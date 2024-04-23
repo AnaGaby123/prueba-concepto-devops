@@ -1,0 +1,89 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+.pqf-toggle-container {
+  @include s.flexRowNoWrap;
+  column-gap: 8px;
+
+  #pqf-toggle {
+    @include s.flexRow;
+    align-items: center;
+    background-color: s.$dark-proquifa-c;
+    border-radius: 100px;
+    cursor: pointer;
+    height: 28px;
+    justify-content: flex-start;
+    padding: 0 2px;
+    width: 52px;
+
+    &.disable {
+      cursor: initial;
+      background-color: s.$dark-proquifa-e !important;
+
+      & > .circle {
+        background-color: s.$dark-proquifa-d;
+      }
+
+      &:active {
+        & > .circle {
+          width: 24px;
+        }
+      }
+    }
+
+    &.two-options-active {
+      background-color: s.$pqGreen !important;
+
+      & > .circle {
+        background-color: s.$pqWhite !important;
+      }
+    }
+
+    &.active {
+      justify-content: flex-end;
+    }
+
+    &.thin {
+      height: 20px;
+
+      & > .circle {
+        height: 16px;
+        width: 16px;
+      }
+    }
+
+    & > .circle {
+      background-color: s.$pqWhite;
+      border-radius: 50%;
+      height: 24px;
+      width: 24px;
+    }
+  }
+
+  .default {
+    &.active {
+      background-color: s.$pqGreen !important;
+    }
+  }
+
+  .green {
+    &.active {
+      background-color: s.$pqGreen2 !important;
+    }
+  }
+
+  & > label {
+    @include s.responsive-font-format($font-size-map: s.$responsive-font-16-16);
+
+    &.active {
+      color: s.$main-proquifa;
+    }
+
+    &.disable {
+      color: s.$dark-proquifa-d;
+    }
+  }
+}

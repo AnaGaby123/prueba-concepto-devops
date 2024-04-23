@@ -1,0 +1,102 @@
+<div class="item-details-container">
+  <div class="img-type-presentation">
+    <img
+      #imgTypePresentation
+      alt=""
+      [src]="setImageTypePresentation(seeItemDetailsPopTop?.srcImageTypePresentation)"
+      (error)="errorImageTypePresentation()"
+    />
+  </div>
+  <div class="info-container-general">
+    <div class="info-container-top">
+      <div class="info-details-container">
+        <div class="info-container">
+          <div class="img-brand">
+            <img #imgBrand alt="" [src]="setImageBrand(seeItemDetailsPopTop?.srcImageBrand)" (error)="errorImageBrand()" />
+          </div>
+          <div class="img-availability">
+            <img
+              #imgAvailability
+              alt=""
+              [src]="setImageAvailability(seeItemDetailsPopTop?.srcImageAvailability)"
+              (error)="errorImageAvailability()"
+            />
+          </div>
+          <label class="green" *ngIf="!isTraining">CAT #{{ seeItemDetailsPopTop?.cat }}</label>
+          <!--          DOCS: label que muestrra la información de productos Estandar / reactivos  quimico-->
+          <label class="green" *ngIf="isChemistOrBiologic">
+            · {{ seeItemDetailsPopTop?.typePresentation || 'N/D' }} {{ seeItemDetailsPopTop?.amountPresentation }}
+            {{ seeItemDetailsPopTop?.unitProduct || 'N/D' }}
+            · {{ seeItemDetailsPopTop?.typeUse || 'N/D' }}
+          </label>
+          <!--          DOCS: label que muestrra la información de productos de publicacion-->
+          <label class="green" *ngIf="isPublication">
+            · {{ seeItemDetailsPopTop?.publication?.formatPublication || 'N/D' }}
+          </label>
+          <!--          DOCS: label que muestrra la información de productos de capacitacion-->
+          <label class="green" *ngIf="isTraining"> {{ seeItemDetailsPopTop?.training?.typeMode || 'N/D' }} · </label>
+        </div>
+        <div class="description-container">
+          <div class="img-type-item">
+            <img
+              #imgTypeItem
+              alt=""
+              [src]="setImageTypeItem(seeItemDetailsPopTop?.srcImageTypeItem)"
+              (error)="errorImageTypeItem()"
+            />
+          </div>
+
+          <label class="description"> · {{ seeItemDetailsPopTop?.description || 'N/D' }}</label>
+        </div>
+        <div class="family-container">
+          <label>
+            {{ familyString }}
+          </label>
+          <!--          DOCS: label que muestrra si es controlado o no-->
+          <label class="controlled" *ngIf="seeItemDetailsPopTop?.isControlled">
+            · {{ 'descriptionItemQuote.controlled' | translate }}
+          </label>
+          <!--  DOCS: label que muestrra la información de productos de publicacion-->
+          <label class="author" *ngIf="isPublication">
+            · {{ 'descriptionItemQuote.author' | translate }}: {{ seeItemDetailsPopTop?.publication?.nameAuthor || 'N/D' }}
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="info-container-bottom">
+      <label *ngIf="!isPublication && !isMedicalDevice"
+        >{{ 'orderModification.presentation' | translate }}:
+        <span class="ocean"
+          >{{ seeItemDetailsPopTop?.amountPresentation || 'N/D' }} {{ seeItemDetailsPopTop?.unitProduct }}
+        </span>
+      </label>
+      <label
+        >{{ 'common.provider' | translate }}:
+        <span class="ocean">{{ seeItemDetailsPopTop?.nameProvider || 'N/D' }}</span>
+      </label>
+      <label
+        >{{ 'common.brand' | translate }}:
+        <span class="ocean">{{ seeItemDetailsPopTop?.nameBrand || 'N/D' }} </span>
+      </label>
+      <label
+        >{{ 'quotation.details.section.detailsProducts.tDelivery' | translate }}:
+        <span class="ocean">{{ seeItemDetailsPopTop?.tee }} {{ 'common.days' | translate }}</span>
+      </label>
+    </div>
+  </div>
+  <div class="container-unit-price">
+    <label class="label-price">{{ 'common.unitPriceQuote' | translate }}</label>
+    <label class="amount">
+      {{ seeItemDetailsPopTop?.unitPrice | currency: 'USD':'symbol-narrow':'1.2-2' }}
+      {{ seeItemDetailsPopTop?.currency }}</label
+    >
+    <label class="people" *ngIf="isTraining && seeItemDetailsPopTop?.training?.numberPerson > 0">
+      {{ seeItemDetailsPopTop?.training?.numberPerson }}
+      {{
+        seeItemDetailsPopTop?.training?.numberPerson === 1
+          ? ('formProduct.step1.person' | translate)
+          : ('formProduct.step1.people' | translate)
+      }}</label
+    >
+  </div>
+</div>

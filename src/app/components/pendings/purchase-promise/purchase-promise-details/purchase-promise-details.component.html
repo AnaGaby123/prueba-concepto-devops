@@ -1,0 +1,442 @@
+<div id="purchase-promise-details-container">
+  <div class="header">
+    <div class="client-data">
+      <app-client-contact-bars-collapse
+        [showCollapse]="true"
+        [contact]="clientContactData$ | async"
+        [currency]="(orderSelected$ | async)?.ClaveMoneda"
+        [currentDate]="currentDate"
+        [currentYear]="currentYear"
+        [efficiency]="(clientTotals$ | async)?.TasaEfectividad"
+        [fundamentalObjectiveUSD]="(clientTotals$ | async)?.ObjetivoFundamentalUSD"
+        [percentage]="0"
+        [totalQuotedUSD]="(clientTotals$ | async)?.TotalFacturadoUSD"
+        [showBar]="false"
+      ></app-client-contact-bars-collapse>
+    </div>
+  </div>
+  <div class="content">
+    <div class="arrow" [ngClass]="leftContainerIsOpen ? '' : 'close'">
+      <img src="assets/Images/arrows/flecha_mostrar.svg" alt="" (click)="handleLeftContainer()" />
+    </div>
+    <div class="left-container">
+      <div class="title">
+        <label>{{ 'purchasePromise.purchaseOrders' | translate }}</label>
+      </div>
+      <div class="burger">
+        <app-dropdown-button
+          [options]="ocBurgerOptions$ | async"
+          [value]="selectedOcBurgerOption$ | async"
+          (valueEmit)="setBurgerOption($event, 'selectedOcBurgerOption', true)"
+        ></app-dropdown-button>
+      </div>
+      <div class="filters">
+        <div class="hamburger">
+          <app-hamburger-menu
+            [options]="dateBurgerOptions$ | async"
+            [value]="(selectedDateBurgerOption$ | async)?.value"
+            [title]="(selectedDateBurgerOption$ | async)?.label"
+            (valueEmit)="setBurgerOption($event, 'selectedDateBurgerOption')"
+          ></app-hamburger-menu>
+        </div>
+        <div class="search">
+          <app-search
+            [placeholder]="'#OC'"
+            [searchTerm]="ocSearchTerm$ | async"
+            (textSearch)="handleOcSearchTerm($event)"
+          ></app-search>
+        </div>
+      </div>
+      <div class="list-container">
+        <virtual-scroller
+          *ngIf="!lodashIsEmpty(purchaseOrderList$ | async) && !(isLoadingOrders$ | async)"
+          [items]="purchaseOrderList$ | async"
+          (vsUpdate)="listScrollItems = $event"
+          (vsEnd)="fetchMore($event)"
+        >
+          <div
+            class="item"
+            *ngFor="let order of listScrollItems; trackBy: handleTrackByPcPromesa"
+            (click)="selectedPurchaseOrder(order)"
+            [ngClass]="order.IdPcPromesaDeCompra === (orderSelected$ | async)?.IdPcPromesaDeCompra ? 'selected' : ''"
+          >
+            <div
+              class="indicator"
+              [ngClass]="order.IdPcPromesaDeCompra === (orderSelected$ | async)?.IdPcPromesaDeCompra ? 'selected' : ''"
+            ></div>
+            <div class="content">
+              <label class="title"
+                >#{{ order?.Index }} ·
+                <span [ngClass]="!order?.IdArchivo ? 'red' : ''">{{
+                  order?.IdArchivo ? order?.OrdenDeCompra : 'SIN OC'
+                }}</span></label
+              >
+              <label class="subtitle"
+                >{{ 'purchasePromise.currencyOrderSelected' | translate }}: {{ order?.ClaveMoneda }}</label
+              >
+              <label class="subtitle"
+                >{{ 'executeCollection.details.reception' | translate }}: {{ order?.FechaRegistro | dateFormatSlash }}</label
+              >
+            </div>
+          </div>
+        </virtual-scroller>
+        <div *ngIf="lodashIsEmpty(purchaseOrderList$ | async) && !(isLoadingOrders$ | async)" class="without">
+          <app-without-results></app-without-results>
+        </div>
+        <div class="loadingContainer" *ngIf="isLoadingOrders$ | async">
+          <app-loading></app-loading>
+        </div>
+      </div>
+      <div class="totals">
+        <label
+          >#{{ orderTotals$ | async }}
+          {{
+            (orderTotals$ | async) === 1 ? ('common.purchaseOrder' | translate) : ('purchasePromise.purchaseOrders' | translate)
+          }}</label
+        >
+      </div>
+    </div>
+    <div class="center-container" [ngClass]="leftContainerIsOpen ? '' : 'close'">
+      <div class="slide">
+        <div class="title">
+          <label>{{ 'purchasePromise.request' | translate }}</label>
+        </div>
+        <div class="without-results">
+          <div class="loadingContainer" *ngIf="isLoadingOrders$ | async">
+            <app-loading></app-loading>
+          </div>
+        </div>
+        <div
+          class="content"
+          *ngIf="!lodashIsEmpty((orderSelected$ | async)?.mailData) && !(isLoadingOrders$ | async); let mailData"
+        >
+          <label [ngClass]="!(orderSelected$ | async)?.IdArchivo ? 'red' : ''">{{
+            (orderSelected$ | async)?.IdArchivo ? 'FO - ' + (orderSelected$ | async)?.OrdenDeCompra : 'SIN OC'
+          }}</label>
+          <div>
+            <label>{{ (orderSelected$ | async)?.mailData?.CorreoRecibido.CorreoEmisor }}</label>
+            <label>
+              {{ (orderSelected$ | async)?.mailData.CorreoRecibido?.Asunto }}
+            </label>
+          </div>
+        </div>
+        <div #files id="files" class="files">
+          <div class="file" *ngFor="let mail of (orderSelected$ | async)?.mailData.Archivo; let i = index">
+            <label class="index">{{ i + 1 }}</label>
+            <img alt="file" src="assets/Images/quotation/file.svg" />
+            <label class="btn" (click)="viewFile(mail)">{{ mail.FileKey | onlyFileNamePdf }}</label>
+          </div>
+        </div>
+        <!--        <div class="files-container" *ngIf="(orderSelected$ | async)?.IdArchivo">-->
+        <!--          <div class="files">-->
+        <!--            <div-->
+        <!--              class="file"-->
+        <!--              *ngFor="let mail of (orderSelected$ | async)?.mailData.Archivo; let i = index"-->
+        <!--              (click)="viewFile(mail)"-->
+        <!--            >-->
+        <!--              <label>{{ i + 1 }}</label>-->
+        <!--              <img alt="file" src="assets/Images/quotation/file.svg" />-->
+        <!--              <label>{{ mail?.FileKey | onlyFileNamePdf }}</label>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--        </div>-->
+      </div>
+    </div>
+    <div class="right-container">
+      <div class="title">
+        <label>#{{ (orderSelected$ | async)?.Index }} · </label>
+        <label *ngIf="(orderSelected$ | async)?.IdArchivo"
+          >{{ (orderSelected$ | async)?.OrdenDeCompra }}
+          <img class="edit" src="assets/Images/edit_pencil.svg" (click)="referencePopOpen = true" #reference />
+          <app-custom-position-pop-up
+            *ngIf="referencePopOpen"
+            [popUpPosition]="'bottom-center'"
+            [closeButton]="false"
+            [target]="reference"
+            [backgroundColor]="'#424242'"
+            [borderColor]="'#424242'"
+            [triangleBackgroundColor]="'#424242'"
+            [borderRadius]="'6px'"
+            [padding]="'16px'"
+          >
+            <app-reference-form-edit
+              [reference]="(orderSelected$ | async)?.OrdenDeCompra"
+              (handleAction)="handleReferenceAction($event)"
+            ></app-reference-form-edit>
+          </app-custom-position-pop-up>
+        </label>
+        <label class="red" *ngIf="!(orderSelected$ | async)?.IdArchivo"> SIN OC</label>
+        <label class="ocean">
+          · {{ (quotations$ | async).length }}
+          {{
+            (quotations$ | async)?.length === 1
+              ? ('quotation.quotation' | translate)
+              : ('purchasePromise.quotations' | translate)
+          }}</label
+        >
+        <label>
+          · {{ 'purchasePromise.totalValueInPromise' | translate }}
+          {{ selectValueTotalInPromise$ | async | currency: 'USD':'symbol-narrow':'1.2-2' }}
+          USD
+        </label>
+      </div>
+      <div class="search">
+        <app-search
+          [imageFill]="'#008894'"
+          [borderColor]="'#008894'"
+          [placeholder]="'Escribe aquí'"
+          [searchTerm]="purchaseSearchTerm$ | async"
+          [resultItems]="optionsProduct$ | async"
+          [itemSelected]="itemSelected$ | async"
+          [activeRefresh]="true"
+          [isExpandable]="true"
+          [isLoading]="optionsLoading$ | async"
+          [isSearchByType]="true"
+          [typeValidation]="
+            (selectedPurchaseSearchOption$ | async)?.value === CAS ? inputValidators.CASNumber : inputValidators.AcceptAll
+          "
+          [typesOfSearch]="purchaseSearchOptions$ | async"
+          [typeSelected]="selectedPurchaseSearchOption$ | async"
+          (textSearch)="handleKeySearch($event)"
+          (handleSearchTermSelected)="handleSearchTermSelected($event)"
+          (handleItemSelected)="handleOption($event)"
+          (handleClearSearchTerm)="clear()"
+          (handleTypeSelected)="setQuoteSearchOption($event)"
+        ></app-search>
+      </div>
+      <div class="carousel">
+        <app-pqf-card
+          [enableMessage]="true"
+          [isLoading]="(statusApiSummaryList$ | async) === REQUEST_LOADING"
+          [options]="quotations$ | async"
+          (handleOptionSelected)="selectQuotation($event)"
+        ></app-pqf-card>
+      </div>
+      <div class="table-content">
+        <div class="subtitle">
+          <label *ngIf="!(seeResumeActive$ | async)">{{ 'purchasePromise.entries' | translate }} </label>
+          <label *ngIf="seeResumeActive$ | async"
+            >{{ 'purchasePromise.seeResume' | translate }}
+            <span> · {{ (resume$ | async).length }} {{ 'purchasePromise.entries' | translate }}</span></label
+          >
+          <button
+            *ngIf="!(seeResumeActive$ | async)"
+            [disabled]="!(((resume$ | async)?.length || 0 + (listFleteExpress$ | async)?.length || 0) !== 0)"
+            [ngClass]="
+              ((resume$ | async)?.length || 0 + (listFleteExpress$ | async)?.length || 0) !== 0 ? 'active' : 'disabled'
+            "
+            (click)="seeResume(true)"
+            >{{ 'purchasePromise.seeResume' | translate }} ({{
+              ((resume$ | async)?.length || 0) + ((selectFleteEspressDetails$ | async)?.length || 0)
+            }})
+          </button>
+          <button *ngIf="seeResumeActive$ | async" [ngClass]="'active'" (click)="seeResume(false)">{{
+            'common.back' | translate
+          }}</button>
+        </div>
+        <div class="table-container">
+          <div class="loadingContainer" *ngIf="(statusApiItemList$ | async) === REQUEST_LOADING">
+            <app-loading></app-loading>
+          </div>
+          <ng-template
+            *ngIf="
+              (statusApiItemList$ | async) !== REQUEST_LOADING && !(seeResumeActive$ | async)
+                ? lodashIsEmpty(listItem$ | async)
+                : lodashIsEmpty(resume$ | async)
+            "
+          >
+            <div class="without-results">
+              <app-without-results [title]="'purchasePromise.searcherEnableSection' | translate"></app-without-results>
+            </div>
+          </ng-template>
+          <app-table-summary
+            *ngIf="
+              (statusApiItemList$ | async) !== REQUEST_LOADING &&
+              !(seeResumeActive$ | async) &&
+              ((listItem$ | async)?.length > 0 || !(fleteAlreadySelected$ | async))
+            "
+            class="{{
+              (statusApiItemList$ | async) !== REQUEST_LOADING &&
+              !(seeResumeActive$ | async) &&
+              ((listItem$ | async)?.length > 0 || !(fleteAlreadySelected$ | async))
+                ? 'fullScreen'
+                : ''
+            }}"
+          ></app-table-summary>
+          <app-table-resume
+            *ngIf="
+              (seeResumeActive$ | async) &&
+              (statusApiItemList$ | async) !== REQUEST_LOADING &&
+              ((resume$ | async)?.length > 0 || (selectFleteEspressDetails$ | async)?.length > 0)
+            "
+            class="{{
+              (seeResumeActive$ | async) &&
+              (statusApiItemList$ | async) !== REQUEST_LOADING &&
+              ((resume$ | async)?.length > 0 || (selectFleteEspressDetails$ | async)?.length > 0)
+                ? 'fullScreen'
+                : ''
+            }}"
+          >
+          </app-table-resume>
+        </div>
+        <div class="totals" [ngClass]="true ? 'with-totals' : ''">
+          <div class="orders-brands">
+            <div class="text">
+              <label
+                >{{ totalOrders$ | async }}
+                {{ (totalOrders$ | async) === 1 ? ('item' | translate) : ('purchasePromise.entries' | translate) }}</label
+              >
+              <label
+                >{{ totalBrands$ | async }}
+                {{ (totalBrands$ | async) === 1 ? ('common.brand' | translate) : ('common.brands' | translate) }}</label
+              >
+            </div>
+            <div class="content" *ngIf="seeResumeActive$ | async">
+              <div class="checkbox">
+                <app-check-box
+                  [check]="hasObservations$ | async"
+                  (event)="updatePurchasePromise('TieneObservaciones', $event)"
+                ></app-check-box>
+                <img src="assets/Images/purchase-promise/notas_partidas.svg" width="22.115" height="19.451" />
+                <label>
+                  {{ 'purchasePromise.purchaseOrderObservations' | translate }}
+                </label>
+              </div>
+              <app-generic-input
+                [value]="(selectedPurchaseOrder$ | async)?.Observaciones"
+                [isDisable]="!(hasObservations$ | async)"
+                [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+                (textData)="updatePurchasePromise('Observaciones', $event)"
+              ></app-generic-input>
+            </div>
+          </div>
+          <div class="totals-container" *ngIf="true">
+            <div>
+              <label>{{ 'common.subtotal' | translate }}: </label>
+              <label>{{ 'common.tax' | translate }}: </label>
+              <label class="total">{{ 'common.total' | translate }}: </label>
+            </div>
+            <div>
+              <label
+                >{{ (totals$ | async)?.subTotal | currency: (orderSelected$ | async).ClaveMoneda:'symbol-narrow':'1.2-2' }}
+                {{
+                  !(isResumeActive$ | async) && (selectedQuote$ | async)?.ClaveMoneda
+                    ? (selectedQuote$ | async)?.ClaveMoneda
+                    : !(isResumeActive$ | async) && (orderSelected$ | async)?.ClaveMoneda
+                    ? (orderSelected$ | async)?.ClaveMoneda
+                    : (isResumeActive$ | async) && (firstItemResume$ | async)?.quote?.ClaveMoneda
+                    ? (firstItemResume$ | async)?.quote?.ClaveMoneda
+                    : (orderSelected$ | async)?.ClaveMoneda
+                }}</label
+              >
+              <label
+                >{{ (totals$ | async)?.totalTax | currency: (orderSelected$ | async).ClaveMoneda:'symbol-narrow':'1.2-2' }}
+                {{
+                  !(isResumeActive$ | async) && (selectedQuote$ | async)?.ClaveMoneda
+                    ? (selectedQuote$ | async)?.ClaveMoneda
+                    : !(isResumeActive$ | async) && (orderSelected$ | async)?.ClaveMoneda
+                    ? (orderSelected$ | async)?.ClaveMoneda
+                    : (isResumeActive$ | async) && (firstItemResume$ | async)?.quote?.ClaveMoneda
+                    ? (firstItemResume$ | async)?.quote?.ClaveMoneda
+                    : (orderSelected$ | async)?.ClaveMoneda
+                }}</label
+              >
+              <label class="total"
+                >{{
+                  (totals$ | async).totalPriceQuotation | currency: (orderSelected$ | async).ClaveMoneda:'symbol-narrow':'1.2-2'
+                }}
+                {{
+                  !(isResumeActive$ | async) && (selectedQuote$ | async)?.ClaveMoneda
+                    ? (selectedQuote$ | async)?.ClaveMoneda
+                    : !(isResumeActive$ | async) && (orderSelected$ | async)?.ClaveMoneda
+                    ? (orderSelected$ | async)?.ClaveMoneda
+                    : (isResumeActive$ | async) && (firstItemResume$ | async)?.quote?.ClaveMoneda
+                    ? (firstItemResume$ | async)?.quote?.ClaveMoneda
+                    : (orderSelected$ | async)?.ClaveMoneda
+                }}</label
+              >
+            </div>
+          </div>
+        </div>
+        <div class="button">
+          <button
+            class="small"
+            *ngIf="!(seeResumeActive$ | async)"
+            [ngClass]="(isActiveAddToResume$ | async) ? 'active' : 'disabled'"
+            [disabled]="!(isActiveAddToResume$ | async)"
+            (click)="addToSummary()"
+            >{{ 'purchasePromise.addToResume' | translate }}</button
+          >
+          <button
+            class="big"
+            *ngIf="seeResumeActive$ | async"
+            [disabled]="!(validatorForCloseButton$ | async)"
+            [ngClass]="{
+              'active-yellow': !(orderSelected$ | async).IdArchivo && (validatorForCloseButton$ | async),
+              active: (orderSelected$ | async).IdArchivo && validatorForCloseButton$ | async,
+              disabled: !(validatorForCloseButton$ | async)
+            }"
+            (click)="closeSale()"
+            >{{
+              (orderSelected$ | async).IdArchivo
+                ? ('purchasePromise.closeOfferWithOC' | translate)
+                : ('purchasePromise.closeOfferWithoutOC' | translate)
+            }}</button
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div>
+      <label>OC: </label>
+      <label>{{ 'purchasePromise.purchaseOrder' | translate }}</label>
+    </div>
+    <div>
+      <img src="assets/Images/pre-processing/originales.svg" alt="" />
+      <label>{{ 'preProcessing.typeOfItem.originals' | translate }}</label>
+    </div>
+    <div>
+      <img src="assets/Images/pre-processing/alternativas.svg" alt="" />
+      <label>{{ 'preProcessing.typeOfItem.alternatives' | translate }}</label>
+    </div>
+    <div>
+      <img src="assets/Images/pre-processing/complementarias.svg" alt="" />
+      <label>{{ 'preProcessing.typeOfItem.complementary' | translate }}</label>
+    </div>
+    <div>
+      <img src="assets/Images/pre-processing/promocion.svg" alt="" />
+      <label>{{ 'preProcessing.typeOfItem.promotion' | translate }}</label>
+    </div>
+    <div>
+      <img src="assets/Images/pre-processing/ahorro.svg" alt="" />
+      <label>{{ 'preProcessing.typeOfItem.saving' | translate }}</label>
+    </div>
+  </footer>
+</div>
+<div class="linked-items-pop">
+  <app-custom-position-pop-up
+    *ngIf="toolTipPop"
+    [minWidth]="'160px'"
+    [maxWidth]="'160px'"
+    [minHeight]="'60px'"
+    [maxHeight]="(viewType$ | async) === 'macBookAir' ? '95px' : '85px'"
+    [popUpPosition]="'bottom-center'"
+    [backgroundColor]="'#33333c'"
+    [target]="targetPop"
+    [borderColor]="'#33333c'"
+    [borderRadius]="'solid 0.5px #c8c8c9'"
+    [triangleBackgroundColor]="'#33333c'"
+    [closeButton]="false"
+    (closeEmitter)="openLinkedQuoted('tooltip', false)"
+  >
+    <div class="linked-items">
+      <ul>
+        <li *ngFor="let quote of (quotesLinked$ | async)?.quotesLinked; let i = index"
+          ><label (click)="openLinkedFile(quote.IdArchivoPDF, quote.Folio)"> {{ i + 1 + '.- FO-' + quote.Folio }} </label>
+        </li>
+      </ul>
+    </div>
+  </app-custom-position-pop-up>
+</div>
+<app-payent-date-pop *ngIf="false"></app-payent-date-pop>

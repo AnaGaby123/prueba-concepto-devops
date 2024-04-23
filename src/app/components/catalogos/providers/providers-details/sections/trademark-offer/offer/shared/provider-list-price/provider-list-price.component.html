@@ -1,0 +1,74 @@
+<div class="provider-list-price">
+  <h4 [ngClass]="!showListPrice && 'margin-bottom'">PRECIO DE LISTA PROVEEDOR</h4>
+  <ng-container *ngIf="showListPrice">
+    <h5>{{ price?.PrecioLista }} {{ price?.MonedaVentaProveedor }}</h5>
+    <h6 *ngIf="price?.PrecioListaMonedaProveedor"
+      >{{ price?.PrecioListaMonedaProveedor?.toFixed(2) }} {{ price?.ClaveMonedaPagos }}</h6
+    >
+    <h6 *ngIf="!price?.PrecioListaMonedaProveedor">N/D</h6>
+  </ng-container>
+  <div class="inputs">
+    <app-pqf-toggle-switch
+      class="switch"
+      [disable]="!enableEdit"
+      [options]="selectToggleSwitchOptions$ | async"
+      [selectedOption]="actualConfiguration?.selectedToggleSwitchOption"
+      (selectedOptionChange)="handleInputChange($event, fields.selectedToggleSwitchOption)"
+    ></app-pqf-toggle-switch>
+    <app-generic-input
+      class="input"
+      [enableEdit]="enableEdit"
+      [isDisable]="!actualConfiguration?.selectedToggleSwitchOption"
+      [placeholder]="'0'"
+      [textAlign]="'center'"
+      (textData)="
+        handleInputChange(
+          $event,
+          actualConfiguration?.selectedToggleSwitchOption?.label === toggleOptions.Monto
+            ? fields.MontoMinimoOC
+            : fields.NumPiezas
+        )
+      "
+      [typeValidation]="
+        actualConfiguration?.selectedToggleSwitchOption?.label === toggleOptions.Monto ? 'decimalNumber' : 'number'
+      "
+      [value]="
+        actualConfiguration?.selectedToggleSwitchOption?.label === toggleOptions.Monto
+          ? actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.MontoMinimoOC
+          : actualConfiguration?.selectedToggleSwitchOption?.label === toggleOptions.Unidad
+          ? actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.NumPiezas
+          : null
+      "
+    ></app-generic-input>
+    <label>{{ actualConfiguration?.selectedToggleSwitchOption?.label === toggleOptions.Unidad ? 'Pzas' : 'USD' }}</label>
+    <div class="check-container" *ngIf="!isMexican">
+      <app-check-box
+        class="check"
+        [check]="actualConfiguration?.MarcaFamiliaProveedor?.AplicaConsolidacion"
+        [enableEdit]="activeConsolidatedCheck && enableEdit"
+        [enabledIconNoSelected]="true"
+        [label]="'¿Consolidación con otros tipos de productos  a orden de despacho?'"
+        [labelFontStyle]="
+          actualConfiguration?.MarcaFamiliaProveedor?.AplicaConsolidacion ? 'robotoBold12Green' : 'robotoBold12'
+        "
+        (event)="handleCheckChange($event, fields.AplicaConsolidacion)"
+      >
+      </app-check-box>
+      <app-drop-down-list
+        *ngIf="enableEdit && activeConsolidatedCheck; else label"
+        class="drop-list"
+        [activeCheckItem]="true"
+        [activeMinWidth]="false"
+        [capitalize]="false"
+        [disable]="!actualConfiguration?.MarcaFamiliaProveedor?.AplicaConsolidacion"
+        [enableEdit]="activeConsolidatedCheck"
+        [items]="trademarkFamiliesOptions$ | async"
+        [subtitleActive]="true"
+        (itemCheckChange)="handleItemCheckChange($event)"
+      ></app-drop-down-list>
+      <ng-template #label>
+        <label>{{ trademarkFamilies$ | async }}</label>
+      </ng-template>
+    </div>
+  </div>
+</div>

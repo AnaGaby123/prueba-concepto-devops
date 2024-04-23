@@ -1,0 +1,114 @@
+@use 'base' as s;
+
+:host {
+  @include s.flexColumn;
+  flex: 1;
+
+  * {
+    box-sizing: border-box;
+  }
+
+  overflow: hidden;
+}
+
+#logistic-configuration-routes-times {
+  @include s.flexColumn;
+  border-top: 1px solid s.$pqBlack2;
+  flex: 1;
+  //max-height: 315px;
+  text-align: center;
+  overflow: auto;
+
+  & > .title {
+    padding-top: 8px;
+    @include s.responsive-font-format(
+      $color: s.$main-proquifa-c,
+      $font-family: s.$font_family_roboto_bold,
+      $font-size-map: s.$responsive-font-16-20,
+      $font-weight: s.$font-weight-bold
+    );
+  }
+
+  & > .requested-fields {
+    @include s.responsive-font-format($font-size-map: s.$responsive-font-14-16, $color: s.$dark-proquifa-c);
+  }
+
+  & > .scrollable-content {
+    @include s.flexColumn;
+    @include s.absolute100;
+    overflow: auto;
+
+    & > .row {
+      @include s.flexRow;
+      gap: 150px;
+      margin: 24px 0 24px 0;
+      width: 100%;
+
+      & > .column {
+        @include s.flexColumn;
+        align-items: flex-end;
+        gap: 24px;
+
+        & > div {
+          @include s.flexRow;
+          align-items: center;
+
+          & > div {
+            padding-right: 8px;
+          }
+
+          & > label {
+            @include s.responsive-font-format($font-size-map: s.$responsive-font-16-20, $color: s.$pqBlack2);
+          }
+        }
+      }
+    }
+
+    & > .times {
+      @include s.flexRow;
+      @include s.flex-center-items;
+      gap: 16px;
+      padding-top: 24px;
+
+      & > .left-container {
+        @include s.flexColumn;
+        align-items: flex-end;
+        gap: 8px;
+
+        & > div {
+          @include s.flexRow;
+          gap: 8px;
+        }
+      }
+
+      & > .right-container {
+        @include s.flexColumn;
+        gap: 6px;
+
+        & > .logistic-time {
+          @include s.responsive-font-format(
+            $color: s.$main-proquifa-b,
+            $font-family: s.$font_family_roboto_bold,
+            $font-size-map: s.$responsive-font-16-20,
+            $font-weight: s.$font-weight-bold
+          );
+        }
+
+        & > .commercial-time {
+          @include s.responsive-font-format(
+            $color: s.$pqGreen,
+            $font-family: s.$font_family_roboto_bold,
+            $font-size-map: s.$responsive-font-16-20,
+            $font-weight: s.$font-weight-bold
+          );
+        }
+      }
+    }
+  }
+}
+
+@include s.media-query(s.$standard) {
+  #logistic-configuration-routes-times {
+    //max-height: 250px;
+  }
+}

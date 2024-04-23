@@ -1,0 +1,23 @@
+<div id="item" [ngClass]="item.isSelected ? 'active' : ''" (click)="selectItem(item)">
+  <div class="number">
+    <label>{{ '#' + item.Index }}</label>
+  </div>
+  <div class="content">
+    <label class="name">{{ item.NombreMarca }}</label>
+    <label class="family">{{ item.fullFamilyName }}</label>
+    <label class="name-supplier">{{ item.NombreProveedor }}</label>
+    <label class="date">
+      {{ 'newProductExistingSupplier.logisticConfiguration.list.dateSlopeCreated' | translate }}:
+      {{ item.FechaCreacionPendiente | dateFormatSlashShortNumbers }}
+    </label>
+  </div>
+  <div class="arrow">
+    <img
+      [src]="
+        item.isSelected
+          ? 'assets/Images/arrows/arrow-selected-dashboard-item.svg'
+          : 'assets/Images/arrows/arrow-dashboard-item.svg'
+      "
+    />
+  </div>
+</div>

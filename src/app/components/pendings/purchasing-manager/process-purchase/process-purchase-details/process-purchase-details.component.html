@@ -1,0 +1,31 @@
+<section id="offer-adjustment-details">
+  <router-outlet></router-outlet>
+</section>
+<footer>
+  <div>
+    <div>
+      <label class="normal">CU:</label>
+      <label>{{ 'processPurchase.details.unitCost' | translate }}</label>
+    </div>
+    <div>
+      <label class="normal">CT:</label>
+      <label>{{ 'processPurchase.details.totalCost' | translate }}</label>
+    </div>
+    <div>
+      <label class="red">FEE:</label>
+      <label>{{ 'processPurchase.details.estimatedDeliveryDateOutOfTime' | translate }}</label>
+    </div>
+    <div>
+      <label class="yellow">FEE:</label>
+      <label>{{ 'processPurchase.details.estimatedExpressDeliveryDate' | translate }}</label>
+    </div>
+    <div>
+      <label class="green">FEE:</label>
+      <label>{{ 'processPurchase.details.estimatedDeliveryDateOnTime' | translate }}</label>
+    </div>
+    <div>
+      <img src="assets/Images/purchasing-manager/stock.svg" />
+      <p class="text">{{ 'processPurchase.details.linkToStock' | translate }}</p>
+    </div>
+  </div>
+</footer>

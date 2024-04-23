@@ -1,0 +1,451 @@
+<div id="execute-payment">
+  <div class="content-container">
+    <div *ngIf="!(rebillView$ | async)" class="inputs-container">
+      <div class="content">
+        <div class="first-container">
+          <div class="column-one">
+            <app-drop-down-list
+              [label]="'executeCollection.details.currency' | translate"
+              [items]="currencyOptions$ | async"
+              [activeMinWidth]="false"
+              [itemSelected]="(paymentTransaction$ | async).selectedCurrency"
+              (valueDropList)="setDropListOption('selectedCurrency', $event)"
+            >
+            </app-drop-down-list>
+            <app-generic-input
+              [label]="'executeCollection.details.amount' | translate"
+              [typeValidation]="inputValidators.DecimalNumber"
+              [value]="(clientPayment$ | async)?.Monto"
+              (textData)="setFieldValue('Monto', $event)"
+            >
+            </app-generic-input>
+            <app-drop-down-list
+              [label]="'executeCollection.details.paymentMethod2' | translate"
+              [items]="paymentMethodsOptions$ | async"
+              [activeMinWidth]="false"
+              [itemSelected]="(paymentTransaction$ | async).selectedPaymentMethod"
+              (valueDropList)="setDropListOption('selectedPaymentMethod', $event)"
+            >
+            </app-drop-down-list>
+          </div>
+          <div class="column-two">
+            <app-generic-input
+              [label]="'executeCollection.details.tc' | translate"
+              [typeValidation]="inputValidators.DecimalNumber"
+              [value]="(clientPayment$ | async)?.TipoDeCambio"
+              (textData)="setFieldValue('TipoDeCambio', $event)"
+            >
+            </app-generic-input>
+            <label>{{ 'executeCollection.details.datePayment' | translate }}</label>
+            <app-date-picker
+              dateFormat="YYYYMMDD"
+              [disabledCalendarDays]="selectNonWorkingDays$ | async"
+              [color]="false"
+              [date]="(clientPayment$ | async)?.FechaPagoDate"
+              (fecha)="handleDate($event)"
+            >
+            </app-date-picker>
+            <app-drop-down-list
+              [label]="'executeCollection.details.bankAccount' | translate"
+              [items]="bankDataOptions$ | async"
+              [activeMinWidth]="false"
+              [itemSelected]="(paymentTransaction$ | async).selectedBankAccount"
+              (valueDropList)="setDropListOption('selectedBankAccount', $event)"
+            >
+            </app-drop-down-list>
+          </div>
+        </div>
+        <div class="second-container">
+          <app-check-box
+            [check]="(clientPayment$ | async)?.InformacionComplementoPago"
+            [label]="'executeCollection.details.complementPayInformation' | translate"
+            [labelFontStyle]="'novecentoBold15'"
+            (event)="setCheckBoxValue('InformacionComplementoPago', $event)"
+          ></app-check-box>
+        </div>
+        <div class="third-container">
+          <div class="column-one">
+            <app-drop-down-list
+              class="mb"
+              [disable]="!(clientPayment$ | async)?.InformacionComplementoPago"
+              [label]="'executeCollection.details.bankRfc' | translate"
+              [items]="banksOptions$ | async"
+              [activeMinWidth]="false"
+              [itemSelected]="(paymentTransaction$ | async).selectedBankName"
+              (valueDropList)="setDropListOption('selectedBankName', $event)"
+            >
+            </app-drop-down-list>
+            <app-generic-input
+              [label]="'executeCollection.details.ctaPayer' | translate"
+              [isDisable]="!(clientPayment$ | async)?.InformacionComplementoPago"
+              [value]="(clientPayment$ | async)?.CuentaOrdenante"
+              (textData)="setFieldValue('CuentaOrdenante', $event)"
+            >
+            </app-generic-input>
+          </div>
+          <div class="column-two">
+            <app-generic-input
+              class="mb"
+              [label]="'executeCollection.details.bankPayer' | translate"
+              [isDisable]="true"
+              [value]="(paymentTransaction$ | async).selectedBankName?.label"
+            >
+            </app-generic-input>
+            <app-generic-input
+              [label]="'executeCollection.details.bankReference' | translate"
+              [isDisable]="!(clientPayment$ | async)?.InformacionComplementoPago"
+              [value]="(clientPayment$ | async)?.ReferenciaBancaria"
+              (textData)="setFieldValue('ReferenciaBancaria', $event)"
+            >
+            </app-generic-input>
+          </div>
+        </div>
+        <div class="fourth-container">
+          <app-check-box
+            [check]="(clientPayment$ | async)?.Broker"
+            [label]="'executeCollection.details.broker' | translate"
+            [labelFontStyle]="'novecentoBold15'"
+            (event)="setCheckBoxValue('Broker', $event)"
+          ></app-check-box>
+        </div>
+        <div class="fifth-container">
+          <div class="column-one">
+            <app-drop-down-list
+              [disable]="!(clientPayment$ | async)?.Broker"
+              [items]="clientBrokerOptions$ | async"
+              [label]="'executeCollection.details.businessName' | translate"
+              [activeMinWidth]="false"
+              [itemSelected]="(paymentTransaction$ | async).selectedBrokerName"
+              (valueDropList)="setDropListOption('selectedBrokerName', $event)"
+            >
+            </app-drop-down-list>
+          </div>
+          <div class="column-two">
+            <app-generic-input
+              [isDisable]="true"
+              [label]="'common.rfc' | translate"
+              [value]="(paymentTransaction$ | async).selectedBrokerName?.subtitle"
+            >
+            </app-generic-input>
+          </div>
+        </div>
+        <div class="sixth-container">
+          <label>{{ 'executeCollection.details.creditNotes' | translate }}</label>
+          <ng-container *ngIf="!lodashIsEmpty(creditNotes$ | async); else withoutResults">
+            <div class="folios-container">
+              <div *ngFor="let note of creditNotes$ | async; trackBy: trackByCreditNote" class="folio">
+                <app-check-box
+                  class="check"
+                  [check]="note.isSelected"
+                  (event)="handleCheckCreditNote(note.IdFCCNotaCredito)"
+                ></app-check-box>
+                <div class="labels">
+                  <label>#{{ note.Index }} ·</label>
+                  <label class="green">{{ 'common.folio' | translate }} {{ note.Folio }}</label>
+                  <label
+                    >· {{ 'common.amount' | translate }}
+                    {{ note.Monto | currency: (note.USD ? 'USD' : 'MXN'):'symbol-narrow':'1.2-2' }}
+                    {{ note.USD ? 'USD' : 'MXN' }}</label
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="footer">
+              <label>#{{ (creditNotesTotals$ | async)?.Length }}</label>
+              <label
+                >{{ 'common.total' | translate }}
+                {{ (creditNotesTotals$ | async)?.TotalUSD | currency: 'USD':'symbol-narrow':'1.2-2' }} {{ 'USD' }}</label
+              >
+              <label
+                >{{ 'common.total' | translate }}
+                {{ (creditNotesTotals$ | async)?.TotalMXN | currency: 'MXN':'symbol-narrow':'1.2-2' }} {{ 'MXN' }}</label
+              >
+            </div>
+          </ng-container>
+          <ng-template #withoutResults>
+            <div class="without-results">
+              <app-without-results></app-without-results>
+            </div>
+          </ng-template>
+        </div>
+        <div class="seventh-container">
+          <label>{{ 'executeCollection.details.loadEvidence' | translate }}</label>
+          <app-generic-input-file
+            [acceptedExtensions]="'application/pdf,.pdf,.jpeg,.jpg,.png'"
+            [placeholder]="'.Pdf, png, jpg'"
+            [showAddSelectedFile]="true"
+            (manualEmitFile)="addFile($event)"
+          >
+          </app-generic-input-file>
+        </div>
+        <div class="eighth-container">
+          <div>
+            <app-chip-file
+              [chipsFiles]="(paymentTransaction$ | async).files"
+              (deleteChipFile)="deleteFile($event)"
+            ></app-chip-file>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="info-container">
+      <div class="header">
+        <div class="client-container">
+          <div class="client-title">
+            <label>{{ 'common.client' | translate }}</label>
+            <label *ngIf="rebillView$ | async"> · </label>
+            <div #popUpTarget>
+              <img *ngIf="rebillView$ | async" (click)="popUpIsOpenConditions = true" src="assets/Images/labels/moroso.svg" />
+            </div>
+          </div>
+          <div class="client">
+            <div>
+              <img src="assets/Images/clientes/logo_proquifa_hover.svg" alt="" />
+            </div>
+            <div class="client-info">
+              <div>
+                <label>{{ (selectedClient$ | async)?.NombreCliente }}</label>
+              </div>
+              <label>{{ 'closeOffer.client' | translate }} · {{ 'AA+' }}</label>
+            </div>
+          </div>
+        </div>
+        <div class="contact-data">
+          <div class="data">
+            <div>
+              <div class="row title">
+                <div class="title">
+                  <label>{{ 'purchasePromise.contactData' | translate }}</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="image">
+                  <img src="assets/Images/contacto.svg" alt="" />
+                </div>
+                <label class="bold"
+                  >{{ (contact$ | async)?.Nombres }} {{ (contact$ | async)?.ApellidoPaterno }}
+                  {{ (contact$ | async)?.ApellidoMaterno }}</label
+                >
+              </div>
+              <div class="row">
+                <div class="image">
+                  <img src="assets/Images/quotation/mail.svg" alt="" />
+                </div>
+                <label>{{
+                  (contact$ | async)?.CorreoElectronico ? ((contact$ | async)?.CorreoElectronico)[0].Correo : 'ND'
+                }}</label>
+              </div>
+              <div class="row">
+                <div class="image">
+                  <img src="assets/Images/quotation/phone.svg" alt="" />
+                </div>
+                <label
+                  >{{
+                    !lodashIsEmpty((contact$ | async)?.NumeroTelefonico)
+                      ? ((contact$ | async)?.NumeroTelefonico)[0].Numero
+                      : 'ND'
+                  }}
+                  · Ext.
+                  {{
+                    !lodashIsEmpty((contact$ | async)?.NumeroTelefonico)
+                      ? ((contact$ | async)?.NumeroTelefonico)[0].Extension
+                      : ''
+                  }}</label
+                >
+              </div>
+            </div>
+            <div>
+              <div class="row">
+                <label class="bold">{{ 'purchasePromise.department' | translate }}: </label>
+                <label>{{ (contact$ | async)?.Departamento || 'NA' }}</label>
+              </div>
+              <div class="row">
+                <label class="bold">{{ 'purchasePromise.position' | translate }}: </label>
+                <label>{{ (contact$ | async)?.Puesto || 'NA' }}</label>
+              </div>
+              <div class="row">
+                <label class="bold">{{ 'purchasePromise.decisionLevel' | translate }}: </label>
+                <label>{{ (contact$ | async)?.NivelDecision || 'NA' }}</label>
+              </div>
+            </div>
+            <div>
+              <div class="row">
+                <label class="bold">{{ 'purchasePromise.assignedUser' | translate }}: </label>
+              </div>
+              <div class="row">
+                <label [ngClass]="(selectedClient$ | async)?.SinCredito ? 'red' : 'green'">{{
+                  (selectedClient$ | async)?.SinCredito
+                    ? ('purchasePromise.clientWithoutCredit' | translate)
+                    : ('purchasePromise.clientWithCredit' | translate)
+                }}</label>
+              </div>
+              <div class="row">
+                <label class="bold"></label>
+                <label></label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="content">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>
+<!--TODO: CAMBIAR POR DIALOG-->
+<app-pop-up-send-email
+  *ngIf="popUps.mail.isOpen"
+  [titleHeader]="'Enviar CFDI'"
+  [additionalText]="'archivoCFDI.pdf'"
+  [activeContacts]="true"
+  [validateOnlyContact]="false"
+  [mailList]="[]"
+  [contacts]="[]"
+  [subject]="'CFDI'"
+  (emitResponse)="handlePopUps(MAIL_POP, false)"
+>
+</app-pop-up-send-email>
+
+<app-custom-position-pop-up
+  class="pop-up-conditions"
+  *ngIf="popUpIsOpenConditions"
+  [adjustForSmallTarget]="30"
+  [minHeight]="'700px'"
+  [minWidth]="'1100px'"
+  [padding]="'0'"
+  [popUpPosition]="'right-start'"
+  (closeEmitter)="closePopUp($event, 'conditions')"
+  [target]="popUpTarget"
+>
+  <div id="container-pop-up-conditions">
+    <div class="header">
+      <img src="assets/Images/strategy/bad.svg" />
+      <label>{{ 'Nombre cliente' }}</label>
+    </div>
+    <div class="content-info">
+      <div class="bar-line">
+        <div>
+          <label>{{ 'strategy.details.paymentConditions' | translate }}</label>
+          <label class="green">{{ 60 + ' Dìas' }}</label>
+        </div>
+        <div>
+          <label>{{ 'strategy.details.creditLine' | translate }}</label>
+          <label class="green">{{ (10000 | currency: 'USD':'symbol-narrow':'1.0-2') + ' USD' }}</label>
+        </div>
+        <div>
+          <label>{{ 'strategy.details.healthyDebt' | translate }}</label>
+          <label class="green">{{ (1000 | currency: 'USD':'symbol-narrow':'1.0-2') + ' USD' }}</label>
+        </div>
+        <div>
+          <label>{{ 'strategy.details.expiredDebt' | translate }}</label>
+          <label class="red">{{ (2000 | currency: 'USD':'symbol-narrow':'1.0-2') + ' USD' }}</label>
+        </div>
+        <div>
+          <label>{{ 'strategy.details.positiveBalance' | translate }}</label>
+          <label class="green">{{ (300 | currency: 'USD':'symbol-narrow':'1.0-2') + ' USD' }}</label>
+        </div>
+        <div>
+          <label>{{ 'strategy.details.remains' | translate }}</label>
+          <label class="yellow">{{ (7000 | currency: 'USD':'symbol-narrow':'1.0-2') + ' USD' }}</label>
+        </div>
+      </div>
+      <div class="complaints">
+        <div class="container-chart">
+          <div class="chart-container">
+            <div class="chart">
+              <app-doughnut-chart
+                [title]=""
+                [typeChart]="11"
+                [titleDetails]="'Totales'"
+                [fontSize]="'small'"
+                [showPercentage]="false"
+                [adjustTotals]="true"
+                [enableOnClick]="true"
+              >
+              </app-doughnut-chart>
+            </div>
+            <div class="labels">
+              <div>
+                <span class="circulo" [style.background]="'#dd4543'"></span>
+                <p>{{ 'strategy.details.delinquent' | translate }}</p>
+              </div>
+              <div>
+                <span class="circulo" [style.background]="'#4ba92b'"></span>
+                <p>{{ 'strategy.details.healthyDebt' | translate }}</p>
+              </div>
+              <div>
+                <span class="circulo" [style.background]="'#5793f3'"></span>
+                <p>{{ 'strategy.details.creditNotes' | translate }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container-table">
+          <div>
+            <div>
+              <span class="circulo" [style.background]="'#dd4543'"></span>
+              <label>{{ 'MOROSIDAD' }}</label>
+            </div>
+            <div>
+              <app-hamburger-menu [position]="'right'"></app-hamburger-menu>
+            </div>
+          </div>
+          <div class="table">
+            <div>
+              <div class="body">
+                <virtual-scroller>
+                  <div class="row-items-quotation">
+                    <div>
+                      <div class="line-one">
+                        <p>#{{ 1 }} · </p>
+                        <p>{{ 'F0-123456787' }}</p>
+                      </div>
+                      <div class="line-two">
+                        <p>{{ 'Fecha estimada de cobro' + ' 20/Dic/2018 ' }}</p>
+                      </div>
+                    </div>
+                    <div>
+                      <label class="text-red">
+                        {{ '$200.00 USD' }}
+                      </label>
+                      <!--                      <label *ngIf="segmentActiveChartConditions.label === healthyDebt" class="text-green">-->
+                      <!--                        {{ (item.m_Item4 | currency: (selectCurrencyClient$ | async)) + ' ' + (selectCurrencyClient$ | async) }}-->
+                      <!--                      </label>-->
+                      <!--                      <label-->
+                      <!--                        *ngIf="segmentActiveChartConditions.label === creditNotes && lodash.isFinite(item.m_Item3)"-->
+                      <!--                        class="text-blue"-->
+                      <!--                      >-->
+                      <!--                        {{ (item.m_Item3 | currency: (selectCurrencyClient$ | async)) + ' ' + (selectCurrencyClient$ | async) }}-->
+                      <!--                      </label>-->
+                    </div>
+                  </div>
+                </virtual-scroller>
+              </div>
+              <!--              <div class="without-results" *ngIf="segmentActiveChartConditions === null">-->
+              <!--                <app-without-results [title]="'SELECCIONA LA GRÁFICA PARA HABILITAR ESTA SECCIÓN'"></app-without-results>-->
+              <!--              </div>-->
+              <!--              <div-->
+              <!--                class="without-results"-->
+              <!--                *ngIf="segmentActiveChartConditions !== null && scrollItemsPendingsInvoices.length === 0"-->
+              <!--              >-->
+              <!--                <app-without-results [title]="'Sin facturas'"></app-without-results>-->
+              <!--              </div>-->
+            </div>
+          </div>
+          <div class="footer-table">
+            <div>
+              <label class="label-1">
+                {{ 5 + ' Facturas' }}
+              </label>
+              <label class="label-2"> {{ (2000 | currency: 'USD':'symbol-narrow':'1.0-2') + ' USD' }}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--    <div class="loading" *ngIf="isLoadingPendingInvoices$ | async">-->
+    <!--      <app-loading></app-loading>-->
+    <!--    </div>-->
+  </div>
+</app-custom-position-pop-up>

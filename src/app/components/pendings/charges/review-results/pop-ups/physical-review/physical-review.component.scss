@@ -1,0 +1,359 @@
+@use 'base' as s;
+
+:host {
+  width: 100%;
+  height: 100%;
+
+  .container {
+    @include s.flexColumn;
+    height: 100%;
+    width: 100%;
+
+    & > .type-review {
+      @include s.flexRow;
+      @include s.absoluteCenter;
+      width: 100%;
+      height: 32px;
+      background-color: s.$pqGreen2;
+
+      & > label {
+        margin-right: 5px;
+        @include s.escaledFontFormat(s.$textSize12to16, '', s.$pqWhite);
+        @include s.Roboto-Bold;
+      }
+
+      & > .out-of-time {
+        background-color: s.$redOutTime;
+      }
+    }
+
+    & > .data {
+      @include s.flexColumn;
+      box-sizing: border-box;
+      // padding: 30px;
+      height: calc(100% - 32px);
+
+      & > .review {
+        @include s.flexRow;
+        justify-content: space-between;
+        flex: 0 0 100px;
+        padding: 30px;
+        box-sizing: border-box;
+
+        & > .data-customer {
+          @include s.flexRow;
+
+          & > .customer {
+            @include s.flexColumn;
+            box-sizing: border-box;
+            padding-right: 10px;
+            justify-content: space-around;
+
+            & > img {
+              height: 90px;
+            }
+
+            & > div {
+              @include s.flexRow;
+
+              & > .name {
+                @include s.escaledFontFormat(s.$textSize14to22, '', s.$pqGreen);
+                @include s.Novecento-Bold;
+              }
+
+              & > .invoice {
+                margin-right: 5px;
+                @include s.escaledFontFormat(s.$textSize14to20, '', s.$pqGreen);
+                @include s.Roboto-Bold;
+              }
+
+              & > .order {
+                color: s.$pqBlack2 !important;
+              }
+
+              & > .schedule {
+                @include s.escaledFontFormat(s.$textSize14to18, '', s.$pqBlack2);
+                @include s.Roboto-Regular;
+              }
+            }
+          }
+        }
+
+        & > .amount {
+          @include s.flexColumn;
+          justify-content: center;
+
+          & > label {
+            margin-top: 5px;
+            @include s.escaledFontFormat(s.$textSize12to16, '', s.$pqBlack2);
+            @include s.Roboto-Regular;
+          }
+
+          & > .amount {
+            @include s.escaledFontFormat(s.$textSize14to20, bold, s.$pqGreen);
+            @include s.Roboto-Bold;
+          }
+        }
+      }
+
+      & > .tabs {
+        @include s.flexRow;
+        height: 57px;
+        box-sizing: border-box;
+        padding: 0 30px;
+      }
+
+      & > .content {
+        @include s.flexColumn;
+        flex: 1 1 auto;
+        height: 100%;
+        box-sizing: border-box;
+        padding-top: 30px;
+        overflow: auto;
+
+        & > .general-data {
+          @include s.flexColumn;
+          justify-content: space-between;
+          height: 100%;
+
+          & > .payment {
+            @include s.flexRow;
+            @include s.absoluteCenter;
+            flex: 0 0 60px;
+            background-color: s.$pqFondoContent;
+
+            & > .date {
+              @include s.flexRow;
+
+              & > div {
+                & > label {
+                  margin-right: 5px;
+                  @include s.escaledFontFormat(s.$textSize12to16, '', s.$pqBlack2);
+                  @include s.Roboto-Bold;
+                }
+              }
+
+              & > .date-data {
+                width: 170px;
+              }
+            }
+          }
+
+          & > .address {
+            @include s.flexColumn;
+            padding: 0 30px;
+
+            & > .address-data {
+              @include s.flexRow;
+
+              & > .info {
+                @include s.flexColumn;
+                box-sizing: border-box;
+                padding-right: 30px;
+
+                & > div {
+                  @include s.flexRow;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize12to16, '', s.$pqBlack2);
+                    @include s.Roboto-Bold;
+                  }
+
+                  & > .text {
+                    margin-top: 5px;
+                    @include s.Roboto-Regular-Important;
+                  }
+                }
+              }
+            }
+
+            & > .delegation {
+              @include s.flexRow;
+              box-sizing: border-box;
+              padding-top: 20px;
+
+              & > label {
+                margin-right: 5px;
+                @include s.escaledFontFormat(s.$textSize12to16, '', s.$pqBlack2);
+                @include s.Roboto-Regular;
+              }
+
+              & > .title {
+                @include s.Roboto-Bold-Important;
+              }
+            }
+          }
+
+          & > .info {
+            @include s.flexRow;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0 30px;
+
+            & > div {
+              @include s.flexColumn;
+              width: 50%;
+
+              & > .title {
+                @include s.flexRow;
+
+                & > label {
+                  @include s.escaledFontFormat(s.$textSize14to20, '', s.$pqGreen);
+                  @include s.Novecento-Bold;
+                }
+              }
+
+              & > .message {
+                padding: 10px 0;
+
+                & > app-without-results {
+                  min-height: auto !important;
+
+                  & > ::ng-deep .withoutResultsContainer {
+                    @include s.absoluteLeft;
+                    min-height: auto !important;
+                  }
+                }
+              }
+
+              & > .images {
+                @include s.flexRowWrap;
+                width: 100%;
+                min-height: 30px;
+                padding-top: 10px;
+
+                & > div {
+                  @include s.flexRow;
+                  box-sizing: border-box;
+                  padding: 7px 7px 7px 0;
+
+                  & > div {
+                    @include s.flexRow;
+                    @include s.absoluteCenter;
+                    width: auto;
+                    height: 100%;
+                    background-color: rgba(0, 136, 148, 0.07);
+                    border-radius: 14px;
+                    justify-content: flex-start;
+                    padding: 0 20px;
+
+                    & > label:nth-of-type(1) {
+                      $textSize: (
+                        'base': 13px,
+                        'macBookAir': 15px,
+                      );
+                      @include s.flexRow;
+                      @include s.escaledFontFormat($textSize, regular, s.$pqGreen);
+                      @include s.Roboto-Regular;
+                      text-decoration: underline;
+                    }
+                  }
+                }
+              }
+
+              & > .data {
+                @include s.flexRow;
+                box-sizing: border-box;
+
+                & > .content {
+                  @include s.flexColumn;
+                  box-sizing: border-box;
+
+                  & > div {
+                    @include s.flexRow;
+
+                    & > label {
+                      margin-right: 5px;
+                      margin-top: 5px;
+                      @include s.escaledFontFormat(s.$textSize12to16, '', s.$pqBlack2);
+                      @include s.Roboto-Regular;
+                    }
+
+                    & > .title {
+                      @include s.Roboto-Bold-Important;
+                    }
+                  }
+                }
+
+                & > div:nth-child(1) {
+                  padding-right: 30px;
+                }
+              }
+            }
+          }
+        }
+
+        & > .schedule {
+          @include s.flexColumn;
+          height: 100%;
+          flex: 1;
+          overflow: hidden;
+          box-sizing: border-box;
+          padding: 30px;
+
+          & > .list {
+            @include s.flexColumn;
+            height: 100%;
+            width: 100%;
+            border-top: 1px solid s.$pqBlack2;
+            border-bottom: 1px solid s.$pqBlack2;
+
+            & > .item {
+              @include s.flexRow;
+              width: 100%;
+              height: 70px;
+              box-sizing: border-box;
+              padding: 12px;
+              border-bottom: 1px solid s.$pqGray2;
+
+              & > label {
+                margin-right: 5px;
+                @include s.escaledFontFormat(s.$textSize12to15, '', s.$pqBlack2);
+                @include s.Roboto-Bold;
+              }
+
+              & > .pqf {
+                color: s.$pqGreen !important;
+              }
+
+              & > .comment {
+                @include s.Roboto-Regular-Important;
+              }
+            }
+
+            & > .item:hover {
+              background-color: s.$pqGray2;
+            }
+          }
+
+          & > .totals {
+            @include s.flexRow;
+            @include s.absoluteCenter;
+            flex: 0 0 23px;
+
+            & > label {
+              padding-top: 5px;
+              @include s.escaledFontFormat(s.$textSize12to15, '', s.$pqBlack2);
+              @include s.Roboto-Bold;
+            }
+          }
+        }
+      }
+
+      & > .buttons {
+        @include s.flexRow;
+        justify-content: space-between;
+        box-sizing: border-box;
+        padding: 30px;
+
+        & > .button {
+          @include s.pqButton();
+        }
+
+        & > .disabled {
+          @include s.pqButtonDisable();
+        }
+      }
+    }
+  }
+}

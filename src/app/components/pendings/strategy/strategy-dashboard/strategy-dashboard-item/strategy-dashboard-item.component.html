@@ -1,0 +1,54 @@
+<div class="item">
+  <div class="number">
+    <label>{{ '#' + strategy.Index }}</label>
+  </div>
+  <div class="content">
+    <div class="name">
+      <label class="label-name">{{ strategy.Nombre }}</label>
+    </div>
+    <div class="classification">
+      <label>
+        {{
+          'Valor Total en Cierre: ' +
+            ((strategy.TotalCotizadoUSD ? strategy.TotalCotizadoUSD : 0) | currency: 'USD':'symbol-narrow':'1.2-2') +
+            ' USD'
+        }}</label
+      >
+    </div>
+    <div class="states">
+      <div>
+        <img alt="quotes" src="assets/Images/quotation/quotes.svg" />
+        <label>{{ (strategy.Total | number: '1.0-0') + (strategy.Total === 1 ? ' Cotización' : ' Cotizaciones') }}</label>
+        <label
+          *ngIf="
+            strategy.EstadoCorreoCotizacionConfirmada > 0 ||
+            strategy.EstadoCorreoCotizacionPendiente > 0 ||
+            strategy.EstadoCorreoCotizacionErrorEnEnvio > 0
+          "
+          >·</label
+        >
+      </div>
+      <div *ngIf="strategy.EstadoCorreoCotizacionConfirmada > 0">
+        <img alt="confirmed" src="assets/Images/strategy/tag_confirmed.svg" />
+        <label class="confirmed">{{ strategy.EstadoCorreoCotizacionConfirmada }}</label>
+        <label
+          class="confirmed"
+          *ngIf="strategy.EstadoCorreoCotizacionPendiente > 0 || strategy.EstadoCorreoCotizacionPendiente > 0"
+          >·</label
+        >
+      </div>
+      <div *ngIf="strategy.EstadoCorreoCotizacionPendiente > 0">
+        <img alt="pending" src="assets/Images/strategy/tag_pending.svg" />
+        <label class="pending">{{ strategy.EstadoCorreoCotizacionPendiente }}</label>
+        <label class="pending" *ngIf="strategy.EstadoCorreoCotizacionErrorEnEnvio > 0">·</label>
+      </div>
+      <div *ngIf="strategy.EstadoCorreoCotizacionErrorEnEnvio > 0">
+        <img alt="error" src="assets/Images/strategy/tag_error.svg" />
+        <label class="error">{{ strategy.EstadoCorreoCotizacionErrorEnEnvio }}</label>
+      </div>
+    </div>
+  </div>
+  <div class="arrow">
+    <img alt="arrow" src="assets/Images/arrows/arrow_right.svg" />
+  </div>
+</div>

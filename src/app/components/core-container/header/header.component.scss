@@ -1,0 +1,160 @@
+@use 'base' as s;
+
+:host {
+  * {
+    box-sizing: border-box;
+  }
+
+  & > header {
+    @include s.default-transition();
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-column-gap: 20px;
+    height: 50px;
+    overflow: hidden;
+
+    * {
+      -webkit-user-drag: none;
+    }
+
+    & > .menuContainer {
+      @include s.flexRow;
+      align-items: center;
+      column-gap: 16px;
+      padding: 7px 16px;
+      width: 140px;
+      overflow: hidden;
+
+      & > .hamburgerMenu {
+        @include s.flexColumn;
+        @include s.default-transition($duration: 0.2s);
+        grid-column-end: span 2;
+        cursor: pointer;
+        flex: 0 0 48px;
+        row-gap: 6px;
+
+        & > .icon-bar {
+          background: s.$pqBlack2;
+          border-radius: 16px;
+          width: 36px;
+          height: 4px;
+          position: relative;
+        }
+
+        &.open {
+          row-gap: 3px;
+        }
+      }
+
+      & > .menuTitle {
+        @include s.flexRow;
+        user-select: none;
+
+        & > label {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-roboto_bold,
+            $font-weight: s.$font-weight-bold,
+            $font-size-map: s.$responsive-font-24-24
+          );
+        }
+      }
+    }
+
+    & > .logo-session {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-column-end: span 11;
+      grid-column-gap: 20px;
+      overflow: hidden;
+      * {
+        -webkit-user-drag: none;
+      }
+
+      & > .logo {
+        @include s.flexColumn;
+        @include s.flex-center-items;
+        padding: 6px 0;
+        overflow: hidden;
+        position: relative;
+        * {
+          user-select: none;
+        }
+
+        & > img {
+          height: 35px;
+          width: 158px;
+        }
+
+        & > .version {
+          bottom: 4px;
+          position: absolute;
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-roboto_bold,
+            $font-weight: s.$font-weight-bold,
+            $font-size-map: s.$responsive-font-10-10
+          );
+        }
+      }
+
+      & > .userSession {
+        @include s.flexRow;
+        align-items: center;
+        column-gap: 8px;
+        padding: 7px 16px;
+
+        & > .profilePicture {
+          @include s.flexRow;
+          align-items: center;
+          border-radius: 50%;
+          border: 2px solid s.$pqGreen;
+          height: 32px;
+          justify-content: center;
+          overflow: hidden;
+          padding: 4px;
+          width: 32px;
+
+          & > img {
+            max-height: 100%;
+            max-width: 100%;
+            user-select: none;
+          }
+        }
+
+        & > .profileName {
+          &.flexColumn {
+            @include s.flexColumn;
+          }
+          & > .name {
+            @include s.responsive-font-format($font-size-map: s.$responsive-font-16-16, $color: s.$pqGreen);
+          }
+          & > .role {
+            @include s.responsive-font-format(
+              $font-family: s.$font_family_roboto,
+              $font-weight: s.$font_weight_bold,
+              $font-size-map: s.$responsive-font-12-b-12-b,
+              $color: s.$main-proquifa
+            );
+          }
+        }
+      }
+    }
+
+    @include s.media-query(s.$standard) {
+      height: 54px;
+      & > .logo-session {
+        grid-column-end: span 12;
+        grid-template-columns: repeat(12, 1fr);
+        grid-column-gap: 20px;
+
+        & > .logo {
+          grid-column-end: span 2;
+        }
+
+        & > .userSession {
+          grid-column-end: span 10;
+          justify-content: flex-end;
+        }
+      }
+    }
+  }
+}

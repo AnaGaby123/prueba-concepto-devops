@@ -1,0 +1,21 @@
+<app-pop-up-generic
+  [width]="'620px'"
+  [height]="'425px'"
+  [showClose]="false"
+  [rightButtonLabel]="'AGREGAR'"
+  [leftButtonLabel]="'DESCARTAR'"
+  [activeButtons]="true"
+  (evento)="setValueModal($event)"
+>
+  <div class="general-content">
+    <div class="content-img">
+      <img alt="alert" src="assets/Images/alerta.svg" class="alert-img" />
+    </div>
+    <div class="product-details">
+      <label class="product">{{ 'quotation.details.section.offlineProduct.theProduct' | translate }}:</label>
+      <label class="name-product">{{ (productExisting$ | async)?.Descripcion }}</label>
+      <label class="available">{{ 'quotation.details.section.offlineProduct.availableProductInCatalog' | translate }} .</label>
+    </div>
+    <label class="question">{{ 'quotation.details.section.offlineProduct.addProductInQuote' | translate }}</label>
+  </div>
+</app-pop-up-generic>

@@ -1,0 +1,246 @@
+<div id="quarantine-manager-details">
+  <div class="container">
+    <div class="header-container">
+      <div class="header">
+        <div class="contact-data">
+          <div class="title">
+            <label>{{ 'purchasePromise.contactData' | translate }}</label>
+          </div>
+          <div class="data">
+            <div>
+              <div class="row">
+                <div class="image">
+                  <img src="assets/Images/contacto.svg" alt="" />
+                </div>
+                <app-drop-down-list [hasBorder]="false"></app-drop-down-list>
+              </div>
+              <div class="row">
+                <div class="image">
+                  <img src="assets/Images/quotation/mail.svg" alt="" />
+                </div>
+                <label>jose.ruiz@empresa.com</label>
+              </div>
+              <div class="row">
+                <div class="image">
+                  <img src="assets/Images/quotation/phone.svg" alt="" />
+                </div>
+                <label>01 (55) 364 74 85 · Ext. 1245</label>
+              </div>
+            </div>
+            <div>
+              <div class="row">
+                <label class="bold">{{ 'purchasePromise.department' | translate }}: </label>
+                <label>Compras</label>
+              </div>
+              <div class="row">
+                <label class="bold">{{ 'purchasePromise.position' | translate }}: </label>
+                <label>Administrativo</label>
+              </div>
+            </div>
+            <div>
+              <div class="row">
+                <label class="bold">{{ 'purchasePromise.decisionLevel' | translate }}: </label>
+                <label>Bajo</label>
+              </div>
+              <!--<div class="row">
+                <label class="green bold">Cliente con Crédito</label>
+              </div>-->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="body">
+      <div class="left">
+        <div class="list">
+          <div class="header-list">
+            <label>{{ 'common.purchaseOrders' | translate }}</label>
+            <div class="filters">
+              <div class="hamburger">
+                <app-hamburger-menu
+                  [options]="filterOptions$ | async"
+                  [value]="(filterSelected$ | async).value"
+                  (valueEmit)="setFilter($event)"
+                ></app-hamburger-menu>
+              </div>
+              <div class="search">
+                <app-search
+                  placeholder="OC"
+                  [searchTerm]="searchOC$ | async"
+                  (textSearch)="handleKeySearchOC($event)"
+                ></app-search>
+              </div>
+            </div>
+          </div>
+          <div class="body-list">
+            <div class="item" [ngClass]="'selected'">
+              <div class="indicator" [ngClass]="'selected'"></div>
+              <div class="item-content">
+                <div class="index">
+                  <label
+                    >#{{ 1 }} · <span>{{ '121421 - 9231' }}</span></label
+                  >
+                </div>
+                <div class="pieces">
+                  <label>{{ 6 }} {{ 'Piezas' }} · {{ 'Inspector' }}</label>
+                </div>
+                <div class="date">
+                  <label>{{ 'quarantineManager.inspectionDate' | translate }}: {{ '20/01/2021' }}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="footer-list">
+          <div>
+            <label>#{{ 1 }}</label>
+            <label>{{ 1 }} {{ 'common.pieces' | translate }}</label>
+          </div>
+        </div>
+      </div>
+      <div class="center">
+        <div class="center-content">
+          <div class="header">
+            <label
+              >#{{ 1 }} · OC -<span>{{ '121421-9231' }}</span></label
+            >
+          </div>
+          <div class="filter">
+            <app-search
+              placeholder="código, tipo, descripción"
+              [searchTerm]="searchTerm$ | async"
+              (textSearch)="handleKeySearch($event)"
+            ></app-search>
+          </div>
+          <div class="list">
+            <div class="item" [ngClass]="'selected'">
+              <div class="indicator" [ngClass]="'selected'"></div>
+              <div class="item-content">
+                <div class="content1">
+                  <label
+                    >#{{ 1 }} · <span>{{ 'B1157300' }}</span> {{ 'Budesonide CRS' }}</label
+                  >
+                </div>
+                <div class="content2">
+                  <label
+                    >{{ 'quarantineManager.inspectionDate' | translate }}: {{ '12/01/2022' }} · {{ 'Inspector' }}:
+                    {{ 'Inspector2' }}</label
+                  >
+                </div>
+                <div class="content3">
+                  <label
+                    >{{ 'quarantineManager.place' | translate }}: {{ 'Matríz' }} {{ 'FEE' }} : {{ '21/01/2022' }} {{ 'DRE' }}:
+                    {{ -13 }} {{ 'common.type' | translate }} {{ 'estandares' }}</label
+                  >
+                </div>
+                <div class="content4">
+                  <label>{{ 'changeNotices.internalOrder' | translate }}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="center-footer">
+          <label>{{ 6 }} {{ 'common.pieces' | translate }}</label>
+        </div>
+      </div>
+      <div class="right">
+        <div class="header">
+          <div>
+            <label
+              >#{{ 1 }} · <span>{{ 'B1157300' }}</span> {{ 'Budesonide CRS' }}</label
+            >
+          </div>
+        </div>
+        <div class="content">
+          <div class="top">
+            <div class="content1">
+              <div class="left">
+                <label>{{ 'common.product' | translate }}</label>
+                <div>
+                  <div>
+                    <label>{{ 'quarantineManager.cost' | translate }}:</label>
+                    <span>{{ 178 }}</span>
+                  </div>
+                  <div>
+                    <label>{{ 'quarantineManager.handling' | translate }}:</label>
+                    <span>{{ 'priorityConsole.refrigeration' | translate }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="right">
+                <label>{{ 'quarantineManager.economicData' | translate }} · {{ 'common.providers' | translate }}</label>
+                <div>
+                  <label>{{ 'uploadInvoice.origin' | translate }}: </label>
+                  <span>{{ 'FRANCIA' }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="content2">
+              <div class="left">
+                <label>{{ 'common.brand' | translate }}:</label>
+                <span>{{ 'EP' }}</span>
+              </div>
+              <div class="right">
+                <label>{{ 'quarantineManager.cause' | translate }}</label>
+                <span>{{ 'orderModification.presentation' | translate }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="mid">
+            <div class="pink">
+              <label>{{ 'El sistema pide presentación de 110mg pero físicamente se tiene vial de 120mg' }}</label>
+            </div>
+            <div class="gray">
+              <div class="gray-content">
+                <div class="text">
+                  <div>
+                    <label [ngClass]="front && 'bold'" (click)="selectImage('front')">{{
+                      'quarantineManager.frontPhoto' | translate
+                    }}</label>
+                    <label [ngClass]="up && 'bold'" (click)="selectImage('up')">{{
+                      'quarantineManager.photoAbove' | translate
+                    }}</label>
+                    <label [ngClass]="down && 'bold'" (click)="selectImage('down')">{{
+                      'quarantineManager.photoBelow' | translate
+                    }}</label>
+                  </div>
+                </div>
+                <div class="image">
+                  <img
+                    [src]="
+                      front
+                        ? 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Contactlensverpakking_Confortissimo_38_-_Ot%C3%A9_Pharma_Sol_B.V._Uden.JPG/1200px-Contactlensverpakking_Confortissimo_38_-_Ot%C3%A9_Pharma_Sol_B.V._Uden.JPG'
+                        : up
+                        ? 'https://cloud10.todocoleccion.online/antiguedades/tc/2011/10/23/29005017.jpg'
+                        : 'https://cloud10.todocoleccion.online/antiguedades/tc/2011/10/23/29004952.jpg?size=720x720&crop=true'
+                    "
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="rButtons">
+              <div>
+                <app-radio-button
+                  label="{{ 'quarantineManager.deliverProductToCustomer' | translate }}"
+                  [height]="(viewType$ | async) === 'macBookAir' ? '20px' : '15px'"
+                ></app-radio-button>
+              </div>
+              <app-radio-button
+                label="{{ 'quarantineManager.claimProductReplacement' | translate }}"
+                [height]="(viewType$ | async) === 'macBookAir' ? '20px' : '15px'"
+              ></app-radio-button>
+            </div>
+            <div class="txtArea">
+              <label>{{ 'quarantineManager.instructions' | translate }}</label>
+              <app-generic-text-area [height]="'77px'"></app-generic-text-area>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <button>{{ 'common.accept' | translate }}</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width='44px' height='45px' viewBox='0 0 44 45' version='1.1' xmlns='http://www.w3.org/2000/svg'
+     xmlns:xlink='http://www.w3.org/1999/xlink'>
+  <!-- Generator: Sketch 52.6 (67491) - http://www.bohemiancoding.com/sketch -->
+  <title>Group 7 Copy 6</title>
+  <desc>Created with Sketch.</desc>
+  <defs>
+    <polygon id='path-1'
+             points='0.4082 0.34052973 25.6050889 0.34052973 25.6050889 25.4773859 0.4082 25.4773859'></polygon>
+    <polygon id='path-3' points='0.00234666667 0.190571429 44 0.190571429 44 20 0.00234666667 20'></polygon>
+  </defs>
+  <g id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'>
+    <g id='1_agregar' transform='translate(-1338.000000, -1282.000000)'>
+      <g id='Group-7-Copy-6' transform='translate(1338.000000, 1282.000000)'>
+        <g id='Group-7-Copy-4'>
+          <g id='Group-3' transform='translate(9.000000, 0.000000)'>
+            <mask id='mask-2' fill='white'>
+              <use xlink:href='#path-1'></use>
+            </mask>
+            <g id='Clip-2'></g>
+            <path
+              d='M13.0008667,0.339953514 C19.9688667,0.339953514 25.6050889,5.97534811 25.6050889,12.9101103 C25.6050889,19.8477535 19.9688667,25.4773859 13.0008667,25.4773859 C6.03864444,25.4773859 0.4082,19.8477535 0.4082,12.9101103 C0.4082,5.97534811 6.03864444,0.339953514 13.0008667,0.339953514'
+              id='Fill-1' fill='#424242' mask='url(#mask-2)'></path>
+          </g>
+          <g id='Group-6' transform='translate(0.000000, 25.000000)'>
+            <mask id='mask-4' fill='white'>
+              <use xlink:href='#path-3'></use>
+            </mask>
+            <g id='Clip-5'></g>
+            <path
+              d='M31.9698133,0.190571429 C29.3239467,2.49914286 25.83328,3.91342857 22.0023467,3.91342857 C18.1743467,3.91342857 14.6807467,2.49914286 12.04368,0.190571429 C4.93328,3.86485714 0.0639466667,11.3477143 0.00234666667,20.002 L44.0023467,20.002 C43.9554133,11.3477143 39.06848,3.86485714 31.9698133,0.190571429'
+              id='Fill-4' fill='#424242' mask='url(#mask-4)'></path>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

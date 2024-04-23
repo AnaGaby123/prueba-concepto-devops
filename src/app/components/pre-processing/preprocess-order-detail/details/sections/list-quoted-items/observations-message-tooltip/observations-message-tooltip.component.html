@@ -1,0 +1,13 @@
+<img src="assets/Images/pre-processing/notas_partida.svg" alt="observations-message-icon" (click)="showObservationsTooltip()" />
+<div class="observations-message-tooltip" *ngIf="isTooltipOpen && hasObservations$ | async">
+  <div class="floating-container">
+    <div class="observations-floating">
+      <label class="title">{{ 'preProcessing.purchaseOrderObservations' | translate }}</label>
+      <div class="content">
+        <label class="info">
+          {{ observations$ | async }}
+        </label>
+      </div>
+    </div>
+  </div>
+</div>

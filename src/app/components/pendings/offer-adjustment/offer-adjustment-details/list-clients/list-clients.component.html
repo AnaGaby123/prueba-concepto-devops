@@ -1,0 +1,169 @@
+<section id="clients">
+  <div class="evi-content">
+    <div class="title">
+      <label>EVI</label>
+    </div>
+    <div class="user">
+      <img src="assets/Images/strategy/user.svg" />
+      <label>{{ (userName$ | async) || 'N/D' }}</label>
+    </div>
+  </div>
+  <div class="container">
+    <div class="content">
+      <div class="title">
+        <label>{{ 'dailyMeeting.customers' | translate }}</label>
+      </div>
+      <div class="container-tabs">
+        <app-tabs
+          [options]="filtersTabs$ | async"
+          [tapSelected]="tabSelected$ | async"
+          (onSelectOption)="onSelectOption($event)"
+        ></app-tabs>
+      </div>
+
+      <div class="search">
+        <app-search
+          [placeholder]="'Escribe aquí'"
+          [isSearchByType]="true"
+          [typesOfSearch]="searchTypes$ | async"
+          [typeSelected]="searchTypeSelected$ | async"
+          [imageFill]="'#008894'"
+          (handleTypeSelected)="setSearchType($event)"
+          (textSearch)="handleKeySearch($event)"
+        >
+        </app-search>
+      </div>
+      <div class="filter-hamburger">
+        <app-hamburger-menu
+          [options]="valuesFilter$ | async"
+          [value]="(valueFilterSelected$ | async).value"
+          (valueEmit)="selectFilterByType($event)"
+        >
+        </app-hamburger-menu>
+      </div>
+      <div class="list-container">
+        <div class="dataList">
+          <virtual-scroller
+            *ngIf="(!(isLoadingClients$ | async) || (isLoadingMoreClients$ | async)) && (listClients$ | async).length > 0"
+            [items]="listClients$ | async"
+            (vsUpdate)="scrollItems = $event"
+            (vsEnd)="fetchMore($event)"
+            class="list"
+          >
+            <div
+              [ngClass]="
+                (clientSelected$ | async).IdCliente === client.IdCliente &&
+                (clientSelected$ | async).IdAjOfEstrategiaCotizacion === client.IdAjOfEstrategiaCotizacion
+                  ? 'divActive'
+                  : ''
+              "
+              *ngFor="let client of scrollItems"
+              (click)="selectedPurchase(client)"
+            >
+              <div class="dfSelect"></div>
+              <div>
+                <div class="info">
+                  <div class="oc">
+                    <label>{{ '#' + client.Index + ' · ' + client.Nombre }}</label>
+                  </div>
+                  <div class="strategy">
+                    <label>
+                      {{
+                        ('offerAdjustment.details.strategy' | translate) +
+                          ': ' +
+                          (client.Estrategia === null ? 'NA' : client.Estrategia)
+                      }}
+                    </label>
+                    <label>{{
+                      '· ' +
+                        ('offerAdjustment.details.totalSetting' | translate) +
+                        ': ' +
+                        (client.TotalUSDPartidasEnAjuste | currencyFormat: 'USD') +
+                        'USD'
+                    }}</label>
+                  </div>
+                  <div class="total">
+                    <img src="assets/Images/offer-adjustment/quotation-gray.svg" />
+                    <label>{{ client.TotalCotizacionesEnAjuste }}</label>
+                    <label>
+                      {{
+                        '· ' +
+                          client.TotalPartidasEnAjuste +
+                          ' ' +
+                          (client.TotalPartidasEnAjuste === 1
+                            ? ('offerAdjustment.item' | translate)
+                            : ('offerAdjustment.items' | translate))
+                      }}
+                    </label>
+                    <label>
+                      {{
+                        '· ' +
+                          client.TotalMarcas +
+                          ' ' +
+                          (client.TotalMarcas === 1
+                            ? ('offerAdjustment.details.mark' | translate)
+                            : ('offerAdjustment.details.marks' | translate))
+                      }}
+                    </label>
+                    <label
+                      [ngClass]="
+                        client.Vigencia >= 1 && client.Vigencia <= 4
+                          ? 'red'
+                          : client.Vigencia >= 5 && client.Vigencia <= 8
+                          ? 'yellow'
+                          : client.Vigencia > 8
+                          ? 'green'
+                          : 'red'
+                      "
+                    >
+                      {{
+                        '· ' +
+                          ('offerAdjustment.details.expiresIn' | translate) +
+                          ' ' +
+                          client.Vigencia +
+                          ' ' +
+                          (client.Vigencia === 1
+                            ? ('offerAdjustment.details.day' | translate)
+                            : ('offerAdjustment.details.days' | translate))
+                      }}
+                    </label>
+                  </div>
+                  <div class="settings">
+                    <label class="label-setting">{{ ('offerAdjustment.details.settings' | translate) + ':' }}</label>
+                    <div class="setting">
+                      <label class="label-setting">{{ client.Ajustes }}</label>
+                      <!--<label class="label-setting" *ngFor="let ajuste of client.ajustes; let i = index">{{i !== 0 ? ' · ' + ajuste : ' ' + ajuste}}</label>-->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="loading-more-clients" *ngIf="(isLoadingMoreClients$ | async) && (isLoadingMoreClients$ | async)">
+              <app-loading></app-loading>
+            </div>
+          </virtual-scroller>
+          <div class="loading-center" *ngIf="(isLoadingClients$ | async) && !(isLoadingMoreClients$ | async)">
+            <app-loading></app-loading>
+          </div>
+          <div class="without-results" *ngIf="(listClients$ | async).length === 0 && !(isLoadingClients$ | async)">
+            <app-without-results [title]="'Sin resultados'"></app-without-results>
+          </div>
+        </div>
+        <div class="total">
+          <div class="values" *ngIf="!(isLoadingClients$ | async) || (isLoadingMoreClients$ | async)">
+            <label>{{ '#' + (totalClients$ | async) }}</label>
+            <label>
+              {{
+                (totalQuotations$ | async) +
+                  ' ' +
+                  ((totalQuotations$ | async) === 1
+                    ? ('dailyMeeting.details.quotation' | translate)
+                    : ('dailyMeeting.details.quotations' | translate))
+              }}
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

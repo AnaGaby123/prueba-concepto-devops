@@ -1,0 +1,244 @@
+@use 'base' as s;
+
+:host {
+  width: 100%;
+
+  & > .providerContact {
+    @include s.flexRowNoWrap;
+    align-content: space-between;
+
+    & > .providerData {
+      @include s.flexColumn;
+      flex-grow: 0;
+      flex-shrink: 1;
+
+      & > .providerTitle {
+        padding-bottom: 10px;
+        width: max-content;
+        margin-right: 10px;
+
+        & > label:nth-of-type(1) {
+          @include s.escaledFontFormat(s.$textSize15to21, bold, s.$pqBlack2);
+          @include s.Novecento-Bold;
+
+          & > span {
+            @include s.escaledFontFormat(s.$textSize13to17, bold, s.$pqTextAlert);
+            @include s.Roboto-Bold;
+          }
+        }
+      }
+
+      & > .providerContent {
+        display: grid;
+        grid-template-columns: 110px 1fr;
+        grid-column-gap: 5px;
+        margin-right: 20px;
+
+        & > div:nth-of-type(1) {
+          align-self: center;
+          max-width: 200px;
+          margin: 0 20px 0 20px;
+
+          & > img {
+            max-height: 65px;
+            max-width: 100%;
+          }
+        }
+
+        & > div:nth-of-type(2) {
+          width: max-content;
+          max-width: 300px;
+          align-self: center;
+
+          & > label:nth-of-type(1) {
+            @include s.multiLineTextTruncateSinHeight($lineHeight: 1.2);
+            @include s.escaledFontFormat(s.$textSize15to21, bold, s.$pqGreen);
+            @include s.Roboto-Bold;
+          }
+
+          & > label:nth-of-type(2) {
+            @include s.escaledFontFormat(s.$textSize13to16, normal, s.$pqBlack2);
+            @include s.Roboto-Regular;
+            padding-top: 5px;
+          }
+        }
+      }
+    }
+
+    & > .providerContactData {
+      @include s.flexColumn;
+      flex: 1 0 415px;
+
+      & > .titleContact {
+        padding-bottom: 10px;
+
+        & > label:nth-of-type(1) {
+          @include s.escaledFontFormat(s.$textSize15to21, bold, s.$pqGreen);
+          @include s.Roboto-Bold;
+        }
+      }
+
+      & > .providerContactContent {
+        @include s.flexRowNoWrap;
+
+        & > .contentLeft {
+          @include s.flexColumn;
+          margin-right: 25px;
+
+          & > div {
+            align-items: center;
+            display: flex;
+            flex: 0 0 22px;
+
+            & > label:nth-of-type(1) {
+              @include s.escaledFontFormat(s.$textSize13to16, normal, s.$pqBlack2);
+              @include s.Roboto-Regular;
+              margin-left: 10px;
+            }
+
+            & > label:nth-of-type(2) {
+              @include s.escaledFontFormat(s.$textSize13to16, normal, s.$pqBlack2);
+              @include s.Roboto-Regular;
+              white-space: pre;
+            }
+          }
+
+          & > div:nth-of-type(1) {
+            & > div {
+              display: flex;
+              flex: 0 0 24px;
+              justify-content: center;
+
+              & > img {
+                height: 20px;
+              }
+            }
+          }
+
+          & > div:nth-of-type(2) {
+            & > div {
+              display: flex;
+              flex: 0 0 24px;
+              justify-content: center;
+
+              & > img {
+                height: 11px;
+              }
+            }
+          }
+
+          & > div:nth-of-type(3) {
+            & > div {
+              display: flex;
+              flex: 0 0 24px;
+              justify-content: center;
+
+              & > img {
+                height: 11px;
+              }
+            }
+          }
+        }
+
+        & > .contentRight {
+          @include s.flexColumn;
+          margin-left: 25px;
+
+          & > div:nth-of-type(1) {
+            flex: 0 0 25px;
+          }
+
+          & > div {
+            align-items: center;
+            display: flex;
+            flex: 0 0 22px;
+
+            & > label:nth-of-type(1) {
+              @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+              @include s.Roboto-Bold;
+            }
+
+            & > label:nth-of-type(2) {
+              @include s.escaledFontFormat(s.$textSize13to16, normal, s.$pqBlack2);
+              @include s.Roboto-Regular;
+              padding-left: 5px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > .providerContact {
+      & > .providerData {
+        flex: 0 1 300px;
+
+        & > .providerContent {
+          & > div:nth-of-type(1) {
+            margin: 0 10px 0 10px;
+
+            & > img {
+              max-height: 65px;
+              max-width: 100%;
+            }
+          }
+
+          & > label {
+            margin-right: 10px;
+          }
+        }
+
+        & > .providerTitle {
+          padding-bottom: 10px;
+          width: max-content;
+          margin-right: 10px;
+        }
+      }
+
+      & > .providerContactData {
+        & > .providerContactContent {
+          & > .contentLeft {
+            & > div {
+              flex: 0 0 25px;
+            }
+
+            & > div:nth-of-type(1) {
+              & > div {
+                & > img {
+                  height: 24px;
+                }
+              }
+            }
+
+            & > div:nth-of-type(2) {
+              & > div {
+                & > img {
+                  height: 13px;
+                }
+              }
+            }
+
+            & > div:nth-of-type(3) {
+              & > div {
+                & > img {
+                  height: 13px;
+                }
+              }
+            }
+          }
+
+          & > .contentRight {
+            & > div:nth-of-type(1) {
+              flex: 0 0 30px;
+            }
+
+            & > div {
+              flex: 0 0 25px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

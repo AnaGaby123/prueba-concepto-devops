@@ -1,0 +1,14 @@
+<div class="container">
+  <img
+    class="close-button"
+    alt="Cerrar"
+    src="assets/Images/cerrar.svg"
+    [style.width]="closeButtonSize"
+    [style.height]="closeButtonSize"
+    [style.top]="closeButtonPosition"
+    [style.right]="closeButtonPosition"
+    (click)="closePopUp()"
+  />
+  <ng-content class="content"></ng-content>
+</div>
+<div class="triangle" [style.bottom]="positions.bottom" [style.left]="positions.left" [ngClass]="trianglePosition"></div>

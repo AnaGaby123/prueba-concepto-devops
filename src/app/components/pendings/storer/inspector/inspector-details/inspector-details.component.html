@@ -1,0 +1,170 @@
+<div id="inspector-details">
+  <div class="info-header">
+    <div class="content">
+      <div class="information">
+        <div class="section-title">
+          <label>{{ 'inspector.itemInformation' | translate }}</label>
+        </div>
+        <div class="text-information">
+          <label>{{
+            '1612534 · Descripción a dos renglones por que puede ser extensa se dejaraán dos renglones, o tal vez tres si es más información.'
+          }}</label>
+        </div>
+        <div class="invoice">
+          <!--          // TODO: si es un impedimento colocar este -->
+          <div class="inspection-invoice" *ngIf="true">
+            <img src="assets/Images/pedimento.svg" alt="" />
+            <label>{{ '123-1234567788' }}</label>
+          </div>
+          <label class="invoice-text" *ngIf="false">{{ 'OC-012418-001' }}</label>
+          <!--          // TODO: si no es un impedimento colocar este -->
+        </div>
+        <div class="pieces">
+          <div class="left">
+            <img src="assets/Images/ambiente.svg" alt="" />
+            <label>{{ ' · ' + '55 ' }} {{ 55 > 1 ? ('common.pieces' | translate) : ('common.piece' | translate) }}</label>
+          </div>
+          <div class="right">
+            <label> {{ 'P1 · +' + 1000 }}</label>
+          </div>
+        </div>
+      </div>
+      <div class="progress">
+        <div class="first-section">
+          <div class="title">
+            <div class="section-title">
+              <label>{{ 'inspector.inspectionProgress' | translate }}</label>
+            </div>
+            <div class="subtitle">
+              <label>{{ 'Con el ritmo de Inspección actual, lograrás cumplir el objetivo.' }}</label>
+            </div>
+          </div>
+          <div class="clock">
+            <img src="assets/Images/reloj_fondo_negro.svg" alt="" />
+            <label>{{ '10:34 hrs' }}</label>
+          </div>
+        </div>
+        <div class="second-section">
+          <app-items-count-bar
+            [totalItems]="200"
+            [progress]="195"
+            [progressMessage]="'inspector.inspectedParts' | translate"
+            [missingMessage]="'inspector.remainingPieces' | translate"
+          ></app-items-count-bar>
+        </div>
+      </div>
+      <div class="type">
+        <div class="section-title">
+          <label>{{ 'inspector.inspectionType' | translate }}</label></div
+        >
+        <div *ngIf="true" class="priority">
+          <label>{{ 'Por prioridad' }}</label>
+          <div class="cards">
+            <div>
+              <div class="title">
+                <label>{{ 'inspector.priority1' | translate }}</label>
+              </div>
+              <div class="content">
+                <div>
+                  <label>{{ 'Por Inspeccionar: ' + 56 }} {{ 'common.pieces' | translate }}</label>
+                </div>
+                <div>
+                  <label>{{ 'Tiempo Estimado de Inpección: 1 hr 55 min' }}</label>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="title">
+                <label>{{ 'P2' }}</label>
+              </div>
+              <div class="content">
+                <div>
+                  <label>{{ 'PI: ' + 56 }} {{ 'common.pieces' | translate }}</label>
+                </div>
+                <div>
+                  <label>{{ 'TEI: 1 hr 55 min' }}</label>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="title">
+                <label>{{ 'P3' }}</label>
+              </div>
+              <div class="content">
+                <div>
+                  <label>{{ 'PI: ' + 56 }} {{ 'common.pieces' | translate }}</label>
+                </div>
+                <div>
+                  <label>{{ 'TEI: 1 hr 55 min' }}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="false" class="purchase-order">
+          <div class="section-title">
+            <label>{{ 'Por Orden de Compra' }}</label>
+          </div>
+          <div class="oc">
+            <label>{{ 'OC-012418-001' }}</label>
+          </div>
+        </div>
+        <div *ngIf="false" class="petition">
+          <div class="image-content">
+            <img src="assets/Images/pedimento.svg" alt="" />
+          </div>
+          <div class="section-title">
+            <label>{{ 'Por Pedimento' }}</label>
+          </div>
+          <div class="section-text">
+            <label>{{ '123-1234567788' }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <div *ngIf="actualStep$ | async" class="stepper">
+      <app-options-bar
+        [options]="stepOptions$ | async"
+        [selectedOption]="actualStep$ | async"
+        [showNumber]="true"
+        [showArrows]="true"
+        [enableSelectOption]="false"
+        (handleOptionSelected)="setStep($event)"
+        [enableRightArrow]="(actualStep$ | async)?.number !== 3"
+        [enableLeftArrow]="(actualStep$ | async)?.number !== 1"
+      ></app-options-bar>
+    </div>
+    <div class="steps-content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  <footer>
+    <div>
+      <label><span class="red">P1 </span>{{ 'inspector.priority1' | translate }}</label>
+    </div>
+    <div>
+      <label><span class="yellow">P2 </span>{{ 'inspector.priority2' | translate }}</label>
+    </div>
+    <div>
+      <label><span class="green">P3 </span>{{ 'inspector.priority3' | translate }}</label>
+    </div>
+    <div>
+      <img src="assets/Images/ambiente.svg" alt="" />
+      <label> {{ 'priorityConsole.environment' | translate }}</label>
+    </div>
+    <div>
+      <img src="assets/Images/congelacion.svg" alt="" />
+      <label> {{ 'priorityConsole.freezing' | translate }}</label>
+    </div>
+    <div>
+      <img src="assets/Images/refrigeracion.svg" alt="" />
+      <label> {{ 'priorityConsole.refrigeration' | translate }}</label>
+    </div>
+    <div>
+      <img src="assets/Images/pedimento.svg" alt="" />
+      <label> {{ 'registerArrival.petition' | translate }}</label>
+    </div>
+  </footer>
+</div>

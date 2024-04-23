@@ -1,0 +1,144 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  $left-container-flex: (
+    'base': 660px,
+    'macBookAir': 890px,
+  );
+  $graphics-padding: (
+    'base': 40px 80px,
+    'macBookAir': 50px 80px,
+  );
+  $graphics-structure: (
+    'top': 1,
+    'bottom': 1,
+  );
+  $graphics-gap: (
+    'base': 50px 0,
+  );
+  @include s.pending-dashboard-structure($left-container-flex, $graphics-padding, $graphics-structure, $graphics-gap);
+
+  #attend-investigation-list {
+    & > .left-container {
+      & > .tabs {
+        margin-bottom: 75px;
+      }
+
+      & > .list-container {
+        & > .virtual-list {
+          .item {
+            & > .content {
+              @include s.absoluteTop;
+              @include s.flexColumn;
+              gap: 8px;
+
+              & > .name {
+                @include s.flexRowNoWrap;
+
+                & > label:nth-of-type(1) {
+                  @include s.Roboto-Bold;
+                  @include s.escaledFontFormat(s.$textSize21to28, bold, s.$pqGreen);
+                  @include s.multiLineTextTruncateSinHeight(1, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+                }
+              }
+
+              & > .classification {
+                & > .classification-products {
+                  @include s.Roboto-Bold;
+                  @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+                  margin-right: 5px;
+                }
+
+                & > label {
+                  @include s.Roboto-Bold;
+                  @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+                  margin-right: 5px;
+                }
+              }
+
+              & > .status {
+                @include s.flexRow;
+                column-gap: 9px;
+
+                & > label {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize14to19, regular, s.$pqBlack2);
+                  vertical-align: baseline;
+                  white-space: pre;
+                }
+
+                & > .new {
+                  color: s.$pqGreen2;
+                }
+
+                & > .reattended {
+                  color: s.$orange;
+                }
+
+                & > .pending-response {
+                  color: s.$pqTextAlert;
+                }
+
+                & > img {
+                  @include s.imageLabel;
+                }
+              }
+
+              & > .states {
+                & > label {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize14to19, regular, s.$dark-proquifa-d);
+                }
+              }
+            }
+          }
+        }
+      }
+
+      & > .footer {
+        @include s.flexRow;
+        border-top: 1px solid s.$pqBlack2;
+        justify-content: space-between;
+
+        & > label {
+          @include s.responsive-font-format($font-size-map: s.$responsive-font-14-14);
+        }
+      }
+    }
+
+    & > .right-container {
+      & > app-doughnut-chart {
+        grid-column-end: span 2;
+        overflow: hidden;
+      }
+
+      & > app-bar-chart {
+        overflow: hidden;
+      }
+
+      & > .loading {
+        grid-area: 2/1/2/2;
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #attend-investigation-list {
+      & > .left-container {
+        & > .list-container {
+          & > .virtual-list {
+            .item {
+              & > .content {
+                gap: 10px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

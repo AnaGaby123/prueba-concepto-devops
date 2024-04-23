@@ -1,0 +1,65 @@
+<div class="expenses">
+  <h4>{{ 'formProvider.step8.subtitles.expenses' | translate }}</h4>
+  <div class="grid">
+    <div class="input-container">
+      <label>{{ 'formProvider.step8.inputs.consularization' | translate }}</label>
+      <app-generic-input
+        class="input"
+        [enableEdit]="enableEdit"
+        [maxlength]="14"
+        [placeholder]="'0'"
+        [textAlign]="'center'"
+        [typeValidation]="inputValidators.DecimalNumber"
+        [value]="actualConfiguration?.ConfiguracionPrecioProveedor?.PrecioConsularizacion"
+        (textData)="handleInputChange($event, fields.PrecioConsularizacion)"
+      >
+      </app-generic-input>
+      <span>USD</span>
+    </div>
+    <div class="input-container">
+      <label>{{ 'formProvider.step8.inputs.docDelivery' | translate }}</label>
+      <app-generic-input
+        class="input"
+        [enableEdit]="enableEdit"
+        [maxlength]="14"
+        [placeholder]="'0'"
+        [textAlign]="'center'"
+        [typeValidation]="inputValidators.DecimalNumber"
+        [value]="actualConfiguration?.ConfiguracionPrecioProveedor?.PrecioEnvioDeDocumentos"
+        (textData)="handleInputChange($event, fields.PrecioEnvioDeDocumentos)"
+      >
+      </app-generic-input>
+      <span>USD</span>
+    </div>
+    <div class="input-container">
+      <label>{{ 'formProvider.step8.inputs.permission' | translate }}</label>
+      <app-generic-input
+        class="input"
+        [enableEdit]="enableEdit"
+        [maxlength]="14"
+        [placeholder]="'0'"
+        [textAlign]="'center'"
+        [typeValidation]="inputValidators.DecimalNumber"
+        [value]="actualConfiguration?.ConfiguracionPrecioProveedor?.PrecioPermiso"
+        (textData)="handleInputChange($event, fields.PrecioPermiso)"
+      >
+      </app-generic-input>
+      <span>USD</span>
+    </div>
+    <div class="input-container">
+      <label>{{ 'formProvider.step8.inputs.freightAd' | translate }}</label>
+      <app-generic-input
+        class="input"
+        [enableEdit]="enableEdit"
+        [maxlength]="14"
+        [placeholder]="'0'"
+        [textAlign]="'center'"
+        [typeValidation]="inputValidators.DecimalNumber"
+        [value]="actualConfiguration?.ConfiguracionPrecioProveedor?.PrecioFleteAD"
+        (textData)="handleInputChange($event, fields.PrecioFleteAD)"
+      >
+      </app-generic-input>
+      <span>USD</span>
+    </div>
+  </div>
+</div>

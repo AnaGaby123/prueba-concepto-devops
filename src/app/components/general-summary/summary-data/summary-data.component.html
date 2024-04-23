@@ -1,0 +1,107 @@
+<section id="summary-data">
+  <div class="filter">
+    <div class="title">
+      <label>{{ 'quotation.details.results' | translate }}</label>
+    </div>
+    <div class="keyPad">
+      <app-tabs [options]="tabOptions$ | async" [tapSelected]="tabOption$ | async" (onSelectOption)="setOption($event)">
+      </app-tabs>
+    </div>
+  </div>
+  <div class="content">
+    <div *ngIf="(listCustomer$ | async)?.length > 0 && !(apiStatus$ | async)" class="list" #list>
+      <div
+        class="item"
+        (click)="viewStrategy(customer)"
+        [ngClass]="list.offsetWidth > 2019 ? 'medium' : 'small'"
+        *ngFor="let customer of listCustomer$ | async; let i = index"
+      >
+        <div class="content-customer">
+          <label class="id-name">#{{ customer.Index }} · {{ customer.Nombre }} </label>
+          <div class="contract">
+            <label class="withContact" *ngIf="customer.Contrato">Con Contrato · </label>
+            <label class="strategy">Estrategia: {{ customer.Estrategia }}</label>
+          </div>
+          <label class="date">Realización {{ customer.FechaRealizacion | dateFormatSlashShort }} </label>
+          <div class="quotes">
+            <label>
+              {{
+                customer.Cotizaciones +
+                  ' ' +
+                  (customer.Cotizaciones === 1 ? 'Cotización' : 'Cotizaciones') +
+                  ' · Monto total ' +
+                  (customer.TotalCotizado | currency) +
+                  ' USD'
+              }}
+            </label>
+          </div>
+          <div class="evi">
+            <label class="title">Evi: </label>
+            <label class="evi-name">{{ customer.UserName }}</label>
+          </div>
+          <div class="time">
+            <label
+              [ngClass]="
+                customer.HorasCaducidad >= 8 && customer.HorasCaducidad < 16
+                  ? 'orange'
+                  : customer.HorasCaducidad < 8
+                  ? 'red'
+                  : 'green'
+              "
+              >Expira en
+            </label>
+            <img
+              [src]="
+                customer.HorasCaducidad >= 8 && customer.HorasCaducidad < 16
+                  ? 'assets/Images/clock_orange.svg'
+                  : customer.HorasCaducidad < 8
+                  ? 'assets/Images/clock_red.svg'
+                  : 'assets/Images/clock_green.svg'
+              "
+            />
+            <label
+              [ngClass]="
+                customer.HorasCaducidad >= 8 && customer.HorasCaducidad < 16
+                  ? 'orange'
+                  : customer.HorasCaducidad < 8
+                  ? 'red'
+                  : 'green'
+              "
+            >
+              {{ customer.HorasCaducidad }} Hrs
+            </label>
+          </div>
+          <div class="strategies">
+            <label class="link">Ver Tácticas</label>
+            <label
+              [ngClass]="
+                customer.HorasCaducidad >= 8 && customer.HorasCaducidad < 16
+                  ? 'orange'
+                  : customer.HorasCaducidad < 8
+                  ? 'red'
+                  : 'green'
+              "
+            >
+              {{ customer.EstadoCotizaciones }}
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="(listCustomer$ | async)?.length === 0 && !(apiStatus$ | async)" class="without-results">
+      <app-without-results></app-without-results>
+    </div>
+    <div class="loader" *ngIf="apiStatus$ | async">
+      <app-loading></app-loading>
+    </div>
+    <div class="total">
+      <label>
+        #{{
+          (totalCustomer$ | async) +
+            ' ' +
+            ((totalCustomer$ | async) === 1 ? ('preProcessing.client' | translate) : ('preProcessing.clients' | translate))
+        }}
+      </label>
+    </div>
+  </div>
+</section>

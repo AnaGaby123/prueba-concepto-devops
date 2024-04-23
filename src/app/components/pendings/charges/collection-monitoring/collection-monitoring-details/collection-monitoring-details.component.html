@@ -1,0 +1,470 @@
+<div id="collection-monitoring-details">
+  <section>
+    <div class="title">
+      <div>
+        <label>{{ 'executeCollection.collections' | translate }}</label>
+      </div>
+      <div>
+        <label>{{ (selectedClient$ | async)?.Fecha | dateWithDayOfWeek }}</label>
+      </div>
+    </div>
+    <div class="header-container">
+      <div class="header">
+        <div class="client-container">
+          <div class="client-title">
+            <label>{{ 'common.client' | translate }}</label>
+          </div>
+          <div class="client">
+            <div>
+              <img src="assets/Images/clientes/logo_proquifa_hover.svg" alt="" />
+            </div>
+            <div class="client-info">
+              <div>
+                <label>{{ (selectedClient$ | async)?.NombreCliente }}</label>
+              </div>
+              <label>{{ 'common.client' | translate }} {{ (selectedClient$ | async)?.NivelIngreso }}</label>
+            </div>
+          </div>
+        </div>
+        <div class="contact-data">
+          <div class="title">
+            <label>{{ 'purchasePromise.contactData' | translate }}</label>
+          </div>
+          <div class="data">
+            <div>
+              <div class="row">
+                <div class="image">
+                  <img src="assets/Images/contacto.svg" alt="" />
+                </div>
+                <label class="bold"
+                  >{{ (contact$ | async)?.Nombres }} {{ (contact$ | async)?.ApellidoPaterno }}
+                  {{ (contact$ | async)?.ApellidoMaterno }}</label
+                >
+              </div>
+              <div class="row">
+                <div class="image">
+                  <img src="assets/Images/quotation/mail.svg" alt="" />
+                </div>
+                <label>{{
+                  (contact$ | async)?.CorreoElectronico ? ((contact$ | async)?.CorreoElectronico)[0].Correo : 'ND'
+                }}</label>
+              </div>
+              <div class="row">
+                <div class="image">
+                  <img src="assets/Images/quotation/phone.svg" alt="" />
+                </div>
+                <label
+                  >{{
+                    !lodashIsEmpty((contact$ | async)?.NumeroTelefonico)
+                      ? ((contact$ | async)?.NumeroTelefonico)[0].Numero
+                      : 'ND'
+                  }}
+                  · Ext.
+                  {{
+                    !lodashIsEmpty((contact$ | async)?.NumeroTelefonico)
+                      ? ((contact$ | async)?.NumeroTelefonico)[0].Extension
+                      : ''
+                  }}</label
+                >
+              </div>
+            </div>
+            <div>
+              <div class="row">
+                <label class="bold">{{ 'purchasePromise.department' | translate }}: </label>
+                <label>{{ (contact$ | async)?.Departamento || 'NA' }}</label>
+              </div>
+              <div class="row">
+                <label class="bold">{{ 'purchasePromise.position' | translate }}: </label>
+                <label>{{ (contact$ | async)?.Puesto || 'NA' }}</label>
+              </div>
+            </div>
+            <div>
+              <div class="row">
+                <label class="bold">{{ 'purchasePromise.decisionLevel' | translate }}: </label>
+                <label>{{ (contact$ | async)?.NivelDecision || 'NA' }}</label>
+              </div>
+              <div class="row">
+                <label [ngClass]="(selectedClient$ | async)?.SinCredito ? 'red' : 'green'">{{
+                  (selectedClient$ | async)?.SinCredito
+                    ? ('purchasePromise.clientWithoutCredit' | translate)
+                    : ('purchasePromise.clientWithCredit' | translate)
+                }}</label>
+              </div>
+            </div>
+            <div class="credit-limit">
+              <div class="row">
+                <label class="pqf"
+                  >Límite de crédito
+                  {{ (barsData$ | async)?.ConfiguracionPagos.LimiteLineaCredito | currency: 'USD':'symbol-narrow':'1.2-2' }}
+                  USD</label
+                >
+              </div>
+              <div class="row">
+                <label class="title"
+                  >Monto utilizado {{ (barsData$ | async)?.TotalACobrar | currency: 'USD':'symbol-narrow':'1.2-2' }} USD</label
+                >
+              </div>
+              <div class="row">
+                <label class="subtitle">hasta el {{ currentDate | dateFormatDot }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chart">
+      <div class="title-bar">
+        <label
+          >{{ 'collectionMonitoring.totalReceivable' | translate }}
+          {{ (selectedClient$ | async)?.ACobrar | currency: 'USD':'symbol-narrow':'1.2-2' }} USD</label
+        >
+      </div>
+      <div class="bar">
+        <app-percentage-bar [items]="percentageItemsDebts$ | async"></app-percentage-bar>
+      </div>
+    </div>
+    <div class="tabs-data">
+      <div class="title">
+        <label>{{ 'common.search' | translate }}</label>
+      </div>
+      <div class="tabs">
+        <app-tabs
+          [options]="tabOptions$ | async"
+          [tapSelected]="selectedTabOption$ | async"
+          (onSelectOption)="selectTabOption($event)"
+        >
+        </app-tabs>
+      </div>
+    </div>
+    <div class="filters">
+      <div class="drop-list">
+        <div>
+          <app-drop-down-list
+            [label]="'MEC'"
+            [items]="mecOptions$ | async"
+            [itemSelected]="selectedMecOption$ | async"
+            (valueDropList)="changeDropListValue('selectedMecOption', $event)"
+          >
+          </app-drop-down-list>
+        </div>
+        <div>
+          <app-drop-down-list
+            [label]="'collectionMonitoring.paymentMethods' | translate"
+            [items]="paymentMethodsOptions$ | async"
+            [itemSelected]="selectedPaymentMethodsOption$ | async"
+            (valueDropList)="changeDropListValue('selectedPaymentMethodsOption', $event)"
+          >
+          </app-drop-down-list>
+        </div>
+        <div>
+          <app-drop-down-list
+            [label]="'collectionMonitoring.debtStatements' | translate"
+            [items]="debtOptions$ | async"
+            [itemSelected]="selectedDebtOption$ | async"
+            (valueDropList)="changeDropListValue('selectedDebtOption', $event)"
+          >
+          </app-drop-down-list>
+        </div>
+        <div class="range-date">
+          <div>
+            <label>F. Facturación:</label>
+          </div>
+          <div>
+            <app-date-range (emitValues)="setRangeDate('billFilterDate', $event)"></app-date-range>
+          </div>
+        </div>
+        <div class="range-date">
+          <div>
+            <label>FEP:</label>
+          </div>
+          <div>
+            <app-date-range (emitValues)="setRangeDate('chargeFilterDate', $event)"></app-date-range>
+          </div>
+        </div>
+        <div class="search">
+          <app-search
+            [imageFill]="'#008894'"
+            [placeholder]="'Buscar'"
+            [searchTerm]="''"
+            [activeRefresh]="true"
+            [isSearchByType]="true"
+            [typesOfSearch]="searchTypeOptions$ | async"
+            [typeSelected]="selectedSearchType$ | async"
+            (textSearch)="handleSearchTerm($event)"
+            (handleTypeSelected)="changeDropListValue('selectedSearchType', $event)"
+          >
+          </app-search>
+        </div>
+      </div>
+    </div>
+    <div class="table-container">
+      <div class="table">
+        <div class="head">
+          <div class="index">
+            <p>#</p>
+          </div>
+          <div class="company">
+            <p>{{ 'collectionMonitoring.company' | translate }}</p>
+          </div>
+          <div class="uuid">
+            <p>UUID</p>
+          </div>
+          <div class="invoice">
+            <p>{{ 'common.invoice' | translate }}</p>
+          </div>
+          <div class="pi">
+            <p>P.Interno</p>
+          </div>
+          <div class="payment-conditions">
+            <p>C.Pago</p>
+          </div>
+          <div class="date">
+            <p>F.Facturación</p>
+          </div>
+          <div class="date">
+            <p>F.Revisión</p>
+          </div>
+          <div class="receipt">
+            <p>Contrarecibo</p>
+          </div>
+          <div class="date">
+            <p>FEP</p>
+          </div>
+          <div class="date">
+            <p>FPP</p>
+          </div>
+          <div class="payment-method">
+            <p>{{ 'registerConfirmation.paymentMedia' | translate }}</p>
+          </div>
+          <div class="drc">
+            <p>DRC</p>
+          </div>
+          <div class="mec">
+            <p>MEC</p>
+          </div>
+          <div class="in-time">
+            <p>{{ 'common.state' | translate }}</p>
+          </div>
+          <div class="img"></div>
+          <div class="img"></div>
+          <div class="img"></div>
+          <div class="img">
+            <app-check-box [check]="allItemsAreSelected$ | async" (event)="checkAllInvoices($event)"></app-check-box>
+          </div>
+        </div>
+        <div class="body">
+          <virtual-scroller
+            *ngIf="(itemsStatus$ | async) === 3 && !lodashIsEmpty(invoices$ | async)"
+            [items]="invoices$ | async"
+            [enableUnequalChildrenSizes]="true"
+            (vsUpdate)="invoicesScrollItems = $event"
+          >
+            <div class="item" *ngFor="let item of invoicesScrollItems; trackBy: handleTrackByItem">
+              <div class="index">
+                <label>{{ item.Index }}</label>
+              </div>
+              <div class="company">
+                <label>{{ item.Alias }}</label>
+              </div>
+              <div class="uuid">
+                <label>{{ item.UUID ? item.UUID : 'ND' }}</label>
+              </div>
+              <div class="invoice">
+                <label>{{ item.FolioFactura ? item.FolioFactura : 'ND' }}</label>
+              </div>
+              <div class="pi">
+                <label>{{ item.PedidoInterno }}</label>
+              </div>
+              <div class="payment-conditions">
+                <label>{{ item.CondicionesDePago }}</label>
+              </div>
+              <div class="date">
+                <label>{{ item.FechaCertificacionSat | dateFormatSlash }}</label>
+              </div>
+              <div class="date">
+                <label class="ocean">{{ item.FechaRevision | dateFormatSlash }}</label>
+              </div>
+              <div class="receipt">
+                <label>{{ item.Contrarecibo ? '' : 'Pendiente' }}</label>
+              </div>
+              <div class="date">
+                <label class="ocean">{{ item.FechaPromesaPagoMonitoreoCobros | dateFormatDot }}</label>
+              </div>
+              <div class="date">
+                <app-date-picker
+                  class="date-picker"
+                  [dateFormat]="'DD/MMMM/YYYY'"
+                  [style.height]="(viewType$ | async) === 'macBookAir' ? '24px' : '22px'"
+                  [color]="false"
+                  [date]="item.FechaCompromisoPagoDate"
+                  [disabledCalendarDays]="selectNonWorkingDays$ | async"
+                  [disabled]="!item.selected"
+                  [borderInputColor]="'transparent'"
+                  [imageAdd]="false"
+                  [textDecoration]="'underline'"
+                  [textAlign]="'start'"
+                  [fontColor]="item.hasTemporaryDate ? '#008894' : '#4ba92b'"
+                  [sizeInput]="(viewType$ | async) === 'macBookAir' ? '14px' : '12px'"
+                  (fecha)="handleDate(item.IdTPProformaPedido, $event)"
+                ></app-date-picker>
+                <label *ngIf="item.hasTemporaryDate" class="small"
+                  >{{ 'collectionMonitoring.monitoring' | translate }}
+                  {{ item.FechaCompromisoPago | dateFormatSlashShort }}</label
+                >
+              </div>
+              <div class="payment-method">
+                <label>{{ item.MedioDePago }}</label>
+              </div>
+              <div class="drc">
+                <label>{{ item.Dia }}</label>
+              </div>
+              <div class="mec">
+                <label class="pqf">{{ item.MontoPendiente | currency: 'USD':'symbol-narrow':'1.2-2' }} {{ 'USD' }}</label>
+              </div>
+              <div class="in-time">
+                <img *ngIf="item.EnTiempoVerde" src="assets/Images/labels/en-tiempo.svg" alt="in time" />
+                <img *ngIf="item.VencidaAmarillo" src="assets/Images/labels/overdue.svg" alt="overdue" />
+                <img *ngIf="item.VencidaNaranja" src="assets/Images/labels/overdue-orange.svg" alt="overdue" />
+                <img *ngIf="item.VencidaRojo" src="assets/Images/labels/overdue-red.svg" alt="overdue" />
+                <img *ngIf="item.Morosa" src="assets/Images/labels/defaulting.svg" alt="overdue" />
+              </div>
+              <div class="img">
+                <img
+                  *ngIf="item.Monitoreo"
+                  (click)="handlePopUps(MONITORING_POP, true)"
+                  class="active"
+                  src="assets/Images/execute-collection/monitoring.svg"
+                  alt="monitoring"
+                />
+                <img *ngIf="!item.Monitoreo" src="assets/Images/monitoring-gray.svg" alt="monitoring disable" />
+              </div>
+              <div class="img">
+                <img
+                  *ngIf="item.Programacion"
+                  (click)="handlePopUps(RESCHEDULE_POP, true)"
+                  class="active"
+                  src="assets/Images/execute-collection/reschedule.svg"
+                  alt="reschedule"
+                />
+                <img *ngIf="!item.Programacion" src="assets/Images/rescheduling-gray.svg" alt="reschedule disable" />
+              </div>
+              <div class="img">
+                <img
+                  *ngIf="item.selected"
+                  alt="comment"
+                  src="assets/Images/quotation/comment.svg"
+                  (click)="addComment(true, item)"
+                />
+                <img *ngIf="!item.selected" alt="comment" src="assets/Images/comment-gray.svg" />
+              </div>
+              <div class="img">
+                <app-check-box [check]="item.selected" (event)="checkInvoice(item.IdTPProformaPedido)"></app-check-box>
+              </div>
+            </div>
+          </virtual-scroller>
+          <div class="loading" *ngIf="(itemsStatus$ | async) === 1">
+            <app-loading></app-loading>
+          </div>
+          <div class="without-results" *ngIf="(itemsStatus$ | async) !== 1 && lodashIsEmpty(invoices$ | async)">
+            <app-without-results></app-without-results>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="totals">
+      <div></div>
+      <div>
+        <label
+          >{{ (invoices$ | async)?.length }}
+          {{ (invoices$ | async)?.length === 1 ? ('common.invoice' | translate) : ('common.invoices' | translate) }}</label
+        >
+      </div>
+      <div>
+        <div class="amounts">
+          <label class="total-collection"
+            >{{ 'common.total' | translate }}:
+            {{ (selectedClient$ | async)?.ACobrar | currency: 'USD':'symbol-narrow':'1.2-2' }} {{ 'USD' }}</label
+          >
+        </div>
+        <div class="amounts">
+          <img
+            *ngIf="validatorForAddCommentsButton$ | async"
+            src="assets/Images/new_note.svg"
+            alt="new note"
+            (click)="addComments(true)"
+          />
+          <img *ngIf="!(validatorForAddCommentsButton$ | async)" src="assets/Images/new_note_gray.svg" alt="new note disable" />
+          <label class="totalInvoice">#{{ (selectedInvoices$ | async)?.length }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="btn">
+      <button
+        [disabled]="!(validatorForAcceptButton$ | async)"
+        [ngClass]="(validatorForAcceptButton$ | async) ? 'enabled' : 'disabled'"
+        (click)="finalize()"
+      >
+        {{ 'common.accept' | translate }}
+      </button>
+    </div>
+  </section>
+  <footer>
+    <div>
+      <div>
+        <label>{{ 'collectionMonitoring.cPago' | translate }}: </label>
+        <label>{{ 'collectionMonitoring.paymentConditions' | translate }}</label>
+      </div>
+      <div>
+        <label>{{ 'collectionMonitoring.fBill' | translate }}: </label>
+        <label>{{ 'collectionMonitoring.billingDate' | translate }}</label>
+      </div>
+      <div>
+        <label>{{ 'collectionMonitoring.fReview' | translate }}: </label>
+        <label>{{ 'collectionMonitoring.revisionDate' | translate }}</label>
+      </div>
+      <div>
+        <label>{{ 'FEP' }}: </label>
+        <label>{{ 'collectionMonitoring.estimatedPaymentDate' | translate }}</label>
+      </div>
+      <div>
+        <label>{{ 'FPP' }}: </label>
+        <label>{{ 'collectionMonitoring.promisedPaymentDate' | translate }}</label>
+      </div>
+      <div>
+        <label>{{ 'DRC' }}: </label>
+        <label>{{ 'collectionMonitoring.remainingCreditDays' | translate }}</label>
+      </div>
+      <div>
+        <label>{{ 'MEC' }}: </label>
+        <label>{{ 'collectionMonitoring.estimatedAmountOCollection' | translate }}</label>
+      </div>
+      <div>
+        <img alt="" src="assets/Images/execute-collection/monitoring.svg" />
+        <label>{{ 'collectionMonitoring.monitoring' | translate }}</label>
+      </div>
+      <div>
+        <img alt="" src="assets/Images/execute-collection/reschedule.svg" />
+        <label>{{ 'collectionMonitoring.reschedule' | translate }}</label>
+      </div>
+      <div>
+        <img src="assets/Images/quotation/comment.svg" alt="" />
+        <label>{{ 'common.comments' | translate }}</label>
+      </div>
+    </div>
+  </footer>
+</div>
+<app-add-comment
+  *ngIf="activeComment"
+  [invoice]="itemForPopUp"
+  [selectedClient]="selectedClient$ | async"
+  [viewType]="viewType$ | async"
+  (emitButton)="addComment(false, null, $event)"
+>
+</app-add-comment>
+<app-add-comments
+  *ngIf="activeComments"
+  [selectedClient]="selectedClient$ | async"
+  [viewType]="viewType$ | async"
+  (emitButton)="addComments(false, $event)"
+>
+</app-add-comments>

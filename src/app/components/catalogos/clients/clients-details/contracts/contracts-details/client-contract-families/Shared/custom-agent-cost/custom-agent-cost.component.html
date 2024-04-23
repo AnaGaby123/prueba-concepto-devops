@@ -1,0 +1,133 @@
+<div class="custom-agent-cost">
+  <h4>{{ 'formProvider.step8.subtitles.customAgentCost' | translate }}</h4>
+  <div class="grid-drops">
+    <div class="drop-container">
+      <label>{{ 'formClient.step5.customAgent' | translate }}</label>
+      <label class="green">{{ actualConfiguration?.selectedCustomsAgent?.label || 'N/D' }}</label>
+    </div>
+    <div class="drop-container">
+      <label>{{ 'formClient.step5.dispatchPoint' | translate }}</label>
+      <label class="green">{{ actualConfiguration?.selectedCustoms?.label || 'N/D' }}</label>
+    </div>
+    <div class="drop-container last">
+      <label>{{ 'formClient.step5.feeAA' | translate }}</label>
+      <label class="green">{{ actualConfiguration?.selectedCustomsAgentConcept?.label || 'N/D' }}</label>
+    </div>
+    <div class="input-container first" *ngIf="!actualConfiguration?.ConceptoAgenteAduanal?.PorcentajeAPedimento">
+      <label>{{ 'formClient.step5.exportAccount' | translate }}</label>
+      <label class="green">
+        {{ (actualConfiguration?.ConceptoAgenteAduanal?.MontoExportacion | currency: 'USD':'symbol-narrow':'1.2-2') || 'N/D' }}
+        USD
+      </label>
+    </div>
+    <div class="input-container" *ngIf="!actualConfiguration?.ConceptoAgenteAduanal?.PorcentajeAPedimento">
+      <label>{{ 'formClient.step5.importAccount' | translate }}</label>
+      <label class="green">
+        {{ (actualConfiguration?.ConceptoAgenteAduanal?.MontoImportacion | currency: 'USD':'symbol-narrow':'1.2-2') || 'N/D' }}
+        USD
+      </label>
+    </div>
+    <div class="input-container center" *ngIf="actualConfiguration?.ConceptoAgenteAduanal?.PorcentajeAPedimento">
+      <label>{{ 'formClient.step5.percentageToRequest' | translate }}</label>
+      <label class="green">{{ actualConfiguration?.ConceptoAgenteAduanal?.Porcentaje | percentageTransform }}</label>
+    </div>
+  </div>
+  <div class="grid-inputs">
+    <div class="input-container">
+      <label>VUCEM</label>
+      <label class="green">
+        {{
+          (actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.VUCEM | currency: 'USD':'symbol-narrow':'1.2-2') || 'N/D'
+        }}
+        USD
+      </label>
+    </div>
+    <div class="input-container big">
+      <label>{{ 'formClient.step5.logisticService' | translate }}</label>
+      <label class="green">
+        {{
+          (actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.ServicioLogistica
+            | currency: 'USD':'symbol-narrow':'1.2-2') || 'N/D'
+        }}
+        USD
+      </label>
+    </div>
+    <div class="input-container">
+      <label>TM</label>
+      <label class="green"
+        >{{
+          (actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.TM | currency: 'USD':'symbol-narrow':'1.2-2') || 'N/D'
+        }}
+        USD</label
+      >
+    </div>
+    <div class="input-container">
+      <label>{{ 'formClient.step5.validation' | translate }}</label>
+      <label class="green">
+        {{
+          (actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.Validacion | currency: 'USD':'symbol-narrow':'1.2-2') ||
+            'N/D'
+        }}
+        USD
+      </label>
+    </div>
+    <div class="input-container">
+      <label>{{ 'formClient.step5.previous' | translate }}</label>
+      <label class="green">
+        {{
+          (actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.Previo | currency: 'USD':'symbol-narrow':'1.2-2') || 'N/D'
+        }}
+        USD
+      </label>
+    </div>
+    <div class="input-container big">
+      <label>{{ 'formClient.step5.deconsolidation' | translate }}</label>
+      <label class="green">
+        {{
+          (actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.Desconsolidacion
+            | currency: 'USD':'symbol-narrow':'1.2-2') || 'N/D'
+        }}
+        USD
+      </label>
+    </div>
+    <div class="input-container">
+      <label>{{ 'formClient.step5.shunting' | translate }}</label>
+      <label class="green">
+        {{
+          (actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.Maniobras | currency: 'USD':'symbol-narrow':'1.2-2') ||
+            'N/D'
+        }}
+        USD
+      </label>
+    </div>
+    <div class="input-container">
+      <label>{{ 'formClient.step5.transit' | translate }}</label>
+      <label class="green">
+        {{
+          (actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.Transito | currency: 'USD':'symbol-narrow':'1.2-2') ||
+            'N/D'
+        }}
+        USD
+      </label>
+    </div>
+    <div class="input-container big area9">
+      <label>{{ 'formClient.step5.classificationAndProcess' | translate }}</label>
+      <label class="green">
+        {{
+          (actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.ClasificacionProceso
+            | currency: 'USD':'symbol-narrow':'1.2-2') || 'N/D'
+        }}
+        USD
+      </label>
+    </div>
+    <div class="input-container area10">
+      <label>InBond</label>
+      <label class="green">
+        {{
+          (actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.InBond | currency: 'USD':'symbol-narrow':'1.2-2') || 'N/D'
+        }}
+        USD
+      </label>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,41 @@
+<div id="inspector-dashboard">
+  <div class="tabs">
+    <app-tabs
+      [options]="tabOptions$ | async"
+      [tapSelected]="selectedTab$ | async"
+      [enableSup]="true"
+      (onSelectOption)="setTab($event)"
+    ></app-tabs>
+  </div>
+  <div class="content">
+    <div class="charts">
+      <div class="left-content">
+        <app-doughnut-chart [title]="'common.products' | translate"></app-doughnut-chart>
+      </div>
+      <div class="right-content">
+        <div class="up">
+          <div>
+            <app-doughnut-chart [title]="'common.providers' | translate"></app-doughnut-chart>
+          </div>
+          <div>
+            <app-doughnut-chart [title]="'assignMessenger.priorities' | translate"></app-doughnut-chart>
+          </div>
+        </div>
+        <div class="down">
+          <div>
+            <app-doughnut-chart [title]="'inspector.priority1' | translate"></app-doughnut-chart>
+          </div>
+          <div>
+            <app-doughnut-chart [title]="'inspector.priority2' | translate"></app-doughnut-chart>
+          </div>
+          <div>
+            <app-doughnut-chart [title]="'inspector.priority3' | translate"></app-doughnut-chart>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="button">
+      <button [ngClass]="'button-active'" (click)="goToDetails()">{{ 'common.enter' | translate }}</button>
+    </div>
+  </div>
+</div>

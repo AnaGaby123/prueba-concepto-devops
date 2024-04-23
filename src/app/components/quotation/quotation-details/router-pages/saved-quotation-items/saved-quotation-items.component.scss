@@ -1,0 +1,435 @@
+@use 'base' as s;
+* {
+  box-sizing: border-box;
+  line-height: initial;
+}
+:host {
+  @include s.absolute100();
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  #saved-quotation-items-container {
+    @include s.absolute100();
+    @include s.flexColumn();
+    flex: 1;
+    overflow: hidden;
+    padding: 18px 0 20px 20px;
+    &.quotation-new {
+      & > .title {
+        & > label {
+          & > .quotation-status {
+            color: s.$pqGreen2;
+            vertical-align: baseline;
+          }
+        }
+      }
+    }
+    &.quotation-saved {
+      & > .title {
+        & > label {
+          & > .quotation-status {
+            color: s.$pqOrange;
+            vertical-align: baseline;
+          }
+        }
+      }
+    }
+    &.quotation-sent {
+      padding: 0 0 20px 20px;
+      & > .title {
+        padding-bottom: 10px;
+        & > label {
+          & > .quotation-status {
+            color: s.$pqBlue !important;
+            vertical-align: baseline;
+          }
+        }
+      }
+
+      & > .tabs {
+        margin-bottom: 18px;
+      }
+
+      & > .filters {
+        grid-template-columns: 1fr min-content;
+
+        & > .search-bar {
+          max-width: 340px;
+        }
+      }
+    }
+    &.quotation-investigation {
+      padding: 0 0 20px 20px;
+
+      & > .title {
+        padding-bottom: 10px;
+
+        & > label {
+          & > .quotation-status {
+            color: s.$complementario-b;
+            vertical-align: baseline;
+          }
+        }
+      }
+
+      & > .tabs {
+        margin-bottom: 18px;
+      }
+    }
+    &.quotation-investigation-finish {
+      padding: 0 0 20px 20px;
+
+      & > .title {
+        padding-bottom: 10px;
+
+        & > label {
+          & > .quotation-status {
+            color: s.$complementario-d;
+            vertical-align: baseline;
+          }
+        }
+      }
+
+      & > .tabs {
+        margin-bottom: 18px;
+      }
+    }
+    & > .title {
+      @include s.flexRowNoWrap;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 7px;
+
+      & > label {
+        @include s.responsive-font-format(
+          $font-family: s.$font_family_novecento_bold,
+          $font-size-map: s.$responsive-font-17-21
+        );
+        vertical-align: baseline;
+        & > span {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_novecento_bold,
+            $font-size-map: s.$responsive-font-17-21
+          );
+          vertical-align: baseline;
+        }
+        & > .ocean {
+          color: s.$pqGreen;
+          vertical-align: baseline;
+        }
+        & > .ocean-sent {
+          color: s.$pqGreen;
+          vertical-align: baseline;
+          & > span {
+            color: s.$pqGreen;
+            cursor: pointer;
+            text-decoration: underline;
+            vertical-align: baseline;
+          }
+        }
+      }
+      & > button {
+        $max-width-map: (
+          'base': 200px,
+          'macBookAir': 200px,
+        );
+        @include s.pqfButton($max-width-map: $max-width-map);
+      }
+    }
+    & > .tabs {
+      @include s.flexRowNoWrap;
+      box-sizing: border-box;
+      height: 30px;
+      margin-bottom: 15px;
+      width: 100%;
+    }
+    & > .filters {
+      align-items: center;
+      column-gap: 25px;
+      display: grid;
+      grid-template-columns: 1fr repeat(2, min-content);
+      margin-bottom: 15px;
+
+      & > .search-bar {
+        max-width: 300px;
+      }
+      & > .currency {
+        @include s.responsive-font-format(
+          $color: s.$dark-proquifa,
+          $font-family: s.$font_family_roboto,
+          $font-size-map: s.$responsive-font-13-13
+        );
+        white-space: pre;
+
+        & > span {
+          @include s.responsive-font-format(
+            $color: s.$dark-proquifa,
+            $font-family: s.$font_family_roboto_bold,
+            $font-size-map: s.$responsive-font-13-13,
+            $font-weight: s.$font-weight_bold
+          );
+          vertical-align: baseline;
+        }
+      }
+      & > .freight {
+        @include s.absoluteCenter;
+        @include s.flexRowNoWrap;
+        & > .disabled {
+          pointer-events: none;
+          & > label {
+            color: s.$pqGray3;
+          }
+        }
+        & > div {
+          @include s.flexRowNoWrap;
+          align-items: center;
+          &:hover * {
+            cursor: pointer;
+          }
+          & > img {
+            margin-right: 5px;
+            width: 25px;
+          }
+          & > label {
+            @include s.responsive-font-format(
+              $color: s.$main-proquifa,
+              $font-family: s.$font_family_novecento_bold,
+              $font-size-map: s.$responsive-font-12-b-12-b,
+              $font-weight: s.$font-weight_bold
+            );
+            white-space: pre;
+          }
+        }
+      }
+    }
+    & > .products {
+      @include s.flexRowNoWrap;
+      flex: 1;
+      overflow: hidden;
+      & > .without-results {
+        @include s.flexColumn;
+        align-items: center;
+        flex: 1;
+        justify-content: center;
+      }
+    }
+    & > .type-quotation {
+      @include s.absoluteCenter;
+      @include s.flexRowNoWrap;
+      background-color: s.$pqGray2;
+      height: 50px;
+      margin-bottom: 15px;
+      width: 100%;
+      gap: 80px;
+      &.grey {
+        background-color: s.$pqGray2;
+      }
+      &.green {
+        background-color: rgb(s.$pqGreen, 0.05);
+      }
+      & > .disabled {
+        & > div {
+          & > p {
+            color: s.$dark-proquifa-d;
+          }
+          & > app-pqf-toggle-switch::ng-deep {
+            & > .cont {
+              & > p {
+                color: s.$dark-proquifa-d;
+              }
+              & > .switch {
+                & > .circle {
+                  background-color: s.$dark-proquifa-d;
+                }
+              }
+            }
+          }
+        }
+      }
+      & > div {
+        @include s.absoluteCenter;
+        @include s.flexRowNoWrap;
+        width: auto;
+        & > div {
+          @include s.absoluteCenter;
+          @include s.flexRowNoWrap;
+          height: 20px;
+          width: auto;
+          & > p {
+            @include s.escaledFontFormat(s.$textSize12to18, bold, s.$pqGreen);
+            @include s.Novecento-Bold;
+          }
+        }
+        & > div:nth-of-type(2) {
+          margin-left: 8px;
+          height: 20px;
+          width: auto;
+        }
+      }
+    }
+    & > .footer {
+      @include s.flexRowNoWrap;
+      align-items: center;
+      gap: 18px;
+      & > label {
+        @include s.responsive-font-format($color: s.$alert, $font-size-map: s.$responsive-font-12-12);
+      }
+      & > .buttons-container {
+        @include s.flexRow;
+        justify-content: flex-end;
+        width: 100%;
+        & > button:nth-of-type(2) {
+          margin-left: 10px;
+        }
+        & > button {
+          &.save {
+            $max-width-map: (
+              'base': 185px,
+              'macBookAir': 290px,
+            );
+            @include s.pqfButton($max-width-map: $max-width-map, $background-color: s.$pqGreen2);
+            &.disabled {
+              @include s.pqfDisableButton($max-width-map: $max-width-map);
+            }
+          }
+          &.send {
+            $max-width-map: (
+              'base': 204px,
+              'macBookAir': 300px,
+            );
+            @include s.pqfButton($max-width-map: $max-width-map, $background-color: s.$pqGreen2);
+            &.disabled {
+              @include s.pqfDisableButton($max-width-map: $max-width-map);
+            }
+          }
+          &.resend {
+            $max-width-map: (
+              'base': 225px,
+              'macBookAir': 325px,
+            );
+            @include s.pqfButton($max-width-map: $max-width-map, $background-color: s.$pqGreen2);
+            &.disabled {
+              @include s.pqfDisableButton($max-width-map: $max-width-map);
+            }
+          }
+          &.disabled {
+            background-color: s.$pqGray3 !important;
+            cursor: not-allowed;
+            &:hover * {
+              cursor: not-allowed;
+            }
+          }
+        }
+      }
+    }
+    & > .pop-up-remove-product {
+      width: auto;
+      & > app-pop-up-generic ::ng-deep .contenido {
+        justify-content: normal;
+        & > div {
+          margin-top: 37px;
+          & > .text {
+            @include s.flexColumn;
+            gap: 26px;
+            margin-top: 30px;
+            & > label {
+              @include s.responsive-font-format(
+                $color: s.$dark-proquifa,
+                $font-family: s.$font-family_roboto,
+                $font-size-map: s.$responsive-font-26-26
+              );
+            }
+            & > .product-name {
+              @include s.responsive-font-format(
+                $color: s.$main-proquifa,
+                $font-family: s.$font-family_roboto_bold,
+                $font-size-map: s.$responsive-font-26-26,
+                $font-weight: s.$font-weight_bold
+              );
+            }
+          }
+        }
+      }
+    }
+    & > .freight-configurator-container {
+      width: auto;
+    }
+    .item-investigation-container {
+      @include s.flexColumn;
+      row-gap: 19px;
+
+      & > .item-investigation-info {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-column-gap: 20px;
+      }
+    }
+    & > .resend-quote-container {
+      width: auto;
+    }
+  }
+  app-right-sidebar {
+    position: relative;
+    margin-left: auto;
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #saved-quotation-items-container {
+      overflow-x: hidden;
+      & > .title {
+        & > .content {
+          & > .detail {
+            width: calc(100% - 180px);
+          }
+        }
+      }
+      & > .tabs {
+        height: 40px;
+      }
+      & > .products {
+        & > .content-products {
+          min-width: 1200px;
+        }
+      }
+      & > .totals {
+        & > .right {
+          & > p {
+            min-width: 150px;
+          }
+        }
+      }
+    }
+  }
+}
+.linked-items-pop {
+  & > app-custom-position-pop-up {
+    transition: all 0.4s ease-in-out;
+  }
+  & ::ng-deep {
+    & .linked-items {
+      overflow: auto;
+      padding: 5px 3px;
+      & > ul {
+        & > li {
+          @include s.escaledFontFormat(s.$textSize12to13, regular, s.$pqWhite);
+          @include s.Roboto-Regular();
+          margin-bottom: 5px;
+          text-align: center;
+          white-space: pre-wrap;
+          & > label {
+            cursor: pointer;
+          }
+          &:hover {
+            text-decoration: underline;
+          }
+          @include s.responsive_layout('macBookAir') {
+            margin-bottom: 8px;
+          }
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+}

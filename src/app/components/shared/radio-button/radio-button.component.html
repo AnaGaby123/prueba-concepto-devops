@@ -1,0 +1,56 @@
+<div *ngIf="enableEdit" class="principal pointer">
+  <img
+    *ngIf="isMulticolor"
+    alt=""
+    class="check"
+    [src]="
+      value
+        ? 'assets/Images/radio_selected_' + radioColor + '.svg'
+        : disabled
+        ? 'assets/Images/radio_unselected_gray.svg'
+        : 'assets/Images/radio_unselected_' + radioColor + '.svg'
+    "
+    [style.height]="height"
+    [style.padding-right]="radioPaddingRight"
+    [style.width]="height"
+    (click)="handleSelectRadioButton(!value)"
+  />
+  <img
+    *ngIf="!isMulticolor"
+    alt=""
+    class="check"
+    data-test="unselected"
+    [src]="
+      value
+        ? 'assets/Images/radio_selected.svg'
+        : disabled
+        ? 'assets/Images/radio_unselected_gray.svg'
+        : 'assets/Images/radio_unselected.svg'
+    "
+    [style.height]="height"
+    [style.padding-right]="radioPaddingRight"
+    [style.width]="height"
+    (click)="handleSelectRadioButton(!value)"
+  />
+  <label
+    *ngIf="label"
+    id="enabled-radio-label"
+    class="{{ labelFontStyle }}"
+    [ngClass]="{disabledBtn: disabled}"
+    (click)="handleSelectRadioButton(!value)"
+    >{{ label }}</label
+  >
+</div>
+<div *ngIf="!enableEdit" class="principal">
+  <img
+    id="disabled-radio-img"
+    alt=""
+    [src]="value ? 'assets/Images/check.svg' : 'assets/Images/radio_unselected.svg'"
+    [style.height]="height"
+    [style.padding-right]="radioPaddingRight"
+    [style.width]="height"
+  />
+  <label *ngIf="label" id="disabled-radio-label" class="{{ labelFontStyle }}" [ngClass]="{disabledBtn: disabled}">{{
+    label
+  }}</label>
+</div>

@@ -1,0 +1,68 @@
+<div id="navBarContainer" #navOptions>
+  <div
+    class="navOptionsContent"
+    [ngClass]="{
+      showMenuAnimation: (viewType$ | async) === viewTypes.small && menuIsOpen,
+      hideMenuAnimation: (viewType$ | async) === viewTypes.small && !menuIsOpen
+    }"
+  >
+    <div class="submenuSelected" [style.width]="(viewType$ | async) === viewTypes.small ? navContentWidth : '100%'">
+      <div class="submenuItem" *ngFor="let option of mainMenuOptions; trackBy: handleTrackBy" [class.active]="option.active">
+        <div
+          class="firstLevel"
+          [ngClass]="{active: option.active}"
+          (click)="selectFirstLevelOptionFromMenu(option)"
+          #firstLevel
+        >
+          <div class="indicator">
+            <div></div>
+          </div>
+          <div class="content">
+            <div class="icon">
+              <img [alt]="'option_' + 1" [src]="option.imagePath" />
+              <span *ngIf="showIndicator(option.options)" class="elipse"></span>
+            </div>
+            <div class="titleOption">
+              <label>{{ option.title | translate }}</label>
+            </div>
+            <div class="arrows">
+              <img alt="" src="assets/Images/arrows/pqf-up-arrow.svg" />
+            </div>
+          </div>
+        </div>
+        <div class="secondLevel">
+          <div
+            class="submenuOptions"
+            #submenuOptions
+            [style.height]="'100%'"
+            [style.max-height]="option.active ? navContentHeight : 0"
+          >
+            <div class="submenuOption" *ngFor="let secondLevelOption of option.options; trackBy: handleSubmenuTrackBy">
+              <div
+                class="content-submenu-option"
+                [ngClass]="secondLevelOption.active && !secondLevelOption.options ? 'active' : ''"
+                (click)="selectSecondLevelOptionFromMenu(secondLevelOption)"
+              >
+                <div class="indicator" [ngClass]="{active: option.active}"></div>
+                <div class="content" [ngClass]="{active: secondLevelOption.active}">
+                  <div class="bulletPoint">
+                    <span></span>
+                  </div>
+                  <div class="title">
+                    <label>{{ secondLevelOption.title }}</label>
+                  </div>
+                  <div *ngIf="secondLevelOption.total !== null" class="badgeContent">
+                    <div class="badge">
+                      <!--                      <span class="indicator"></span>-->
+                      <label>{{ secondLevelOption.total }}</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

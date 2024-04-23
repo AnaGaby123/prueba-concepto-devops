@@ -1,0 +1,16 @@
+<div class="component-container" id="load-missing-container">
+  <div class="header">
+    <app-header-bar [activeBack]="isDetails$ | async" [title]="title$ | async"></app-header-bar>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="footer" *ngIf="!(isDetails$ | async)">
+    <ng-container>
+      <div>
+        <label class="label-dark">OC:</label>
+        <label>{{ 'processPurchase.purchaseOrder' | translate }}</label>
+      </div>
+    </ng-container>
+  </div>
+</div>

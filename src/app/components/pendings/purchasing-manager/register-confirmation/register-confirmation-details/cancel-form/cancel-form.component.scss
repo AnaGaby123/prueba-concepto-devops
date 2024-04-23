@@ -1,0 +1,116 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  .cancel-container {
+    @include s.flexColumn;
+    background-color: rgba(s.$pqTextAlert, 0.13);
+    border-bottom: 1px solid s.$pqGray2;
+    min-width: 900px;
+
+    & > .close-button {
+      display: flex;
+      justify-content: flex-end;
+      margin: 15px 15px 0 0;
+
+      & > img {
+        @include s.imageIconResponsiveSize;
+        cursor: pointer;
+      }
+    }
+
+    & > .form-container {
+      @include s.flexRowNoWrap;
+      justify-content: space-between;
+      padding: 0 60px 15px 60px;
+
+      & > .form {
+        @include s.flexColumn;
+        flex: 1 1 auto;
+
+        & > label {
+          @include s.Novecento-Bold;
+          @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqTextAlert);
+        }
+
+        & > .radius {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr) 130px;
+          margin-bottom: 15px;
+          align-items: flex-end;
+
+          & > div {
+            @include s.flexRowNoWrap;
+            align-items: flex-end;
+            justify-content: flex-end;
+
+            & > div {
+              display: flex;
+              flex: 0 1 85px;
+            }
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+              @include s.Roboto-Regular;
+              margin: 0 0 5px 5px;
+              width: max-content;
+            }
+          }
+        }
+      }
+
+      & > .buttons {
+        @include s.flexColumn;
+        flex: 0 0 auto;
+        justify-content: space-between;
+        margin-left: 40px;
+
+        & > .active {
+          @include s.pqfButton($background-color: s.$pqTextAlert);
+        }
+
+        & > .disabled {
+          @include s.pqfDisableButton();
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    .cancel-container {
+      min-width: 1230px;
+
+      & > .close-button {
+        margin: 20px 20px 0 0;
+      }
+
+      & > .form-container {
+        padding: 0 60px 20px 60px;
+
+        & > .form {
+          & > .radius {
+            grid-template-columns: repeat(3, 1fr) 150px;
+            margin-bottom: 20px;
+
+            & > div {
+              & > div {
+                flex: 0 1 75px;
+              }
+
+              & > label {
+                margin: 0 0 6px 5px;
+              }
+            }
+          }
+        }
+
+        & > .buttons {
+          margin-left: 60px;
+        }
+      }
+    }
+  }
+}

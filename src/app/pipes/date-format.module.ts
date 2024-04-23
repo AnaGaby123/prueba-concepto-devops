@@ -1,0 +1,58 @@
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {
+  DateFormatAgo,
+  DateFormatDot,
+  DateFormatNumber,
+  DateFormatPipe,
+  DateFormatSlash,
+  DateFormatSlashShort,
+  DateFormatSlashShortNumbers,
+  DateFormatSlashShortNumbersWithHour,
+  DateFormatSlashShortWithHour,
+  DateFormatSlashWithHour,
+  DateWithDayOfWeek,
+  DaysRange,
+  LongDateWithHourFormat,
+  NumbersPreviousDays,
+  OnlyDayNumber,
+} from './date-format.pipe';
+
+@NgModule({
+  declarations: [
+    DateFormatPipe,
+    DateFormatSlash,
+    DateFormatSlashShort,
+    DateFormatDot,
+    DateFormatNumber,
+    DateFormatAgo,
+    LongDateWithHourFormat,
+    NumbersPreviousDays,
+    OnlyDayNumber,
+    DaysRange,
+    DateWithDayOfWeek,
+    DateFormatSlashWithHour,
+    DateFormatSlashShortWithHour,
+    DateFormatSlashShortNumbersWithHour,
+    DateFormatSlashShortNumbers,
+  ],
+  imports: [CommonModule],
+  exports: [
+    DateFormatPipe,
+    DateFormatSlash,
+    DateFormatSlashShort,
+    DateFormatDot,
+    DateFormatNumber,
+    DateFormatAgo,
+    LongDateWithHourFormat,
+    NumbersPreviousDays,
+    OnlyDayNumber,
+    DaysRange,
+    DateWithDayOfWeek,
+    DateFormatSlashWithHour,
+    DateFormatSlashShortWithHour,
+    DateFormatSlashShortNumbersWithHour,
+    DateFormatSlashShortNumbers,
+  ],
+})
+export class DateFormatModule {}

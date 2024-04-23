@@ -1,0 +1,100 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.flexColumn;
+
+  & > .price-item {
+    @include s.flexRow;
+    align-items: center;
+    border-bottom: 1px solid s.$pqGray2;
+    cursor: pointer;
+    flex: 0 0 60px;
+
+    &.selected {
+      & > .select-indicator {
+        background-color: s.$pqGreen;
+      }
+    }
+
+    & * {
+      cursor: pointer;
+    }
+
+    &:hover {
+      background-color: s.$pqGray2;
+    }
+
+    & > .select-indicator {
+      display: flex;
+      flex: 0 0 7px;
+      height: 100%;
+    }
+
+    & > .item-content {
+      @include s.flexColumn;
+      flex: 1;
+      gap: 5px;
+      padding: 10px;
+
+      & > .title {
+        @include s.Roboto-Bold;
+        @include s.escaledFontFormat(s.$textSize13to14, bold, s.$pqGreen);
+
+        & > span {
+          vertical-align: baseline;
+        }
+      }
+
+      & > .subtitle {
+        @include s.flexRow;
+        gap: 10px;
+        justify-content: space-between;
+
+        & > label {
+          @include s.Roboto-Bold;
+          @include s.escaledFontFormat(s.$textSize11to12, bold, s.$pqBlack2);
+        }
+
+        & > .subtitle-2 {
+          color: s.$pqGreen;
+        }
+      }
+
+      & > .has-config-indicator {
+        display: flex;
+
+        & > img {
+          height: 12px;
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > .price-item {
+      @include s.flexRow;
+      flex: 0 0 65px;
+
+      & > .select-indicator {
+        flex: 0 0 8px;
+      }
+
+      & > .item-content {
+        @include s.flexColumn;
+        flex: 1;
+        gap: 6px;
+        padding: 15px;
+
+        & > .has-config-indicator {
+          & > img {
+            height: 13px;
+          }
+        }
+      }
+    }
+  }
+}

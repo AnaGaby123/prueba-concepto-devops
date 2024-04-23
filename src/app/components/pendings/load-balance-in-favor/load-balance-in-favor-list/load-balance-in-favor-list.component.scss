@@ -1,0 +1,291 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  & > #load-balance-in-favor-list {
+    @include s.flexColumn;
+    @include s.absolute100;
+
+    & > .top-content {
+      flex: 0 0 auto;
+      padding: 20px 20px 0 20px;
+
+      & > .title {
+        padding-bottom: 20px;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+          @include s.Novecento-Bold;
+        }
+      }
+
+      & > .tabs {
+        height: 50px;
+      }
+
+      & > .filters {
+        @include s.flexRowNoWrap;
+        justify-content: space-between;
+        padding-top: 20px;
+
+        & > .drop {
+          @include s.flexRowNoWrap;
+          align-items: center;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize15to17, regular, s.$pqBlack2);
+            @include s.Roboto-Regular;
+            padding-right: 5px;
+          }
+        }
+      }
+    }
+
+    & > .table {
+      @include s.flexColumn;
+      flex: 1 1 auto;
+      padding: 20px 20px 0 20px;
+
+      & > .header {
+        @include s.flexRow;
+        border-bottom: 1px solid s.$pqBlack2;
+        flex: 0 0 auto;
+        padding: 10px 0;
+
+        & > .index {
+          @include s.flexRow;
+          justify-content: center;
+          flex: 0 0 auto;
+          min-width: 27px;
+
+          & > label {
+            @include s.Roboto-Bold;
+            @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+          }
+        }
+
+        & > .company {
+          @include s.flexRow;
+          justify-content: center;
+          flex: 1 1 auto;
+
+          & > label {
+            @include s.Roboto-Bold;
+            @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+          }
+        }
+
+        & > .provider {
+          @include s.flexRow;
+          justify-content: center;
+          flex: 1 1 auto;
+
+          & > label {
+            @include s.Roboto-Bold;
+            @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+          }
+        }
+
+        & > .date {
+          @include s.flexRow;
+          justify-content: center;
+          flex: 1 1 auto;
+
+          & > label {
+            @include s.Roboto-Bold;
+            @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+          }
+        }
+
+        & > .documentFolio {
+          @include s.flexRow;
+          justify-content: center;
+          flex: 1 1 auto;
+
+          & > label {
+            @include s.Roboto-Bold;
+            @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+          }
+        }
+
+        & > .cfdi {
+          @include s.flexRow;
+          justify-content: center;
+          flex: 1 1 auto;
+
+          & > label {
+            @include s.Roboto-Bold;
+            @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+          }
+        }
+
+        & > .amount {
+          @include s.flexRow;
+          justify-content: center;
+          flex: 1 1 auto;
+
+          & > label {
+            @include s.Roboto-Bold;
+            @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+          }
+        }
+
+        & > .delete {
+          @include s.flexRow;
+          flex: 0 0 30px;
+        }
+      }
+
+      & > .body {
+        @include s.flexColumn;
+        flex: 1;
+
+        & > virtual-scroller {
+          @include s.absolute100;
+
+          & > ::ng-deep .scrollable-content {
+            max-width: 100% !important;
+            max-height: 100% !important;
+          }
+
+          .item {
+            @include s.flexColumn;
+            border-bottom: 1px solid s.$pqGray;
+            height: 50px;
+            justify-content: center;
+
+            &:hover {
+              background-color: s.$pqGray2;
+            }
+
+            & > .principal {
+              @include s.flexRow;
+
+              & > .index {
+                @include s.flexRow;
+                @include s.absoluteCenter;
+                flex: 0 0 auto;
+                min-width: 27px;
+
+                & > label {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                }
+              }
+
+              & > .company {
+                @include s.flexRow;
+                @include s.absoluteCenter;
+                flex: 1 1 auto;
+
+                & > label {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen);
+                }
+              }
+
+              & > .provider {
+                @include s.flexRow;
+                @include s.absoluteCenter;
+                flex: 1 1 auto;
+
+                & > label {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                }
+              }
+
+              & > .date {
+                @include s.flexColumn;
+                @include s.absoluteCenter;
+                flex: 1 1 auto;
+
+                & > label {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize13to14, regular, s.$pqGreen);
+                  text-align: center;
+                }
+              }
+
+              & > .documentFolio {
+                @include s.flexColumn;
+                @include s.absoluteCenter;
+                flex: 1 1 auto;
+
+                & > label {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                  text-align: center;
+                }
+              }
+
+              & > .cfdi {
+                @include s.flexRow;
+                @include s.absoluteCenter;
+                flex: 1 1 auto;
+
+                & > label {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen);
+                }
+              }
+
+              & > .amount {
+                @include s.flexRow;
+                @include s.absoluteCenter;
+                flex: 1 1 auto;
+
+                & > label {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                }
+              }
+
+              & > .delete {
+                @include s.flexRow;
+                flex: 0 0 30px;
+
+                & > img {
+                  cursor: pointer;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    & > footer {
+      @include s.flexRow;
+      @include s.absoluteCenter;
+      border-top: 2px solid s.$pqBlack2;
+      flex: 0 0 50px;
+      justify-content: flex-end;
+
+      & > div {
+        padding-right: 20px;
+
+        & > .add {
+          @include s.pqButton(166px, 250px, 25px, 30px, s.$pqGreen);
+        }
+
+        & > .add-disable {
+          @include s.pqButton(166px, 250px, 25px, 30px, s.$pqGray3);
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > #load-balance-in-favor-list {
+        & > footer {
+          flex: 0 0 45px;
+        }
+      }
+    }
+  }
+}

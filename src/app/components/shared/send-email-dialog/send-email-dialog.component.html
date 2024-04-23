@@ -1,0 +1,117 @@
+<app-pop-up-generic [width]="data?.width" [height]="data?.height" [titleHeader]="data?.titleHeader">
+  <div class="container">
+    <div class="message-sender">
+      <div class="message-content-data">
+        <div class="email-info-emails">
+          <label>{{ 'email.contact' | translate }}:</label>
+          <div class="contacts">
+            <div *ngIf="!data?.isEditAddressEmail">
+              <div class="item-contact" *ngFor="let email of mailListAux; let i = index">
+                <label>{{
+                  lodashFind(email.labels, ['isShow', true])?.label + (email?.labels?.length - 1 > i ? ',' : '')
+                }}</label>
+              </div>
+            </div>
+            <div class="contact-edit" *ngIf="data?.isEditAddressEmail">
+              <input
+                #inputElement
+                [ngClass]="{error: activeErrorEmail}"
+                type="text"
+                [(ngModel)]="currentEmail"
+                (keypress)="onKeyPress($event)"
+                (ngModelChange)="validate($event)"
+                (blur)="onBlur()"
+                (keyup.enter)="onEnter()"
+              />
+            </div>
+          </div>
+          <div *ngIf="data?.activeContacts">
+            <app-drop-list-contact
+              [minHeight]="40"
+              [options]="data?.contacts"
+              (emitValue)="pushEmail($event)"
+            ></app-drop-list-contact>
+          </div>
+        </div>
+        <div class="email-info" [ngClass]="'cc'">
+          <div>
+            <label>CC:</label>
+          </div>
+          <div>
+            <div class="carbon-copy">
+              <app-multiple-emails-input
+                [emails]="carbonCopy"
+                (getEmails)="addCarbonCopy($event)"
+                (deleteItem)="deletedItem($event)"
+              ></app-multiple-emails-input>
+            </div>
+          </div>
+          <div *ngIf="data?.contacts?.length > 0" class="contacts-drop">
+            <app-drop-list-contact
+              [options]="data?.contacts"
+              (emitValue)="addCcEmail($event)"
+              [minHeight]="90"
+            ></app-drop-list-contact>
+          </div>
+        </div>
+        <div class="email-info-subject">
+          <label>{{ 'email.subject' | translate }}:</label>
+          <div class="subject">
+            <label *ngIf="!data?.activeSaveSubject">{{ data.subject }}</label>
+            <input *ngIf="data?.activeSaveSubject" type="text" [(ngModel)]="data.subject" />
+          </div>
+        </div>
+      </div>
+      <ng-container *ngIf="!data?.hasInnerHTMLTemplate">
+        <div class="attached-file" *ngIf="!data?.hasMultipleComments">
+          <div
+            ><label>{{ data?.additionalText }}</label></div
+          >
+        </div>
+
+        <div class="filesContainer" *ngIf="data?.hasMultipleComments">
+          <div class="file" *ngFor="let files of data?.comments">
+            <label>{{ files }} </label>
+          </div>
+        </div>
+        <div class="comments">
+          <app-generic-text-area
+            [height]="'100%'"
+            [placeholder]="'email.additionalComments' | translate"
+            (emitData)="addComments($event)"
+          >
+          </app-generic-text-area>
+        </div>
+      </ng-container>
+      <div class="ngContainer" *ngIf="data?.hasInnerHTMLTemplate">
+        <ng-container *ngComponentOutlet="data?.innerHtml"></ng-container>
+      </div>
+    </div>
+    <div class="buttons-container">
+      <button class="btn-enable" (click)="onClose(false)">{{ 'common.cancel' | translate }}</button>
+      <button
+        [ngClass]="
+          data?.validateOnlyContact
+            ? !lodashIsEmpty(mailListAux) && data?.subject && !activeErrorEmail
+              ? 'btn-enable'
+              : 'btn-disable'
+            : ((!lodashIsEmpty(mailListAux) && data?.subject) || !lodashIsEmpty(carbonCopy)) &&
+              !activeErrorEmail &&
+              commentValidator(data?.comment)
+            ? 'btn-enable'
+            : 'btn-disable'
+        "
+        [disabled]="
+          data?.validateOnlyContact
+            ? lodashIsEmpty(mailListAux) || !data?.subject || activeErrorEmail
+            : (lodashIsEmpty(mailListAux) && lodashIsEmpty(carbonCopy)) ||
+              !data?.subject ||
+              activeErrorEmail ||
+              !commentValidator(data?.comment)
+        "
+        (click)="onClose(true)"
+        >{{ 'email.send' | translate }}</button
+      >
+    </div>
+  </div>
+</app-pop-up-generic>

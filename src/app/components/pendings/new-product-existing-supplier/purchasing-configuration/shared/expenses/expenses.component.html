@@ -1,0 +1,44 @@
+<div class="expenses-container">
+  <label>{{ 'newProductExistingSupplier.purchasingConfiguration.expenses' | translate }}</label>
+  <div class="expenses">
+    <div>
+      <label>{{ 'newProductExistingSupplier.purchasingConfiguration.permission' | translate }}:</label>
+      <div class="generic-input-container">
+        <pqf-generic-input
+          [placeholder]="'000'"
+          [width]="'100px'"
+          [typeValidation]="inputTypes.DecimalNumber"
+          [value]="actualConfiguration?.ConfiguracionPrecioProveedor?.PrecioPermiso"
+          (valueChangeEmitter)="handleInputChange($event, fields.PrecioPermiso)"
+        ></pqf-generic-input>
+        <span>{{ 'newProductExistingSupplier.purchasingConfiguration.dollars' | translate }}</span>
+      </div>
+    </div>
+    <div>
+      <label>{{ 'newProductExistingSupplier.purchasingConfiguration.consularization' | translate }}:</label>
+      <div class="generic-input-container">
+        <pqf-generic-input
+          [placeholder]="'000'"
+          [width]="'100px'"
+          [typeValidation]="inputTypes.DecimalNumber"
+          [value]="actualConfiguration?.ConfiguracionPrecioProveedor?.PrecioConsularizacion"
+          (valueChangeEmitter)="handleInputChange($event, fields.PrecioConsularizacion)"
+        ></pqf-generic-input>
+        <span>{{ 'newProductExistingSupplier.purchasingConfiguration.dollars' | translate }}</span>
+      </div>
+    </div>
+    <div>
+      <label>{{ 'newProductExistingSupplier.purchasingConfiguration.sendDocumentations' | translate }}:</label>
+      <div class="generic-input-container">
+        <pqf-generic-input
+          [placeholder]="'000'"
+          [width]="'100px'"
+          [typeValidation]="inputTypes.DecimalNumber"
+          [value]="actualConfiguration?.ConfiguracionPrecioProveedor?.PrecioEnvioDeDocumentos"
+          (valueChangeEmitter)="handleInputChange($event, fields.PrecioEnvioDeDocumentos)"
+        ></pqf-generic-input>
+        <span>{{ 'newProductExistingSupplier.purchasingConfiguration.dollars' | translate }}</span>
+      </div>
+    </div>
+  </div>
+</div>

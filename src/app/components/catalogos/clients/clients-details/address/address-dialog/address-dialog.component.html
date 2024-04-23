@@ -1,0 +1,179 @@
+<app-pop-up-generic
+  [titleHeader]="addressModalTitle$ | async"
+  [height]="(viewType$ | async) === viewTypes.small ? '730px' : '805px'"
+  [width]="(viewType$ | async) === viewTypes.small ? '720px' : '827px'"
+  [activeButtons]="true"
+  [activeBtn]="addressValidation$ | async"
+  class="add-address-pop"
+  (evento)="onClose($event)"
+>
+  <div class="content">
+    <div class="header">
+      <div class="info-content">
+        <div class="image">
+          <img
+            #imageElement
+            alt=""
+            [src]="setImage((selectedClient$ | async)?.imageHover)"
+            (error)="errorImage()"
+            class="imgFoto"
+          />
+        </div>
+        <div class="text">
+          <div class="aqua">
+            <label>{{ (selectedClient$ | async)?.Alias || 'N/D' }}</label>
+          </div>
+          <div class="black">
+            <label class="rfc"
+              >{{ (selectedClient$ | async)?.Sector || 'N/D' }} · {{ (selectedClient$ | async).Industria || 'N/D' }}</label
+            >
+          </div>
+        </div>
+      </div>
+      <div class="subtitle">
+        <label>DIRECCIÓN</label>
+      </div>
+    </div>
+    <div class="aqua-content">
+      <div class="aqua">
+        <div class="text">
+          <label>{{ '* Tipo de Dirección:' }}</label>
+        </div>
+        <div class="drop-container">
+          <app-drop-down-list
+            [items]="addressType$ | async"
+            [itemSelected]="(selectClientDirectionCopy$ | async)?.catTipoDireccionSelected"
+            [activeMinWidth]="false"
+            [enableEdit]="false"
+            [capitalize]="false"
+          ></app-drop-down-list>
+        </div>
+      </div>
+    </div>
+    <div class="input-content">
+      <div class="search-bar">
+        <app-search
+          [activeRefresh]="true"
+          [isExpandable]="true"
+          [placeholder]="'google-maps.placeholder' | translate"
+          [resultItems]="predictionsList"
+          [searchTerm]="searchTermGoogleMaps"
+          (textSearch)="handleKeySearchDirection($event)"
+          (handleSearchTermSelected)="changeSearchTerm($event)"
+          (handleItemSelected)="handleItemSelected($event)"
+          (handleClearSearchTerm)="handleClearSearchTerm()"
+        ></app-search>
+      </div>
+      <div class="country">
+        <app-drop-down-list
+          [activeMinWidth]="false"
+          [capitalize]="false"
+          [disable]="!(allowedForm$ | async)"
+          [isSearchable]="true"
+          [itemSelected]="addressCountrySelected$ | async"
+          [items]="listCountry$ | async"
+          [label]="'formProvider.step1.country' | translate"
+          [required]="true"
+          (valueDropList)="setDirectionDataDrop('IdCatPais', $event, 'catCountrySelected')"
+        ></app-drop-down-list>
+      </div>
+      <div class="street">
+        <app-generic-input
+          [isDisable]="!(allowedForm$ | async)"
+          [label]="'formProvider.step1.street' | translate"
+          [maxlength]="150"
+          [required]="true"
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          [value]="(selectClientAddress$ | async)?.Calle"
+          (textData)="setDirectionDataInput('Calle', $event)"
+        ></app-generic-input>
+      </div>
+      <div class="external-number">
+        <app-generic-input
+          [isDisable]="!(allowedForm$ | async)"
+          [label]="'formProvider.step1.externalNumber' | translate"
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          [value]="(selectClientAddress$ | async)?.NumeroExterior"
+          (textData)="setDirectionDataInput('NumeroExterior', $event)"
+        ></app-generic-input>
+      </div>
+      <div class="internal-number">
+        <app-generic-input
+          [isDisable]="!(allowedForm$ | async)"
+          [value]="(selectClientAddress$ | async)?.NumeroInterior"
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          [label]="'formProvider.step1.apartmentNumber' | translate"
+          (textData)="setDirectionDataInput('NumeroInterior', $event)"
+        ></app-generic-input>
+      </div>
+      <div class="zip-code">
+        <app-generic-input
+          [activeErrors]="!(zipCodeValid$ | async)"
+          [isDisable]="!(allowedForm$ | async)"
+          [label]="'formProvider.step1.zipCode' | translate"
+          [maxlength]="(isMexicanAddress$ | async) ? 5 : 10"
+          [required]="true"
+          [typeValidation]="(isMexicanAddress$ | async) ? inputValidators.Number : inputValidators.AlphaAndSpacesAndNumbers"
+          [value]="(selectClientAddress$ | async)?.CodigoPostal"
+          (textData)="setDirectionDataInput('CodigoPostal', $event)"
+        >
+        </app-generic-input>
+      </div>
+      <div class="state">
+        <app-generic-input
+          [isDisable]="!(allowedForm$ | async)"
+          [required]="true"
+          [label]="'formProvider.step1.state' | translate"
+          [value]="(selectClientAddress$ | async)?.Estado"
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          [maxlength]="50"
+          (textData)="setDirectionDataInput('Estado', $event)"
+        ></app-generic-input>
+      </div>
+      <div class="city">
+        <app-generic-input
+          [isDisable]="!(allowedForm$ | async)"
+          [label]="'formProvider.step1.city' | translate"
+          [required]="true"
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          [value]="(selectClientAddress$ | async)?.Ciudad"
+          [maxlength]="50"
+          (textData)="setDirectionDataInput('Ciudad', $event)"
+        ></app-generic-input>
+      </div>
+      <div class="municipally">
+        <app-generic-input
+          [isDisable]="!(allowedForm$ | async)"
+          [required]="true"
+          [value]="(selectClientAddress$ | async)?.Municipio"
+          [label]="'formProvider.step1.municipality' | translate"
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          [maxlength]="50"
+          (textData)="setDirectionDataInput('Municipio', $event)"
+        >
+        </app-generic-input>
+      </div>
+      <div class="suburb">
+        <app-generic-input
+          [isDisable]="!(allowedForm$ | async)"
+          [required]="true"
+          [value]="(selectClientAddress$ | async)?.Colonia"
+          [label]="'formProvider.step1.Suburb' | translate"
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          [maxlength]="50"
+          (textData)="setDirectionDataInput('Colonia', $event)"
+        ></app-generic-input>
+      </div>
+    </div>
+    <div class="buttons-container">
+      <div class="saveBtn">
+        <button [ngClass]="(allowedForm$ | async) ? 'enable' : 'disabled'" (click)="setResetForm()">{{
+          'quotation.details.noticeCustomer.step1.cleanForm' | translate
+        }}</button>
+      </div>
+    </div>
+    <div class="required-field">
+      <label>{{ '*' }} {{ 'formClient.step5.contractPopUp.requiredData' | translate }}</label>
+    </div>
+  </div>
+</app-pop-up-generic>

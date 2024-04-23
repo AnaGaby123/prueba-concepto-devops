@@ -1,0 +1,16 @@
+<div id="general-summary">
+  <div class="filters">
+    <img
+      alt="arrow"
+      class="arrow"
+      src="assets/Images/arrows/flecha_cuadro.svg"
+      [ngClass]="requestIsOpen ? 'arrow-hide-panel' : 'arrow-show-panel'"
+      [src]="requestIsOpen ? 'assets/Images/arrows/flecha_cuadro.svg' : 'assets/Images/arrows/flecha_mostrar.svg'"
+      (click)="handleRequest()"
+    />
+    <app-summary-filters [isOpen]="requestIsOpen" (handleIsOpen)="handleRequest()"></app-summary-filters>
+  </div>
+  <div class="summary-data" [ngClass]="{show: requestIsOpen}">
+    <app-summary-data></app-summary-data>
+  </div>
+</div>

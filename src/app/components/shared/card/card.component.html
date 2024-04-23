@@ -1,0 +1,54 @@
+<div id="card-container" [style.height]="height">
+  <virtual-scroller
+    *ngIf="!isLoading && options?.length > 0"
+    [items]="options"
+    (vsUpdate)="optionsScrollItems = $event"
+    [horizontal]="true"
+    [style.height]="height"
+  >
+    <div
+      class="option"
+      *ngFor="let option of optionsScrollItems; let i = index"
+      (click)="onSelected(option)"
+      [ngClass]="{active: option.active, border: optionIndex - 1 === i}"
+      [style.width]="itemWidth"
+      [style.height]="option.active ? height : '100%'"
+    >
+      <div
+        class="label"
+        *ngFor="let label of option.labels"
+        [ngClass]="option.labels.length < 3 || applySameMargin ? '' : 'margin-auto'"
+      >
+        <label
+          [ngClass]="label.fontSize ? label.fontSize : 'normal'"
+          [style.color]="label.color ? label.color : '#FFFFFF'"
+          [style.font-family]="label.family ? label.family : ''"
+          [style.font-size]="label.fontSize ? label.fontSize : ''"
+          [style.font-weight]="label.fontWeight ? label.fontWeight : ''"
+          [style.text-transform]="label.textTransform! ? label.textTransform : ''"
+          [style.margin-top]="labelMargin"
+        >
+          {{ label.label }}
+          <span *ngIf="!!label.subLabel" [style.color]="label.subColor ? label.subColor : '#FFFFFF'">
+            · {{ label.subLabel }}</span
+          >
+        </label>
+        <div class="indicators" *ngIf="!lodashIsEmpty(label.indicators)">
+          <img
+            [alt]="indicator.name"
+            *ngFor="let indicator of label.indicators; let i = index"
+            [src]="'assets/Images/quotation/' + indicator.color + '.svg'"
+            [style.z-index]="i"
+          />
+        </div>
+      </div>
+      <img *ngIf="option.image" [src]="option.image" alt="" />
+    </div>
+  </virtual-scroller>
+  <div *ngIf="isLoading" class="scrollable-content loading">
+    <app-loading [color]="'white'"></app-loading>
+  </div>
+  <div *ngIf="!isLoading && options?.length === 0 && enableMessage" class="scrollable-content without-results-message">
+    <label>{{ withoutOptionsMessage }}</label>
+  </div>
+</div>

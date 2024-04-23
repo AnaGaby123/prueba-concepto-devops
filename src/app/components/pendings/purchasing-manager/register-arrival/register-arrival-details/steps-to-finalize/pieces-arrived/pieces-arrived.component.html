@@ -1,0 +1,116 @@
+<div id="pieces-arrived">
+  <div class="container-component">
+    <div class="table-container">
+      <div class="head">
+        <div class="provider">
+          <label>{{ 'common.provider' | translate }}</label>
+        </div>
+        <div class="to-arrived">
+          <label>{{ 'registerArrival.details.toArrived' | translate }} · ({{ 'common.pzas' | translate }})</label>
+        </div>
+        <div class="arrived">
+          <label>{{ 'registerArrival.details.arrived' | translate }} · ({{ 'common.pzas' | translate }})</label>
+        </div>
+        <div class="missing">
+          <label>{{ 'registerArrival.details.missing' | translate }} · ({{ 'common.pzas' | translate }})</label>
+        </div>
+        <div class="surplus">
+          <label>{{ 'registerArrival.details.surplus' | translate }} · ({{ 'common.pzas' | translate }})</label>
+        </div>
+      </div>
+      <div class="body">
+        <virtual-scroller
+          *ngIf="(providersWithItems$ | async).length > 0 && !(isLoadingProvidersWithItems$ | async)"
+          [items]="providersWithItems$ | async"
+          [enableUnequalChildrenSizes]="true"
+          (vsUpdate)="listProvidersScrollItems = $event"
+        >
+          <div *ngFor="let provider of listProvidersScrollItems; trackBy: handleTrackBy" class="item-provider">
+            <div class="info-provider">
+              <div class="provider" (click)="handleOpenProvider(provider.IdOcPackingList)">
+                <div>
+                  <label>#{{ provider.Index }} ·</label>
+                </div>
+                <div class="arrow">
+                  <img [ngClass]="provider.isOpen ? 'open' : ''" src="assets/Images/quotation/arrow_default.svg" alt="arrow" />
+                </div>
+                <div>
+                  <label>{{ provider.NombreProveedor }}</label>
+                </div>
+              </div>
+              <div class="to-arrived">
+                <label>{{ provider.PiezasPorArribar }}</label>
+              </div>
+              <div class="arrived">
+                <div>
+                  <app-generic-input
+                    [value]="provider.arrived"
+                    [required]="true"
+                    [placeholder]="'0'"
+                    [typeValidation]="inputValidators.Number"
+                    [textAlign]="'center'"
+                    (textData)="setPiecesArrived($event, provider.IdOcPackingList)"
+                  >
+                  </app-generic-input>
+                </div>
+              </div>
+              <div class="missing">
+                <label>{{ calculatePiecesMissing(provider.PiezasPorArribar, provider.arrived) }}</label>
+              </div>
+              <div class="surplus">
+                <label>{{ calculatePiecesSurplus(provider.PiezasPorArribar, provider.arrived) }}</label>
+              </div>
+            </div>
+            <div class="items" *ngIf="provider.isOpen">
+              <div *ngFor="let item of provider.listaVOcPartida; let i = index" class="item">
+                <div class="desc-item">
+                  <label
+                    >#{{ i + 1 }} ·
+                    <span>{{ item.FolioPedidoInterno }}</span>
+                    <span>{{ item.Descripcion }}</span>
+                  </label>
+                </div>
+                <div class="to-arrived">
+                  <label>{{ item.NumeroDePiezas }}</label>
+                </div>
+                <div class="arrived"></div>
+                <div class="missing"></div>
+                <div class="surplus"></div>
+              </div>
+            </div>
+          </div>
+        </virtual-scroller>
+        <div class="is-loading" *ngIf="isLoadingProvidersWithItems$ | async">
+          <div class="load-circle">
+            <app-loading></app-loading>
+          </div>
+        </div>
+        <div
+          *ngIf="(providersWithItems$ | async).length === 0 && !(isLoadingProvidersWithItems$ | async)"
+          class="without-results"
+        >
+          <app-without-results></app-without-results>
+        </div>
+      </div>
+      <div class="footer">
+        <ng-container *ngIf="!(isLoadingProvidersWithItems$ | async)">
+          <div class="provider">
+            <label>#{{ (providersWithItems$ | async).length }}</label>
+          </div>
+          <div class="to-arrived">
+            <label>{{ (totals$ | async).toArrived }}</label>
+          </div>
+          <div class="arrived">
+            <label>{{ (totals$ | async).arrived }}</label>
+          </div>
+          <div class="missing">
+            <label>{{ (totals$ | async).missing }}</label>
+          </div>
+          <div class="surplus">
+            <label>{{ (totals$ | async).surplus }}</label>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

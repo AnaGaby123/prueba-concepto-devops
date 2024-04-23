@@ -1,0 +1,82 @@
+<div class="filter-container">
+  <div class="drops">
+    <app-drop-down-with-image
+      class="filter"
+      [defaultImgSource]="'assets/Images/providers/estrategicos.svg'"
+      [isSelected]="(providersListNode$ | async)?.strategicIsSelected"
+      [mainImgSource]="'assets/Images/providers/hover_estrategicos.svg'"
+      [selectedOption]="(providersListNode$ | async)?.selectedStrategiesOption"
+      [showTriangle]="false"
+      [title]="'Estratégicos'"
+      (selectOption)="setProvidersFilter($event, 'selectedStrategiesOption')"
+      (click)="setStrategicIsSelected()"
+    ></app-drop-down-with-image>
+    <app-drop-down-with-image
+      class="filter"
+      [defaultImgSource]="'assets/Images/providers/producto.svg'"
+      [isSelected]="(providersListNode$ | async)?.selectedProductTypesOption.value !== '1'"
+      [mainImgSource]="'assets/Images/providers/hover_producto.svg'"
+      [options]="(providersListNode$ | async)?.productTypesOptions"
+      [selectedOption]="(providersListNode$ | async)?.selectedProductTypesOption"
+      [title]="'Tipo de Productos'"
+      (selectOption)="setProvidersFilter($event, 'selectedProductTypesOption')"
+    ></app-drop-down-with-image>
+    <app-drop-down-with-image
+      class="filter"
+      [defaultImgSource]="'assets/Images/providers/agente.svg'"
+      [isSelected]="(providersListNode$ | async)?.selectedCustomAgentsOption.value !== '1'"
+      [mainImgSource]="'assets/Images/providers/hover_agente.svg'"
+      [options]="(providersListNode$ | async)?.customAgentsOptions"
+      [selectedOption]="(providersListNode$ | async)?.selectedCustomAgentsOption"
+      [title]="'Agente aduanal'"
+      (selectOption)="setProvidersFilter($event, 'selectedCustomAgentsOption')"
+    ></app-drop-down-with-image>
+    <app-drop-down-with-image
+      class="filter"
+      [defaultImgSource]="'assets/Images/providers/proveedores.svg'"
+      [isSelected]="(providersListNode$ | async)?.selectedProvidersOption.value !== '1'"
+      [mainImgSource]="'assets/Images/providers/hover_proveedores.svg'"
+      [options]="(providersListNode$ | async)?.providersOptions"
+      [selectedOption]="(providersListNode$ | async)?.selectedProvidersOption"
+      [title]="'Proveedores'"
+      (selectOption)="setProvidersFilter($event, 'selectedProvidersOption')"
+    ></app-drop-down-with-image>
+    <app-drop-down-with-image
+      class="filter"
+      [defaultImgSource]="'assets/Images/providers/region.svg'"
+      [isSelected]="(providersListNode$ | async)?.selectedRegionOption.value !== '1'"
+      [mainImgSource]="'assets/Images/providers/hover_region.svg'"
+      [options]="(providersListNode$ | async)?.regionOptions"
+      [selectedOption]="(providersListNode$ | async)?.selectedRegionOption"
+      [title]="'Región'"
+      (selectOption)="setProvidersFilter($event, 'selectedRegionOption')"
+    ></app-drop-down-with-image>
+    <app-drop-down-with-image
+      class="filter"
+      [defaultImgSource]="'assets/Images/providers/comprador.svg'"
+      [isSelected]="(providersListNode$ | async)?.selectedBuyerOption.value !== '1'"
+      [mainImgSource]="'assets/Images/providers/hover_comprador.svg'"
+      [options]="(providersListNode$ | async)?.buyerOptions"
+      [selectedOption]="(providersListNode$ | async)?.selectedBuyerOption"
+      [title]="'Comprador'"
+      (selectOption)="setProvidersFilter($event, 'selectedBuyerOption')"
+    ></app-drop-down-with-image>
+    <app-drop-down-with-image
+      class="filter"
+      [defaultImgSource]="'assets/Images/providers/pagador.svg'"
+      [isSelected]="(providersListNode$ | async)?.selectedPayerOption.value !== '1'"
+      [mainImgSource]="'assets/Images/providers/hover_pagador.svg'"
+      [options]="(providersListNode$ | async)?.payerOptions"
+      [selectedOption]="(providersListNode$ | async)?.selectedPayerOption"
+      [title]="'Pagador'"
+      (selectOption)="setProvidersFilter($event, 'selectedPayerOption')"
+    ></app-drop-down-with-image>
+  </div>
+  <div class="search">
+    <app-search
+      [searchTerm]="searchTerm$ | async"
+      [placeholder]="'Proveedor'"
+      (textSearch)="handleSetSearchTerm($event)"
+    ></app-search>
+  </div>
+</div>

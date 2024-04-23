@@ -1,0 +1,136 @@
+<div id="invoices">
+  <div class="content">
+    <div class="totals">
+      <div class="left">
+        <label class="ocean">{{ 'executeCollection.paymentAmount' | translate }}</label>
+        <label
+          >{{ (totalAmountsConversion$ | async)?.totalAmountUSD | currency: 'USD':'symbol-narrow':'1.2-2' }} USD<span>/</span
+          >{{ (totalAmountsConversion$ | async)?.totalAmountMXN | currency: 'MXN':'symbol-narrow':'1.2-2' }} MXN</label
+        >
+      </div>
+      <div class="right">
+        <label class="ocean">{{ 'executeCollection.creditNotes' | translate }}</label>
+        <label
+          >{{ (creditNotesTotals$ | async)?.TotalUSD | currency: 'USD':'symbol-narrow':'1.2-2' }} USD<span>/</span
+          >{{ (creditNotesTotals$ | async)?.TotalMXN | currency: 'MXN':'symbol-narrow':'1.2-2' }} MXN</label
+        >
+      </div>
+    </div>
+    <div class="bills-container">
+      <div class="title">
+        <label>{{ 'executeCollection.details.billsSelected' | translate }}</label>
+      </div>
+      <div class="bills-selected">
+        <virtual-scroller *ngIf="true" [items]="selectedBillList$ | async" (vsUpdate)="billsSelectedScrollItems = $event">
+          <div class="bill" *ngFor="let bill of billsSelectedScrollItems">
+            <div class="column-one">
+              <div class="line-one">
+                <label>#{{ bill.Index }} · </label>
+                <img *ngIf="bill.Morosa" src="assets/Images/labels/defaulting.svg" alt="defaulting" />
+                <label class="green">F. {{ bill.FolioFactura }} · </label>
+                <label>P.I {{ bill.PedidoInterno }}</label>
+              </div>
+              <div class="line-two">
+                <label>FF: {{ bill.FechaCertificacionSat | dateFormatSlashShort }} · </label>
+                <label>FEP: {{ bill.FechaPromesaPagoMonitoreoCobros | dateFormatSlashShort }} · </label>
+                <label>FPP: {{ bill.FechaCompromisoPago | dateFormatSlashShort }}</label>
+              </div>
+              <div class="line-three">
+                <label (click)="goToRebill()">{{ 'executeCollection.details.rebill' | translate }}</label>
+                <label>{{ 'executeCollection.details.seeMonitoring' | translate }}</label>
+                <label>{{ 'executeCollection.details.seeReprogramming' | translate }}</label>
+              </div>
+            </div>
+            <div class="column-two">
+              <label class="line-one">{{ bill.NumeroDeParcialidad }}</label>
+              <label class="line-two">{{ 'executeCollection.details.partiality' | translate }}</label>
+            </div>
+            <div class="column-three">
+              <label class="line-one">{{ bill.MontoPendiente | currency: 'USD':'symbol-narrow':'1.2-2' }} {{ 'USD' }}</label>
+              <label class="line-two">{{ 'executeCollection.details.pBalance' | translate }}</label>
+            </div>
+            <div class="column-four">
+              <div class="line-one">
+                <div class="floating-container">
+                  <label class="green" #amountToPayInputDispatch (click)="openInput(bill)">
+                    {{ bill.MontoPagado | currency: 'USD':'symbol-narrow':'1.2-2' }} {{ 'USD' }}
+                  </label>
+                  <div class="floating-input" *ngIf="bill.openInput" #amountToPayInput (click)="handleStopEvents($event)">
+                    <div>
+                      <input
+                        placeholder="0"
+                        (keypress)="handleValidateDecimalNumber(bill, $event)"
+                        [(ngModel)]="tempAmountToPay"
+                        (keyup.enter)="changeUnitPrice(bill, tempAmountToPay)"
+                      />
+                      <label>{{ (paymentTransaction$ | async).selectedCurrency?.label }}</label>
+                    </div>
+                  </div>
+                  <div *ngIf="bill.openInput" (click)="handleStopEvents($event)" class="triangle"></div>
+                </div>
+              </div>
+              <div class="line-two">
+                <label>{{ 'executeCollection.details.amountToPay' | translate }}</label>
+                <app-radio-button
+                  class="radio"
+                  [height]="(viewType$ | async) === 'macBookAir' ? '15px' : '12px'"
+                  [label]="'USD'"
+                  [labelFontStyle]="'robotoRegular15'"
+                  [radioPaddingRight]="'3px'"
+                  [value]="bill.isUSD"
+                  (emitValue)="selectInvoiceCurrency('isUSD', bill.IdTPProformaPedido)"
+                ></app-radio-button>
+                <app-radio-button
+                  class="radio"
+                  [height]="(viewType$ | async) === 'macBookAir' ? '15px' : '12px'"
+                  [label]="'MXN'"
+                  [labelFontStyle]="'robotoRegular15'"
+                  [radioPaddingRight]="'3px'"
+                  [value]="bill.isMXN"
+                  (emitValue)="selectInvoiceCurrency('isMXN', bill.IdTPProformaPedido)"
+                ></app-radio-button>
+              </div>
+            </div>
+            <div class="column-five">
+              <label class="line-one"
+                >{{ bill.MontoPendiente - bill.MontoPagado | currency: 'USD':'symbol-narrow':'1.2-2' }} {{ 'USD' }}</label
+              >
+              <label class="line-two">{{ 'executeCollection.details.oBalance' | translate }}</label>
+            </div>
+            <div class="cross">
+              <img (click)="deleteSelectedBill(bill.IdTPProformaPedido)" src="assets/Images/cerrar.svg" alt="cross" />
+            </div>
+          </div>
+        </virtual-scroller>
+      </div>
+      <div class="footer-bills">
+        <label
+          >{{ (selectedBillList$ | async)?.length }}
+          {{
+            (selectedBillList$ | async)?.length === 1
+              ? ('executeCollection.details.bill' | translate)
+              : ('executeCollection.details.bills' | translate)
+          }}</label
+        >
+      </div>
+    </div>
+    <div class="footer">
+      <div class="column-one">
+        <label>{{ 'executeCollection.details.nc' | translate }}:</label>
+        <label>{{ 'executeCollection.details.pay' | translate }}:</label>
+        <label>{{ 'executeCollection.details.oBalance' | translate }}:</label>
+        <label>{{ 'executeCollection.details.totalToPay' | translate }}:</label>
+      </div>
+      <div class="column-two">
+        <label
+          >{{ (paymentTransactionTotals$ | async)?.CreditNotes | currency: 'USD':'symbol-narrow':'1.2-2' }} {{ 'USD' }}</label
+        >
+        <label>{{ (paymentTransactionTotals$ | async)?.Payment | currency: 'USD':'symbol-narrow':'1.2-2' }} {{ 'USD' }}</label>
+        <label>{{ (paymentTransactionTotals$ | async)?.Unpaid | currency: 'USD':'symbol-narrow':'1.2-2' }} {{ 'USD' }}</label>
+        <label class="green"
+          >{{ (paymentTransactionTotals$ | async)?.Total | currency: 'USD':'symbol-narrow':'1.2-2' }} {{ 'USD' }}</label
+        >
+      </div>
+    </div>
+  </div>
+</div>

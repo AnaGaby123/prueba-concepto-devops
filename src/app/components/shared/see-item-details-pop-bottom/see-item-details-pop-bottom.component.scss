@@ -1,0 +1,48 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  width: 100%;
+
+  & > .item-details-container {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    grid-template-rows: auto;
+    grid-column-gap: 30px;
+    grid-row-gap: 18px;
+    width: 100%;
+
+    & > div {
+      @include s.flexRow;
+      flex-wrap: wrap;
+      row-gap: 2px;
+      & > label {
+        @include s.responsive-font-format(
+          $color: s.$pqBlack2,
+          $font-family: s.$font-family-roboto_regular,
+          $font-size-map: s.$responsive-font-15-17,
+          $font-weight: s.$font-weight-regular
+        );
+        text-align: left;
+
+        & > .black-bold {
+          @include s.responsive-font-format(
+            $color: s.$pqBlack2,
+            $font-family: s.$font-family-roboto_bold,
+            $font-size-map: s.$responsive-font-15-17,
+            $font-weight: s.$font-weight-bold
+          );
+          vertical-align: baseline;
+        }
+      }
+
+      & > .gray {
+        color: s.$textGray;
+        white-space: pre;
+      }
+    }
+  }
+}

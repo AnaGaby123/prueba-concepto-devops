@@ -1,0 +1,143 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  #fingerprint-scan {
+    @include s.flexColumn;
+    @include s.absolute100;
+    justify-content: flex-start;
+    overflow: hidden;
+
+    & > .container-component {
+      @include s.flexRowNoWrap;
+      @include s.absolute100;
+
+      & > .column-one,
+      .column-two {
+        @include s.flexRowNoWrap;
+        @include s.absoluteCenter;
+        padding-bottom: 200px;
+        flex: 1 1 50%;
+
+        & > .column-container {
+          @include s.flexRowNoWrap;
+          align-items: flex-end;
+
+          & > .labels {
+            @include s.flexColumn;
+
+            & > div:nth-of-type(1) {
+              @include s.flexColumn;
+              text-align: center;
+              padding-bottom: 20px;
+
+              & > label:nth-of-type(1) {
+                @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+                @include s.Novecento-Bold;
+                padding-bottom: 10px;
+              }
+
+              & > label:nth-of-type(2) {
+                @include s.escaledFontFormat(s.$textSize40to45, bold, s.$pqGreen);
+                @include s.Novecento-Bold;
+              }
+            }
+
+            & > .inputs {
+              @include s.flexRow;
+              @include s.absoluteCenter;
+
+              & > div {
+                @include s.flexRow;
+                @include s.absoluteCenter;
+
+                & > input {
+                  width: 80px;
+                  height: 65px;
+                  border: 1px solid s.$pqGreen;
+                  background-color: s.$pqWhite;
+                  text-align: center;
+                  margin-right: 31px;
+                  $textSize: (
+                    'base': 30px,
+                    'macBookAir': 35px,
+                  );
+                  @include s.escaledFontFormat($textSize, bold, s.$pqGreen);
+                  @include s.Roboto-Bold;
+
+                  &:last-child {
+                    margin-right: 0;
+                  }
+                }
+              }
+            }
+
+            & .shaked {
+              & > div {
+                animation: shake 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+                transform: translate3d(0, 0, 0);
+                backface-visibility: hidden;
+                perspective: 1000px;
+
+                & > input {
+                  border: 1px solid s.$redAlert;
+                  background-color: s.$pqWhite;
+                  color: s.$redAlert;
+                }
+              }
+            }
+          }
+
+          & > .icon {
+            padding-left: 30px;
+
+            & > img {
+              width: 60px;
+              height: 60px;
+            }
+
+            & > .cross {
+              animation: shake 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #fingerprint-scan {
+      & > .container-component {
+        & > .column-one,
+        .column-two {
+          & > .column-container {
+            & > .labels {
+              & > .inputs {
+                & > div {
+                  & > input {
+                    width: 90px;
+                    height: 75px;
+                  }
+                }
+              }
+            }
+
+            & > .icon {
+              padding-left: 40px;
+
+              & > img {
+                width: 71px;
+                height: 71px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

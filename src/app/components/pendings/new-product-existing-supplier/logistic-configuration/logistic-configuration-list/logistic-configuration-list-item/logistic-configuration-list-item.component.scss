@@ -1,0 +1,94 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+#item {
+  @include s.cursor-pointer;
+  @include s.flexRow;
+  background-color: s.$light-proquifa;
+  border-bottom: 1px solid s.$dark-proquifa-d;
+  padding: 8px;
+
+  &:hover {
+    @include s.default-transition;
+    background-color: s.$dark-proquifa-e !important;
+  }
+
+  &.active {
+    background-color: s.$main-proquifa-f;
+    border-bottom: 1px solid s.$pqGreen;
+  }
+
+  & > .number {
+    @include s.flexRow;
+    align-items: flex-start;
+    flex: 0 0 38px;
+    margin: 3px 2px 0 0;
+
+    & > label {
+      @include s.responsive-font-format($font-size-map: s.$responsive-font-16-20);
+    }
+  }
+
+  & > .content {
+    @include s.flexColumn;
+    flex: 1;
+
+    & > .name {
+      @include s.responsive-font-format(
+        $font-family: s.$font-family-roboto_bold,
+        $font-weight: s.$font-weight-bold,
+        $font-size-map: s.$responsive-font-20-24,
+        $color: s.$pqGreen
+      );
+      margin-bottom: 8px;
+    }
+
+    & > .family {
+      @include s.responsive-font-format(
+        $font-family: s.$font-family-roboto_bold,
+        $font-weight: s.$font-weight-bold,
+        $font-size-map: s.$responsive-font-16-20
+      );
+      margin-bottom: 8px;
+    }
+
+    & > .name-supplier {
+      @include s.responsive-font-format($font-size-map: s.$responsive-font-16-16);
+      margin-bottom: 4px;
+    }
+
+    & > .date {
+      @include s.responsive-font-format(
+        $font-family: s.$font-family-roboto_bold,
+        $font-weight: s.$font-weight-bold,
+        $font-size-map: s.$responsive-font-14-14
+      );
+    }
+  }
+
+  & > .arrow {
+    @include s.flexRow;
+    align-items: center;
+    justify-content: center;
+    padding: 0 8px;
+
+    & > img {
+      height: 26px;
+      width: 16px;
+    }
+  }
+}
+
+@include s.media-query(s.$standard) {
+  #item {
+    padding: 16px;
+
+    & > .number {
+      flex: 0 0 46px;
+      margin: 2px 4px 0 0;
+    }
+  }
+}

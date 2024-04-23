@@ -1,0 +1,74 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  & > .cont {
+    @include s.flexRow;
+    align-items: center;
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+
+    &.disable {
+      pointer-events: none;
+    }
+
+    & > p {
+      @include s.escaledFontFormat(s.$textSize13to16, regular, #8f8e91);
+      @include s.Roboto-Regular;
+      cursor: pointer;
+
+      &.selected {
+        color: #008894;
+      }
+    }
+
+    & > .switch {
+      @include s.flexRowNoWrap;
+      background-color: #ffffff;
+      border-radius: 10px;
+      border: 0.5px solid #d8d9dd;
+      cursor: pointer;
+      height: 15px;
+      justify-content: flex-start;
+      margin: 0 7px 0 7px;
+      position: relative;
+      width: 45px;
+
+      & > .click {
+        cursor: pointer;
+        flex-basis: 50%;
+
+        &:first-child {
+          margin-right: 3px;
+        }
+      }
+
+      & > .circle {
+        background-color: s.$pqGreen;
+        border-radius: 50%;
+        cursor: pointer;
+        height: 20px;
+        position: absolute;
+        top: -3.5px;
+        transition: left 0.3s ease;
+        width: 20px;
+
+        &.circle-left {
+          left: -1px;
+        }
+
+        &.circle-center {
+          left: 11.5px;
+        }
+
+        &.circle-right {
+          left: 24px;
+        }
+      }
+    }
+  }
+}

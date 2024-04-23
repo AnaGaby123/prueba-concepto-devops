@@ -1,0 +1,26 @@
+<div
+  class="product-item"
+  [ngClass]="classification?.isSelected ? 'selected' : ''"
+  (click)="handleSelectedClassificationChange()"
+>
+  <div class="select-indicator"></div>
+  <div class="item-content">
+    <label class="title">
+      #{{ classification?.Index }} ·
+      <span>
+        {{ classification?.TotalProductos }}
+        {{ classification?.TotalProductos === 1 ? ('common.product' | translate) : ('common.products' | translate) }}
+      </span>
+    </label>
+    <label class="subtitle">
+      {{ classification?.Descripcion }}
+    </label>
+    <div class="has-config-indicator">
+      <img
+        alt="Tiene configuración"
+        src="assets/Images/clientes/enfoque.svg"
+        *ngIf="classification?.NivelConfiguracionProductoProveedor === levels.CharacteristicGrouper"
+      />
+    </div>
+  </div>
+</div>

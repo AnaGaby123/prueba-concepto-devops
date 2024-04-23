@@ -1,0 +1,52 @@
+<app-pop-up-generic
+  id="request-with-errors-pop-up"
+  [activeButtons]="true"
+  [onlyOneButton]="data.onlyOneButton"
+  [activeBtn]="data.onlyOneButton ? true : (validationAvailabilityConfirmation$ | async)"
+  [height]="(viewType$ | async) === 'iPad' ? '360px' : '380px'"
+  [rightButtonLabel]="data.onlyOneButton ? ('common.close' | translate) : ('dialogs.availabilityLetters.process' | translate)"
+  [titleHeader]="'dialogs.availabilityLetters.confirmationExistence' | translate"
+  [width]="(viewType$ | async) === 'iPad' ? '720px' : '720px'"
+  (evento)="onClose(data.onlyOneButton ? false : $event)"
+>
+  <div class="container">
+    <div class="instructions">
+      <label *ngIf="!(legalRepresentativeSelected$ | async)">{{
+        'dialogs.availabilityLetters.messageWarning' | translate
+      }}</label>
+      <div *ngIf="legalRepresentativeSelected$ | async">
+        <label>{{ 'dialogs.availabilityLetters.signFileInstruction' | translate }}</label>
+        <label>{{ 'dialogs.availabilityLetters.signFileInstructionStep1' | translate }}</label>
+        <label>{{ 'dialogs.availabilityLetters.signFileInstructionStep2' | translate }}</label>
+      </div>
+    </div>
+    <div class="legal-representative">
+      <div>
+        <app-drop-down-list
+          [placeholder]="'dialogs.availabilityLetters.selectLegalRepresentative' | translate"
+          [itemSelected]="legalRepresentativeSelected$ | async"
+          [items]="legalRepresentatives$ | async"
+          (valueDropList)="setLegalRepresentative($event)"
+        ></app-drop-down-list>
+      </div>
+    </div>
+
+    <div
+      class="file-section"
+      [ngClass]="{disabled: empty(legalRepresentativeSelected$ | async) || (statusFile$ | async) !== 3}"
+    >
+      <div class="file-container" *ngIf="(statusFile$ | async) !== 1">
+        <div class="file">
+          <label>{{ 'dialogs.availabilityLetters.availabilityLetter' | translate }}</label>
+          <img alt="download" [src]="getDownloadImage(availabilityLetterFile$ | async)" (click)="downloadFile()" />
+        </div>
+        <div class="see-more" (click)="openFile()">
+          <label>{{ 'dialogs.availabilityLetters.seeFile' | translate }}</label>
+        </div>
+      </div>
+      <div *ngIf="(statusFile$ | async) === 1">
+        <app-loading></app-loading>
+      </div>
+    </div>
+  </div>
+</app-pop-up-generic>

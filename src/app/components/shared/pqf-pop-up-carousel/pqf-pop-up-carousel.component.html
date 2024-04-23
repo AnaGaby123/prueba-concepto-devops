@@ -1,0 +1,28 @@
+<pqf-generic-pop-up [isActiveButtons]="false" [height]="'539px'" (event)="handleClose($event)">
+  <div id="pop-up-content">
+    <div class="subtitle" *ngIf="subtitle !== ''">
+      <label>{{ subtitle }}</label>
+    </div>
+    <div class="content">
+      <div class="left-arrow">
+        <img src="assets/Images/arrows/pqf-left-arrow-disable.svg" (click)="scrollLeft()" #leftArrow />
+      </div>
+      <div class="right-arrow">
+        <img src="assets/Images/arrows/pqf-right-arrow-disable.svg" (click)="scrollRight()" #rightArrow />
+      </div>
+      <div class="pages-container" [ngClass]="{initial: scrollInitial}" #pagesHtmlElement>
+        <ng-content></ng-content>
+      </div>
+    </div>
+    <div class="paginator">
+      <div class="pages">
+        <div
+          class="page"
+          *ngFor="let page of pagesArray; let index"
+          [ngClass]="{active: currentPage === page}"
+          [style.background-color]="currentPage === page ? paginatorColor : ''"
+        ></div>
+      </div>
+    </div>
+  </div>
+</pqf-generic-pop-up>

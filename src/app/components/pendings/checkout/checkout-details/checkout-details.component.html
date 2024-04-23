@@ -1,0 +1,523 @@
+<div id="checkout-details-container">
+  <div class="container">
+    <div class="arrow" [ngClass]="{close: !leftContainerIsOpen}">
+      <img src="assets/Images/arrows/flecha_mostrar.svg" alt="" (click)="handleLeftContainer()" />
+    </div>
+    <div class="top-container">
+      <div class="left-container" [ngClass]="{close: !leftContainerIsOpen}">
+        <div class="slide" *ngIf="(purchaseOrderDetails$ | async)?.apiStatus === 3">
+          <div class="fixed">
+            <div class="client-title">
+              <label class="textUpperCase">{{ 'common.client' | translate }}</label>
+              <!--              DOCS: SE QUTÓ TEMPORALMENTE LA FUNCIONALIDAD DEL POP MOROSO, PARA REESTABLECERLA SOLO HAY QUE DESCOMENTAR LA ETIQUETA IMG Y ELIMINAR LA QUE ESTÁ DEBAJO -->
+              <!--              <img-->
+              <!--                [src]="openSlow ? 'assets/Images/labels/moroso.svg' : 'assets/Images/labels/Moroso-sin-fondo.svg'"-->
+              <!--                #target-->
+              <!--                (click)="openPop(true)"-->
+              <!--              />-->
+              <!--  <img
+                alt=""
+                [src]="openSlow ? 'assets/Images/labels/moroso.svg' : 'assets/Images/labels/Moroso-sin-fondo.svg'"
+                #target
+              />-->
+              <!--<div *ngIf="openSlow">
+                <app-custom-position-pop-up
+                  [popUpPosition]="'bottom-start'"
+                  [adjustForSmallTarget]="20"
+                  [padding]="'0'"
+                  [target]="target"
+                  [maxWidth]="'1179px'"
+                  [minWidth]="(viewType$ | async) === 'iPad' ? '750px' : '1179px'"
+                  [maxHeight]="'741px'"
+                  [minHeight]="(viewType$ | async) === 'iPad' ? '394px' : '741px'"
+                  (closeEmitter)="openPop($event)"
+                  *ngIf="dataSlow$ | async; let slow"
+                >
+                  <div id="slow-container">
+                    <div class="header">
+                      <img src="assets/Images/strategy/bad.svg" />
+                      <label>{{ (customer$ | async)?.Nombre }}</label>
+                    </div>
+                    <div class="content-info">
+                      <div class="bar-line">
+                        <div>
+                          <label>{{ 'strategy.details.paymentConditions' | translate }}</label>
+                          <label class="green">{{ slow?.catCondicionesDePago?.CondicionesDePago }}</label>
+                        </div>
+                        <div>
+                          <label>{{ 'strategy.details.creditLine' | translate }}</label>
+                          <label class="green">{{
+                            (slow?.ConfiguracionPagos?.LineaCredito | currency: 'USD':'symbol-narrow':'2.2-4') + ' USD'
+                          }}</label>
+                        </div>
+                        <div>
+                          <label>{{ 'strategy.details.healthyDebt' | translate }}</label>
+                          <label class="green">{{
+                            (slow?.TotalDeudaSana | currency: 'USD':'symbol-narrow':'2.2-4') + ' USD'
+                          }}</label>
+                        </div>
+                        <div>
+                          <label>{{ 'strategy.details.expiredDebt' | translate }}</label>
+                          <label class="red">{{
+                            (slow?.TotalVencido | currency: 'USD':'symbol-narrow':'2.2-4') + ' USD'
+                          }}</label>
+                        </div>
+                        <div>
+                          <label>{{ 'strategy.details.positiveBalance' | translate }}</label>
+                          <label class="green">{{
+                            (slow?.TotalACobrar | currency: 'USD':'symbol-narrow':'2.2-4') + ' USD'
+                          }}</label>
+                        </div>
+                        <div>
+                          <label>{{ 'strategy.details.remains' | translate }}</label>
+                          <label class="yellow">{{ (10 | currency: 'USD':'symbol-narrow':'2.2-4') + ' USD' }}</label>
+                        </div>
+                      </div>
+                      <div class="complaints">
+                        <div class="container-chart">
+                          <div class="chart-container">
+                            <div class="chart">
+                              <app-doughnut-chart
+                                [titleDetails]="'Totales'"
+                                [showPercentage]="false"
+                                [adjustTotals]="true"
+                                [enableOnClick]="true"
+                                [data]="doughnutChartDataConditions$ | async"
+                                [optionDetails]="doughnutChartOptionConditionsDetails$ | async"
+                                [optionDetailsHover]="doughnutChartOptionDetailsConditionsHover$ | async"
+                                (segmentActive)="setSegmentActive($event)"
+                              >
+                              </app-doughnut-chart>
+                            </div>
+                            <div class="labels">
+                              <div>
+                                <span class="circulo" [style.background]="'#dd4543'"></span>
+                                <p>{{ 'strategy.details.delinquent' | translate }}</p>
+                              </div>
+                              <div>
+                                <span class="circulo" [style.background]="'#4ba92b'"></span>
+                                <p>{{ 'strategy.details.healthyDebt' | translate }}</p>
+                              </div>
+                              <div>
+                                <span class="circulo" [style.background]="'#5793f3'"></span>
+                                <p>{{ 'strategy.details.creditNotes' | translate }}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="container-table">
+                          <div>
+                            <div *ngIf="segmentActiveChartConditions !== null">
+                              <span
+                                class="circulo"
+                                [style.background]="
+                                  segmentActiveChartConditions.label === delinquent
+                                    ? '#dd4543'
+                                    : segmentActiveChartConditions.label === creditNotes
+                                    ? '#5793f3'
+                                    : segmentActiveChartConditions.label === healthyDebt
+                                    ? '#4ba92b'
+                                    : ''
+                                "
+                              ></span>
+                              <p class="text">{{ segmentActiveChartConditions.label }}</p>
+                            </div>
+                            <div *ngIf="segmentActiveChartConditions !== null">
+                              <app-hamburger-menu></app-hamburger-menu>
+                            </div>
+                          </div>
+                          <div class="table">
+                            <div>
+                              <div class="body" *ngIf="segmentActiveChartConditions !== null">
+                                <virtual-scroller
+                                  [items]="
+                                    segmentActiveChartConditions.label === delinquent
+                                      ? (listDelinquentBills$ | async)
+                                      : segmentActiveChartConditions.label === creditNotes
+                                      ? (listCreditNotes$ | async)
+                                      : segmentActiveChartConditions.label === healthyDebt
+                                      ? (listHealthyDebtBills$ | async)
+                                      : []
+                                  "
+                                  (vsUpdate)="scrollItemsPendingsInvoices = $event"
+                                >
+                                  <div class="row-items-quotation" *ngFor="let item of scrollItemsPendingsInvoices">
+                                    <div>
+                                      <div class="line-one">
+                                        <p>{{ '#' + item.Index + ' · ' }}</p>
+                                        <p>{{ item.m_Item1.Folio ? item.m_Item1.Folio : 'ND' }}</p>
+                                      </div>
+                                      <div class="line-two" *ngIf="segmentActiveChartConditions.label !== creditNotes">
+                                        <p>{{
+                                          ('strategy.details.collectDate' | translate) +
+                                            ' ' +
+                                            (item.m_Item1.FechaCompromisoPago | dateFormatSlashShort)
+                                        }}</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </virtual-scroller>
+                              </div>
+                              <div class="without-results" *ngIf="segmentActiveChartConditions === null">
+                                <app-without-results
+                                  [title]="'SELECCIONA LA GRÁFICA PARA HABILITAR ESTA SECCIÓN'"
+                                ></app-without-results>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="footer-table">
+                            <div *ngIf="segmentActiveChartConditions !== null">
+                              <label class="label-1" *ngIf="segmentActiveChartConditions.label === creditNotes">
+                                {{ (listCreditNotes$ | async).length + ' ' + ('strategy.details.notes' | translate) }}
+                              </label>
+                              <label class="label-1" *ngIf="segmentActiveChartConditions.label === healthyDebt">
+                                {{ (listHealthyDebtBills$ | async).length + ' ' + ('strategy.details.invoices' | translate) }}
+                              </label>
+                              <label class="label-1" *ngIf="segmentActiveChartConditions.label === delinquent">
+                                {{ (listDelinquentBills$ | async).length + ' ' + ('strategy.details.invoices' | translate) }}
+                              </label>
+                              <label class="label-2">
+                                {{
+                                  'Total ' +
+                                    (segmentActiveChartConditions.label === creditNotes
+                                      ? (totalCreditNotes$ | async | currency: (selectCurrencyClient$ | async))
+                                      : segmentActiveChartConditions.label === delinquent
+                                      ? (totalDelinquent$ | async | currency: (selectCurrencyClient$ | async))
+                                      : segmentActiveChartConditions.label === healthyDebt
+                                      ? (totalHealthy$ | async | currency: (selectCurrencyClient$ | async))
+                                      : '') +
+                                    ' ' +
+                                    (selectCurrencyClient$ | async)
+                                }}</label
+                              >
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </app-custom-position-pop-up>
+              </div>-->
+              <img
+                src="assets/Images/pre-processing/slow-client.svg"
+                alt=""
+                *ngIf="(purchaseOrderDetails$ | async)?.RequiereAutorizacionFinanzas"
+              />
+            </div>
+            <div class="client">
+              <div>
+                <img src="assets/Images/clientes/logo_proquifa_hover.svg" alt="" />
+              </div>
+              <div class="client-info">
+                <div>
+                  <label>{{ (purchaseOrderDetails$ | async)?.vCliente?.Nombre }}</label>
+                </div>
+                <label
+                  >{{ 'closeOffer.client' | translate }} · {{ (purchaseOrderDetails$ | async)?.vCliente?.NivelIngreso }}</label
+                >
+              </div>
+            </div>
+            <div class="extra-data">
+              <div
+                [ngClass]="{
+                  ocean: (purchaseOrderDetails$ | async)?.DireccionClienteDetalle?.DatosDireccionCliente?.AceptaParciales,
+                  red: !(purchaseOrderDetails$ | async)?.DireccionClienteDetalle?.DatosDireccionCliente?.AceptaParciales
+                }"
+              >
+                <label>{{
+                  (purchaseOrderDetails$ | async)?.DireccionClienteDetalle?.DatosDireccionCliente?.AceptaParciales
+                    ? ('checkout.acceptPartials' | translate)
+                    : ('checkout.dontAcceptPartials' | translate)
+                }}</label>
+              </div>
+            </div>
+          </div>
+          <div class="scroll">
+            <div class="delivery-data">
+              <div>
+                <label>{{ 'checkout.deliveryData' | translate }}</label>
+              </div>
+              <div class="delivery-data-container">
+                <app-drop-down-list
+                  [required]="true"
+                  [capitalize]="false"
+                  [enableEdit]="!(resumeMode$ | async)"
+                  [items]="destinies$ | async"
+                  [isSearchable]="(destinies$ | async)?.length > 5"
+                  [itemSelected]="selectedCatDestiny$ | async"
+                  [label]="'checkout.destiny' | translate"
+                  (valueDropList)="selectCatDestino($event)"
+                >
+                </app-drop-down-list>
+                <!--     <app-drop-down-list
+                  *ngIf="!(resumeMode$ | async)"
+                  [capitalize]="false"
+                  [enableEdit]="!(resumeMode$ | async)"
+                  [heightLi]="(viewType$ | async) === 'macBookAir' ? '71px' : '63px'"
+                  [height]="(viewType$ | async) === 'macBookAir' ? '71px' : '63px'"
+                  [items]="addresses$ | async"
+                  [itemSelected]="(purchaseOrderDetails$ | async)?.selectedClientAddresses"
+                  [label]="'checkout.address' | translate"
+                  [multiline]="'three'"
+                  (valueDropList)="selectClientAddress($event)"
+                >
+                </app-drop-down-list>-->
+                <div class="resume-address">
+                  <!--*ngIf="resumeMode$ | async"-->
+                  <div class="title">
+                    <label>{{ 'checkout.address' | translate }}</label>
+                  </div>
+                  <div class="content">
+                    <label>{{ clientAddress$ | async }}</label>
+                  </div>
+                </div>
+                <div class="contact-delivery">
+                  <app-drop-down-list
+                    [capitalize]="false"
+                    [enableEdit]="!(resumeMode$ | async)"
+                    [items]="contactDelivery$ | async"
+                    [itemSelected]="selectedContactDelivery$ | async"
+                    [isSearchable]="(contactDelivery$ | async)?.length > 5"
+                    [required]="(selectedCatDestiny$ | async)?.labelKey === keyCatDestination.Usuario"
+                    [label]="'checkout.contactDelivery' | translate"
+                    (valueDropList)="selectContactDelivery($event)"
+                  ></app-drop-down-list>
+                </div>
+                <div class="routes">
+                  <div>
+                    <label>{{ 'checkout.route' | translate }}: </label>
+                    <label>{{ (purchaseOrderDetails$ | async)?.DireccionClienteDetalle?.catRutaEntrega?.RutaEntrega }}</label>
+                  </div>
+                  <div>
+                    <label>{{ 'checkout.zone' | translate }}: </label>
+                    <label>{{ (purchaseOrderDetails$ | async)?.DireccionClienteDetalle?.catZona?.Zona }}</label>
+                  </div>
+                </div>
+                <div class="green-title">
+                  <label (click)="handlePopUp('schedules', !popUpSchedules, $event.target)">{{
+                    'checkout.seeDeliverySchedules' | translate
+                  }}</label>
+                  <div class="schedules-pop">
+                    <app-custom-position-pop-up
+                      *ngIf="popUpSchedules && leftContainerIsOpen"
+                      [popUpPosition]="'bottom-start'"
+                      [target]="popUpSchedulesTarget"
+                      [minWidth]="'200px'"
+                      [maxWidth]="'400px'"
+                      [minHeight]="'80px'"
+                      [maxHeight]="'200px'"
+                      [closeButton]="false"
+                      [borderRadius]="(viewType$ | async) === 'macBookAir' ? '23px' : '18px'"
+                      (closeEmitter)="handlePopUp('schedules', false, popUpSchedulesTarget)"
+                    >
+                      <div class="schedules">
+                        <ul>
+                          <li *ngFor="let schedule of schedules$ | async">{{ schedule }}</li>
+                        </ul>
+                      </div>
+                    </app-custom-position-pop-up>
+                  </div>
+                </div>
+                <div class="black-title">
+                  <label>{{ 'checkout.additionalComments' | translate }}</label>
+                </div>
+                <div class="comments" *ngIf="!lodashIsEmpty((purchaseOrderDetails$ | async)?.ComentariosAdicionales)">
+                  <div *ngFor="let comment of (purchaseOrderDetails$ | async)?.ComentariosAdicionales; let index = index">
+                    <label
+                      ><span>#{{ index + 1 }} </span>· {{ comment.ComentariosAdicionales }}
+                    </label>
+                  </div>
+                </div>
+                <div class="without-results" *ngIf="lodashIsEmpty((purchaseOrderDetails$ | async)?.ComentariosAdicionales)">
+                  <app-without-results [title]="'common.withoutComments' | translate"></app-without-results>
+                </div>
+              </div>
+              <!--<div class='without-results'>
+                <app-without-results [title]="'checkout.withoutDeliveryAddresses' | translate">
+                </app-without-results>
+                <label>{{ 'checkout.linkToClientCatalogs' | translate }}</label>
+              </div>-->
+              <div class="black-title">
+                <label>{{ 'checkout.destinyOfDeliveryNotifications' | translate }}</label>
+                <app-drop-list-contact
+                  [options]="contacts$ | async"
+                  [minHeight]="38"
+                  (emitValue)="addEmail($event)"
+                  [ngClass]="(resumeMode$ | async) ? 'disable' : ''"
+                ></app-drop-list-contact>
+              </div>
+              <div
+                class="addressee-container"
+                *ngIf="!lodashIsEmpty((purchaseOrderDetails$ | async)?.ListaContactoNotificadoEntrega)"
+              >
+                <div *ngFor="let item of (purchaseOrderDetails$ | async)?.ListaContactoNotificadoEntrega">
+                  <label>{{ (item.m_Item2?.CorreoElectronico)[0]?.Correo }}</label>
+                  <img *ngIf="!(resumeMode$ | async)" (click)="deleteEmail(item)" src="assets/Images/cerrar.svg" alt="" />
+                </div>
+              </div>
+              <div
+                class="without-addressees"
+                *ngIf="lodashIsEmpty((purchaseOrderDetails$ | async)?.ListaContactoNotificadoEntrega)"
+              >
+                <app-without-results [title]="'common.withoutAddressees' | translate"></app-without-results>
+              </div>
+              <div class="black-title">
+                <label>{{ 'checkout.deliveryComments' | translate }}:</label>
+              </div>
+              <div>
+                <app-generic-text-area
+                  [value]="(purchaseOrderDetails$ | async)?.tpPedido?.ComentariosEntrega"
+                  [enableEdit]="!(resumeMode$ | async)"
+                  [height]="'93px'"
+                  (emitData)="setTPOrderValue($event, 'ComentariosEntrega')"
+                >
+                </app-generic-text-area>
+              </div>
+            </div>
+            <div class="contact-data">
+              <div>
+                <label>{{ 'closeOffer.contactData' | translate }}</label>
+              </div>
+              <div class="image">
+                <img src="assets/Images/contacto.svg" alt="contact" />
+                <label class="bold"
+                  >{{ (purchaseOrderDetails$ | async)?.ContactoDetalleObj?.Nombres }}
+                  {{ (purchaseOrderDetails$ | async)?.ContactoDetalleObj?.ApellidoPaterno }}
+                  {{ (purchaseOrderDetails$ | async)?.ContactoDetalleObj?.ApellidoMaterno }}
+                </label>
+              </div>
+              <div class="image" *ngIf="((purchaseOrderDetails$ | async)?.ContactoDetalleObj?.CorreoElectronico)[0]; let email">
+                <img src="assets/Images/quotation/mail.svg" alt="mail" />
+                <label>{{ email.Correo }}</label>
+              </div>
+              <div class="image" *ngIf="((purchaseOrderDetails$ | async)?.ContactoDetalleObj?.NumeroTelefonico)[0]; let tel">
+                <img src="assets/Images/quotation/phone.svg" alt="phone" />
+                <label>{{ tel.Numero }} </label>
+                <label *ngIf="tel.Extension"> · Ext. {{ tel.Extension }} </label>
+              </div>
+              <div class="data">
+                <label>{{ 'closeOffer.dept' | translate }}: </label>
+                <label>{{ (purchaseOrderDetails$ | async)?.ContactoDetalleObj?.Departamento || 'N/D' }}</label>
+              </div>
+              <div class="data">
+                <label>{{ 'closeOffer.position' | translate }}: </label>
+                <label>{{ (purchaseOrderDetails$ | async)?.ContactoDetalleObj?.Puesto || 'N/D' }}</label>
+              </div>
+              <div class="data">
+                <label>{{ 'closeOffer.decisionLevel' | translate }}: </label>
+                <label>{{ (purchaseOrderDetails$ | async)?.ContactoDetalleObj?.NivelDecision || 'N/D' }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="loading" *ngIf="(purchaseOrderDetails$ | async)?.apiStatus === 1">
+          <app-loading></app-loading>
+        </div>
+      </div>
+      <div class="right-container">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+    <footer class="bottom-container" *ngIf="resumeMode$ | async">
+      <button class="cancel" (click)="goBack()">{{ 'common.cancel' | translate }}</button>
+      <button
+        class="process"
+        [ngClass]="(checkoutValidator$ | async) ? 'active' : 'disabled'"
+        [disabled]="!(checkoutValidator$ | async)"
+        (click)="openCodePopUp()"
+        >{{ 'common.process' | translate }}</button
+      >
+    </footer>
+  </div>
+</div>
+<!--// TODO: REVISAR CON VALDEMAR EN QUÉ MOMENTO SE ABRE ESTE POP UP Y SI SE SIGUE UTILIZANDO-->
+<div class="pop-up-edit-data">
+  <app-pop-up-generic
+    id="code-pop-up"
+    *ngIf="popUps.code.isOpen"
+    [titleHeader]="'VALIDAR AJUSTES'"
+    [activeButtons]="true"
+    [rightButtonLabel]="(codePopValidation$ | async) ? 'Aceptar' : 'Reenviar'"
+    [width]="(viewType$ | async) === 'iPad' ? '745px' : '785px'"
+    [height]="(viewType$ | async) === 'iPad' ? '660px' : '685px'"
+    (evento)="onCloseCodePopUp($event)"
+  >
+    <div class="container">
+      <div class="header">
+        <div class="image">
+          <img src="assets/Images/cargar_foto.svg" alt="" />
+        </div>
+        <div class="client-data">
+          <label>{{
+            (purchaseOrderDetails$ | async)?.DatosFacturacionClienteDetallePorDefecto.DatosFacturacionCliente.RazonSocial
+          }}</label>
+          <label>{{
+            !(purchaseOrder$ | async)?.OcInterna
+              ? 'OC INTERNA'
+              : (purchaseOrder$ | async)?.SinOC
+              ? 'SIN OC'
+              : 'OC-' + (purchaseOrder$ | async)?.NumeroOrdenDeCompra
+          }}</label>
+          <label>
+            {{ 'quotation.details.paymentConditions' | translate }} ·
+            {{ (purchaseOrderDetails$ | async)?.catCondicionesDePago.CondicionesDePago }}</label
+          >
+        </div>
+      </div>
+      <div class="resume">
+        <label>{{ 'checkout.delinquentCustomer' | translate }}</label>
+      </div>
+      <div class="code">
+        <!--TODO: Tipo TRAMITAR A MOROSO-->
+
+        <!--TODO: NO tiene request-->
+        <ng-container *ngIf="!lodashIsEmpty(codeRequest$) && !(delinquentCustomerRequest$ | async); else hasRequest">
+          <label>
+            {{ 'checkout.validityCodeMessageDelinquentCustomer' | translate }} <br />
+            <span>{{ 'checkout.validityCodeMessagePart2' | translate }}</span>
+          </label>
+          <label>
+            {{ 'checkout.generateCodeQuestion' | translate }}
+          </label>
+        </ng-container>
+        <!--TODO: Tiene request-->
+        <ng-template #hasRequest>
+          <label>
+            {{ 'checkout.codeSent' | translate }} <br />
+            <span *ngIf="((purchaseOrderDetails$ | async)?.ContactoDetalleObj?.CorreoElectronico)[0]; let email">{{
+              email.Correo
+            }}</span>
+          </label>
+          <label class="enter-digits">
+            {{ 'checkout.enterDigits' | translate }}
+          </label>
+        </ng-template>
+      </div>
+      <div
+        class="inputs"
+        *ngIf="!lodashIsEmpty(codeRequest$) && (delinquentCustomerRequest$ | async)"
+        [ngClass]="(shaked$ | async) ? 'shaked' : ''"
+      >
+        <div>
+          <input
+            placeholder=""
+            #inputs
+            [autofocus]="selectCodeIsEmpty$ | async"
+            [value]="(code$ | async)[0]"
+            (keyup)="handleValidateNumber($event, 0)"
+          />
+          <input placeholder="" #inputs [value]="(code$ | async)[1]" (keyup)="handleValidateNumber($event, 1)" />
+          <input placeholder="" #inputs [value]="(code$ | async)[2]" (keyup)="handleValidateNumber($event, 2)" />
+          <input placeholder="" #inputs [value]="(code$ | async)[3]" (keyup)="handleValidateNumber($event, 3)" />
+        </div>
+      </div>
+    </div>
+  </app-pop-up-generic>
+</div>
+<app-pop-up-alert
+  *ngIf="popUps.defaulter.isOpen"
+  [textInitial]="(customer$ | async).Nombre + ' es un cliente moroso'"
+  [textInter]="'¿Deseas continuar el trámite?'"
+  [textFinal]="''"
+  (confirmacion)="openCodePopUp()"
+></app-pop-up-alert>

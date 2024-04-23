@@ -1,0 +1,356 @@
+<section id="validate-adjustment-items">
+  <section id="principal">
+    <div class="dataGeneral">
+      <div class="preprocess-order">
+        <div>
+          <label>#{{ (orderSelected$ | async)?.index }}</label>
+          <label>·</label>
+          <label>OC</label>
+          <label>·</label>
+          <label *ngIf="(orderSelected$ | async)?.IdArchivo"
+            >{{ (orderSelected$ | async)?.OrdenDeCompra }}
+            <img class="edit" src="assets/Images/edit_pencil.svg" (click)="referencePopOpen = true" #reference />
+            <app-custom-position-pop-up
+              *ngIf="referencePopOpen"
+              [popUpPosition]="'bottom-center'"
+              [closeButton]="false"
+              [target]="reference"
+              [backgroundColor]="'#424242'"
+              [borderColor]="'#424242'"
+              [triangleBackgroundColor]="'#424242'"
+              [borderRadius]="'6px'"
+              [padding]="'16px'"
+            >
+              <app-reference-form-edit
+                [reference]="(orderSelected$ | async)?.OrdenDeCompra"
+                (handleAction)="handleReferenceAction($event)"
+              ></app-reference-form-edit>
+            </app-custom-position-pop-up>
+          </label>
+          <label *ngIf="!(orderSelected$ | async)?.IdArchivo" class="red">{{ 'SIN OC' }}</label>
+          <label class="pqf">·</label>
+          <label class="pqf">
+            {{
+              (totalItems$ | async) +
+                ' ' +
+                ((totalItems$ | async) == 1 ? ('preProcessing.item' | translate) : ('preProcessing.items' | translate))
+            }}
+          </label>
+          <label class="pqf">·</label>
+          <label>
+            {{
+              ('quotation.details.totalValue' | translate) +
+                ' ' +
+                (((orderSelected$ | async)?.ValorTotal ? (orderSelected$ | async)?.ValorTotal : 0)
+                  | currency: (currencyLabel$ | async):'symbol-narrow':'1.2-2')
+            }}
+            {{ currencyLabel$ | async }}
+          </label>
+        </div>
+      </div>
+      <div class="client">
+        <app-clients-contact
+          [contact]="selectContactData$ | async"
+          [showConfigAddress]="true"
+          [isCollapse]="true"
+        ></app-clients-contact>
+      </div>
+    </div>
+    <div class="info-preprocess-order">
+      <div class="title">
+        <label>{{ 'preProcessing.validityMessage' | translate }}</label>
+      </div>
+      <div class="compare-info" *ngIf="(orderSelected$ | async)?.ppPedidoConfiguracion || {}; let check">
+        <div class="details">
+          <div class="checks">
+            <div (click)="dataValidate(false, 'whoBills', check.EmpresaValidada)">
+              <img
+                alt="No validado"
+                [src]="
+                  (orderSelected$ | async)?.ppPedidoConfiguracion?.EmpresaValidada === false
+                    ? 'assets/Images/pre-processing/disable.svg'
+                    : 'assets/Images/pre-processing/disable_gray.svg'
+                "
+              />
+            </div>
+            <div (click)="dataValidate(true, 'whoBills', check.EmpresaValidada)">
+              <img
+                alt="Validado"
+                [src]="
+                  (orderSelected$ | async)?.ppPedidoConfiguracion?.EmpresaValidada
+                    ? 'assets/Images/pre-processing/active.svg'
+                    : 'assets/Images/pre-processing/active_gray.svg'
+                "
+              />
+            </div>
+          </div>
+          <div class="info-container">
+            <div>
+              <label class="text-bold">{{ '¿' + ('quotation.details.whoBills' | translate) + '?' }}</label>
+            </div>
+            <div>
+              <label class="text pqf">{{
+                (orderSelected$ | async)?.DatosFacturacionClienteDetalle?.empresa?.RazonSocial || 'N/D'
+              }}</label>
+            </div>
+            <div>
+              <label class="text"
+                >RFC: {{ (orderSelected$ | async)?.DatosFacturacionClienteDetalle?.empresa?.RFC || 'N/D' }}</label
+              >
+            </div>
+          </div>
+        </div>
+        <div class="details">
+          <div class="checks">
+            <div (click)="dataValidate(false, 'businessName', check.RazonSocialValidado)">
+              <img
+                alt="No validado"
+                [src]="
+                  (orderSelected$ | async)?.ppPedidoConfiguracion?.RazonSocialValidado === false
+                    ? 'assets/Images/pre-processing/disable.svg'
+                    : 'assets/Images/pre-processing/disable_gray.svg'
+                "
+              />
+            </div>
+            <div (click)="dataValidate(true, 'businessName', check.RazonSocialValidado)">
+              <img
+                alt="Validado"
+                [src]="
+                  (orderSelected$ | async)?.ppPedidoConfiguracion?.RazonSocialValidado
+                    ? 'assets/Images/pre-processing/active.svg'
+                    : 'assets/Images/pre-processing/active_gray.svg'
+                "
+              />
+            </div>
+          </div>
+          <div class="info-container">
+            <div>
+              <label class="text-bold">{{ 'formProvider.step1.businessName' | translate }}</label>
+            </div>
+            <div>
+              <label class="text pqf">
+                {{ (orderSelected$ | async)?.DatosFacturacionClienteDetalle?.RazonSocial || 'N/D' }}
+              </label>
+            </div>
+            <div>
+              <label class="text">
+                {{ 'preProcessing.rfc' | translate }}
+                : {{ (orderSelected$ | async)?.DatosFacturacionClienteDetalle?.RFC || 'N/D' }} ·
+              </label>
+            </div>
+            <div>
+              <label class="text"> {{ 'preProcessing.billingAddress' | translate }}: {{ billingAddress$ | async }} </label>
+            </div>
+          </div>
+        </div>
+        <div class="details">
+          <div class="checks">
+            <div (click)="dataValidate(false, 'paymentConditions', check.CondicionesDePagoValidado)">
+              <img
+                alt="No validado"
+                [src]="
+                  (orderSelected$ | async)?.ppPedidoConfiguracion?.CondicionesDePagoValidado === false
+                    ? 'assets/Images/pre-processing/disable.svg'
+                    : 'assets/Images/pre-processing/disable_gray.svg'
+                "
+              />
+            </div>
+            <div (click)="dataValidate(true, 'paymentConditions', check.CondicionesDePagoValidado)">
+              <img
+                alt="Validado"
+                [src]="
+                  (orderSelected$ | async)?.ppPedidoConfiguracion?.CondicionesDePagoValidado
+                    ? 'assets/Images/pre-processing/active.svg'
+                    : 'assets/Images/pre-processing/active_gray.svg'
+                "
+              />
+            </div>
+          </div>
+          <div class="info-container">
+            <div>
+              <label class="text-bold">{{ 'quotation.details.paymentConditions' | translate }}</label>
+            </div>
+            <div>
+              <label class="text">
+                {{ (orderSelected$ | async)?.DatosFacturacionClienteDetalle?.catCondicionesDePago?.CondicionesDePago || 'N/D' }}
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="details address">
+          <div class="checks">
+            <div (click)="dataValidate(false, 'deliveryAddress', check.DireccionClienteEntregaValidado)">
+              <img
+                alt="No validado"
+                [src]="
+                  (orderSelected$ | async).ppPedidoConfiguracion?.DireccionClienteEntregaValidado === false
+                    ? 'assets/Images/pre-processing/disable.svg'
+                    : 'assets/Images/pre-processing/disable_gray.svg'
+                "
+              />
+            </div>
+            <div (click)="dataValidate(true, 'deliveryAddress', check.DireccionClienteEntregaValidado)">
+              <img
+                alt="Validado"
+                [src]="
+                  (orderSelected$ | async).ppPedidoConfiguracion?.DireccionClienteEntregaValidado
+                    ? 'assets/Images/pre-processing/active.svg'
+                    : 'assets/Images/pre-processing/active_gray.svg'
+                "
+              />
+            </div>
+          </div>
+          <div class="address-container">
+            <label class="address">{{ 'preProcessing.deliveryAddress' | translate }}</label>
+            <div>
+              <app-delivery-addresses-tooltip
+                [deliverySelected]="deliveryAddressSelected$ | async"
+                [deliveriesAddress]="deliveryAddresses$ | async"
+                (valueEmitter)="handleDeliveryAddress($event)"
+              ></app-delivery-addresses-tooltip>
+              <!--         TODO: REVISAR CÓMO SE VA A INDICAR CUANDO SE RECOGE EN PROQUIFA-->
+              <!--              <label class="pick-up-proquifa" *ngIf="false">{{ 'preProcessing.pickUpProquifa' | translate }}</label>-->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="config-order">
+      <div class="items">
+        <div class="title">
+          <label>
+            {{ 'preProcessing.validityInformationTitle' | translate }}
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="table-container">
+      <div class="container">
+        <app-header-internal-sales-item
+          class="header"
+          [internalSalesItem]="internalSalesItemHeader$ | async"
+        ></app-header-internal-sales-item>
+        <virtual-scroller
+          *ngIf="(itemsOrderSelected$ | async)?.length > 0 && (statusApiIssueAndItems$ | async) === 3"
+          [enableUnequalChildrenSizes]="true"
+          [items]="itemsOrderSelected$ | async"
+          (vsUpdate)="scrolledEntriesResults = $event"
+        >
+          <app-item-quote-validate-adjustment
+            *ngFor="let item of scrolledEntriesResults; let index = index; trackBy: handleTrackBy"
+            [item]="item"
+            [currency]="currencyLabel$ | async"
+            (openNotesValueEmitter)="handleHoverNotes($event)"
+          >
+          </app-item-quote-validate-adjustment>
+        </virtual-scroller>
+        <div
+          class="without-results"
+          *ngIf="(statusApiIssueAndItems$ | async) === 3 && (itemsOrderSelected$ | async)?.length === 0"
+        >
+          <app-without-results [title]="'common.withoutInformation' | translate"></app-without-results>
+        </div>
+        <div class="loading" *ngIf="(statusApiIssueAndItems$ | async) === 1">
+          <app-loading></app-loading>
+        </div>
+      </div>
+    </div>
+    <div class="footer-container" *ngIf="!lodashIsEmpty(itemsOrderSelected$ | async)">
+      <div class="purchase-order-observations">
+        <div class="title">
+          <app-observations-message-tooltip></app-observations-message-tooltip>
+          <label>{{ 'preProcessing.purchaseOrderObservations' | translate }}</label>
+        </div>
+        <div class="select">
+          <div class="checks">
+            <div (click)="dataValidate(false, 'irregularities', true)">
+              <img
+                alt="Freights without inconsistencies"
+                [src]="
+                  (orderSelected$ | async).ppPedidoConfiguracion?.oCSinIrregularidades !== null &&
+                  !(orderSelected$ | async).ppPedidoConfiguracion?.oCSinIrregularidades
+                    ? 'assets/Images/pre-processing/disable.svg'
+                    : 'assets/Images/pre-processing/disable_gray.svg'
+                "
+              />
+            </div>
+            <div (click)="dataValidate(true, 'irregularities', false)">
+              <img
+                alt="Freights with inconsistencies"
+                [src]="
+                  (orderSelected$ | async).ppPedidoConfiguracion?.oCSinIrregularidades !== null &&
+                  (orderSelected$ | async).ppPedidoConfiguracion?.oCSinIrregularidades
+                    ? 'assets/Images/pre-processing/active.svg'
+                    : 'assets/Images/pre-processing/active_gray.svg'
+                "
+              />
+            </div>
+          </div>
+          <label>{{ 'preProcessing.freightsWithInconsistencies' | translate }}</label>
+        </div>
+      </div>
+      <div class="totals">
+        <div>
+          <div>
+            <label class="text"> {{ 'preProcessing.tableLabels.subtotal' | translate }}: </label>
+          </div>
+          <div>
+            <label class="text color-pqf">
+              {{
+                ((totals$ | async)?.subtotal ? (totals$ | async)?.subtotal : 0)
+                  | currency: (currencyLabel$ | async):'symbol-narrow':'1.2-2'
+              }}
+              {{ currencyLabel$ | async }}
+            </label>
+          </div>
+        </div>
+        <div>
+          <div>
+            <label class="text"> {{ 'preProcessing.tableLabels.iva' | translate }}: </label>
+          </div>
+          <div>
+            <label class="text color-pqf">
+              {{
+                ((totals$ | async)?.iva ? (totals$ | async)?.iva : 0)
+                  | currency: (currencyLabel$ | async):'symbol-narrow':'1.2-2'
+              }}
+              {{ currencyLabel$ | async }}
+            </label>
+          </div>
+        </div>
+        <div>
+          <div>
+            <label class="text-bold"> {{ 'preProcessing.tableLabels.total' | translate }}: </label>
+          </div>
+          <div>
+            <label class="text-bold green">
+              {{
+                ((totals$ | async)?.total ? (totals$ | async)?.total : 0)
+                  | currency: (currencyLabel$ | async):'symbol-narrow':'1.2-2'
+              }}
+              {{ currencyLabel$ | async }}
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="options">
+      <div>
+        <button
+          [disabled]="!(validatePreProcessNotTramitableButton$ | async)"
+          [ngClass]="(validatePreProcessNotTramitableButton$ | async) ? 'btnActive' : 'btnDisable'"
+          (click)="onNotTramitablePressed()"
+        >
+          {{ 'preProcessing.notTramitable' | translate }}
+        </button>
+      </div>
+      <button
+        [disabled]="!(validatePreProcessTramitableButton$ | async)"
+        [ngClass]="(validatePreProcessTramitableButton$ | async) ? 'btnActive-process' : 'btnDisable-process'"
+        (click)="onTramitablePressed()"
+      >
+        {{ 'preProcessing.process' | translate }}
+      </button>
+    </div>
+  </section>
+</section>

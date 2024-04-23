@@ -1,0 +1,156 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  width: 100%;
+  height: 100%;
+
+  & > .container {
+    @include s.flexColumn;
+    width: 100%;
+
+    & > .container-bar,
+    .container-info {
+      @include s.flexRow;
+
+      & > .item {
+        @include s.flexColumn;
+        margin-right: 3px;
+        min-width: 20px;
+
+        & > .bar {
+          height: 15px;
+          margin-bottom: 7px;
+          transition: all 0.5s ease;
+        }
+
+        & > .bar:hover {
+          opacity: 70%;
+        }
+      }
+
+      & > .item:first-child {
+        & > .bar {
+          border-top-left-radius: 10px;
+          border-bottom-left-radius: 10px;
+        }
+
+        & > .bar:hover {
+          opacity: 70%;
+        }
+      }
+
+      & > .item:last-child {
+        margin-right: 0;
+
+        & > .bar {
+          border-top-right-radius: 10px;
+          border-bottom-right-radius: 10px;
+        }
+
+        & > .bar:hover {
+          opacity: 70%;
+        }
+      }
+
+      & > .empty {
+        margin-right: 0;
+
+        & > .bar {
+          border-top-left-radius: 10px;
+          border-bottom-left-radius: 10px;
+          border-top-right-radius: 10px;
+          border-bottom-right-radius: 10px;
+        }
+
+        & > .bar:hover {
+          opacity: 70%;
+        }
+      }
+
+      & > .info {
+        min-width: max-content;
+        padding-right: 10px;
+        margin-right: 3px;
+
+        & > div {
+          @include s.flexRow;
+          justify-content: flex-start;
+          align-items: center;
+
+          & > div {
+            height: 10px;
+            width: 10px;
+            border-radius: 50%;
+            margin-right: 3px;
+            flex-shrink: 0;
+          }
+        }
+
+        & > .title {
+          margin-bottom: 2px;
+
+          & > label {
+            $textSize: (
+              'base': 9px,
+              'macBookAir': 14px,
+            );
+            @include s.escaledFontFormat($textSize, bold, s.$pqBlack2);
+            @include s.Novecento-Bold;
+            word-break: keep-all;
+            transition: all 0.5s ease;
+          }
+        }
+
+        & > .subtitle {
+          & > label {
+            $textSize: (
+              'base': 10px,
+              'macBookAir': 12px,
+            );
+            @include s.escaledFontFormat($textSize, bold, s.$pqBlack2);
+            @include s.Novecento-Bold;
+            word-break: keep-all;
+            transition: all 0.5s ease;
+          }
+        }
+
+        &:last-of-type {
+          padding-right: 0;
+          margin-right: 0;
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > .container {
+      & > .container-bar,
+      .container-info {
+        & > .item {
+          & > .bar {
+            height: 17px;
+            margin-bottom: 9px;
+          }
+
+          & > .bar:hover {
+            opacity: 70%;
+          }
+        }
+
+        & > .info {
+          & > .title {
+            & > div {
+              height: 11px;
+              width: 11px;
+              margin-right: 4px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

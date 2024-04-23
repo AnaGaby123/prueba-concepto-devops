@@ -1,0 +1,286 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100();
+  position: relative;
+  #general-data-quotation-container {
+    @include s.flexRowNoWrap();
+    background-color: s.$pqWhite;
+    height: 100%;
+    position: relative;
+    width: auto;
+    overflow: hidden;
+    transition: all 0.4s ease-in-out;
+    & > .info {
+      @include s.flexColumn();
+      min-width: 300px;
+      overflow: hidden;
+      padding: 18px 20px 18px 0;
+      position: relative;
+      width: 100%;
+      & > .title {
+        @include s.flexRow();
+        & > label {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_novecento_bold,
+            $font-size-map: s.$responsive-font-17-21
+          );
+        }
+      }
+      & > .logo {
+        @include s.flexRowNoWrap;
+        column-gap: 15px;
+        padding: 15px 0;
+        & > .image {
+          @include s.gridCenter;
+          flex: 0 0 106px;
+          height: 70px;
+          & > img {
+            max-height: 100%;
+            max-width: 100%;
+            overflow: hidden;
+          }
+        }
+        & > .client-name {
+          @include s.flexColumn();
+          justify-content: center;
+          & > .name {
+            @include s.multiLineTextTruncateSinHeight($lineHeight: 20px, $wordBreak: break-word);
+            @include s.responsive-font-format(
+              $font-family: s.$font_family_roboto_bold,
+              $font-weight: s.$font_weight_bold,
+              $font-size-map: s.$responsive-font-17-21,
+              $color: s.$pqGreen
+            );
+          }
+          & > .subtitle {
+            @include s.responsive-font-format(
+              $font-family: s.$font_family_roboto_regular,
+              $font-size-map: s.$responsive-font-14-16,
+              $font-weight: s.$font_weight_regular
+            );
+          }
+        }
+      }
+      & > .totals {
+        @include s.flexRowNoWrap;
+        padding-bottom: 20px;
+        & > div {
+          @include s.flexColumn;
+          flex: 0 0 50%;
+          & > .title {
+            @include s.responsive-font-format(
+              $font-family: s.$font_family_roboto_bold,
+              $font-size-map: s.$responsive-font-13-16,
+              $font-weight: s.$font_weight_bold
+            );
+            margin-bottom: 1px;
+          }
+          & > .totals {
+            @include s.responsive-font-format(
+              $font-family: s.$font_family_roboto_regular,
+              $font-size-map: s.$responsive-font-13-16,
+              $font-weight: s.$font_weight_regular,
+              $color: s.$main-proquifa
+            );
+          }
+          & > .segmentation {
+            @include s.flexRowNoWrap;
+            column-gap: 6px;
+            margin-top: 3px;
+            & > img {
+              @include s.imageIconResponsiveSize;
+            }
+          }
+          &.right {
+            align-items: flex-end;
+          }
+        }
+      }
+      & > .sector-industry {
+        @include s.flexRowNoWrap;
+        padding-bottom: 20px;
+        border-bottom: 1px solid s.$pqBlack2;
+        & > div {
+          @include s.flexColumn;
+          flex: 0 0 50%;
+          & > .title {
+            @include s.responsive-font-format(
+              $font-family: s.$font_family_roboto_bold,
+              $font-size-map: s.$responsive-font-13-16,
+              $font-weight: s.$font_weight_bold
+            );
+            margin-bottom: 1px;
+          }
+          & > .description {
+            @include s.responsive-font-format($font-size-map: s.$responsive-font-14-16);
+          }
+          &.right {
+            align-items: flex-end;
+          }
+        }
+      }
+      & > .content {
+        @include s.flexColumn;
+        flex: 1;
+        overflow: auto;
+        padding-top: 15px;
+        row-gap: 15px;
+        & > .client-data {
+          @include s.flexColumn();
+          row-gap: 10px;
+          & > .data-top {
+            @include s.responsive-font-format(
+              $font-family: s.$font_family_roboto_bold,
+              $font-weight: s.$font_weight_bold,
+              $font-size-map: s.$responsive-font-16-20,
+              $color: s.$pqGreen
+            );
+          }
+          & > .data-bottom {
+            @include s.flexColumn();
+            row-gap: 5px;
+            & > label {
+              @include s.responsive-font-format(
+                $font-family: s.$font_family_roboto_bold,
+                $font-weight: s.$font_weight_bold,
+                $font-size-map: s.$responsive-font-14-16
+              );
+
+              & > span {
+                @include s.responsive-font-format($font-size-map: s.$responsive-font-14-16);
+                vertical-align: baseline;
+              }
+            }
+            & > div {
+              gap: 5px;
+              @include s.responsive-font-format(
+                $font-family: s.$font_family_roboto_bold,
+                $font-weight: s.$font_weight_bold,
+                $font-size-map: s.$responsive-font-14-16
+              );
+            }
+          }
+        }
+        & > .contact-data {
+          @include s.flexColumn();
+          row-gap: 10px;
+          & > .data-top {
+            @include s.responsive-font-format(
+              $font-family: s.$font_family_roboto_bold,
+              $font-weight: s.$font_weight_bold,
+              $font-size-map: s.$responsive-font-16-20,
+              $color: s.$pqGreen
+            );
+          }
+
+          & > .content-center {
+            @include s.flexColumn();
+            row-gap: 5px;
+            & > div {
+              @include s.flexRowNoWrap();
+              column-gap: 7px;
+
+              & > .icon {
+                @include s.gridCenter;
+                flex: 0 0 20px;
+
+                & > img {
+                  max-height: 100%;
+                  max-width: 100%;
+                }
+              }
+
+              & > .response {
+                @include s.responsive-font-format($font-size-map: s.$responsive-font-14-16);
+                flex: 1 1 auto;
+              }
+            }
+          }
+
+          & > .content-bottom {
+            @include s.flexColumn;
+            row-gap: 6px;
+
+            & > label {
+              @include s.responsive-font-format(
+                $font-family: s.$font_family_roboto_bold,
+                $font-weight: s.$font_weight_bold,
+                $font-size-map: s.$responsive-font-14-16
+              );
+
+              & > span {
+                @include s.responsive-font-format($font-size-map: s.$responsive-font-14-16);
+                vertical-align: baseline;
+              }
+            }
+          }
+        }
+      }
+    }
+    &.hide {
+      width: 0;
+    }
+    &.show {
+      width: 300px;
+    }
+  }
+  .arrow {
+    cursor: pointer;
+    height: 21px;
+    position: absolute;
+    top: calc(50% - 42px);
+    width: 16px;
+    z-index: 2;
+
+    & > img {
+      height: 21px;
+      opacity: 1;
+      transform: scaleX(1);
+      transition: transform 0.8s ease-in-out;
+      width: 16px;
+
+      &:hover {
+        opacity: 0.4;
+      }
+    }
+
+    & > .reverse {
+      transform: scaleX(-1);
+    }
+  }
+  @include s.media-query(s.$standard) {
+    #general-data-quotation-container {
+      & > .info {
+        min-width: 360px;
+        & > .logo {
+          & > .client-name {
+            & > .name {
+              @include s.multiLineTextTruncateSinHeight($lineHeight: 25px, $wordBreak: break-word);
+            }
+          }
+        }
+      }
+      &.show {
+        width: 360px;
+      }
+    }
+    & > .arrow {
+      height: 32px;
+      width: 23px;
+
+      & > img {
+        height: 32px;
+        width: 23px;
+      }
+
+      & > .reverse {
+        width: 32px;
+      }
+    }
+  }
+}

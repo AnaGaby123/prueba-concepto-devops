@@ -1,0 +1,105 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  & > .without-impact {
+    @include s.flexColumn;
+    @include s.absoluteCenter;
+    background-color: rgba(s.$darkGreen, 0.13);
+    border-bottom: 1px solid s.$pqGray2;
+    min-width: 900px;
+    padding: 50px 18px;
+    position: relative;
+
+    & > div:not(.absolute) {
+      @include s.flexRowNoWrap;
+      align-items: center;
+
+      & > label {
+        @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+        @include s.Roboto-Regular;
+        margin-right: 6px;
+        white-space: pre;
+
+        &.green {
+          color: s.$darkGreen;
+        }
+      }
+
+      & > .date-picker {
+        height: 25px;
+      }
+
+      & > .input {
+        margin-right: 6px;
+        width: 80px;
+      }
+    }
+
+    & > div:first-of-type {
+      margin-bottom: 25px;
+    }
+
+    & > .absolute {
+      @include s.flexRowNoWrap;
+      height: 100%;
+      padding: 18px;
+      position: absolute;
+      right: 0;
+      top: 0;
+
+      & > .buttons {
+        @include s.flexColumn;
+        flex: 0 0 auto;
+        justify-content: space-between;
+        margin-left: 40px;
+        padding: 2px 0;
+
+        & > .active {
+          @include s.pqButton(
+            $min-width: 105px,
+            $max-width: 112px,
+            $baseColor: s.$darkGreen,
+            $textSizeButton: s.$textSize13to16
+          );
+        }
+
+        & > .disabled {
+          @include s.pqButtonDisable($min-width: 105px, $max-width: 112px, $textSizeButton: s.$textSize13to16);
+        }
+      }
+
+      & > .image {
+        @include s.flexColumn;
+        align-items: flex-end;
+        margin-left: 29px;
+
+        & > img {
+          cursor: pointer;
+          width: 18px;
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      min-width: 1250px;
+
+      & > div:not(.absolute) {
+        & > .date-picker {
+          height: 30px;
+        }
+      }
+
+      & > .absolute {
+        & > .image {
+          & > img {
+            width: 20px;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,132 @@
+<app-pop-up-generic
+  class="addSchedules"
+  [activeButtons]="true"
+  [activeBtn]="enableBtn"
+  [height]="(viewType$ | async) === viewTypes.small ? '730px' : '800px'"
+  [width]="(viewType$ | async) === viewTypes.small ? '1150' : '1200px'"
+  [titleHeader]="data?.title"
+  (evento)="onClose($event)"
+>
+  <div class="content">
+    <div class="header">
+      <div class="image">
+        <img
+          #imageElement
+          alt=""
+          [src]="setImage((selectedClient$ | async)?.imageHover)"
+          class="imgFoto"
+          (error)="errorImage()"
+        />
+      </div>
+      <div class="data">
+        <label class="title">{{ (selectedClient$ | async)?.Alias }}</label>
+        <label class="subtitle">{{ (selectedClient$ | async)?.Sector }}</label>
+      </div>
+    </div>
+    <div class="addressContent">
+      <div class="title">
+        <label>{{ 'common.address' | translate }} #{{ (selectedAddress$ | async)?.index }}</label>
+      </div>
+      <div class="address">
+        <label
+          >{{ (selectedAddress$ | async)?.Calle }}, {{ (selectedAddress$ | async)?.Colonia }},
+          {{ 'No.' + (selectedAddress$ | async)?.NumeroExterior }} {{ (selectedAddress$ | async)?.Estado }}
+          <span>C.P</span>
+          {{ (selectedAddress$ | async)?.CodigoPostal }}
+        </label>
+      </div>
+    </div>
+    <div class="horarioAtencion">
+      <div class="horarios">
+        <div class="title">
+          <span>{{ 'HORARIOS DE ATENCIÓN' }}</span>
+        </div>
+        <div class="infoHorarios">
+          <div *ngFor="let item of scheduleList; let i = index">
+            <div class="titleDay">
+              <app-check-box [height]="'20px'" [check]="item.checked" (event)="cambiarValor($event, item, i)"></app-check-box>
+              <p [className]="item.checked ? 'dayActive' : 'dayDisabled'">{{ item.Dia }}</p>
+            </div>
+            <div
+              class="horariosDay"
+              [style.pointerEvents]="item.checked ? 'auto' : 'none'"
+              [style.opacity]="item.checked ? '1' : '0.3'"
+            >
+              <label>A partir de:</label>
+              <div>
+                <div>
+                  <app-drop-down-list
+                    [display]="'flex'"
+                    [justify]="'center'"
+                    [items]="listHorarios[i].hMI"
+                    [activeMinWidth]="false"
+                    [subtitleActive]="false"
+                    [itemSelected]="{value: item?.HoraInicioPrimerHorario, label: item?.HoraInicioPrimerHorario}"
+                    (valueDropList)="formHandle($event, FIELD_HORA_INICIO_PRIMER_HORARIO, i)"
+                  ></app-drop-down-list>
+                </div>
+                <label>A</label>
+                <div>
+                  <app-drop-down-list
+                    [display]="'flex'"
+                    [justify]="'center'"
+                    [items]="listHorarios[i].hMF"
+                    [activeMinWidth]="false"
+                    [subtitleActive]="false"
+                    [itemSelected]="{value: item?.HoraFinPrimerHorario, label: item?.HoraFinPrimerHorario}"
+                    (valueDropList)="formHandle($event, FIELD_HORA_FIN_PRIMER_HORARIO, i)"
+                  ></app-drop-down-list>
+                </div>
+              </div>
+            </div>
+            <div
+              class="horariosDay spaceHorarios"
+              [style.pointerEvents]="item.checked ? 'auto' : 'none'"
+              [style.opacity]="item.checked ? '1' : '0.3'"
+            >
+              <label>A partir de:</label>
+              <div>
+                <div>
+                  <app-drop-down-list
+                    [display]="'flex'"
+                    [justify]="'center'"
+                    [items]="listHorarios[i].hVI"
+                    [activeMinWidth]="false"
+                    [subtitleActive]="false"
+                    [itemSelected]="{value: item?.HoraInicioSegundoHorario, label: item?.HoraInicioSegundoHorario}"
+                    (valueDropList)="formHandle($event, FIELD_HORA_INICIO_SEGUNDO_HORARIO, i)"
+                  ></app-drop-down-list>
+                </div>
+                <label>A</label>
+                <div>
+                  <app-drop-down-list
+                    [display]="'flex'"
+                    [justify]="'center'"
+                    [items]="listHorarios[i].hVF"
+                    [activeMinWidth]="false"
+                    [subtitleActive]="false"
+                    [itemSelected]="{value: item?.HoraFinSegundoHorario, label: item?.HoraFinSegundoHorario}"
+                    (valueDropList)="formHandle($event, FIELD_HORA_FIN_SEGUNDO_HORARIO, i)"
+                  ></app-drop-down-list>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="allDay"
+          [style.pointerEvents]="stylePointerDisabledCheckAll ? 'none' : 'auto'"
+          [style.opacity]="stylePointerDisabledCheckAll ? '0.3' : '1'"
+        >
+          <app-check-box
+            [height]="'20px'"
+            [disabled]="stylePointerDisabledCheckAll"
+            [check]="checkAll"
+            (event)="marcarTodos((checkAll = $event))"
+          ></app-check-box>
+          <label>Aplicar este horario toda la semana</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-pop-up-generic>

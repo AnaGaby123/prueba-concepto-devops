@@ -1,0 +1,19 @@
+<div class="pqf-toggle-container">
+  <label *ngIf="textLeft" [ngClass]="{active: !active, disable: disable}">{{ textLeft }}</label>
+  <div
+    id="pqf-toggle"
+    class="{{ theme }}"
+    [ngClass]="{
+      active: active,
+      inactive: !active,
+      disable: disable,
+      fat: version === 'fat',
+      thin: version === 'thin',
+      'two-options-active': betweenActive
+    }"
+    (click)="handleClick()"
+  >
+    <div class="circle" [ngClass]="{active: active, inactive: !active}"></div>
+  </div>
+  <label *ngIf="textRight" [ngClass]="{active: active, disable: disable}">{{ textRight }}</label>
+</div>

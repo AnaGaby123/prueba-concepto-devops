@@ -1,0 +1,127 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  #regulation-restriction-non-tariff {
+    @include s.flexColumn;
+    @include s.absolute100;
+    overflow: hidden;
+
+    & > .product-info {
+      & > .title {
+        margin-bottom: 10px;
+
+        & > label {
+          @include s.Novecento-Bold;
+          @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+        }
+      }
+    }
+
+    & > .general-data {
+      @include s.flexColumn;
+      flex: 1;
+      margin: 20px 0;
+
+      & > .title {
+        @include s.flexRow;
+        border-bottom: 1px solid;
+        padding-bottom: 5px;
+
+        & > label {
+          @include s.Novecento-Bold;
+          @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+        }
+      }
+
+      & > .content {
+        @include s.flexColumn;
+        flex: 1;
+        padding: 20px 0;
+
+        & > .principal-data {
+          display: grid;
+          grid-template-columns: repeat(5, 1fr);
+          grid-template-rows: auto;
+          grid-column-gap: 15px;
+
+          & > .regulatory-notes {
+            grid-column-end: span 2;
+          }
+        }
+
+        & > .permissions {
+          @include s.flexColumn;
+
+          & > .psicotropics {
+            margin: 30px 0;
+
+            & > .title {
+              margin-bottom: 10px;
+
+              & > label {
+                @include s.Novecento-Bold;
+                @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+              }
+            }
+
+            & > .inputs {
+              display: grid;
+              grid-template-columns: repeat(5, 1fr);
+              grid-template-rows: auto;
+              grid-column-gap: 15px;
+            }
+          }
+
+          & > .general {
+            & > .title {
+              margin-bottom: 10px;
+
+              & > label {
+                @include s.Novecento-Bold;
+                @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+              }
+            }
+
+            & > .inputs {
+              display: grid;
+              grid-template-columns: repeat(5, 1fr);
+              grid-template-rows: auto;
+              grid-column-gap: 15px;
+            }
+          }
+        }
+
+        & > .otherData {
+          display: grid;
+          grid-template-columns: repeat(5, 1fr);
+          grid-template-rows: auto;
+          grid-column-gap: 15px;
+          margin: 20px 0;
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .product-info {
+        & > .title {
+          margin-bottom: 15px;
+        }
+      }
+      & > .general-data {
+        margin: 25px 0;
+
+        & > .title {
+          @include s.flexRow;
+          border-bottom: 1px solid;
+          padding-bottom: 10px;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,47 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  & > .discount-freight {
+    @include s.flexRowNoWrap;
+    justify-content: center;
+
+    & > .left-container {
+      @include s.flexColumn;
+      align-items: center;
+
+      & > h4 {
+        @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqGreen);
+        @include s.Novecento-Bold;
+        margin-bottom: 12px;
+      }
+
+      & > .flex {
+        @include s.flexRow;
+
+        & > .input-container {
+          @include s.flexColumn;
+          align-items: center;
+
+          &:first-child {
+            margin-right: 30px;
+          }
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+            @include s.Roboto-Bold;
+
+            &.green {
+              @include s.Roboto-Regular;
+              color: s.$pqGreen;
+              margin-top: 4px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

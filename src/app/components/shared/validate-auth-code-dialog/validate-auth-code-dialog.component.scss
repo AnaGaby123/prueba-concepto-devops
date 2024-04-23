@@ -1,0 +1,157 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+#request-code-pop-up {
+  ::ng-deep .modal {
+    background: none;
+
+    & > .modal-content {
+      transition: none;
+    }
+  }
+  & .container {
+    @include s.flexColumn;
+    width: 100%;
+    height: 100%;
+    justify-content: flex-start;
+    & > .header {
+      @include s.flexRow;
+      height: 122px;
+
+      & > .image {
+        width: 190px;
+        @include s.flexColumn;
+        @include s.absoluteCenter;
+        padding: 15px;
+
+        & > img {
+          max-height: 100%;
+          max-width: 100%;
+        }
+      }
+
+      & > .client-data {
+        @include s.flexColumn;
+        align-items: flex-start;
+        justify-content: center;
+        flex: 1;
+
+        & > label {
+          margin-bottom: 3px;
+        }
+
+        & > label:nth-child(1) {
+          @include s.escaledFontFormat(s.$textSize20to24, bold, s.$pqGreen);
+          @include s.Novecento-Bold;
+        }
+
+        & > label:nth-child(2) {
+          @include s.escaledFontFormat(s.$textSize16to20, regular, s.$pqGreen);
+          @include s.Roboto-Regular;
+        }
+
+        & > label:nth-child(3) {
+          @include s.escaledFontFormat(s.$textSize16to19, regular, s.$pqBlack2);
+          @include s.Roboto-Regular;
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    & > .resume {
+      @include s.flexColumn;
+      @include s.absoluteCenter;
+      height: 135px;
+      background-color: s.$redAlertHover;
+
+      & > label {
+        @include s.responsive-font-format(
+          $color: s.$redAlert,
+          $font-family: s.$font-family-roboto_bold,
+          $font-size-map: s.$responsive-font-20-20,
+          $font-weight: s.$font-weight-bold
+        );
+        margin-bottom: 5px;
+      }
+
+      & > label:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    & > .code {
+      @include s.flexColumn;
+      @include s.absoluteCenter;
+      gap: 20px;
+      padding: 29px 0;
+
+      & > label {
+        @include s.responsive-font-format(
+          $color: s.$pqBlack2,
+          $font-family: s.$font-family-roboto,
+          $font-size-map: s.$responsive-font-26-26
+        );
+
+        & > span {
+          color: s.$pqGreen;
+          @include s.Roboto-Bold;
+        }
+      }
+
+      & > .enter-digits {
+        @include s.responsive-font-format(
+          $color: s.$pqBlack2,
+          $font-family: s.$font-family-roboto,
+          $font-size-map: s.$responsive-font-16-16
+        );
+      }
+    }
+
+    & > .inputs {
+      @include s.flexRow;
+      @include s.absoluteCenter;
+      background-color: rgba(s.$pqGreen, 0.05);
+      height: 110px;
+
+      & > div {
+        @include s.flexRow;
+        @include s.absoluteCenter;
+
+        & > input {
+          width: 66px;
+          height: 51px;
+          border: 1px solid s.$pqGreen;
+          background-color: s.$pqWhite;
+          text-align: center;
+          margin-right: 31px;
+          @include s.escaledFontFormat(s.$textSize30to35, bold, s.$pqGreen);
+          @include s.Roboto-Bold;
+
+          &:last-child {
+            margin-right: 0;
+          }
+        }
+      }
+
+      &.shaked {
+        background-color: s.$redAlertHover;
+
+        & > div {
+          animation: shake 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+          transform: translate3d(0, 0, 0);
+          backface-visibility: hidden;
+          perspective: 1000px;
+
+          & > input {
+            border: 1px solid s.$redAlert;
+            background-color: s.$pqWhite;
+            color: s.$redAlert;
+          }
+        }
+      }
+    }
+  }
+}

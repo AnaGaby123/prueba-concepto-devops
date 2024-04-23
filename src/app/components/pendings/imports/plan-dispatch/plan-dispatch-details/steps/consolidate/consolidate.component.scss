@@ -1,0 +1,1282 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  width: 100%;
+  height: 100%;
+
+  & > #plan-dispatch-details-step2 {
+    height: 100%;
+
+    & > .container {
+      @include s.flexColumn;
+      height: 100%;
+
+      & > .body {
+        @include s.flexRow;
+        flex: 1;
+        height: 100%;
+        overflow: hidden;
+
+        & > .left {
+          @include s.flexColumn;
+          border-right: 1px solid s.$pqGray2;
+          padding: 0 20px 35px 20px;
+          flex: 0 0 380px;
+
+          & > .header {
+            & > .title {
+              & > label {
+                @include s.Novecento-Bold;
+                @include s.escaledFontFormat(s.$textSize19to24, bold, s.$pqBlack2);
+              }
+            }
+
+            & > .search {
+              padding: 12px 0;
+            }
+          }
+
+          & > .list {
+            border-top: 1px solid s.$pqBlack2;
+            flex: 1 1 auto;
+            overflow: hidden;
+
+            & > .virtual-scroller {
+              @include s.absolute100;
+
+              & .item {
+                @include s.flexRow;
+                @include s.Roboto-Bold;
+                border-bottom: 1px solid s.$pqGray2;
+                transition: all 200ms ease-in-out;
+
+                & * {
+                  cursor: pointer;
+                }
+
+                &:hover {
+                  background-color: s.$pqGray2;
+                }
+
+                &.selected {
+                  background-color: s.$pqGray2;
+
+                  & > .indicator {
+                    width: 8px;
+                    background-color: s.$pqGreen;
+                  }
+                }
+
+                & > .indicator {
+                  width: 8px;
+
+                  &.selected {
+                    background-color: s.$pqGreen;
+                  }
+                }
+
+                & > .text {
+                  @include s.flexColumn;
+                  padding: 10px 20px;
+                  width: 100%;
+
+                  & > .first {
+                    @include s.flexRow;
+                    padding: 3px 0;
+
+                    & > .normal-color {
+                      & > label {
+                        @include s.escaledFontFormat(s.$textSize15to20, bold, s.$pqBlack2);
+
+                        & > span {
+                          color: s.$pqGreen;
+                          vertical-align: baseline;
+                        }
+                      }
+                    }
+                  }
+
+                  & > .second {
+                    padding: 3px 0;
+
+                    & > label {
+                      @include s.Roboto-Bold;
+                      @include s.escaledFontFormat(s.$textSize15to20, bold, s.$pqBlack2);
+                    }
+                  }
+
+                  & > .third {
+                    padding: 3px 0;
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to18, regular, s.$pqGreen);
+                  }
+                }
+              }
+            }
+
+            & > .loading {
+              @include s.absolute100;
+              @include s.gridCenter;
+            }
+          }
+
+          & > .footer {
+            padding-top: 10px;
+            @include s.flexRow;
+            justify-content: center;
+            border-top: 1px solid s.$pqBlack2;
+
+            & > label {
+              @include s.Roboto-Regular;
+              @include s.escaledFontFormat(s.$textSize10to14, regular, s.$pqBlack2);
+            }
+          }
+        }
+
+        & > .center {
+          @include s.flexColumn;
+          flex: 1 1 auto;
+          overflow: hidden;
+          padding: 0 0 55px 20px;
+
+          & > .header {
+            @include s.flexRow;
+            padding-bottom: 12px;
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize19to24, bold, s.$pqBlack2);
+              @include s.Novecento-Bold;
+
+              & > span {
+                color: s.$pqGreen;
+              }
+            }
+
+            & > .proquifa-color {
+              & > label {
+                color: s.$pqGreen;
+              }
+            }
+          }
+
+          & > .tableContainer {
+            @include s.table-container;
+            border: 1px solid s.$pqBlack2;
+
+            & > .table {
+              @include s.table($min-width: 850px);
+
+              & > .table-header {
+                @include s.table-header($min-width: 850px);
+                padding-left: 8px;
+
+                & > div {
+                  @include s.flexRowNoWrap;
+                  @include s.absoluteCenter;
+                  padding: 8px 10px;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize13to15, '', s.$pqBlack2);
+                    @include s.Novecento-Bold;
+                  }
+                }
+
+                & > .index {
+                  flex: 1 0 40px;
+                }
+
+                & > .invoice {
+                  flex: 1 0 140px;
+                  justify-content: flex-start;
+                }
+
+                & > .amount {
+                  flex: 1 0 140px;
+                  justify-content: flex-end;
+                }
+
+                & > .pieces {
+                  flex: 1 0 120px;
+                }
+
+                & > .fee {
+                  flex: 1 0 140px;
+                }
+
+                & > .plus {
+                  flex: 1 0 50px;
+
+                  & > img {
+                    height: 18px;
+                  }
+                }
+              }
+
+              & > .table-body {
+                @include s.table-body($min-width: 850px);
+
+                & > virtual-scroller {
+                  @include s.absolute100;
+
+                  & .item-arrival {
+                    @include s.flexColumn;
+
+                    & * {
+                      cursor: pointer;
+                    }
+
+                    & > .item-top {
+                      @include s.default-transition($duration: 0.2s);
+                      @include s.flexRowNoWrap;
+                      border-bottom: 1px solid s.$pqGray2;
+
+                      &.selected {
+                        background-color: s.$pqGray2;
+
+                        & > .indicator {
+                          background-color: s.$pqGreen;
+                        }
+                      }
+
+                      &:hover {
+                        background-color: s.$pqGray2;
+                      }
+
+                      & > div {
+                        @include s.flexRowNoWrap;
+                        @include s.absoluteCenter;
+                        padding: 15px 10px;
+
+                        & > label {
+                          @include s.escaledFontFormat(s.$textSize13to16, '', s.$pqBlack2);
+                          @include s.Roboto-Regular;
+                        }
+                      }
+
+                      & > .indicator {
+                        flex: 0 0 8px;
+                        padding: 0;
+                      }
+
+                      & > .index {
+                        flex: 1 0 40px;
+
+                        & > label {
+                          @include s.Roboto-Bold;
+                        }
+                      }
+
+                      & > .invoice {
+                        flex: 1 0 140px;
+                        justify-content: flex-start;
+
+                        & > label {
+                          color: s.$pqGreen;
+                        }
+                      }
+
+                      & > .amount {
+                        flex: 1 0 140px;
+                        justify-content: flex-end;
+                      }
+
+                      & > .pieces {
+                        flex: 1 0 120px;
+                      }
+
+                      & > .fee {
+                        flex: 1 0 140px;
+                      }
+
+                      & > .plus {
+                        flex: 1 0 50px;
+
+                        & > img {
+                          height: 18px;
+                        }
+                      }
+                    }
+
+                    & .item-bottom {
+                      @include s.flexColumn;
+                      background-color: rgba(s.$pqGreen, 0.02);
+                      border-bottom: 1px solid s.$pqGray2;
+                      padding: 12px 30px 30px 30px;
+
+                      & > .header {
+                        @include s.flexRowNoWrap;
+                        border-bottom: 1px solid s.$pqBlack2;
+                        padding: 5px 0;
+
+                        & > div {
+                          @include s.absoluteCenter;
+                          @include s.flexRowNoWrap;
+                          padding: 0 10px;
+
+                          & > label {
+                            @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+                            @include s.Roboto-Regular;
+                          }
+                        }
+
+                        & > .index {
+                          flex: 0 0 35px;
+                        }
+
+                        & > .oc {
+                          flex: 1 0 110px;
+                        }
+
+                        & > .description {
+                          flex: 0 0 380px;
+                          justify-content: flex-start;
+                        }
+
+                        & > .pieces {
+                          flex: 1 0 60px;
+                        }
+
+                        & > .cu {
+                          flex: 1 0 90px;
+                          justify-content: flex-end;
+                        }
+
+                        & > .ct {
+                          flex: 1 0 90px;
+                          justify-content: flex-end;
+                        }
+                      }
+
+                      & > .body {
+                        @include s.flexColumn;
+                        max-height: 143px;
+                        overflow-y: auto;
+
+                        & > .item {
+                          @include s.flexRow;
+                          @include s.Roboto-Regular;
+                          border-bottom: 1px solid s.$pqGray2;
+                          padding: 10px 0;
+
+                          & > div {
+                            @include s.absoluteCenter;
+                            @include s.flexRowNoWrap;
+                            padding: 0 10px;
+
+                            & > label {
+                              @include s.escaledFontFormat(s.$textSize13to15, regular, s.$pqGreen);
+                              @include s.Roboto-Regular;
+                            }
+                          }
+
+                          & > .index {
+                            flex: 0 0 35px;
+
+                            & > label {
+                              color: s.$pqBlack2;
+                            }
+                          }
+
+                          & > .oc {
+                            flex: 1 0 110px;
+                          }
+
+                          & > .description {
+                            flex: 0 0 380px;
+                            justify-content: flex-start;
+
+                            & > label {
+                              color: s.$pqBlack2;
+                            }
+                          }
+
+                          & > .pieces {
+                            flex: 1 0 60px;
+                          }
+
+                          & > .cu {
+                            flex: 1 0 90px;
+                            justify-content: flex-end;
+                          }
+
+                          & > .ct {
+                            flex: 1 0 90px;
+                            justify-content: flex-end;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+
+                & > .loading {
+                  @include s.absolute100;
+                  @include s.gridCenter;
+                }
+              }
+
+              & > .table-footer {
+                @include s.flexRowNoWrap;
+                align-items: center;
+                border-top: 1px solid s.$pqBlack2;
+                min-width: 850px;
+                padding-left: 8px;
+
+                & > div {
+                  @include s.flexRowNoWrap;
+                  @include s.absoluteCenter;
+                  padding: 10px;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize12to14, '', s.$pqBlack2);
+                    @include s.Novecento-Bold;
+                  }
+                }
+
+                & > .index {
+                  flex: 1 0 40px;
+                }
+
+                & > .invoice {
+                  flex: 1 0 140px;
+                }
+
+                & > .amount {
+                  flex: 1 0 140px;
+                  justify-content: flex-end;
+                }
+
+                & > .pieces {
+                  flex: 1 0 120px;
+                }
+
+                & > .fee {
+                  flex: 1 0 140px;
+                }
+
+                & > .plus {
+                  flex: 1 0 50px;
+                }
+              }
+            }
+          }
+        }
+
+        & > .right {
+          @include s.flexColumn;
+          padding: 0 0 15px 0;
+          flex: 0 0 390px;
+          position: relative;
+
+          & > .right-content {
+            flex: 1 1 auto;
+            position: relative;
+            width: 100%;
+
+            & > .list {
+              @include s.flexColumn;
+              @include s.absolute100;
+              flex: 0 0 100%;
+              padding: 0 20px 0 20px;
+
+              & > .header-right {
+                @include s.flexRow;
+                flex: 0 0 auto;
+                justify-content: center;
+                padding-bottom: 12px;
+
+                & > label {
+                  @include s.Novecento-Bold;
+                  @include s.escaledFontFormat(s.$textSize19to24, bold, s.$pqBlack2);
+                }
+              }
+
+              & > .body-right {
+                flex: 1 1 auto;
+                border-top: 1px solid s.$pqBlack2;
+                overflow: hidden;
+
+                & > virtual-scroller {
+                  @include s.absolute100;
+
+                  & .item {
+                    @include s.flexColumn;
+                    border-bottom: 1px solid s.$pqGray2;
+
+                    & > .top {
+                      @include s.flexRow;
+                      cursor: pointer;
+                      position: relative;
+                      transition: background-color 0.2s ease-in-out, height 0.2s ease-in-out;
+
+                      & * {
+                        cursor: pointer;
+                      }
+
+                      &:hover {
+                        background-color: s.$pqGray2;
+                      }
+
+                      &.selected {
+                        background-color: s.$pqGray2;
+
+                        & > .indicator {
+                          background-color: s.$pqGreen;
+                        }
+
+                        & > .container {
+                          & > .first-text {
+                            & > img {
+                              transform: scaleY(1);
+                            }
+                          }
+                        }
+                      }
+
+                      & > .indicator {
+                        flex: 0 0 8px;
+                      }
+
+                      & > .container {
+                        padding: 12px 20px;
+                        width: 100%;
+
+                        & > .first-text {
+                          @include s.flexRowNoWrap;
+                          align-items: center;
+                          flex: 1;
+                          justify-content: space-between;
+                          width: 100%;
+
+                          & > label {
+                            @include s.escaledFontFormat(s.$textSize15to20, bold, s.$pqBlack2);
+                            @include s.Roboto-Bold;
+
+                            & > span {
+                              color: s.$pqGreen;
+                              vertical-align: baseline;
+                            }
+                          }
+
+                          & > img {
+                            height: 12px;
+                            transform: scaleY(-1);
+                          }
+                        }
+
+                        & > .second-text {
+                          @include s.flexColumn;
+
+                          & > .arrival-list {
+                            @include s.escaledFontFormat(s.$textSize15to20, bold, s.$pqBlack2);
+                            @include s.Roboto-Bold;
+                            margin: 3px 0;
+
+                            & > span {
+                              color: s.$pqGreen;
+                            }
+                          }
+
+                          & > .totals {
+                            @include s.escaledFontFormat(s.$textSize14to18, regular, s.$pqBlack2);
+                            @include s.Roboto-Regular;
+                            margin-bottom: 3px;
+                          }
+
+                          & > .date {
+                            @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                            @include s.Roboto-Regular;
+
+                            &.red {
+                              color: s.$pqTextAlert;
+                            }
+                          }
+                        }
+                      }
+                    }
+
+                    & > .bottom {
+                      @include s.flexColumn;
+                      background-color: s.$pqGray6;
+                      max-height: 247px;
+                      overflow: hidden;
+                      padding: 0 20px 0 28px;
+
+                      & > .sub-items {
+                        @include s.flexColumn;
+                        flex: 1 1 auto;
+                        overflow-y: auto;
+
+                        & > .sub-item {
+                          @include s.flexColumn;
+                          border-top: 0.5px solid s.$pqPlaceholder;
+                          padding: 9px 0;
+
+                          & > .arrival-list {
+                            @include s.escaledFontFormat(s.$textSize15to19, regular, s.$pqBlack2);
+                            @include s.Roboto-Regular;
+                            margin-bottom: 3px;
+
+                            & > span {
+                              color: s.$pqGreen;
+                            }
+                          }
+
+                          & > .totals {
+                            @include s.escaledFontFormat(s.$textSize14to18, regular, s.$pqBlack2);
+                            @include s.Roboto-Regular;
+                            margin-bottom: 3px;
+                          }
+
+                          & > .date {
+                            @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                            @include s.Roboto-Regular;
+
+                            &.red {
+                              color: s.$pqTextAlert;
+                            }
+                          }
+                        }
+                      }
+
+                      & > .footer {
+                        @include s.gridCenter;
+                        border-top: 0.5px solid s.$pqPlaceholder;
+                        flex: 0 0 auto;
+                        padding: 8px 0;
+
+                        & > label {
+                          @include s.Roboto-Regular;
+                          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+                        }
+                      }
+                    }
+                  }
+
+                  & .loading {
+                    @include s.absolute100;
+                    @include s.gridCenter;
+                  }
+                }
+              }
+
+              & > .footer-right {
+                @include s.gridCenter;
+                border-top: 1px solid s.$pqBlack2;
+                flex: 0 0 auto;
+                padding-top: 10px;
+
+                & > label {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+                }
+              }
+
+              & > .limits {
+                border-bottom: 1px solid s.$pqBlack2;
+                flex: 0 0 auto;
+
+                & > .title {
+                  @include s.flexRow;
+                  justify-content: center;
+                  padding: 25px 0;
+
+                  & > label {
+                    @include s.Novecento-Bold;
+                    @include s.escaledFontFormat(s.$textSize21to23, bold, s.$pqBlack2);
+                  }
+                }
+
+                & > .body {
+                  @include s.flexColumn;
+                  @include s.Roboto-Regular;
+
+                  & > div {
+                    @include s.flexRow;
+                    justify-content: space-between;
+                    margin-bottom: 18px;
+
+                    & > label {
+                      @include s.escaledFontFormat(s.$textSize15to20, regular, s.$pqBlack2);
+
+                      &.ocean {
+                        color: s.$pqGreen;
+                      }
+
+                      &.green {
+                        color: s.$pqGreen2;
+                      }
+                    }
+
+                    & > .bold {
+                      @include s.escaledFontFormat(s.$textSize17to22, bold, s.$pqBlack2);
+                      @include s.Roboto-Bold;
+                    }
+                  }
+                }
+              }
+            }
+
+            & > .hiddenList {
+              @include s.flexRow;
+              @include s.absolute100;
+              @include s.default-transition($property: width, $duration: 0.5s);
+              background-color: s.$pqWhite;
+              justify-content: flex-end;
+              overflow: hidden;
+              position: absolute;
+              right: 0;
+              top: 0;
+
+              &.close {
+                width: 0;
+              }
+
+              & * {
+                cursor: pointer;
+              }
+
+              & > .amountBody {
+                @include s.flexColumn;
+                @include s.absolute100;
+                min-width: 390px;
+                padding: 0 20px;
+
+                & > .header {
+                  @include s.flexRow;
+                  flex: 0 0 auto;
+                  justify-content: center;
+                  padding-bottom: 12px;
+
+                  & > label {
+                    @include s.Novecento-Bold;
+                    @include s.escaledFontFormat(s.$textSize19to24, bold, s.$pqBlack2);
+                  }
+                }
+
+                & > .body {
+                  @include s.flexColumn;
+                  flex: 1 1 auto;
+                  justify-content: space-between;
+                  border-top: 1px solid s.$pqBlack2;
+                  padding: 31px 0 0 10px;
+
+                  & > div {
+                    @include s.flexColumn;
+
+                    & > label {
+                      @include s.escaledFontFormat(s.$textSize20to23, bold, s.$pqBlack2);
+                      @include s.Novecento-Bold;
+                      margin-bottom: 5px;
+                    }
+
+                    & > div {
+                      @include s.flexRow;
+                      @include s.Roboto-Regular;
+                      justify-content: space-between;
+                      padding: 12px 0;
+
+                      & > label {
+                        @include s.escaledFontFormat(s.$textSize15to20, regular, s.$pqBlack2);
+
+                        &.ocean {
+                          color: s.$pqGreen;
+                        }
+
+                        &.bold {
+                          @include s.Roboto-Bold;
+                        }
+                      }
+                    }
+
+                    & > .total {
+                      border-top: 1px solid s.$pqGray2;
+                    }
+                  }
+                }
+
+                & > .total {
+                  @include s.flexRow;
+                  border-bottom: 1px solid s.$pqBlack2;
+                  border-top: 1px solid s.$pqGray2;
+                  flex: 0 0 auto;
+                  justify-content: space-between;
+                  padding: 15px 0 40px 10px;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize26to29, bold, s.$pqBlack2);
+                    @include s.Roboto-Bold;
+
+                    &.green {
+                      color: s.$pqGreen2;
+                    }
+                  }
+                }
+              }
+            }
+
+            & > .arrow {
+              @include s.default-transition($property: right, $duration: 0.5s);
+              cursor: pointer;
+              position: absolute;
+              right: calc(100% - 25px);
+              top: 50%;
+              width: 25px;
+
+              &.close {
+                right: 0;
+              }
+
+              & > img {
+                cursor: pointer;
+                width: 100%;
+              }
+            }
+          }
+
+          & > .bot {
+            @include s.flexRow;
+            flex: 0 0 auto;
+            justify-content: flex-end;
+            padding-right: 20px;
+
+            & > .button {
+              @include s.flexRow;
+              justify-content: flex-end;
+              padding: 15px 0 0 0;
+
+              & > button {
+                @include s.pqButton($min-width: 143px, $max-width: 170px, $baseColor: s.$pqGreen);
+              }
+            }
+          }
+        }
+      }
+
+      & > .footer {
+        @include s.flexRow;
+        height: 55px;
+        border-top: 2px solid s.$pqBlack2;
+        justify-content: center;
+        padding: 20px 0;
+
+        & > .al {
+          padding: 0 40px;
+
+          & > label {
+            @include s.Roboto-Bold;
+            @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+
+            & > span {
+              @include s.Roboto-Regular;
+            }
+          }
+        }
+
+        & > .cv {
+          padding: 0 40px;
+
+          & > label {
+            @include s.Roboto-Bold;
+            @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+
+            & > span {
+              @include s.Roboto-Regular;
+            }
+          }
+        }
+
+        & > .fte {
+          padding: 0 40px;
+
+          & > label {
+            @include s.Roboto-Bold;
+            @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+
+            & > span {
+              @include s.Roboto-Regular;
+            }
+          }
+        }
+
+        & > .vad {
+          padding: 0 40px;
+
+          & > label {
+            @include s.Roboto-Bold;
+            @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+
+            & > span {
+              @include s.Roboto-Regular;
+            }
+          }
+        }
+
+        & > .imp {
+          padding: 0 40px;
+
+          & > label {
+            @include s.Roboto-Bold;
+            @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+
+            & > span {
+              @include s.Roboto-Regular;
+            }
+          }
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .container {
+        & > .body {
+          & > .left {
+            flex: 0 0 420px;
+            padding-bottom: 40px;
+
+            & > .header {
+              & > .search {
+                padding: 15px 0 20px 0;
+              }
+            }
+
+            & > .list {
+              & > .virtual-scroller {
+                & .item {
+                  & > .text {
+                    padding: 12px 20px;
+
+                    & > .first {
+                      padding: 5px 0;
+                    }
+
+                    & > .second {
+                      padding: 5px 0;
+                    }
+
+                    & > .third {
+                      padding: 5px 0;
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          & > .center {
+            padding-bottom: 60px;
+
+            & > .header {
+              padding-bottom: 15px;
+            }
+
+            & > .tableContainer {
+              & > .table {
+                & > .table-header {
+                  & > div {
+                    padding: 12px 10px;
+
+                    & > img {
+                      height: 21px;
+                    }
+                  }
+                }
+
+                & > .table-body {
+                  & > virtual-scroller {
+                    & .item {
+                      & > .item-top {
+                        & > div {
+                          padding: 20px 10px;
+
+                          & > img {
+                            height: 21px;
+                          }
+                        }
+                      }
+
+                      & .item-bottom {
+                        & > .header {
+                          padding: 7px 0;
+                        }
+
+                        & > .body {
+                          max-height: 159px;
+
+                          & > .item {
+                            padding: 11px 0;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          & > .right {
+            flex: 0 0 430px;
+
+            & > .right-content {
+              & > .list {
+                & > .header-right {
+                  padding-bottom: 15px;
+                }
+
+                & > .body-right {
+                  & > virtual-scroller {
+                    & .item {
+                      & > .bottom {
+                        max-height: 247px;
+
+                        & > .sub-item {
+                          padding: 11px 0;
+
+                          & > .totals {
+                            margin-bottom: 4px;
+                          }
+                        }
+
+                        & > .footer {
+                          padding: 10px 0;
+                        }
+                      }
+                    }
+                  }
+                }
+
+                & > .limits {
+                  & > .title {
+                    padding: 30px 0;
+                  }
+
+                  & > .body {
+                    & > div {
+                      margin-bottom: 23px;
+                    }
+                  }
+                }
+              }
+
+              & > .hiddenList {
+                & > .amountBody {
+                  min-width: 430px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.item-arrival {
+  @include s.flexColumn;
+  background-color: s.$pqWhite;
+
+  & * {
+    cursor: pointer;
+  }
+
+  & > .item-top {
+    @include s.default-transition($duration: 0.2s);
+    @include s.flexRowNoWrap;
+    border-bottom: 1px solid s.$pqGray2;
+
+    &.selected {
+      background-color: s.$pqGray2;
+
+      & > .indicator {
+        background-color: s.$pqGreen;
+      }
+    }
+
+    &:hover {
+      background-color: s.$pqGray2;
+    }
+
+    & > div {
+      @include s.flexRowNoWrap;
+      @include s.absoluteCenter;
+      padding: 15px 10px;
+
+      & > label {
+        @include s.escaledFontFormat(s.$textSize13to16, '', s.$pqBlack2);
+        @include s.Roboto-Regular;
+      }
+    }
+
+    & > .indicator {
+      flex: 0 0 8px;
+      padding: 0;
+    }
+
+    & > .index {
+      flex: 1 0 40px;
+
+      & > label {
+        @include s.Roboto-Bold;
+      }
+    }
+
+    & > .invoice {
+      flex: 1 0 140px;
+      justify-content: flex-start;
+
+      & > label {
+        color: s.$pqGreen;
+      }
+    }
+
+    & > .amount {
+      flex: 1 0 140px;
+      justify-content: flex-end;
+    }
+
+    & > .pieces {
+      flex: 1 0 120px;
+    }
+
+    & > .fee {
+      flex: 1 0 140px;
+    }
+
+    & > .plus {
+      flex: 1 0 50px;
+
+      & > img {
+        height: 18px;
+      }
+    }
+  }
+
+  & .item-bottom {
+    @include s.flexColumn;
+    background-color: rgba(s.$pqGreen, 0.02);
+    border-bottom: 1px solid s.$pqGray2;
+    padding: 12px 30px 30px 30px;
+
+    & > .header {
+      @include s.flexRowNoWrap;
+      border-bottom: 1px solid s.$pqBlack2;
+      padding: 5px 0;
+
+      & > div {
+        @include s.absoluteCenter;
+        @include s.flexRowNoWrap;
+        padding: 0 10px;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+          @include s.Roboto-Regular;
+        }
+      }
+
+      & > .index {
+        flex: 0 0 35px;
+      }
+
+      & > .oc {
+        flex: 1 0 110px;
+      }
+
+      & > .description {
+        flex: 0 0 380px;
+        justify-content: flex-start;
+      }
+
+      & > .pieces {
+        flex: 1 0 60px;
+      }
+
+      & > .cu {
+        flex: 1 0 90px;
+        justify-content: flex-end;
+      }
+
+      & > .ct {
+        flex: 1 0 90px;
+        justify-content: flex-end;
+      }
+    }
+
+    & > .body {
+      @include s.flexColumn;
+      max-height: 143px;
+      overflow-y: auto;
+
+      & > .item {
+        @include s.flexRow;
+        @include s.Roboto-Regular;
+        border-bottom: 1px solid s.$pqGray2;
+        padding: 10px 0;
+
+        & > div {
+          @include s.absoluteCenter;
+          @include s.flexRowNoWrap;
+          padding: 0 10px;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize13to15, regular, s.$pqGreen);
+            @include s.Roboto-Regular;
+          }
+        }
+
+        & > .index {
+          flex: 0 0 35px;
+
+          & > label {
+            color: s.$pqBlack2;
+          }
+        }
+
+        & > .oc {
+          flex: 1 0 110px;
+        }
+
+        & > .description {
+          flex: 0 0 380px;
+          justify-content: flex-start;
+
+          & > label {
+            color: s.$pqBlack2;
+          }
+        }
+
+        & > .pieces {
+          flex: 1 0 60px;
+        }
+
+        & > .cu {
+          flex: 1 0 90px;
+          justify-content: flex-end;
+        }
+
+        & > .ct {
+          flex: 1 0 90px;
+          justify-content: flex-end;
+        }
+      }
+    }
+  }
+}
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}

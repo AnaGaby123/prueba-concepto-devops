@@ -1,0 +1,18 @@
+<div class="container">
+  <div class="header-bar">
+    <app-header-bar *ngIf="!(isInDetails$ | async)" [activeBack]="false" [title]="title$ | async"></app-header-bar>
+    <app-header-bar
+      *ngIf="isInDetails$ | async"
+      [activeBack]="(editMode$ | async) && !(enableEdit$ | async)"
+      [name]="(customAgentSelected$ | async)?.NombreComercial"
+      [title]="title$ | async"
+      (goBack)="goBack()"
+    ></app-header-bar>
+  </div>
+  <div class="container-outlet">
+    <router-outlet></router-outlet>
+  </div>
+  <footer>
+    <app-footer></app-footer>
+  </footer>
+</div>

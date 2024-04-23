@@ -1,0 +1,26 @@
+<div class="cont" [ngClass]="disable && 'disable'">
+  <p
+    (click)="!disable && handleSelectedOptionChange(options[0])"
+    [ngClass]="options.length > 0 && options[0].value === selectedOption?.value && 'selected'"
+    >{{ options.length > 0 ? options[0].label : 'N/D' }}</p
+  >
+  <div [style.background-color]="backgroundColor" class="switch">
+    <div class="click" (click)="options.length > 0 && !disable && handleSelectedOptionChange(options[0])"></div>
+    <div class="click" (click)="options.length > 1 && !disable && handleSelectedOptionChange(options[1])"></div>
+    <div
+      class="circle"
+      [ngClass]="{
+        'circle-left': selectedOption && options[0]?.value === selectedOption?.value,
+        'circle-center':
+          !selectedOption || (options[0]?.value !== selectedOption?.value && options[1]?.value !== selectedOption?.value),
+        'circle-right': selectedOption && options[1]?.value === selectedOption?.value
+      }"
+    >
+    </div>
+  </div>
+  <p
+    (click)="!disable && handleSelectedOptionChange(options[1])"
+    [ngClass]="options.length > 1 && options[1].value === selectedOption?.value && 'selected'"
+    >{{ options.length > 1 ? options[1].label : 'N/D' }}</p
+  >
+</div>

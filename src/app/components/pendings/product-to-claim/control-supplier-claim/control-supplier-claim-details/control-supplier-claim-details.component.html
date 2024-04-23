@@ -1,0 +1,273 @@
+<div id="control-supplier-claim-details">
+  <section>
+    <div class="list-container">
+      <div class="title"
+        ><label>{{ 'preProcessing.purchaseOrders' | translate }}</label></div
+      >
+      <div class="tabs">
+        <app-tabs
+          [options]="tabOptions$ | async"
+          [tapSelected]="tabSelected$ | async"
+          (onSelectOption)="setTab($event)"
+        ></app-tabs>
+      </div>
+
+      <div class="filters">
+        <div class="filter-by-type">
+          <app-hamburger-menu
+            [options]="sortOptions$ | async"
+            [value]="(sortSelected$ | async).value"
+            (valueEmit)="setSort($event)"
+          ></app-hamburger-menu>
+        </div>
+        <div class="filter-search">
+          <app-search [placeholder]="'loadMissing.providers' | translate" (textSearch)="handleKeySearch($event)"></app-search>
+        </div>
+      </div>
+      <div class="list-clients">
+        <virtual-scroller>
+          <div class="item" [ngClass]="'active'">
+            <div class="indicator"></div>
+            <div class="item-content">
+              <div class="index">
+                <label
+                  >{{ '#' + 1 + ' ·' }} <span>{{ 'OC-000000-0001 · ' }}</span
+                  >{{ 'R508500-100MG ' }}</label
+                >
+              </div>
+              <div class="product">
+                <label>{{ 'Rifapentine (100mg) TRC Inc.' }}</label>
+              </div>
+              <div class="fee">
+                <label>FEE: {{ '07/Enero/2021' }} {{ '· Inspector: AhernandezM' }}</label>
+              </div>
+            </div>
+            <div class="status">
+              <img src="assets/Images/labels/fuera-de-tiempo.svg" />
+              <!--<img src="assets/Images/labels/en-tiempo.svg" />-->
+            </div>
+          </div>
+        </virtual-scroller>
+      </div>
+      <div class="totals">
+        <label>{{ '#11' }}</label>
+      </div>
+    </div>
+    <div class="right-container">
+      <div>
+        <div class="text">
+          <label class="title"
+            >#{{ 1 }} · <span class="underline">OC-{{ '00002 - 00015' }} · </span>
+            {{ 'R508500-100MG Rifapentine (100mg) TRC Inc · ' }}
+          </label>
+        </div>
+        <div class="image">
+          <img src="assets/Images/labels/fuera-de-tiempo.svg" />
+        </div>
+      </div>
+      <div class="header-container">
+        <div class="header">
+          <div class="client-container">
+            <div class="client-title">
+              <label>{{ 'common.provider' | translate }}</label>
+            </div>
+            <div class="client">
+              <div>
+                <img src="assets/Images/clientes/logo_proquifa_hover.svg" alt="" />
+              </div>
+              <div class="client-info">
+                <div>
+                  <label>{{ 'Nombre proveedor' }}</label>
+                </div>
+                <label>{{ 'common.provider' | translate }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="body">
+        <div class="title">
+          <label>{{ 'productToClaim.dataOfTheRejectedProduct' | translate }}</label>
+        </div>
+        <div class="info-content">
+          <div class="left">
+            <div class="top">
+              <div class="top-left">
+                <span>{{ 'productToClaim.inspectionDate' | translate }}</span>
+                <label>{{ '29/Dic/2021' }}</label>
+              </div>
+              <div class="top-right">
+                <span>Inspector</span>
+                <label>{{ 'AhernandezM' }}</label>
+              </div>
+            </div>
+            <div class="bot">
+              <span>{{ 'common.product' | translate }}</span>
+              <label>{{ 'R508500-100MG Rifapentine (100mg) TRC Inc. ' }}</label>
+            </div>
+          </div>
+          <div class="right">
+            <div class="top">
+              <div class="top-left">
+                <span>{{ 'quarantineManager.cause' | translate }}</span>
+                <label>{{ 'Fisicamente No Conforme' }}</label>
+              </div>
+              <div class="top-right">
+                <span>FEE</span>
+                <label>{{ '07/Enero/2022' }}</label>
+              </div>
+            </div>
+            <div class="bot">
+              <div class="bot-left">
+                <span>{{ 'common.type' | translate }}</span>
+                <label>{{ 'Estandares' }}</label>
+              </div>
+              <div class="bot-right">
+                <span>{{ 'Reporte de rechazo' }}</span>
+                <label>{{ 'Vial Roto' }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="image-content">
+          <div class="text">
+            <div>
+              <label [ngClass]="front && 'bold'" (click)="selectImage('front')">{{
+                'quarantineManager.frontPhoto' | translate
+              }}</label>
+              <label [ngClass]="up && 'bold'" (click)="selectImage('up')">{{
+                'quarantineManager.photoAbove' | translate
+              }}</label>
+              <label [ngClass]="down && 'bold'" (click)="selectImage('down')">{{
+                'quarantineManager.photoBelow' | translate
+              }}</label>
+            </div>
+          </div>
+          <div class="image">
+            <img
+              [src]="
+                front
+                  ? 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Contactlensverpakking_Confortissimo_38_-_Ot%C3%A9_Pharma_Sol_B.V._Uden.JPG/1200px-Contactlensverpakking_Confortissimo_38_-_Ot%C3%A9_Pharma_Sol_B.V._Uden.JPG'
+                  : up
+                  ? 'https://cloud10.todocoleccion.online/antiguedades/tc/2011/10/23/29005017.jpg'
+                  : 'https://cloud10.todocoleccion.online/antiguedades/tc/2011/10/23/29004952.jpg?size=720x720&crop=true'
+              "
+            />
+          </div>
+        </div>
+        <div class="actions-content">
+          <div class="title">
+            <label>{{ 'productToClaim.actions' | translate }}</label>
+          </div>
+          <div class="content1">
+            <div class="phs">
+              <span>{{ 'productToClaim.datePHSUSA' | translate }}</span>
+              <label>{{ '18/Enero/2022' }}</label>
+            </div>
+            <div class="qpf">
+              <span>{{ 'productToClaim.datePQF' | translate }}</span>
+              <app-date-picker
+                class="picker"
+                dateFormat="YYYYMMDD"
+                [color]="false"
+                [disabled]="false"
+                [heightInput]="(viewType$ | async) === 'macBookAir' ? '30px' : '25px'"
+              ></app-date-picker>
+            </div>
+            <div class="comments">
+              <span>{{ 'common.comments' | translate }}</span>
+              <app-generic-input></app-generic-input>
+            </div>
+          </div>
+          <div class="content2">
+            <label>{{ 'attendReview.uploadEvidence' | translate }}</label>
+            <div class="files">
+              <app-generic-input-file
+                class="file"
+                [showAddSelectedFile]="true"
+                (manualEmitFile)="addFile($event)"
+              ></app-generic-input-file>
+              <div>
+                <div class="file-name">
+                  <label>{{ '#1 · Archivo.pdf' }} </label>
+                  <img src="assets/Images/cerrar.svg" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="rb-content" [ngClass]="rbSelected ? 'green' : ''">
+          <div class="content1">
+            <div
+              ><label>1#· </label>
+              <app-radio-button
+                label="Reposición en tránsito con devolución por mensajería"
+                [height]="(viewType$ | async) === 'macBookAir' ? '20px' : '15px'"
+                (click)="changeColor()"
+              ></app-radio-button>
+            </div>
+            <div
+              ><label>2#· </label>
+              <app-radio-button
+                label="Reposición en tránsito con devolución por ruta"
+                [height]="(viewType$ | async) === 'macBookAir' ? '20px' : '15px'"
+                (click)="changeColor()"
+              ></app-radio-button>
+            </div>
+          </div>
+          <div class="content2">
+            <div
+              ><label>3#· </label>
+              <app-radio-button
+                label="Reposición en tránsito sin devolución a stock"
+                [height]="(viewType$ | async) === 'macBookAir' ? '20px' : '15px'"
+                (click)="changeColor()"
+              ></app-radio-button>
+            </div>
+            <div
+              ><label>4#· </label>
+              <app-radio-button
+                label="Reposición en tránsito sin devolución a destrucción"
+                [height]="(viewType$ | async) === 'macBookAir' ? '20px' : '15px'"
+                (click)="changeColor()"
+              ></app-radio-button>
+            </div>
+          </div>
+          <div class="content3">
+            <div
+              ><label>5#· </label>
+              <app-radio-button
+                label="Sin reposición con nota de crédito"
+                [height]="(viewType$ | async) === 'macBookAir' ? '20px' : '15px'"
+                (click)="changeColor()"
+              ></app-radio-button>
+            </div>
+            <div
+              ><label>6#· </label>
+              <app-radio-button
+                label="Cancelación"
+                [height]="(viewType$ | async) === 'macBookAir' ? '20px' : '15px'"
+                (click)="changeColor()"
+              ></app-radio-button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="button">
+        <button>{{ 'common.send' | translate }}</button>
+      </div>
+    </div>
+  </section>
+</div>
+<!--TODO: CAMBIAR POR DIALOG-->
+<app-pop-up-send-email
+  *ngIf="false"
+  [width]="(viewType$ | async) === 'macBookAir' ? '1000px' : '800px'"
+  [height]="(viewType$ | async) === 'macBookAir' ? '800px' : '700px'"
+  [titleHeader]="'Enviar reclamo a proveedor' | translate"
+  [activeContacts]="true"
+  [activeSaveSubject]="true"
+  [hasMultipleComments]="true"
+  [comments]="files"
+>
+</app-pop-up-send-email>

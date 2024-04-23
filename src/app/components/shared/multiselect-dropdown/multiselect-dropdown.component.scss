@@ -1,0 +1,427 @@
+@use 'base' as s;
+
+:host {
+  width: 100%;
+  height: 30px;
+
+  $grayColor: s.$gnGrisRata;
+
+  & > .dropList {
+    width: 100%;
+    padding: 0;
+    position: relative;
+    display: inline-block;
+
+    & > .container-drop {
+      width: 100%;
+      padding: 0;
+      position: relative;
+
+      & > .Title {
+        @include s.flexRowImportant;
+        background: #ffffff;
+        justify-content: space-between;
+        width: 100%;
+        height: 30px;
+        color: s.$pqBlack2;
+        box-sizing: border-box;
+        border: 1px solid #eceef0;
+        font-size: 16px;
+        align-items: center;
+
+        & > p {
+          @include s.flexRow;
+          @include s.absoluteCenter;
+          font-family: s.$font-family_roboto_regular;
+          font-size: 16px;
+          padding-left: 6px;
+        }
+
+        & > img {
+          width: 11px;
+          height: 6px;
+          // top: 5px;
+          position: relative;
+          padding-right: 5px;
+        }
+
+        & > .left {
+          @include s.flexRow;
+          @include s.absoluteCenter;
+          width: 100%;
+          text-align: left;
+          justify-content: flex-start;
+        }
+
+        & > i {
+          @include s.flexRow;
+          @include s.absoluteCenter;
+          color: lightblue;
+        }
+      }
+
+      & > .Title.Disabled {
+        pointer-events: none;
+        @include s.flexRow;
+        justify-content: space-between;
+        width: 100%;
+        height: 30px;
+        box-sizing: border-box;
+        border-bottom: 0.75px solid $grayColor;
+
+        & > p {
+          @include s.flexRow;
+          @include s.absoluteCenter;
+          font-family: s.$font-family_roboto_regular;
+          font-size: 16px;
+        }
+
+        & > i {
+          @include s.flexRow;
+          @include s.absoluteCenter;
+          color: lightgray;
+        }
+      }
+
+      & > .content {
+        width: 100%;
+        max-height: 200px;
+        top: 30px;
+        background-color: white;
+        border: 1px solid s.$gnInactivo;
+        position: absolute;
+        z-index: 100;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+        transition: all 1s;
+        box-sizing: border-box;
+
+        & > .triangulo {
+          width: 0px;
+          height: 0px;
+          border-left: 8px solid transparent; /* izquierda flecha */
+          border-right: 8px solid transparent; /* derecha flecha */
+          border-bottom: 8px solid s.$gnInactivo; /* base flecha y color*/
+          font-size: 0px;
+          line-height: 0px;
+          position: relative;
+          left: 0;
+          top: -9px;
+          right: 0;
+          margin: auto;
+          bottom: 0;
+        }
+
+        & > .triangulo2 {
+          width: 0;
+          height: 0;
+          border-left: 8px solid transparent; /* izquierda flecha */
+          border-right: 8px solid transparent; /* derecha flecha */
+          border-bottom: 8px solid white; /* base flecha y color*/
+          font-size: 0;
+          line-height: 0;
+          position: relative;
+          left: 0;
+          top: -15px;
+          margin: auto;
+          right: 0;
+          bottom: 0;
+        }
+
+        & > .search {
+          padding: 10px 20px 10px 20px;
+        }
+
+        .lista {
+          @include s.windowsScrollbars('none');
+          max-height: 125px;
+          margin: 0px 0px 0px 0px !important;
+          //
+          //overflow: scroll;
+          & > li {
+            @include s.flexRow;
+            height: 35px;
+            border-bottom: solid 0.75px s.$pqGray2 !important;
+            transition: 0.5s all;
+            color: s.$pqBlack2;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: s.$font-family_roboto_light;
+            font-weight: 300;
+            padding: 0 5px;
+            @include s.multiLineTextTruncate(1, 25px, 25px, #fff);
+            word-break: break-all;
+            box-sizing: border-box;
+
+            &:hover {
+              font-size: 13px;
+              color: s.$pqGreen;
+              font-weight: 300;
+            }
+          }
+
+          & > .category {
+            pointer-events: none;
+            color: s.$gnInactivo;
+            font-size: 1em;
+            cursor: none;
+            left: -5px;
+            padding: 0px 0px;
+          }
+        }
+
+        & > .button {
+          @include s.absoluteCenter;
+          @include s.flexRow;
+          margin-top: 20px;
+          border-radius: 0 0 5px 5px !important;
+        }
+      }
+    }
+  }
+
+  & > .dropListSelect {
+    width: 100%;
+    padding: 0;
+    position: relative;
+    display: inline-block;
+
+    & > .container-drop {
+      width: 100%;
+      padding: 0;
+      position: relative;
+
+      & > .Title {
+        @include s.flexRow;
+        width: 100%;
+        min-height: 30px;
+        color: s.$pqBlack2;
+        justify-content: space-between;
+        box-sizing: border-box;
+        border: 1px solid #eceef0;
+        font-size: 16px;
+        align-items: center;
+        background: #ffffff;
+
+        & > p {
+          @include s.absoluteCenter;
+          font-family: s.$font-family_roboto_regular;
+          font-weight: lighter;
+          font-size: 16px;
+          padding-left: 6px;
+        }
+
+        & > img {
+          width: 11px;
+          height: 6px;
+          // top: 5px;
+          position: relative;
+          margin-right: 5px;
+        }
+
+        & > .left {
+          @include s.flexRow;
+          @include s.absoluteCenter;
+          width: 100%;
+          text-align: left;
+          justify-content: flex-start;
+        }
+
+        & > i {
+          @include s.flexRow;
+          @include s.absoluteCenter;
+          color: lightblue;
+        }
+      }
+
+      & > .Title.Disabled {
+        pointer-events: none;
+        @include s.flexRow;
+        justify-content: space-between;
+        width: 100%;
+        height: 30px;
+        box-sizing: border-box;
+        border-bottom: 0.75px solid $grayColor;
+        font-size: 16px;
+
+        & > p {
+          @include s.flexRow;
+          @include s.absoluteCenter;
+          font-family: s.$font-family_roboto_regular;
+          font-weight: lighter;
+          font-size: 16px;
+        }
+
+        & > i {
+          @include s.flexRow;
+          @include s.absoluteCenter;
+          color: lightgray;
+        }
+      }
+
+      & > .content {
+        width: 100%;
+        max-height: 200px;
+        top: 30px;
+        background-color: white;
+        border: 1px solid s.$gnInactivo;
+        //border-radius: 0 0 5px 5px;
+        position: absolute;
+        z-index: 100;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+        transition: all 1s;
+        box-sizing: border-box;
+
+        & > .triangulo {
+          width: 0px;
+          height: 0px;
+          border-left: 8px solid transparent; /* izquierda flecha */
+          border-right: 8px solid transparent; /* derecha flecha */
+          border-bottom: 8px solid s.$gnInactivo; /* base flecha y color*/
+          font-size: 0px;
+          line-height: 0px;
+          position: relative;
+          left: 50%;
+          top: -8px;
+        }
+
+        & > .small {
+          left: 40%;
+        }
+
+        & > .triangulo2 {
+          width: 0px;
+          height: 0px;
+          border-left: 8px solid transparent; /* izquierda flecha */
+          border-right: 8px solid transparent; /* derecha flecha */
+          border-bottom: 8px solid white; /* base flecha y color*/
+          font-size: 0px;
+          line-height: 0px;
+          position: relative;
+
+          left: 52.2%;
+          top: -7px;
+          margin: -7px;
+        }
+
+        & > .search {
+          padding: 10px 20px 10px 20px;
+        }
+
+        .lista {
+          @include s.windowsScrollbars('none');
+          max-height: 125px;
+          overflow: auto;
+          margin: 0px 0px 0px 0px !important;
+
+          & > li {
+            @include s.flexRow;
+            color: s.$pqBlack2;
+            height: 32px;
+            border-bottom: solid 0.75px s.$pqGray2 !important;
+            transition: 0.5s all;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: s.$font-family_roboto_light;
+            font-weight: 300;
+            @include s.multiLineTextTruncate(1, 1.8em, 1.8em, #fff);
+            word-break: break-all;
+
+            &:hover {
+              font-size: 13px;
+              color: s.$pqGreen;
+              font-weight: 300;
+            }
+          }
+
+          & > .category {
+            pointer-events: none;
+            color: s.$gnInactivo;
+            font-size: 1em;
+          }
+        }
+
+        & > .button {
+          @include s.absoluteCenter;
+          @include s.flexRow;
+          margin-top: 20px;
+          border-radius: 0 0 5px 5px !important;
+        }
+      }
+    }
+  }
+
+  .tooltip {
+    position: relative !important;
+    z-index: 1;
+  }
+
+  .tooltip .tooltiptext {
+    border: 1px solid s.$pqGray2;
+    visibility: hidden;
+    width: 160px;
+    background-color: s.$gnAzulObscuro;
+    color: s.$pqWhite;
+    text-align: left;
+    position: absolute;
+    z-index: 10;
+    bottom: 100%;
+    left: 5px;
+    margin-left: -60px;
+    padding: 10px 15px;
+    /* Fade in tooltip - takes 1 second to go from 0% to 100% opac: */
+    opacity: 0;
+    transition: opacity 1s;
+
+    & > span {
+      color: s.$gnDorado;
+    }
+  }
+
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .Title2 {
+  }
+}
+
+.list {
+  font-family: s.$font-family_roboto_regular;
+  font-size: 13px;
+  font-weight: lighter;
+  @include s.flexRow;
+  min-height: 25px;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: left;
+
+  & > app-check-box {
+    padding-right: 10px;
+  }
+}
+
+.imgCheck {
+  padding-right: 5px;
+  height: 15px;
+}
+
+.tiposSelected {
+  @include s.flexRow;
+
+  & > p {
+    font-family: s.$font-family_roboto_regular;
+    font-weight: lighter;
+    padding-left: 6px;
+  }
+}
+
+.border-separator {
+  margin: 0px 15px;
+  width: calc(100% - 30px);
+  border-bottom: 0.5px solid #eceef0;
+}
+
+.container-li:hover {
+  background: #eceef0;
+}

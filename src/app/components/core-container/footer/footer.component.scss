@@ -1,0 +1,26 @@
+@use 'base' as s;
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  flex-grow: 1;
+  flex-basis: 100%;
+}
+
+.logoRyndem {
+  order: 1;
+  align-self: auto;
+  justify-content: center;
+  align-items: center;
+  width: 97px;
+  height: 25px;
+}
+
+#logoRyndem {
+  width: 97px;
+  height: 25px;
+}

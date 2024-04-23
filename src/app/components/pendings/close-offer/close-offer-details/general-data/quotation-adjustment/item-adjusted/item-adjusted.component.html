@@ -1,0 +1,67 @@
+<div class="item">
+  <div class="content">
+    <div class="info">
+      <label
+        >#{{ item.Index }} ·
+        <img class="imageBrand" #imageElement alt="" [src]="setImage(item.image)" (error)="errorImage()" />
+        <img
+          alt="type"
+          class="entry-type"
+          [src]="
+            'assets/Images/pre-processing/' +
+            (item.TipoPartida === typeItem.Original
+              ? 'originales.svg'
+              : item.TipoPartida === typeItem.Alternative
+              ? 'alternativas.svg'
+              : item.TipoPartida === typeItem.Saving
+              ? 'ahorro.svg'
+              : item.TipoPartida === typeItem.Complementary
+              ? 'complementarias.svg'
+              : item.TipoPartida === typeItem.Promotion
+              ? 'promocion.svg'
+              : 'originales.svg')
+          "
+        />
+        · #CAT · {{ item.Catalogo }} <span>{{ item.Descripcion }}</span>
+      </label>
+    </div>
+    <div class="price-adjusted">
+      <label
+        [ngClass]="{
+          red: item.AjusteRechazado,
+          yellow: item.AjusteParcialmenteAutorizado,
+          green: item.AjusteAutorizado
+        }"
+        >{{ 'closeOffer.adjustedPrice' | translate }}:
+        {{ item.PrecioAjustado | currency: (quote$ | async)?.claveMoneda:'symbol-narrow':'1.2-2' }}
+        {{ (quote$ | async)?.claveMoneda }}</label
+      >
+
+      <label>
+        · {{ 'closeOffer.priceUnitary' | translate }}:
+        {{ item.PrecioCatalogo | currency: (quote$ | async)?.claveMoneda:'symbol-narrow':'1.2-2' }}
+        {{ (quote$ | async)?.claveMoneda }}</label
+      >
+    </div>
+    <div class="comments">
+      <label>{{ 'common.comments' | translate }}: </label>
+      <label>{{ item.Comentario }}</label>
+    </div>
+  </div>
+  <div class="status">
+    <label
+      [ngClass]="{
+        red: item.AjusteRechazado,
+        yellow: item.AjusteParcialmenteAutorizado,
+        green: item.AjusteAutorizado
+      }"
+      >{{
+        item.AjusteParcialmenteAutorizado
+          ? ('closeOffer.partialAuthorized' | translate)
+          : item.AjusteAutorizado
+          ? ('closeOffer.acceptedAdjustment' | translate)
+          : ('closeOffer.rejectedAdjustment' | translate)
+      }}</label
+    >
+  </div>
+</div>

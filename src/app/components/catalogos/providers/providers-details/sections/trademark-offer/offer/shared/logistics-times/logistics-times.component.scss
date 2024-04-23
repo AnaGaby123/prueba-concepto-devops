@@ -1,0 +1,143 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  & > .container {
+    @include s.flexColumn;
+
+    & > .container-times {
+      @include s.flexRowNoWrap;
+
+      & > .left-container {
+        align-items: center;
+        display: grid;
+        grid-column-gap: 11px;
+        grid-row-gap: 12px;
+        grid-template-columns: 1fr 60px;
+        margin-right: 25px;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize12to13, bold, s.$pqBlack2);
+          @include s.Novecento-Bold;
+          text-align: end;
+          text-transform: uppercase;
+          white-space: nowrap;
+        }
+
+        & > .text-gray {
+          color: s.$pqGray3;
+        }
+
+        & > .green-title {
+          @include s.escaledFontFormat(s.$textSize14to16, bold, s.$pqGreen);
+          grid-column-end: span 2;
+        }
+
+        & > .input {
+        }
+      }
+
+      & > .right-container {
+        @include s.flexColumn;
+        flex: 1;
+        justify-content: center;
+
+        & > .rectangle {
+          display: grid;
+          grid-template-columns: 1fr 85px;
+          grid-column-gap: 10px;
+
+          &:first-of-type {
+            margin-bottom: 8px;
+          }
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize13to15, bold, s.$pqGreen);
+            @include s.Novecento-Bold;
+            text-align: end;
+
+            &:last-of-type {
+              text-align: center;
+              align-self: center;
+            }
+          }
+
+          &.green {
+            padding: 10px 0 10px 15px;
+            background-color: rgba(s.$pqGreen2, 0.09);
+
+            & > label {
+              color: s.$pqGreen2;
+
+              &:last-of-type {
+                text-align: center;
+              }
+            }
+          }
+        }
+
+        & > .toggle {
+          align-self: center;
+          margin-bottom: 15px;
+        }
+
+        & > .input {
+          flex: 0 0 120px;
+          margin-bottom: 15px;
+        }
+
+        & > .row {
+          @include s.flexRowNoWrap;
+          align-items: center;
+          justify-content: flex-end;
+          margin-bottom: 15px;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+            @include s.Roboto-Bold;
+            flex: 1 1 auto;
+            margin-right: 6px;
+          }
+
+          & > .input {
+            flex: 0 0 90px;
+          }
+        }
+      }
+
+      & > .message {
+        @include s.flexRow;
+        @include s.absoluteCenter;
+        padding: 30px;
+
+        & > label {
+          @include s.fontFormat(Novecento-Bold, 25px, bold, s.$gnHeadreTable);
+          text-align: center;
+        }
+      }
+    }
+
+    & > .container-text {
+      @include s.flexColumn;
+      align-items: flex-end;
+
+      & > .LabelDates {
+        @include s.escaledFontFormat(s.$textSize12to13, regular, s.$pqGreen);
+        @include s.Roboto-Regular;
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .container-times {
+        & > .right-container {
+          & > .rectangle {
+            grid-template-columns: 1fr 110px;
+          }
+        }
+      }
+    }
+  }
+}

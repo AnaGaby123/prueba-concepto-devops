@@ -1,0 +1,41 @@
+<div class="item-details-container">
+  <div>
+    <label class="gray">{{ 'control' | translate }}: </label>
+    <label class="black">{{
+      seeItemDetailsPopBottom?.isControlled
+        ? ('descriptionItemQuote.controlled' | translate)
+        : ('descriptionItemQuote.noControlled' | translate)
+    }}</label>
+  </div>
+  <div>
+    <label class="gray">{{ 'purchasePromise.item' | translate }}: </label>
+    <label class="black">{{ seeItemDetailsPopBottom?.numberItem || 'N/D' }}</label>
+  </div>
+  <div>
+    <label class="gray">{{ 'purchasePromise.units' | translate }}: </label>
+    <label class="black">{{ seeItemDetailsPopBottom?.amount || 'N/D' }}</label>
+  </div>
+  <div>
+    <label class="gray">{{ 'purchasePromise.lot' | translate }}: </label>
+    <label class="black">{{ seeItemDetailsPopBottom?.nameBatch || 'N/D' }}</label>
+  </div>
+  <div>
+    <label class="gray">{{ 'newProductExistingSupplier.regulatoryResearch.details.curatorshipValidity' | translate }}: </label>
+    <label class="black"
+      ><span class="black-bold" *ngIf="seeItemDetailsPopBottom?.dateValidation">
+        {{ 'quotation.details.untilThe' | translate }}
+      </span>
+      {{ seeItemDetailsPopBottom?.dateValidation ? (seeItemDetailsPopBottom?.dateValidation | dateFormatSlashShort) : 'N/D' }}
+    </label>
+  </div>
+  <div *ngIf="seeItemDetailsPopBottom?.edition">
+    <label class="gray">{{ 'purchasePromise.edition' | translate }}: </label>
+    <label class="black">{{ seeItemDetailsPopBottom?.edition || ('common.notSpecified' | translate) }}</label>
+  </div>
+  <div>
+    <label class="gray">{{ 'purchasePromise.expiration' | translate }}: </label>
+    <label class="black">{{
+      seeItemDetailsPopBottom?.dateExpiration ? (seeItemDetailsPopBottom?.dateExpiration | dateFormatSlashShort) : 'N/D'
+    }}</label>
+  </div>
+</div>

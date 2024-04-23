@@ -1,0 +1,50 @@
+<div class="without-impact">
+  <div>
+    <label class="green">{{
+      ('registerConfirmation.fea' | translate) + ' ' + (item.EmpresaEmbarque ? item.EmpresaEmbarque.Prefijo : 'NA')
+    }}</label>
+    <app-date-picker
+      class="date-picker"
+      dateFormat="YYYYMMDD"
+      [color]="false"
+      [disabled]="false"
+      [disabledCalendarDays]="selectNonWorkingDays$ | async"
+      [date]="item?.ocPartidaEdicionSinImpactoFEE.FechaEstimadaArriboDate"
+      [rangeStart]="rangeStart"
+      [rangeEnd]="feaRangeEnd"
+      (fecha)="handleDate($event)"
+    ></app-date-picker>
+  </div>
+  <div>
+    <label class="green">{{ 'common.pieces' | translate }}</label>
+    <app-generic-input
+      class="input"
+      [fontSize]="viewType === 'iPad' ? '13px' : '16px'"
+      [isDisable]="item.withoutImpactConfig || arrayLength === 4"
+      [labelFontColor]="'#42882a'"
+      [max]="item?.tempNumeroDePiezas"
+      [placeholder]="'0'"
+      [textAlign]="'center'"
+      [typeValidation]="inputValidators.Number"
+      [value]="item?.ocPartidaEdicionSinImpactoFEE.NumeroDePiezas"
+      (textData)="saveInputValue('NumeroDePiezas', $event)"
+    ></app-generic-input>
+    <label>{{ 'common.fromMinus' | translate }} {{ item?.tempNumeroDePiezas }}</label>
+  </div>
+  <div class="absolute">
+    <div class="buttons">
+      <button *ngIf="!item.withoutImpactConfig || !isTheLastIndex" [ngClass]="'active'" (click)="cancelConfig()">{{
+        'common.cancel' | translate
+      }}</button>
+      <button *ngIf="item.withoutImpactConfig && isTheLastIndex" [ngClass]="'active'" (click)="deleteConfig()">{{
+        'common.uncheck' | translate
+      }}</button>
+      <button [disabled]="!saveValidator" [ngClass]="saveValidator ? 'active' : 'disabled'" (click)="saveConfig()">{{
+        'common.accept' | translate
+      }}</button>
+    </div>
+    <div class="image">
+      <img src="assets/Images/dark-green-x.svg" alt="" (click)="cancelConfig()" />
+    </div>
+  </div>
+</div>

@@ -1,0 +1,287 @@
+<div id="attend-review-details">
+  <div class="top-container">
+    <div class="left-container" *ngIf="!(rebillView$ | async)">
+      <label class="title">{{ 'attendReview.billsToReview' | translate }}</label>
+      <div class="filters">
+        <app-hamburger-menu [options]="filters$ | async" [value]="(filter$ | async).value" (valueEmit)="setFilter($event)">
+        </app-hamburger-menu>
+        <app-search [placeholder]="'# de Factura, # de Pedido'" (textSearch)="handleKeySearch($event)"></app-search>
+      </div>
+      <div class="list-container">
+        <virtual-scroller [items]="bills$ | async" (vsUpdate)="billsScroller = $event" *ngIf="(requestStatus$ | async) === 3">
+          <div class="item-oc" *ngFor="let bill of billsScroller" (click)="selectedBill(bill)">
+            <div
+              class="indicator"
+              [ngClass]="bill.IdTPProformaPedido === (selectedBill$ | async).IdTPProformaPedido ? 'selected' : ''"
+            ></div>
+            <div class="info">
+              <label class="bold"
+                >#{{ bill.index }} · <span>{{ 'FO-' + bill.NumeroFactura }}</span></label
+              >
+              <div [ngClass]="bill.PedidosAsociados.length > 0 ? 'tooltip' : ''">
+                <label>{{ 'attendReview.associatedOrders' | translate }} · {{ bill.PedidosAsociados.length }}</label>
+                <div class="tooltip-text">
+                  <p *ngFor="let order of bill.PedidosAsociados">{{ order.NumeroOrdenDeCompra }}</p>
+                </div>
+              </div>
+
+              <label>{{ 'common.totalValue' | translate }} · {{ bill.MontoTotal | currency }} USD</label>
+              <label class="dates"
+                ><span class="gray">{{
+                  'FE: ' + (bill.FechaEstimadaEntrega ? (bill.FechaEstimadaEntrega | dateFormatSlashShort) : 'ND')
+                }}</span
+                ><span class="green">{{
+                  ' · FR : ' + (bill.FechaRevision ? (bill.FechaRevision | dateFormatSlashShort) : 'ND')
+                }}</span
+                ><span class="violet">{{ ' · ' + bill.EstadoTPProformaPedido }}</span></label
+              >
+            </div>
+            <div class="image">
+              <img [src]="bill.TipoValidacion === 'Física' ? 'assets/Images/labels/fisica.svg' : ''" alt="" />
+            </div>
+          </div>
+        </virtual-scroller>
+        <div class="loading" *ngIf="(requestStatus$ | async) === 1">
+          <app-loading></app-loading>
+        </div>
+        <div>
+          <app-without-results *ngIf="(requestStatus$ | async) !== 1 && (bills$ | async).length === 0"></app-without-results>
+        </div>
+      </div>
+      <div class="totals">
+        <label>#{{ (bills$ | async).length }} {{ 'common.invoices' | translate }}</label>
+        <label>{{ 'common.totalAmount' | translate }}: {{ (customer$ | async).MontoTotal | currency }} USD</label>
+      </div>
+    </div>
+    <div class="right-container" [ngClass]="(rebillView$ | async) ? 'rebillPadding' : ''">
+      <label class="title" *ngIf="!(rebillView$ | async)"
+        ><span class="ocean">#{{ 1 }} · FO-{{ 20943856 }} · </span> {{ 'common.totalAmount' | translate }}
+        {{ (selectedBill$ | async)?.MontoTotal | currency }} USD
+        <span [ngClass]="'purple'">· {{ (selectedBill$ | async)?.EstadoTPProformaPedido }}</span></label
+      >
+      <div class="header-container">
+        <div class="header">
+          <div class="client-container">
+            <div class="client-title">
+              <label>{{ 'common.client' | translate }}</label>
+              <label *ngIf="rebillView$ | async"> · </label>
+              <div #popUpTarget>
+                <img *ngIf="rebillView$ | async" (click)="popUpIsOpenConditions = true" src="assets/Images/labels/moroso.svg" />
+              </div>
+            </div>
+            <div class="client">
+              <div>
+                <img src="assets/Images/clientes/logo_proquifa_hover.svg" alt="" />
+              </div>
+              <div class="client-info">
+                <div>
+                  <label>{{ (customer$ | async).NombreCliente }}</label>
+                </div>
+                <label>{{ 'common.client' | translate }} AA+</label>
+              </div>
+            </div>
+          </div>
+          <div class="contact-data">
+            <div class="title">
+              <label>{{ 'purchasePromise.contactData' | translate }}</label>
+            </div>
+            <div class="data">
+              <div>
+                <div class="row">
+                  <div class="image">
+                    <img src="assets/Images/contacto.svg" alt="" />
+                  </div>
+                  <label class="bold">{{
+                    (selectedBill$ | async)?.contact?.Nombres
+                      ? (selectedBill$ | async).contact.Nombres +
+                        ' ' +
+                        (selectedBill$ | async)?.contact?.ApellidoPaterno +
+                        ' ' +
+                        (selectedBill$ | async)?.contact?.ApellidoMaterno
+                      : 'N/D'
+                  }}</label>
+                </div>
+                <div class="row">
+                  <div class="image">
+                    <img src="assets/Images/quotation/mail.svg" alt="" />
+                  </div>
+                  <label>{{
+                    (selectedBill$ | async)?.contact?.CorreoElectronico?.length > 0
+                      ? ((selectedBill$ | async)?.contact?.CorreoElectronico)[0].Correo
+                      : 'N/D'
+                  }}</label>
+                </div>
+                <div class="row">
+                  <div class="image">
+                    <img src="assets/Images/quotation/phone.svg" alt="" />
+                  </div>
+                  <label>{{
+                    (selectedBill$ | async)?.contact?.NumeroTelefonico?.length > 0
+                      ? (selectedBill$ | async).contact.NumeroTelefonico[0].Numero +
+                        ((selectedBill$ | async).contact.NumeroTelefonico[0].Extension
+                          ? ' · Ext. ' + (selectedBill$ | async).contact.NumeroTelefonico[0].Extension
+                          : '')
+                      : 'N/D'
+                  }}</label>
+                </div>
+              </div>
+              <div>
+                <div class="row">
+                  <label class="bold">{{ 'purchasePromise.department' | translate }}: </label>
+                  <label>{{
+                    (selectedBill$ | async)?.contact?.Departamento ? (selectedBill$ | async).contact.Departamento : 'N/D'
+                  }}</label>
+                </div>
+                <div class="row">
+                  <label class="bold">{{ 'purchasePromise.position' | translate }}: </label>
+                  <label>{{ (selectedBill$ | async)?.contact?.Puesto ? (selectedBill$ | async).contact.Puesto : 'N/' }}</label>
+                </div>
+              </div>
+              <div>
+                <div class="row">
+                  <label class="bold">{{ 'purchasePromise.decisionLevel' | translate }}: </label>
+                  <label>{{
+                    (selectedBill$ | async)?.contact?.NivelDecision ? (selectedBill$ | async).contact.NivelDecision : 'N/D'
+                  }}</label>
+                </div>
+                <div class="row">
+                  <label class="green bold">Cliente con Crédito</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="center-container">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+  <footer class="bottom-container">
+    <div *ngIf="!(rebillView$ | async)">
+      <label>OC: </label>
+      <label>{{ 'common.purchaseOrder' | translate }}</label>
+    </div>
+  </footer>
+</div>
+<app-custom-position-pop-up
+  class="pop-up-conditions"
+  *ngIf="popUpIsOpenConditions"
+  [adjustForSmallTarget]="30"
+  [minHeight]="(viewType$ | async) === 'macBookAir' ? '741px' : '450px'"
+  [minWidth]="(viewType$ | async) === 'macBookAir' ? '1179px' : '800px'"
+  [padding]="'0'"
+  [popUpPosition]="'right-start'"
+  (closeEmitter)="closePopUp($event, 'conditions')"
+  [target]="popUpTarget"
+>
+  <div id="container-pop-up-conditions">
+    <div class="header">
+      <img src="assets/Images/strategy/bad.svg" />
+      <label>{{ 'Nombre cliente' }}</label>
+    </div>
+    <div class="content-info">
+      <div class="bar-line">
+        <div>
+          <label>{{ 'strategy.details.paymentConditions' | translate }}</label>
+          <label class="green">{{ 60 + ' Dìas' }}</label>
+        </div>
+        <div>
+          <label>{{ 'strategy.details.creditLine' | translate }}</label>
+          <label class="green">{{ (10000 | currency: 'USD':'symbol-narrow':'1.0-2') + ' USD' }}</label>
+        </div>
+        <div>
+          <label>{{ 'strategy.details.healthyDebt' | translate }}</label>
+          <label class="green">{{ (1000 | currency: 'USD':'symbol-narrow':'1.0-2') + ' USD' }}</label>
+        </div>
+        <div>
+          <label>{{ 'strategy.details.expiredDebt' | translate }}</label>
+          <label class="red">{{ (2000 | currency: 'USD':'symbol-narrow':'1.0-2') + ' USD' }}</label>
+        </div>
+        <div>
+          <label>{{ 'strategy.details.positiveBalance' | translate }}</label>
+          <label class="green">{{ (300 | currency: 'USD':'symbol-narrow':'1.0-2') + ' USD' }}</label>
+        </div>
+        <div>
+          <label>{{ 'strategy.details.remains' | translate }}</label>
+          <label class="yellow">{{ (7000 | currency: 'USD':'symbol-narrow':'1.0-2') + ' USD' }}</label>
+        </div>
+      </div>
+      <div class="complaints">
+        <div class="container-chart">
+          <div class="chart-container">
+            <div class="chart">
+              <app-doughnut-chart
+                [title]=""
+                [typeChart]="11"
+                [titleDetails]="'Totales'"
+                [fontSize]="'small'"
+                [showPercentage]="false"
+                [adjustTotals]="true"
+                [enableOnClick]="true"
+              >
+              </app-doughnut-chart>
+            </div>
+            <div class="labels">
+              <div>
+                <span class="circulo" [style.background]="'#dd4543'"></span>
+                <p>{{ 'strategy.details.delinquent' | translate }}</p>
+              </div>
+              <div>
+                <span class="circulo" [style.background]="'#4ba92b'"></span>
+                <p>{{ 'strategy.details.healthyDebt' | translate }}</p>
+              </div>
+              <div>
+                <span class="circulo" [style.background]="'#5793f3'"></span>
+                <p>{{ 'strategy.details.creditNotes' | translate }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container-table">
+          <div>
+            <div>
+              <span class="circulo" [style.background]="'#dd4543'"></span>
+              <label>{{ 'MOROSIDAD' }}</label>
+            </div>
+            <div>
+              <app-hamburger-menu [position]="'right'"></app-hamburger-menu>
+            </div>
+          </div>
+          <div class="table">
+            <div>
+              <div class="body">
+                <virtual-scroller>
+                  <div class="row-items-quotation">
+                    <div>
+                      <div class="line-one">
+                        <p>#{{ 1 }} · </p>
+                        <p>{{ 'F0-123456787' }}</p>
+                      </div>
+                      <div class="line-two">
+                        <p>{{ 'Fecha estimada de cobro' + ' 20/Dic/2018 ' }}</p>
+                      </div>
+                    </div>
+                    <div>
+                      <label class="text-red">
+                        {{ '$200.00 USD' }}
+                      </label>
+                    </div>
+                  </div>
+                </virtual-scroller>
+              </div>
+            </div>
+          </div>
+          <div class="footer-table">
+            <div>
+              <label class="label-1">
+                {{ 5 + ' Facturas' }}
+              </label>
+              <label class="label-2"> {{ (2000 | currency: 'USD':'symbol-narrow':'1.0-2') + ' USD' }}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-custom-position-pop-up>

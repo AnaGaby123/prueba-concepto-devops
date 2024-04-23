@@ -1,0 +1,764 @@
+<div class="performance-container" [ngClass]="!isMexican ? 'with-fixed-cost' : 'without-fixed-cost'">
+  <div class="performance-table-header">
+    <label>{{ 'formProvider.step8.sector' | translate }}</label>
+    <label>{{ 'formProvider.step8.industries' | translate }}</label>
+    <div>
+      <label>{{ 'formProvider.step8.inputs.factor' | translate }}</label>
+      <span> {{ 'formProvider.step8.inputs.fixedCost' | translate }}</span>
+    </div>
+
+    <label *ngIf="!isMexican">{{ 'formProvider.step8.infrastructures' | translate }}</label>
+    <label class="utility">{{ 'formProvider.step8.subtitles.utility' | translate }}</label>
+  </div>
+  <div class="performance-table-container">
+    <virtual-scroller [items]="industryFamily" [bufferAmount]="3" (vsUpdate)="industryFamilyUpdated = $event">
+      <div
+        class="item"
+        *ngFor="let item of industryFamilyUpdated; let i = index; trackBy: handleTrackBy"
+        [ngClass]="isHoveColorOriginal ? 'hover-color-original' : 'hover-color'"
+      >
+        <div class="sector"
+          ><label>{{ item?.Sector }}</label></div
+        >
+        <div class="industries">
+          <label>{{ item?.Industria }}</label>
+        </div>
+        <div class="container-cost-infrastructures-utility">
+          <div class="fixed-cost">
+            <app-generic-input
+              class="input"
+              [enableEdit]="enableEdit"
+              [fontColor]="'#008894'"
+              [maxlength]="14"
+              [placeholder]="'0'"
+              [textAlign]="'center'"
+              [typeValidation]="inputValidators.Percentage"
+              [value]="item?.ConfiguracionComisionProveedor?.FactorDeCostoFijo"
+              (textData)="handleInputChange($event, fields.FactorDeCostoFijo, item.IdMarcaFamiliaCatIndustria)"
+            >
+            </app-generic-input>
+            <label>%</label>
+          </div>
+          <div class="infrastructures" *ngIf="!isMexican">
+            <label class="text-bold">{{ 'formProvider.step8.commercialFront' | translate }}</label>
+            <app-generic-input
+              class="input"
+              [enableEdit]="enableEdit"
+              [maxlength]="14"
+              [placeholder]="'0'"
+              [textAlign]="'center'"
+              [typeValidation]="inputValidators.Percentage"
+              [value]="item?.ConfiguracionComisionProveedor?.ComisionFrenteComercial"
+              (textData)="handleInputChange($event, fields.ComisionFrenteComercial, item.IdMarcaFamiliaCatIndustria)"
+            >
+            </app-generic-input>
+            <label>%</label>
+            <label class="text-bold">{{ 'formProvider.step8.Pharma' | translate }}</label>
+            <app-generic-input
+              class="input"
+              [enableEdit]="enableEdit"
+              [maxlength]="14"
+              [placeholder]="'0'"
+              [textAlign]="'center'"
+              [typeValidation]="inputValidators.Percentage"
+              [value]="item?.ConfiguracionComisionProveedor.ComisionPharma"
+              (textData)="handleInputChange($event, fields.ComisionPharma, item.IdMarcaFamiliaCatIndustria)"
+            >
+            </app-generic-input>
+            <label>%</label>
+          </div>
+          <div class="utility">
+            <app-utility [providerUtilities]="item" [enableEdit]="enableEdit" [viewType]="viewType"></app-utility>
+          </div>
+        </div>
+        <div class="breakdown">
+          <label
+            [id]="i"
+            (click)="setTarget(i, item)"
+            [ngClass]="{
+              disabled: actualConfiguration.IdConfiguracionPrecioProveedorFamilia === defaultUUID || (hasChanges$ | async)
+            }"
+            >{{ 'formProvider.step8.seeBreakdown' | translate }}</label
+          >
+        </div>
+      </div>
+    </virtual-scroller>
+  </div>
+</div>
+<app-custom-position-pop-up
+  *ngIf="target && popBreakdownIsOpen$ | async"
+  [adjustForSmallTarget]="(viewType$ | async) === 'macBookAir' ? 60 : 80"
+  [closeButtonSeparation]="(viewType$ | async) === 'macBookAir' ? '18px' : '15px'"
+  [closeButtonSize]="(viewType$ | async) === 'macBookAir' ? '20px' : '18px'"
+  [maxHeight]="(viewType$ | async) === appViewTypes.small ? '600px' : '750px'"
+  [maxWidth]="(viewType$ | async) === appViewTypes.small ? '880px' : '970px'"
+  [minHeight]="(viewType$ | async) === appViewTypes.small ? '600px' : '750px'"
+  [minWidth]="(viewType$ | async) === appViewTypes.small ? '820px' : '970px'"
+  [padding]="'0'"
+  [popUpPosition]="'left-end'"
+  [target]="target"
+  (closeEmitter)="handleCloseBreakdownPopup()"
+>
+  <div class="pop-container">
+    <div class="title-container">
+      <label
+        >{{ (selectedFamily | async).NombreMarca || 'N/D' }}
+        <span>
+          · {{ (selectedFamily | async)?.Tipo }} {{ (selectedFamily | async)?.Subtipo }}
+          {{ (selectedFamily | async)?.Control }}
+        </span></label
+      >
+      <label>
+        {{ (selectedCatIndustryBrand | async)?.Sector }} · {{ (selectedCatIndustryBrand | async)?.Industria }}
+        <span
+          >· {{ (selectedFamily | async)?.Productos ?? 0 }}
+          {{ (selectedFamily | async)?.Productos === 1 ? 'Producto' : 'Productos' }}</span
+        ></label
+      >
+    </div>
+    <div
+      class="search-bar-container"
+      *ngIf="
+        (selectedLevelConfigurationTab$ | async)?.level === levels.Family ||
+        (selectedLevelConfigurationTab$ | async)?.level === levels.CharacteristicGrouper
+      "
+    >
+      <app-search
+        class="search-bar"
+        [placeholder]="'Precio Lista'"
+        [searchTerm]="(asidePrices$ | async).searchTerm"
+        (textSearch)="handlePriceForPanelSearch($event)"
+      >
+      </app-search>
+    </div>
+    <div
+      class="price-list-utility-container"
+      *ngIf="!(asidePrices$ | async).isLoading && !lodashIsEmpty((asidePrices$ | async).pricesList?.Results)"
+      [ngClass]="{
+        'without-search-bar':
+          (selectedLevelConfigurationTab$ | async)?.level === levels.listPrice ||
+          (selectedLevelConfigurationTab$ | async)?.level === levels.Product
+      }"
+    >
+      <div class="utility">
+        <label>{{ 'formProvider.step8.subtitles.utility' | translate }}</label>
+        <div class="utilities">
+          <div
+            class="utility-item"
+            [ngClass]="(selectedIncomeLevel$ | async)?.NivelIngreso === fields.AAPlus ? 'selected' : ''"
+            (click)="selectIncomeLevel(fields.AAPlus)"
+          >
+            <div class="point"></div>
+            <label
+              ><span class="income-level"> {{ (getIncomeLevels(fields.AAPlus) | async).NivelIngreso }} · </span>
+              <span class="value">
+                {{ (getIncomeLevels(fields.AAPlus) | async)?.PrecioProquifaNetProveedor | currency: 'USD':'symbol':'1.2-2' }}
+                ·
+              </span>
+              <span class="negative" *ngIf="(getIncomeLevels(fields.AAPlus) | async).isNegative">- </span>
+              <span class="percentage" [ngClass]="(getIncomeLevels(fields.AAPlus) | async).isNegative ? 'negative' : ''">
+                {{ (getIncomeLevels(fields.AAPlus) | async).percentage | pqfPercentageTransform: 2 }}
+              </span>
+            </label>
+          </div>
+          <div
+            class="utility-item"
+            [ngClass]="(selectedIncomeLevel$ | async)?.NivelIngreso === fields.MM ? 'selected' : ''"
+            (click)="selectIncomeLevel(fields.MM)"
+          >
+            <div class="point"></div>
+            <label
+              ><span class="income-level"> {{ (getIncomeLevels(fields.MM) | async)?.NivelIngreso }} · </span>
+              <span class="value">
+                {{ (getIncomeLevels(fields.MM) | async)?.PrecioProquifaNetProveedor | currency: 'USD':'symbol':'1.2-2' }}
+                ·
+              </span>
+              <span class="negative" *ngIf="(getIncomeLevels(fields.MM) | async).isNegative">- </span>
+              <span class="percentage" [ngClass]="(getIncomeLevels(fields.MM) | async).isNegative ? 'negative' : ''">
+                {{ (getIncomeLevels(fields.MM) | async).percentage | pqfPercentageTransform: 2 }}
+              </span>
+            </label>
+          </div>
+          <div
+            class="utility-item"
+            [ngClass]="(selectedIncomeLevel$ | async).NivelIngreso === fields.AA ? 'selected' : ''"
+            (click)="selectIncomeLevel(fields.AA)"
+          >
+            <div class="point"></div>
+            <label
+              ><span class="income-level"> {{ (getIncomeLevels(fields.AA) | async).NivelIngreso }} · </span>
+              <span class="value">
+                {{ (getIncomeLevels(fields.AA) | async)?.PrecioProquifaNetProveedor | currency: 'USD':'symbol':'1.2-2' }}
+                ·
+              </span>
+              <span class="negative" *ngIf="(getIncomeLevels(fields.AA) | async).isNegative">- </span>
+              <span class="percentage" [ngClass]="(getIncomeLevels(fields.AA) | async).isNegative ? 'negative' : ''">
+                {{ (getIncomeLevels(fields.AA) | async).percentage | pqfPercentageTransform: 2 }}
+              </span>
+            </label>
+          </div>
+          <div
+            class="utility-item"
+            [ngClass]="(selectedIncomeLevel$ | async)?.NivelIngreso === fields.MB ? 'selected' : ''"
+            (click)="selectIncomeLevel(fields.MB)"
+          >
+            <div class="point"></div>
+            <label
+              ><span class="income-level"> {{ (getIncomeLevels(fields.MB) | async).NivelIngreso }} · </span>
+              <span class="value">
+                {{ (getIncomeLevels(fields.MB) | async).PrecioProquifaNetProveedor | currency: 'USD':'symbol':'1.2-2' }}
+                ·
+              </span>
+              <span class="negative" *ngIf="(getIncomeLevels(fields.MB) | async).isNegative">- </span>
+              <span class="percentage" [ngClass]="(getIncomeLevels(fields.MB) | async).isNegative ? 'negative' : ''">
+                {{ (getIncomeLevels(fields.MB) | async).percentage | pqfPercentageTransform: 2 }}
+              </span>
+            </label>
+          </div>
+          <div
+            class="utility-item"
+            [ngClass]="(selectedIncomeLevel$ | async).NivelIngreso === fields.AM ? 'selected' : ''"
+            (click)="selectIncomeLevel(fields.AM)"
+          >
+            <div class="point"></div>
+            <label
+              ><span class="income-level"> {{ (getIncomeLevels(fields.AM) | async).NivelIngreso }} · </span>
+              <span class="value">
+                {{ (getIncomeLevels(fields.AM) | async).PrecioProquifaNetProveedor | currency: 'USD':'symbol':'1.2-2' }}
+                ·
+              </span>
+              <span class="negative" *ngIf="(getIncomeLevels(fields.AM) | async).isNegative">- </span>
+              <span class="percentage" [ngClass]="(getIncomeLevels(fields.AM) | async).isNegative ? 'negative' : ''">
+                {{ (getIncomeLevels(fields.AM) | async).percentage | pqfPercentageTransform: 2 }}
+              </span>
+            </label>
+          </div>
+          <div
+            class="utility-item"
+            [ngClass]="(selectedIncomeLevel$ | async).NivelIngreso === fields.BAJO ? 'selected' : ''"
+            (click)="selectIncomeLevel(fields.BAJO)"
+          >
+            <div class="point"></div>
+            <label
+              ><span class="income-level"> {{ (getIncomeLevels(fields.BAJO) | async).NivelIngreso }} · </span>
+              <span class="value">
+                {{ (getIncomeLevels(fields.BAJO) | async).PrecioProquifaNetProveedor | currency: 'USD':'symbol':'1.2-2' }}
+                ·
+              </span>
+              <span class="negative" *ngIf="(getIncomeLevels(fields.BAJO) | async).isNegative">- </span>
+              <span class="percentage" [ngClass]="(getIncomeLevels(fields.BAJO) | async).isNegative ? 'negative' : ''">
+                {{ (getIncomeLevels(fields.BAJO) | async).percentage | pqfPercentageTransform: 2 }}
+              </span>
+            </label>
+          </div>
+          <div
+            class="utility-item"
+            [ngClass]="(selectedIncomeLevel$ | async).NivelIngreso === fields.AB ? 'selected' : ''"
+            (click)="selectIncomeLevel(fields.AB)"
+          >
+            <div class="point"></div>
+            <label
+              ><span class="income-level"> {{ (getIncomeLevels(fields.AB) | async).NivelIngreso }} · </span>
+              <span class="value">
+                {{ (getIncomeLevels(fields.AB) | async).PrecioProquifaNetProveedor | currency: 'USD':'symbol':'1.2-2' }}
+                ·
+              </span>
+              <span class="negative" *ngIf="(getIncomeLevels(fields.AB) | async).isNegative">- </span>
+              <span class="percentage" [ngClass]="(getIncomeLevels(fields.AB) | async).isNegative ? 'negative' : ''">
+                {{ (getIncomeLevels(fields.AB) | async).percentage | pqfPercentageTransform: 2 }}
+              </span>
+            </label>
+          </div>
+          <div
+            class="utility-item"
+            [ngClass]="(selectedIncomeLevel$ | async).NivelIngreso === fields.WEB ? 'selected' : ''"
+            (click)="selectIncomeLevel(fields.WEB)"
+          >
+            <div class="point"></div>
+            <label
+              ><span class="income-level"> {{ (getIncomeLevels(fields.WEB) | async).NivelIngreso }} · </span>
+              <span class="value">
+                {{ (getIncomeLevels(fields.WEB) | async).PrecioProquifaNetProveedor | currency: 'USD':'symbol':'1.2-2' }}
+                ·
+              </span>
+              <span class="negative" *ngIf="(getIncomeLevels(fields.WEB) | async).isNegative">- </span>
+              <span class="percentage" [ngClass]="(getIncomeLevels(fields.WEB) | async).isNegative ? 'negative' : ''">
+                {{ (getIncomeLevels(fields.WEB) | async).percentage | pqfPercentageTransform: 2 }}
+              </span>
+            </label>
+          </div>
+          <div
+            class="utility-item"
+            [ngClass]="(selectedIncomeLevel$ | async).NivelIngreso === fields.MA ? 'selected' : ''"
+            (click)="selectIncomeLevel(fields.MA)"
+          >
+            <div class="point"></div>
+            <label
+              ><span class="income-level"> {{ (getIncomeLevels(fields.MA) | async).NivelIngreso }} · </span>
+              <span class="value">
+                {{ (getIncomeLevels(fields.MA) | async).PrecioProquifaNetProveedor | currency: 'USD':'symbol':'1.2-2' }}
+                ·
+              </span>
+              <span class="negative" *ngIf="(getIncomeLevels(fields.MA) | async).isNegative">- </span>
+              <span class="percentage" [ngClass]="(getIncomeLevels(fields.MA) | async).isNegative ? 'negative' : ''">
+                {{ (getIncomeLevels(fields.MA) | async).percentage | pqfPercentageTransform: 2 }}
+              </span>
+            </label>
+          </div>
+          <div
+            class="utility-item"
+            [ngClass]="(selectedIncomeLevel$ | async).NivelIngreso === fields.DIST ? 'selected' : ''"
+            (click)="selectIncomeLevel(fields.DIST)"
+          >
+            <div class="point"></div>
+            <label
+              ><span class="income-level"> {{ (getIncomeLevels(fields.DIST) | async).NivelIngreso }} · </span>
+              <span class="value">
+                {{ (getIncomeLevels(fields.DIST) | async).PrecioProquifaNetProveedor | currency: 'USD':'symbol':'1.2-2' }}
+                ·
+              </span>
+              <span class="negative" *ngIf="(getIncomeLevels(fields.DIST) | async).isNegative">- </span>
+              <span class="percentage" [ngClass]="(getIncomeLevels(fields.DIST) | async).isNegative ? 'negative' : ''">
+                {{ (getIncomeLevels(fields.DIST) | async).percentage | pqfPercentageTransform: 2 }}
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="list-price-container">
+        <div class="prices">
+          <label
+            >{{ 'formProvider.step8.titleListPrice' | translate }} {{ (selectedAsidePrice$ | async)?.PrecioLista }}
+            {{ (selectedAsidePrice$ | async)?.MonedaVentaProveedor }}</label
+          >
+          <label *ngIf="(selectedAsidePrice$ | async)?.PrecioListaMonedaProveedor"
+            >{{ 'formProvider.step8.titlePriceProvider' | translate }}
+            {{ (selectedAsidePrice$ | async)?.PrecioListaMonedaProveedor }}
+            {{ (selectedAsidePrice$ | async)?.ClaveMonedaPagos }}</label
+          >
+          <label *ngIf="!(selectedAsidePrice$ | async)?.PrecioListaMonedaProveedor"
+            >{{ 'formProvider.step8.titlePriceProvider' | translate }} N/D</label
+          >
+        </div>
+        <div>
+          <div class="list-price-content">
+            <div class="utility-title">
+              <label>
+                {{ (selectedIncomeLevel$ | async)?.NivelIngreso }} ·
+                {{ (selectedIncomeLevel$ | async)?.PrecioProquifaNetProveedor | currency: 'USD':'symbol':'1.2-6' }} ·
+                <span *ngIf="(selectedIncomeLevel$ | async).isNegative">-</span>
+                {{ (selectedIncomeLevel$ | async)?.percentage | pqfPercentageTransform: 2 }}</label
+              ></div
+            >
+            <div class="resume-amount-container">
+              <div>
+                <label class="content-text">
+                  {{ 'formProvider.step8.subtitles.minimumAmountOC' | translate }}
+                </label>
+                <label>
+                  {{
+                  actualConfiguration.ConfiguracionPrecioProveedorFamilia?.MontoMinimoOC ?? 0| currency: 'USD':'symbol':'1.2-6'
+                  }}
+                </label>
+              </div>
+              <div>
+                <label class="content-text">
+                  {{ 'formProvider.step8.subtitles.discounts' | translate }}
+                </label>
+                <label>
+                  {{ actualConfiguration.ConfiguracionPrecioProveedor?.PorcentajeDescuento | pqfPercentageTransform: 2 }}
+                </label>
+              </div>
+              <div>
+                <label> {{ 'formProvider.step8.subtitles.customsValue' | translate }} </label>
+                <label>
+                  {{ (selectedIncomeLevel$ | async)?.ValorEnAduana ?? 0 | currency: 'USD':'symbol':'1.2-6' }}
+                </label>
+              </div>
+            </div>
+            <div class="items-container">
+              <app-custom-position-pop-up
+                class="popup"
+                *ngIf="popupIsOpen"
+                [adjustForSmallTarget]="10"
+                [backgroundColor]="'#33333c'"
+                [borderColor]="'#33333c'"
+                [borderRadius]="'8px'"
+                [closeButton]="false"
+                [maxHeight]="'auto'"
+                [maxWidth]="(viewType$ | async) === appViewTypes.small ? '280px' : '380px'"
+                [minHeight]="'auto'"
+                [minWidth]="'auto'"
+                [padding]="'7px 12px'"
+                [popUpPosition]="'bottom-center'"
+                [target]="popupTarget"
+                [triangleBackgroundColor]="'#33333c'"
+              >
+                <p class="item-text">{{ popupText }}</p>
+              </app-custom-position-pop-up>
+              <div class="item">
+                <label class="item-title"> {{ 'formProvider.step8.subtitles.numberOfPieces' | translate }}: </label>
+                <label
+                  class="item-text"
+                  (mouseenter)="handleOpenPopup($event.target, formulasDescription.PiecesNumber)"
+                  (mouseleave)="handleClosePopup()"
+                >
+                  {{
+                  actualConfiguration.ConfiguracionPrecioProveedorFamilia?.MontoMinimoOC ?? 0 | currency: 'USD':'symbol':'1.2-6'
+                  }}
+                  / ({{ (selectedIncomeLevel$ | async).BasePrecioLista | currency: 'USD':'symbol':'1.2-6' }} * (1 -
+                  {{ actualConfiguration.ConfiguracionPrecioProveedor?.PorcentajeDescuento | pqfPercentageTransform: 2 }}
+                  )) =
+                  {{ (selectedIncomeLevel$ | async).NumPiezas | currency: 'USD':'symbol':'1.2-6' }}
+                </label>
+              </div>
+              <div class="item">
+                <label class="item-title"> {{ 'formProvider.step8.subtitles.customsValue' | translate }}: </label>
+                <label
+                  class="item-text"
+                  (mouseenter)="handleOpenPopup($event.target, formulasDescription.CustomValue)"
+                  (mouseleave)="handleClosePopup()"
+                >
+                  {{ (selectedIncomeLevel$ | async).NumPiezas | currency: 'USD':'symbol':'1.2-6' }} * ({{
+                    (selectedIncomeLevel$ | async).BasePrecioLista | currency: 'USD':'symbol':'1.2-6'
+                  }}
+                  * (1 -
+                  {{ actualConfiguration.ConfiguracionPrecioProveedor?.PorcentajeDescuento | pqfPercentageTransform: 2 }}
+                  )) +
+                  {{ actualConfiguration.ConfiguracionPrecioProveedor?.PrecioFletePC ?? 0 | currency: 'USD':'symbol':'1.2-6' }}
+                  + (({{ (selectedIncomeLevel$ | async).NumPiezas | currency: 'USD':'symbol':'1.2-6' }} * ({{
+                    (selectedIncomeLevel$ | async).BasePrecioLista | currency: 'USD':'symbol':'1.2-6'
+                  }}
+                  * (1 -
+                  {{ actualConfiguration.ConfiguracionPrecioProveedor?.PorcentajeDescuento | pqfPercentageTransform: 2 }}
+                  ))) *
+                  {{
+                    (selectedCatIndustryBrandFamily$ | async).ConfiguracionComisionProveedor?.ComisionPharma
+                      | pqfPercentageTransform: 2
+                  }})= {{ (selectedIncomeLevel$ | async).ValorEnAduana | currency: 'USD':'symbol':'1.2-6' }}
+                </label>
+              </div>
+              <div class="item">
+                <label class="item-title"> {{ 'formProvider.step8.subtitles.import' | translate }}: </label>
+                <label
+                  class="item-text"
+                  (mouseenter)="handleOpenPopup($event.target, formulasDescription.Import)"
+                  (mouseleave)="handleClosePopup()"
+                >
+                  ({{ (selectedIncomeLevel$ | async).ValorEnAduana | currency: 'USD':'symbol':'1.2-6' }} *
+                  {{ actualConfiguration.ConfiguracionPrecioProveedor?.IGI | pqfPercentageTransform: 2 }}) + ({{
+                    (selectedIncomeLevel$ | async).ValorEnAduana | currency: 'USD':'symbol':'1.2-6'
+                  }}
+                  * {{ actualConfiguration.ConfiguracionPrecioProveedor?.DTA | pqfPercentageTransform: 2 }}) +
+                  {{
+                    actualConfiguration.ConceptoAgenteAduanal
+                      ? (actualConfiguration.ConceptoAgenteAduanal?.Monto | currency: 'USD':'symbol':'1.2-6')
+                      : (0 | currency: 'USD':'symbol':'1.2-6')
+                  }}
+                  +
+                  {{
+                    actualConfiguration.ConfiguracionPrecioProveedor
+                      ? (actualConfiguration.ConfiguracionPrecioProveedor?.PRV | currency: 'USD':'symbol':'1.2-6')
+                      : (0 | currency: 'USD':'symbol':'1.2-6')
+                  }}
+                  +
+                  {{
+                    actualConfiguration.ConfiguracionPrecioProveedorFamilia
+                      ? (actualConfiguration.ConfiguracionPrecioProveedorFamilia.VUCEM | currency: 'USD':'symbol':'1.2-6')
+                      : (0 | currency: 'USD':'symbol':'1.2-6')
+                  }}
+                  +
+                  {{
+                    actualConfiguration.ConfiguracionPrecioProveedorFamilia
+                      ? (actualConfiguration.ConfiguracionPrecioProveedorFamilia.Desconsolidacion
+                        | currency: 'USD':'symbol':'1.2-6')
+                      : (0 | currency: 'USD':'symbol':'1.2-6')
+                  }}
+                  +
+                  {{
+                    actualConfiguration.ConfiguracionPrecioProveedorFamilia
+                      ? (actualConfiguration.ConfiguracionPrecioProveedorFamilia.ServicioLogistica
+                        | currency: 'USD':'symbol':'1.2-6')
+                      : (0 | currency: 'USD':'symbol':'1.2-6')
+                  }}
+                  +
+                  {{
+                    actualConfiguration.ConfiguracionPrecioProveedorFamilia
+                      ? (actualConfiguration.ConfiguracionPrecioProveedorFamilia.Maniobras | currency: 'USD':'symbol':'1.2-6')
+                      : (0 | currency: 'USD':'symbol':'1.2-6')
+                  }}
+                  +
+                  {{
+                    actualConfiguration.ConfiguracionPrecioProveedorFamilia
+                      ? (actualConfiguration.ConfiguracionPrecioProveedorFamilia.TM | currency: 'USD':'symbol':'1.2-6')
+                      : (0 | currency: 'USD':'symbol':'1.2-6')
+                  }}
+                  +
+                  {{
+                    actualConfiguration.ConfiguracionPrecioProveedorFamilia
+                      ? (actualConfiguration.ConfiguracionPrecioProveedorFamilia.Transito | currency: 'USD':'symbol':'1.2-6')
+                      : (0 | currency: 'USD':'symbol':'1.2-6')
+                  }}
+                  +
+                  {{
+                    actualConfiguration.ConfiguracionPrecioProveedorFamilia
+                      ? (actualConfiguration.ConfiguracionPrecioProveedorFamilia.Validacion | currency: 'USD':'symbol':'1.2-6')
+                      : (0 | currency: 'USD':'symbol':'1.2-6')
+                  }}
+                  +
+                  {{
+                    actualConfiguration.ConfiguracionPrecioProveedorFamilia
+                      ? (actualConfiguration.ConfiguracionPrecioProveedorFamilia.ClasificacionProceso
+                        | currency: 'USD':'symbol':'1.2-6')
+                      : (0 | currency: 'USD':'symbol':'1.2-6')
+                  }}
+                  +
+                  {{
+                    actualConfiguration.ConfiguracionPrecioProveedorFamilia
+                      ? (actualConfiguration.ConfiguracionPrecioProveedorFamilia.Previo | currency: 'USD':'symbol':'1.2-6')
+                      : (0 | currency: 'USD':'symbol':'1.2-6')
+                  }}
+                  +
+                  {{
+                    actualConfiguration.ConfiguracionPrecioProveedorFamilia
+                      ? (actualConfiguration.ConfiguracionPrecioProveedorFamilia.InBond | currency: 'USD':'symbol':'1.2-6')
+                      : (0 | currency: 'USD':'symbol':'1.2-6')
+                  }}
+                  =
+                  {{ (selectedIncomeLevel$ | async).Importacion ?? 0 | currency: 'USD':'symbol':'1.2-6' }}
+                </label>
+              </div>
+              <div class="item">
+                <label class="item-title"> {{ 'formProvider.step8.subtitles.totalCostOfSales' | translate }}: </label>
+                <label
+                  class="item-text"
+                  (mouseenter)="handleOpenPopup($event.target, formulasDescription.TotalCostOfSale)"
+                  (mouseleave)="handleClosePopup()"
+                >
+                  {{ (selectedIncomeLevel$ | async).ValorEnAduana | currency: 'USD':'symbol':'1.2-6' }} +
+                  {{ (selectedIncomeLevel$ | async).Importacion | currency: 'USD':'symbol':'1.2-6' }} +
+                  {{
+                  actualConfiguration.ConfiguracionPrecioProveedor?.PrecioConsularizacion ?? 0| currency: 'USD':'symbol':'1.2-6'
+                  }}
+                  +
+                  {{
+                  actualConfiguration.ConfiguracionPrecioProveedor?.PrecioEnvioDeDocumentos ?? 0| currency: 'USD':'symbol':'1.2-6'
+                  }}
+                  +
+                  {{ actualConfiguration.ConfiguracionPrecioProveedor?.PrecioPermiso ?? 0 | currency: 'USD':'symbol':'1.2-6' }}
+                  +
+                  {{ actualConfiguration.ConfiguracionPrecioProveedor?.PrecioFleteAD ?? 0 | currency: 'USD':'symbol':'1.2-6' }}
+                  =
+                  {{ (selectedIncomeLevel$ | async).CVT ?? 0 | currency: 'USD':'symbol':'1.2-6' }}
+                </label>
+              </div>
+              <div class="item">
+                <label class="item-title"> {{ 'formProvider.step8.subtitles.totalFixedCost' | translate }}: </label>
+                <label
+                  class="item-text"
+                  (mouseenter)="handleOpenPopup($event.target, formulasDescription.TotalFixedCost)"
+                  (mouseleave)="handleClosePopup()"
+                >
+                  {{ (selectedIncomeLevel$ | async).CVT | currency: 'USD':'symbol':'1.2-6' }} *
+
+                  {{
+                    (selectedCatIndustryBrandFamily$ | async).ConfiguracionComisionProveedor.FactorDeCostoFijo
+                      | pqfPercentageTransform: 2
+                  }}
+                  =
+                  {{ (selectedIncomeLevel$ | async).CFT | currency: 'USD':'symbol':'1.2-6' }}
+                </label>
+              </div>
+              <div class="item">
+                <label class="item-title"> {{ 'formProvider.step8.subtitles.unitFixedCost' | translate }}: </label>
+                <label
+                  class="item-text"
+                  (mouseenter)="handleOpenPopup($event.target, formulasDescription.UnitFixedCost)"
+                  (mouseleave)="handleClosePopup()"
+                >
+                  {{ (selectedIncomeLevel$ | async).CFT | currency: 'USD':'symbol':'1.2-6' }} /
+                  {{ (selectedIncomeLevel$ | async).NumPiezas | currency: 'USD':'symbol':'1.2-6' }} =
+                  {{ (selectedIncomeLevel$ | async).CostoFijoUnitario | currency: 'USD':'symbol':'1.2-6' }}
+                </label>
+              </div>
+              <div class="item">
+                <label class="item-title"> {{ 'formProvider.step8.subtitles.totalUtility' | translate }}: </label>
+                <label
+                  class="item-text"
+                  (mouseenter)="handleOpenPopup($event.target, formulasDescription.TotalUtility)"
+                  (mouseleave)="handleClosePopup()"
+                >
+                  {{ (selectedIncomeLevel$ | async).CVT | currency: 'USD':'symbol':'1.2-6' }} *
+                  {{
+                    ((selectedCatIndustryBrandFamily$ | async)?.ConfiguracionPrecioUtilidadCategoriaProveedor)[0]
+                      .UtilidadNivelIngreso | pqfPercentageTransform: 2
+                  }}
+                  {{ (selectedIncomeLevel$ | async).UtilidadTotal | currency: 'USD':'symbol':'1.2-6' }}
+                </label>
+              </div>
+              <div class="item">
+                <label class="item-title"> {{ 'formProvider.step8.subtitles.unitUtility' | translate }}: </label>
+                <label
+                  class="item-text"
+                  (mouseenter)="handleOpenPopup($event.target, formulasDescription.UnitUtility)"
+                  (mouseleave)="handleClosePopup()"
+                >
+                  {{ (selectedIncomeLevel$ | async).UtilidadTotal | currency: 'USD':'symbol':'1.2-6' }}
+                  / {{ (selectedIncomeLevel$ | async).NumPiezas }} =
+                  {{ (selectedIncomeLevel$ | async).UtilidadUnitaria | currency: 'USD':'symbol':'1.2-6' }}
+                </label>
+              </div>
+              <div class="item">
+                <label class="item-title"> {{ 'formProvider.step8.subtitles.totalPrice' | translate }}: </label>
+                <label
+                  class="item-text"
+                  (mouseenter)="handleOpenPopup($event.target, formulasDescription.TotalPrice)"
+                  (mouseleave)="handleClosePopup()"
+                >
+                  {{ (selectedIncomeLevel$ | async).CVT | currency: 'USD':'symbol':'1.2-6' }} +
+                  {{ (selectedIncomeLevel$ | async).CFT | currency: 'USD':'symbol':'1.2-6' }} +
+                  {{ (selectedIncomeLevel$ | async).UtilidadTotal | currency: 'USD':'symbol':'1.2-6' }} + (
+                  {{ (selectedIncomeLevel$ | async).CVT | currency: 'USD':'symbol':'1.2-6' }} *
+                  {{
+                    (selectedCatIndustryBrandFamily$ | async).ConfiguracionComisionProveedor.ComisionFrenteComercial
+                      | pqfPercentageTransform: 2
+                  }}) =
+                  {{ (selectedIncomeLevel$ | async).PrecioTotal | currency: 'USD':'symbol':'1.2-6' }}
+                </label>
+              </div>
+              <div class="item">
+                <label class="item-title"> {{ 'formProvider.step8.subtitles.unitCostOfSales' | translate }}: </label>
+                <label
+                  class="item-text"
+                  (mouseenter)="handleOpenPopup($event.target, formulasDescription.UnitCostOfSale)"
+                  (mouseleave)="handleClosePopup()"
+                >
+                  {{ (selectedIncomeLevel$ | async).CVT | currency: 'USD':'symbol':'1.2-6' }} /
+                  {{ (selectedIncomeLevel$ | async).NumPiezas }} =
+                  {{ (selectedIncomeLevel$ | async).CVU | currency: 'USD':'symbol':'1.2-6' }}
+                </label>
+              </div>
+              <div class="item">
+                <label class="item-title"> {{ 'formProvider.step8.subtitles.unitPrice' | translate }}: </label>
+                <label
+                  class="item-text"
+                  (mouseenter)="handleOpenPopup($event.target, formulasDescription.UnitPrice)"
+                  (mouseleave)="handleClosePopup()"
+                >
+                  {{ (selectedIncomeLevel$ | async).CVU | currency: 'USD':'symbol':'1.2-6' }} +
+                  {{ (selectedIncomeLevel$ | async).CostoFijoUnitario | currency: 'USD':'symbol':'1.2-6' }} +
+                  {{ (selectedIncomeLevel$ | async).UtilidadUnitaria | currency: 'USD':'symbol':'1.2-6' }} +
+                  {{ (selectedIncomeLevel$ | async).FrenteComercialUnitario | currency: 'USD':'symbol':'1.2-6' }} =
+                  {{ (selectedIncomeLevel$ | async).PrecioUnitario | currency: 'USD':'symbol':'1.2-6' }}
+                </label>
+              </div>
+              <div class="item">
+                <label class="item-title sales"> {{ 'formProvider.step8.subtitles.salesPrice' | translate }}: </label>
+                <label class="item-text sales">
+                  {{ (selectedIncomeLevel$ | async).PrecioProquifaNetProveedor ?? 0 | currency: 'USD':'symbol':'1.2-6' }}
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="indicators">
+            <label>{{ 'formProvider.step8.subtitles.titleIndicators' | translate }}</label>
+            <div class="input-container">
+              <div class="item">
+                <label class="indicator-title">{{ 'formProvider.step8.indicators.costTotals' | translate }}</label>
+                <label class="result">
+                  {{ (selectedIncomeLevel$ | async).CostoTotalIndicador ?? 0 | currency: 'USD':'symbol':'1.2-6' }}
+                </label>
+              </div>
+              <div class="item">
+                <label>{{ 'formProvider.step8.indicators.utilitiesCash' | translate }} </label>
+                <label class="result">
+                  {{ (selectedIncomeLevel$ | async).UtilidadIndicador ?? 0 | currency: 'USD':'symbol':'1.2-6' }}
+                </label>
+              </div>
+              <div class="item">
+                <label>{{ 'formProvider.step8.indicators.utilitiesPercentage' | translate }}</label>
+                <label class="result">
+                  {{ (selectedIncomeLevel$ | async)?.PorcentajeUtilidadIndicador | pqfPercentageTransform: 2 }}</label
+                >
+              </div>
+              <div class="item">
+                <label>{{ 'formProvider.step8.indicators.performanceCost' | translate }}</label>
+                <label class="result">{{
+                  (selectedIncomeLevel$ | async)?.PorcentajeRendimientoIndicador | pqfPercentageTransform: 2
+                }}</label>
+              </div>
+              <div class="item">
+                <label>{{ 'formProvider.step8.indicators.utilitiesPriceList' | translate }}</label>
+                <label class="result">
+                  {{ (selectedIncomeLevel$ | async).UtilidadPrecioListaIndicador ?? 0 | currency: 'USD':'symbol':'1.2-6' }}
+                </label>
+              </div>
+              <div class="item">
+                <label>{{ 'formProvider.step8.indicators.priceList' | translate }}</label>
+                <label class="result">{{
+                  (selectedIncomeLevel$ | async)?.PorcentajeUtilidadPrecioListaIndicador | pqfPercentageTransform: 2
+                }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="without-results"
+      *ngIf="
+        !(asidePrices$ | async).isLoading &&
+        (!(selectedAsidePrice$ | async) || lodashIsEmpty((asidePrices$ | async).pricesList?.Results))
+      "
+    >
+      <app-without-results></app-without-results>
+    </div>
+    <div class="loading" *ngIf="(asidePrices$ | async).isLoading">
+      <app-loading></app-loading>
+    </div>
+    <div
+      class="footer-quantity"
+      *ngIf="
+        (selectedLevelConfigurationTab$ | async)?.level === levels.Family ||
+        (selectedLevelConfigurationTab$ | async)?.level === levels.CharacteristicGrouper
+      "
+    >
+      <img
+        alt="anterior"
+        [ngClass]="(allowPreviousPanelPage$ | async) ? 'cursor-pointer' : 'cursor-default'"
+        [src]="
+          (allowPreviousPanelPage$ | async) ? 'assets/Images/arrows/flecha_izq.svg' : 'assets/Images/arrows/flecha_gris_Izq.svg'
+        "
+        (click)="getPricePageForPanel(-1)"
+      />
+      <label> {{ (asidePrices$ | async).desiredPage }} / {{ (asidePrices$ | async).pricesList?.TotalResults ?? 0}} </label>
+      <img
+        alt="siguiente"
+        [ngClass]="(allowNextPanelPage$ | async) ? 'cursor-pointer' : 'cursor-default'"
+        [src]="
+          (allowNextPanelPage$ | async)
+            ? 'assets/Images/arrows/flecha_derecha.svg'
+            : 'assets/Images/arrows/flecha_gris_derecha.svg'
+        "
+        (click)="getPricePageForPanel(1)"
+      />
+    </div>
+  </div>
+</app-custom-position-pop-up>
+<app-pop-up-generic
+  class="question-pop-up"
+  *ngIf="alertPopUpdateBreakdown$ | async"
+  [activeBtn]="saveValidatorsBySteps$ | async"
+  [activeButtons]="true"
+  [height]="(viewType$ | async) === viewTypes.small ? '320px' : '360px'"
+  [rightButtonLabel]="'Guardar'"
+  [width]="(viewType$ | async) === viewTypes.small ? '500px' : '620px'"
+  (evento)="handleClosePop($event)"
+>
+  <div class="container">
+    <img alt="alert" src="assets/Images/alerta.svg" />
+    <div>
+      <label>{{ 'formProvider.step8.continueWithSeeBreakdown' | translate }}</label>
+    </div>
+  </div>
+</app-pop-up-generic>

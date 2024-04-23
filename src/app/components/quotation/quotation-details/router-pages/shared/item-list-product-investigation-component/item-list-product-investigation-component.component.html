@@ -1,0 +1,96 @@
+<div class="row-products-online-or-offline">
+  <div class="index">
+    <label>{{ item?.ProductoInvestigacionObj?.Index }}</label>
+  </div>
+  <div class="description-product">
+    <div class="status-cat">
+      <img
+        src="assets/Images/labels/in_investigation_label.svg"
+        alt=""
+        *ngIf="
+          item?.ProductoInvestigacionObj?.ClaveEstadoInvestigacion !== statusItemInvestigation.ATTENDED &&
+          item?.ProductoInvestigacionObj?.ClaveEstadoInvestigacion !== statusItemInvestigation.FINALIZED
+        "
+      />
+      <img
+        src="assets/Images/labels/attended_label.svg"
+        alt=""
+        *ngIf="
+          item?.ProductoInvestigacionObj?.ClaveEstadoInvestigacion === statusItemInvestigation.ATTENDED &&
+          item?.ProductoInvestigacionObj?.ClaveEstadoInvestigacion !== statusItemInvestigation.FINALIZED
+        "
+      />
+      <img
+        src="assets/Images/labels/finalized_label.svg"
+        alt=""
+        *ngIf="item?.ProductoInvestigacionObj?.ClaveEstadoInvestigacion === statusItemInvestigation.FINALIZED"
+      />
+      <label>CAT #{{ item.ProductoInvestigacionObj?.Catalogo }}</label>
+      <label> · {{ item.ProductoInvestigacionObj?.Cantidad }} {{ item.ProductoInvestigacionObj.CatUnidad }} </label>
+    </div>
+    <label class="description">{{ item.ProductoInvestigacionObj?.Descripcion }}</label>
+    <!--  <label class="validity-date"
+      >{{ 'quotation.details.validity' | translate }}:
+      <span> {{ 'quotation.details.untilThe' | translate }} {{ defaultDate | dateFormatSlashShort }}</span></label
+    >-->
+    <label class="family">{{ item.ProductoInvestigacionObj?.fullFamilyName }}</label>
+  </div>
+  <div class="brand">
+    <div class="brand-image">
+      <img #imageElement alt="logo" [src]="item?.ProductoInvestigacionObj?.imageHover" (error)="errorImage()" />
+    </div>
+    <label> {{ item?.ProductoInvestigacionObj?.Marca }}</label>
+  </div>
+  <div class="pieces">
+    <label>
+      {{ item?.ProductoInvestigacionObj?.piezas ?? 0 }}
+    </label>
+  </div>
+  <div class="status-investigation">
+    <label
+      class="product-not-found"
+      *ngIf="
+        item?.CotPartidaInvestigacionProducto?.NoEncontrado &&
+        item?.ProductoInvestigacionObj?.ClaveEstadoInvestigacion === statusItemInvestigation.FINALIZED
+      "
+      >{{ 'quotation.details.productNotFound' | translate }}</label
+    >
+    <label
+      class="product-found"
+      *ngIf="
+        item?.CotPartidaInvestigacionProducto?.Encontrado &&
+        item?.ProductoInvestigacionObj?.ClaveEstadoInvestigacion === statusItemInvestigation.FINALIZED
+      "
+      >{{ 'quotation.details.productFound' | translate }}</label
+    >
+    <label
+      class="product-available"
+      *ngIf="
+        item.ProductoInvestigacionObj?.ProductoDisponible &&
+        !item.CotPartidaInvestigacionProducto &&
+        item?.ProductoInvestigacionObj?.ClaveEstadoInvestigacion === statusItemInvestigation.ATTENDED
+      "
+      >{{ 'quotation.details.productAvailable' | translate }}</label
+    >
+    <label
+      class="product-suggested"
+      *ngIf="
+        item.ProductoInvestigacionObj?.ProductoSugerencia &&
+        !item.CotPartidaInvestigacionProducto &&
+        item?.ProductoInvestigacionObj?.ClaveEstadoInvestigacion === statusItemInvestigation.ATTENDED
+      "
+      >{{ 'quotation.details.suggestedProduct' | translate }}</label
+    >
+  </div>
+  <div class="see-more">
+    <label
+      (click)="seeDetailsInvestigationProduct(item)"
+      *ngIf="
+        item.CotPartidaInvestigacionProducto &&
+        item?.ProductoInvestigacionObj?.ClaveEstadoInvestigacion === statusItemInvestigation.FINALIZED &&
+        item.CotPartidaInvestigacionProducto.Encontrado
+      "
+      >{{ 'common.seeMore' | translate }}</label
+    >
+  </div>
+</div>

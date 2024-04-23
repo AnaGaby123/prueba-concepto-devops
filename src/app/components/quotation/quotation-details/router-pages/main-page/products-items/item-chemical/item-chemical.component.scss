@@ -1,0 +1,50 @@
+@use 'base' as s;
+
+:host {
+  @include s.structure-item-products-quotation-complete();
+
+  #items-products {
+    & > .content-items {
+      & > .information {
+        & > .section-three {
+          & > .column {
+            & > .item-date {
+              flex: 2 auto;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  #technical-product {
+    & > .section-first,
+    & > .section-second {
+      & > .content {
+        & > div {
+          & > .line {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #technical-product {
+      & > .section-first,
+      .section-second {
+        & > .content {
+          //1401
+          grid-template-columns: 1fr 1fr;
+
+          & > .line {
+            text-decoration: underline;
+          }
+
+          //1401
+        }
+      }
+    }
+  }
+}

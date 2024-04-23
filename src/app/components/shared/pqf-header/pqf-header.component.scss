@@ -1,0 +1,44 @@
+@use 'base' as s;
+
+#pqf-header {
+  @include s.flexRow;
+  align-items: center;
+  column-gap: 4px;
+  border-bottom: 1px solid s.$dark-proquifa-d;
+  padding: 6px 8px;
+
+  & > .left-content {
+    @include s.flexRow;
+    cursor: pointer;
+    column-gap: 4px;
+
+    &.active-back {
+      * {
+        @include s.cursor-pointer;
+      }
+    }
+
+    & > .image {
+      padding: 4px 7px;
+
+      & > img {
+        height: 16px;
+        width: 10px;
+      }
+    }
+
+    & > .title {
+      & > label {
+        @include s.responsive-font-format(
+          $font-family: s.$font-family-roboto_bold,
+          $font-weight: s.$font-weight-bold,
+          $font-size-map: s.$responsive-font-24-24
+        );
+      }
+    }
+  }
+
+  @include s.media-query(s.$standard) {
+    padding: 10px 16px;
+  }
+}

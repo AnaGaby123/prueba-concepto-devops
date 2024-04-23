@@ -1,0 +1,54 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  & > .utility {
+    @include s.flexColumn;
+    align-items: center;
+
+    & > h4 {
+      @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqGreen);
+      @include s.Novecento-Bold;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+
+    & > .input-container {
+      @include s.flexRow;
+      align-items: center;
+      flex-wrap: nowrap;
+      justify-content: flex-end;
+      width: 125px;
+
+      & > .input {
+        margin: 0 7px;
+        flex: 0 0 70px;
+      }
+
+      & label {
+        @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+        @include s.Roboto-Bold;
+        text-align: end;
+      }
+
+      & span {
+        @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+        @include s.Roboto-Bold;
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .input-container {
+        width: 150px;
+
+        & > .input {
+          margin: 0 9px;
+          flex: 0 0 85px;
+        }
+      }
+    }
+  }
+}

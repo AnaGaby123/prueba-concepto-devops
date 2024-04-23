@@ -1,0 +1,32 @@
+<div class="discount-freight">
+  <div class="left-container">
+    <h4>{{ 'formProvider.step8.subtitles.discountAndFreight' | translate }}</h4>
+    <div class="flex">
+      <div class="input-container">
+        <label>{{ 'formProvider.step8.inputs.discount' | translate }}</label>
+        <label class="green">{{
+          actualConfiguration?.ConfiguracionPrecioProveedor?.PorcentajeDescuento | percentageTransform
+        }}</label>
+      </div>
+      <div class="input-container">
+        <label>{{
+          isMexican ? ('formProvider.step8.inputs.freightAd' | translate) : ('formProvider.step8.inputs.freightPc' | translate)
+        }}</label>
+        <label class="green" *ngIf="!isMexican"
+          >{{
+            (actualConfiguration?.ConfiguracionPrecioProveedor?.PrecioFletePC | currency: 'USD':'symbol-narrow':'1.2-2') ||
+              'N/D'
+          }}
+          USD
+        </label>
+        <label class="green" *ngIf="isMexican"
+          >{{
+            (actualConfiguration?.ConfiguracionPrecioProveedor?.PrecioFleteAD | currency: 'USD':'symbol-narrow':'1.2-2') ||
+              'N/D'
+          }}
+          USD
+        </label>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+@use 'base' as s;
+
+:host {
+  @include s.generic-main-component-structure;
+
+  #upload-receipt-container {
+    & > .outlet {
+      width: 100%;
+      height: calc(100% - 50px);
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > #upload-receipt-container {
+      & > .outlet {
+        height: calc(100% - 64px);
+      }
+    }
+  }
+}

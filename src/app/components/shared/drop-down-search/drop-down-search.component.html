@@ -1,0 +1,31 @@
+<div [ngClass]="dropListClass" style="min-width: 210px;">
+  <label class="label-disable-edit" *ngIf="!enableEdit">{{ title !== 'Seleccionar' ? title : 'N/D' }}</label>
+  <div class="container-drop" *ngIf="enableEdit">
+    <div class="Title" (click)="openDropList($event)">
+      <img alt="" src="assets/Images/lupa.svg" width="11" height="6" alt="" *ngIf="showDropList" class="buscar" />
+      <div>
+        <input [ngClass]="align" [placeholder]="title" [ngModel]="search" (ngModelChange)="changeSearchTerm($event)" />
+      </div>
+      <img class="flecha" [src]="srcImagen" width="11" height="6" alt="" *ngIf="!showDropList" />
+    </div>
+
+    <div [hidden]="!showDropList" class="content" [style.width]="widthContent" [style.margin-left]="marginLeftContent">
+      <div>
+        <div slimScroll height="100%" size="5px" color="#3369b1" railVisible="true" railColor="#ecf0f3" opacity=".7">
+          <ul class="lista" *ngIf="arrayAux != undefined">
+            <div class="container-li" *ngFor="let item of arrayAux" (click)="selectItem(item)">
+              <div class="border-separator">
+                <li [style.min-height]="heightLi" class="list">
+                  <label [style.color]="colorPrincipal">{{ item.nombre }}</label>
+                  <label *ngIf="subtitleActive" [style.color]="colorSecundario"
+                    >{{ item.nombre }} <label [style.color]="colorSecundario"> · {{ item.puesto }}</label></label
+                  >
+                </li>
+              </div>
+            </div>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

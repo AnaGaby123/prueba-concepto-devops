@@ -1,0 +1,67 @@
+<div class="checks-list">
+  <div class="all">
+    <pqf-check-box
+      [check]="$selectCheckAll | async"
+      [fontFamily]="'Roboto-Bold'"
+      [label]="'formBrand.details.checkAll' | translate"
+      (event)="handleCheckAll($event)"
+    ></pqf-check-box>
+  </div>
+  <div class="checks-content">
+    <div class="section">
+      <label>{{ 'Sector' }}</label>
+      <div class="checks-list">
+        <pqf-check-box
+          *ngFor="let itemSector of $sectorFilterList | async"
+          [check]="itemSector.Aplica"
+          [label]="itemSector.Sector"
+          (event)="handleCheckFilter('listaSector', 'IdCatSector', itemSector.IdCatSector, $event)"
+        ></pqf-check-box>
+      </div>
+    </div>
+    <div class="section">
+      <label>{{ 'formBrand.details.industry' | translate }}</label>
+      <div class="checks-list">
+        <pqf-check-box
+          *ngFor="let itemIndustry of $industryFilterList | async"
+          [check]="itemIndustry.Aplica"
+          [label]="itemIndustry.Industria"
+          (event)="handleCheckFilter('listaIndustria', 'IdCatIndustria', itemIndustry.IdCatIndustria, $event)"
+        ></pqf-check-box>
+      </div>
+    </div>
+    <div class="section">
+      <label>{{ 'formBrand.details.type' | translate }}</label>
+      <div class="checks-list">
+        <pqf-check-box
+          *ngFor="let itemType of $typeFilterList | async"
+          [check]="itemType.Aplica"
+          [label]="itemType.Tipo"
+          (event)="handleCheckFilter('listaTipo', 'IdCatTipo', itemType.IdCatTipo, $event)"
+        ></pqf-check-box>
+      </div>
+    </div>
+    <div class="section">
+      <label>{{ 'formBrand.details.subType' | translate }}</label>
+      <div class="checks-list">
+        <pqf-check-box
+          *ngFor="let itemSubtype of $subtypeFilterList | async"
+          [check]="itemSubtype.Aplica"
+          [label]="itemSubtype.Subtipo"
+          (event)="handleCheckFilter('listaSubtipo', 'IdCatSubTipo', itemSubtype.IdCatSubTipo, $event)"
+        ></pqf-check-box>
+      </div>
+    </div>
+    <div class="section">
+      <label>{{ 'Control' }}</label>
+      <div class="checks-list">
+        <pqf-check-box
+          *ngFor="let itemControl of $controlFilterList | async"
+          [check]="itemControl.Aplica"
+          [label]="itemControl.Control"
+          (event)="handleCheckFilter('listaControl', 'IdCatControl', itemControl.IdCatControl, $event)"
+        ></pqf-check-box>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,63 @@
+<div class="products-details-form">
+  <div class="container">
+    <div class="tabs">
+      <app-tabs
+        [options]="steps$ | async"
+        [tapSelected]="actualStep$ | async"
+        (onSelectOption)="selectOptionBar($event)"
+      ></app-tabs>
+    </div>
+    <div class="container-outlet">
+      <app-technical-commercial-investigation
+        *ngIf="(actualStep$ | async)?.id === '1'"
+      ></app-technical-commercial-investigation>
+      <app-regulation-restriction-non-tariff *ngIf="(actualStep$ | async)?.id === '2'"></app-regulation-restriction-non-tariff>
+      <app-logistic *ngIf="(actualStep$ | async)?.id === '3'"></app-logistic>
+      <app-link-alternative-complementary *ngIf="(actualStep$ | async)?.id === '4'"></app-link-alternative-complementary>
+    </div>
+  </div>
+  <footer>
+    <div class="buttons" *ngIf="(enableEdit$ | async) && (actualStep$ | async)?.id !== '4'">
+      <button *ngIf="editMode$ | async" (click)="cancelForm()" [ngClass]="'enable'">{{ 'common.cancel' | translate }}</button>
+      <button *ngIf="!(editMode$ | async)" [ngClass]="'enable'" (click)="cancelAdd()">{{ 'common.cancel' | translate }}</button>
+      <button
+        (click)="saveData()"
+        [ngClass]="(saveValidator$ | async) ? 'enable' : 'disable'"
+        [disabled]="!(saveValidator$ | async)"
+      >
+        {{ 'common.save' | translate }}
+      </button>
+    </div>
+    <div class="oneButton" *ngIf="!(enableEdit$ | async) && (actualStep$ | async)?.id !== '4'">
+      <button (click)="enableEditMode()">{{ 'common.edit' | translate }}</button>
+    </div>
+    <div class="indicators" *ngIf="(actualStep$ | async)?.id === '4'">
+      <div class="content">
+        <label>
+          {{ 'productsForm.selectedProducts' | translate }}:
+          <span class="yellow">{{ ('productsForm.alternatives' | translate) + ' ' + (alternativesLenght$ | async) }}</span>
+          <span class="green">
+            {{ ' ' + ('productsForm.complementary' | translate) + ' ' + (complementariesLenght$ | async) }}</span
+          >
+        </label>
+      </div>
+    </div>
+  </footer>
+</div>
+<app-pop-up-generic
+  *ngIf="popAlert$ | async"
+  [activeBtn]="true"
+  [activeButtons]="true"
+  [height]="(viewType$ | async) === viewTypes.small ? '300px' : '360px'"
+  [rightButtonLabel]="'Aceptar'"
+  [width]="(viewType$ | async) === viewTypes.small ? '500px' : '620px'"
+  class="cancel-pop-up"
+  (evento)="discardOrContinue($event)"
+>
+  <div class="container">
+    <img src="assets/Images/alerta.svg" alt="alert" />
+    <div>
+      <label>{{ 'formProduct.general.titleModal' | translate }}</label>
+    </div>
+  </div>
+</app-pop-up-generic>

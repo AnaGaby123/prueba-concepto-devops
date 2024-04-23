@@ -1,0 +1,9 @@
+@use 'base' as s;
+
+:host {
+  @include s.absolute100;
+
+  .outlet {
+    @include s.absolute100;
+  }
+}

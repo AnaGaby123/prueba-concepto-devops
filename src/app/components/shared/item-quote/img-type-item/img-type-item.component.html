@@ -1,0 +1,18 @@
+<div class="type-item-container" *ngIf="columnImgTypeItem?.value">
+  <img
+    [src]="
+      'assets/Images/pre-processing/' +
+      (columnImgTypeItem?.value === typeItem.Original
+        ? 'originales.svg'
+        : columnImgTypeItem?.value === typeItem.Alternative
+        ? 'alternativas.svg'
+        : columnImgTypeItem?.value === typeItem.Saving
+        ? 'ahorro.svg'
+        : columnImgTypeItem?.value === typeItem.Complementary
+        ? 'complementarias.svg'
+        : columnImgTypeItem?.value === typeItem.Promotion
+        ? 'promocion.svg'
+        : 'originales.svg')
+    "
+  />
+</div>

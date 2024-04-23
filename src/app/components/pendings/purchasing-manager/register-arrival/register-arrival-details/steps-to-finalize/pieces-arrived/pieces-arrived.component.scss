@@ -1,0 +1,296 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  & > #pieces-arrived {
+    @include s.flexColumn;
+    @include s.absolute100;
+    justify-content: flex-start;
+    overflow: hidden;
+
+    & > .container-component {
+      @include s.flexColumn;
+      @include s.absolute100;
+      overflow: auto;
+
+      & > .table-container {
+        @include s.flexColumn;
+        @include s.absolute100;
+        min-width: 1700px;
+        overflow-y: hidden;
+        overflow-x: auto;
+
+        & > .head {
+          @include s.flexRowNoWrap;
+          flex: 0 0 auto;
+          border-bottom: 1px solid s.$pqBlack2;
+          padding-bottom: 10px;
+          min-width: 1700px;
+
+          & > div {
+            @include s.flexRowNoWrap;
+            justify-content: center;
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize14to21, bold, s.$pqBlack2);
+              @include s.Novecento-Bold;
+              text-transform: uppercase;
+            }
+          }
+
+          & > .provider {
+            flex: 2 1 auto;
+            justify-content: flex-start !important;
+          }
+
+          & > .to-arrived {
+            flex: 0 0 300px;
+          }
+
+          & > .arrived {
+            flex: 0 0 300px;
+          }
+
+          & > .missing {
+            flex: 0 0 300px;
+          }
+
+          & > .surplus {
+            flex: 0 0 300px;
+          }
+        }
+
+        & > .body {
+          @include s.flexColumn;
+          flex: 1 1 auto;
+          min-width: 1700px;
+          overflow: auto;
+
+          & > virtual-scroller {
+            @include s.absolute100;
+
+            .item-provider {
+              @include s.flexColumn;
+              min-width: 1700px;
+              box-sizing: border-box;
+              padding: 15px 0;
+              border-bottom: 1px solid s.$pqGray2;
+
+              &:hover {
+                background-color: s.$pqGray2;
+              }
+
+              & > .info-provider {
+                @include s.flexRowNoWrap;
+                width: 100%;
+
+                & > div {
+                  @include s.flexRowNoWrap;
+                  justify-content: center;
+                }
+
+                & > .provider {
+                  flex: 2 1 auto;
+                  cursor: pointer;
+                  justify-content: flex-start !important;
+                  padding-left: 15px;
+
+                  & > * {
+                    cursor: pointer;
+                  }
+
+                  & > div {
+                    & > label {
+                      @include s.escaledFontFormat(s.$textSize13to20, bold, s.$pqBlack2);
+                      @include s.Roboto-Bold;
+                    }
+                  }
+
+                  & > .arrow {
+                    padding-right: 15px;
+                    padding-left: 15px;
+
+                    & > img {
+                      height: 13px;
+                    }
+
+                    & > .open {
+                      transform: rotate(-180deg);
+                    }
+                  }
+
+                  & > div:nth-of-type(3) {
+                    & > label {
+                      color: s.$pqGreen !important;
+                    }
+                  }
+                }
+
+                & > .to-arrived {
+                  flex: 0 0 300px;
+                }
+
+                & > .arrived {
+                  flex: 0 0 300px;
+
+                  & > div {
+                    padding: 0 90px;
+                  }
+                }
+
+                & > .missing {
+                  flex: 0 0 300px;
+
+                  & > label {
+                    color: s.$orange !important;
+                  }
+                }
+
+                & > .surplus {
+                  flex: 0 0 300px;
+
+                  & > label {
+                    color: s.$pqGreen2 !important;
+                  }
+                }
+              }
+
+              & > .items {
+                @include s.flexColumn;
+                width: 100%;
+                padding-top: 15px;
+
+                & > .item {
+                  @include s.flexRowNoWrap;
+                  background-color: s.$gnAzulFondo;
+                  border-bottom: 1px solid s.$pqGray2;
+                  padding: 15px 0 15px 15px;
+
+                  & > div {
+                    @include s.flexRow;
+                  }
+
+                  & > .desc-item {
+                    flex: 2 1 auto;
+                    justify-content: flex-start;
+
+                    & > label {
+                      @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+                      @include s.Roboto-Bold;
+                      padding-right: 4px;
+
+                      & > span {
+                        @include s.Roboto-Regular;
+                        padding-right: 4px;
+                      }
+                    }
+                  }
+
+                  & > .to-arrived {
+                    flex: 0 0 300px;
+                    justify-content: center;
+                    align-items: center;
+                  }
+
+                  & > .arrived {
+                    flex: 0 0 300px;
+                  }
+
+                  & > .missing {
+                    flex: 0 0 300px;
+                  }
+
+                  & > .surplus {
+                    flex: 0 0 300px;
+                  }
+                }
+              }
+            }
+          }
+
+          & > .is-loading,
+          .without-results {
+            @include s.flexRowNoWrap;
+            @include s.absoluteCenter;
+            @include s.absolute100;
+          }
+        }
+
+        & > .footer {
+          @include s.flexRowNoWrap;
+          flex: 0 0 30px;
+          min-width: 1700px;
+          border-top: 1px solid s.$pqBlack2;
+          padding-top: 10px;
+
+          & > div {
+            @include s.flexRowNoWrap;
+            justify-content: center;
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize13to14, regular, s.$pqBlack2);
+              @include s.Roboto-Regular;
+            }
+          }
+
+          & > .provider {
+            flex: 2 1 auto;
+            justify-content: flex-start !important;
+            padding-left: 15px;
+          }
+
+          & > .to-arrived {
+            flex: 0 0 300px;
+          }
+
+          & > .arrived {
+            flex: 0 0 300px;
+          }
+
+          & > .missing {
+            flex: 0 0 300px;
+
+            & > label {
+              color: s.$orange !important;
+            }
+          }
+
+          & > .surplus {
+            flex: 0 0 300px;
+
+            & > label {
+              color: s.$pqGreen2 !important;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > #pieces-arrived {
+      & > .container-component {
+        & > .table-container {
+          & > .body {
+            & > virtual-scroller {
+              .item-provider {
+                & > .provider {
+                  & > div:nth-of-type(2) {
+                    & > img {
+                      height: 16px;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

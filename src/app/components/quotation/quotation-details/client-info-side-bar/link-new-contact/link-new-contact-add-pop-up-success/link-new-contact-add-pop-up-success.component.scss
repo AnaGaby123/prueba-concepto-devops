@@ -1,0 +1,24 @@
+@use 'base' as s;
+
+#pop-up-add-new-client-success {
+  @include s.flexColumn;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  height: 100%;
+  padding: 0 108px;
+  row-gap: 24px;
+
+  & > img {
+    height: 57.5px;
+  }
+
+  & > .content {
+    margin-top: 30px;
+
+    & > label {
+      @include s.responsive-font-format($font-size-map: s.$responsive-font-20-20, $font-family: s.$font-family_roboto);
+      text-align: center;
+    }
+  }
+}

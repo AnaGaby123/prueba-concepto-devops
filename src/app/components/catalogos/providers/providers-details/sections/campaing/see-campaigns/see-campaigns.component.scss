@@ -1,0 +1,394 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  & > .container {
+    @include s.absolute100;
+    @include s.flexRow;
+    column-gap: 20px;
+
+    & > .left-container {
+      @include s.flexColumn;
+      flex: 0 0 55%;
+
+      & > .title {
+        @include s.Novecento-Bold;
+        @include s.escaledFontFormatImportant(s.$textSize17to21, bold, s.$pqBlack2);
+        margin-bottom: 10px;
+      }
+
+      & > .tabs {
+        flex: 0 0 30px;
+      }
+
+      & > .search-bar {
+        margin: 15px 0;
+      }
+
+      & > .campaign-list {
+        @include s.flexColumn;
+        flex: 1 1 auto;
+        overflow: auto;
+        border-top: solid 1px #1a1a1a;
+
+        & > .list-container {
+          @include s.fixVirtualScroller;
+          flex: 0 0 100%;
+
+          .items-background {
+            background: #eceef0;
+          }
+
+          & .items {
+            display: grid;
+            grid-template-columns: 1fr 105px repeat(2, 65px);
+            border-bottom: 1px solid s.$pqGray2;
+            column-gap: 20px;
+            padding-right: 20px;
+
+            &:hover {
+              background-color: s.$pqGray2;
+            }
+
+            & > .item-content {
+              @include s.flexRow;
+
+              & > .indicator {
+                flex: 0 0 5px;
+
+                &.selected {
+                  background-color: s.$pqGreen;
+                }
+              }
+
+              & > .text {
+                @include s.flexColumn;
+                flex: 1 1 auto;
+                padding: 13px 0 13px 20px;
+
+                > .multiLineTruncateTwo {
+                  @include s.multiLineTextTruncateSinHeight(2);
+                }
+
+                & > label:nth-child(1) {
+                  @include s.Roboto-Bold;
+                  @include s.escaledFontFormatImportant(s.$textSize14to17, bold, s.$pqGreen);
+                  margin-bottom: 4px;
+
+                  & > span {
+                    color: s.$pqBlack2;
+                    vertical-align: baseline;
+                  }
+                }
+
+                & > label:nth-child(2) {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormatImportant(s.$textSize14to17, regular, s.$pqBlack2);
+                  margin-bottom: 4px;
+                }
+
+                & > label:nth-child(3) {
+                  @include s.Roboto-Bold;
+                  @include s.escaledFontFormatImportant(s.$textSize14to17, bold, s.$pqGreen);
+                }
+              }
+            }
+
+            & > .status {
+              display: grid;
+              place-items: center;
+
+              &.active {
+                & > label {
+                  @include s.escaledFontFormatImportant(s.$textSize14to17, bold, s.$pqGreen2);
+                  @include s.Roboto-Bold;
+                }
+              }
+
+              &.inactive {
+                & > label {
+                  @include s.escaledFontFormatImportant(s.$textSize14to17, bold, s.$gnRojoSemaforo);
+                  @include s.Roboto-Bold;
+                }
+              }
+            }
+
+            & > .actions {
+              display: grid;
+              place-items: center;
+
+              & > img {
+                cursor: pointer;
+              }
+            }
+          }
+        }
+
+        & > .without-results {
+          @include s.flexRow;
+          height: 100%;
+
+          & > app-without-results {
+            @include s.flexRow;
+          }
+        }
+
+        & > .loader {
+          @include s.flexRow;
+          height: 100%;
+
+          & > app-loading {
+            @include s.flexRow;
+          }
+        }
+      }
+
+      & > .campaign-list-footer {
+        @include s.flexColumn;
+        flex: 0 0 70px;
+        border-top: solid 1px #1a1a1a;
+        align-items: center;
+        padding: 5px 0 15px 0;
+        justify-content: space-between;
+
+        & > .total {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormatImportant(s.$textSize12to14, regular, s.$pqBlack2);
+        }
+
+        & > .btn {
+          $max-width-map: (
+            'base': 150px,
+            'macBookAir': 170px,
+          );
+
+          &.enable {
+            @include s.pqfButton($max-width-map: $max-width-map, $background-color: s.$pqGreen);
+          }
+
+          &.disable {
+            @include s.pqfDisableButton($max-width-map: $max-width-map);
+          }
+        }
+      }
+    }
+
+    & > .right-container {
+      @include s.flexColumn();
+      padding: 15px 20px 0 20px;
+      flex: 45%;
+      background: s.$pqGray2;
+
+      & .title {
+        @include s.Novecento-Bold;
+        @include s.escaledFontFormatImportant(s.$textSize17to21, bold, s.$pqBlack2);
+        flex: 0 0 auto;
+        margin-bottom: 9px;
+      }
+
+      & > .without-results {
+        @include s.flexRow;
+        height: 100%;
+
+        & > app-without-results {
+          @include s.flexRow;
+        }
+      }
+
+      & .campaign-details-middle {
+        @include s.flexColumn;
+        flex: 1 1 auto;
+
+        & > .campaing-title {
+          @include s.Roboto-Bold;
+          @include s.escaledFontFormat(s.$textSize14to17, bold, s.$pqGreen);
+          border-bottom: 1px solid s.$pqBlack2;
+          padding-bottom: 9px;
+
+          & > span {
+            color: s.$pqBlack2;
+            vertical-align: baseline;
+          }
+        }
+
+        & > .campaigns-details-middle-data {
+          flex: 0 0 auto;
+          padding: 25px 0;
+
+          @include s.flexColumn();
+          justify-content: space-around;
+
+          & > div {
+            @include s.flexColumn();
+            margin-bottom: 25px;
+
+            &:last-child {
+              margin-bottom: 0;
+            }
+
+            & > :nth-child(1) {
+              @include s.Roboto-Bold;
+              @include s.escaledFontFormat(s.$textSize14to17, bold, s.$pqBlack2);
+              margin-bottom: 4px;
+            }
+
+            & > :nth-child(2) {
+              @include s.Roboto-Regular;
+              @include s.escaledFontFormat(s.$textSize14to17, regular, s.$pqBlack2);
+            }
+          }
+        }
+
+        & .campaign-details-items {
+          @include s.flexColumn;
+          flex: 1 1 auto;
+
+          & > .list {
+            @include s.fixVirtualScroller;
+            border-top: solid 1px #eceef0;
+            flex: 0 0 100%;
+
+            & .items-product {
+              @include s.flexColumn;
+              border-bottom: solid 1px s.$pqGray3;
+              padding: 10px 12px;
+
+              &.items-background {
+                background: #eceef0;
+              }
+
+              & > .content {
+                @include s.flexColumn;
+
+                & > .name {
+                  @include s.Roboto-Bold;
+                  @include s.escaledFontFormat(s.$textSize14to17, bold, s.$pqBlack2);
+                  margin-bottom: 4px;
+                }
+
+                & > .family {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize14to17, regular, s.$pqGreen);
+                  margin-bottom: 4px;
+                }
+
+                & > .total-products {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormatImportant(s.$textSize14to17, regular, s.$pqBlack2);
+                }
+
+                & > .types {
+                  @include s.flexRow;
+                  flex-wrap: wrap;
+                  margin-bottom: 5px;
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize14to17, regular, s.$pqGreen);
+                    white-space: pre;
+                  }
+                }
+              }
+            }
+          }
+
+          & > .loading {
+            @include s.gridCenter;
+            flex: 0 0 100%;
+          }
+
+          & > .without-results {
+            @include s.gridCenter;
+            flex: 0 0 100%;
+          }
+        }
+
+        & > .campaign-list-footer {
+          @include s.flexColumn;
+          flex: 0 0 70px;
+          border-top: solid 1px #1a1a1a;
+          align-items: center;
+          padding-top: 5px;
+
+          & > label {
+            @include s.Roboto-Regular;
+            @include s.escaledFontFormatImportant(s.$textSize12to14, regular, s.$pqBlack2);
+          }
+        }
+      }
+    }
+
+    .disable {
+      pointer-events: none;
+    }
+  }
+
+  & > .items-product {
+    @include s.flexRow;
+    justify-content: space-between;
+    height: 100px;
+    align-items: center;
+
+    & > .text {
+      & > :nth-child(1) {
+        & > :nth-child(1) {
+          @include s.Roboto-Bold;
+          @include s.escaledFontFormatImportant(s.$textSize14to17, bold, s.$pqGreen);
+        }
+
+        & > :nth-child(2) {
+          @include s.Roboto-Bold;
+          @include s.escaledFontFormatImportant(s.$textSize14to17, bold, s.$pqBlack2);
+        }
+      }
+
+      & > :nth-child(2) {
+        & > :nth-child(even) {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormatImportant(s.$textSize14to17, regular, s.$pqBlack2);
+        }
+      }
+
+      & > :nth-child(2) {
+        & > :nth-child(odd) {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormatImportant(s.$textSize14to17, regular, s.$pqGreen);
+        }
+      }
+
+      & > :nth-child(3) {
+        & > :nth-child(1) {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormatImportant(s.$textSize14to17, regular, s.$pqGreen);
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > .container {
+      & > .left-container {
+        & > .tabs {
+          flex: 0 0 40px;
+        }
+
+        & > .campaign-list {
+          & > .list-container {
+            & .items {
+              & > .item-content {
+                & > .indicator {
+                  flex: 0 0 7px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

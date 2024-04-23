@@ -1,0 +1,144 @@
+@use 'base' as s;
+
+:host {
+  @include s.absolute100;
+  display: flex;
+  overflow: hidden;
+
+  & > .arrivedPartsContainer {
+    @include s.flexRow;
+    justify-content: center;
+    flex: 1 1 auto;
+    overflow: hidden;
+
+    & > .listArrivedPartsContainer {
+      @include s.flexColumn;
+      overflow: auto;
+      flex: 0 0 350px;
+
+      & > .tagBoardingGuides {
+        margin-bottom: 20px;
+        @include s.Novecento-Bold;
+        @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack);
+      }
+
+      & > .left-container {
+        @include s.flexColumn;
+        flex: 1 1 auto;
+
+        & > .orders-list-container {
+          @include s.flexColumn;
+          flex: 1 1 auto;
+          overflow: hidden;
+
+          & > .virtual-list {
+            @include s.flexColumn;
+            flex: 1;
+            overflow: auto;
+            width: 100%;
+            height: 100%;
+
+            & > ::ng-deep .scrollable-content > .item {
+              @include s.flexRow;
+              border-bottom: 1px solid s.$pqGray2;
+              cursor: pointer;
+              transition: background-color 0.2s ease;
+
+              & * {
+                cursor: pointer;
+              }
+
+              &:hover {
+                background-color: s.$pqGray2;
+              }
+
+              &.active {
+                & > .indicator {
+                  background-color: s.$pqGreen;
+                }
+              }
+
+              & > .indicator {
+                flex: 0 0 8px;
+              }
+
+              & > .content {
+                @include s.flexColumn;
+                flex: 1;
+                overflow: hidden;
+                justify-content: space-between;
+                align-items: flex-start;
+                padding: 10px 10px 10px 10px;
+                height: 100%;
+
+                & > .title {
+                  @include s.multiLineTextTruncateSinHeight($lineHeight: 1.2em);
+                  margin-bottom: 5px;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize16to21, bold, s.$pqBlack2);
+                    @include s.Roboto-Bold;
+
+                    & > span {
+                      color: s.$pqGreen;
+                      vertical-align: baseline;
+                    }
+                  }
+                }
+
+                & > .subtitle {
+                  @include s.escaledFontFormat(s.$textSize14to20, normal, s.$pqBlack2);
+                  @include s.Roboto-Regular;
+                  margin-bottom: 4px;
+                }
+
+                & > .black-info {
+                  @include s.escaledFontFormat(s.$textSize13to18, regular, s.$pqTextGris);
+                  @include s.Roboto-Regular;
+                }
+              }
+            }
+          }
+
+          & > .without-results,
+          & > .loading {
+            @include s.flexRow;
+            @include s.absoluteCenter;
+            height: 100%;
+          }
+        }
+      }
+    }
+
+    & > .detailsArrivedParts {
+      @include s.flexColumn;
+      flex: 1 1 auto;
+      justify-content: center;
+      overflow: hidden;
+
+      & > .detailsArrivedPartsContainer {
+        @include s.absoluteCenter;
+        @include s.flexRow;
+        flex: 1 0 70%;
+        padding: 20px;
+        background-color: s.$pqGray5;
+        margin-left: 20px;
+      }
+
+      & > .buttonContainerSecond {
+        @include s.flexRow;
+        justify-content: space-between;
+        margin-top: 20px;
+        margin-left: 20px;
+
+        & > .btn-link-to {
+          @include s.pqButton(150px, 180px, 25px, 30px, s.$pqGreen);
+        }
+
+        & > .btn-link-to-disable {
+          @include s.pqButton(150px, 250px, 25px, 30px, s.$pqGray3);
+        }
+      }
+    }
+  }
+}

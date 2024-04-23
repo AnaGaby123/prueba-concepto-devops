@@ -1,0 +1,63 @@
+<div id="inspector">
+  <div class="header-bar">
+    <app-header-bar [title]="title$ | async" [activeBack]="detailsMode$ | async" (goBack)="goBack()"></app-header-bar>
+  </div>
+  <div class="data-header">
+    <div class="content" [ngClass]="(detailsMode$ | async) ? 'with-border' : ''">
+      <div class="item">
+        <div class="title">
+          <label>{{ 'warehouse.yourGoal' | translate }}</label>
+          <label>de {{ 'inspector.inspection' | translate }} {{ 'dropDownButtonCustom.today' | translate }}</label>
+        </div>
+        <div class="number">
+          <label class="total"> {{ '51' }}</label>
+        </div>
+        <div class="image">
+          <img alt="objective" src="assets/Images/objetivo.svg" />
+        </div>
+      </div>
+      <div class="item pa">
+        <div class="title">
+          <label>{{ 'common.pieces' | translate }} {{ 'common.today' | translate }}</label>
+          <label>{{ 'inspector.inspected' | translate }}</label>
+        </div>
+        <div class="number tooltip">
+          <label class="total ocean"> {{ '100' }}</label>
+          <div class="tooltip-text">
+            <p
+              >{{ ('inspector.goalMessage1' | translate) + ' 60 ' }}
+              {{ 60 > 0 ? ('common.pieces' | translate) : ('common.piece' | translate) }}
+              {{ 'inspector.goalMessage2' | translate }}</p
+            >
+          </div>
+        </div>
+      </div>
+      <div class="item pa">
+        <div class="title">
+          <label>{{ 'inspector.inspection' | translate }}</label>
+          <label>{{ 'inspector.desired' | translate }}</label>
+        </div>
+        <div class="number tooltip">
+          <label class="total ocean"> {{ '51' }}</label>
+          <label class="super-index">{{ '51' }}</label>
+          <div class="tooltip-text">
+            <p>{{ 'inspector.alertTooltip' | translate }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="item pa">
+        <div class="title">
+          <label>{{ 'warehouse.minimumOf' | translate }}</label>
+          <label>{{ 'inspector.inspection' | translate }}</label>
+        </div>
+        <div class="number tooltip">
+          <label class="total ocean"> {{ '51' }}</label>
+          <label class="super-index green">{{ '+5' }}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+</div>

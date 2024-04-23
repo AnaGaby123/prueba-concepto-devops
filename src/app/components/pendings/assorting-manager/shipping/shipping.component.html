@@ -1,0 +1,68 @@
+<div id="shipping-container">
+  <div class="header-bar">
+    <app-header-bar
+      [title]="title$ | async"
+      [activeBack]="isDetails$ | async"
+      [name]="'Paola apellido apellido'"
+      (goBack)="goBack()"
+    >
+    </app-header-bar>
+  </div>
+  <div class="datosC">
+    <div class="subPadre">
+      <div class="item">
+        <div class="title">
+          <label>TU OBJETIVO</label>
+          <label>DE PACKING LIST HOY</label>
+        </div>
+        <div class="number">
+          <label class="total"> {{ '51' }}</label>
+        </div>
+        <div class="image">
+          <img src="assets/Images/objetivo.svg" />
+        </div>
+      </div>
+      <div class="item">
+        <div class="title">
+          <label>PACKING LIST</label>
+          <label>TRABAJADAS HOY</label>
+        </div>
+        <div class="number">
+          <label class="total ocean"> {{ '51' }}</label>
+        </div>
+      </div>
+      <div class="item">
+        <div class="title">
+          <label>PACKING LIST</label>
+          <label>DESEADAS</label>
+        </div>
+        <div class="number tooltip">
+          <label class="total ocean"> {{ '51' }}</label>
+          <label class="super-index">{{ '51' }}</label>
+          <div class="tooltip-text">
+            <p>{{ '51' }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="title">
+          <label>MINIMO DE</label>
+          <label>PACKING LIST</label>
+        </div>
+        <div class="number tooltip">
+          <label class="total ocean"> {{ '51' }}</label>
+          <label class="super-index">{{ '-51' }}</label>
+          <div class="tooltip-text">
+            <p>{{ '51' }}</p>
+          </div>
+        </div>
+        <!--<div class="big-image">
+          <img src="assets/Images/graficasBtn.svg" alt="'Abrir pop'" (click)="handleModal(true)" />
+        </div>-->
+      </div>
+    </div>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+</div>

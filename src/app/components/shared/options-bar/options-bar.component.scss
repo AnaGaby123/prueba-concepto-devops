@@ -1,0 +1,119 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  width: 100%;
+
+  & > .optionsBar {
+    @include s.flexRow;
+    align-content: stretch;
+    align-items: center;
+    justify-content: space-between;
+    overflow-x: auto;
+    width: 100%;
+
+    & > .leftRow {
+      @include s.absoluteCenter;
+      @include s.flexRow;
+      cursor: pointer;
+      margin: 3px 5px 0 0;
+
+      & > img {
+        width: 19.5px;
+        height: 29.5px;
+      }
+
+      @include s.responsive_layout('macBookAir') {
+        margin: 5px 7px 0 0;
+        & > img {
+          width: 22.5px;
+          height: 32.5px;
+        }
+      }
+    }
+
+    & > .rightRow {
+      @include s.absoluteCenter;
+      @include s.flexRow;
+      cursor: pointer;
+      margin: 3px 0 0 5px;
+
+      & > img {
+        height: 29.5px;
+        width: 19.5px;
+      }
+
+      @include s.responsive_layout('macBookAir') {
+        margin: 5px 0 0 7px;
+        & > img {
+          height: 32.5px;
+          width: 22.5px;
+        }
+      }
+    }
+
+    & > .content {
+      @include s.flexRow;
+      align-self: auto;
+      flex: 1;
+
+      & > .element {
+        @include s.flexColumn;
+        color: rgba(66, 66, 66, 0.4);
+        flex: 1;
+        position: relative;
+        text-decoration: none;
+
+        & * {
+          cursor: pointer;
+        }
+
+        &:hover {
+          & > div {
+            & > label {
+              color: s.$pqGreen !important;
+            }
+          }
+
+          & > hr {
+            background-color: s.$pqGreen !important;
+          }
+        }
+
+        & > div {
+          @include s.flexRow;
+          align-items: baseline;
+
+          & > label {
+            @include s.Novecento-Bold;
+            @include s.escaledFontFormat(s.$textSize14to17, bold, s.$pqBlack2);
+            @include s.truncateText;
+            padding: 0 10px 3px 10px;
+            /*
+            text-align: center;
+            */
+
+            & > span {
+              vertical-align: baseline;
+            }
+
+            & > img {
+              vertical-align: baseline;
+            }
+          }
+        }
+
+        & > hr {
+          border: none;
+          margin: 0;
+          padding: 5px 0;
+          transition: all 0.4s;
+          width: 100%;
+        }
+      }
+    }
+  }
+}

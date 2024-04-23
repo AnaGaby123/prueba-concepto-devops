@@ -1,0 +1,38 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  & > .provider-commercial-info-container {
+    align-items: end;
+    display: grid;
+    grid-template-columns: 160px repeat(4, 1fr);
+    grid-template-rows: auto;
+    grid-column-gap: 15px;
+    grid-row-gap: 15px;
+
+    & > .title {
+      @include s.escaledFontFormat(s.$textSize15to19, bold, s.$pqBlack2);
+      @include s.Roboto-Bold;
+      grid-column: 1 / 6;
+      /*      margin-bottom: -11px;*/
+    }
+
+    & > .check {
+      padding-bottom: 3px;
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      grid-template-columns: 170px repeat(4, 1fr);
+      padding: 0 110px;
+      grid-column-gap: 20px;
+      grid-row-gap: 20px;
+
+      & > .check {
+        padding-bottom: 5px;
+      }
+    }
+  }
+}

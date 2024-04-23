@@ -1,0 +1,20 @@
+<div id="pop-up-container">
+  <div class="header-pop-up"
+    ><label>{{ titleHeader }}</label></div
+  >
+  <div class="body-pop-up">
+    <img alt="" class="image-pop" [src]="getCheckImage()" draggable="false" />
+    <div class="content" [ngClass]="getTypePopStyles()">
+      <label>{{ text }}</label>
+      <label class="secondary-text">{{ secondText }}</label>
+      <div *ngIf="activeButtons" class="buttons-container">
+        <button class="secondary-button-{{ widthButton }}" (click)="emitSelected('secondary', false)">{{
+          textSecondaryButton
+        }}</button>
+        <button class="primary-button-{{ widthButton }}" (click)="emitSelected('primary', true)">{{
+          textPrimaryButton
+        }}</button>
+      </div>
+    </div>
+  </div>
+</div>

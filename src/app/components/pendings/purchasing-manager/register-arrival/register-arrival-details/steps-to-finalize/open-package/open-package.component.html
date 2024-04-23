@@ -1,0 +1,11 @@
+<div id="open-package">
+  <div class="container-component">
+    <app-load-and-carousel-images
+      (arrayEmit)="saveArrayImages($event)"
+      [images]="imagesLoaded$ | async"
+      [imageContainerWidth]="'100%'"
+      [imageContainerHeight]="viewType === viewIpad ? '600px' : '700px'"
+    >
+    </app-load-and-carousel-images>
+  </div>
+</div>

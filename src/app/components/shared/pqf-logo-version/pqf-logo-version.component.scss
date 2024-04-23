@@ -1,0 +1,25 @@
+@use 'base' as s;
+* {
+  box-sizing: border-box;
+}
+:host {
+  height: 100%;
+  overflow: hidden;
+
+  #pqf-logo-version {
+    @include s.flexRow;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    & > svg {
+      height: 100%;
+      width: 100%;
+    }
+    & > .full {
+      max-width: 100%;
+    }
+    & > .text {
+      height: 36px;
+    }
+  }
+}

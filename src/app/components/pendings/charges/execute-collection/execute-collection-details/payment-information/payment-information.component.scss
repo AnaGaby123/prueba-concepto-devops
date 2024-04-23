@@ -1,0 +1,998 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  #payment-information {
+    @include s.absolute100;
+    @include s.flexColumn;
+    overflow: hidden;
+
+    & > .header {
+      @include s.flexRow;
+      flex: 0 0 auto;
+      overflow-x: auto;
+      padding: 15px 20px;
+
+      & > div {
+        margin-right: 30px;
+      }
+
+      & > div:last-of-type {
+        margin-right: 0;
+      }
+
+      & > .client-container {
+        @include s.flexColumn;
+        flex: 0 0 auto;
+
+        & > .client-title {
+          @include s.flexRowNoWrap;
+          justify-content: flex-start;
+          margin-bottom: 10px;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize15to21, bold, s.$pqBlack2);
+            @include s.Novecento-Bold;
+          }
+        }
+
+        & > .client {
+          @include s.flexRowNoWrap;
+
+          & > div:nth-of-type(1) {
+            @include s.flexColumn;
+            @include s.absoluteCenter;
+            flex: 0 0 122px;
+            height: 70px;
+            padding-right: 18px;
+
+            & > img {
+              max-height: 100%;
+              max-width: 100%;
+            }
+          }
+
+          & > .client-info {
+            @include s.flexColumn;
+            flex: 1;
+            justify-content: center;
+
+            & > div {
+              @include s.multiLineTextTruncateSinHeight($lineHeight: 1.1em);
+              max-width: 200px;
+              min-width: 150px;
+
+              & > label {
+                @include s.escaledFontFormat(s.$textSize15to21, bold, s.$pqGreen);
+                @include s.Roboto-Bold;
+              }
+            }
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+              @include s.Roboto-Regular;
+            }
+          }
+        }
+      }
+
+      & > .contact-data {
+        @include s.flexColumn;
+        flex: 1 0 auto;
+
+        & > .data {
+          @include s.flexRow;
+          justify-content: space-around;
+
+          & > div {
+            @include s.flexColumn;
+            justify-content: flex-end;
+            margin-right: 30px;
+
+            & > .title {
+              height: auto !important;
+              margin-bottom: 0 !important;
+            }
+
+            & > .row {
+              @include s.flexRowNoWrap;
+              align-items: center;
+              height: 18px;
+              margin-bottom: 5px;
+
+              & > .title {
+                @include s.flexColumn;
+                margin-bottom: 10px;
+
+                & > label {
+                  @include s.escaledFontFormat(s.$textSize15to21, bold, s.$pqGreen);
+                  @include s.Roboto-Bold;
+                }
+              }
+
+              & > .image {
+                @include s.absoluteCenter;
+                @include s.flexColumn;
+                height: 18px;
+                margin-right: 5px;
+                width: 18px;
+
+                & > img {
+                  max-height: 100%;
+                  max-width: 100%;
+                }
+              }
+
+              & > label {
+                @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                @include s.Roboto-Regular;
+                white-space: pre-wrap;
+
+                &.bold {
+                  @include s.Roboto-Bold;
+                }
+
+                &.green {
+                  @include s.escaledFontFormat(s.$textSize14to18, bold, s.$pqGreen2);
+                  @include s.Roboto-Bold;
+                }
+
+                &.red {
+                  @include s.escaledFontFormat(s.$textSize14to18, bold, s.$pqRed);
+                  @include s.Roboto-Bold;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    & > .container-blue {
+      @include s.flexColumn;
+      flex: 0 0 100px;
+      background-color: s.$pqFondo;
+      justify-content: center;
+      padding: 0 20px;
+
+      & > label:nth-of-type(1) {
+        @include s.escaledFontFormat(s.$textSize15to21, bold, s.$pqBlack2);
+        @include s.Novecento-Bold;
+        padding-bottom: 9px;
+      }
+
+      & > div {
+        @include s.flexRowNoWrap;
+        justify-content: space-between;
+      }
+
+      & > .line-one {
+        padding-top: 4px;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize14to19, bold, s.$pqBlack2);
+          @include s.Novecento-Bold;
+        }
+      }
+
+      & > .line-two {
+        padding-top: 2px;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize10to11, bold, s.$pqBlack2);
+          @include s.Novecento-Bold;
+        }
+
+        & > .green {
+          color: s.$pqGreen !important;
+        }
+      }
+    }
+
+    & > .percentage-bar-container {
+      @include s.flexColumn;
+      flex: 0 0 auto;
+      padding: 13px 20px;
+
+      & > label:nth-of-type(1) {
+        @include s.escaledFontFormat(s.$textSize15to21, bold, s.$pqBlack2);
+        @include s.Novecento-Bold;
+        padding-bottom: 9px;
+      }
+    }
+
+    & > .tabs-container {
+      @include s.flexColumn;
+      flex: 0 0 auto;
+      padding: 0 20px 20px 20px;
+
+      & > label:nth-of-type(1) {
+        @include s.escaledFontFormat(s.$textSize15to21, bold, s.$pqBlack2);
+        @include s.Novecento-Bold;
+        padding-bottom: 10px;
+      }
+    }
+
+    & > .filters-container,
+    .filters-dates-container {
+      @include s.flexRowNoWrap;
+      flex: 0 0 auto;
+      justify-content: space-between;
+      padding: 0 20px;
+    }
+
+    & > .filters-container {
+      align-items: flex-end;
+
+      & > div {
+        @include s.flexRowNoWrap;
+        flex: 1 1 auto;
+      }
+
+      & > .column-one {
+        padding-right: 20px;
+
+        & > app-drop-down-list:nth-of-type(1),
+        app-drop-down-list:nth-of-type(2) {
+          padding-right: 15px;
+        }
+      }
+    }
+
+    & > .filters-dates-container {
+      padding-top: 20px;
+
+      & > div {
+        @include s.flexRowNoWrap;
+        align-items: center;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize14to16, regular, s.$pqBlack2);
+          @include s.Roboto-Regular;
+        }
+
+        & > app-date-range {
+          width: auto !important;
+        }
+      }
+    }
+
+    & > .table-container {
+      @include s.flexRowNoWrap;
+      flex: 1 0 auto;
+      margin: 0 20px;
+      overflow: auto;
+      padding-top: 20px;
+
+      & > .table {
+        @include s.flexColumn;
+        @include s.absolute100;
+        flex: 1 0 1190px;
+        overflow-y: hidden;
+        overflow-x: auto;
+
+        & > .head {
+          @include s.flexRowNoWrap;
+          flex: 0 0 auto;
+          border-bottom: 1px solid s.$pqBlack2;
+          padding-bottom: 6px;
+
+          & > .center {
+            justify-content: center !important;
+          }
+
+          & > .end {
+            justify-content: flex-end !important;
+          }
+
+          & > div {
+            @include s.flexRowNoWrap;
+            justify-content: flex-start;
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize10to13, regular, s.$pqBlack2);
+              @include s.Roboto-Regular;
+            }
+          }
+
+          & > .index {
+            flex: 0 0 30px;
+          }
+
+          & > .uuid {
+            flex: 1 0 80px;
+          }
+
+          & > .company {
+            flex: 1 0 90px;
+          }
+
+          & > .bill {
+            flex: 1 0 60px;
+          }
+
+          & > .internal-order {
+            flex: 1 0 90px;
+          }
+
+          & > .payment-condition {
+            flex: 1 0 70px;
+          }
+
+          & > .p-billing {
+            flex: 1 0 80px;
+          }
+
+          & > .p-revision {
+            flex: 1 0 70px;
+          }
+
+          & > .against-receipt {
+            flex: 1 0 80px;
+          }
+
+          & > .fep {
+            flex: 1 0 70px;
+          }
+
+          & > .fpp {
+            flex: 1 0 70px;
+          }
+
+          & > .payment-method {
+            flex: 1 0 80px;
+          }
+
+          & > .drc {
+            flex: 1 0 40px;
+          }
+
+          & > .mec {
+            flex: 1 0 100px;
+          }
+
+          & > .status {
+            flex: 1 0 90px;
+          }
+
+          & > .monitoring {
+            flex: 1 0 30px;
+          }
+
+          & > .reschedule {
+            flex: 1 0 30px;
+          }
+
+          & > .check {
+            flex: 1 0 30px;
+          }
+        }
+
+        & > .body {
+          @include s.flexColumn;
+          flex: 1 1 auto;
+          overflow: auto;
+
+          & > virtual-scroller {
+            @include s.absolute100;
+
+            .item-company {
+              @include s.flexRowNoWrap;
+              align-items: center;
+              box-sizing: border-box;
+              border-bottom: 1px solid s.$pqGray2;
+              height: 55px;
+
+              &:hover {
+                background-color: s.$pqGray2;
+              }
+
+              & > .center {
+                justify-content: center;
+              }
+
+              & > .end {
+                justify-content: flex-end;
+              }
+
+              & > div {
+                @include s.flexRowNoWrap;
+
+                & > .normal-black {
+                  @include s.escaledFontFormat(s.$textSize10to13, regular, s.$pqBlack2);
+                  @include s.Roboto-Regular;
+                }
+
+                & > .normal-green {
+                  @include s.escaledFontFormat(s.$textSize10to13, regular, s.$pqGreen);
+                  @include s.Roboto-Regular;
+                }
+
+                & > .bold-black {
+                  @include s.escaledFontFormat(s.$textSize10to13, bold, s.$pqBlack2);
+                  @include s.Roboto-Bold;
+                }
+
+                & > .bold-green {
+                  @include s.escaledFontFormat(s.$textSize10to13, bold, s.$pqGreen);
+                  @include s.Roboto-Bold;
+                }
+
+                & > .underline {
+                  text-decoration: underline;
+                }
+
+                & > img {
+                  height: 15px;
+                }
+
+                & > .check {
+                  height: 20px;
+                }
+              }
+
+              & > .index {
+                flex: 0 0 30px;
+              }
+
+              & > .uuid {
+                flex: 1 0 80px;
+              }
+
+              & > .company {
+                flex: 1 0 90px;
+              }
+
+              & > .bill {
+                flex: 1 0 60px;
+              }
+
+              & > .internal-order {
+                flex: 1 0 90px;
+              }
+
+              & > .payment-condition {
+                flex: 1 0 70px;
+              }
+
+              & > .p-billing {
+                flex: 1 0 80px;
+              }
+
+              & > .p-revision {
+                flex: 1 0 70px;
+              }
+
+              & > .against-receipt {
+                flex: 1 0 80px;
+              }
+
+              & > .fep {
+                flex: 1 0 70px;
+              }
+
+              & > .fpp {
+                flex: 1 0 70px;
+              }
+
+              & > .payment-method {
+                flex: 1 0 80px;
+              }
+
+              & > .drc {
+                flex: 1 0 40px;
+              }
+
+              & > .mec {
+                flex: 1 0 100px;
+              }
+
+              & > .status {
+                flex: 1 0 90px;
+              }
+
+              & > .monitoring {
+                flex: 1 0 30px;
+              }
+
+              & > .reschedule {
+                flex: 1 0 30px;
+              }
+
+              & > .check {
+                flex: 1 0 30px;
+
+                & > img {
+                  cursor: pointer;
+                }
+              }
+
+              & > .monitoring,
+              .reschedule {
+                & > .active {
+                  cursor: pointer;
+                }
+              }
+            }
+          }
+
+          & > .is-loading,
+          .without-results {
+            @include s.gridCenter;
+            @include s.absolute100;
+          }
+        }
+
+        & > .footer {
+          @include s.flexRowNoWrap;
+          flex: 0 0 40px;
+          border-top: 1px solid s.$pqBlack2;
+          padding-top: 10px;
+
+          & > div {
+            @include s.flexRowNoWrap;
+            justify-content: flex-end;
+
+            & > .normal-black {
+              @include s.escaledFontFormat(s.$textSize10to13, regular, s.$pqBlack2);
+              @include s.Roboto-Regular;
+            }
+
+            & > .bold-green {
+              @include s.escaledFontFormat(s.$textSize10to13, bold, s.$pqGreen);
+              @include s.Roboto-Bold;
+            }
+          }
+
+          & > .bills {
+            flex: 1 0 650px;
+          }
+
+          & > .total {
+            flex: 1 0 290px;
+          }
+
+          & > .bills-selected {
+            flex: 1 0 180px;
+          }
+        }
+      }
+    }
+
+    & > .footer-container {
+      @include s.flexRowNoWrap;
+      flex: 0 0 auto;
+      justify-content: flex-end;
+      padding: 20px;
+
+      & > label {
+        @include s.escaledFontFormat(s.$textSize17to22, regular, s.$pqBlack2);
+        @include s.Roboto-Bold;
+      }
+
+      & > label:nth-of-type(1) {
+        padding-right: 30px;
+      }
+
+      & > .green {
+        color: s.$pqGreen2 !important;
+      }
+    }
+  }
+
+  #pop-up-monitoring,
+  #pop-up-reschedule {
+    @include s.flexColumn;
+    width: 100%;
+
+    & .container-pop {
+      @include s.flexColumn;
+      @include s.absolute100;
+      padding: 40px 30px 20px 30px;
+
+      & > .header {
+        @include s.flexRowNoWrap;
+        justify-content: space-between;
+        padding-bottom: 20px;
+
+        & > .column-one {
+          @include s.flexRowNoWrap;
+
+          & > img {
+            padding-right: 20px;
+          }
+
+          & > .labels {
+            @include s.flexColumn;
+
+            & > div {
+              @include s.flexRowNoWrap;
+              align-items: center;
+              padding-bottom: 4px;
+            }
+
+            & > .line-one {
+              & > label {
+                @include s.escaledFontFormat(s.$textSize17to22, bold, s.$pqGreen);
+                @include s.Novecento-Bold;
+              }
+            }
+
+            & > .line-two {
+              & > label {
+                @include s.escaledFontFormat(s.$textSize15to20, bold, s.$pqBlack2);
+                @include s.Roboto-Bold;
+              }
+
+              & > .green {
+                color: s.$pqGreen !important;
+              }
+
+              & > label:nth-of-type(1) {
+                padding-right: 4px;
+              }
+            }
+
+            & > .line-three {
+              & > label {
+                @include s.escaledFontFormat(s.$textSize13to18, regular, s.$pqBlack2);
+                @include s.Roboto-Regular;
+                padding-right: 3px;
+              }
+
+              & > img {
+                height: 21px;
+              }
+            }
+          }
+        }
+
+        & > .column-two {
+          @include s.flexColumn;
+
+          & > div {
+            @include s.flexColumn;
+          }
+
+          & > .line-one {
+            align-items: flex-start;
+            padding-top: 10px;
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize15to20, bold, s.$pqGreen);
+              @include s.Roboto-Bold;
+            }
+          }
+
+          & > .line-two {
+            align-items: flex-end;
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize12to16, regular, s.$pqBlack2);
+              @include s.Roboto-Regular;
+            }
+          }
+        }
+      }
+
+      & > .container-table {
+        border-top: 1px solid s.$pqBlack2;
+        box-sizing: border-box;
+        flex: 1;
+        height: calc(100% - 100px - 50px);
+        overflow: hidden;
+
+        & > div:nth-of-type(1) {
+          @include s.absolute100;
+          @include s.flexColumn;
+          box-sizing: border-box;
+          flex: 1;
+          overflow: hidden;
+
+          & > .body {
+            @include s.absolute100;
+            @include s.flexRowWrap;
+            box-sizing: border-box;
+            flex: 1;
+            overflow: hidden;
+
+            & > virtual-scroller {
+              width: 100%;
+              height: 99%;
+
+              ::ng-deep .scrollable-content {
+                & > .row-item {
+                  @include s.flexColumn;
+                  align-items: flex-start;
+                  align-content: flex-start;
+                  border-bottom: solid 1px s.$pqGray2;
+                  box-sizing: border-box;
+                  justify-content: space-between;
+                  padding: 15px;
+                  width: 100%;
+
+                  &:hover * {
+                    cursor: pointer;
+                  }
+
+                  &:hover {
+                    background-color: s.$pqGray2;
+                    cursor: pointer;
+                  }
+
+                  & > .line-one {
+                    @include s.flexRow;
+                    padding-bottom: 2px;
+
+                    & > .column-one {
+                      @include s.flexRowNoWrap;
+
+                      & > label {
+                        @include s.escaledFontFormat(s.$textSize12to15, bold, s.$pqBlack2);
+                        @include s.Roboto-Bold;
+                      }
+
+                      & > label:nth-of-type(1),
+                      label:nth-of-type(2) {
+                        padding-right: 3px;
+                      }
+
+                      & > label:nth-of-type(2),
+                      label:nth-of-type(3) {
+                        color: s.$pqGreen !important;
+                      }
+                    }
+                  }
+
+                  & > .line-two {
+                    & > label:nth-of-type(1) {
+                      @include s.escaledFontFormat(s.$textSize12to15, bold, s.$pqBlack2);
+                      @include s.Roboto-Bold;
+                      padding-right: 3px;
+                    }
+
+                    & > label:nth-of-type(2) {
+                      @include s.escaledFontFormat(s.$textSize12to15, regular, s.$pqBlack2);
+                      @include s.Roboto-Regular;
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          & > .without-results {
+            @include s.absolute100;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+
+            & > label {
+              $textSize: (
+                'base': 23px,
+                'macBookAir': 23px,
+              );
+              @include s.escaledFontFormat($textSize, bold, s.$pqGray3);
+              @include s.Novecento-Bold;
+              text-align: center;
+            }
+          }
+        }
+      }
+
+      & > .footer {
+        height: 50px;
+        border-top: 1px solid s.$pqBlack2;
+
+        & > label:nth-of-type(1) {
+          @include s.escaledFontFormat(s.$textSize13to14, regular, s.$pqBlack2);
+          @include s.Roboto-Regular;
+          padding-top: 3px;
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #payment-information {
+      & > .container-blue {
+        flex: 0 0 130px;
+      }
+
+      & > .percentage-bar-container {
+        padding: 16px 20px;
+      }
+
+      & > .table-container {
+        & > .table {
+          flex: 1 0 1550px;
+
+          & > .head {
+            & > .index {
+              flex: 0 0 50px;
+            }
+
+            & > .uuid {
+              flex: 1 0 100px;
+            }
+
+            & > .company {
+              flex: 1 0 100px;
+            }
+
+            & > .bill {
+              flex: 1 0 70px;
+            }
+
+            & > .internal-order {
+              flex: 1 0 100px;
+            }
+
+            & > .payment-condition {
+              flex: 1 0 100px;
+            }
+
+            & > .p-billing {
+              flex: 1 0 100px;
+            }
+
+            & > .p-revision {
+              flex: 1 0 100px;
+            }
+
+            & > .against-receipt {
+              flex: 1 0 100px;
+            }
+
+            & > .fep {
+              flex: 1 0 100px;
+            }
+
+            & > .fpp {
+              flex: 1 0 100px;
+            }
+
+            & > .payment-method {
+              flex: 1 0 100px;
+            }
+
+            & > .drc {
+              flex: 1 0 50px;
+            }
+
+            & > .mec {
+              flex: 1 0 130px;
+            }
+
+            & > .status {
+              flex: 1 0 100px;
+            }
+
+            & > .monitoring {
+              flex: 1 0 50px;
+            }
+
+            & > .reschedule {
+              flex: 1 0 50px;
+            }
+
+            & > .check {
+              flex: 1 0 50px;
+            }
+          }
+
+          & > .body {
+            & > virtual-scroller {
+              .item-company {
+                & > div {
+                  & > img {
+                    height: 18px;
+                  }
+
+                  & > .check {
+                    height: 23px;
+                  }
+                }
+
+                & > .index {
+                  flex: 0 0 50px;
+                }
+
+                & > .uuid {
+                  flex: 1 0 100px;
+                }
+
+                & > .company {
+                  flex: 1 0 100px;
+                }
+
+                & > .bill {
+                  flex: 1 0 70px;
+                }
+
+                & > .internal-order {
+                  flex: 1 0 100px;
+                }
+
+                & > .payment-condition {
+                  flex: 1 0 100px;
+                }
+
+                & > .p-billing {
+                  flex: 1 0 100px;
+                }
+
+                & > .p-revision {
+                  flex: 1 0 100px;
+                }
+
+                & > .against-receipt {
+                  flex: 1 0 100px;
+                }
+
+                & > .fep {
+                  flex: 1 0 100px;
+                }
+
+                & > .fpp {
+                  flex: 1 0 100px;
+                }
+
+                & > .payment-method {
+                  flex: 1 0 100px;
+                }
+
+                & > .drc {
+                  flex: 1 0 50px;
+                }
+
+                & > .mec {
+                  flex: 1 0 130px;
+                }
+
+                & > .status {
+                  flex: 1 0 100px;
+                }
+
+                & > .monitoring {
+                  flex: 1 0 50px;
+                }
+
+                & > .reschedule {
+                  flex: 1 0 50px;
+                }
+
+                & > .check {
+                  flex: 1 0 50px;
+                }
+              }
+            }
+          }
+
+          & > .footer {
+            & > .bills {
+              flex: 1 0 920px;
+            }
+
+            & > .total {
+              flex: 1 0 380px;
+            }
+
+            & > .bills-selected {
+              flex: 1 0 250px;
+            }
+          }
+        }
+      }
+
+      & > .footer-container {
+        flex: 0 0 70px;
+      }
+    }
+  }
+}

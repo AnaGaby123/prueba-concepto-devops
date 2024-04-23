@@ -1,0 +1,20 @@
+<app-pop-up-generic
+  [activeBtn]="selectValidateBtn$ | async"
+  [activeButtons]="true"
+  [height]="(viewType$ | async) === viewTypes.small ? '720px' : '810px'"
+  [overflow]="'auto'"
+  [rightButtonLabel]="'Aceptar'"
+  [titleHeader]="'VER PRODUCTO'"
+  [width]="(viewType$ | async) === viewTypes.small ? '740px' : '830px'"
+  (evento)="onClose($event)"
+>
+  <div class="content">
+    <app-pop-items-products
+      *ngIf="selectedProduct$ | async"
+      [options]="optionsProduct$ | async"
+      [optionSelected]="optionSelected$ | async"
+      [product]="selectedProduct$ | async"
+    >
+    </app-pop-items-products>
+  </div>
+</app-pop-up-generic>

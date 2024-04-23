@@ -1,0 +1,12 @@
+<div class="delete-container">
+  <img
+    *ngIf="columnDelete?.showArrow"
+    #imageElement
+    alt="delete"
+    [id]="'delete'"
+    [src]="
+      'assets/Images/quotation/' + (columnDelete?.typeItem === quotationItemTypes.Saving ? 'delete-green.svg' : 'delete.svg')
+    "
+    (click)="handleClick($event, imageElement, true, nameActionsInternalSalesItem?.DeleteAction)"
+  />
+</div>

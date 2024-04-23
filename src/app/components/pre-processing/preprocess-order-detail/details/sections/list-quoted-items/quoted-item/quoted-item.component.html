@@ -1,0 +1,140 @@
+<div class="item">
+  <app-internal-sales-item
+    [internalSalesItem]="item"
+    (valueEmitter)="globalItemEventsHandler($event)"
+  ></app-internal-sales-item>
+  <div
+    class="incidence"
+    *ngIf="
+      (!itemPpreProcessing?.Validada || itemPpreProcessing?.hasInheritIncidences) &&
+      !itemPpreProcessing?.freightItem &&
+      itemPpreProcessing?.Validada !== null
+    "
+  >
+    <div class="tab" *ngIf="!itemPpreProcessing?.Validada && !itemPpreProcessing?.hasInheritIncidences"></div>
+    <div class="content">
+      <div>
+        <label> {{ 'preProcessing.inconsistencies' | translate }}: </label>
+      </div>
+      <div>
+        <app-check-box
+          [label]="'incidencesItem.catalog' | translate"
+          [check]="itemPpreProcessing?.ppIncidenciaPartida?.Catalogo"
+          [backGroundCheckColor]="'#fff'"
+          (event)="setIncidenceValue(itemPpreProcessing.IdPPPartidaPedido, FIELD_CATALOG, $event, item?.index)"
+        >
+        </app-check-box>
+        <app-check-box
+          [label]="'incidencesItem.description' | translate"
+          [check]="itemPpreProcessing?.ppIncidenciaPartida?.Descripcion"
+          [backGroundCheckColor]="'#fff'"
+          (event)="setIncidenceValue(itemPpreProcessing.IdPPPartidaPedido, FIELD_DESCRIPTION, $event, item?.index)"
+        >
+        </app-check-box>
+        <app-check-box
+          [label]="'incidencesItem.presentation' | translate"
+          [check]="itemPpreProcessing?.ppIncidenciaPartida?.Presentacion"
+          [backGroundCheckColor]="'#fff'"
+          (event)="setIncidenceValue(itemPpreProcessing.IdPPPartidaPedido, FIELD_PRESENTATION, $event, item?.index)"
+        >
+        </app-check-box>
+        <app-check-box
+          [label]="'incidencesItem.brand' | translate"
+          [check]="itemPpreProcessing?.ppIncidenciaPartida?.Marca"
+          [backGroundCheckColor]="'#fff'"
+          (event)="setIncidenceValue(itemPpreProcessing.IdPPPartidaPedido, FIELD_TRADEMARK, $event, item?.index)"
+        >
+        </app-check-box>
+        <app-check-box
+          *ngIf="
+            itemPpreProcessing?.cotPartidaCotizacionDetalle?.vProducto?.Tipo !== productsTypes.trainings &&
+            itemPpreProcessing?.cotPartidaCotizacionDetalle?.vProducto?.Tipo !== productsTypes.training
+          "
+          [label]="'incidencesItem.tee' | translate"
+          [check]="itemPpreProcessing?.ppIncidenciaPartida?.TiempoEstimadoEntrega"
+          [backGroundCheckColor]="'#fff'"
+          (event)="setIncidenceValue(itemPpreProcessing.IdPPPartidaPedido, FIELD_TEE, $event, item?.index)"
+        >
+        </app-check-box>
+        <app-check-box
+          *ngIf="
+            itemPpreProcessing?.cotPartidaCotizacionDetalle?.vProducto?.Tipo === productsTypes.trainings ||
+            itemPpreProcessing?.cotPartidaCotizacionDetalle?.vProducto?.Tipo === productsTypes.trainings
+          "
+          [label]="'incidencesItem.dateTraining' | translate"
+          [check]="itemPpreProcessing?.ppIncidenciaPartida?.FechaRealizacionEnCapacitacion"
+          [backGroundCheckColor]="'#fff'"
+          (event)="setIncidenceValue(itemPpreProcessing.IdPPPartidaPedido, FIELD_DATE, $event, item?.index)"
+        >
+        </app-check-box>
+        <app-check-box
+          [label]="'incidencesItem.price' | translate"
+          [check]="itemPpreProcessing?.ppIncidenciaPartida?.PrecioUnitario"
+          [backGroundCheckColor]="'#fff'"
+          (event)="setIncidenceValue(itemPpreProcessing.IdPPPartidaPedido, FIELD_UNIT_PRICE, $event, item?.index)"
+        >
+        </app-check-box>
+        <app-check-box
+          [label]="'incidencesItem.currency' | translate"
+          [check]="itemPpreProcessing?.ppIncidenciaPartida?.Moneda"
+          [backGroundCheckColor]="'#fff'"
+          (event)="setIncidenceValue(itemPpreProcessing.IdPPPartidaPedido, FIELD_CURRENCY, $event, item?.index)"
+        >
+        </app-check-box>
+        <app-check-box
+          [label]="'incidencesItem.iva' | translate"
+          [check]="itemPpreProcessing?.ppIncidenciaPartida?.IVA"
+          [backGroundCheckColor]="'#fff'"
+          (event)="setIncidenceValue(itemPpreProcessing.IdPPPartidaPedido, FIELD_IVA, $event, item?.index)"
+        >
+        </app-check-box>
+      </div>
+      <div>
+        <label>
+          {{ 'common.comments' | translate }}
+        </label>
+        <app-generic-input
+          [value]="itemPpreProcessing?.ppIncidenciaPartida?.Comentarios"
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          (textData)="setIncidenceValue(itemPpreProcessing?.IdPPPartidaPedido, FIELD_COMMENTS, $event, item?.index)"
+        >
+        </app-generic-input>
+      </div>
+    </div>
+    <div class="image">
+      <img
+        alt="Inconsistencia"
+        src="assets/Images/pre-processing/partida_inconsistencias.svg"
+        *ngIf="itemPpreProcessing?.hasInheritIncidences"
+      />
+    </div>
+  </div>
+</div>
+<div class="linked-items-pop">
+  <!-- TODO: Revisar si se va a implementar-->
+  <!--<app-custom-position-pop-up
+    *ngIf="toolTipPop"
+    [minWidth]="'160px'"
+    [maxWidth]="'160px'"
+    [minHeight]="'60px'"
+    [maxHeight]="'82px'"
+    [popUpPosition]="'bottom-center'"
+    [backgroundColor]="'#33333c'"
+    [target]="targetPop"
+    [borderColor]="'#33333c'"
+    [borderRadius]="'solid 0.5px #c8c8c9'"
+    [triangleBackgroundColor]="'#33333c'"
+    [closeButton]="false"
+    (closeEmitter)="openLinkedQuoted('tooltip', false)"
+  >
+    <div class="linked-items">
+      <ul>
+        <li *ngFor="let quote of (quotesLinked$ | async)?.quotesLinked; let i = index">
+          <label (click)="openLinkedFile(quote.IdArchivoPDF, quote.Folio)">
+            {{ i + 1 + '.- FO-' + quote.Folio }}
+          </label>
+        </li>
+      </ul>
+    </div>
+  </app-custom-position-pop-up>-->
+</div>

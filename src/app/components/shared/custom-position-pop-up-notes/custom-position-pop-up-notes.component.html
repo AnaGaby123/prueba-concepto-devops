@@ -1,0 +1,27 @@
+<div #popUp [style.top]="popUpTopProperty" [style.left]="popUpLeftProperty">
+  <div>
+    <div class="container" [style.z-index]="2" (click)="handleStopEvents($event)">
+      <div class="notes-container">
+        <div class="tooltip-text">
+          <div class="system" *ngIf="columnNotes?.systemNotes">
+            <label class="title">{{ 'descriptionItemQuote.notesSystem' | translate }}</label>
+            <label class="body">{{ columnNotes?.systemNotes }}</label>
+          </div>
+          <div class="item" *ngIf="columnNotes?.itemNotes">
+            <label class="title">{{ 'descriptionItemQuote.notesItem' | translate }}</label>
+            <label class="body">{{ columnNotes?.itemNotes }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="triangle"
+      [ngClass]="popUpPosition"
+      [style.bottom]="triangleBottomPosition"
+      [style.left]="triangleLeftPosition"
+      [style.right]="triangleRightPosition"
+      [style.top]="triangleTopPosition"
+      [style.z-index]="3"
+    ></div>
+  </div>
+</div>

@@ -1,0 +1,634 @@
+<div id="content-items">
+  <div class="technical-information">
+    <div class="image-product">
+      <img
+        #imageElement
+        alt="logo"
+        [src]="setImage(product.product ? product.product.imageHover : product?.VPartidaCotizacion.imageHover)"
+        (error)="errorImage()"
+      />
+      <img
+        *ngIf="
+          product.VPartidaCotizacion?.ClaveTipoPartidaCotizacion === quotationItemTypes[QuotationItemTypes.Saving] ||
+          product?.VPartidaCotizacion === null
+        "
+        class="saved"
+        src="assets/Images/quotation/itemQuotationTypeSaving.svg"
+        alt="Ahorro"
+      />
+    </div>
+    <div class="information-product">
+      <div class="mark">
+        <img
+          #imageElement
+          alt="logo"
+          [src]="setImage(product.product ? product.product.imageHover : product?.VPartidaCotizacion.imageHover)"
+          (error)="errorImage()"
+        />
+        <label *ngIf="!product.vProductoDetalle.ProductoCapacitacion"
+          >{{ 'CAT #' + product?.vProductoDetalle.Catalogo }}
+          <span *ngIf="!product.vProductoDetalle.ProductoDispositivoMedico">· </span>
+        </label>
+        <label *ngIf="product.vProductoDetalle.ProductoCapacitacion"> {{ product.vProductoDetalle.MedioDifusion }}</label>
+        <label *ngIf="product.vProductoDetalle.ProductoPublicacion">
+          {{ product.vProductoDetalle.FormatoPublicacion || 'N/D' }}</label
+        >
+        <label
+          *ngIf="
+            !product.vProductoDetalle?.ProductoCapacitacion &&
+            !product.vProductoDetalle.ProductoPublicacion &&
+            product?.vProductoDetalle.TipoPresentacion &&
+            !product.vProductoDetalle.ProductoDispositivoMedico
+          "
+        >
+          {{ product?.vProductoDetalle.TipoPresentacion }}
+        </label>
+        <label
+          *ngIf="
+            !product.vProductoDetalle?.ProductoCapacitacion &&
+            !product.vProductoDetalle.ProductoPublicacion &&
+            product?.vProductoDetalle.Presentacion &&
+            !product.vProductoDetalle.ProductoDispositivoMedico
+          "
+          >{{ product?.vProductoDetalle.Presentacion }}
+        </label>
+        <label
+          *ngIf="
+            !product.vProductoDetalle?.ProductoCapacitacion &&
+            !product.vProductoDetalle.ProductoPublicacion &&
+            product?.vProductoDetalle.Unidad &&
+            !product.vProductoDetalle.ProductoDispositivoMedico
+          "
+          >{{ product?.vProductoDetalle.Unidad }}</label
+        >
+        <label
+          *ngIf="
+            !product.vProductoDetalle?.ProductoCapacitacion &&
+            !product.vProductoDetalle.ProductoPublicacion &&
+            !product.vProductoDetalle.ProductoLabware &&
+            !product.vProductoDetalle.ProductoDispositivoMedico
+          "
+        >
+          · {{ product?.vProductoDetalle.Uso || 'N/D' }}</label
+        >
+      </div>
+      <div class="description">
+        <label>
+          {{ product.vProductoDetalle.Descripcion }}
+        </label>
+      </div>
+      <div class="footer-product">
+        <div class="content-left">
+          <div class="section-top">
+            <label class="ocean">{{
+              buildStringFamily(
+                product.vProductoDetalle.Tipo,
+                product.vProductoDetalle.Subtipo,
+                product.vProductoDetalle.Control
+              )
+            }}</label>
+            <label *ngIf="product?.vProductoDetalle?.ProductoPublicacion">
+              · {{ 'quotation.details.section.detailsProducts.Author' | translate }}:
+              {{ product?.vProductoDetalle?.ProductoPublicacion?.Autor || 'N/D' }}</label
+            >
+            <label
+              *ngIf="!product.vProductoDetalle.ProductoCapacitacion && product?.vProductoDetalle.Controlado"
+              class="orange"
+            >
+              ·
+              {{ 'quotation.details.section.detailsProducts.control' | translate }}
+            </label>
+          </div>
+          <div class="section-bottom" [ngClass]="{training: product.vProductoDetalle.ProductoCapacitacion}">
+            <div class="content" *ngIf="!product.vProductoDetalle.ProductoCapacitacion">
+              <label class="title">{{ 'quotation.details.section.detailsProducts.present' | translate }}:</label>
+              <label class="response">{{ product?.vProductoDetalle.Presentacion }} {{ product.vProductoDetalle.Unidad }}</label>
+            </div>
+            <div class="content" *ngIf="!product.vProductoDetalle.ProductoCapacitacion">
+              <label class="title">{{ 'quotation.details.section.detailsProducts.delivery' | translate }}:</label>
+              <label class="response"
+                >{{ product?.VPartidaCotizacion?.TiempoEstimadoEntrega || product?.product?.TiempoEstimadoEntrega }}
+                {{
+                  product?.VPartidaCotizacion?.TiempoEstimadoEntrega === 1 || product?.product?.TiempoEstimadoEntrega === 1
+                    ? ('common.day' | translate)
+                    : ('common.days' | translate)
+                }}</label
+              >
+            </div>
+            <div class="content" *ngIf="product.vProductoDetalle.ProductoCapacitacion">
+              <label class="title">{{ 'quotation.details.section.detailsProducts.provider' | translate }}:</label>
+              <label class="response">{{ product.vProductoDetalle.NombreProveedor }}</label>
+            </div>
+            <div class="content">
+              <label class="title">{{ 'quotation.details.section.detailsProducts.mark' | translate }}:</label>
+              <label class="response">{{ product?.vProductoDetalle.NombreMarca | translate }}</label>
+            </div>
+          </div>
+        </div>
+        <div class="content-right">
+          <label>{{
+            product?.vProductoDetalle.NumeroDePiezas === 1 ? ('common.piece' | translate) : ('common.pieces' | translate)
+          }}</label>
+          <div>
+            <app-generic-input
+              (textData)="handlePiecesNumber(+$event)"
+              [fontColor]="'#008894'"
+              [fontSize]="(viewType$ | async) === viewTypes.small ? '16px' : '18px'"
+              [font]="'Roboto-Bold'"
+              [isDisable]="(quotationState$ | async) === 'Enviada'"
+              [min]="1"
+              [onlyNumbers]="true"
+              [padding]="'2px 6px'"
+              [placeholder]="'0'"
+              [maxlength]="5"
+              [textAlign]="'center'"
+              [typeValidation]="validators.Number"
+              [value]="product?.CotProductoOferta.NumeroDePiezas"
+              [width]="(viewType$ | async) === viewTypes.small ? '48px' : '60px'"
+            ></app-generic-input>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="price-product">
+      <div class="content-top">
+        <label class="title" *ngIf="!product.vProductoDetalle.ProductoCapacitacion">{{
+          'quotation.details.section.detailsProducts.priceUni' | translate
+        }}</label>
+        <label class="title" *ngIf="product.vProductoDetalle.ProductoCapacitacion">{{
+          product.vProductoDetalle.ProductoCapacitacion.PrecioPorPersona
+            ? ('quotation.details.section.detailsProducts.pricePerson' | translate)
+            : ('quotation.details.section.detailsProducts.priceGroup' | translate)
+        }}</label>
+        <label class="response" *ngIf="!product.vProductoDetalle.ProductoCapacitacion"
+          >{{ product?.CotProductoOferta?.PrecioCotizadoUnitarioConvertido | currency: 'USD':'symbol-narrow':'1.2-2' }}
+          {{ currencyQuotationSelected$ | async }}</label
+        >
+        <label class="response" *ngIf="product.vProductoDetalle.ProductoCapacitacion"
+          >{{
+            product.vProductoDetalle.ProductoCapacitacion.PrecioPorPersona
+              ? (product?.CotProductoOferta?.PrecioCotizadoUnitarioConvertido | currency: 'USD':'symbol-narrow':'1.2-2')
+              : (product.vProductoDetalle.ProductoCapacitacion.NumeroDePersonasPorGrupo + ' ' || 'S/N ') +
+                ('formProduct.step1.people' | translate) +
+                ' · ' +
+                (product?.CotProductoOferta?.PrecioCotizadoUnitarioConvertido | currency: 'USD':'symbol-narrow':'1.2-2')
+          }}
+          {{ currencyQuotationSelected$ | async }}</label
+        >
+      </div>
+      <div class="content-bottom">
+        <label class="title">{{ 'quotation.details.section.detailsProducts.totals' | translate }}</label>
+        <div class="content-two">
+          <label class="response"
+            >{{ product?.CotProductoOferta.PrecioCotizadoTotal | currency: 'USD':'symbol-narrow':'1.2-2' }}
+            {{ currencyQuotationSelected$ | async }}</label
+          >
+          <div class="tooltip" *ngIf="resultPriceList?.length === 2">
+            <div>
+              <div>
+                <img
+                  alt="indicator_price"
+                  [src]="resultPriceList?.[0] ? 'assets/Images/strategy/price_down.svg' : 'assets/Images/strategy/price_up.svg'"
+                />
+                <p>{{ resultPriceList?.[1] | number: '1.0-0' }}%</p>
+              </div>
+            </div>
+            <div class="tooltip-text">
+              <p
+                >{{ resultPriceList?.[0] ? ('quotation.details.downList' | translate) : ('quotation.details.upList' | translate) }}</p
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="data-general-products">
+    <div class="tabs" *ngIf="!product.vProductoDetalle.ProductoCapacitacion">
+      <app-tabs [options]="options$ | async" [tapSelected]="optionSelected$ | async" (onSelectOption)="setTabs($event)">
+      </app-tabs>
+    </div>
+    <div class="content">
+      <div class="data-sheet" *ngIf="optionSelected.id === '1'">
+        <label class="title">{{ 'quotation.details.technicalInformation' | translate }}</label>
+        <div class="data">
+          <!--          DOCS: DATOS DEL PRODUCTO-->
+          <div class="product-data">
+            <label class="subtitle">{{ 'quotation.details.dataProduct' | translate }} </label>
+            <div class="detailed-description" *ngIf="product.vProductoDetalle.ProductoCapacitacion">
+              <label class="gray-text"
+                >{{ 'quotation.details.section.detailsProducts.detailedDescription' | translate }}:</label
+              >
+              <label class="normal-text">{{ product.vProductoDetalle.ProductoCapacitacion.DescripcionDetallada }}</label>
+            </div>
+            <div class="data-product-columns">
+              <div class="data-column" *ngIf="product.vProductoDetalle.ProductoCapacitacion">
+                <label class="normal-text" *ngIf="product.vProductoDetalle.ProductoCapacitacion"
+                  ><span class="gray-text"
+                    >{{
+                      product.vProductoDetalle.ProductoCapacitacion.PrecioPorPersona
+                        ? ('quotation.details.section.detailsProducts.pricePerson' | translate)
+                        : ('quotation.details.section.detailsProducts.priceGroup' | translate)
+                    }}: </span
+                  >{{
+                    product.vProductoDetalle.ProductoCapacitacion.PrecioPorPersona
+                      ? (product.CotProductoOferta?.PrecioCotizadoUnitarioConvertido | currency: 'USD':'symbol-narrow':'0.2-4')
+                      : (product.vProductoDetalle.ProductoCapacitacion.NumeroDePersonasPorGrupo + ' ' || 'S/N ') +
+                        ('formProduct.step1.people' | translate) +
+                        ' · ' +
+                        (product.CotProductoOferta?.PrecioCotizadoUnitarioConvertido | currency: 'USD':'symbol-narrow':'0.2-4')
+                  }}
+                  {{ currencyQuotationSelected$ | async }}</label
+                >
+                <label class="normal-text" *ngIf="product.vProductoDetalle.ProductoCapacitacion"
+                  ><span class="gray-text">{{ 'quotation.details.section.detailsProducts.droad' | translate }}: </span
+                  >{{ product.vProductoDetalle.MedioDifusion || 'N/D' }}</label
+                >
+                <label class="normal-text" *ngIf="product.vProductoDetalle.ProductoCapacitacion"
+                  ><span class="gray-text">{{ 'formProduct.step1.durationOfEvent' | translate }}: </span
+                  >{{ product.vProductoDetalle.ProductoCapacitacion.DuracionEvento }}
+                  {{
+                    product.vProductoDetalle.ProductoCapacitacion.DuracionEvento === 1
+                      ? ('common.hour' | translate)
+                      : ('common.hours' | translate)
+                  }}
+                </label>
+                <!--                TODO: DESCOMENTAR Y AGREGAR LA PROPIEDAD CORRESPONDIENTE CUANDO SE DEFINA EL LINK AL SER UN PRODUCTO DE CAPACTICACIÓN-->
+                <!--                <label class="normal-text" *ngIf="product.vProductoDetalle.ProductoCapacitacion"-->
+                <!--                  ><span class="gray-text">Link: </span>-->
+                <!--                  {{ 'www.link.com.mx' }}-->
+                <!--                </label>-->
+              </div>
+              <div class="data-column">
+                <label class="normal-text" *ngIf="!product.vProductoDetalle.ProductoCapacitacion"
+                  ><span class="gray-text">{{ 'quotation.details.section.detailsProducts.priceUni' | translate }}: </span
+                  >{{ product?.CotProductoOferta?.PrecioCotizadoUnitarioConvertido | currency: 'USD':'symbol-narrow':'1.2-2' }}
+                  {{ currencyQuotationSelected$ | async }}</label
+                >
+                <label class="normal-text" *ngIf="!product.vProductoDetalle.ProductoCapacitacion"
+                  ><span class="gray-text">{{ 'quotation.details.section.detailsProducts.present' | translate }}: </span
+                  >{{ product.vProductoDetalle.Presentacion }} {{ product.vProductoDetalle.Unidad }}</label
+                >
+                <label class="normal-text" *ngIf="!product.vProductoDetalle.ProductoCapacitacion"
+                  ><span class="gray-text">{{ 'quotation.details.section.detailsProducts.delivery' | translate }}: </span
+                  >{{ product?.VPartidaCotizacion?.TiempoEstimadoEntrega || product?.product?.TiempoEstimadoEntrega }}
+                  {{
+                    product?.VPartidaCotizacion?.TiempoEstimadoEntrega === 1 || product?.product?.TiempoEstimadoEntrega === 1
+                      ? ('common.day' | translate)
+                      : ('common.days' | translate)
+                  }}</label
+                >
+                <label class="normal-text"
+                  ><span class="gray-text">{{ 'quotation.details.section.detailsProducts.dateCura' | translate }}: </span
+                  >{{ 'clientCatalog.until' | translate }}
+                  {{
+                    product.vProductoDetalle.FechaCaducidadVigenciaCuraduria
+                      ? (product.vProductoDetalle.FechaCaducidadVigenciaCuraduria | dateFormatSlashShort)
+                      : 'N/D'
+                  }}
+                </label>
+                <label class="normal-text"
+                  ><span class="gray-text">{{ 'common.provider' | translate }}: </span
+                  >{{ product.vProductoDetalle.NombreProveedor }}</label
+                >
+                <label class="normal-text" *ngIf="product.vProductoDetalle.ProductoCapacitacion"
+                  ><span class="gray-text">{{ 'common.brand' | translate }}: </span
+                  >{{ product.vProductoDetalle.NombreMarca }}</label
+                >
+              </div>
+              <div class="data-column" *ngIf="!product.vProductoDetalle.ProductoCapacitacion">
+                <label class="normal-text"
+                  ><span class="gray-text">{{ 'common.brand' | translate }}: </span
+                  >{{ product.vProductoDetalle.NombreMarca || 'N/D' }}</label
+                >
+                <label class="normal-text"
+                  ><span class="gray-text">{{ 'CAT #' }}: </span>{{ product.vProductoDetalle.Catalogo || 'N/D' }}</label
+                >
+                <label
+                  class="normal-text"
+                  *ngIf="
+                    !product.vProductoDetalle.ProductoPublicacion &&
+                    product?.vProductoDetalle?.SubtipoProductoClave === familyKey.CHEMIST
+                  "
+                  ><span class="gray-text">{{ 'CAS #' }}: </span>{{ product.vProductoDetalle.CAS || 'N/D' }}</label
+                >
+                <label
+                  class="normal-text"
+                  *ngIf="
+                    !product.vProductoDetalle.ProductoPublicacion &&
+                    product?.vProductoDetalle?.SubtipoProductoClave === familyKey.CHEMIST
+                  "
+                  ><span class="gray-text">{{ 'quotation.details.section.detailsProducts.synonyms' | translate }}: </span
+                  >{{ product.vProductoDetalle.Sinonimos || 'N/D' }}</label
+                >
+                <label
+                  class="normal-text"
+                  *ngIf="
+                    !product.vProductoDetalle.ProductoPublicacion &&
+                    !product.vProductoDetalle.ProductoLabware &&
+                    !product.vProductoDetalle?.ProductoDispositivoMedico
+                  "
+                  ><span class="gray-text">{{ 'quotation.details.section.detailsProducts.use' | translate }}: </span
+                  >{{ product.vProductoDetalle.Uso || 'N/D' }}</label
+                >
+                <label class="normal-text" *ngIf="product.vProductoDetalle.ProductoDispositivoMedico"
+                  ><span class="gray-text"
+                    >{{ 'newProductExistingSupplier.regulatoryResearch.details.handlingStorage' | translate }}: </span
+                  >{{ product.vProductoDetalle.ManejoAlmacenaje || 'N/D' }}</label
+                >
+                <label class="normal-text" *ngIf="product.vProductoDetalle.ProductoLabware"
+                  ><span class="gray-text">{{ 'formProduct.step2.regulatoryClassification' | translate }}: </span
+                  >{{ product.vProductoDetalle?.ClasificacionRegulatoriaLabware }}</label
+                >
+                <label class="normal-text" *ngIf="product.vProductoDetalle.ProductoLabware"
+                  ><span class="gray-text">{{ 'formProduct.step2.tariffFraction' | translate }}: </span
+                  >{{ product?.vProductoDetalle?.FraccionArancelaria || 'N/D' }}</label
+                >
+
+                <label class="normal-text" *ngIf="product.vProductoDetalle.ProductoPublicacion"
+                  ><span class="gray-text">{{ 'quotation.details.section.detailsProducts.Author' | translate }}: </span
+                  >{{ product.vProductoDetalle.ProductoPublicacion.Autor || 'N/D' }}</label
+                >
+                <label class="normal-text" *ngIf="product.vProductoDetalle.ProductoPublicacion"
+                  ><span class="gray-text">{{ 'quotation.details.section.detailsProducts.postFormat' | translate }}: </span
+                  >{{ product.vProductoDetalle.FormatoPublicacion || 'N/D' }}</label
+                >
+              </div>
+              <div
+                class="data-column"
+                *ngIf="
+                  !product.vProductoDetalle.ProductoCapacitacion &&
+                  !product.vProductoDetalle?.ProductoLabware &&
+                  !product.vProductoDetalle?.ProductoDispositivoMedico
+                "
+              >
+                <label class="normal-text" *ngIf="!product.vProductoDetalle.ProductoPublicacion"
+                  ><span class="gray-text">{{ 'quotation.details.section.detailsProducts.rankings' | translate }}: </span
+                  >{{ product.vProductoDetalle.Clasificacion || 'N/D' }}</label
+                >
+                <label class="normal-text" *ngIf="!product.vProductoDetalle.ProductoPublicacion"
+                  ><span class="gray-text">{{ 'quotation.details.section.detailsProducts.application' | translate }} : </span
+                  >{{ product.vProductoDetalle.Aplicacion || 'N/D' }}</label
+                >
+                <label class="normal-text" *ngIf="!product.vProductoDetalle.ProductoPublicacion"
+                  ><span class="gray-text">{{ 'quotation.details.section.detailsProducts.physicalState' | translate }} : </span
+                  >{{ product.vProductoDetalle.EstadoFisico || 'N/D' }}</label
+                >
+                <label class="normal-text" *ngIf="!product.vProductoDetalle.ProductoPublicacion"
+                  ><span class="gray-text">{{ 'quotation.details.section.detailsProducts.lteVigen' | translate }}: </span
+                  >{{ product.vProductoDetalle?.Lote?.Nombre || 'N/D' }}</label
+                >
+                <label class="normal-text" *ngIf="!product.vProductoDetalle.ProductoPublicacion"
+                  ><span class="gray-text">{{ 'quotation.details.section.detailsProducts.lteBefore' | translate }}: </span
+                  >{{ product?.vProductoDetalle?.Lotes?.length === 0
+                  ? 'N/D'
+                  : product?.vProductoDetalle?.Lotes?.length < 2
+                    ? product?.vProductoDetalle?.Lotes?.[0].Nombre
+                    : product?.vProductoDetalle?.Lotes?.[product.vProductoDetalle?.Lotes?.length - 2].Nombre }}</label
+                >
+
+                <!--                DOCS: Estos campos solo aparecen en casos de publicaciones-->
+                <label class="normal-text" *ngIf="product.vProductoDetalle.ProductoPublicacion"
+                  ><span class="gray-text">{{ 'ISBN No' }}: </span>{{ product.vProductoDetalle.ISBN || 'N/D' }}</label
+                >
+                <label class="normal-text" *ngIf="product.vProductoDetalle.ProductoPublicacion"
+                  ><span class="gray-text">{{ 'quotation.details.section.detailsProducts.tariffFraction' | translate }}: </span
+                  >{{ product.vProductoDetalle.FraccionArancelaria || 'N/D' }}</label
+                >
+                <label class="normal-text" *ngIf="product.vProductoDetalle.ProductoPublicacion"
+                  ><span class="gray-text">{{ 'quotation.details.section.detailsProducts.tariffImport' | translate }}: </span
+                  >{{ product.vProductoDetalle.FraccionImportacion || 'N/D' }}</label
+                >
+              </div>
+              <!--              DOCS: Tercera Columna de Datos, Aparece cuando el producto es de tipo Labware o DIspositivo medico-->
+              <div
+                class="data-column"
+                *ngIf="product.vProductoDetalle?.ProductoLabware || product?.vProductoDetalle?.ProductoDispositivoMedico"
+              >
+                <label class="normal-text" *ngIf="product.vProductoDetalle.ProductoLabware"
+                  ><span class="gray-text">{{ 'formProduct.general.importationFraction' | translate }}: </span
+                  >{{ product.vProductoDetalle.FraccionImportacion || 'N/D' }}</label
+                >
+                <label
+                  class="normal-text"
+                  *ngIf="product.vProductoDetalle.ProductoLabware || product?.vProductoDetalle?.ProductoDispositivoMedico"
+                  ><span class="gray-text">{{ 'formProduct.step2.sanitaryRegistrationNumber' | translate }}: </span
+                  >{{ product.vProductoDetalle.ProductoLabware?.NumeroDeRegistroSanitario || 'N/D' }}</label
+                >
+                <label
+                  class="normal-text"
+                  *ngIf="product.vProductoDetalle.ProductoLabware || product?.vProductoDetalle?.ProductoDispositivoMedico"
+                  ><span class="gray-text">{{ 'formProduct.step2.expirationOfSanitaryRegistration' | translate }}: </span
+                  >{{
+                    product.vProductoDetalle.FechaCaducidadRegistroSanitario
+                      ? (product.vProductoDetalle.FechaCaducidadRegistroSanitario | dateFormatSlashShort)
+                      : 'N/D'
+                  }}</label
+                >
+              </div>
+            </div>
+          </div>
+          <!--          FIN DATOS DEL PRODUCTO-->
+          <!--          DOCS: FAMILIA - RESTRICCIONES DE COMPRA - DOCUMENTACION-->
+          <div class="product-data">
+            <!--            DOCS: ESTA SECCIÓN SOLO APARECE EN PUBLICACIONES-->
+            <div
+              class="supplements"
+              *ngIf="
+                product.vProductoDetalle.ProductoPublicacion && product.vProductoDetalle.vProductoSuplementarios.length > 0
+              "
+            >
+              <label class="subtitle"
+                >{{ product.vProductoDetalle.vProductoSuplementarios.length }}
+                {{
+                  product.vProductoDetalle.vProductoSuplementarios.length === 1
+                    ? ('quotation.details.section.detailsProducts.supplement' | translate)
+                    : ('quotation.details.section.detailsProducts.supplements' | translate)
+                }}</label
+              >
+              <div class="supplements-content">
+                <div
+                  class="supplement"
+                  *ngFor="let supplement of product.vProductoDetalle.vProductoSuplementarios; let i = index"
+                >
+                  <label
+                    ><span>{{ '#' + (i + 1) + ' · ' + supplement.Descripcion }}</span>
+                    {{ supplement.ISBN ? ' · ISBN ' + supplement.ISBN : ''
+                    }}{{ supplement.Editorial ? ' · ' + supplement.Editorial : ''
+                    }}{{ supplement.Edicion ? ' · ' + supplement.Edicion : '' }}
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="data-product-columns">
+              <div class="data-column">
+                <label class="subtitle">{{ 'quotation.details.family' | translate }} </label>
+                <label class="normal-text">
+                  {{
+                    buildStringFamily(
+                      product.vProductoDetalle.Tipo,
+                      product.vProductoDetalle.Subtipo,
+                      product.vProductoDetalle.Control
+                    )
+                  }}
+                </label>
+              </div>
+              <div class="data-column" *ngIf="!product.vProductoDetalle.ProductoCapacitacion">
+                <label class="subtitle">{{ 'descriptionItemQuote.purchaseRestrictions' | translate }} </label>
+                <label class="normal-text">
+                  {{
+                    product?.vProductoDetalle.RestriccionDeCompra === purchaseRestrictions.limitOfPieces
+                      ? product?.vProductoDetalle?.RestriccionDeCompra +
+                        ' · ' +
+                        (product?.VPartidaCotizacion?.RestriccionProductoNumeroDePiezas ||
+                          product?.vProductoDetalle?.NumeroDePiezas) +
+                        ' al Mes'
+                      : product?.vProductoDetalle?.RestriccionDeCompra || 'N/D'
+                  }}
+                </label>
+              </div>
+              <div class="data-column" *ngIf="!product.vProductoDetalle.ProductoCapacitacion">
+                <app-documentation [product]="product?.vProductoDetalle" [location]="'pop'"></app-documentation>
+              </div>
+              <!--              TODO: COLOCAR LA PROPIEDAD CORRESPONDIENTE, CUANDO SE DEFINA LA PROPIEDAD-->
+              <!--              <div-->
+              <!--                class="data-column"-->
+              <!--                *ngIf="-->
+              <!--                  product.vProductoDetalle.ProductoCapacitacion &&-->
+              <!--                  product.vProductoDetalle.MedioDifusion === 'Presencial en línea'-->
+              <!--                "-->
+              <!--              >-->
+              <!--                <label class="subtitle">{{ 'quotation.details.section.detailsProducts.evidenceProviders' | translate }} </label>-->
+              <!--                <div class="evidence">-->
+              <!--                  <label>{{ 'Ejemplo_de_archivo_de_evidencia' }}</label>-->
+              <!--                </div>-->
+              <!--              </div>-->
+            </div>
+          </div>
+
+          <!--DOCS: NOTAS DE LA PARTIDA-->
+          <div class="notes">
+            <label class="green">
+              {{ 'quotation.details.section.detailsProducts.seeCommentProduct' | translate }}
+            </label>
+            <label class="normal-text">
+              {{ product.vProductoDetalle.Nota || 'N/D' }}
+            </label>
+          </div>
+          <div class="comments">
+            <label class="green">
+              {{ 'quotation.details.section.detailsProducts.addItemNotes' | translate }}
+            </label>
+            <app-generic-text-area
+              [height]="'60px'"
+              (emitData)="handleSetItemNotes($event)"
+              [maxlength]="150"
+              [value]="product.CotPartidaCotizacion.Comentarios"
+            ></app-generic-text-area>
+          </div>
+          <!--DOCS: FECHAS SUGERIDAS-->
+          <div class="dates" *ngIf="product.vProductoDetalle.ProductoCapacitacion">
+            <label class="subtitle">{{
+              'quotation.details.section.detailsProducts.suggestedCompletionDates' | translate
+            }}</label>
+            <div class="date-piker">
+              <div>
+                <app-date-picker
+                  [dateFormat]="'YYYYMMDD'"
+                  [disabledCalendarDays]="nonWorkingDays"
+                  [date]="newDate"
+                  [disabled]="product?.fechasRealizacionCapacitacion?.length === 5"
+                  [position]="'top'"
+                  (onSelect)="setDates($event)"
+                ></app-date-picker>
+              </div>
+              <div class="plus">
+                <img
+                  [ngClass]="{disable: product?.fechasRealizacionCapacitacion?.length === 5 || newDate === null}"
+                  [src]="
+                    newDate === null
+                      ? 'assets/Images/components-src/generic-input-file/plus-gray-fill.svg'
+                      : 'assets/Images/components-src/generic-input-file/plus-green-fill.svg'
+                  "
+                  alt="add-date-icon"
+                  (click)="addDate()"
+                />
+              </div>
+            </div>
+            <div class="dates-content">
+              <div class="item" *ngFor="let date of showOnlyActives(product.fechasRealizacionCapacitacion)">
+                <label>{{ date.Fecha | dateFormatSlashShort }}</label>
+                <img src="assets/Images/pqf-close.svg" (click)="removeDate(date)" />
+              </div>
+            </div>
+          </div>
+          <!--          FIN FECHAS-->
+        </div>
+      </div>
+      <div class="complements" *ngIf="optionSelected.id === '2'">
+        <div class="items">
+          <ng-container *ngIf="product.vProductoDetalle.vProductoAlternativo.length > 0">
+            <app-product-card-item
+              *ngFor="let item of product.vProductoDetalle.vProductoAlternativo; let i = index"
+              class="product-item"
+              [backGroundColor]="'yellow-card'"
+              [product]="buildAlternativeProductCardItem(item, i + 1)"
+            ></app-product-card-item>
+          </ng-container>
+          <app-without-results
+            *ngIf="product.vProductoDetalle.vProductoAlternativo.length === 0"
+            class="without"
+            [title]="'quotation.details.notProductsLinks' | translate"
+          ></app-without-results>
+          <div class="without" *ngIf="false">
+            <app-without-results
+              class="without"
+              [title]="'quotation.details.notProductsComplementary' | translate"
+            ></app-without-results>
+            <label>{{ 'quotation.details.AbilityCatMark' | translate }}</label>
+          </div>
+        </div>
+        <div class="footer-complements">
+          <label>
+            {{ product.vProductoDetalle.vProductoAlternativo.length }}
+            {{
+              product.vProductoDetalle.vProductoAlternativo.length === 1
+                ? ('common.product' | translate)
+                : ('common.products' | translate)
+            }}</label
+          >
+        </div>
+      </div>
+      <div class="alternative" *ngIf="optionSelected.id === '3'">
+        <div class="items">
+          <ng-container *ngIf="product.vProductoDetalle.vProductoComplementario.length > 0">
+            <app-product-card-item
+              *ngFor="let item of product.vProductoDetalle.vProductoComplementario; let i = index"
+              [backGroundColor]="'blue-card'"
+              [product]="buildComplementaryProductCardItem(item, i + 1)"
+            ></app-product-card-item>
+          </ng-container>
+          <app-without-results
+            *ngIf="product.vProductoDetalle.vProductoComplementario.length === 0"
+            class="without"
+            [title]="'quotation.details.notProductsLinks' | translate"
+          ></app-without-results>
+          <div class="without" *ngIf="false">
+            <app-without-results [title]="'quotation.details.notProductsAlternative' | translate"></app-without-results>
+            <label>{{ 'quotation.details.AbilityCatMark' | translate }}</label>
+          </div>
+        </div>
+        <div class="footer-alternative">
+          <label>
+            {{ product?.vProductoDetalle?.vProductoComplementario?.length }}
+            {{
+              product?.vProductoDetalle?.vProductoComplementario?.length === 1
+                ? ('common.product' | translate)
+                : ('common.products' | translate)
+            }}</label
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

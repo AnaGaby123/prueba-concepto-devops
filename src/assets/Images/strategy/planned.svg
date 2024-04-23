@@ -1,0 +1,12 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='19' height='19' viewBox='0 0 19 19'>
+  <g fill='none' fill-rule='evenodd'>
+    <g>
+      <g transform='translate(-1337 -1354) translate(1338 1355)'>
+        <circle cx='8.5' cy='8.5' r='8.5' fill='#FFF' stroke='#E4A43C' stroke-width='1.5' />
+        <text fill='#E4A43C' font-family='Roboto-Bold, Roboto' font-size='11' font-weight='bold'>
+          <tspan x='4.905' y='13'>P</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,14 @@
+<div class="container">
+  <div class="header-bar">
+    <app-header-bar *ngIf="!(isInDetails$ | async)" [title]="title$ | async" [activeBack]="false"></app-header-bar>
+    <app-header-bar
+      *ngIf="isInDetails$ | async"
+      [title]="title$ | async"
+      (goBack)="goBack()"
+      [activeBack]="true"
+    ></app-header-bar>
+  </div>
+  <div class="container-outlet">
+    <router-outlet></router-outlet>
+  </div>
+</div>

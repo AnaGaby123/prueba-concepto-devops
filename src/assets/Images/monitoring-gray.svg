@@ -1,0 +1,7 @@
+<svg width='25' height='19' viewBox='0 0 25 19' xmlns='http://www.w3.org/2000/svg'>
+  <g transform='translate(1 1)' stroke='#C2C3C9' fill='none' fill-rule='evenodd'>
+    <rect fill='#FFF' width='22.842' height='14' rx='1' />
+    <path fill='#FFF' stroke-linejoin='round' d='M9 14h5v3H9z' />
+    <path stroke-linecap='round' stroke-linejoin='round' d='M2 17.5h17.5M8 6.97l2.34 2.328L14.946 4' />
+  </g>
+</svg>

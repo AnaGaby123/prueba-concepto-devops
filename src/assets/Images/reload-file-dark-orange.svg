@@ -1,0 +1,8 @@
+<svg width='30' height='30' xmlns='http://www.w3.org/2000/svg'>
+  <g fill='none' fill-rule='evenodd'>
+    <path fill='#C87133' d='M0 0h30v30H0z' />
+    <path
+      d='M14.32 6.64a8.37 8.37 0 0 0 0 16.73v-2.8a5.57 5.57 0 1 1 5.53-5.76H18.5l2.76 3.89L24 14.81h-1.33a8.36 8.36 0 0 0-8.35-8.17z'
+      fill='#FFF' />
+  </g>
+</svg>

@@ -1,0 +1,195 @@
+<div id="execute-collection">
+  <div class="content-container">
+    <div class="payments" *ngIf="(tabSelected$ | async)?.id === 2">
+      <section class="filters" [ngClass]="isOpen ? 'show' : 'hide'">
+        <div class="data-filters">
+          <div>
+            <div class="title">
+              <div class="text">
+                <label>CONSULTAR COBRANZA</label>
+              </div>
+            </div>
+            <div class="dateFilter">
+              <div class="picker">
+                <app-date-picker
+                  class="date-picker"
+                  dateFormat="YYYYMMDD"
+                  [color]="false"
+                  (fecha)="handleDate('fromCalendar', $event)"
+                  [label]="'Del'"
+                  [labelFont]="'Roboto-Bold'"
+                ></app-date-picker>
+              </div>
+              <div class="pickerFrom">
+                <app-date-picker
+                  class="date-picker"
+                  dateFormat="YYYYMMDD"
+                  [color]="false"
+                  (fecha)="handleDate('toCalendar', $event)"
+                  [label]="'Al'"
+                  [labelFont]="'Roboto-Bold'"
+                ></app-date-picker>
+              </div>
+            </div>
+            <div class="content">
+              <div>
+                <div>
+                  <app-drop-down-list
+                    [items]="clientOptions$ | async"
+                    [itemSelected]="clientOptionSelected$ | async"
+                    (valueDropList)="setClient($event)"
+                    [font]="'Roboto-Bold'"
+                    [label]="'Cliente'"
+                    [fontSize]="(viewType$ | async) === 'macBookAir' ? '16px' : '18px'"
+                  >
+                  </app-drop-down-list>
+                </div>
+              </div>
+              <div>
+                <div>
+                  <app-drop-down-list
+                    [items]="statusPaymentOptions$ | async"
+                    [itemSelected]="statusPaymentOptionSelected$ | async"
+                    (valueDropList)="setStatusPayment($event)"
+                    [font]="'Roboto-Bold'"
+                    [label]="'Estados de Cobro'"
+                  >
+                  </app-drop-down-list>
+                </div>
+              </div>
+              <div>
+                <div>
+                  <app-drop-down-list
+                    [items]="typePaymentOptions$ | async"
+                    [itemSelected]="typePaymentOptionSelected$ | async"
+                    (valueDropList)="setTypePayment($event)"
+                    [font]="'Roboto-Bold'"
+                    [label]="'Tipos de Cobro'"
+                  >
+                  </app-drop-down-list>
+                </div>
+              </div>
+              <div>
+                <div>
+                  <app-drop-down-list
+                    [items]="typeClientOptions$ | async"
+                    [itemSelected]="typeClientOptionsSelected$ | async"
+                    (valueDropList)="setTypeClient($event)"
+                    [font]="'Roboto-Bold'"
+                    [label]="'Tipo de Cliente'"
+                  >
+                  </app-drop-down-list>
+                </div>
+              </div>
+              <div>
+                <div class="recharge">
+                  <img src="assets/Images/recharge.svg" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="arrow">
+          <img alt="arrow" src="assets/Images/arrows/flecha_cuadro.svg" [ngClass]="{reverse: !isOpen}" (click)="onClick()" />
+        </div>
+      </section>
+    </div>
+    <div class="information-payments">
+      <div class="tabs">
+        <app-tabs
+          [options]="tabsOptions$ | async"
+          [tapSelected]="tabSelected$ | async"
+          (onSelectOption)="setOption($event)"
+        ></app-tabs>
+      </div>
+      <div class="date" *ngIf="(componentShow$ | async) === 'week'">
+        <label>{{ actualWeek$ | async | daysRange }}</label>
+        <div class="weekFilter">
+          <div class="left" (click)="calendar('previous')">
+            <img src="assets/Images/arrows/flecha_mostrar.svg" alt="" />
+          </div>
+          <div class="center" (click)="calendar('today')">
+            <label>{{ 'Hoy' }}</label>
+          </div>
+          <div class="right" (click)="calendar('next')">
+            <img src="assets/Images/arrows/flecha_mostrar.svg" alt="" />
+          </div>
+        </div>
+      </div>
+      <div class="filters" *ngIf="(componentShow$ | async) === 'week'">
+        <div class="column-one">
+          <div class="chips">
+            <app-chip
+              [dataChips]="chips$ | async"
+              [fontColorDefault]="'#ffffff'"
+              [totalsIsAmount]="true"
+              [separator]="': '"
+              (activeChip)="activeChip($event)"
+            >
+            </app-chip>
+          </div>
+          <div class="search">
+            <app-search
+              [placeholder]="'common.client' | translate"
+              [searchTerm]="searchTerm$ | async"
+              (textSearch)="handleKeySearch($event)"
+            >
+            </app-search>
+          </div>
+        </div>
+        <div class="column-two">
+          <div class="drop-list">
+            <label>{{ 'executeCollection.collections' | translate }}</label>
+            <app-drop-down-list
+              [activeMinWidth]="false"
+              [items]="chargesOptions$ | async"
+              [itemSelected]="chargeOptionSelected$ | async"
+              (valueDropList)="saveInputValue($event)"
+            >
+            </app-drop-down-list>
+          </div>
+          <button class="btn-see-breakdown">
+            {{ 'executeCollection.seeBreakdown' | translate }}
+          </button>
+        </div>
+      </div>
+      <div class="calendar">
+        <app-week *ngIf="(componentShow$ | async) === 'week'"></app-week>
+        <app-month *ngIf="(componentShow$ | async) === 'month'"></app-month>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div>
+      <div>
+        <span class="green"></span>
+        <label>{{ 'executeCollection.collectionOnTime' | translate }}</label>
+      </div>
+      <div>
+        <span class="yellow"></span>
+        <label>{{ 'executeCollection.overdueCollection1to8days' | translate }}</label>
+      </div>
+      <div>
+        <span class="orange"></span>
+        <label>{{ 'executeCollection.overdueCollection9o16days' | translate }}</label>
+      </div>
+      <div>
+        <span class="red"></span>
+        <label>{{ 'executeCollection.overdueCollection17to179days' | translate }}</label>
+      </div>
+      <div>
+        <span class="purple"></span>
+        <label>{{ 'executeCollection.overdueCollection180days' | translate }}</label>
+      </div>
+      <div>
+        <img alt="not received" src="assets/Images/execute-collection/collectionNotReceived.svg" />
+        <label>{{ 'executeCollection.collectionNotReceived' | translate }}</label>
+      </div>
+      <div>
+        <img alt="received" src="assets/Images/execute-collection/collectionReceived.svg" />
+        <label>{{ 'executeCollection.collectionReceived' | translate }}</label>
+      </div>
+    </div>
+  </footer>
+</div>

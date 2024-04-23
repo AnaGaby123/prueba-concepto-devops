@@ -1,0 +1,87 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+  overflow: hidden;
+
+  #message-history-container::-webkit-scrollbar {
+    width: 0;
+  }
+
+  #message-history-container {
+    @include s.absolute100;
+    @include s.flexColumn;
+    background-color: s.$main-proquifa-c;
+    border-radius: 8px;
+    overflow-y: auto;
+    padding: 10px 22px;
+    row-gap: 10px;
+    scrollbar-gutter: stable;
+
+    & > .message-container {
+      @include s.flexColumn;
+      border-radius: 10px;
+      gap: 8px;
+      margin-bottom: 30px;
+      max-width: 90%;
+      padding: 8px 8px 12px 8px;
+      position: relative;
+      width: fit-content;
+
+      & > .header-message {
+        @include s.responsive-font-format(
+          $color: s.$dark-proquifa-e,
+          $font-family: s.$font-family_roboto_bold,
+          $font-size-map: s.$responsive-font-11-b-11-b,
+          $font-weight: s.$font-weight-bold
+        );
+      }
+
+      & > .content-message {
+        @include s.responsive-font-format($color: s.$pqWhite, $font-size-map: s.$responsive-font-16-16);
+      }
+
+      & > .date-message {
+        @include s.responsive-font-format($color: s.$dark-proquifa-f, $font-size-map: s.$responsive-font-11-b-11-b);
+        text-align: right;
+      }
+
+      & > img {
+        bottom: -28px;
+        height: 30px;
+        position: absolute;
+        width: 30px;
+      }
+
+      &.message-left {
+        background-color: s.$main-proquifa;
+
+        & > img {
+          left: 30px;
+        }
+      }
+
+      &.message-right {
+        background-color: s.$dark-proquifa-f;
+        align-self: flex-end;
+
+        & > .header-message,
+        & > .date-message {
+          color: s.$main-proquifa;
+        }
+
+        & > .content-message {
+          color: s.$main-proquifa-b;
+        }
+
+        & > img {
+          right: 30px;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,164 @@
+<div id="plan-dispatch-details-step1">
+  <div class="container">
+    <div class="importer">
+      <div class="header">
+        <label>{{ 'planDispatchDetails.importer' | translate }}</label>
+      </div>
+      <div class="body">
+        <div
+          class="importer-item"
+          *ngFor="let importer of importersList$ | async"
+          (click)="selectRadioButton('IdEmpresaImportador', importer.IdEmpresa)"
+        >
+          <div class="image">
+            <label [for]="importer.IdEmpresa">{{ importer.Alias }}</label>
+          </div>
+          <div class="rb">
+            <app-radio-button
+              [height]="(viewType$ | async) === 'macBookAir' ? '25px' : '20px'"
+              [id]="importer.IdEmpresa"
+              [value]="importer.IdEmpresa === (selectedDispatchOrder$ | async)?.IdEmpresaImportador"
+            ></app-radio-button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="exporter">
+      <div class="header">
+        <label>{{ 'planDispatchDetails.exporter' | translate }}</label>
+      </div>
+      <div class="body">
+        <div
+          class="exporter-item"
+          *ngFor="let exporter of exportersList$ | async"
+          (click)="selectRadioButton('IdEmpresaExportador', exporter.IdEmpresa)"
+        >
+          <div class="image">
+            <label [for]="exporter.IdEmpresa">{{ exporter.Alias }}</label>
+          </div>
+          <div class="rb">
+            <app-radio-button
+              [height]="(viewType$ | async) === 'macBookAir' ? '25px' : '20px'"
+              [id]="exporter.IdEmpresa"
+              [value]="exporter.IdEmpresa === (selectedDispatchOrder$ | async)?.IdEmpresaExportador"
+            ></app-radio-button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="customsBroker">
+      <div class="header">
+        <label>{{ 'planDispatchDetails.customsBroker' | translate }}</label>
+      </div>
+      <div class="body">
+        <div
+          class="customsBroker-item"
+          *ngFor="let agent of customsAgentsList$ | async"
+          (click)="selectRadioButton('IdAgenteAduanal', agent.IdAgenteAduanal)"
+        >
+          <div class="image">
+            <label [for]="agent.IdAgenteAduanal">{{ agent.NombreComercial }}</label>
+          </div>
+          <div class="rb">
+            <app-radio-button
+              [height]="(viewType$ | async) === 'macBookAir' ? '25px' : '20px'"
+              [id]="agent.IdAgenteAduanal"
+              [value]="agent.IdAgenteAduanal === (selectedDispatchOrder$ | async)?.IdAgenteAduanal"
+            ></app-radio-button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="border">
+      <div class="header">
+        <label>{{ 'planDispatchDetails.border' | translate }}</label>
+      </div>
+      <div class="body">
+        <div
+          class="border-item"
+          *ngFor="let custom of customsListByAgent$ | async"
+          (click)="selectRadioButton('IdAduana', custom.IdAduana)"
+        >
+          <div class="text">
+            <label>{{ custom.NombreLugar }}</label>
+          </div>
+          <div class="rb">
+            <app-radio-button
+              [height]="(viewType$ | async) === 'macBookAir' ? '25px' : '20px'"
+              [id]="custom.IdAduana"
+              [value]="custom.IdAduana === (selectedDispatchOrder$ | async)?.IdAduana"
+            ></app-radio-button>
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        <button>{{ 'planDispatchDetails.forHire' | translate }}</button>
+      </div>
+    </div>
+    <div class="packingList">
+      <div class="header">
+        <label>{{ 'planDispatchDetails.packingList' | translate }}</label>
+      </div>
+      <div class="body">
+        <div class="packingList-item" (click)="selectRadioButton('PackingListSimplificado', true)">
+          <div class="text">
+            <label for="simplificado">Simplificado</label>
+          </div>
+          <div class="rb">
+            <app-radio-button
+              id="simplificado"
+              [height]="(viewType$ | async) === 'macBookAir' ? '25px' : '20px'"
+              [value]="(selectedDispatchOrder$ | async)?.PackingListSimplificado"
+            ></app-radio-button>
+          </div>
+        </div>
+        <div class="packingList-item" (click)="selectRadioButton('PackingListDetallado', true)">
+          <div class="text">
+            <label for="detallado">Detallado </label>
+          </div>
+          <div class="rb">
+            <app-radio-button
+              id="detallado"
+              [height]="(viewType$ | async) === 'macBookAir' ? '25px' : '20px'"
+              [value]="(selectedDispatchOrder$ | async)?.PackingListDetallado"
+            ></app-radio-button>
+          </div>
+        </div>
+        <div class="packingList-item" (click)="selectRadioButton('PackingListAmbos', true)">
+          <div class="text">
+            <label for="ambos">Ambos </label>
+          </div>
+          <div class="rb">
+            <app-radio-button
+              id="ambos"
+              [height]="(viewType$ | async) === 'macBookAir' ? '25px' : '20px'"
+              [value]="(selectedDispatchOrder$ | async)?.PackingListAmbos"
+            ></app-radio-button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="incoterm">
+      <div class="header">
+        <label>{{ 'planDispatchDetails.incoterm' | translate }}</label>
+      </div>
+      <div class="body">
+        <div
+          class="incoterm-item"
+          *ngFor="let incoterm of incotermList$ | async"
+          (click)="selectRadioButton('IdCatIncoterm', incoterm.IdCatIncoterm)"
+        >
+          <div class="text">
+            <label>{{ incoterm.Incoterm }}</label>
+          </div>
+          <div class="rb">
+            <app-radio-button
+              [height]="(viewType$ | async) === 'macBookAir' ? '25px' : '20px'"
+              [value]="(selectedDispatchOrder$ | async)?.IdCatIncoterm === incoterm.IdCatIncoterm"
+            ></app-radio-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

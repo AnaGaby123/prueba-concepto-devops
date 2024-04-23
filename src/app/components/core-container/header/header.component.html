@@ -1,0 +1,26 @@
+<header>
+  <div class="menuContainer" *ngIf="(viewType$ | async) === viewTypes.small">
+    <div class="hamburgerMenu" [ngClass]="{open: menuIsOpen$ | async}" (click)="menuHandler()">
+      <div class="icon-bar" [@hamburguerX]="!(menuIsOpen$ | async) ? 'hamburguer' : 'topX'"></div>
+      <div class="icon-bar" [@hamburguerX]="!(menuIsOpen$ | async) ? 'hamburguer' : 'hide'"></div>
+      <div class="icon-bar" [@hamburguerX]="!(menuIsOpen$ | async) ? 'hamburguer' : 'bottomX'"></div>
+    </div>
+    <div class="menuTitle">
+      <label>{{ 'common.menu' | translate }}</label>
+    </div>
+  </div>
+  <div class="logo-session">
+    <div class="logo">
+      <app-pqf-logo-version [onlyText]="true"></app-pqf-logo-version>
+    </div>
+    <div class="userSession">
+      <div class="profilePicture">
+        <img src="assets/Images/menu/user.svg" />
+      </div>
+      <div class="profileName" [ngClass]="{flexColumn: (user$ | async)?.PuestoUsuario}">
+        <label class="name" (dblclick)="closeSession()">{{ (user$ | async)?.name }}</label>
+        <label class="role">{{ (user$ | async)?.PuestoUsuario }}</label>
+      </div>
+    </div>
+  </div>
+</header>

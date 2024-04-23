@@ -1,0 +1,17 @@
+<div class="utility">
+  <h4>{{ 'formProvider.step8.subtitles.utility' | translate }}</h4>
+  <div class="input-container area9">
+    <label>{{ actualConfiguration?.configurationPriceProvider?.incomeLevel | uppercase }}</label>
+    <app-generic-input
+      class="input"
+      [textAlign]="'center'"
+      [placeholder]="'0'"
+      [enableEdit]="enableEdit"
+      [typeValidation]="inputValidators.Percentage"
+      [value]="actualConfiguration?.ConfiguracionPrecioCliente?.Utilidad"
+      (textData)="handleInputChange($event, fields.Utilidad)"
+    >
+    </app-generic-input>
+    <span>%</span>
+  </div>
+</div>

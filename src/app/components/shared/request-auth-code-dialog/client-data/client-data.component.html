@@ -1,0 +1,15 @@
+<div class="header">
+  <div class="image">
+    <img src="assets/Images/cargar_foto.svg" alt="" />
+  </div>
+  <div class="client-data">
+    <label class="textUpperCase">
+      {{ customerName }}
+    </label>
+    <label *ngIf="purchaseOrder"> OC {{ purchaseOrder }} </label>
+    <label *ngIf="paymentConditions">
+      {{ 'quotation.details.paymentConditions' | translate }} ·
+      {{ paymentConditions || 'N/D' }}
+    </label>
+  </div>
+</div>

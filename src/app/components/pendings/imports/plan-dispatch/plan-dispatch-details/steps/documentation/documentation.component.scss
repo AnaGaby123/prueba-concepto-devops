@@ -1,0 +1,525 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  & > #plan-dispatch-details-step3 {
+    @include s.flexColumn;
+    @include s.absolute100;
+
+    & > .container-component {
+      @include s.flexRowNoWrap;
+      height: 100%;
+      overflow-x: auto;
+
+      & > div {
+        @include s.flexColumn;
+      }
+
+      & > .chart-container {
+        @include s.absoluteCenter;
+        flex: 0 0 400px;
+
+        & > app-doughnut-chart {
+          height: 70%;
+        }
+
+        & > .input-container {
+          @include s.flexRowNoWrap;
+
+          & > .btn-load {
+            @include s.pqButton(200px, 300px, 30px, 30px, s.$pqGreen2);
+            align-items: center;
+            display: flex;
+            justify-content: center;
+          }
+
+          & > input {
+            display: none;
+          }
+        }
+      }
+
+      & > .documents-container {
+        flex: 0 0 440px;
+
+        & > div {
+          @include s.flexColumn;
+        }
+
+        & > .content {
+          @include s.flexColumn;
+          flex: 1 1 auto;
+          border-left: 1px solid s.$pqGray2;
+          border-right: 1px solid s.$pqGray2;
+          padding: 0 20px;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize20to25, bold, s.$pqBlack2);
+            @include s.Novecento-Bold;
+            flex: 0 0 auto;
+          }
+
+          & > app-tabs {
+            flex: 0 0 auto;
+            padding: 12px 0 15px 0;
+          }
+
+          & > app-search {
+            flex: 0 0 auto;
+            margin-bottom: 15px;
+          }
+
+          & > .table-container {
+            border-top: 1px solid s.$pqBlack2;
+            flex: 1 1 auto;
+
+            & > virtual-scroller {
+              @include s.absolute100;
+
+              & .card:hover {
+                background-color: s.$pqGray;
+              }
+
+              & .active {
+                background-color: s.$pqGray;
+                border-left: 8px solid s.$pqGreen !important;
+              }
+
+              & .card {
+                @include s.flexColumn;
+                padding: 12px 20px 12px 12px;
+                border-left: 8px solid transparent;
+                border-bottom: 1px solid s.$pqGray2;
+                cursor: pointer;
+
+                & * {
+                  cursor: pointer;
+                }
+
+                & > div {
+                  @include s.flexColumn;
+
+                  & > .line-one {
+                    @include s.escaledFontFormat(s.$textSize15to20, bold, s.$pqBlack2);
+                    @include s.Roboto-Bold;
+                    margin-bottom: 3px;
+
+                    & > span {
+                      color: s.$pqGreen;
+                      vertical-align: baseline;
+                    }
+                  }
+
+                  & > label.line-two {
+                    @include s.escaledFontFormat(s.$textSize15to20, bold, s.$pqBlack2);
+                    @include s.Roboto-Bold;
+                    margin-bottom: 5px;
+                  }
+
+                  & > div.line-two {
+                    @include s.flexRowNoWrap;
+                    justify-content: space-between;
+                    margin-bottom: 5px;
+
+                    & > label {
+                      @include s.escaledFontFormat(s.$textSize15to20, bold, s.$pqBlack2);
+                      @include s.Roboto-Bold;
+                    }
+
+                    & > img {
+                      height: 16px;
+                      margin-right: 25px;
+                    }
+                  }
+
+                  & > label.line-three {
+                    @include s.escaledFontFormat(s.$textSize14to18, regular, s.$pqGreen);
+                    @include s.Roboto-Regular;
+                  }
+
+                  & > div.line-three {
+                    @include s.flexRowNoWrap;
+                    justify-content: space-between;
+
+                    & > label {
+                      @include s.escaledFontFormat(s.$textSize14to18, regular, s.$pqGreen);
+                      @include s.Roboto-Regular;
+
+                      &.green {
+                        color: s.$pqGreen2;
+                      }
+                    }
+                  }
+
+                  & > .line-four {
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                    @include s.Roboto-Regular;
+                    margin-top: 5px;
+                  }
+                }
+              }
+            }
+
+            & > .is-loading {
+              @include s.flexRowNoWrap;
+              @include s.absoluteCenter;
+              width: 100%;
+              height: 100%;
+            }
+
+            & > .without-results {
+              @include s.flexRowNoWrap;
+              @include s.absoluteCenter;
+              width: 100%;
+              height: 100%;
+            }
+          }
+        }
+
+        & > .footer {
+          flex: 0 0 25px;
+          align-items: center;
+          border-top: 1px solid s.$pqBlack2;
+          margin: 10px 20px 0 20px;
+          justify-content: flex-end;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize12to14, normal, s.$pqBlack2);
+            @include s.Roboto-Regular;
+          }
+        }
+      }
+
+      & > .letter-of-user {
+        flex: 1 0 600px;
+
+        & > div {
+          @include s.flexColumn;
+        }
+
+        & > .content {
+          flex: 1 1 auto;
+          padding: 0 20px;
+
+          & > .header {
+            flex: 0 0 auto;
+            padding-bottom: 15px;
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize20to25, bold, s.$pqBlack2);
+              @include s.Novecento-Bold;
+            }
+          }
+
+          & > .pdf-viewer {
+            flex: 1 1 auto;
+          }
+
+          & > .document-info {
+            flex: 0 0 260px;
+            padding: 20px 0;
+
+            & > .proforma-or-bill {
+              & > div:nth-of-type(1),
+              div:nth-of-type(2) {
+                padding-bottom: 20px;
+              }
+
+              & > div {
+                @include s.flexColumn;
+
+                & > label:nth-of-type(1) {
+                  @include s.escaledFontFormat(s.$textSize16to20, bold, s.$pqBlack2);
+                  @include s.Roboto-Bold;
+                  padding-bottom: 5px;
+                }
+
+                & > label:nth-of-type(2) {
+                  @include s.escaledFontFormat(s.$textSize16to20, regular, s.$pqBlack2);
+                  @include s.Roboto-Regular;
+                }
+              }
+            }
+
+            & > .packing-list {
+              @include s.flexRowNoWrap;
+
+              & > div {
+                & > div {
+                  @include s.flexColumn;
+
+                  & > label:nth-of-type(1) {
+                    @include s.escaledFontFormat(s.$textSize16to20, bold, s.$pqBlack2);
+                    @include s.Roboto-Bold;
+                    padding-bottom: 5px;
+                  }
+
+                  & > label:nth-of-type(2) {
+                    @include s.escaledFontFormat(s.$textSize16to20, regular, s.$pqBlack2);
+                    @include s.Roboto-Regular;
+                  }
+                }
+              }
+
+              & > .column-one {
+                & > div:nth-of-type(1),
+                div:nth-of-type(2),
+                div:nth-of-type(3) {
+                  padding-bottom: 20px;
+                }
+              }
+
+              & > .column-two {
+                padding-left: 250px;
+
+                & > div {
+                  padding-top: 66px;
+                }
+              }
+            }
+
+            & > .oc {
+              & > div:nth-of-type(1),
+              div:nth-of-type(2) {
+                padding-bottom: 20px;
+              }
+
+              & > div {
+                @include s.flexColumn;
+
+                & > label:nth-of-type(1) {
+                  @include s.escaledFontFormat(s.$textSize16to20, bold, s.$pqBlack2);
+                  @include s.Roboto-Bold;
+                  padding-bottom: 5px;
+                }
+
+                & > label:nth-of-type(2) {
+                  @include s.escaledFontFormat(s.$textSize16to20, regular, s.$pqBlack2);
+                  @include s.Roboto-Regular;
+                }
+              }
+            }
+
+            & > .additional {
+              @include s.flexRowNoWrap;
+
+              & > div {
+                & > div {
+                  @include s.flexColumn;
+
+                  & > label:nth-of-type(1) {
+                    @include s.escaledFontFormat(s.$textSize16to20, bold, s.$pqBlack2);
+                    @include s.Roboto-Bold;
+                    padding-bottom: 5px;
+                  }
+
+                  & > label:nth-of-type(2) {
+                    @include s.escaledFontFormat(s.$textSize16to20, regular, s.$pqBlack2);
+                    @include s.Roboto-Regular;
+                  }
+                }
+              }
+
+              & > .column-one {
+                & > div:nth-of-type(1),
+                div:nth-of-type(2) {
+                  padding-bottom: 20px;
+                }
+              }
+
+              & > .column-two {
+                padding-left: 250px;
+              }
+            }
+          }
+        }
+
+        & > .footer {
+          flex: 0 0 25px;
+          align-items: center;
+          border-top: 1px solid s.$pqBlack2;
+          margin: 0 20px;
+          justify-content: flex-end;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize12to14, normal, s.$pqBlack2);
+            @include s.Roboto-Regular;
+          }
+        }
+      }
+    }
+
+    & > footer {
+      @include s.flexColumn;
+      align-items: flex-end;
+      padding: 15px 20px 20px 0;
+
+      & > .btn-save {
+        @include s.pqButton(150px, 200px, 25px, 30px, s.$pqGreen);
+      }
+    }
+
+    & > .footer {
+      @include s.flexRow;
+      height: 55px;
+      border-top: 2px solid s.$pqBlack2;
+      justify-content: center;
+      padding: 20px 0;
+
+      & > .al {
+        padding: 0 40px;
+
+        & > label {
+          @include s.Roboto-Bold;
+          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+
+          & > span {
+            @include s.Roboto-Regular;
+          }
+        }
+      }
+
+      & > .cv {
+        padding: 0 40px;
+
+        & > label {
+          @include s.Roboto-Bold;
+          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+
+          & > span {
+            @include s.Roboto-Regular;
+          }
+        }
+      }
+
+      & > .fte {
+        padding: 0 40px;
+
+        & > label {
+          @include s.Roboto-Bold;
+          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+
+          & > span {
+            @include s.Roboto-Regular;
+          }
+        }
+      }
+
+      & > .vad {
+        padding: 0 40px;
+
+        & > label {
+          @include s.Roboto-Bold;
+          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+
+          & > span {
+            @include s.Roboto-Regular;
+          }
+        }
+      }
+
+      & > .imp {
+        padding: 0 40px;
+
+        & > label {
+          @include s.Roboto-Bold;
+          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+
+          & > span {
+            @include s.Roboto-Regular;
+          }
+        }
+      }
+    }
+  }
+
+  & > app-pop-up-generic {
+    & .pop-up-content {
+      @include s.flexColumn;
+      flex: 1 0 100%;
+      overflow: hidden;
+      padding: 40px 20px;
+
+      & > .image {
+        @include s.flexRow;
+        justify-content: center;
+
+        & > img {
+          height: 50px;
+          width: 58px;
+        }
+      }
+
+      & > .text {
+        @include s.flexRow;
+        padding: 20px 30px 30px 30px;
+
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize26to29, regular, s.$pqBlack2);
+
+          & > span {
+            color: s.$pqGreen;
+          }
+        }
+      }
+
+      & > .button {
+        @include s.flexRow;
+        justify-content: center;
+
+        & > button {
+          @include s.pqButton();
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > #plan-dispatch-details-step3 {
+      & > .container-component {
+        & > .chart-container {
+          flex: 0 1 550px;
+        }
+
+        & > .documents-container {
+          flex: 0 0 500px;
+
+          & > .content {
+            & > app-tabs {
+              padding: 15px 0 20px 0;
+            }
+
+            & > app-search {
+              margin-bottom: 20px;
+            }
+
+            & > .table-container {
+              & > virtual-scroller {
+                & .card {
+                  & > div {
+                    & > div.line-two {
+                      & > img {
+                        height: 20px;
+                        margin-right: 28px;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        & > .letter-of-user {
+          flex: 1 0 750px;
+        }
+      }
+    }
+  }
+}

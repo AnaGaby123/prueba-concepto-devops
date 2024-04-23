@@ -1,0 +1,28 @@
+<div class="items-count-bar">
+  <div class="bar-content">
+    <div
+      #progressElement
+      class="progress"
+      [style.width]="(progress / totalItems) * 100 + '%'"
+      [style.background-color]="progressColor"
+      [ngClass]="showProgressTooltip ? 'bar-tooltip' : ''"
+    >
+      <label *ngIf="progressLabel > 35" class="text">{{ progress + ' ' + progressMessage }}</label>
+      <label class="tooltip-text">{{ progress + ' ' + progressMessage }}</label>
+    </div>
+    <div
+      #missingElement
+      class="missing"
+      [style.width]="((totalItems - progress) / totalItems) * 100 + '%'"
+      [style.background-color]="missingColor"
+      [ngClass]="showMissingTooltip ? 'bar-tooltip' : ''"
+    >
+      <label class="text" *ngIf="missingLabel > 35">{{ totalItems - progress + ' ' + missingMessage }}</label>
+      <label class="tooltip-text">{{ totalItems - progress + ' ' + missingMessage }}</label>
+    </div>
+  </div>
+  <div class="indicators">
+    <label>{{ '0 ' + ('common.pieces' | translate) }}</label>
+    <label>{{ totalItems }} {{ progress === 1 ? ('common.piece' | translate) : ('common.pieces' | translate) }}</label>
+  </div>
+</div>

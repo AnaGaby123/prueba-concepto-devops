@@ -1,0 +1,53 @@
+@use 'base' as s;
+
+:host {
+  display: flex;
+
+  #chip-file {
+    @include s.flexRowWrap;
+
+    & > .chip {
+      background-color: s.$pqFondoContent;
+      border-radius: 12px;
+      display: flex;
+      padding: 4px 15px;
+      margin: 20px 15px 0 0;
+
+      & > label {
+        @include s.escaledFontFormat(s.$textSize13to15, regular, s.$pqGreen);
+        @include s.Roboto-Regular;
+        white-space: nowrap;
+      }
+
+      & > label:nth-of-type(1) {
+        padding-right: 4px;
+      }
+
+      & > label:nth-of-type(2) {
+        max-width: 120px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      & > img {
+        height: 11px;
+        cursor: pointer;
+        padding-left: 25px;
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #chip-file {
+      & > .chip {
+        border-radius: 15px;
+        padding: 7px 15px;
+
+        & > img {
+          height: 13px;
+          padding-left: 30px;
+        }
+      }
+    }
+  }
+}

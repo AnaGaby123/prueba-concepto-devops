@@ -1,0 +1,26 @@
+<div class="pqf-generic-grid-item" (click)="emitResponse()">
+  <div class="agent">
+    <div class="status">
+      <div class="indicator">
+        <div [ngClass]="!showActiveIndicator ? 'none' : item?.active ? 'enable' : 'disable'"></div>
+        <label [ngClass]="!showActiveIndicator ? 'none' : item?.active ? 'enable-text' : 'disable-text'">{{
+          item?.active ? ('customsAgents.enable' | translate) : ('customsAgents.disable' | translate)
+        }}</label>
+      </div>
+      <img *ngIf="showRightImage" alt="" [src]="rightImageSource" (click)="handleRightImageClick($event)" />
+      <img *ngIf="showRightImage" alt="" [src]="hoverRightImageSource" (click)="handleRightImageClick($event)" />
+    </div>
+    <div class="centerPagination">
+      <img #imageElement alt="{{ 'logo ' + item?.title }}" [src]="item?.image" (error)="errorImgHandler()" />
+      <img #imageElementHover alt="{{ 'logo ' + item?.title }}" [src]="item?.imageHover" (error)="errorImgHandlerHover()" />
+    </div>
+    <div class="footContent">
+      <div class="name">
+        <label>{{ item?.title }}</label>
+      </div>
+      <div class="product">
+        <label>{{ item?.subtitle }}</label>
+      </div>
+    </div>
+  </div>
+</div>

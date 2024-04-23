@@ -1,0 +1,102 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+  line-height: normal;
+}
+
+:host {
+  @include s.absolute100();
+  display: flex;
+  //min-width: 1100px;
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  .content-products {
+    @include s.flexColumn;
+    flex: 1;
+
+    & > .header-internal {
+      border-bottom: 1px solid s.$pqBlack2;
+    }
+    & > .head {
+      @include s.absoluteCenter();
+      border-bottom: 1px solid s.$pqBlack2;
+      column-gap: 9px;
+      padding-bottom: 2px;
+      width: 100%;
+
+      & > .content-products-online-or-offline {
+        align-content: flex-end;
+        align-items: flex-end;
+        display: grid;
+        grid-template-columns: minmax(30px, 80px) minmax(350px, 1fr) minmax(135px, 1fr) minmax(20px, 1fr) minmax(60px, 1fr) minmax(
+            16px,
+            0.5fr
+          );
+        grid-column-gap: 20px;
+        width: 100%;
+        padding: 0 10px;
+
+        & > .quantity,
+        & > .investigator-response {
+          justify-content: center;
+        }
+
+        & > div {
+          @include s.flexRow;
+          width: 100%;
+
+          & > label {
+            @include s.responsive-font-format(
+              $color: s.$dark-proquifa,
+              $font-family: s.$font_family_roboto,
+              $font-size-map: s.$responsive-font-11-b-11-b
+            );
+            letter-spacing: 0;
+            text-align: center;
+          }
+        }
+      }
+    }
+
+    & > .body {
+      @include s.absolute100();
+      @include s.flexRowWrap();
+      flex: 1;
+      position: relative;
+
+      & > virtual-scroller {
+        @include s.fixVirtualScroller();
+        width: 100%;
+        border-bottom: 1px solid s.$pqBlack2;
+
+        .disabled {
+          pointer-events: none;
+        }
+      }
+    }
+
+    & > .totals {
+      @include s.flexRow();
+      flex: 0 0 50px;
+      padding-top: 10px;
+      width: 100%;
+
+      & > .total-products-online-or-offline {
+        @include s.flexRowNoWrap;
+        @include s.absoluteCenter;
+        width: 100%;
+
+        & > label {
+          @include s.responsive-font-format(
+            $color: s.$dark-proquifa,
+            $font-family: s.$font_family_roboto_bold,
+            $font-size-map: s.$responsive-font-12-b-12-b,
+            $font-weight: s.$font-weight_bold
+          );
+        }
+      }
+    }
+  }
+}

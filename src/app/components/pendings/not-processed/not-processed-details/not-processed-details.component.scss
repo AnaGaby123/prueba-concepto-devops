@@ -1,0 +1,43 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  display: flex;
+  overflow: hidden;
+  flex: 1;
+
+  #not-processed-details {
+    @include s.flexRow;
+    flex: 1;
+    overflow: hidden;
+
+    & > .list-purchase-order {
+      @include s.flexRow;
+      flex: 0 0 425px;
+      overflow: hidden;
+      padding: 15px 15px 15px 0;
+    }
+
+    & > .request-not-processed {
+      @include s.flexRow;
+    }
+
+    & > .order-items {
+      @include s.flexRow;
+      flex: 1;
+      overflow: hidden;
+    }
+  }
+
+  @include s.media-query(s.$standard) {
+    #not-processed-details {
+      & > .list-purchase-order {
+        flex: 0 0 460px;
+        padding: 20px 20px 20px 0;
+      }
+    }
+  }
+}

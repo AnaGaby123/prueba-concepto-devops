@@ -1,0 +1,25 @@
+@use 'base' as s;
+
+:host {
+  width: 100%;
+  min-height: 150px;
+
+  & > .withoutResultsContainer {
+    @include s.flexRow;
+    @include s.absoluteCenter;
+    width: 100%;
+    min-height: 150px;
+
+    & > p:nth-of-type(1) {
+      $textSize: (
+        'base': 20px,
+        'macBookAir': 25px,
+      );
+      @include s.flexRow;
+      @include s.absoluteCenter;
+      @include s.escaledFontFormat($textSize, regular, #c2c3c9);
+      @include s.Novecento-Bold;
+      text-align: center;
+    }
+  }
+}

@@ -1,0 +1,348 @@
+<div id="indirect-payment-container">
+  <div class="header-bar">
+    <app-header-bar [title]="title$ | async" [activeBack]="false" (goBack)="goBack()"></app-header-bar>
+  </div>
+  <div class="main">
+    <div class="general-data">
+      <div class="title">
+        <label>{{ 'indirectPayment.generalData' | translate }}</label>
+      </div>
+      <div class="center">
+        <div class="title no-margin">
+          <label class="ocean">* {{ 'indirectPayment.paymentType' | translate }}</label>
+        </div>
+        <div class="payment-type">
+          <app-radio-button
+            class="radio"
+            [height]="(viewType$ | async) === 'iPad' ? '20px' : '23px'"
+            [label]="'indirectPayment.refund' | translate"
+          ></app-radio-button>
+          <app-radio-button
+            class="radio"
+            [height]="(viewType$ | async) === 'iPad' ? '20px' : '23px'"
+            [label]="'indirectPayment.payment' | translate"
+          ></app-radio-button>
+          <app-radio-button
+            class="radio"
+            [height]="(viewType$ | async) === 'iPad' ? '20px' : '23px'"
+            [label]="'indirectPayment.prepaid' | translate"
+          ></app-radio-button>
+          <app-drop-down-list
+            class="drop"
+            [activeMinWidth]="false"
+            [label]="'* ' + ('indirectPayment.typeOfCurrency' | translate)"
+          ></app-drop-down-list>
+          <app-generic-input-file
+            class="input-file"
+            [label]="'* ' + ('indirectPayment.uploadPdf' | translate)"
+          ></app-generic-input-file>
+          <app-generic-input-file
+            class="input-file"
+            [label]="'indirectPayment.uploadXml' | translate"
+            (autoEmitFile)="readXML($event)"
+          ></app-generic-input-file>
+          <app-drop-down-list
+            class="drop-100"
+            [activeMinWidth]="false"
+            [label]="'* ' + ('indirectPayment.description' | translate)"
+          ></app-drop-down-list>
+          <app-drop-down-list
+            class="drop-25"
+            [activeMinWidth]="false"
+            [label]="'indirectPayment.issuingCompanyName' | translate"
+          ></app-drop-down-list>
+          <app-drop-down-list
+            class="drop-25"
+            [activeMinWidth]="false"
+            [label]="'indirectPayment.rfcEmitter' | translate"
+          ></app-drop-down-list>
+          <app-drop-down-list
+            class="drop-25"
+            [activeMinWidth]="false"
+            [label]="'indirectPayment.receiverCompanyName' | translate"
+          ></app-drop-down-list>
+          <app-drop-down-list
+            class="drop-25 no-margin"
+            [activeMinWidth]="false"
+            [label]="'indirectPayment.rfcReceiver' | translate"
+          ></app-drop-down-list>
+          <app-drop-down-list
+            class="drop-25"
+            [activeMinWidth]="false"
+            [label]="'indirectPayment.payForm' | translate"
+          ></app-drop-down-list>
+          <app-drop-down-list
+            class="drop-75"
+            [activeMinWidth]="false"
+            [label]="'indirectPayment.payMethod' | translate"
+          ></app-drop-down-list>
+          <app-drop-down-list
+            class="drop-25"
+            [activeMinWidth]="false"
+            [label]="'* ' + ('indirectPayment.activity' | translate)"
+          ></app-drop-down-list>
+          <app-drop-down-list
+            class="drop-25"
+            [activeMinWidth]="false"
+            [label]="'* ' + ('indirectPayment.costType' | translate)"
+          ></app-drop-down-list>
+          <app-drop-down-list
+            class="drop-25"
+            [activeMinWidth]="false"
+            [label]="'* ' + ('indirectPayment.area' | translate)"
+          ></app-drop-down-list>
+          <app-drop-down-list
+            class="drop-25 no-margin"
+            [activeMinWidth]="false"
+            [label]="'* ' + ('indirectPayment.accountingAccount' | translate)"
+          ></app-drop-down-list>
+          <app-drop-down-list
+            class="drop-25"
+            [activeMinWidth]="false"
+            [label]="'* ' + ('indirectPayment.sector' | translate)"
+          ></app-drop-down-list>
+          <app-drop-down-list
+            class="drop-25"
+            [activeMinWidth]="false"
+            [label]="'indirectPayment.budget' | translate"
+          ></app-drop-down-list>
+          <div class="drop-25"></div>
+          <div class="drop-25 no-margin"></div>
+        </div>
+        <div class="title">
+          <label class="ocean">{{ 'indirectPayment.paymentData' | translate }}</label>
+        </div>
+        <div class="payment-data">
+          <div class="w-40">
+            <app-check-box class="check" [label]="'indirectPayment.spei' | translate"></app-check-box>
+            <div class="drops">
+              <app-generic-input class="input" [label]="'indirectPayment.clabe' | translate"></app-generic-input>
+              <app-drop-down-list
+                class="drop"
+                [activeMinWidth]="false"
+                [label]="'indirectPayment.bank' | translate"
+              ></app-drop-down-list>
+            </div>
+          </div>
+          <div class="w-60">
+            <app-check-box class="check" [label]="'indirectPayment.account' | translate"></app-check-box>
+            <div class="drops">
+              <app-generic-input class="input" [label]="'# ' + ('indirectPayment.account' | translate)"></app-generic-input>
+              <app-drop-down-list
+                class="drop"
+                [activeMinWidth]="false"
+                [label]="'indirectPayment.bank' | translate"
+              ></app-drop-down-list>
+              <app-generic-input class="input" [label]="'indirectPayment.branch' | translate"></app-generic-input>
+            </div>
+          </div>
+          <div class="w-40">
+            <app-check-box class="check" [label]="'indirectPayment.agreement' | translate"></app-check-box>
+            <div class="inputs">
+              <app-generic-input class="input-50" [label]="'#' + ('indirectPayment.agreement' | translate)"></app-generic-input>
+              <app-generic-input
+                class="input-50 no-margin"
+                [label]="('indirectPayment.reference' | translate) + ' 1'"
+              ></app-generic-input>
+              <app-generic-input
+                class="input-100"
+                [label]="('indirectPayment.reference' | translate) + ' 2'"
+              ></app-generic-input>
+            </div>
+          </div>
+          <div class="w-60-row">
+            <div class="left">
+              <app-check-box class="check" [label]="'indirectPayment.card' | translate"></app-check-box>
+              <app-generic-input class="input-100" [label]="'#' + ('indirectPayment.card' | translate)"></app-generic-input>
+            </div>
+            <div class="right">
+              <label>{{ 'indirectPayment.uploadDocumentation' | translate }}</label>
+              <div class="files-container">
+                <div class="file">
+                  <label>{{ '#1 · Archivo.pdf' }}</label>
+                  <img src="assets/Images/cerrar.svg" alt="" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="title">
+          <label class="ocean">{{ 'indirectPayment.programming' | translate }}</label>
+          <label class="subtitle">* {{ 'common.requiredField' | translate }}</label>
+        </div>
+        <div class="opacity">
+          <div class="picker">
+            <label>* {{ 'indirectPayment.paymentWishDate' | translate }}:</label>
+            <app-date-picker class="date-picker" dateFormat="YYYYMMDD" [color]="false"></app-date-picker>
+          </div>
+          <div class="input">
+            <label class="bold">* {{ 'indirectPayment.amountToPay' | translate }}:</label>
+            <app-generic-input class="input"></app-generic-input>
+            <label class="ocean">MXN</label>
+          </div>
+        </div>
+        <div class="totals">
+          <div class="border">
+            <div class="labels">
+              <label>{{ 'indirectPayment.ivaTransfer' | translate }}: </label>
+              <label>{{ 'indirectPayment.isrWithholding' | translate }}: </label>
+              <label>{{ 'indirectPayment.ivaWithholding' | translate }}: </label>
+              <label>{{ 'common.subtotal' | translate }}: </label>
+              <label>{{ 'common.total' | translate }}: </label>
+            </div>
+            <div class="numbers">
+              <label>{{ 1655.17 | currency: 'USD':'':'1.2-2' }} MXN</label>
+              <label>{{ 0 | currency: 'USD':'':'1.2-2' }} MXN</label>
+              <label>{{ 0 | currency: 'USD':'':'1.2-2' }} MXN</label>
+              <label>{{ 10344.83 | currency: 'USD':'':'1.2-2' }} MXN</label>
+              <label>{{ 12000.83 | currency: 'USD':'':'1.2-2' }} USD</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <button [ngClass]="'active'" (click)="changeSeeResumeMode(true)">{{ 'indirectPayment.seeResume' | translate }}</button>
+      </footer>
+    </div>
+    <div class="resume">
+      <div class="title">
+        <label>{{ seeResumeMode ? ('indirectPayment.seeResume' | translate) : '' }}</label>
+      </div>
+      <div class="center" *ngIf="seeResumeMode; else resumeModeTemplate">
+        <div class="opacity">
+          <div>
+            <label class="bold">{{ 'indirectPayment.emitter' | translate }}:</label>
+            <label>Radio movil dipsa, sa de cv<span class="ocean"> · RFC: XXX000000000</span></label>
+          </div>
+          <div>
+            <label class="bold">{{ 'indirectPayment.receiver' | translate }}:</label>
+            <label>Proveedora químico farmaceutica<span class="ocean"> · RFC: XXX000000000</span></label>
+          </div>
+        </div>
+        <div class="title">
+          <label class="ocean">{{ 'indirectPayment.generalData' | translate }}</label>
+        </div>
+        <div class="general-data">
+          <div>
+            <label class="bold">{{ 'indirectPayment.paymentType' | translate }}</label>
+            <label>{{ 'MXN' }}</label>
+          </div>
+          <div>
+            <label class="bold">{{ 'indirectPayment.typeOfCurrency' | translate }}</label>
+            <label>{{ 'Pago' }}</label>
+          </div>
+          <div>
+            <label class="bold">{{ 'indirectPayment.invoice' | translate }}</label>
+            <label class="ocean underline">{{ 'Factura_renta.Pdf' }}</label>
+          </div>
+          <div>
+            <label class="bold">{{ 'indirectPayment.xml' | translate }}</label>
+            <label class="ocean underline">{{ 'adgfsdhfjdhfjlsewqasa.xml' }}</label>
+          </div>
+          <div>
+            <label class="bold">{{ 'indirectPayment.payForm' | translate }}</label>
+            <label>{{ 'Transferencia' }}</label>
+          </div>
+          <div></div>
+          <div>
+            <label class="bold">{{ 'indirectPayment.payMethod' | translate }}</label>
+            <label>{{ 'PPD · Pago en Parcialidades o Diferido' }}</label>
+          </div>
+          <div></div>
+          <div>
+            <label class="bold">{{ 'indirectPayment.description' | translate }}</label>
+            <label>{{ 'Renta de Auto' }}</label>
+          </div>
+          <div></div>
+          <div>
+            <label class="bold">{{ 'indirectPayment.activity' | translate }}</label>
+            <label>{{ 'Administrativo' }}</label>
+          </div>
+          <div>
+            <label class="bold">{{ 'indirectPayment.costType' | translate }}</label>
+            <label>{{ 'Gastos Administración' }}</label>
+          </div>
+          <div>
+            <label class="bold">{{ 'indirectPayment.area' | translate }}</label>
+            <label>{{ 'Finanzas' }}</label>
+          </div>
+          <div>
+            <label class="bold">{{ 'indirectPayment.accountingAccount' | translate }}</label>
+            <label>{{ 'Renta de Automóvil' }}</label>
+          </div>
+          <div>
+            <label class="bold">{{ 'indirectPayment.sector' | translate }}</label>
+            <label>{{ 'Sector A' }}</label>
+          </div>
+          <div>
+            <label class="bold">{{ 'indirectPayment.budget' | translate }}</label>
+            <label>{{ 'Fuera' }}</label>
+          </div>
+          <div class="files">
+            <label class="bold">{{ 'indirectPayment.additionalDocumentation' | translate }}</label>
+            <div class="files-container">
+              <div class="file">
+                <label>{{ '#1 · Archivo.pdf' }}</label>
+                <img src="assets/Images/cerrar.svg" alt="" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="title">
+          <label class="ocean">{{ 'indirectPayment.paymentData' | translate }}</label>
+        </div>
+        <div class="spei-opacity">
+          <label class="ocean">· SPEI</label>
+          <label class="bold"
+            ><span>{{ 'attendReviewPayment.interbankClabe' | translate }} · </span>{{ '123456789123456789' }}</label
+          >
+
+          <label class="bold"
+            ><span>{{ 'attendReviewPayment.bank' | translate }} · </span>{{ 'HSBC' }}</label
+          >
+        </div>
+        <div class="title">
+          <label class="ocean">{{ 'indirectPayment.programming' | translate }}</label>
+        </div>
+        <div class="picker-opacity">
+          <div class="picker">
+            <label>* {{ 'indirectPayment.paymentWishDate' | translate }}:</label>
+            <app-date-picker class="date-picker" dateFormat="YYYYMMDD" [color]="false"></app-date-picker>
+          </div>
+        </div>
+        <div class="title">
+          <label class="ocean">{{ 'common.total' | translate }}</label>
+        </div>
+        <div class="totals">
+          <div class="border">
+            <div class="labels">
+              <label>{{ 'common.tax' | translate }}: </label>
+              <label>{{ 'indirectPayment.isrWithholding' | translate }}: </label>
+              <label>{{ 'indirectPayment.ivaWithholding' | translate }}: </label>
+              <label>{{ 'common.subtotal' | translate }}: </label>
+              <label>{{ 'common.total' | translate }}: </label>
+            </div>
+            <div class="numbers">
+              <label>{{ 1655.17 | currency: 'USD':'':'1.2-2' }} MXN</label>
+              <label>{{ 0 | currency: 'USD':'':'1.2-2' }} MXN</label>
+              <label>{{ 0 | currency: 'USD':'':'1.2-2' }} MXN</label>
+              <label>{{ 10344.83 | currency: 'USD':'':'1.2-2' }} MXN</label>
+              <label>{{ 12000.83 | currency: 'USD':'':'1.2-2' }} USD</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #resumeModeTemplate>
+        <div class="without-results">
+          <app-without-results [title]="'indirectPayment.selectSeeResume' | translate"></app-without-results>
+        </div>
+      </ng-template>
+      <footer>
+        <ng-container *ngIf="seeResumeMode">
+          <button [ngClass]="'active'" (click)="changeSeeResumeMode(false)">{{ 'common.cancel' | translate }}</button>
+          <button [ngClass]="'active-green'">{{ 'indirectPayment.program' | translate }}</button>
+        </ng-container>
+      </footer>
+    </div>
+  </div>
+</div>

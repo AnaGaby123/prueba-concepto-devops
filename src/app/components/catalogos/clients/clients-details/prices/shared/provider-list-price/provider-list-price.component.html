@@ -1,0 +1,43 @@
+<div class="provider-list-price">
+  <h4 [ngClass]="!showListPrice && 'margin-bottom'">{{ 'formProduct.general.providerPriceList' | translate }}</h4>
+  <ng-container *ngIf="showListPrice">
+    <h5>{{ price?.PrecioLista }} {{ price?.MonedaVentaProveedor }}</h5>
+    <h6 *ngIf="price?.PrecioListaMonedaProveedor"
+      >{{ price?.PrecioListaMonedaProveedor.toFixed(2) }} {{ price?.ClaveMonedaPagos }}</h6
+    >
+    <h6 *ngIf="!price?.PrecioListaMonedaProveedor">N/D</h6>
+  </ng-container>
+  <div class="inputs">
+    <app-pqf-toggle-switch
+      class="switch"
+      [disable]="true"
+      [options]="selectToggleSwitchOptions$ | async"
+      [selectedOption]="actualConfiguration?.selectedToggleSwitchOption"
+    ></app-pqf-toggle-switch>
+    <label *ngIf="actualConfiguration?.selectedToggleSwitchOption?.label === toggleOptions.Monto"
+      >{{
+        actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.MontoMinimoOC || 0 | currency: 'USD':'symbol-narrow':'1.0-0'
+      }}
+      USD
+    </label>
+    <label *ngIf="actualConfiguration?.selectedToggleSwitchOption?.label === toggleOptions.Unidad"
+      >{{ actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.NumPiezas }} Pzas
+    </label>
+    <div class="check-container" *ngIf="!isMexican">
+      <app-check-box
+        class="check"
+        [check]="actualConfiguration?.MarcaFamiliaProveedor?.AplicaConsolidacion"
+        [enableEdit]="false"
+        [enabledIconNoSelected]="true"
+        [labelFontStyle]="'robotoBold12'"
+        [label]="'¿Consolidación con otros tipos de productos  a orden de despacho?'"
+      >
+      </app-check-box>
+      <div class="consolidation-trademarks">
+        <label *ngFor="let consolidation of selectedTrademarkConsolidation$ | async">{{
+          buildStringFamilyConsolidation(consolidation)
+        }}</label>
+      </div>
+    </div>
+  </div>
+</div>

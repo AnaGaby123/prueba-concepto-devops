@@ -1,0 +1,37 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+:host {
+  @include s.absolute100;
+  overflow: hidden;
+
+  #contracts-details {
+    @include s.flexColumn;
+    @include s.absolute100;
+    overflow: hidden;
+
+    & > .title {
+      @include s.escaledFontFormat(s.$textSize17to21, '', s.$dark-proquifa);
+      @include s.Novecento-Bold;
+      margin: 8px 0 27px;
+    }
+
+    & > .barContainer {
+      @include s.flexRow;
+      height: 70px;
+      //padding: 0 20px;
+      & > app-bar-activities {
+        width: 100%;
+      }
+    }
+
+    & > app-client-contract-contract {
+      display: flex;
+      flex: 1;
+    }
+  }
+}

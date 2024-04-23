@@ -1,0 +1,25 @@
+<section class="principal">
+  <div class="header">
+    <div class="title">
+      <!--<label>{{'quotation.details.titleLinkedQuote' | translate}}</label>-->
+      <label>{{ (dataLinked$ | async)?.title }}</label>
+    </div>
+    <div class="folio">
+      <label>· {{ (dataLinked$ | async)?.folio }}</label>
+    </div>
+  </div>
+  <div class="document">
+    <app-upload-view-file [datasFile]="{path: file$ | async, titulo: (dataLinked$ | async)?.folio}"></app-upload-view-file>
+  </div>
+  <div class="buttons">
+    <button (click)="redirectTo()">{{ 'common.cancel' | translate }}</button>
+    <button (click)="handleModalIsOpenResendQuotation(true)">{{ 'common.resend' | translate }}</button>
+  </div>
+</section>
+<app-resend-quote
+  *ngIf="modalIsOpenResendQuotation$ | async"
+  [contacts]="contacts$ | async"
+  [folio]="(dataLinked$ | async)?.folio"
+  (emitCancel)="handleModalIsOpenResendQuotation($event)"
+  (emitSend)="handleResendQuotation($event)"
+></app-resend-quote>

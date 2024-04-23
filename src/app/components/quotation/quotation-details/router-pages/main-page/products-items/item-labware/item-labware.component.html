@@ -1,0 +1,102 @@
+<div id="items-products">
+  <div class="content-items">
+    <label>{{ 'quotation.details.dataProduct' | translate }}</label>
+    <div class="information">
+      <div class="section-first">
+        <div class="column">
+          <label class="title">
+            {{ 'quotation.details.section.detailsProducts.provider' | translate }}:
+            <span class="text">{{ product?.NombreProveedor }}</span>
+          </label>
+        </div>
+        <div>
+          <label class="title">
+            {{ 'quotation.details.section.detailsProducts.mark' | translate }}:
+            <span class="text">{{ product?.NombreMarca }}</span>
+          </label>
+        </div>
+        <div>
+          <label class="title">
+            {{ 'quotation.details.section.detailsProducts.catNo' | translate }}:
+            <span class="text">{{ product?.Catalogo }}</span>
+          </label>
+        </div>
+        <div>
+          <label class="title">
+            {{ 'quotation.details.section.detailsProducts.regulatoryClassification' | translate }}:
+            <span class="text">
+              {{ product.Clasificacion || 'N/D' }}
+            </span>
+          </label>
+        </div>
+      </div>
+      <div class="section-second">
+        <div>
+          <label class="title">
+            {{ 'quotation.details.section.detailsProducts.tariffFraction' | translate }}:
+            <span class="text">
+              {{ product?.FraccionArancelaria || 'N/D' }}
+            </span>
+          </label>
+        </div>
+        <div>
+          <label class="title">
+            {{ 'quotation.details.section.detailsProducts.tariffImport' | translate }}:
+            <span class="text">
+              {{ product?.FraccionImportacion || 'N/D' }}
+            </span>
+          </label>
+        </div>
+      </div>
+      <div class="section-three">
+        <div>
+          <label class="title">
+            {{ 'quotation.details.section.detailsProducts.sanitaryRegistrationNumber' | translate }}:
+            <span class="text">{{ product?.vProductDetails?.ProductoLabware?.NumeroDeRegistroSanitario }}</span>
+          </label>
+        </div>
+        <div>
+          <label class="title">
+            {{ 'quotation.details.section.detailsProducts.expirationHealthRegister' | translate }}:
+            <span class="text">
+              {{ product.FechaCaducidadRegistroSanitario ? (product.FechaCaducidadRegistroSanitario | dateFormat) : 'N/D' }}
+            </span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="family-items">
+    <label>{{ 'quotation.details.family' | translate }}</label>
+    <div class="content">
+      <label class="text">{{ family }}</label>
+      <label *ngIf="isNotMarketable" class="blue">{{ 'quotation.details.marketableProduct' | translate }}</label>
+      <label *ngIf="isBackOrder" class="title">
+        {{ 'quotation.details.section.detailsProducts.ability' | translate }}:
+        <span class="text">{{ product?.FechaDisponibilidadBackOrder | dateFormatSlashShort }}</span>
+      </label>
+    </div>
+  </div>
+</div>
+<div id="technical-product">
+  <div class="section-first">
+    <div>
+      <label class="title blue">{{ 'quotation.details.purchaseRestrictions' | translate }}</label>
+    </div>
+    <div>
+      <label class="description">
+        {{ product.vProductDetails?.RestriccionDeCompra }}
+        <ng-container *ngIf="isValidLimitOfPieces(product.vProductDetails?.RestriccionDeCompra)">
+          {{ ' · ' + product.NumeroDePiezas + ' ' + ('quotation.details.perMonth' | translate) }}
+        </ng-container>
+      </label>
+    </div>
+  </div>
+  <div class="section-second">
+    <app-documentation *ngIf="product?.isSelected" [product]="product" [location]="'list'"></app-documentation>
+  </div>
+  <div class="comment">
+    <label class="title">{{ 'quotation.details.section.detailsProducts.seeCommentProduct' | translate }}:</label>
+    <label class="text">{{ product?.Nota ? product?.Nota : 'N/D' }}</label>
+  </div>
+</div>

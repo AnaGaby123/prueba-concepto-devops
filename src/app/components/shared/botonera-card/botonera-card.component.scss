@@ -1,0 +1,111 @@
+@use 'base' as s;
+
+.padre {
+  width: 100%;
+  flex-direction: row;
+  display: flex;
+  overflow: auto;
+  align-items: center;
+
+  & > div {
+    width: 100%;
+    display: flex;
+    height: 90px;
+    background: rgba(66, 66, 66, 1);
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.botonesDias {
+  width: 180px;
+  height: 90px;
+  background: rgba(66, 66, 66, 1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  box-sizing: border-box;
+  flex-direction: column;
+  line-height: 1.3;
+}
+
+.botonesDiasActive {
+  min-width: 205px;
+  min-height: 126px;
+  background: #000000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: none;
+  color: white;
+  // position: relative;
+  flex-direction: column;
+  line-height: 1.3;
+  animation-duration: 0.5s;
+  transition: 0.5s ease-out;
+}
+
+.indice {
+  @include s.Novecento;
+  font-weight: bold;
+  position: relative;
+  font-size: 11px;
+  top: -7px;
+}
+
+a {
+  @include s.Novecento-Bold;
+  font-size: calc(((13) * 1px) + ((18) - (13)) * ((100vw - 1300px) / (2974 - 1300)));
+  color: #ffffff;
+}
+
+label {
+  @include s.Novecento;
+  font-size: calc(((12) * 1px) + ((18) - (12)) * ((100vw - 1300px) / (2974 - 1300)));
+  color: #ffffff;
+}
+
+.tipos {
+  @include s.flexColumn;
+  box-sizing: border-box;
+
+  line-height: 1.3;
+  align-items: center;
+
+  & > label {
+    padding-top: 5px;
+  }
+}
+
+@include s.responsive_layout('macBookAir') {
+  .botonesDiasActive {
+    width: 250px !important;
+    height: 199px !important;
+  }
+  .botonesDias {
+    width: 230px;
+    height: 162px;
+    animation-duration: 0.5s;
+    transition: 0.5s ease-in-out;
+  }
+  a {
+    @include s.Novecento-Bold;
+    font-size: calc(((19) * 1px) + ((18) - (19)) * ((100vw - 1300px) / (2974 - 1300)));
+    color: #ffffff;
+  }
+  label {
+    @include s.Novecento;
+    font-size: calc(((17) * 1px) + ((18) - (17)) * ((100vw - 1300px) / (2974 - 1300)));
+    color: #ffffff;
+  }
+  .padre > div {
+    height: 162px;
+  }
+}
+
+::-webkit-scrollbar {
+  display: none;
+}

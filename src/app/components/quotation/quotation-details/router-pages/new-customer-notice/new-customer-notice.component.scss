@@ -1,0 +1,33 @@
+@use 'base' as s;
+
+:host {
+  .container-nav {
+    line-height: 19px;
+    @include s.flexColumn;
+    @include s.absoluteCenter;
+    width: 334px;
+    height: 938px;
+    padding: 15px;
+    row-gap: 41px;
+
+    & > h1 {
+      @include s.Novecento-Bold;
+      @include s.escaledFontFormat(s.$textSize19to23, bold, s.$pqGreen);
+      text-transform: uppercase;
+      padding: 0 28px 0 28px;
+      text-align: center;
+    }
+
+    & > span {
+      @include s.Roboto-Regular;
+      @include s.escaledFontFormat(s.$textSize14to18, regular, s.$pqGreen);
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    & > button {
+      @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqWhite);
+      @include s.pqButton($min-width: 180px, $max-width: 255px, $baseColor: s.$pqGreen2);
+    }
+  }
+}

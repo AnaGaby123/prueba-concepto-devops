@@ -1,0 +1,536 @@
+@use 'base' as s;
+
+:host {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+
+  #dispatch-point-customs-agent {
+    @include s.flexColumn;
+    flex: 1;
+    overflow: hidden;
+
+    & > .title {
+      @include s.Novecento-Bold;
+      @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+      padding-bottom: 5px;
+      border-bottom: 1px solid #424242;
+    }
+
+    & > .add-dispatch-point {
+      align-items: center;
+      display: grid;
+      grid-column-gap: 10px;
+      grid-row-gap: 5px;
+      grid-template-columns: max-content 388px 120px;
+      grid-template-rows: repeat(2, 1fr);
+      padding: 40px 60px;
+
+      & > div {
+        & > label {
+          @include s.Novecento-Bold;
+          @include s.escaledFontFormat(s.$textSize14to17, bold, s.$pqBlack2);
+          white-space: nowrap;
+        }
+
+        & > .btn-enable {
+          @include s.pqfButton();
+        }
+
+        & > .btn-disable {
+          @include s.pqfDisableButton();
+        }
+      }
+
+      & > .name-dispatch-point {
+        grid-area: 2 / 2 / 3 / 3;
+
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize14to16, regular, s.$alert);
+        }
+      }
+    }
+
+    & > .message {
+      @include s.flexRow;
+      flex: 1;
+
+      & > app-without-results {
+        @include s.flexRow;
+        flex: 1;
+        height: 100%;
+      }
+    }
+
+    & > .content {
+      @include s.flexColumn;
+      flex: 1;
+      overflow: hidden;
+
+      & > .bar {
+        padding: 0 60px;
+      }
+
+      & > .option-content {
+        @include s.flexColumn;
+        flex: 0 1 auto;
+        overflow: auto;
+        padding: 20px 60px 40px 60px;
+
+        & > .dispatch-point-status {
+          @include s.flexRow;
+          @include s.absoluteCenter;
+          background-color: rgba(s.$pqGreen, 0.05);
+          padding: 15px 0;
+
+          & > label {
+            @include s.Roboto-Bold;
+            @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+            padding-left: 5px;
+
+            &.active {
+              color: s.$pqGreen;
+            }
+          }
+        }
+
+        & > .address {
+          @include s.flexColumn;
+          padding-top: 35px;
+
+          & > .subtitle {
+            padding-bottom: 10px;
+
+            & > label {
+              @include s.Roboto-Bold;
+              @include s.escaledFontFormat(s.$textSize15to19, bold, s.$pqBlack2);
+            }
+          }
+
+          &.address-disable {
+            & > .subtitle {
+              & > label {
+                color: s.$pqGray3;
+              }
+            }
+          }
+
+          & > .address-content {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            grid-template-rows: repeat(2, auto);
+            grid-column-gap: 20px;
+            grid-row-gap: 20px;
+            align-items: end;
+            & > .span2 {
+              grid-column-end: span 2;
+            }
+            & > div {
+              @include s.flexColumn;
+
+              &.big {
+                grid-column-end: span 2;
+              }
+            }
+          }
+          & > .clean-form-button {
+            align-items: center;
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+            & .enable {
+              $max-width-map: (
+                'base': 300px,
+                'macBookAir': 310px,
+              );
+              @include s.pqfButton($max-width-map: $max-width-map);
+            }
+            & .disabled {
+              $max-width-map: (
+                'base': 300px,
+                'macBookAir': 310px,
+              );
+              @include s.pqfDisableButton($max-width-map: $max-width-map);
+            }
+          }
+        }
+
+        & > .add-fee-section {
+          @include s.flexRow;
+          @include s.absoluteCenter;
+          background-color: rgba(s.$pqGreen, 0.05);
+          margin-top: 45px;
+          padding: 40px 0;
+
+          & > .fee-content {
+            align-items: flex-start;
+            display: grid;
+            flex: 1;
+            grid-column: 1/4;
+            grid-row: 1/3;
+            grid-template-rows: auto 1fr;
+            grid-template-columns: 1fr 1fr 110px;
+            grid-gap: 10px 25px;
+            padding: 0 30px;
+
+            & > .add-fee {
+              display: grid;
+              grid-template-columns: auto 1fr;
+              align-items: flex-end;
+              grid-area: 1 / 1 / 1/ 4;
+
+              & > label {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormat(s.$textSize15to18, bold, s.$pqBlack2);
+                padding-right: 10px;
+                white-space: pre;
+                padding-bottom: 5px;
+              }
+            }
+
+            & > .petition {
+              display: grid;
+              grid-template-columns: auto auto auto;
+              align-items: end;
+              gap: 20px;
+
+              & > div {
+                @include s.flexRow;
+
+                & > .label {
+                  @include s.flexRow;
+                  align-items: flex-end;
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen);
+                    padding-left: 3px;
+                  }
+                }
+              }
+            }
+
+            & > .custom-value {
+              display: grid;
+              grid-template-rows: 1fr 1fr;
+              grid-template-columns: auto auto;
+              grid-gap: 0 20px;
+
+              & > .input {
+                @include s.flexRow;
+                align-items: flex-end;
+
+                & > .label {
+                  @include s.flexRow;
+                  align-items: flex-end;
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen);
+                    padding-left: 3px;
+                  }
+                }
+              }
+
+              & > .check {
+                grid-area: 2/2;
+              }
+            }
+
+            & > .btn {
+              padding-top: 20px;
+              justify-self: end;
+
+              & > button {
+                @include s.pqfButton();
+              }
+
+              & > .button-disable {
+                @include s.pqfDisableButton();
+              }
+            }
+
+            @include s.responsive_layout('media-1800') {
+              grid-column: 1/3;
+              grid-template-columns: 1fr 1fr 1fr;
+              padding: 0 40px;
+              & > .add-fee {
+                grid-area: 1 / 1;
+              }
+              & > .petition {
+                grid-template-columns: auto auto auto;
+              }
+
+              & > .btn {
+                padding-top: 0;
+                grid-area: 2/3;
+                justify-self: flex-end;
+              }
+            }
+            @include s.responsive_layout('media-2300') {
+              grid-column: 1/4;
+              grid-template-columns: 1fr 1fr 1fr 180px;
+              grid-template-rows: none;
+              padding: 0 40px;
+              & > .add-fee {
+                grid-area: 1 / 1;
+              }
+              & > .petition {
+                grid-template-columns: auto 1fr 1fr;
+              }
+
+              & > .btn {
+                padding-top: 20px;
+                grid-area: 1/4;
+              }
+            }
+          }
+        }
+
+        & > .fee-section {
+          @include s.flexColumn;
+          padding: 35px 0;
+
+          & > .subtitle {
+            padding-bottom: 20px;
+
+            & > label {
+              @include s.Roboto-Bold;
+              @include s.escaledFontFormat(s.$textSize15to19, bold, s.$pqBlack2);
+            }
+          }
+
+          & > .content {
+            @include s.flexRow;
+            flex: 1;
+            flex-wrap: wrap;
+
+            & > .withoutResults {
+              flex: 1;
+            }
+
+            & > .fee-item {
+              @include s.flexRow;
+              align-items: center;
+              background-color: rgba(s.$pqGreen, 0.05);
+              margin: 5px 10px 5px 0;
+              padding: 5px 10px;
+
+              & > label {
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormat(s.$textSize14to16, regular, s.$pqBlack2);
+
+                & > .bold {
+                  @include s.Roboto-Bold;
+                  color: s.$pqGreen;
+                  vertical-align: baseline;
+                }
+
+                & > .regular {
+                  color: s.$pqGreen;
+                  vertical-align: baseline;
+                }
+              }
+
+              & > img {
+                height: 14px;
+                padding-left: 10px;
+                cursor: pointer;
+              }
+            }
+          }
+
+          &.disabled-fee-section {
+            & > .subtitle {
+              & > label {
+                color: s.$pqGray3;
+              }
+            }
+
+            & > .content {
+              & > .fee-item {
+                background-color: #ffffff;
+
+                & > label {
+                  color: s.$pqGray3;
+
+                  & > .bold {
+                    color: s.$pqGray3;
+                  }
+
+                  & > .regular {
+                    color: s.$pqGray3;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        & > .required-documentation {
+          @include s.flexRow;
+          flex-wrap: wrap;
+          padding-top: 30px;
+
+          & > .left {
+            @include s.flexRow;
+            align-items: center;
+            justify-content: space-between;
+            flex: 1;
+            margin: 10px 0;
+
+            & > div {
+              flex: 1;
+              padding: 0 10px;
+              min-width: 130px;
+
+              & > label {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormat(s.$textSize15to18, bold, s.$pqBlack2);
+                white-space: nowrap;
+              }
+            }
+
+            & div:first-child {
+              min-width: 200px;
+            }
+          }
+
+          & > .right {
+            @include s.flexRow;
+            align-items: center;
+            flex: 1;
+            /*            max-width: 400px;*/
+            min-width: 500px;
+            margin-bottom: 2px;
+
+            & > label {
+              @include s.Roboto-Bold;
+              @include s.escaledFontFormat(s.$textSize15to18, bold, s.$pqBlack2);
+              padding-right: 10px;
+              white-space: nowrap;
+              margin-bottom: 2px;
+            }
+          }
+
+          &.disabled-required-documentation {
+            & > .left {
+              & > div {
+                & > label {
+                  color: s.$pqGray3;
+                }
+              }
+            }
+
+            & > .right {
+              & > label {
+                color: s.$pqGray3;
+              }
+            }
+          }
+        }
+      }
+
+      & > .required-data {
+        @include s.flexRow;
+        justify-content: flex-end;
+        padding: 15px 0;
+
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen);
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .title {
+        padding-bottom: 10px;
+      }
+      & > .add-dispatch-point {
+        padding: 55px 100px;
+        grid-template-columns: max-content 488px 160px;
+      }
+      & > .content {
+        & > .bar {
+          padding: 0 100px;
+        }
+
+        & > .option-content {
+          padding: 25px 100px 55px 100px;
+
+          & > .dispatch-point-status {
+            padding: 20px 0;
+
+            & > label {
+              padding-left: 7px;
+            }
+          }
+
+          & > .address {
+            padding-top: 45px;
+
+            & > .subtitle {
+              padding-bottom: 15px;
+            }
+          }
+
+          & > .add-fee-section {
+            margin-top: 55px;
+            padding: 50px 0;
+
+            & > .fee-content {
+              & > div {
+                padding: 0 5px;
+              }
+            }
+          }
+
+          & > .fee-section {
+            padding: 40px 0;
+
+            & > .subtitle {
+              padding-bottom: 25px;
+            }
+
+            & > .content {
+              & > .fee-item {
+                padding: 10px 20px;
+
+                & > .img {
+                  height: 16px;
+                  padding-left: 15px;
+                }
+              }
+            }
+          }
+
+          & > .required-documentation {
+            padding-top: 40px;
+
+            & > .left {
+              & > div {
+                padding: 0 15px;
+              }
+            }
+
+            & > .right {
+              max-width: 550px;
+
+              & > label {
+                padding-right: 15px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.loader {
+  @include s.flexRow;
+  flex: 1;
+  align-items: center;
+}

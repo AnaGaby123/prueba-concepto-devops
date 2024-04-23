@@ -1,0 +1,41 @@
+/* tslint:disable */
+import { ConfProveedor } from './conf-proveedor';
+export interface ConfiguracionAplicadaProveedorObj {
+  BasePrecioLista?: number;
+  CFT?: number;
+  CVT?: number;
+  CVU?: number;
+  ClaveMonedaPagos?: string;
+  ConfProveedor?: ConfProveedor;
+  CostoFijoUnitario?: number;
+  DescripcionProducto?: string;
+  FrenteComercialUnitario?: number;
+  IdCatIndustria?: string;
+  IdCatMonedaPagos?: string;
+  IdCatMonedaVentas?: string;
+  IdCatNivelIngreso?: string;
+  IdConfiguracionPrecioProveedorFamilia?: string;
+  IdConfiguracionTiempoEntregaProveedorFamilia?: string;
+  IdFamilia?: string;
+  IdMarcaFamilia?: string;
+  IdMarcaFamiliaCatIndustria?: string;
+  IdMarcaFamiliaProveedor?: string;
+  IdProducto?: string;
+  IdProveedor?: string;
+  Importacion?: number;
+  Industria?: string;
+  MonedaVentaProveedor?: string;
+  NivelConfiguracionProductoProveedor?: string;
+  NombreProveedor?: string;
+  NumPiezas?: number;
+  PrecioLista?: number;
+  PrecioListaMonedaProveedor?: number;
+  PrecioProquifaNet?: number;
+  PrecioTotal?: number;
+  PrecioUnitario?: number;
+  Sector?: string;
+  UtilidadTotal?: number;
+  UtilidadUnitaria?: number;
+  ValorEnAduana?: number;
+  idCatSector?: string;
+}

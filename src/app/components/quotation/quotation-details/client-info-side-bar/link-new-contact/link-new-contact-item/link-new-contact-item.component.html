@@ -1,0 +1,20 @@
+<div id="link-new-contact-item">
+  <div class="logo">
+    <img
+      #imageElementHover
+      alt="{{ 'logo ' + client?.Nombre }}"
+      [src]="client?.imageHover"
+      (error)="errorImgHandlerHover(imageElementHover)"
+    />
+  </div>
+  <div class="name">
+    <label>
+      {{ client.Nombre }}
+    </label>
+    <label class="business-name">Razón social</label>
+  </div>
+  <div class="link" (click)="openNewContactPopUp()">
+    <label>Vincular contacto</label>
+    <img src="assets/Images/quotation/plus-circle-icon.svg" alt="client-logoo" />
+  </div>
+</div>

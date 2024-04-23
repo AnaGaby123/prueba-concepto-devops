@@ -1,0 +1,235 @@
+<div class="container" [style.background-color]="backgroundColor">
+  <div class="search-container">
+    <app-search
+      [placeholder]="'Precio Lista'"
+      [searchTerm]="(asidePrices$ | async).searchTerm"
+      (textSearch)="handlePriceForPanelSearch($event)"
+    >
+    </app-search>
+  </div>
+  <div *ngIf="(selectedAsidePrice$ | async) && !(asidePrices$ | async).isLoading" class="right-side-content">
+    <div class="first-content" [style.background-color]="backgroundColor">
+      <label class="content-title"> {{ (selectedAsidePrice$ | async).PrecioLista }} DLS </label>
+      <label class="content-text green-text">
+        {{ 'formProvider.step8.private' | translate }}
+      </label>
+      <label class="item-text">
+        {{ selectClientIncomeLevel$ | async }} ·
+        <label class="">
+          {{ (selectedAsidePrice$ | async).PrecioProquifaNet | currency: 'USD':'symbol-narrow':'1.2-2' }} ·
+          <label [style.color]="(selectedAsidePrice$ | async).isNegative ? '#C1272D' : '#88C783'">
+            <label *ngIf="(selectedAsidePrice$ | async).isNegative">-</label>
+            {{ (selectedAsidePrice$ | async).percentage.toFixed(2) }} %
+          </label>
+        </label>
+      </label>
+    </div>
+    <div class="second-content">
+      <label class="content-title">
+        {{ selectClientIncomeLevel$ | async }}
+      </label>
+      <label
+        class="content-text"
+        *ngIf="!actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.AplicaPorPieza; else pieces"
+      >
+        <span>{{ 'formProvider.step8.subtitles.minimumAmountOC' | translate }}: </span>
+        {{ actualConfiguration.ConfiguracionPrecioProveedorFamilia?.MontoMinimoOC | currency: 'USD':'symbol':'1.2-2' }}
+      </label>
+      <ng-template #pieces>
+        <label class="content-text">
+          <span>{{ 'formProvider.step8.subtitles.numberOfPieces' | translate }}: </span>
+          {{ actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.NumPiezas }}
+        </label>
+      </ng-template>
+      <label class="content-text">
+        <span>{{ 'formProvider.step8.inputs.discount' | translate }}: </span>
+        {{ actualConfiguration?.ConfiguracionPrecioProveedor?.PorcentajeDescuento | percent }}
+      </label>
+    </div>
+    <div class="items-container">
+      <app-custom-position-pop-up
+        *ngIf="popupIsOpen"
+        class="popup"
+        [adjustForSmallTarget]="10"
+        [borderRadius]="'8px'"
+        [closeButton]="false"
+        [minHeight]="'auto'"
+        [minWidth]="'auto'"
+        [maxHeight]="'auto'"
+        [maxWidth]="'230px'"
+        [padding]="'7px 12px'"
+        [popUpPosition]="'left-end'"
+        [target]="popupTarget"
+      >
+        <p class="item-title">{{ popupTitle }}</p>
+        <p class="item-text">{{ popupText }}</p>
+      </app-custom-position-pop-up>
+      <div class="item">
+        <label class="item-title"> {{ 'formProvider.step8.subtitles.import' | translate }}: </label>
+        <label
+          class="item-text"
+          (mouseenter)="handleOpenPopup($event.target, formulasTitles.Import, formulasDescription.Import)"
+          (mouseleave)="handleClosePopup()"
+        >
+          ({{ (selectedAsidePrice$ | async).ValorEnAduana | currency: 'USD':'symbol':'1.2-2' }} *
+          {{ (generalConfiguration$ | async).ConfiguracionPrecioProveedor?.IGI | percentageTransform }} ) + ({{
+            (selectedAsidePrice$ | async).ValorEnAduana | currency: 'USD':'symbol':'1.2-2'
+          }}
+          * {{ (generalConfiguration$ | async).ConfiguracionPrecioProveedor?.DTA | percentageTransform }} ) +
+          {{ (generalConfiguration$ | async).ConceptoAgenteAduanal?.Monto | currency: 'USD':'symbol':'1.2-2' }} =
+          {{ (selectedAsidePrice$ | async).Importacion | currency: 'USD':'symbol':'1.2-2' }}
+        </label>
+      </div>
+      <div class="item">
+        <label class="item-title"> {{ 'formProvider.step8.subtitles.totalCostOfSales' | translate }}: </label>
+        <label
+          class="item-text"
+          (mouseenter)="handleOpenPopup($event.target, formulasTitles.TotalCostOfSale, formulasDescription.TotalCostOfSale)"
+          (mouseleave)="handleClosePopup()"
+        >
+          {{ (selectedAsidePrice$ | async).ValorEnAduana | currency: 'USD':'symbol':'1.2-2' }}
+          + {{ (selectedAsidePrice$ | async).Importacion | currency: 'USD':'symbol':'1.2-2' }} +
+          {{
+            (generalConfiguration$ | async).ConfiguracionPrecioProveedor?.PrecioConsularizacion
+              | currency: 'USD':'symbol':'1.2-2'
+          }}
+          +
+          {{
+            (generalConfiguration$ | async).ConfiguracionPrecioProveedor?.PrecioEnvioDeDocumentos
+              | currency: 'USD':'symbol':'1.2-2'
+          }}
+          +
+          {{ (generalConfiguration$ | async).ConfiguracionPrecioProveedor?.PrecioPermiso | currency: 'USD':'symbol':'1.2-2' }}
+          +
+          {{ (generalConfiguration$ | async).ConfiguracionPrecioProveedor?.PrecioFleteAD | currency: 'USD':'symbol':'1.2-2' }}
+          = {{ (selectedAsidePrice$ | async).CVT | currency: 'USD':'symbol':'1.2-2' }}
+        </label>
+      </div>
+      <div class="item">
+        <label class="item-title"> {{ 'formProvider.step8.subtitles.totalFixedCost' | translate }}: </label>
+        <label
+          class="item-text"
+          (mouseenter)="handleOpenPopup($event.target, formulasTitles.TotalFixedCost, formulasDescription.TotalFixedCost)"
+          (mouseleave)="handleClosePopup()"
+        >
+          {{ (selectedAsidePrice$ | async).CVT | currency: 'USD':'symbol':'1.2-2' }}
+          *
+          {{ (generalConfiguration$ | async).ConfiguracionPrecioCliente?.FactorDeCostoFijo | percentageTransform }}
+          = {{ (selectedAsidePrice$ | async).CostoFijoUnitario | currency: 'USD':'symbol':'1.2-2' }}
+        </label>
+      </div>
+      <div class="item">
+        <label class="item-title"> {{ 'formProvider.step8.subtitles.totalUtility' | translate }}: </label>
+        <label
+          class="item-text"
+          (mouseenter)="handleOpenPopup($event.target, formulasTitles.TotalUtility, formulasDescription.TotalUtility)"
+          (mouseleave)="handleClosePopup()"
+        >
+          {{ (selectedAsidePrice$ | async).CVT | currency: 'USD':'symbol':'1.2-2' }}
+          *
+          {{ (generalConfiguration$ | async).ConfiguracionPrecioCliente?.Utilidad | percentageTransform }}
+          = {{ (selectedAsidePrice$ | async).UtilidadTotal | currency: 'USD':'symbol':'1.2-2' }}
+        </label>
+      </div>
+      <div class="item">
+        <label class="item-title"> {{ 'formProvider.step8.subtitles.totalPrice' | translate }}: </label>
+        <label
+          class="item-text"
+          (mouseenter)="handleOpenPopup($event.target, formulasTitles.TotalPrice, formulasDescription.TotalPrice)"
+          (mouseleave)="handleClosePopup()"
+        >
+          {{ (selectedAsidePrice$ | async).CVT | currency: 'USD':'symbol':'1.2-2' }}
+          + {{ (selectedAsidePrice$ | async).CFT | currency: 'USD':'symbol':'1.2-2' }} +
+          {{ (selectedAsidePrice$ | async).UtilidadTotal | currency: 'USD':'symbol':'1.2-2' }} =
+          {{ (selectedAsidePrice$ | async).PrecioTotal | currency: 'USD':'symbol':'1.2-2' }}
+        </label>
+      </div>
+      <div class="item">
+        <label class="item-title"> {{ 'formProvider.step8.subtitles.unitCostOfSales' | translate }}: </label>
+        <label
+          class="item-text"
+          (mouseenter)="handleOpenPopup($event.target, formulasTitles.UnitCostOfSale, formulasDescription.UnitCostOfSale)"
+          (mouseleave)="handleClosePopup()"
+        >
+          {{ (selectedAsidePrice$ | async).CVT | currency: 'USD':'symbol':'1.2-2' }}
+          /
+          {{ (selectedAsidePrice$ | async).NumPiezas | currency: 'USD':'symbol':'1.2-2' }}
+          = {{ (selectedAsidePrice$ | async).CVU | currency: 'USD':'symbol':'1.2-2' }}
+        </label>
+      </div>
+      <div class="item">
+        <label class="item-title"> {{ 'formClient.step5.subtitles.unitFixedCost' | translate }}: </label>
+        <label
+          class="item-text"
+          (mouseenter)="handleOpenPopup($event.target, formulasTitles.UnitFixedCost, formulasDescription.UnitFixedCost)"
+          (mouseleave)="handleClosePopup()"
+        >
+          {{ (selectedAsidePrice$ | async).CFT | currency: 'USD':'symbol':'1.2-2' }}
+          / {{ (selectedAsidePrice$ | async).NumPiezas }} =
+          {{ (selectedAsidePrice$ | async).CostoFijoUnitario | currency: 'USD':'symbol':'1.2-2' }}
+        </label>
+      </div>
+      <div class="item">
+        <label class="item-title"> {{ 'formClient.step5.subtitles.unitUtility' | translate }}: </label>
+        <label
+          class="item-text"
+          (mouseenter)="handleOpenPopup($event.target, formulasTitles.UnitUtility, formulasDescription.UnitUtility)"
+          (mouseleave)="handleClosePopup()"
+        >
+          {{ (selectedAsidePrice$ | async).UtilidadTotal | currency: 'USD':'symbol':'1.2-2' }}
+          / {{ (selectedAsidePrice$ | async).NumPiezas }} =
+          {{ (selectedAsidePrice$ | async).UtilidadUnitaria | currency: 'USD':'symbol':'1.2-2' }}
+        </label>
+      </div>
+      <div class="item">
+        <label class="item-title"> {{ 'formClient.step5.subtitles.unitPrice' | translate }}: </label>
+        <label
+          class="item-text"
+          (mouseenter)="handleOpenPopup($event.target, formulasTitles.UnitPrice, formulasDescription.UnitPrice)"
+          (mouseleave)="handleClosePopup()"
+        >
+          {{ (selectedAsidePrice$ | async).CVU | currency: 'USD':'symbol':'1.2-2' }} +
+          {{ (selectedAsidePrice$ | async).CostoFijoUnitario | currency: 'USD':'symbol':'1.2-2' }} +
+          {{ (selectedAsidePrice$ | async).UtilidadUnitaria | currency: 'USD':'symbol':'1.2-2' }} =
+          {{ (selectedAsidePrice$ | async).PrecioUnitario | currency: 'USD':'symbol':'1.2-2' }}
+        </label>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="(asidePrices$ | async).isLoading" class="loading">
+    <div class="loadingContainer">
+      <div class="load-circle">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+      </div>
+    </div>
+  </div>
+  <div
+    *ngIf="
+      !(asidePrices$ | async).isLoading &&
+      (!(selectedAsidePrice$ | async) || lodashIsEmpty((asidePrices$ | async).pricesList?.Results))
+    "
+    class="without-results"
+  >
+    <app-without-results></app-without-results>
+  </div>
+  <div
+    *ngIf="(selectedAsidePrice$ | async) && (asidePrices$ | async).desiredPage !== null && (asidePrices$ | async).pricesList"
+    class="right-side-footer"
+  >
+    <img
+      alt="anterior"
+      [src]="(allowPreviousPanelPage$ | async) ? 'assets/Images/flecha_izq.svg' : 'assets/Images/flecha_gris_Izq.svg'"
+      [ngClass]="(allowPreviousPanelPage$ | async) ? 'cursor-pointer' : 'cursor-default'"
+      (click)="getPricePageForPanel(-1)"
+    />
+    <label> {{ (asidePrices$ | async).desiredPage }} / {{ (asidePrices$ | async).pricesList?.TotalResults }} </label>
+    <img
+      alt="siguiente"
+      [src]="(allowNextPanelPage$ | async) ? 'assets/Images/flecha_derecha.svg' : 'assets/Images/flecha_gris_derecha.svg'"
+      [ngClass]="(allowNextPanelPage$ | async) ? 'cursor-pointer' : 'cursor-default'"
+      (click)="getPricePageForPanel(1)"
+    />
+  </div>
+</div>

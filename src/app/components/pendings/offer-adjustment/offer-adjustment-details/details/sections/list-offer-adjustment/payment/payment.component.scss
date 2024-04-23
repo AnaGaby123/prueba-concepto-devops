@@ -1,0 +1,255 @@
+@use 'base' as s;
+
+:host {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  overflow: hidden;
+
+  #payment {
+    @include s.flexColumn;
+    width: 100%;
+    box-sizing: border-box;
+    flex: 1;
+    overflow: hidden;
+
+    & > .container-blue {
+      @include s.flexColumn;
+      width: 100%;
+      height: 50px;
+      justify-content: center;
+      background-color: s.$pqFondo;
+      padding: 6px 22px;
+
+      & > div:nth-of-type(1) {
+        @include s.flexColumn;
+
+        & > label:nth-of-type(1) {
+          @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqGreen);
+          @include s.Roboto-Bold;
+          padding-bottom: 3px;
+        }
+
+        & > .second-line {
+          @include s.flexRowNoWrap;
+
+          & > label:nth-of-type(1) {
+            @include s.escaledFontFormat(s.$textSize12to15, bold, s.$pqBlack2);
+            @include s.Roboto-Bold-Italic;
+            padding-right: 4px;
+          }
+
+          & > label:nth-of-type(2) {
+            @include s.escaledFontFormat(s.$textSize12to15, regular, s.$pqBlack2);
+            @include s.Roboto-Regular-Italic;
+          }
+        }
+      }
+    }
+
+    & > .container-filters {
+      @include s.flexRow;
+      padding-top: 10px;
+      padding-bottom: 5px;
+      align-items: center;
+      overflow-y: hidden;
+      overflow-x: auto;
+
+      & > label:nth-of-type(1) {
+        @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+        @include s.Roboto-Bold;
+        text-transform: uppercase;
+      }
+    }
+    & > .table-container {
+      @include s.flexRow;
+      flex: 1;
+
+      & > virtual-scroller {
+        overflow: hidden;
+        @include s.fixVirtualScroller();
+
+        ::ng-deep .scrollable-content {
+          overflow: auto;
+
+          & > .header {
+            flex: 0 0 auto;
+            position: sticky;
+            top: 0;
+            z-index: 6;
+          }
+
+          & > .header-separator {
+            position: sticky;
+            top: 47px;
+            left: 0;
+            border-bottom: 1px solid s.$dark-proquifa;
+          }
+        }
+      }
+    }
+  }
+
+  & > .without-results {
+    @include s.flexRow;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+  }
+
+  #pop-up-price-cat {
+    & .container-price-cat {
+      @include s.flexColumn;
+      box-sizing: border-box;
+      height: calc(100% - 35px);
+      padding: 15px 0;
+
+      & > .container-blue {
+        @include s.flexColumn;
+        @include s.absoluteCenter;
+        background-color: s.$pqFondo;
+        height: 40px;
+        justify-content: center;
+        width: 100%;
+
+        & > .container-radio-buttons {
+          @include s.flexRowNoWrap;
+          width: 60%;
+          justify-content: space-around;
+        }
+
+        & > .amount {
+          @include s.flexRowNoWrap;
+          width: auto;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize13to15, regular, s.$pqBlack2);
+
+            & > span:nth-of-type(1) {
+              @include s.Roboto-Bold;
+              color: s.$pqBlack2;
+              margin-right: 3px;
+            }
+
+            & > span:nth-of-type(2) {
+              @include s.Roboto-Regular;
+              color: s.$pqGreen;
+              margin-left: 3px;
+            }
+          }
+        }
+      }
+
+      & > .container-second-section {
+        @include s.flexColumn;
+        box-sizing: border-box;
+        height: 100%;
+        padding: 0 20px;
+
+        & > app-slider {
+          padding-bottom: 20px;
+        }
+
+        & > .amount-controls {
+          @include s.flexRowNoWrap;
+          justify-content: space-between;
+          height: 60px;
+          width: 100%;
+
+          & > div {
+            @include s.flexRowNoWrap;
+            @include s.absoluteCenter;
+
+            & > input {
+              @include s.escaledFontFormat(s.$textSize14to16, bold, s.$pqBlack2);
+              @include s.Roboto-Bold;
+              background-color: s.$pqWhite;
+              border-radius: 2px;
+              box-sizing: border-box;
+              height: 26px;
+              outline: none;
+              padding: 2px 5px;
+              text-align: center;
+            }
+
+            & > input::placeholder {
+              @include s.placeholder(s.$pqBlack4, 0);
+              @include s.escaledFontFormat(s.$textSize14to16, regular, s.$pqPlaceholder);
+              @include s.Roboto-Bold;
+              font-size: 14px !important;
+              @include s.responsive_layout('macBookAir') {
+                font-size: 16px !important;
+              }
+            }
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize14to16, regular, s.$pqBlack2);
+              margin-left: 8px;
+            }
+          }
+
+          & > div:nth-of-type(1) {
+            width: 35%;
+
+            & > input {
+              width: calc(100% - 12px);
+            }
+
+            & > label {
+              @include s.Roboto-Bold;
+              color: s.$pqGreen;
+            }
+          }
+
+          & > div:nth-of-type(2) {
+            width: 55%;
+
+            & > input {
+              width: calc(100% - 50px);
+            }
+
+            & > label {
+              @include s.Roboto-Regular;
+            }
+          }
+        }
+
+        & > .container-comments {
+          @include s.flexColumn;
+          height: 100%;
+
+          & > label:nth-of-type(1) {
+            @include s.escaledFontFormat(s.$textSize12to15, regular, s.$pqBlack2);
+            @include s.Roboto-Regular;
+            padding-bottom: 10px;
+          }
+
+          & > textarea {
+            width: 100%;
+            height: 100px;
+            box-sizing: border-box;
+            padding: 10px;
+          }
+        }
+      }
+    }
+
+    & .button {
+      width: 100%;
+      height: 35px;
+
+      & > button {
+        border-radius: 0 !important;
+      }
+
+      & > .btn-active-accept {
+        @include s.pqButton(100%, 100%, 35px, 35px);
+      }
+
+      & > .btn-disable-accept {
+        @include s.pqButtonDisable(100%, 100%, 35px, 35px);
+        cursor: default;
+      }
+    }
+  }
+}

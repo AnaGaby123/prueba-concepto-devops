@@ -1,0 +1,176 @@
+<section id="general-data-quotation-container" [ngClass]="isOpen ? 'show' : 'hide'">
+  <app-link-new-contact
+    *ngIf="(selectedClient$ | async)?.Nombre === (selectNewClientName$ | async); else elseInfo"
+  ></app-link-new-contact>
+  <ng-template #elseInfo>
+    <div class="info">
+      <div class="title">
+        <label>{{ 'quotation.details.content' | translate }}</label>
+      </div>
+      <div class="logo">
+        <div class="image">
+          <img #imageElement alt="logo" [src]="setImage((selectedClient$ | async)?.imageHover)" (error)="errorImage()" />
+        </div>
+        <div class="client-name">
+          <label class="name">{{ (selectedClient$ | async)?.Nombre }}</label>
+          <label class="subtitle">{{ 'quotation.details.client' | translate }}</label>
+        </div>
+      </div>
+      <div class="totals">
+        <div class="left">
+          <label class="title">{{ 'quotation.details.request' | translate }}</label>
+          <label class="totals">
+            {{ quotationsListTotalResults$ | async }}
+            {{ (quotationsListTotalResults$ | async) === 1 ? 'Cotización' : 'Cotizaciones' }}
+          </label>
+        </div>
+        <div class="right">
+          <label class="title">{{ 'quotation.details.segmentation' | translate }}</label>
+          <div class="segmentation">
+            <img
+              [src]="
+                (clientInfo$ | async)?.incomeLevel
+                  ? 'assets/Images/clientes/niveles-ingreso/' + incomeLevelHelper((clientInfo$ | async)?.incomeLevel) + '.svg'
+                  : 'assets/Images/clientes/niveles-ingreso/bajo.svg'
+              "
+              [alt]="(clientInfo$ | async)?.incomeLevel"
+            />
+            <img
+              [src]="
+                (clientInfo$ | async)?.category
+                  ? 'assets/Images/clientes/categorias/' + lodashToLower((clientInfo$ | async)?.category) + '.svg'
+                  : 'assets/Images/clientes/categorias/rest.svg'
+              "
+              alt="bajo"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="sector-industry">
+        <div class="left">
+          <label class="title">{{ 'quotation.details.sector' | translate }}</label>
+          <label class="description">{{ (clientInfo$ | async)?.sector }}</label>
+        </div>
+        <div class="right">
+          <label class="title">{{ 'quotation.details.industry' | translate }}</label>
+          <label class="description">{{ (clientInfo$ | async)?.industry }}</label>
+        </div>
+      </div>
+      <div class="content">
+        <div class="client-data">
+          <label class="data-top">{{ 'quotation.details.clientData' | translate }}</label>
+          <div class="data-bottom">
+            <label>
+              {{ 'quotation.details.acceptPartials' | translate }}:
+              <span>{{ (clientInfo$ | async)?.acceptPartial }}</span> </label
+            ><label>
+              {{ 'quotation.details.sendGuide' | translate }}: <span>{{ (clientInfo$ | async)?.sendGuide }}</span> </label
+            ><label>
+              {{ 'quotation.details.route' | translate }}: <span>{{ (clientInfo$ | async)?.route }}</span>
+            </label>
+            <label>
+              {{ 'quotation.details.whoBills' | translate }}: <span>{{ (clientInfo$ | async)?.whoBills }}</span>
+            </label>
+            <div>
+              <label>{{ 'quotation.details.billingCurrencyQuotation' | translate }}</label>
+              <app-drop-down-list
+                [capitalize]="false"
+                [enableEdit]="
+                  (stateQuotationSelected$ | async) !== quotationSent &&
+                  !(investigationQuotation$ | async) &&
+                  !(sendWithvestigationQuotation$ | async)
+                "
+                [font]="'Roboto-Bold'"
+                [itemSelected]="quotationCurrency$ | async"
+                [items]="currencies$ | async"
+                (valueDropList)="handleCurrencySelected($event)"
+              ></app-drop-down-list>
+            </div>
+            <label>
+              {{ 'quotation.details.paymentConditions' | translate }}:
+              <span>{{ (clientInfo$ | async)?.paymentConditions }}</span>
+            </label>
+            <label>
+              {{ 'quotation.details.assignedUser' | translate }}: <span>{{ (clientInfo$ | async)?.assignedUser }}</span>
+            </label>
+            <div class="address">
+              <label>{{ 'quotation.details.deliveryAddress' | translate }}</label>
+              <app-drop-down-list
+                [capitalize]="false"
+                [enableEdit]="
+                  (stateQuotationSelected$ | async) !== quotationSent &&
+                  !(investigationQuotation$ | async) &&
+                  !(sendWithvestigationQuotation$ | async)
+                "
+                [font]="'Roboto-Bold'"
+                [itemSelected]="addressDeliverySelected$ | async"
+                [items]="addressDelivery$ | async"
+                [borderColor]="(activeErrorAddress$ | async) ? '#dc3545' : '#D8D9DD'"
+                [labelFontColor]="(activeErrorAddress$ | async) ? '#dc3545' : '#424242'"
+                (valueDropList)="handleOptionDeliveryDirectionSelected($event)"
+              ></app-drop-down-list>
+            </div>
+          </div>
+        </div>
+        <div class="contact-data">
+          <label class="data-top">{{ 'quotation.details.contactData' | translate }}</label>
+
+          <div class="content-center">
+            <div class="contact-name">
+              <div class="icon">
+                <img src="assets/Images/quotation/client.svg" alt="contact" />
+              </div>
+              <div class="response">
+                <app-drop-down-list
+                  [enableEdit]="
+                    (stateQuotationSelected$ | async) !== quotationSent &&
+                    !(investigationQuotation$ | async) &&
+                    !(sendWithvestigationQuotation$ | async)
+                  "
+                  [font]="'Roboto-Bold'"
+                  [itemSelected]="optionContactSelected$ | async"
+                  [items]="optionsContact$ | async"
+                  [capitalize]="false"
+                  (valueDropList)="handleOptionSelected($event)"
+                ></app-drop-down-list>
+              </div>
+            </div>
+            <div class="mail">
+              <div class="icon">
+                <img src="assets/Images/quotation/mail.svg" alt="mail" />
+              </div>
+              <label class="response">{{ (contactSelected$ | async)?.email }}</label>
+            </div>
+            <div class="phone">
+              <div class="icon">
+                <img src="assets/Images/quotation/phone.svg" alt="phone" />
+              </div>
+              <label class="response">{{ (contactSelected$ | async)?.phone1 }}</label>
+            </div>
+            <div>
+              <div class="icon">
+                <img src="assets/Images/quotation/phone.svg" alt="phone" />
+              </div>
+              <label class="response">{{ (contactSelected$ | async)?.phone2 }}</label>
+            </div>
+          </div>
+          <div class="content-bottom">
+            <label>
+              {{ 'quotation.details.department' | translate }}: <span>{{ (contactSelected$ | async)?.department }}</span>
+            </label>
+            <label>
+              {{ 'quotation.details.position' | translate }}: <span>{{ (contactSelected$ | async)?.position }}</span>
+            </label>
+            <label>
+              {{ 'quotation.details.decisionLevel' | translate }}:
+              <span>{{ (contactSelected$ | async)?.decisionLevel }}</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</section>
+<div class="arrow" [style.right]="!isOpen ? '-16px' : '0'">
+  <img alt="arrow" src="assets/Images/arrows/flecha_cuadro.svg" [ngClass]="{reverse: !isOpen}" (click)="onClick()" />
+</div>

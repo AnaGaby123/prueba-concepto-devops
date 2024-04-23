@@ -1,0 +1,12 @@
+@use 'base' as s;
+
+:host {
+  width: 100%;
+  height: 100%;
+
+  #register-arrival-details {
+    @include s.flexRowNoWrap;
+    width: 100%;
+    height: 100%;
+  }
+}

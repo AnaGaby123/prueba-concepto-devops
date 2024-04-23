@@ -1,0 +1,9 @@
+<div class="radio-button-container">
+  <img
+    #imageElement
+    alt=""
+    *ngIf="columnOptions?.value || columnOptions?.value === null || columnOptions?.value === false"
+    [src]="columnOptions?.value ? 'assets/Images/radio_selected.svg' : 'assets/Images/radio_unselected.svg'"
+    (click)="handleClick($event, imageElement, !columnOptions?.value, nameActionsInternalSalesItem.RadioButtonAction)"
+  />
+</div>

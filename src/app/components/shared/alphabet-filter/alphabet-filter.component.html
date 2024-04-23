@@ -1,0 +1,30 @@
+<div class="alphabet-filter-container">
+  <div class="container" [style]="containerStyle">
+    <div class="label" (click)="handleOpenOptions(true)">
+      <label [style]="labelStyle">{{ label }}</label>
+      <img src="assets/Images/arrows/flecha_abajo_negra.svg" alt="" [ngClass]="optionsAreOpen && 'open'" />
+    </div>
+    <div class="relative">
+      <div class="absolute" *ngIf="optionsAreOpen" [style]="absoluteStyle" @fadeAnimation>
+        <div
+          class="all"
+          *ngIf="allowNoSelectedOption"
+          [ngClass]="(!selectedOption || lodashIsEmpty(selectedOption)) && 'selected'"
+          (click)="selectOption()"
+        >
+          <label>{{ noSelectedOptionLabel }}</label>
+        </div>
+        <ng-container *ngIf="options && !lodashIsEmpty(options)">
+          <div
+            class="item"
+            *ngFor="let item of options"
+            [ngClass]="item.id === selectedOption?.id && 'selected'"
+            (click)="selectOption(item)"
+          >
+            <label>{{ item.label }}</label>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,552 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  width: 100%;
+  height: 100%;
+
+  & > #priority-console {
+    @include s.flexColumn;
+    width: 100%;
+    height: 100%;
+
+    & > .content {
+      @include s.flexColumn;
+      flex: 1;
+      overflow: hidden;
+      padding: 20px;
+
+      & > .top-container {
+        @include s.flexColumn;
+
+        & > .title {
+          @include s.flexRow;
+          align-items: center;
+          justify-content: flex-start;
+          padding-bottom: 20px;
+
+          & > label {
+            @include s.Novecento-Bold;
+            @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+          }
+        }
+
+        & > .tabs {
+          @include s.flexRow;
+        }
+
+        & > .filters {
+          @include s.flexRow;
+          flex: 0 0 auto;
+          padding: 20px 0;
+
+          & > .hambuergerL {
+            @include s.flexRow;
+            width: 30%;
+
+            & > div {
+              width: 30%;
+            }
+          }
+
+          & > .search {
+            @include s.flexRow;
+            flex: 1;
+            justify-content: center;
+          }
+
+          & > .hamburgerR {
+            @include s.flexRow;
+            justify-content: flex-end;
+            padding-right: 10px;
+            width: 30%;
+
+            & > div {
+              width: 30%;
+            }
+          }
+        }
+      }
+
+      & > .table-container {
+        @include s.flexColumn;
+        flex: 1;
+
+        & > .header {
+          @include s.flexRow;
+          border-bottom: 1px solid s.$pqBlack2;
+          flex: 0 0 auto;
+          padding: 10px 0 10px 10px;
+
+          & > .index {
+            @include s.flexRow;
+            justify-content: center;
+            width: 27px;
+
+            & > label {
+              @include s.Roboto-Bold;
+              @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+            }
+          }
+
+          & > .icons {
+            width: 105px;
+          }
+
+          & > .priority {
+            @include s.flexRow;
+            justify-content: center;
+            width: 5%;
+
+            & > label {
+              @include s.Roboto-Bold;
+              @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+            }
+          }
+
+          & > .client {
+            @include s.flexRow;
+            justify-content: center;
+            width: 10%;
+
+            & > label {
+              @include s.Roboto-Bold;
+              @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+            }
+          }
+
+          & > .zone {
+            @include s.flexRow;
+            justify-content: center;
+            width: 20%;
+
+            & > label {
+              @include s.Roboto-Bold;
+              @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+            }
+          }
+
+          & > .contact {
+            @include s.flexRow;
+            justify-content: center;
+            width: 10%;
+
+            & > label {
+              @include s.Roboto-Bold;
+              @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+            }
+          }
+
+          & > .amount {
+            @include s.flexRow;
+            justify-content: center;
+            width: 10%;
+
+            & > label {
+              @include s.Roboto-Bold;
+              @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+            }
+          }
+
+          & > .FEE {
+            @include s.flexRow;
+            justify-content: center;
+            width: 12%;
+
+            & > label {
+              @include s.Roboto-Bold;
+              @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+            }
+          }
+
+          & > .remainingDays {
+            @include s.flexRow;
+            justify-content: center;
+            width: 8%;
+
+            & > label {
+              @include s.Roboto-Bold;
+              @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+            }
+          }
+
+          & > .end {
+            @include s.flexRow;
+            flex: 1;
+          }
+        }
+
+        & > .body {
+          @include s.flexColumn;
+          flex: 1;
+
+          & > virtual-scroller {
+            @include s.absolute100;
+
+            & > ::ng-deep .scrollable-content {
+              max-width: 100% !important;
+              max-height: 100% !important;
+            }
+
+            .item {
+              @include s.flexColumn;
+              border-bottom: 1px solid s.$pqGray;
+              flex: 0 0 auto;
+
+              & > .principal {
+                @include s.flexRow;
+
+                &:hover {
+                  background-color: s.$pqGray2;
+                }
+
+                & > .selector {
+                  width: 5px;
+                  margin-right: 5px;
+
+                  & .selected {
+                    background-color: s.$pqGreen;
+                  }
+                }
+
+                & > .index {
+                  @include s.flexRow;
+                  @include s.absoluteCenter;
+                  width: 27px;
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                  }
+                }
+
+                & > .icons {
+                  @include s.flexRow;
+                  align-items: center;
+                  justify-content: center;
+
+                  & > .ico1 {
+                    padding: 0 5px;
+
+                    & > img {
+                      cursor: pointer;
+                      max-width: 15px;
+                    }
+                  }
+
+                  & > .ico2 {
+                    padding: 0 5px;
+
+                    & > img {
+                      cursor: pointer;
+                      max-width: 10px;
+                    }
+                  }
+
+                  & > .ico3 {
+                    padding: 0 5px;
+
+                    & > img {
+                      cursor: pointer;
+                      height: 15px;
+                    }
+                  }
+                }
+
+                & > .priority {
+                  @include s.flexRow;
+                  @include s.absoluteCenter;
+                  width: 5%;
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                  }
+                }
+
+                & > .client {
+                  @include s.flexRow;
+                  @include s.absoluteCenter;
+                  width: 10%;
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                  }
+                }
+
+                & > .zone {
+                  @include s.flexColumn;
+                  @include s.absoluteCenter;
+                  padding: 5px 0;
+                  width: 20%;
+
+                  & > span {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen);
+                    text-align: center;
+                  }
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to14, regular, s.$pqBlack2);
+                    text-align: center;
+                  }
+                }
+
+                & > .contact {
+                  @include s.flexColumn;
+                  @include s.absoluteCenter;
+                  padding: 5px 0;
+                  width: 10%;
+
+                  & > span {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen);
+                    text-align: center;
+                  }
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                    text-align: center;
+                  }
+                }
+
+                & > .amount {
+                  @include s.flexRow;
+                  @include s.absoluteCenter;
+                  width: 10%;
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                  }
+                }
+
+                & > .FEE {
+                  @include s.flexRow;
+                  @include s.absoluteCenter;
+                  width: 12%;
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                  }
+                }
+
+                & > .remainingDays {
+                  @include s.flexRow;
+                  @include s.absoluteCenter;
+                  width: 8%;
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                  }
+                }
+
+                & > .end {
+                  @include s.flexRow;
+                  flex: 1;
+
+                  & > .info {
+                    @include s.flexColumn;
+                    @include s.absoluteCenter;
+                    padding: 5px 10px;
+                    flex: 1;
+
+                    & > span {
+                      @include s.Roboto-Regular;
+                      @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen);
+                      text-align: center;
+                    }
+
+                    & > label {
+                      @include s.Roboto-Regular;
+                      @include s.escaledFontFormat(s.$textSize13to14, regular, s.$pqBlack2);
+                      text-align: center;
+                    }
+                  }
+
+                  & > .filter {
+                    @include s.flexRow;
+                    align-items: center;
+                    flex: 1;
+                    justify-content: center;
+                    padding: 0 5px;
+
+                    & > label {
+                      @include s.flexRow;
+                      @include s.Roboto-Regular;
+                      @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                      flex: none;
+
+                      & > img {
+                        cursor: pointer;
+                        padding-left: 10px;
+                        max-width: 23px;
+                      }
+                    }
+                  }
+                }
+              }
+
+              & > .secundary {
+                @include s.flexColumn;
+                background-color: s.$pqGray5;
+                max-height: 217px;
+                padding: 20px 40px;
+
+                & > .items {
+                  @include s.flexRow;
+                  border-bottom: 1px solid s.$pqPlaceholder;
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqPlaceholder);
+                    padding-left: 40px;
+                  }
+                }
+
+                & > .list-items {
+                  @include s.flexColumn;
+                  padding: 0 40px;
+                  border-bottom: 1px solid s.$pqPlaceholder;
+                  overflow-y: auto;
+
+                  & > .item {
+                    @include s.flexRow;
+                    justify-content: space-between;
+                    padding: 10px 0;
+                    border-bottom: 1px solid s.$pqGray;
+
+                    & > .content {
+                      @include s.flexRow;
+                      flex: 0 0 auto;
+
+                      & > label {
+                        @include s.flexRow;
+                        @include s.Roboto-Regular;
+                        @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                        align-items: center;
+
+                        & > .green {
+                          color: s.$pqGreen;
+                        }
+
+                        & > .black {
+                          @include s.Roboto-Bold;
+                        }
+                      }
+                    }
+
+                    & > label {
+                      @include s.Roboto-Regular;
+                      @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen);
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    & > footer {
+      @include s.flexRow;
+      @include s.absoluteCenter;
+      border-top: 2px solid s.$pqBlack2;
+      height: 50px;
+
+      & > .content {
+        @include s.flexRow;
+        @include s.absoluteCenter;
+
+        & > label {
+          @include s.absoluteCenter;
+          @include s.flexRow;
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize13to14, regular, s.$pqBlack2);
+          padding: 0 20px;
+
+          & > span {
+            @include s.Roboto-Bold;
+          }
+
+          & > img {
+            margin-right: 6px;
+          }
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .content {
+        & > .table-container {
+          & > .header {
+            & > .index {
+            }
+
+            & > .icons {
+              width: 120px;
+            }
+
+            //& > .icons {
+            //  max-width: 115px;
+            //}
+          }
+
+          & > .body {
+            & > virtual-scroller {
+              .item {
+                & > .principal {
+                  & > .icons {
+                    & > .ico1 {
+                      & > img {
+                        max-width: 20px;
+                      }
+                    }
+
+                    & > .ico2 {
+                      & > img {
+                        max-width: 15px;
+                      }
+                    }
+
+                    & > .ico3 {
+                      & > img {
+                        height: 17px;
+                      }
+                    }
+                  }
+
+                  & > .end {
+                    & > .filter {
+                      & > label {
+                        & > img {
+                          max-width: 30px;
+                        }
+                      }
+                    }
+                  }
+                }
+
+                & > .secundary {
+                  max-height: 252px;
+
+                  & > .list-items {
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

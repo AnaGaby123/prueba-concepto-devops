@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width='16px' height='16px' viewBox='0 0 16 16' version='1.1' xmlns='http://www.w3.org/2000/svg'
+     xmlns:xlink='http://www.w3.org/1999/xlink'>
+  <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+  <title>Group 8</title>
+  <desc>Created with Sketch.</desc>
+  <defs>
+    <polygon id='path-1' points='0.0004 0.0001 16 0.0001 16 16 0.0004 16'></polygon>
+  </defs>
+  <g id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'>
+    <g id='3' transform='translate(-605.000000, -1008.000000)'>
+      <g id='Group-8' transform='translate(605.000000, 1008.000000)'>
+        <g id='Group-3'>
+          <mask id='mask-2' fill='white'>
+            <use xlink:href='#path-1'></use>
+          </mask>
+          <g id='Clip-2'></g>
+          <path
+            d='M16.0004,8.0001 C16.0004,12.4181 12.4184,16.0001 8.0004,16.0001 C3.5814,16.0001 0.0004,12.4181 0.0004,8.0001 C0.0004,3.5821 3.5814,0.0001 8.0004,0.0001 C12.4184,0.0001 16.0004,3.5821 16.0004,8.0001'
+            id='Fill-1' fill='#008996' mask='url(#mask-2)'></path>
+        </g>
+        <path
+          d='M15.0004,8.0001 C15.0004,11.8661 11.8654,15.0001 8.0004,15.0001 C4.1344,15.0001 1.0004,11.8661 1.0004,8.0001 C1.0004,4.1341 4.1344,1.0001 8.0004,1.0001 C11.8654,1.0001 15.0004,4.1341 15.0004,8.0001'
+          id='Fill-4' fill='#FFFFFF'></path>
+        <polygon id='Fill-6' fill='#008996'
+                 points='8.1645 7.9679 8.1645 3.8179 7.0315 3.8179 7.0315 7.9679 7.0265 7.9679 7.0265 8.8259 12.0355 8.8259 12.0355 7.9679'></polygon>
+      </g>
+    </g>
+  </g>
+</svg>

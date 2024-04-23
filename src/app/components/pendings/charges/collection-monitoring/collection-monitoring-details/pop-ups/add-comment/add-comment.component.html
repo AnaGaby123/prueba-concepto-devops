@@ -1,0 +1,56 @@
+<app-pop-up-generic
+  [titleHeader]="'common.comments' | translate"
+  [width]="viewType === 'macBookAir' ? '864px' : '620px'"
+  [height]="viewType === 'macBookAir' ? '720px' : '561px'"
+>
+  <div class="pop-up-content">
+    <div class="top">
+      <div class="image">
+        <img src="assets/Images/clientes/logo_proquifa_hover.svg" alt="" />
+      </div>
+      <div class="details">
+        <div class="name">
+          <label>{{ selectedClient?.NombreCliente }}</label>
+        </div>
+        <div class="invoice">
+          <label
+            ><span>{{ 'common.invoice' | translate }} {{ invoice.FolioFactura }} ·</span> {{ 'P.I' }}
+            {{ invoice.PedidoInterno }}</label
+          >
+        </div>
+        <div class="date">
+          <label>{{ 'FF' }}: {{ invoice.FechaCertificacionSat | dateFormatSlashShort }}</label>
+          <label>·</label>
+          <label>{{ 'FEP' }}: {{ invoice.FechaPromesaPagoMonitoreoCobros | dateFormatSlashShort }}</label>
+          <label>·</label>
+          <img *ngIf="invoice.EnTiempoVerde" src="assets/Images/labels/en-tiempo.svg" alt="in time" />
+          <img *ngIf="invoice.VencidaAmarillo" src="assets/Images/labels/overdue.svg" alt="overdue" />
+          <img *ngIf="invoice.VencidaNaranja" src="assets/Images/labels/overdue-orange.svg" alt="overdue" />
+          <img *ngIf="invoice.VencidaRojo" src="assets/Images/labels/overdue-red.svg" alt="overdue" />
+          <img *ngIf="invoice.Morosa" src="assets/Images/labels/defaulting.svg" alt="overdue" />
+        </div>
+      </div>
+      <div class="amount">
+        <div class="number">
+          <label>{{ invoice.MontoPendiente | currency: 'MXN':'symbol-narrow':'1.2-2' }} {{ 'USD' }}</label>
+        </div>
+        <div class="text">
+          <label>{{ 'common.amount' | translate }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="center">
+      <label>{{ 'common.comments' | translate }}</label>
+      <app-generic-text-area
+        [height]="viewType === 'macBookAir' ? '300px' : '240px'"
+        [value]="invoice?.comments"
+        (emitData)="setComment($event)"
+      >
+      </app-generic-text-area>
+    </div>
+    <div class="bottom">
+      <button (click)="save(false)">{{ 'common.cancel' | translate }}</button>
+      <button (click)="save(true)">{{ 'common.accept' | translate }}</button>
+    </div>
+  </div>
+</app-pop-up-generic>

@@ -1,0 +1,51 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  & > .provider-contacts-container {
+    @include s.absolute100;
+    @include s.flexColumn;
+
+    & > .title {
+      border-bottom: 1px solid;
+      padding: 0 0 8px 0;
+
+      & > label {
+        @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+        @include s.Novecento-Bold;
+      }
+    }
+
+    & > .contacts-list {
+      @include s.flexColumn;
+      flex: 1 1 auto;
+
+      & > .virtual-scroller {
+        @include s.fixVirtualScroller;
+        @include s.absolute100;
+        flex: 1 1 auto;
+
+        & ::ng-deep .scrollable-content {
+          @include s.itemsCardWithGrid(345px, s.$contactItemHeightSizeMap);
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .title {
+        padding: 0 0 10px 0;
+      }
+
+      & > .contacts-list {
+        & > .virtual-scroller {
+          & ::ng-deep .scrollable-content {
+            @include s.itemsCardWithGrid(440px, s.$contactItemHeightSizeMap);
+          }
+        }
+      }
+    }
+  }
+}

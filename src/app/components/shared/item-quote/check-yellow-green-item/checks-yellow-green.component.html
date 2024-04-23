@@ -1,0 +1,18 @@
+<div class="checks-container">
+  <img
+    #imageElementExclamation
+    alt=""
+    *ngIf="columnOptions?.value || columnOptions?.value === null || columnOptions?.value === false"
+    [src]="'assets/Images/purchase-promise/exclamation.svg'"
+    [ngClass]="columnOptions?.value || columnOptions?.value === null ? 'img-opacity' : ''"
+    (click)="handleCheck($event, imageElementExclamation, false, nameActionsInternalSalesItem.CheckBoxYellowGreenAction)"
+  />
+  <img
+    #imageElementActive
+    alt=""
+    *ngIf="columnOptions?.value || columnOptions?.value === null || columnOptions?.value === false"
+    [ngClass]="!columnOptions?.value || columnOptions?.value === null ? 'img-opacity' : ''"
+    [src]="'assets/Images/pre-processing/active.svg'"
+    (click)="handleCheck($event, imageElementActive, true, nameActionsInternalSalesItem.CheckBoxYellowGreenAction)"
+  />
+</div>

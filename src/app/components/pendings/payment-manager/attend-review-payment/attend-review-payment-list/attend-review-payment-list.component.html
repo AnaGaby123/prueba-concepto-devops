@@ -1,0 +1,95 @@
+<div class="dashboard-container" id="attend-review-payment-list">
+  <div class="left-container">
+    <label class="title"> {{ 'attendReview.payments' | translate }}</label>
+    <div class="tabs">
+      <app-tabs [options]="tabOptions" [tapSelected]="tapSelected"></app-tabs>
+    </div>
+    <div class="filters">
+      <div class="filter-by-type">
+        <app-hamburger-menu [options]="filterOptions" [value]="'desc'"></app-hamburger-menu>
+      </div>
+      <div class="filter-by-date">
+        <app-search [placeholder]="'common.providers' | translate"></app-search>
+      </div>
+    </div>
+    <div class="list-container">
+      <virtual-scroller>
+        <div class="provider" (click)="setProvider()">
+          <div class="index">
+            <label># {{ 1 }}</label>
+          </div>
+          <div>
+            <div class="name">
+              <label>{{ 'FEUM' }}</label>
+            </div>
+            <div class="total-value">
+              <div class="image">
+                <img alt="directos" src="assets/Images/labels/directos.svg" />
+              </div>
+              <label
+                >{{ 'common.totalValue' | translate }} {{ (5500 | currency: 'USD':'symbol-narrow':'0.2-4') + ' USD' }}</label
+              >
+            </div>
+            <div class="invoice">
+              <label>{{ 5 }} {{ 'common.invoices' | translate }}</label>
+            </div>
+            <div class="paymentDate">
+              <label>{{ 'attendReview.paymentDate' | translate }} : {{ '30/Junio/2021' }}</label>
+            </div>
+          </div>
+          <div class="arrow">
+            <img alt="arrow" src="assets/Images/arrows/arrow_right.svg" />
+          </div>
+        </div>
+        <div class="provider">
+          <div class="index">
+            <label># {{ 1 }}</label>
+          </div>
+          <div>
+            <div class="name">
+              <label>{{ 'FEUM' }}</label>
+            </div>
+            <div class="total-value">
+              <div class="image">
+                <img alt="indirectos" src="assets/Images/labels/indirectos.svg" />
+              </div>
+              <label
+                >{{ 'common.totalValue' | translate }} {{ (5500 | currency: 'USD':'symbol-narrow':'0.2-4') + ' USD' }}</label
+              >
+            </div>
+            <div class="invoice">
+              <label>{{ 5 }} {{ 'common.invoices' | translate }}</label>
+            </div>
+            <div class="paymentDate">
+              <label>{{ 'attendReview.paymentDate' | translate }} : {{ '30/Junio/2021' }}</label>
+            </div>
+          </div>
+          <div class="arrow">
+            <img alt="arrow" src="assets/Images/arrows/arrow_right.svg" />
+          </div>
+        </div>
+      </virtual-scroller>
+      <div class="without-results" *ngIf="false">
+        <app-without-results></app-without-results>
+      </div>
+      <div class="loader" *ngIf="false">
+        <app-loading></app-loading>
+      </div>
+    </div>
+    <div class="footer">
+      <label># {{ 30 }}</label>
+      <label>{{ 34 }} {{ 'common.invoices' | translate }}</label>
+      <label>{{ 'common.totalValue' | translate }} : {{ (85000 | currency: 'USD':'symbol-narrow':'0.2-4') + ' USD' }}</label>
+    </div>
+  </div>
+
+  <div class="right-container">
+    <ng-container *ngIf="true">
+      <app-doughnut-chart [title]="'processPurchase.providers' | translate" [typeChart]="1" [titleDetails]="'Totales'">
+      </app-doughnut-chart>
+      <app-bar-chart [title]="'REVISIONES'"></app-bar-chart>
+      <app-bar-chart [title]="'TIPOS DE PAGOS'"></app-bar-chart>
+    </ng-container>
+    <app-loading class="loading" *ngIf="false"></app-loading>
+  </div>
+</div>

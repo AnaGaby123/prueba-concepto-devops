@@ -1,0 +1,17 @@
+<div
+  class="chip"
+  *ngFor="let chip of dataChips"
+  [ngClass]="{'chip-disable': chip.disable}"
+  [style.background]="chip.active ? chip.color : chip.disable ? disabledColor : chip.colorDefault"
+  [style.color]="chip.active ? fontColorActive : fontColorDefault"
+  (click)="changeActive(chip)"
+  (mouseenter)="changeBackground($event, chip)"
+  (mouseleave)="changeBackground($event, chip)"
+>
+  <span class="circle"></span>
+  <label>{{ chip.label }}</label>
+  <label>{{ separator }}</label>
+  <label *ngIf="totalsIsAmount">{{ chip.total | currency: 'USD':'symbol':'1.2-2' }} {{ currency }}</label>
+  <label *ngIf="!totalsIsAmount">{{ chip.total }}</label>
+  <label *ngIf="chip.totalLabel" class="space">{{ chip.totalLabel }}</label>
+</div>

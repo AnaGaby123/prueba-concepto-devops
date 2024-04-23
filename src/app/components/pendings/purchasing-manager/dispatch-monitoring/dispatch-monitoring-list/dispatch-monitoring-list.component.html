@@ -1,0 +1,136 @@
+<div class="dashboard-container" id="dispatch-monitoring-list-container">
+  <div class="left-container">
+    <label class="title">{{ 'common.providers' | translate }}</label>
+    <div class="filters">
+      <div class="filter-by-menu">
+        <app-hamburger-menu
+          [options]="sortList$ | async"
+          [value]="(sortOption$ | async).value"
+          (valueEmit)="setOptionSort($event)"
+        >
+        </app-hamburger-menu>
+      </div>
+      <div class="filter-by-search">
+        <app-search
+          [placeholder]="'Proveedor, Número de Guía'"
+          [searchTerm]="searchTerm$ | async"
+          (textSearch)="handleKeySearch($event)"
+        >
+        </app-search>
+      </div>
+    </div>
+    <div class="list-container">
+      <virtual-scroller
+        *ngIf="(providersStatus$ | async) === 3 && !lodashIsEmpty(providers$ | async)"
+        [items]="providers$ | async"
+        (vsUpdate)="providersScroll = $event"
+      >
+        <div class="item" *ngFor="let provider of providersScroll" (click)="setProvider(provider)">
+          <div class="index">
+            <label>{{ '#' + provider.Index }}</label>
+          </div>
+          <div>
+            <div class="name">
+              <label>{{ provider.NombreProveedor }}</label>
+            </div>
+            <div class="classification">
+              <label>{{ provider.Guias }} {{ 'registerArrival.guides' | translate }}</label>
+              <label> · </label>
+              <label>{{ provider.MontoTotal | currency: 'USD':'symbol-narrow':'0.2-4' }}</label>
+            </div>
+            <div class="cant">
+              <label>{{ provider.NumeroDePiezas }} {{ 'common.pieces' | translate }}</label>
+              <label> · </label>
+              <label>{{ provider.Productos }} {{ 'common.products' | translate }}</label>
+            </div>
+            <div class="last-file">
+              <div class="days">
+                <label class="day">3 + {{ 'common.days' | translate }}: </label>
+                <label class="result">{{ provider.GuiasAMasDe3Dias }}</label>
+                <label class="day">3 {{ 'common.days' | translate }}: </label>
+                <label class="result">{{ provider.GuiasA3Dias }}</label>
+                <label class="day">2 {{ 'common.days' | translate }}: </label>
+                <label class="result">{{ provider.GuiasA2Dias }}</label>
+                <label class="day">1 {{ 'common.day' | translate }}: </label>
+                <label class="result">{{ provider.GuiasA1Dia }}</label>
+              </div>
+              <div class="date">
+                <label
+                  class="fee"
+                  [ngClass]="
+                    provider.EnTiempo === true
+                      ? 'green'
+                      : provider.Urgente === true
+                      ? 'yellow'
+                      : provider.FueraDeTiempo === true
+                      ? 'red'
+                      : 'green'
+                  "
+                  >FEE+: {{ provider.FechaEstimadaDeEntrega | dateFormatSlashShort }}</label
+                >
+              </div>
+            </div>
+          </div>
+          <div class="arrow">
+            <img alt="arrow" src="assets/Images/arrows/arrow_right.svg" />
+          </div>
+        </div>
+      </virtual-scroller>
+      <div class="without-results" *ngIf="(providersStatus$ | async) !== 1 && lodashIsEmpty(providers$ | async)">
+        <app-without-results [title]="'Sin resultados'"></app-without-results>
+      </div>
+      <div class="loader" *ngIf="(providersStatus$ | async) === 1">
+        <app-loading></app-loading>
+      </div>
+    </div>
+    <div class="footer">
+      <label>{{ '#' + ((totals$ | async).totalResults | number: '1.0-0') }}</label>
+      <label>{{ (totals$ | async).oc }}{{ ' OC' }}</label>
+      <label>{{
+        ((totals$ | async).products | number: '1.0-0') +
+          ' ' +
+          (true ? ('common.products' | translate) : ('common.product' | translate))
+      }}</label>
+      <label>{{
+        ((totals$ | async).pieces | number: '1.0-0') +
+          ' ' +
+          (true ? ('common.pieces' | translate) : ('common.piece' | translate))
+      }}</label>
+      <label
+        >{{ 'common.totalAmount' | translate }}
+        {{ (totals$ | async).TotalAmount | currency: 'USD':'symbol-narrow':'2.2-4' }}
+      </label>
+    </div>
+  </div>
+  <div class="right-container">
+    <ng-container *ngIf="true">
+      <app-doughnut-chart
+        *ngIf="(dataChartStatus$ | async) === 3"
+        [data]="donutChartData$ | async"
+        [fontSize]="'small'"
+        [optionDetailsHover]="donutChartDetailsHover$ | async"
+        [optionDetails]="donutChartDetails$ | async"
+        [titleDetails]="'Totales'"
+        [title]="'processPurchase.providers' | translate"
+        [typeChart]="1"
+      >
+      </app-doughnut-chart>
+      <app-bar-chart
+        *ngIf="(dataChartStatus$ | async) === 3"
+        [fontColorBottom]="'#008894'"
+        [textDataLabel]="'registerArrival.guides' | translate"
+        [title]="'registerConfirmation.referenceTime' | translate"
+        [values]="valuesBarChartTime$ | async"
+      >
+      </app-bar-chart>
+      <app-bar-chart
+        *ngIf="(dataChartStatus$ | async) === 3"
+        [textDataLabel]="'registerArrival.guides' | translate"
+        [title]="'registerConfirmation.deliveryTrafficLight' | translate"
+        [values]="valuesBarChartDelivery$ | async"
+      >
+      </app-bar-chart>
+    </ng-container>
+    <app-loading class="loading" *ngIf="(dataChartStatus$ | async) === 1"></app-loading>
+  </div>
+</div>

@@ -1,0 +1,159 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  & > .custom-agent-cost {
+    @include s.flexColumn;
+    align-items: center;
+
+    & > h4 {
+      @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqGreen);
+      @include s.Novecento-Bold;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+
+    & > .grid-drops {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(auto, auto));
+      grid-gap: 20px 30px;
+      margin-bottom: 40px;
+
+      & > .drop-container {
+        @include s.flexColumn;
+        align-items: center;
+        flex-wrap: nowrap;
+        grid-column: span 2;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+          @include s.Roboto-Bold;
+          white-space: pre;
+
+          &.green {
+            @include s.Roboto-Regular;
+            color: s.$pqGreen;
+            margin-top: 4px;
+          }
+        }
+      }
+
+      & > .input-container {
+        @include s.flexColumn;
+        align-items: center;
+        flex-wrap: nowrap;
+        grid-column: span 2;
+
+        &.first {
+          grid-area: 2/2/3/4;
+        }
+
+        &.center {
+          grid-area: 2/3/3/5;
+        }
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+          @include s.Roboto-Bold;
+          white-space: pre;
+
+          &.green {
+            @include s.Roboto-Regular;
+            color: s.$pqGreen;
+            margin-top: 4px;
+          }
+        }
+      }
+    }
+
+    & > .grid-inputs {
+      display: grid;
+      grid-template-areas:
+        'area1 area2 area3 area4'
+        'area5 area6 area7 area8'
+        '. area9 area10 .';
+      grid-gap: 20px 30px;
+      justify-items: end;
+
+      & > .input-container {
+        @include s.flexColumn;
+        align-items: center;
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        width: 85px;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+          @include s.Roboto-Bold;
+          text-align: end;
+
+          &.green {
+            @include s.Roboto-Regular;
+            color: s.$pqGreen;
+            margin-top: 4px;
+          }
+        }
+
+        &.area9 {
+          grid-area: area9;
+        }
+
+        &.area10 {
+          grid-area: area10;
+        }
+
+        &.big {
+          width: 140px;
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .grid-drops {
+        grid-template-columns: repeat(4, minmax(auto, auto));
+
+        & > .drop-container {
+          &.last {
+            /*            grid-area: 2/2/3/4;*/
+          }
+
+          & > .drop-list {
+            margin-left: 9px;
+          }
+        }
+
+        & > .input-container {
+          &.first {
+            grid-area: 3/1/3/3;
+          }
+
+          & > .input {
+            margin: 0 9px;
+            width: 100px;
+          }
+        }
+      }
+
+      & > .grid-inputs {
+        grid-template-columns: repeat(3, 140px);
+        grid-template-areas:
+          'area1 area2 area3 '
+          'area4 area5 area6 '
+          'area7 area8 area9 '
+          '. area10 .';
+        justify-items: center;
+
+        & > .input-container {
+          justify-content: flex-start;
+
+          & > label {
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
+}

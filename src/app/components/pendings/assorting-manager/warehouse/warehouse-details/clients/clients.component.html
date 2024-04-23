@@ -1,0 +1,34 @@
+<div id="clients">
+  <div class="top">
+    <label>{{ 'common.clients' | translate }}</label>
+    <div>
+      <app-search [placeholder]="'common.clients' | translate"></app-search>
+    </div>
+  </div>
+  <div class="cards">
+    <div>
+      <virtual-scroller [items]="clients">
+        <div *ngFor="let cliente of clients; let i = index" class="client" (click)="seeClient()">
+          <div class="centerPagination">
+            <img alt="pqf-default" [src]="'assets/Images/clientes/logo_proquifa_default.svg'" />
+            <img alt="pqf-hover" [src]="'assets/Images/clientes/logo_proquifa_hover.svg'" />
+          </div>
+          <div class="footContent">
+            <span>{{ cliente.client }}</span>
+            <label
+              >{{ '1' }} {{ 1 === 1 ? ('common.piece' | translate) : ('common.pieces' | translate) }} · {{ '6' }}
+              {{ 'changeNotices.affectedPi' | translate }}</label
+            >
+            <label class="colors">
+              <span class="red">P1 · {{ '17' }}</span>
+              <span class="yellow">P2 · {{ '17' }}</span>
+              <span class="green">P3 · {{ '17' }}</span>
+            </label>
+          </div>
+          <div class="rightSeparator" [ngStyle]="{display: (i + 1) % totalColumn === 0 ? 'none' : 'block'}"></div>
+          <div class="downSeparator"></div>
+        </div>
+      </virtual-scroller>
+    </div>
+  </div>
+</div>

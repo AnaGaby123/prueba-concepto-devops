@@ -1,0 +1,142 @@
+<div id="shipping-console-list">
+  <div class="content">
+    <div class="top-container">
+      <div class="filters">
+        <div class="hamburger">
+          <div>
+            <app-hamburger-menu
+              [options]="options"
+              [value]="options[0].value"
+              (valueEmit)="selectFilterByPriority($event)"
+            ></app-hamburger-menu>
+          </div>
+        </div>
+        <div class="search">
+          <div>
+            <app-search
+              placeholder="Cliente, Contacto, Packing List"
+              [searchTerm]="''"
+              (textSearch)="handleKeySearch($event)"
+            ></app-search>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="table-container">
+      <div class="header">
+        <div class="index">
+          <label>#</label>
+        </div>
+        <div class="icons"></div>
+        <div class="priority">
+          <label>#{{ 'priorityConsole.priority' | translate }}</label>
+        </div>
+        <div class="client">
+          <label>{{ 'common.client' | translate }}</label>
+        </div>
+        <div class="zone">
+          <label>{{ 'priorityConsole.zone' | translate }}</label>
+        </div>
+        <div class="contact">
+          <label>{{ 'priorityConsole.contact' | translate }}</label>
+        </div>
+        <div class="FEE">
+          <label>{{ 'FEE' }}</label>
+        </div>
+        <div class="remainingDays">
+          <label>{{ 'priorityConsole.residuaryDays' | translate }}</label>
+        </div>
+        <div class="end"></div>
+      </div>
+      <div class="body">
+        <virtual-scroller>
+          <div class="item">
+            <div class="principal">
+              <div class="selector"></div>
+              <div class="index">
+                <label>{{ 1 }}</label>
+              </div>
+              <div class="icons">
+                <div><img src="assets/Images/labels/pausar.svg" alt="pause" /></div>
+              </div>
+              <div class="priority">
+                <label>{{ 73 }}</label>
+              </div>
+              <div class="client">
+                <label>{{ 'BEST' }}</label>
+              </div>
+              <div class="zone">
+                <span>{{ 'SUR' }}</span>
+                <label>{{ 'MUNICIPIO LIBRE # 199, COLONIA PORTALES C.P 03330' }}</label>
+              </div>
+              <div class="contact">
+                <span>{{ 'ALFREDO CANO' }}</span>
+                <label>{{ 'SUPERVISOR' }}</label>
+              </div>
+              <div class="FEE">
+                <label>{{ '02/Febrero/2022' }}</label>
+              </div>
+              <div class="remainingDays">
+                <label>{{ 20 }}</label></div
+              >
+              <div class="end">
+                <div class="info">
+                  <label>{{ '1 PL' }}</label>
+                </div>
+                <div class="filter">
+                  <label
+                    >{{ 'Por enviar' }}<img *ngIf="false" alt="down-arrow" src="assets/Images/arrows/flecha_abajo.svg" />
+                    <img *ngIf="true" alt="up-arrow" src="assets/Images/arrows/flecha_arriba.svg"
+                  /></label>
+                </div>
+              </div>
+            </div>
+            <div class="secundary">
+              <div class="items">
+                <label>{{ 'planDispatchDetails.packingList' | translate }}</label>
+              </div>
+              <div class="list-items">
+                <div class="item">
+                  <div class="content">
+                    <label>{{ 1 }} ·</label>
+                    <label>{{ 'PL-122921-6220' }}</label>
+                  </div>
+                </div>
+                <div class="item">
+                  <div class="content">
+                    <label>{{ 2 }} ·</label>
+                    <label>{{ 'PL-122921-6220' }}</label>
+                  </div>
+                </div>
+                <div class="item">
+                  <div class="content">
+                    <label>{{ 3 }} ·</label>
+                    <label>{{ 'PL-122921-6220' }}</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </virtual-scroller>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="content">
+      <label
+        ><img src="assets/Images/labels/reanudar.svg" alt="resume-shipping" />
+        {{ 'shippingConsole.resumeShipping' | translate }}</label
+      >
+      <label
+        ><img src="assets/Images/labels/pausar.svg" alt="pause-sending" />
+        {{ 'shippingConsole.pauseSending' | translate }}</label
+      >
+      <label
+        ><span>{{ 'FEE' }}: </span> {{ 'shippingConsole.FEE' | translate }}</label
+      >
+      <label
+        ><span>{{ 'PL' }}: </span> {{ 'shippingConsole.packingList' | translate }}</label
+      >
+    </div>
+  </footer>
+</div>

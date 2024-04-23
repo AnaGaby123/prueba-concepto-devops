@@ -1,0 +1,196 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.flexColumn;
+
+  & .product-item {
+    @include s.flexRow;
+    @include s.default-transition($property: background-color, $duration: 0.2s);
+    border-bottom: 1px solid s.$pqGray2;
+    cursor: pointer;
+    flex: 0 0 100%;
+
+    &.selected {
+      & > .select-indicator {
+        background-color: s.$pqGreen;
+      }
+    }
+
+    & * {
+      cursor: pointer;
+    }
+
+    &:hover {
+      background-color: s.$pqGray2;
+    }
+
+    & > .select-indicator {
+      flex-basis: 8px;
+      flex-shrink: 0;
+      width: 8px;
+    }
+
+    & > .item-content {
+      flex-basis: 100%;
+      padding: 7px;
+
+      & > .title {
+        @include s.multiLineTextTruncateSinHeight($lines: 2, $lineHeight: 1em);
+        margin-bottom: 3px;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize14to16, bold, s.$pqBlack2);
+          @include s.Roboto-Bold;
+
+          & > span {
+            color: s.$pqGreen;
+            vertical-align: baseline;
+          }
+        }
+      }
+
+      & > .subtitle {
+        @include s.flexRow;
+        @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+        @include s.Roboto-Bold;
+        justify-content: flex-end;
+        padding: 2px 0;
+        transition: ease-in-out 1s;
+
+        & > label {
+          color: s.$pqGreen;
+          & > span {
+            color: s.$pqBlack2;
+            vertical-align: center;
+            padding-left: 5px;
+          }
+        }
+      }
+
+      & > .prices {
+        display: flex;
+        justify-content: center;
+        margin-top: 5px;
+        position: relative;
+
+        & > label {
+          @include s.Roboto-Bold;
+          @include s.escaledFontFormat(s.$textSize10to12, bold, s.$pqBlack2);
+
+          & > .black {
+            @include s.Roboto-Regular;
+            vertical-align: baseline;
+          }
+
+          & > .red {
+            @include s.Roboto-Regular;
+            color: s.$pqRed2;
+            vertical-align: baseline;
+          }
+
+          & > .green {
+            @include s.Roboto-Regular;
+            color: s.$pqGreen3;
+            vertical-align: baseline;
+          }
+        }
+
+        & > .marker {
+          position: absolute;
+          left: 0;
+          top: -4px;
+
+          & > img {
+            height: 13px;
+            width: 13px;
+          }
+
+          & > label {
+            $textSize: (
+              'base': 9px,
+              'macBookAir': 10px,
+            );
+            @include s.escaledFontFormat($textSize, bold, s.$pqOrange4);
+          }
+        }
+      }
+
+      & > .utilities {
+        display: grid;
+        grid-template-columns: repeat(2, auto);
+        grid-template-rows: repeat(5, auto);
+        grid-column-gap: 8px;
+
+        & > .utility-item {
+          display: grid;
+          grid-template-columns: 25px 3px 1fr 3px 1fr;
+          grid-column-gap: 3px;
+          cursor: pointer;
+          padding: 1px 0;
+          margin-bottom: 3px;
+
+          &:nth-child(odd) {
+            grid-template-columns: 19px 3px 1fr 3px 1fr;
+          }
+
+          & > p {
+            @include s.escaledFontFormat(s.$textSize9to11, regular, s.$pqBlack2);
+            @include s.Roboto-Regular;
+          }
+
+          & > .income-level {
+            @include s.Roboto-Bold;
+            text-align: end;
+          }
+
+          & > .separator {
+            text-align: center;
+          }
+
+          & > .value {
+            text-align: center;
+          }
+
+          & > .percentage {
+            color: s.$pqGreen2;
+            text-align: start;
+          }
+
+          & > .negative {
+            color: s.$pqDanger;
+          }
+        }
+      }
+
+      & > .has-config-indicator {
+        & > img {
+          height: 12px;
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .item-content {
+        & > .utilities {
+          & > .utility-item {
+            grid-template-columns: 29px 3px 1fr 3px 1fr;
+
+            &:nth-child(odd) {
+              grid-template-columns: 22px 3px 1fr 3px 1fr;
+            }
+          }
+        }
+
+        & > .has-config-indicator {
+          & > img {
+            height: 13px;
+          }
+        }
+      }
+    }
+  }
+}

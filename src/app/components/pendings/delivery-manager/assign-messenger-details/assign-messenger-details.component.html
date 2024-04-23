@@ -1,0 +1,224 @@
+<div id="assign-messenger-details">
+  <div class="content">
+    <div class="messengers">
+      <div
+        *ngFor="let messenger of messengers"
+        [id]="'id' + messenger.id"
+        class="messengerDetails"
+        cdkDropList
+        cdkDropListSortingDisabled
+        [cdkDropListData]="messenger.assigned"
+        (cdkDropListDropped)="dropItem($event)"
+        (click)="selected(messenger.id)"
+      >
+        <div class="container">
+          <div class="name">
+            <label>{{ messenger.name }} </label>
+            <span class="circle" [style.background]="color[messenger.id]"></span>
+          </div>
+
+          <div class="routes">
+            <label
+              >{{ 'Zona: ' }}<span>{{ messenger.zone }}</span></label
+            >
+            <label
+              >{{ 'Ruta: ' }}<span>{{ messenger.rute }}</span>
+            </label>
+          </div>
+          <div class="totals">
+            <label
+              >{{ '#Total Clientes: ' }}<span>{{ messenger.totalClients }}</span>
+            </label>
+            <label
+              >{{ '#Total Eventos: ' }}<span>{{ messenger.totalEvents }}</span>
+            </label>
+            <label
+              ><img src="assets/Images/entrega.svg" /> <span>{{ messenger.totalClients }}</span></label
+            >
+          </div>
+          <div class="totalAmount">
+            <label
+              >{{ 'Monto Total: ' }}<span>{{ messenger.totalAmount }}</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="list">
+        <div class="list-content">
+          <div class="header-list">
+            <div class="name">
+              <label
+                ><span>{{ 'Ruta' }}:</span> {{ messengers[value].name }}
+              </label>
+            </div>
+            <div class="info">
+              <label
+                >{{ 'Origen:' }}<span> {{ 'José María Morelos 164, Niño Jesús, 14080 Ciudad de México, CDMX' }}</span>
+              </label>
+              <div class="time">
+                <label><img src="assets/Images/reloj-ocean.svg" /> TET: 0 min</label>
+              </div>
+            </div>
+          </div>
+          <virtual-scroller
+            class="body-list"
+            [items]="plItems"
+            cdkDropList
+            cdkDropListSortingDisabled
+            [cdkDropListData]="plItems"
+            [cdkDropListConnectedTo]="messengersIndex"
+            [cdkDropListEnterPredicate]="noReturnPredicate"
+          >
+            <div class="item" *ngFor="let pl of plItems" cdkDrag>
+              <div class="index">
+                <label># {{ pl.id }} ·</label>
+              </div>
+              <div class="content">
+                <div class="client">
+                  <label> {{ pl.client }}</label>
+                </div>
+                <label>{{ 'Zona' }}: {{ pl.zone }}</label>
+                <label>{{ pl.dir }}</label>
+                <label
+                  ><span>{{ 'FEE+ ' }}</span> {{ pl.fee }}</label
+                >
+                <label
+                  ><span>{{ 'Horario Cliente: ' }}{{ pl.clientDate }}</span></label
+                >
+                <div class="events">
+                  <label (click)="activePopUp = !activePopUp"
+                    >{{ pl.events }} {{ 'Eventos' }} - <span>{{ pl.events }}</span> <img src="assets/Images/entrega.svg"
+                  /></label>
+                </div>
+                <div class="mount">
+                  <label>{{ 'Monto: ' }}{{ pl.amount }}</label>
+                </div>
+              </div>
+            </div>
+          </virtual-scroller>
+          <div class="footer-list">
+            <label
+              ><span>{{ 'assignMessenger.store' | translate }}</span></label
+            >
+            <label
+              ><span>{{ 'common.clients' | translate }}</span
+              >: {{ 0 }} · <span>{{ 'strategy.details.deliveries' | translate }}</span
+              >: {{ 0 }}</label
+            >
+          </div>
+        </div>
+      </div>
+      <div class="map">
+        <div class="map-container"></div>
+        <div class="footer">
+          <label>* Si no se publican los cambios antes de las 18:00 el sistema lo hará en automático</label>
+          <button>{{ 'Guardar' }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div>
+      <label
+        ><span>{{ 'TEE:' }}</span> {{ 'Tiempo estimado de evento' }}</label
+      >
+      <label
+        ><span>{{ 'TET:' }}</span> {{ 'Tiempo estimado de traslado' }}</label
+      >
+      <label
+        ><span class="red">{{ 'P1:' }}</span> {{ 'Prioridad 1' }}</label
+      >
+      <label
+        ><span class="yellow">{{ 'P2:' }}</span> {{ 'Prioridad 2' }}</label
+      >
+      <label
+        ><span class="green">{{ 'P3:' }}</span> {{ 'Prioridad 3' }}</label
+      >
+      <label><img src="assets/Images/entrega.svg" alt="" /> {{ 'Entrega' }}</label>
+      <label><img src="assets/Images/cobro.svg" /> {{ 'Cobro' }}</label>
+      <label><img src="assets/Images/revision.svg" /> {{ 'Revision' }}</label>
+      <label><img src="assets/Images/e_especial_verde.svg" /> {{ 'Entrega Especial' }}</label>
+      <label><img src="assets/Images/R_material_verde.svg" /> {{ 'Recolección de material' }}</label>
+    </div>
+  </footer>
+</div>
+<app-pop-up-generic
+  *ngIf="activePopUp"
+  [titleHeader]="'EVENTOS'"
+  [activeButtons]="true"
+  [onlyOneButton]="true"
+  [width]="(viewType$ | async) === 'iPad' ? '650px' : '750px'"
+  [height]="(viewType$ | async) === 'iPad' ? '630px' : '730px'"
+  (evento)="activePopUp = !activePopUp"
+>
+  <div class="pop-up-content">
+    <div class="header">
+      <div class="title">
+        <label>{{ 'SIN ASIGNAR' }}</label>
+      </div>
+      <div class="client">
+        <label
+          ><span>{{ 'common.client' | translate }}: </span>{{ 'NOVAG' }}
+        </label>
+      </div>
+      <div class="zone">
+        <label
+          ><span>{{ 'checkout.zone' | translate }}: </span>{{ 'SUR' }} ·
+        </label>
+        <label
+          ><span>{{ 'checkout.route' | translate }}: </span>{{ 'N/D' }}</label
+        >
+        <div class="events">
+          <label
+            >{{ 1 }} {{ 'manageBackOrder.events' | translate }}: <span>{{ 1 }} </span></label
+          >
+          <img src="assets/Images/entrega.svg" />
+        </div>
+      </div>
+      <div class="totalAmount">
+        <label
+          ><span>{{ 'common.totalAmount' | translate }}:</span>{{ 15654 }}</label
+        >
+      </div>
+    </div>
+    <div class="body">
+      <div class="title">
+        <img src="assets/Images/entrega.svg" />
+        <label>{{ 'strategy.details.delivery' | translate }}</label>
+      </div>
+      <div class="body">
+        <div class="item-pop">
+          <div class="pl">
+            <div class="index">
+              <label>#{{ 1 }} · {{ 'PL - 122821 - 6194' }}</label>
+            </div>
+            <div class="fee">
+              <label><span>FEE+</span> {{ '07/01/2022' }}</label>
+            </div>
+          </div>
+          <div class="list">
+            <label>#{{ 1 }} · {{ 100180 }}</label>
+          </div>
+        </div>
+        <div class="item-pop">
+          <div class="pl">
+            <div class="index">
+              <label>#{{ 1 }} · {{ 'PL - 122821 - 6194' }}</label>
+            </div>
+            <div class="fee">
+              <label><span>FEE+</span> {{ '07/01/2022' }}</label>
+            </div>
+          </div>
+          <div class="list">
+            <label>#{{ 1 }} · {{ 100180 }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <label>#{{ 4 }} {{ 'Eventos' }}</label>
+    </div>
+  </div>
+</app-pop-up-generic>

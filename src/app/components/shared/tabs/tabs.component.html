@@ -1,0 +1,41 @@
+<div class="tabsContainer">
+  <div
+    *ngFor="let option of options; index as i"
+    #tabItem
+    class="tab"
+    [style.width]="with"
+    [ngClass]="{active: tapSelected && option.id === tapSelected.id, disable: option.disable}"
+    (mouseenter)="onMouseEnter(tabItem, option.id)"
+    (mouseleave)="onMouseLeave(option.id)"
+    (click)="!option.disable && handleSelectOption(option, $event)"
+  >
+    <a [id]="'option_' + option.id">
+      <div>
+        <div class="indicators" *ngIf="!lodashIsEmpty(option.indicators)">
+          <img
+            [alt]="indicator.name"
+            *ngFor="let indicator of option.indicators; let i = index"
+            [src]="'assets/Images/quotation/' + indicator.color + '.svg'"
+            [style.z-index]="i"
+          />
+        </div>
+        <label class="title" [ngClass]="{titleCustom: option.activeSubtitle}"
+          >{{ option.label }}<span *ngIf="containIndex">{{ option.total }}</span
+          ><sup *ngIf="enableSup">{{ ' ' + option.supValue }}</sup></label
+        >
+      </div>
+      <div *ngIf="option.activeSubtitle">
+        <div class="indicators" *ngIf="!lodashIsEmpty(option.indicators)">
+          <img
+            [alt]="indicator.name"
+            *ngFor="let indicator of option.indicators; let i = index"
+            [src]="'assets/Images/quotation/' + indicator.color + '.svg'"
+            [style.z-index]="i"
+          />
+        </div>
+        <label class="subtitle">{{ option.totalSubtitle + ' ' + option.labelSubtitle }}</label>
+      </div>
+      <label class="tooltip-text">{{ option.label }}</label>
+    </a>
+  </div>
+</div>

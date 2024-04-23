@@ -1,0 +1,700 @@
+@use 'base' as s;
+
+:host {
+  @include s.absolute100;
+
+  & * {
+    box-sizing: border-box;
+  }
+
+  & > #shipping-details-container {
+    @include s.absolute100;
+    @include s.flexColumn;
+    overflow: hidden;
+
+    & > .main {
+      @include s.flexRowNoWrap;
+      border-bottom: 1px solid s.$pqGray3;
+      flex: 0 0 auto;
+      margin: 0 20px;
+      padding: 30px 0;
+      overflow: hidden;
+
+      & > div {
+        @include s.flexColumn;
+
+        & > .title {
+          @include s.escaledFontFormat(s.$textSize17to22, bold, s.$pqGreen);
+          @include s.Novecento-Bold;
+          margin-bottom: 4px;
+        }
+      }
+
+      & > .packing-list-info {
+        border-right: 1px solid s.$pqGray3;
+        margin-right: 30px;
+        padding-right: 30px;
+        flex: 0 0 auto;
+
+        & > .info {
+          @include s.escaledFontFormat(s.$textSize14to18, bold, s.$pqBlack2);
+          @include s.Roboto-Regular;
+          margin-bottom: 4px;
+        }
+
+        & > .location {
+          @include s.flexRowNoWrap;
+          padding-top: 15px;
+          align-items: center;
+
+          & > img {
+            width: 14px;
+          }
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize14to18, bold, s.$pqBlack2);
+            @include s.Roboto-Regular;
+            padding-left: 9px;
+          }
+        }
+      }
+
+      & > .working-progress {
+        border-right: 1px solid s.$pqGray3;
+        flex: 1 1 auto;
+        margin-right: 30px;
+        padding-right: 30px;
+
+        & > .data {
+          @include s.flexRowNoWrap;
+          justify-content: space-between;
+          margin-bottom: 8px;
+
+          & > .message {
+            flex: 1 1 auto;
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize14to18, bold, s.$pqBlack2);
+              @include s.Roboto-Regular-Italic;
+              font-style: italic;
+            }
+          }
+
+          & > .hour {
+            @include s.flexRowNoWrap;
+            flex: 0 0 auto;
+            align-items: center;
+
+            & > img {
+              margin-right: 10px;
+              width: 25px;
+            }
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize25to30, bold, s.$pqBlack2);
+              @include s.Roboto-Bold;
+            }
+          }
+        }
+
+        & > .progress-bar {
+          @include s.flexColumn;
+          @include s.absoluteCenter;
+          background-color: s.$grayBackground;
+          margin-bottom: 8px;
+          padding: 20px 0;
+          position: relative;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize20to25, bold, s.$grayText);
+            @include s.Roboto-Bold;
+            z-index: 3;
+          }
+
+          & > .bar {
+            background-color: s.$pqGreen;
+            height: 100%;
+            left: 0;
+            position: absolute;
+            top: 0;
+            width: 40%;
+          }
+        }
+
+        & > .totals {
+          @include s.flexRowNoWrap;
+          justify-content: space-between;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+            @include s.Roboto-Bold;
+          }
+        }
+      }
+
+      & > .packing-priority {
+        flex: 0 0 auto;
+
+        & > .priorities {
+          @include s.flexRowNoWrap;
+          flex: 1 1 auto;
+
+          & > div {
+            @include s.flexColumn;
+            padding: 10px;
+
+            & > .title {
+              @include s.escaledFontFormat(s.$textSize15to20, bold, s.$pqWhite);
+              @include s.Roboto-Bold;
+              margin-bottom: 3px;
+            }
+
+            & > .info {
+              @include s.escaledFontFormat(s.$textSize11to13, bold, s.$pqWhite);
+              @include s.Roboto-Regular;
+              margin-bottom: 2px;
+            }
+          }
+
+          & > .p1 {
+            background-color: s.$redPriority;
+            flex: 1 1 auto;
+            margin-right: 3px;
+          }
+
+          & > .p2 {
+            background-color: s.$yellowPriority;
+            flex: 0 0 auto;
+          }
+        }
+      }
+    }
+
+    & > .shipping-data {
+      @include s.flexRowNoWrap;
+      border-bottom: 1px solid s.$pqGray3;
+      flex: 0 0 auto;
+      margin: 0 20px;
+      overflow: hidden;
+      padding: 15px 0;
+
+      & > div {
+        flex: 0 0 50%;
+      }
+
+      & > .destiny {
+        @include s.flexColumn;
+        padding-right: 10px;
+
+        & > .form {
+          & > .subtituloPeque {
+            @include s.flexRow;
+            @include s.escaledFontFormat(s.$textSize15to18, bold, s.$pqBlack2);
+            @include s.Roboto-Bold;
+            padding-top: 10px;
+          }
+
+          & > .rowFormulario {
+            @include s.flexRow;
+            justify-content: space-between;
+            padding-top: 10px;
+            align-items: center;
+
+            & > .datosForm {
+              @include s.flexRow;
+              align-items: center;
+              z-index: 3;
+
+              & > .estiloLabelData {
+                @include s.escaledFontFormat(s.$textSize13to15, regular, s.$pqBlack2);
+                @include s.Roboto-Regular;
+                margin-right: 10px;
+              }
+
+              & > .estiloLabelsContacto {
+                @include s.escaledFontFormat(s.$textSize13to15, light, s.$pqBlack2);
+                @include s.Roboto-Light;
+                margin-right: 10px;
+              }
+            }
+          }
+
+          & > .archivo {
+            @include s.flexRow;
+            justify-content: space-between;
+            padding-top: 10px;
+            padding-bottom: 20px;
+
+            & > .datosForm {
+              @include s.flexRow;
+              align-items: center;
+
+              & > .estiloLabelData {
+                @include s.escaledFontFormat(s.$textSize13to15, regular, s.$pqBlack2);
+                @include s.Roboto-Regular;
+                margin-right: 10px;
+              }
+
+              & > .estiloLabelsContacto {
+                @include s.escaledFontFormat(s.$textSize13to15, light, s.$pqBlack2);
+                @include s.Roboto-Light;
+                margin-right: 10px;
+              }
+
+              & > #EstiloCargarArchivo {
+                @include s.escaledFontFormat(s.$textSize12to14, light, s.$pqGray3);
+                @include s.Roboto-Light;
+                padding-left: 0;
+                max-width: 350px;
+              }
+            }
+          }
+        }
+
+        & > .shipping-comment {
+          @include s.flexRowNoWrap;
+
+          & > .text-area {
+            flex: 1 1 auto;
+          }
+
+          & > .inputs {
+            flex: 0 0 auto;
+          }
+
+          & > div {
+            & > .subtituloPeque {
+              @include s.flexRow;
+              @include s.escaledFontFormat(s.$textSize15to18, bold, s.$pqBlack2);
+              @include s.Roboto-Bold;
+              padding-top: 10px;
+            }
+
+            & > div {
+              & > .estiloLabelData {
+                @include s.escaledFontFormat(s.$textSize13to15, regular, s.$pqBlack2);
+                @include s.Roboto-Regular;
+                margin-right: 10px;
+              }
+            }
+
+            & > .datosPaq {
+              @include s.flexRow;
+              justify-content: space-between;
+              padding-top: 10px;
+              flex-wrap: wrap;
+              position: relative;
+              z-index: 1;
+
+              & > div {
+                @include s.flexRowNoWrap;
+                align-items: center;
+
+                & > .estiloLabelData {
+                  @include s.escaledFontFormat(s.$textSize12to13, regular, s.$pqBlack2);
+                  @include s.Roboto-Regular;
+                  margin-right: 8px;
+                }
+
+                & > .input {
+                  margin-right: 5px;
+                  width: 55px;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      & > .contact {
+        @include s.flexColumn;
+        padding-left: 10px;
+
+        & > .contacto {
+          @include s.flexColumn;
+          width: 100%;
+          box-sizing: border-box;
+          padding-right: 15px;
+
+          & > div {
+            & > .subtituloPeque {
+              @include s.flexRow;
+              @include s.escaledFontFormat(s.$textSize15to18, bold, s.$pqBlack2);
+              @include s.Roboto-Bold;
+              padding-top: 10px;
+            }
+
+            & > .rowFormulario {
+              @include s.flexRow;
+              justify-content: space-between;
+              padding-top: 10px;
+              align-items: center;
+
+              & > .datosForm {
+                @include s.flexRow;
+                align-items: center;
+
+                & > .estiloLabelData {
+                  @include s.escaledFontFormat(s.$textSize12to13, regular, s.$pqBlack2);
+                  @include s.Roboto-Regular;
+                  margin-right: 10px;
+                }
+
+                & > .estiloLabelsContacto {
+                  @include s.escaledFontFormat(s.$textSize13to15, light, s.$pqBlack2);
+                  @include s.Roboto-Light;
+                  margin-right: 10px;
+                }
+              }
+            }
+
+            & > .archivo {
+              @include s.flexRow;
+              justify-content: space-between;
+              padding-top: 10px;
+              padding-bottom: 20px;
+
+              & > .datosForm {
+                @include s.flexRow;
+                align-items: center;
+
+                & > .estiloLabelData {
+                  @include s.escaledFontFormat(s.$textSize12to13, regular, s.$pqBlack2);
+                  @include s.Roboto-Regular;
+                  margin-right: 10px;
+                }
+
+                & > .estiloLabelsContacto {
+                  @include s.escaledFontFormat(s.$textSize13to15, light, s.$pqBlack2);
+                  @include s.Roboto-Light;
+                  margin-right: 10px;
+                }
+
+                & > #EstiloCargarArchivo {
+                  @include s.escaledFontFormat(s.$textSize12to14, light, s.$pqGray3);
+                  @include s.Roboto-Light;
+                  padding-left: 0;
+                  max-width: 350px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    & > .packing-list {
+      @include s.flexRowNoWrap;
+      flex: 1 1 auto;
+      padding: 0 20px;
+
+      & > .content {
+        @include s.flexColumn;
+        border-right: 1px solid s.$pqGray3;
+        flex: 0 0 300px;
+        margin-top: 20px;
+        padding: 0 20px 0 0;
+        overflow: hidden;
+
+        & > label:nth-of-type(1) {
+          @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqGreen);
+          @include s.Novecento-Bold;
+          flex: 0 0 auto;
+          padding-bottom: 15px;
+          border-bottom: 1px solid s.$pqBlack2;
+        }
+
+        & > .container-content {
+          @include s.flexColumn;
+          border-bottom: 1px solid s.$pqBlack2;
+          flex: 1 1 auto;
+          overflow: hidden;
+
+          & > virtual-scroller {
+            @include s.absolute100;
+
+            & .card {
+              @include s.flexColumn;
+              padding: 10px 15px;
+              border-left: 8px solid transparent;
+              border-bottom: 1px solid s.$pqGray2;
+
+              &:hover {
+                background-color: s.$pqGray;
+              }
+
+              &.active {
+                background-color: s.$pqGray;
+                border-left: 8px solid s.$pqGreen;
+              }
+
+              & > .card-body {
+                @include s.flexColumn;
+
+                & > .numPacking_list {
+                  @include s.escaledFontFormat(s.$textSize16to20, bold, s.$pqBlack2);
+                  @include s.Roboto-Bold;
+                  padding-bottom: 5px;
+
+                  & > .nombrePacking_list {
+                    color: s.$pqGreen;
+                    vertical-align: baseline;
+                    padding-bottom: 15px;
+                  }
+                }
+
+                & > .piezasPacking_llist {
+                  @include s.escaledFontFormat(s.$textSize16to20, regular, s.$pqBlack2);
+                  @include s.Roboto-Regular;
+                  padding-bottom: 5px;
+                }
+
+                & > div {
+                  .p1,
+                  .p2,
+                  .p3 {
+                    @include s.escaledFontFormat(s.$textSize16to20, bold, s.$pqBlack2);
+                    @include s.Roboto-Bold;
+                    margin-right: 10px;
+                  }
+
+                  .p1 {
+                    color: s.$redPriority;
+                  }
+
+                  .p2 {
+                    color: #eeb253;
+                  }
+
+                  .p3 {
+                    color: #63b236;
+                  }
+                }
+              }
+            }
+          }
+
+          & > .is-loading,
+          .without-results {
+            @include s.flexRowNoWrap;
+            @include s.absoluteCenter;
+            @include s.absolute100;
+          }
+        }
+
+        & > .totals {
+          @include s.flexColumn;
+          align-items: center;
+          flex: 0 0 55px;
+          padding-top: 10px;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+            @include s.Roboto-Regular;
+          }
+        }
+      }
+
+      & > .second-section {
+        @include s.flexColumn;
+        flex: 1 1 auto;
+        margin: 20px 0 0 20px;
+        position: relative;
+        overflow: hidden;
+
+        & > .escanearCodigos {
+          @include s.flexColumn;
+          border-bottom: 1px solid s.$pqBlack2;
+          flex: 1 1 auto;
+          position: relative;
+
+          & > .tituloColectar {
+            @include s.flexColumn;
+
+            & > .tituloColectarElem {
+              @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqGreen);
+              @include s.Novecento-Bold;
+              padding-bottom: 15px;
+            }
+
+            & > .estiloNombreSeleccioncliente {
+              @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqGreen);
+              @include s.Novecento-Bold;
+              text-align: left;
+              line-height: 30px;
+            }
+          }
+
+          & > .elementosItems {
+            @include s.flexRowWrap;
+
+            & > .textArea {
+              width: 100%;
+              z-index: 1;
+              opacity: 0;
+              bottom: 0;
+              top: 0;
+              position: absolute;
+            }
+
+            & > .seccionUno {
+              @include s.flexRow;
+              justify-content: space-between;
+              padding-bottom: 30px;
+              padding-top: 30px;
+              margin-right: 10px;
+              height: 260px;
+              box-sizing: border-box;
+
+              & > .contenedorTarjeta {
+                height: 100%;
+
+                & > .imagenTarjeta {
+                  @include s.flexColumn;
+                  justify-content: space-between;
+                  border: 1px solid #d8d8d8;
+                  align-items: center;
+                  max-width: 181px;
+                  max-height: 208px;
+                  min-height: 208px;
+                  box-sizing: border-box;
+
+                  & > .estiloTipoElemento {
+                    @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqGreen);
+                    @include s.Novecento-Bold;
+                    text-align: center;
+                    padding-top: 10px;
+                    padding-bottom: 15px;
+                  }
+
+                  & > .divColectarElementos {
+                    @include s.flexColumn;
+                    opacity: 0.94;
+                    background: #008895;
+                    width: 181px;
+                    height: 63px;
+                    padding: 5px 0px;
+                    border: 1px solid #d8d8d8;
+                    justify-content: space-around;
+
+                    & > .labelcolectarElementos {
+                      @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqWhite);
+                      @include s.Roboto-Regular;
+                      text-align: center;
+                    }
+                  }
+
+                  & > .img {
+                    width: 68px;
+                    height: 74px;
+                  }
+                }
+
+                & > .escanear {
+                  @include s.flexRow;
+                  @include s.Roboto-Regular;
+                  justify-content: center;
+                  align-content: stretch;
+                  align-items: center;
+                  text-align: center;
+                  height: 30px;
+                  width: 100%;
+                  margin-top: 22px;
+                  position: relative;
+
+                  & > .imgEscanear {
+                    position: absolute;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        & > .button {
+          @include s.flexRow;
+          align-items: center;
+          justify-content: flex-end;
+          flex: 0 0 55px;
+
+          & > button {
+            &.active {
+              @include s.pqButton();
+            }
+
+            &.active {
+              @include s.pqButtonDisable();
+            }
+          }
+        }
+      }
+    }
+
+    & > .footer {
+      @include s.flexRowNoWrap;
+      @include s.absoluteCenter;
+      border-top: 2px solid s.$pqBlack2;
+      flex: 0 0 50px;
+
+      & > .Ambiente,
+      & > .Congelación,
+      & > .Prioridad1,
+      & > .Prioridad2,
+      & > .Prioridad3,
+      & > .Refrigeración {
+        @include s.flexRow;
+        @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+        @include s.Roboto-Regular;
+        flex: 0 1 auto;
+        align-self: center;
+        justify-content: center;
+        align-items: center;
+        margin-left: 0.7%;
+        margin-right: 0.7%;
+
+        & > .p1,
+        & > .p2,
+        & > .p3 {
+          @include s.Roboto-Bold;
+          margin-right: 10px;
+        }
+
+        & > .p1 {
+          color: s.$redPriority;
+        }
+
+        & > .p2 {
+          color: #eeb253;
+        }
+
+        & > .p3 {
+          color: #63b236;
+        }
+
+        & > img {
+          margin-right: 4px;
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .packing-list {
+        & > .content {
+          & > .totals {
+            flex: 0 0 69px;
+          }
+        }
+
+        & > .second-section {
+          & > .button {
+            flex: 0 0 69px;
+          }
+        }
+      }
+
+      & > .footer {
+        flex: 0 0 55px;
+      }
+    }
+  }
+}

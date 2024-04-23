@@ -1,0 +1,230 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  & > #barcode {
+    @include s.flexColumn;
+    @include s.absolute100;
+    justify-content: flex-start;
+    overflow: hidden;
+
+    & > .container-component {
+      @include s.flexRow;
+      flex: 1 1 auto;
+      overflow: hidden;
+
+      & > .first-section {
+        @include s.flexColumn;
+        @include s.default-transition;
+        flex: 0 0 440px;
+        position: relative;
+
+        &::before {
+          content: '';
+          width: 1px;
+          height: 100%;
+          background-color: s.$pqGray2;
+          position: absolute;
+          top: 0;
+          right: 0;
+        }
+
+        & > .content {
+          @include s.flexColumn;
+          flex: 1 1 auto;
+          height: calc(100% - 45px);
+
+          & > label:nth-of-type(1) {
+            @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+            @include s.Novecento-Bold;
+            padding: 15px 0 15px 15px;
+          }
+
+          & > .container-filters {
+            @include s.flexRowNoWrap;
+            align-items: center;
+            justify-content: space-between;
+            margin: 0 15px;
+            padding-bottom: 20px;
+          }
+
+          & > .container-content {
+            @include s.flexColumn;
+            height: 100%;
+
+            & #all-cards {
+              height: 100%;
+              margin: 0 15px;
+            }
+
+            & > virtual-scroller {
+              * {
+                cursor: pointer;
+              }
+
+              & .card:hover {
+                background-color: s.$pqGray;
+              }
+
+              & .active {
+                background-color: s.$pqGray;
+                border-left: 8px solid s.$pqGreen !important;
+              }
+
+              & .card {
+                @include s.flexColumn;
+                padding: 15px 0;
+                border-left: 8px solid transparent;
+                border-bottom: 1px solid s.$pqGray2;
+
+                & > .card-body {
+                  @include s.flexColumn;
+                  @include s.absolute100;
+                  padding-left: 10px;
+                  justify-content: center;
+
+                  & > .div {
+                    @include s.flexRowNoWrap;
+                    @include s.absoluteTop;
+                    @include s.absolute100;
+                    box-sizing: border-box;
+                    justify-content: flex-start;
+                  }
+
+                  & > .line-one {
+                    padding-bottom: 5px;
+
+                    & > label {
+                      @include s.escaledFontFormat(s.$textSize16to20, bold, s.$pqBlack2);
+                      @include s.Roboto-Bold;
+                      margin-top: 2px;
+                    }
+
+                    & > label:nth-of-type(2) {
+                      color: s.$pqGreen !important;
+                    }
+
+                    & > label:nth-of-type(2),
+                    label:nth-of-type(3) {
+                      padding-left: 4px;
+                    }
+                  }
+
+                  & > .line-two {
+                    padding-bottom: 4px;
+
+                    & > label {
+                      @include s.escaledFontFormat(s.$textSize16to20, normal, s.$pqBlack2);
+                      @include s.Roboto-Regular;
+                      margin-top: 2px;
+                    }
+                  }
+
+                  & > .line-three {
+                    & > label {
+                      @include s.escaledFontFormat(s.$textSize14to18, normal, s.$pqBlack2);
+                      @include s.Roboto-Regular;
+                      margin-top: 2px;
+                    }
+
+                    & > label:nth-of-type(1) {
+                      color: s.$pqGreen !important;
+                    }
+
+                    & > label:nth-of-type(2) {
+                      padding-left: 3px;
+                    }
+                  }
+                }
+              }
+            }
+
+            & > .is-loading {
+              @include s.flexRowNoWrap;
+              @include s.absoluteCenter;
+              width: 100%;
+              height: 100%;
+            }
+
+            & > .without-results {
+              @include s.flexRowNoWrap;
+              @include s.absoluteCenter;
+              width: 100%;
+              height: 100%;
+            }
+          }
+        }
+
+        & > .footer {
+          @include s.flexRowNoWrap;
+          height: 45px;
+          justify-content: center;
+          margin: 0 15px;
+          border-top: 1px solid s.$pqBlack2;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize12to14, normal, s.$pqBlack2);
+            @include s.Roboto-Regular;
+            padding-top: 10px;
+          }
+        }
+      }
+
+      & > .second-section {
+        @include s.flexColumn;
+        @include s.absoluteCenter;
+        flex: 1 1 auto;
+        overflow: hidden;
+        padding: 0 50px 150px 50px;
+
+        & > input {
+          opacity: 0;
+          position: absolute;
+        }
+
+        & > .code {
+          padding-bottom: 40px;
+        }
+
+        & > .texts {
+          @include s.flexColumn;
+          @include s.absoluteCenter;
+
+          & > label:nth-of-type(1) {
+            @include s.escaledFontFormat(s.$textSize60to70, bold, s.$pqBlack2);
+            @include s.Roboto-Bold;
+            text-align: center;
+          }
+
+          & > label:nth-of-type(2) {
+            @include s.escaledFontFormat(s.$textSize60to70, normal, s.$pqGreen);
+            @include s.Roboto-Regular;
+          }
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #barcode {
+      & > .container-component {
+        & > .first-section {
+          flex: 0 0 470px;
+
+          & > .content {
+            height: calc(100% - 58px);
+          }
+
+          & > .footer {
+            height: 58px;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,33 @@
+<div id="edit-batch">
+  <div class="content">
+    <div class="information">
+      <div class="title">
+        <label>{{ 'inspector.batchInformation' | translate }}</label>
+      </div>
+      <div class="content">
+        <div class="batch">
+          <app-generic-input [label]="'inspector.batch' | translate"></app-generic-input>
+        </div>
+        <div class="expiation">
+          <app-drop-down-list [label]="'inspector.expiration' | translate"></app-drop-down-list>
+        </div>
+        <div class="year">
+          <app-drop-down-list></app-drop-down-list>
+        </div>
+      </div>
+    </div>
+    <div class="documentation">
+      <div class="title">
+        <app-check-box [label]="'No aplica documentación'" [labelFontStyle]="'labelRobotoBold21Black21'"></app-check-box>
+      </div>
+      <div class="content">
+        <div class="certificate">
+          <app-generic-input-file [label]="'Certificado'"></app-generic-input-file>
+        </div>
+        <div class="safetySheet">
+          <app-generic-input-file [label]="'Hoja de seguridad'"></app-generic-input-file>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

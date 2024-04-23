@@ -1,0 +1,18 @@
+<div class="item">
+  <div class="number">
+    <label>#{{ item.Index }}</label>
+  </div>
+  <div class="content">
+    <label class="title">{{ item.Nombre }}</label>
+    <div class="totals">
+      <label *ngIf="item.NumeroConOrdenDeCompra > 0">{{ item.NumeroConOrdenDeCompra }} OC </label>
+      <label *ngIf="item.NumeroSinOrdenDeCompra > 0 && item.NumeroConOrdenDeCompra > 0">·</label>
+      <label class="sin-oc" *ngIf="item.NumeroSinOrdenDeCompra > 0"> {{ item.NumeroSinOrdenDeCompra }} Sin OC</label>
+      <label>·</label>
+      <label>VT {{ item.TotalUSD | currency }} USD</label>
+    </div>
+  </div>
+  <div class="arrow">
+    <img alt="Detalles" src="assets/Images/arrows/arrow_right.svg" />
+  </div>
+</div>

@@ -1,0 +1,11 @@
+<section id="not-processed-details">
+  <div class="list-purchase-order">
+    <app-order-list></app-order-list>
+  </div>
+  <div class="request-not-processed">
+    <app-request-not-processed [isOpen]="requestIsOpen" (handleIsOpen)="handleRequest()"></app-request-not-processed>
+  </div>
+  <div class="order-items" [ngClass]="{closeOptions: !requestIsOpen, openOptions: requestIsOpen}">
+    <app-purchase-order-items></app-purchase-order-items>
+  </div>
+</section>

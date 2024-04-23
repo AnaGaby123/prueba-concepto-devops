@@ -1,0 +1,208 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100();
+  position: relative;
+
+  #request-quotation-container {
+    @include s.flexRowNoWrap();
+    background-color: s.$pqGray2;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.4s ease-in-out;
+    width: auto;
+
+    &.hide {
+      width: 0;
+    }
+
+    &.show {
+      width: 205px;
+    }
+
+    & > .content {
+      @include s.flexColumn();
+      min-width: 205px;
+      overflow: hidden;
+      padding: 18px 20px;
+      position: relative;
+      width: auto;
+
+      & > .info {
+        @include s.flexColumn();
+        flex: 1 1 auto;
+        overflow: hidden;
+
+        & > .title {
+          @include s.flexRow();
+          border-bottom: 1px solid s.$pqBlack2;
+          padding-bottom: 13px;
+          margin-bottom: 15px;
+
+          & > label {
+            @include s.responsive-font-format(
+              $font-family: s.$font_family_novecento_bold,
+              $font-size-map: s.$responsive-font-17-21
+            );
+          }
+        }
+
+        & > .folio {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_roboto_bold,
+            $font-weight: s.$font-weight_bold,
+            $font-size-map: s.$responsive-font-14-16,
+            $color: s.$pqGreen
+          );
+        }
+
+        & > .sender {
+          @include s.responsive-font-format(
+            $color: s.$pqBlack2,
+            $font-size-map: s.$responsive-font-14-16,
+            $font-weight: s.$font-weight_bold,
+            $font-family: s.$font-family_roboto_bold
+          );
+          white-space: pre-wrap;
+          word-break: break-word;
+        }
+
+        & > .subject {
+          @include s.responsive-font-format($font-size-map: s.$responsive-font-14-16);
+          margin-bottom: 26px;
+        }
+
+        & > .message {
+          @include s.flexColumn;
+          flex: 1 1 auto;
+          overflow-y: auto;
+          overflow-x: hidden;
+
+          & > label {
+            @include s.responsive-font-format($font-size-map: s.$responsive-font-14-16);
+            white-space: pre-wrap;
+            word-break: break-word;
+          }
+        }
+      }
+
+      & > .files {
+        @include s.flexColumn();
+        border-top: 1px solid s.$pqBlack2;
+        flex: 0 0 50px;
+        margin-top: 10px;
+        overflow-y: auto;
+        padding-top: 10px;
+        row-gap: 8px;
+
+        & > .file {
+          @include s.flexRowNoWrap();
+          align-items: center;
+          column-gap: 5px;
+          flex-shrink: 0;
+          overflow: hidden;
+
+          & > .index {
+            @include s.responsive-font-format(
+              $font-family: s.$font_family_novecento_bold,
+              $font-weight: s.$font-weight-bold,
+              $font-size-map: s.$responsive-font-13-16,
+              $color: s.$pqGreen
+            );
+          }
+
+          & > img {
+            height: 15px;
+          }
+
+          & > .btn {
+            @include s.responsive-font-format(
+              $font-family: s.$font_family_roboto_bold,
+              $font-weight: s.$font-weight-bold,
+              $font-size-map: s.$responsive-font-12-14-b
+            );
+            @include s.multiLineTextTruncateSinHeight(1, 14px);
+            cursor: pointer;
+            word-break: break-all;
+
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+      }
+
+      & > .under-construction {
+        @include s.gridCenter;
+      }
+    }
+  }
+
+  .arrow {
+    width: 16px;
+    height: 21px;
+    cursor: pointer;
+    position: absolute;
+    top: calc(50% + 42px);
+    z-index: 3;
+
+    & > img {
+      height: 21px;
+      opacity: 1;
+      transform: scaleX(1);
+      transition: transform 0.8s ease-in-out;
+      width: 16px;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+
+    & > .reverse {
+      transform: scaleX(-1);
+    }
+  }
+
+  @include s.media-query(s.$standard) {
+    #request-quotation-container {
+      & > .content {
+        padding: 18px 23px;
+        min-width: 320px;
+
+        & > .files {
+          & > .file {
+            & > img {
+              height: 21px;
+            }
+
+            & > .btn {
+              @include s.multiLineTextTruncateSinHeight(1, 16px);
+            }
+          }
+        }
+      }
+
+      &.show {
+        width: 320px;
+      }
+    }
+    .arrow {
+      height: 32px;
+      width: 23px;
+
+      & > img {
+        height: 32px;
+        width: 23px;
+      }
+
+      & > .reverse {
+        width: 32px;
+      }
+    }
+  }
+}

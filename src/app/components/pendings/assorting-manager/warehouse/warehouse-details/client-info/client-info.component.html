@@ -1,0 +1,167 @@
+<div id="client-info">
+  <div class="top">
+    <img src="assets/Images/regresar.svg" alt="back" (click)="returnClientsView()" />
+    <label>{{ 'Nombre de cliente' }}</label>
+  </div>
+  <div class="client-info">
+    <div class="columns">
+      <div class="column-one">
+        <div class="title">
+          <label>{{ 'warehouse.packingList' | translate }}</label>
+        </div>
+        <div class="container-content">
+          <virtual-scroller>
+            <div class="card active">
+              <div class="card-body">
+                <label class="numPacking_list">
+                  #{{ 1 }}· <span class="nombrePacking_list"> {{ 'PL-122921-6220' }} </span></label
+                >
+                <label class="piezasPacking_llist"> {{ 4 }} {{ 'Piezas' }}</label>
+                <div>
+                  <label class="p1"> P1 · {{ 0 }} </label>
+                  <label class="p2"> P2 · {{ 1 }} </label>
+                  <label class="p3"> P3 · {{ 2 }} </label>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-body">
+                <label class="numPacking_list">
+                  #{{ 1 }}· <span class="nombrePacking_list"> {{ 'PL-122921-6220' }} </span></label
+                >
+                <label class="piezasPacking_llist"> {{ 4 }} {{ 'Piezas' }}</label>
+                <div>
+                  <label class="p1"> P1 · {{ 0 }} </label>
+                  <label class="p2"> P2 · {{ 1 }} </label>
+                  <label class="p3"> P3 · {{ 2 }} </label>
+                </div>
+              </div>
+            </div>
+          </virtual-scroller>
+        </div>
+      </div>
+      <div class="column-two">
+        <div class="codes-scan">
+          <div class="labels">
+            <div class="one">
+              <label> {{ 'warehouse.details.collectItem' | translate }} </label>
+            </div>
+            <div class="two">
+              <label> {{ 'PL-122921-6220' }}</label>
+            </div>
+          </div>
+          <div class="cards">
+            <textarea type="text" name="firstname" autofocus="focus" #textarea class="textArea"></textarea>
+            <div class="seccionUno" [attr.id]="'div0'">
+              <div class="contenedorTarjeta">
+                <div class="imagenTarjeta">
+                  <label class="estiloTipoElemento">DOCUMENTACIÓN</label>
+                  <img class="img" src="assets/Images/bolsa_doc.svg" />
+                  <div class="divColectarElementos">
+                    <label class="labelcolectarElementos">{{ 'PL-122921-6220' }}</label>
+                    <label class="labelcolectarElementos">Sobre</label>
+                    <label class="labelcolectarElementos"></label>
+                  </div>
+                </div>
+                <div class="escanear">
+                  <div class="imgEscanear">
+                    <img alt="code-gray" src="assets/Images/codigo_gris.svg" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="seccionUno" class="seccionUno">
+              <div class="contenedorTarjeta">
+                <div class="imagenTarjeta">
+                  <label class="estiloTipoElemento"> {{ 'TRANSITO' }} </label>
+                  <img class="img" src="assets/Images/hielera_refri.svg" />
+                  <div class="divColectarElementos">
+                    <label class="labelcolectarElementos">{{ 'PL-122921-6220' }}</label>
+                    <label class="labelcolectarElementos">Sobre</label>
+                    <label class="labelcolectarElementos">4 piezas</label>
+                  </div>
+                </div>
+                <div class="escanear">
+                  <div class="imgEscanear">
+                    <img alt="code-gray" src="assets/Images/codigo_gris.svg" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- prueba-->
+        </div>
+      </div>
+      <div class="column-three">
+        <div class="title">
+          <label>{{ 'warehouse.details.runPath' | translate }}</label>
+        </div>
+        <div class="inputs-container">
+          <div>
+            <label>{{ 'warehouse.details.informationOfThePersonWhoCollects' | translate }}</label>
+          </div>
+          <div class="inputs">
+            <div class="line-one">
+              <div>
+                <label>{{ 'warehouse.details.contact' | translate }}:</label>
+              </div>
+              <div>
+                <app-generic-input [placeholder]="''"></app-generic-input>
+              </div>
+            </div>
+            <div class="line-two">
+              <div>
+                <label>{{ 'warehouse.details.tel' | translate }}:</label>
+              </div>
+              <div>
+                <app-generic-input [placeholder]="''"></app-generic-input>
+              </div>
+            </div>
+            <div class="line-three">
+              <div>
+                <label>{{ 'warehouse.details.position' | translate }}:</label>
+              </div>
+              <div>
+                <app-generic-input [placeholder]="''"></app-generic-input>
+              </div>
+            </div>
+            <div class="line-four">
+              <div>
+                <label>{{ 'warehouse.details.mail' | translate }}:</label>
+              </div>
+              <div>
+                <app-generic-input [placeholder]="''"></app-generic-input>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="comments-container">
+          <div>
+            <label>{{ 'warehouse.details.deliveryComments' | translate }}</label>
+          </div>
+          <div>
+            <app-without-results [title]="'common.withoutComments' | translate"></app-without-results>
+          </div>
+        </div>
+        <div class="document-container">
+          <div>
+            <label>{{ 'warehouse.details.documentsThatItProtects' | translate }}</label>
+          </div>
+          <div>
+            <app-generic-input-file></app-generic-input-file>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <div class="totals">
+        <label>Total: 1 Packing List</label>
+      </div>
+      <div class="btn">
+        <button [ngClass]="true ? 'btn-finalize' : 'btn-finalize-disable'" [disabled]="false">
+          {{ 'common.finish' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

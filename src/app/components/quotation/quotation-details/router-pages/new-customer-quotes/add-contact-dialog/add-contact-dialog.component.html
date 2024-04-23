@@ -1,0 +1,11 @@
+<app-pop-up-generic
+  class="add-contact"
+  [activeButtons]="true"
+  [activeBtn]="(isValidFormContact$ | async) && contactErrorsForm.length === 0"
+  [height]="(viewType$ | async) === viewTypes.small ? '730px' : '800px'"
+  [width]="(viewType$ | async) === viewTypes.small ? '850px' : '930px'"
+  [titleHeader]="'quotation.details.noticeCustomer.step1.addedContact' | translate"
+  (evento)="openModal($event)"
+>
+  <app-customer-contact-quotes (contactErrors)="contactErrors($event)"></app-customer-contact-quotes>
+</app-pop-up-generic>

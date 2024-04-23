@@ -1,0 +1,51 @@
+<div class="barraActividades">
+  <div class="flechaIzq" *ngIf="showArrows">
+    <img
+      id="FlechaIzqVerde"
+      alt=""
+      [src]="
+        enableLeftArrow && selectedOption > 0
+          ? 'assets/Images/arrows/FlechaIzqVerde.svg'
+          : 'assets/Images/arrows/flechaIzquierdaCatProNormal.svg'
+      "
+      (click)="enableLeftArrow && selectedOption > 0 ? selectPreviousOption() : null"
+    />
+  </div>
+  <div class="contenido">
+    <a
+      class="elemento"
+      (click)="selectOption(i)"
+      *ngFor="let activity of options; let i = index"
+      #barItem
+      [id]="'option_' + activity.id"
+      [style.align-items]="labelsAlignment"
+    >
+      <div [ngClass]="selectedOption === i ? 'textFocus' : 'text'">
+        <label class="title" *ngIf="showIdInLabel">{{ activity.id }} · </label>
+        <label class="title" (mouseenter)="onMouseEnter(barItem, activity.id)" (mouseleave)="onMouseLeave(activity.id)">{{
+          activity.label
+        }}</label>
+        <img *ngIf="activity.image" class="icon" [src]="activity.image" alt="icon" />
+      </div>
+      <hr [ngClass]="{hrFocus: i <= selectedOption, hr: i > selectedOption, 'hr-margin-icon': activity.image}" />
+      <div *ngIf="activity.activeSubtitle">
+        <label class="subtitle">{{ activity.labelSubtitle }}</label>
+      </div>
+      <label class="tooltip-text">{{ activity.label }}</label>
+    </a>
+  </div>
+  <div
+    class="flechaDer"
+    *ngIf="showArrows"
+    [ngClass]="enableRightArrow && selectedOption < options?.length - 1 ? '' : 'disableImg'"
+  >
+    <img
+      alt=""
+      id="FlechaDerVerde"
+      [src]="
+        enableRightArrow ? 'assets/Images/arrows/FlechaDerVerde.svg' : 'assets/Images/arrows/flechaDerechaCatProNormal.svg'
+      "
+      (click)="enableRightArrow ? selectNextOption() : null"
+    />
+  </div>
+</div>

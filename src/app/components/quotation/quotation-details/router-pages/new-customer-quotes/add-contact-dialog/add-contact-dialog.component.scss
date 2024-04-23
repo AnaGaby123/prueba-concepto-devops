@@ -1,0 +1,9 @@
+.add-contact {
+  ::ng-deep .modal {
+    background: none;
+
+    & > .modal-content {
+      transition: none;
+    }
+  }
+}

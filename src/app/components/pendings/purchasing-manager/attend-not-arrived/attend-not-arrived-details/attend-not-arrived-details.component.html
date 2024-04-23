@@ -1,0 +1,405 @@
+<div id="attend-not-arrived-details">
+  <div class="content">
+    <div class="left-container">
+      <div class="title">
+        <label> {{ 'monitoringDispatch.guides' | translate }}</label>
+      </div>
+      <div class="tabs">
+        <app-tabs [options]="tabOptions$" [tapSelected]="selectedTab$"></app-tabs>
+      </div>
+      <div class="search">
+        <app-search class="search" [placeholder]="'monitoringDispatch.placeholder' | translate"></app-search>
+      </div>
+      <div class="list-container">
+        <virtual-scroller class="virtual">
+          <div class="item" [ngClass]="'active'">
+            <div class="select" *ngIf="true"></div>
+            <div class="left">
+              <label
+                ># {{ 1 }} · <span>{{ 'monitoringDispatch.guide' | translate }} {{ '3454-4565' }} · </span
+                >{{ 'Fletera' }}</label
+              >
+              <label
+                >{{ 199 }} {{ 'common.pzas' | translate }} ·
+                {{ 94 }}
+                {{ 'common.products' | translate }} · {{ 17520 | currency: 'USD':'symbol-narrow':'1.2-2' }}</label
+              >
+            </div>
+            <div class="right">
+              <label *ngIf="true" class="ocean">{{ 'registerConfirmation.threeMoreDays' | translate }}</label>
+              <label class="ocean" *ngIf="false">{{ 'registerConfirmation.threeDays' | translate }}</label>
+              <label class="ocean" *ngIf="false">{{ 'registerConfirmation.twoDays' | translate }}</label>
+              <label class="ocean" *ngIf="false">{{ 'registerConfirmation.oneDay' | translate }}</label>
+              <label class="fee" [ngClass]="'green'">{{ 'FEE+: ' }}{{ '10/Junio/2022' }}</label>
+              <!--              <label
+                class="fee"
+                [ngClass]="
+                  guide.EnTiempo === true
+                    ? 'green'
+                    : guide.Urgente === true
+                    ? 'yellow'
+                    : guide.FueraDeTiempo === true
+                    ? 'red'
+                    : 'green'
+                "
+              >{{ 'FEE+: ' }}{{ guide.FechaEstimadaDeEntrega | dateFormatSlashShort }}</label
+              >-->
+            </div>
+          </div>
+        </virtual-scroller>
+        <div class="loading" *ngIf="false">
+          <app-loading></app-loading>
+        </div>
+        <div class="loading" *ngIf="false">
+          <app-without-results></app-without-results>
+        </div>
+      </div>
+      <div class="totals">
+        <label>#{{ 10 }}</label>
+        <label>{{ 230 }} {{ 'common.pieces' | translate }}</label>
+        <label>{{ 600 }} {{ 'common.products' | translate }}</label>
+        <label>{{ 'common.totalAmount' | translate }} {{ 17520 | currency: 'USD':'symbol-narrow':'1.2-2' }} USD</label>
+      </div>
+    </div>
+    <div class="right-container">
+      <div class="title">
+        <label
+          >#{{ 1 }} ·
+          <span class="aqua">{{ 'monitoringDispatch.guide' | translate }} {{ 'Guía 92323-93248' }} · </span>
+          {{ 'nombre de Fletera' }}
+          <span class="red">{{ '· FEA: 10 / Junio / 2022 ' }} {{ '- 3 Días de retraso' }}</span>
+        </label>
+      </div>
+      <div class="provider" [ngClass]="false ? 'one' : 'two'">
+        <div>
+          <app-provider-contacts></app-provider-contacts>
+        </div>
+        <div class="history" *ngIf="true">
+          <label>{{ 'monitoringDispatch.seeHistory' | translate }}</label>
+        </div>
+      </div>
+      <div class="progress">
+        <div class="progress-title">
+          <label>{{ 'monitoringDispatch.arrivedItems' | translate }}</label
+          ><span> {{ '· 0 %' }}</span>
+        </div>
+        <div class="bar">
+          <app-progress-bar></app-progress-bar>
+        </div>
+        <div class="progress-footer">
+          <div class="left">
+            <label
+              ><span>{{ '0 partidas arribadas' }}</span>
+              {{ '· hasta el 13/junio/2022' }}
+            </label>
+          </div>
+          <div class="right">
+            <label>{{ '50 Partidas' }} </label>
+          </div>
+        </div>
+      </div>
+      <div class="data">
+        <div class="subtitle">
+          <label>{{ 'monitoringDispatch.shippingData' | translate }}:</label>
+        </div>
+        <div class="guides">
+          <span>{{ 'monitoringDispatch.guide' | translate }}: </span><label class="underline">{{ 'Nombre del archivo' }}</label>
+        </div>
+        <div class="guides">
+          <span>{{ 'monitoringDispatch.guideNumber' | translate }}: </span><label>{{ '029384-9348' }}</label>
+        </div>
+        <div class="guides">
+          <span>{{ 'monitoringDispatch.guide' | translate }}: </span><label>{{ '029384-9348' }}</label>
+        </div>
+        <div class="files">
+          <label>{{ 'monitoringDispatch.seePackingList' | translate }}</label>
+        </div>
+        <div class="files">
+          <label>{{ 'monitoringDispatch.seeInvoice' | translate }}</label>
+        </div>
+      </div>
+      <div class="table-container">
+        <div class="table">
+          <div class="header">
+            <div class="number">
+              <label>#</label>
+            </div>
+            <div class="description">
+              <label>{{ 'monitoringDispatch.description' | translate }}</label>
+            </div>
+            <div class="client">
+              <label>{{ 'common.client' | translate }}</label>
+            </div>
+            <div></div>
+            <div [ngClass]="true ? 'cancel confirmed' : 'cancel'">
+              <app-check-box class="check" [isMulticolor]="true" [checkColor]="'dark-red'"></app-check-box>
+              <label>{{ 'monitoringDispatch.cancelGuide' | translate }}</label>
+            </div>
+          </div>
+          <div class="body">
+            <virtual-scroller [enableUnequalChildrenSizes]="true" *ngIf="true">
+              <div class="item">
+                <div class="number">
+                  <label>{{ 1 }}</label>
+                </div>
+                <div class="description">
+                  <div class="label">
+                    <label>{{
+                      'MBL-0443P Polydimethylsiloxane (500mg) Polydime solo podrán ser dos renglones \n' +
+                        'solo podrán ser dos renglones y habilitar tooltip …'
+                    }}</label>
+                    <div class="tooltip-text">
+                      <p>{{
+                        'MBL-0443P Polydimethylsiloxane (500mg) Polydime solo podrán ser dos renglones \n' +
+                          'solo podrán ser dos renglones y habilitar tooltip …'
+                      }}</p>
+                    </div>
+                  </div>
+                  <div class="images">
+                    <label>{{ 2 }} {{ 'common.pzas' | translate }} · </label>
+                    <div class="price">
+                      <div class="tooltip">
+                        <div class="tooltip-price">
+                          <label>CU {{ 22 | currency: 'USD' }} · </label>
+                        </div>
+                        <div class="tooltip-text">
+                          <p>{{ 'checkOcNotArrived.details.priceModified' | translate }}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <label>CT {{ 50 | currency: 'USD':'symbol-narrow':'1.2-2' }}</label>
+                  </div>
+                </div>
+                <div class="client">
+                  <label>{{ 'Laboratorios Aranda' }}</label>
+                  <label class="ocean">{{ '020821-1107' }}</label>
+                  <label [ngClass]="{red: true}">FEE: {{ '23/Mar/2021' }}</label>
+                </div>
+                <div class="status">
+                  <label *ngIf="false">{{ 'monitoringDispatch.arrived' | translate }}</label>
+                </div>
+                <div class="cancel red" [ngClass]="true ? 'checked' : 'default'">
+                  <label>{{ 'monitoringDispatch.cancelGuide' | translate }}</label>
+                </div>
+              </div>
+            </virtual-scroller>
+            <div class="loading" *ngIf="false">
+              <app-loading></app-loading>
+            </div>
+            <div class="loading" *ngIf="false">
+              <app-without-results></app-without-results>
+            </div>
+          </div>
+          <div class="footer">
+            <div class="number">
+              <label>#{{ 12 }}</label>
+            </div>
+            <div class="description">
+              <label>{{ 12 }} {{ 'common.pza' | translate }}</label>
+              <label>{{ 'common.totalAmount' | translate }} {{ 240 | currency: 'USD':'symbol-narrow':'1.2-2' }}</label>
+              <label class="ocean">{{ 12 }} {{ 'common.clients' | translate }}</label>
+            </div>
+            <div></div>
+            <div class="fea"></div>
+            <div class="cancel">
+              <label class="red">{{ 0 }}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="buttons">
+        <div>
+          <button [ngClass]="true ? 'active-yellow' : 'disabled'">{{ 'monitoringDispatch.updateFea' | translate }}</button>
+          <button [ngClass]="true ? 'active' : 'disabled'">{{ 'common.register' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-pop-up-generic
+  *ngIf="false"
+  [activeBtn]="false"
+  [activeButtons]="true"
+  [color]="'#cc435e'"
+  [height]="(viewType$ | async) === viewTypes.small ? '690px' : '825px'"
+  [titleHeader]="'monitoringDispatch.cancelGuide' | translate"
+  [width]="(viewType$ | async) === viewTypes.small ? '700px' : '850px'"
+>
+  <div class="pop-cancel">
+    <div class="header-content">
+      <div class="image">
+        <img src="assets/Images/alerta-rojo.svg" alt="" />
+      </div>
+      <div class="message">
+        <div class="text-container cancelMessageWidth">
+          <label class="text"
+            >{{ 'monitoringDispatch.cancelPopMessage' | translate }}{{ 6 }} {{ 'monitoringDispatch.items' | translate }}
+            <span class="red">{{ 'monitoringDispatch.ofGuide' | translate }} {{ '23423-25434' }} </span>?</label
+          >
+        </div>
+      </div>
+    </div>
+    <div class="opacity-content" [ngClass]="'red'">
+      <div class="cancel">
+        <div class="radios">
+          <div>
+            <app-radio-button
+              [disabled]="false"
+              [isMulticolor]="true"
+              [labelFontStyle]="'labelNovecentoBoldRed21'"
+              [label]="'Por reembarque'"
+              [radioColor]="'red'"
+            ></app-radio-button>
+          </div>
+          <div>
+            <app-radio-button
+              [disabled]="true"
+              [isMulticolor]="true"
+              [labelFontStyle]="'labelNovecentoBoldRed21'"
+              [label]="'por disponibilidad'"
+              [radioColor]="'red'"
+            ></app-radio-button>
+          </div>
+        </div>
+        <div class="picker" *ngIf="true">
+          <div>
+            <label>{{ '* fecha estimada de reembarque' }}</label>
+          </div>
+          <div>
+            <app-date-picker [placeholder]="'dd/mm/aa'"></app-date-picker>
+          </div>
+        </div>
+        <div class="only-text" *ngIf="false">
+          <label>{{ 'Producto no disponible con el proveedor' }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="comments">
+      <app-generic-text-area
+        [height]="(viewType$ | async) === viewTypes.small ? '150px' : '170px'"
+        [titleFontFamily]="'Roboto-Bold'"
+        [title]="'* Comentarios'"
+      ></app-generic-text-area>
+    </div>
+    <div class="file">
+      <div>
+        <label>{{ '* cargar soporte' }}</label>
+      </div>
+      <div>
+        <app-generic-input-file [placeholder]="'.Jpg, Png, Pdf'"></app-generic-input-file>
+      </div>
+    </div>
+  </div>
+  <div class="required-data">
+    <label>* {{ 'common.requiredField' | translate }}</label>
+  </div>
+</app-pop-up-generic>
+<app-pop-up-generic
+  *ngIf="false"
+  [activeBtn]="true"
+  [activeButtons]="true"
+  [height]="(viewType$ | async) === viewTypes.small ? '690px' : '825px'"
+  [titleHeader]="'monitoringDispatch.updateFEA' | translate"
+  [width]="(viewType$ | async) === viewTypes.small ? '700px' : '850px'"
+>
+  <div class="pop-cancel">
+    <div class="header-content">
+      <div class="image">
+        <img src="assets/Images/alerta.svg" alt="" />
+      </div>
+      <div class="message">
+        <div class="text-container upgradeMessageWidth">
+          <label class="text"
+            >{{ '¿Deseas actualizar la FEA del ' }} {{ '10/Junio/2022 ' }}
+            <span class="green">de la Guía {{ '23423-25434' }} </span>?</label
+          >
+        </div>
+      </div>
+    </div>
+    <div class="opacity-content" [ngClass]="'green'">
+      <div class="update">
+        <div class="picker">
+          <div>
+            <label>* {{ 'monitoringDispatch.updatePopDatePicker' | translate }}</label>
+          </div>
+          <div>
+            <app-date-picker [placeholder]="'dd/mm/aa'"></app-date-picker>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="comments">
+      <app-generic-text-area
+        [height]="(viewType$ | async) === viewTypes.small ? '150px' : '170px'"
+        [titleFontFamily]="'Roboto-Bold'"
+        [title]="'* Comentarios'"
+      ></app-generic-text-area>
+    </div>
+    <div class="file">
+      <div>
+        <label>{{ '* cargar soporte' }}</label>
+      </div>
+      <div>
+        <app-generic-input-file [placeholder]="'.Jpg, Png, Pdf'"></app-generic-input-file>
+      </div>
+    </div>
+  </div>
+  <div class="required-data">
+    <label>* {{ 'common.requiredField' | translate }}</label>
+  </div>
+</app-pop-up-generic>
+<app-pop-up-generic
+  *ngIf="false"
+  [activeBtn]="false"
+  [activeButtons]="false"
+  [height]="(viewType$ | async) === 'macBookAir' ? '825px' : '725px'"
+  [showClose]="true"
+  [titleHeader]="'monitoringDispatch.historyPop' | translate"
+  [width]="(viewType$ | async) === 'macBookAir' ? '800px' : '700px'"
+>
+  <div class="history-pop">
+    <div class="header">
+      <div class="image">
+        <img src="assets/Images/clientes/logo_proquifa_hover.svg" />
+      </div>
+      <div class="info">
+        <div class="title">
+          <label>{{ 'Chata Biosystems' }}</label>
+        </div>
+        <div class="guide">
+          <span>{{ 'Guía 031021-7593 · ' }}</span
+          ><label>{{ 'Nombre de Fletera' }}</label>
+        </div>
+        <div class="date">
+          <label>FEA: {{ '14/Junio/2022' }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="body">
+      <div class="item">
+        <div class="index">
+          <div class="date">
+            <label
+              >#{{ 1 }} · <span>{{ 'monitoringDispatch.estimatedDateOfarrival' | translate }}: </span>
+              {{ '10/Junio/2022' }}
+            </label>
+          </div>
+          <div class="link">
+            <label>{{ 'monitoringDispatch.seeFile' | translate }}</label>
+          </div>
+        </div>
+        <div class="comments">
+          <label
+            ><span>{{ 'monitoringDispatch.comments' | translate }}: </span
+            >{{
+              'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has of the printing tyu'
+            }}</label
+          >
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <label># {{ 1 + 'FEA' }}</label>
+    </div>
+  </div>
+</app-pop-up-generic>

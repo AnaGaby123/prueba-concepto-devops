@@ -1,0 +1,50 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.generic-main-component-structure;
+
+  & > #quarantine-manager {
+    & > .footer {
+      & > .list-footer {
+        @include s.flexRow;
+
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+          vertical-align: baseline;
+
+          & > span {
+            @include s.Roboto-Bold;
+            vertical-align: baseline;
+          }
+        }
+      }
+
+      & > .details-footer {
+        @include s.flexRow;
+
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+          padding: 0 10px;
+          vertical-align: baseline;
+
+          & > span {
+            @include s.Roboto-Bold;
+            vertical-align: baseline;
+          }
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .footer {
+        flex: 0 0 55px;
+      }
+    }
+  }
+}

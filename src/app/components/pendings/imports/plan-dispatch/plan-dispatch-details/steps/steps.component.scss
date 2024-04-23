@@ -1,0 +1,95 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  #plan-dispatch-details-steps {
+    @include s.absolute100;
+    @include s.flexColumn;
+    overflow: hidden;
+    padding-top: 10px;
+
+    & > .bar-activites {
+      flex: 0 0 auto;
+      padding: 0 20px;
+    }
+
+    & > .outlet {
+      flex: 1 1 auto;
+      overflow: hidden;
+    }
+  }
+
+  & > app-pop-up-generic {
+    & .pop-up-content {
+      @include s.flexColumn;
+      flex: 1 0 100%;
+      overflow: hidden;
+      padding: 25px 30px;
+
+      & > .image {
+        @include s.flexRow;
+        justify-content: center;
+
+        & > img {
+          height: 50px;
+        }
+      }
+
+      & > .text {
+        @include s.flexRow;
+        padding: 18px 0 25px 0;
+
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize22to28, regular, s.$pqBlack2);
+          line-height: 1.2;
+
+          & > span {
+            @include s.Roboto-Bold;
+            color: s.$pqGreen;
+          }
+        }
+      }
+
+      & > .button {
+        @include s.flexRow;
+        justify-content: center;
+
+        & > button {
+          @include s.pqButton();
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > #plan-dispatch-details-steps {
+      padding-top: 15px;
+
+      & > .bar-activites {
+        margin-bottom: 5px;
+      }
+    }
+
+    & > app-pop-up-generic {
+      & .pop-up-content {
+        padding: 30px 35px;
+
+        & > .text {
+          padding: 23px 0 30px 0;
+        }
+
+        & > .image {
+          & > img {
+            height: 60px;
+          }
+        }
+      }
+    }
+  }
+}

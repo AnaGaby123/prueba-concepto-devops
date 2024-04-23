@@ -1,0 +1,68 @@
+<app-pop-up-generic
+  [activeBtn]="false"
+  [height]="'398px'"
+  [showClose]="true"
+  [titleHeader]="'VER PRODUCTO'"
+  [width]="'744px'"
+  (evento)="onClose()"
+>
+  <div class="item-investigation-container">
+    <div class="item-investigation-info">
+      <div class="image-product"><img src="assets/Images/clientes/logo_proquifa_hover.svg" alt="" /></div>
+      <div class="info-product">
+        <div class="brand">
+          <div class="brand-image">
+            <img
+              #imageElement
+              alt="logo"
+              [src]="(popInvestigationProductData$ | async)?.ProductoInvestigacionObj?.imageHover"
+              (error)="errorImage()"
+            />
+          </div>
+          <label>
+            CAT. {{ (popInvestigationProductData$ | async).producto?.Catalogo }} •
+            {{ (popInvestigationProductData$ | async).producto?.TipoPresentacion }}
+            {{ (popInvestigationProductData$ | async).producto?.Presentacion }}
+            {{ (popInvestigationProductData$ | async).producto?.Unidad }}
+          </label>
+        </div>
+        <label class="description">{{ (popInvestigationProductData$ | async).ProductoInvestigacionObj.Descripcion }}</label>
+        <label class="family-name">{{
+          (popInvestigationProductData$ | async)?.ProductoInvestigacionObj?.fullFamilyName
+        }}</label>
+      </div>
+      <div class="status-investigation">
+        <label class="status">{{ 'quotation.details.status' | translate }}</label>
+        <label
+          class="product-found"
+          *ngIf="(popInvestigationProductData$ | async)?.CotPartidaInvestigacionProducto?.Encontrado"
+          >{{ 'quotation.details.productFound' | translate }}</label
+        >
+      </div>
+    </div>
+    <div class="provider-evidence-container">
+      <div class="provider-notes-container">
+        <label class="notes">{{ 'quotation.details.providerNotes' | translate }}</label>
+        <label class="provider-notes">
+          {{ (popInvestigationProductData$ | async)?.CotPartidaInvestigacionProducto?.Notas }}
+        </label>
+      </div>
+      <div class="provider-evidence-file">
+        <app-generic-input-file
+          [label]="'quotation.details.evidence' | translate"
+          [idFile]="(popInvestigationProductData$ | async).CotPartidaInvestigacionProducto.IdArchivoEvidenciaProvedor"
+          [fileName]="
+            (popInvestigationProductData$ | async)?.evidenceFile
+              ? getFileName((popInvestigationProductData$ | async)?.evidenceFile?.FileKey)
+              : null
+          "
+          [enableEdit]="false"
+          (emitExternalFile)="getFile()"
+        ></app-generic-input-file>
+      </div>
+    </div>
+    <div class="footer">
+      <button (click)="handleAddToQuotation()">{{ 'quotation.investigationDetail.addToQuotation' | translate }}</button>
+    </div>
+  </div>
+</app-pop-up-generic>

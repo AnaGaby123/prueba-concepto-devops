@@ -1,0 +1,304 @@
+@use 'base' as s;
+
+:host {
+  @include s.absolute100;
+  display: flex;
+  overflow: hidden;
+
+  #list-quotes-container {
+    @include s.flexColumn;
+    box-sizing: border-box;
+    flex: 1;
+    height: 100%;
+    overflow: hidden;
+    width: 100%;
+
+    & > .bar-progressive {
+      box-sizing: border-box;
+      padding: 15px 20px 0 20px;
+      width: 100%;
+
+      & > label:nth-of-type(1) {
+        @include s.responsive-font-format(
+          $font-family: s.$font_family_novecento_bold,
+          $font-weight: s.$font_weight_bold,
+          $font-size-map: s.$responsive-font-17-21
+        );
+        white-space: pre-wrap;
+
+        & > span {
+          @include s.Novecento-Bold;
+          color: s.$pqGreen;
+          text-transform: uppercase;
+          vertical-align: baseline;
+        }
+      }
+
+      & > label:nth-of-type(2) {
+        @include s.responsive-font-format(
+          $font-family: s.$font_family_novecento_bold,
+          $font-weight: s.$font_weight_bold,
+          $font-size-map: s.$responsive-font-17-21,
+          $color: s.$pqGreen
+        );
+      }
+
+      & > .details {
+        @include s.flexRowWrap;
+        border-bottom: solid 1px s.$pqGray2;
+        margin-top: 10px;
+        padding-bottom: 10px;
+        width: 100%;
+
+        & > div:nth-of-type(1) {
+          margin-bottom: 8px;
+          width: 100%;
+        }
+
+        & > div:nth-of-type(2) {
+          @include s.flexColumn;
+          align-items: flex-start;
+          width: 50%;
+
+          & > label:nth-of-type(1) {
+            @include s.responsive-font-format(
+              $font-family: s.$font_family_novecento_bold,
+              $font-weight: s.$font_weight_bold,
+              $font-size-map: s.$responsive-font-14-16,
+              $color: s.$pqGreen2
+            );
+            margin-bottom: 2px;
+          }
+
+          & > label:nth-of-type(2) {
+            @include s.responsive-font-format(
+              $font-family: s.$font_family_novecento_bold,
+              $font-weight: s.$font_weight_bold,
+              $font-size-map: s.$responsive-font-10-12-b
+            );
+          }
+        }
+
+        & > div:nth-of-type(3) {
+          width: 50%;
+          @include s.flexColumn;
+          align-items: flex-end;
+
+          & > label:nth-of-type(1) {
+            @include s.responsive-font-format(
+              $font-family: s.$font_family_novecento_bold,
+              $font-weight: s.$font_weight_bold,
+              $font-size-map: s.$responsive-font-14-16
+            );
+            margin-bottom: 2px;
+          }
+
+          & > label:nth-of-type(2) {
+            @include s.responsive-font-format(
+              $font-family: s.$font_family_novecento_bold,
+              $font-weight: s.$font_weight_bold,
+              $font-size-map: s.$responsive-font-10-12-b
+            );
+          }
+        }
+      }
+    }
+
+    & > .title {
+      @include s.flexRowNoWrap;
+      @include s.absoluteCenter;
+      box-sizing: border-box;
+      justify-content: flex-start;
+      padding: 10px 20px;
+      width: 100%;
+
+      & > .quotations {
+        @include s.responsive-font-format(
+          $font-family: s.$font_family_novecento_bold,
+          $font-weight: s.$font_weight_bold,
+          $font-size-map: s.$responsive-font-17-21
+        );
+        white-space: initial;
+
+        & > .pending {
+          color: s.$pqOrange5;
+          vertical-align: baseline;
+        }
+
+        & > .error {
+          color: s.$pqRed;
+          vertical-align: baseline;
+        }
+
+        & > .total {
+          color: s.$pqGreen;
+          text-transform: uppercase;
+          vertical-align: baseline;
+        }
+      }
+    }
+
+    & > .list {
+      box-sizing: border-box;
+      padding-bottom: 13px;
+      width: 100%;
+    }
+
+    & > .bar-percentage-container {
+      @include s.flexColumn;
+      box-sizing: border-box;
+      justify-content: space-between;
+      padding: 0 15px 15px;
+      width: 100%;
+      & > .bar-percentage {
+        @include s.flexRowNoWrap;
+        display: flex;
+        justify-content: space-between;
+        & > .value-total {
+          @include s.flexRowNoWrap;
+          box-sizing: border-box;
+          padding-bottom: 10px;
+          & > label {
+            @include s.responsive-font-format(
+              $font-family: s.$font_family_novecento_bold,
+              $font-weight: s.$font_weight_bold,
+              $font-size-map: s.$responsive-font-17-21,
+              $color: s.$pqGreen
+            );
+            align-self: flex-end;
+            white-space: initial;
+
+            & > span:nth-of-type(1) {
+              cursor: pointer;
+              text-decoration: underline;
+              vertical-align: baseline;
+            }
+
+            & > span:nth-of-type(2) {
+              color: s.$pqBlack2;
+              min-width: max-content;
+              vertical-align: baseline;
+            }
+          }
+        }
+
+        & > div:nth-of-type(2) {
+          @include s.flexRowWrap;
+          box-sizing: border-box;
+          justify-content: flex-end;
+          padding-bottom: 14px;
+          width: 40%;
+
+          & > label:nth-of-type(1) {
+            @include s.responsive-font-format(
+              $font-family: s.$font_family_novecento_bold,
+              $font-weight: s.$font_weight_bold,
+              $font-size-map: s.$responsive-font-17-21
+            );
+            align-self: flex-end;
+            box-sizing: border-box;
+            display: flex;
+            min-width: max-content;
+            white-space: initial;
+
+            & > span {
+              text-overflow: ellipsis;
+              color: s.$pqGreen;
+              flex: 1 0 auto;
+              max-width: 220px;
+              overflow: hidden;
+              vertical-align: baseline;
+              white-space: pre;
+            }
+          }
+
+          & > div {
+            @include s.flexRowWrap;
+            align-self: flex-end;
+
+            & > app-percentage-stars {
+              display: flex;
+              flex: 0;
+            }
+
+            & > label {
+              @include s.responsive-font-format(
+                $font-family: s.$font_family_novecento_bold,
+                $font-weight: s.$font_weight_bold,
+                $font-size-map: s.$responsive-font-17-21,
+                $color: #f5a523
+              );
+              align-self: center;
+              display: flex;
+              flex: 0;
+            }
+          }
+        }
+      }
+      & > div:nth-of-type(2) {
+        display: flex;
+        justify-content: space-between;
+
+        & > div:nth-of-type(1) {
+          flex: 1;
+        }
+
+        //& > div:nth-of-type(2) {
+        //  width: 40%;
+        //}
+      }
+    }
+    & > .change-options {
+      @include s.flexColumn;
+      box-sizing: border-box;
+      flex: 1;
+      overflow: hidden;
+      padding: 0 17px 0 17px;
+      width: 100%;
+
+      & > .tabs {
+        height: 30px;
+        margin-bottom: 10px;
+      }
+
+      & > .option {
+        flex: 1;
+        overflow: hidden;
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #list-quotes-container {
+      & > .title {
+        & > div {
+          & > img:nth-of-type(1) {
+            height: 19px;
+            margin-right: 10px;
+          }
+        }
+      }
+
+      & > .bar-percentage-container {
+        padding: 0 20px 20px;
+        & > .bar-percentage {
+          & > .value-total {
+            padding-bottom: 15px;
+            & > label:nth-of-type(1) {
+              & > span {
+                max-width: 320px;
+              }
+            }
+          }
+        }
+      }
+
+      & > .change-options {
+        & > .tabs {
+          height: 40px;
+          margin-bottom: 15px;
+        }
+      }
+    }
+  }
+}

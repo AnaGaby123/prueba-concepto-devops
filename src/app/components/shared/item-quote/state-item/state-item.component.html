@@ -1,0 +1,34 @@
+<div class="state-item-container">
+  <label
+    *ngIf="
+      columnState?.purchasePromise !== undefined ||
+      columnState?.cancellation !== undefined ||
+      columnState?.following !== undefined ||
+      columnState?.adjustmentOffer !== undefined ||
+      columnState?.pending !== undefined
+    "
+    [ngClass]="
+      columnState?.purchasePromise
+        ? 'green'
+        : columnState?.cancellation
+        ? 'red'
+        : columnState?.following
+        ? 'blue'
+        : columnState?.adjustmentOffer
+        ? 'gold'
+        : ''
+    "
+  >
+    {{
+      columnState?.purchasePromise
+        ? ('preProcessing.purchasePromise' | translate)
+        : columnState?.cancellation
+        ? ('preProcessing.cancel' | translate)
+        : columnState?.following
+        ? ('preProcessing.follow' | translate)
+        : columnState?.adjustmentOffer
+        ? ('preProcessing.offerAdjustment' | translate)
+        : ('preProcessing.pending' | translate)
+    }}</label
+  >
+</div>

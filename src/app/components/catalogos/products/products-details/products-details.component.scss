@@ -1,0 +1,138 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  .products-details-form {
+    @include s.flexColumn;
+    @include s.absolute100;
+
+    & > .container {
+      @include s.flexColumn;
+      flex: 1;
+      overflow: hidden;
+      padding-top: 20px;
+
+      & > .tabs {
+        @include s.flexRow;
+        flex: 0 0 35px;
+      }
+
+      & .container-outlet {
+        flex: 1 1 auto;
+        padding-top: 20px;
+        width: 100%;
+        overflow: hidden;
+      }
+    }
+
+    & > footer {
+      @include s.generic-main-component-footer;
+      padding: 0 20px;
+
+      & > .buttons {
+        @include s.flexRow;
+        flex: 1;
+        justify-content: space-between;
+
+        & > .enable {
+          @include s.pqfButton();
+        }
+
+        & > .disable {
+          @include s.pqfDisableButton();
+        }
+      }
+
+      & > .oneButton {
+        @include s.flexRow;
+        flex: 1;
+        justify-content: flex-end;
+
+        & > button {
+          @include s.pqfButton();
+        }
+      }
+
+      & > .indicators {
+        @include s.flexRow;
+        align-items: center;
+        justify-content: flex-end;
+        flex: 1;
+
+        & > .content {
+          @include s.flexRow;
+
+          & > label {
+            @include s.Novecento-Bold;
+            @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+
+            & > .yellow {
+              color: s.$pqYellow;
+              margin: 0 10px;
+              vertical-align: baseline;
+            }
+
+            & > .green {
+              color: s.$pqGreen;
+              margin: 0 10px;
+              vertical-align: baseline;
+            }
+          }
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .container {
+        padding-top: 25px;
+
+        & > .tabs {
+          flex: 0 0 40px;
+        }
+
+        & > .container-outlet {
+          padding-top: 30px;
+        }
+      }
+    }
+  }
+}
+
+.cancel-pop-up {
+  & .container {
+    @include s.flexColumn;
+    align-items: center;
+
+    & > img {
+      @include s.default-transition();
+      @include s.height-scaled-image(s.$warning-pop-image-map);
+      margin-bottom: 20px;
+    }
+
+    & > div {
+      padding: 0 40px;
+
+      & > label {
+        @include s.escaledFontFormat(s.$textSize26to29, normal, s.$pqBlack2);
+        @include s.Roboto-Regular;
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & .container {
+      & > img {
+        margin-bottom: 25px;
+      }
+
+      & > div {
+        padding: 0 45px;
+      }
+    }
+  }
+}

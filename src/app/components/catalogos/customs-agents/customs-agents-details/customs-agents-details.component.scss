@@ -1,0 +1,80 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  #customs-agents-details {
+    @include s.flexColumn;
+    @include s.absolute100;
+
+    & > .container {
+      @include s.flexColumn;
+      flex: 1;
+      overflow: hidden;
+
+      & > .bar-activities {
+        padding: 25px 0;
+      }
+
+      & > .tabs {
+        height: 30px;
+        margin: 25px 0;
+      }
+    }
+  }
+
+  .cancel-pop {
+    & .container {
+      @include s.flexColumn;
+      @include s.absoluteCenter;
+      align-items: center;
+
+      & > img {
+        @include s.default-transition();
+        height: 50px;
+        margin-bottom: 20px;
+        width: 50px;
+      }
+
+      & > div {
+        padding: 0 40px;
+
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize26to29, regular, s.$pqBlack2);
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #customs-agents-details {
+      & > .container {
+        & > .bar-activities {
+          padding-top: 35px;
+        }
+
+        & > .tabs {
+          height: 40px;
+          margin-top: 35px;
+        }
+      }
+    }
+
+    .cancel-pop {
+      & .container {
+        & > img {
+          height: 60px;
+          margin-bottom: 25px;
+          width: 60px;
+        }
+
+        & > div {
+          padding: 0 45px;
+        }
+      }
+    }
+  }
+}

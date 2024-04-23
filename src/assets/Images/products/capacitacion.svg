@@ -1,0 +1,52 @@
+<svg width="83" height="91" viewBox="0 0 83 91" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs>
+        <linearGradient x1="14.792%" y1="91.45%" x2="14.792%" y2="123.876%" id="1f2jnubvib">
+            <stop stop-color="#58595B" offset="0%"/>
+            <stop stop-color="#403F41" offset="100%"/>
+        </linearGradient>
+        <linearGradient x1="14.792%" y1="91.965%" x2="18.177%" y2="91.965%" id="89rk80b1ze">
+            <stop stop-color="#58595B" offset="0%"/>
+            <stop stop-color="#403F41" offset="100%"/>
+        </linearGradient>
+        <linearGradient x1="14.795%" y1="92.582%" x2="14.795%" y2="125.007%" id="rqjuppjdzh">
+            <stop stop-color="#438E9C" offset="0%"/>
+            <stop stop-color="#326D78" offset="100%"/>
+        </linearGradient>
+        <linearGradient x1="14.795%" y1="93.148%" x2="18.177%" y2="93.148%" id="7uut1l2u4k">
+            <stop stop-color="#438E9C" offset="0%"/>
+            <stop stop-color="#326D78" offset="100%"/>
+        </linearGradient>
+        <path d="M41.5 0C63.781.009 82.09 17.39 83 39.397V41H70.64v-1.603c-.833-15.355-13.69-27.373-29.245-27.335-15.555.037-28.353 12.115-29.111 27.474V41H0v-1.868C1.05 17.228 19.318.002 41.5 0z" id="m510jgobca"/>
+        <path d="M41.5 0C63.781.009 82.09 17.39 83 39.397V41H70.64v-1.603c-.833-15.355-13.69-27.373-29.245-27.335-15.555.037-28.353 12.115-29.111 27.474V41H0v-1.868C1.05 17.228 19.318.002 41.5 0z" id="m5f5e7xu0d"/>
+        <path id="zu3uhdnz3g" d="m12.283 0-.013 13.56L41.487 31.34l29.23-17.74L70.73 0H83l-.013 21.405L41.487 45 0 21.354.013 0z"/>
+        <path id="q5j3aakp3j" d="m12.283 0-.013 13.56L41.487 31.34l29.23-17.74L70.73 0H83l-.013 21.405L41.487 45 0 21.354.013 0z"/>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <g>
+            <mask id="huo3l9hdhc" fill="#fff">
+                <use xlink:href="#m510jgobca"/>
+            </mask>
+            <path fill="url(#1f2jnubvib)" mask="url(#huo3l9hdhc)" d="M-362.646 340.825h2451.692v-3986.391H-362.646z"/>
+        </g>
+        <g>
+            <mask id="pvw6eeifcf" fill="#fff">
+                <use xlink:href="#m5f5e7xu0d"/>
+            </mask>
+            <path fill="url(#89rk80b1ze)" mask="url(#pvw6eeifcf)" d="M-362.646 340.825h2451.692v-3986.391H-362.646z"/>
+        </g>
+        <g>
+            <g transform="translate(0 46)">
+                <mask id="e1vmxcbr1i" fill="#fff">
+                    <use xlink:href="#zu3uhdnz3g"/>
+                </mask>
+                <path fill="url(#rqjuppjdzh)" mask="url(#e1vmxcbr1i)" d="M-363.058 294.968H2090.9V-3681.25H-363.058z"/>
+            </g>
+            <g transform="translate(0 46)">
+                <mask id="axblold8gl" fill="#fff">
+                    <use xlink:href="#q5j3aakp3j"/>
+                </mask>
+                <path fill="url(#7uut1l2u4k)" mask="url(#axblold8gl)" d="M-363.058 294.968H2090.9V-3681.25H-363.058z"/>
+            </g>
+        </g>
+    </g>
+</svg>

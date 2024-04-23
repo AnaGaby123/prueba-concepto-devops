@@ -1,0 +1,12 @@
+<div
+  class="notes-container"
+  #notes
+  *ngIf="columnNotes?.systemNotes || columnNotes?.itemNotes"
+  (mouseenter)="handleEventClick($event, notes, true, nameActionsInternalSalesItem.SeeNotesItemAction)"
+  (mouseleave)="handleEventClick($event, notes, false, nameActionsInternalSalesItem.SeeNotesItemAction)"
+>
+  <div class="icon">
+    <img src="assets/Images/pre-processing/notas_partida.svg" alt="" />
+  </div>
+  <label>{{ 'common.notes' | translate }}</label>
+</div>

@@ -1,0 +1,138 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  & > app-pop-up-generic {
+    & .pop-up-content {
+      @include s.flexColumn;
+      flex: 1 0 100%;
+      overflow: hidden;
+      padding: 30px 20px;
+
+      & > .top {
+        @include s.flexRow;
+        border-bottom: 1px solid s.$pqBlack2;
+        padding-bottom: 30px;
+
+        & > .image {
+          padding-right: 15px;
+
+          & > img {
+            height: 62px;
+            width: 110px;
+          }
+        }
+
+        & > .details {
+          @include s.flexColumn;
+          align-items: baseline;
+          flex: 1;
+
+          & > .name {
+            & > label {
+              @include s.Novecento-Bold;
+              @include s.escaledFontFormat(s.$textSize17to22, '', s.$pqGreen);
+            }
+
+            padding-bottom: 4px;
+          }
+
+          & > .invoice {
+            & > label {
+              @include s.escaledFontFormat(s.$textSize15to20, '', s.$pqBlack2);
+              @include s.Roboto-Bold;
+
+              & > span {
+                color: s.$pqGreen;
+                text-decoration: underline;
+                vertical-align: baseline;
+              }
+            }
+          }
+
+          & > .date {
+            padding-top: 5px;
+
+            & > label {
+              @include s.Roboto-Regular;
+              @include s.escaledFontFormat(s.$textSize13to18, '', s.$pqBlack2);
+              margin-right: 5px;
+            }
+          }
+        }
+
+        & > .amount {
+          @include s.flexColumn;
+          align-items: flex-end;
+
+          & > .number {
+            & > label {
+              @include s.Novecento-Bold;
+              @include s.escaledFontFormat(s.$textSize15to20, '', s.$pqGreen);
+            }
+          }
+
+          & > .text {
+            & > label {
+              @include s.Roboto-Regular;
+              @include s.escaledFontFormat(s.$textSize12to16, '', s.$pqBlack2);
+            }
+          }
+        }
+      }
+
+      & > .center {
+        @include s.flexColumn;
+        align-items: flex-start;
+        flex: 1;
+        padding-top: 30px;
+
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize12to16, regular, s.$pqBlack2);
+          padding-bottom: 10px;
+        }
+      }
+
+      & > .bottom {
+        @include s.flexRow;
+        padding-top: 30px;
+        justify-content: space-between;
+
+        & > button {
+          @include s.pqButton();
+        }
+      }
+
+      @include s.responsive_layout('macBookAir') {
+        padding: 40px 30px;
+
+        & > .top {
+          padding-bottom: 39px;
+
+          & > .image {
+            padding-right: 20px;
+
+            & > img {
+              height: 82px;
+              width: 155px;
+            }
+          }
+        }
+
+        & > .center {
+          padding-top: 40px;
+        }
+
+        & > .bottom {
+          padding-top: 50px;
+        }
+      }
+    }
+  }
+}

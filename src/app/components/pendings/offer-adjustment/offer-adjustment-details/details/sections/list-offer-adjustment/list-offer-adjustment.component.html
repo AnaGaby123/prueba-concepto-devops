@@ -1,0 +1,205 @@
+<div id="list-clients-container">
+  <div class="title">
+    <div class="percentage-bar-container">
+      <label>{{
+        ('offerAdjustment.strategy' | translate) +
+          ' · ' +
+          (strategyClientSelected$ | async) +
+          ' · ' +
+          ('offerAdjustment.totalAmountClosing' | translate) +
+          ' ' +
+          (totalInClosingBarData$ | async | currency: 'USD') +
+          ' USD'
+      }}</label>
+      <app-percentage-bar [items]="valuesPercentageBar$ | async"></app-percentage-bar>
+    </div>
+    <div class="quotations-container">
+      <label class="client">
+        <span>{{ '#' + (indexClientSelected$ | async) || 'N/D' + (clientName$ | async) || 'N/D' }}</span>
+      </label>
+      <label class="pending">
+        <span>{{ ' · ' }}</span>
+      </label>
+      <label class="quotations">
+        <span>{{
+          (cardOptions$ | async)?.length +
+            ' ' +
+            ((cardOptions$ | async)?.length === 1
+              ? ('offerAdjustment.quotation' | translate)
+              : ('offerAdjustment.quotations' | translate))
+        }}</span>
+      </label>
+      <label class="amount">
+        <span>·</span>
+        <span
+          >{{ 'offerAdjustment.details.generalSettingAmount' | translate }}
+          {{ totalInAdjustment$ | async | currency: 'USD':'symbol-narrow':'1.2-2' }} USD</span
+        >
+      </label>
+    </div>
+  </div>
+  <div class="list">
+    <app-pqf-card
+      [isLoading]="isLoadingQuotations$ | async"
+      [enableMessage]="true"
+      [options]="cardOptions$ | async"
+      [withoutOptionsMessage]="'common.withoutQuotations' | translate"
+      (handleOptionSelected)="handleOptionSelected($event)"
+    ></app-pqf-card>
+  </div>
+  <div class="content" *ngIf="selectedQuotation$ | async">
+    <div class="bar-percentage">
+      <div>
+        <div>
+          <label>{{ '#' + (selectedQuotation$ | async)?.index + ' ·' }}</label>
+          <label>FO-{{ (selectedQuotation$ | async)?.Folio }}</label>
+          <label>{{ '· ' }}</label>
+          <label>{{
+            ('offerAdjustment.totalAmountSetting' | translate) +
+              ' ' +
+              ((selectedQuotation$ | async)?.TotalPartidasEnAjuste | currency: (selectedQuotation$ | async)?.ClaveMoneda) +
+              ' ' +
+              (selectedQuotation$ | async)?.ClaveMoneda
+          }}</label>
+          <!--          TODO: SE COMENTÓ POR QUE NO SE HA DEFINIDO, REVISAR SI SE VA A CONECTAR, LA IMAGEN SE ENCUENTRA EN IMAGENES SIN UTILIZAR DEL REPO-->
+          <!--          <img
+            (click)="
+              popUpPercentageBars
+                ? handlePopUp('percentageBars', false, popUpPercentageBarsTarget)
+                : handlePopUp('percentageBars', true, $event.target)
+            "
+            alt="bars-chart"
+            src="assets/Images/close-offer/bars-chart.svg"
+          />-->
+        </div>
+        <app-custom-position-pop-up
+          *ngIf="popUpPercentageBars"
+          [popUpPosition]="'bottom-end'"
+          [target]="popUpPercentageBarsTarget"
+          [minWidth]="(viewType$ | async) === viewTypes.small ? '1250px' : '1500px'"
+          [maxWidth]="(viewType$ | async) === viewTypes.small ? '1250px' : '1500px'"
+          [minHeight]="(viewType$ | async) === viewTypes.small ? '1250px' : '170px'"
+          [maxHeight]="(viewType$ | async) === viewTypes.small ? '1250px' : '170px'"
+          [borderRadius]="'18px'"
+          [adjustForSmallTarget]="(viewType$ | async) === viewTypes.small ? 270 : 300"
+          (closeEmitter)="handlePopUp('percentageBars', false, popUpPercentageBarsTarget)"
+        >
+          <div class="bars">
+            <div>
+              <div>
+                <label>{{ ('offerAdjustment.quotation' | translate) + ' ' + (folioQuotationSelected$ | async) + ' · ' }}</label>
+                <label>{{ ('offerAdjustment.details.value' | translate) + ': ' + (0 | currency: 'USD') }}</label>
+              </div>
+              <app-percentage-bar [items]="valuesPercentageBarPopUpFirst$ | async"></app-percentage-bar>
+            </div>
+            <div>
+              <app-percentage-bar [items]="valuesPercentageBarPopUpSecond$ | async"></app-percentage-bar>
+            </div>
+          </div>
+        </app-custom-position-pop-up>
+        <!--        TODO: SE COMENTÓ POR QUE NO SE HA DEFINIDO-->
+        <!--        <app-percentage-bar [items]="valuesPercentageBarCustom$ | async"></app-percentage-bar>-->
+      </div>
+    </div>
+    <div class="change-options">
+      <div class="option">
+        <label>{{ 'offerAdjustment.details.offerAdjustment' | translate }}</label>
+        <div class="navigation-section" *ngIf="(selectedQuotation$ | async)?.configApiStatus === 3">
+          <app-bar-activities
+            [enableLeftArrow]="(optionBarActivitySelected$ | async) !== 0"
+            [enableRightArrow]="
+              ((optionBarActivitySelected$ | async) !== 3 &&
+                (optionBarActivitySelected$ | async) === 0 &&
+                (deliveryTimeValidator$ | async)) ||
+              ((optionBarActivitySelected$ | async) === 1 && (paymentConditionsValidator$ | async)) ||
+              ((optionBarActivitySelected$ | async) === 2 && (priceValidator$ | async))
+            "
+            [enableSelectOption]="!(idRequestAuthorizationChange$ | async)"
+            [options]="optionsBarActivities$ | async"
+            [selectedOption]="optionBarActivitySelected$ | async"
+            (handleOptionSelected)="addPasosBarActivity($event)"
+          >
+          </app-bar-activities>
+          <app-delivery-time *ngIf="(optionBarActivitySelected$ | async) === 0" class="step"></app-delivery-time>
+          <app-payment-conditions *ngIf="(optionBarActivitySelected$ | async) === 1" class="step"></app-payment-conditions>
+          <app-payment *ngIf="(optionBarActivitySelected$ | async) === 2" class="step"></app-payment>
+          <app-adjustments-summary *ngIf="(optionBarActivitySelected$ | async) === 3" class="step"></app-adjustments-summary>
+        </div>
+        <div class="without-results" *ngIf="(selectedQuotation$ | async)?.configApiStatus === 1">
+          <app-loading></app-loading>
+        </div>
+      </div>
+    </div>
+    <pqf-secure-code-pop-up
+      *ngIf="isOpenPopUpCode$ | async"
+      [height]="'auto'"
+      [isActivePrimaryButton]="true"
+      [isShowClose]="false"
+      [onlyPrimaryButton]="false"
+      [onlySecondaryButton]="!(authorization$ | async)?.valid"
+      [paddingBottomContent]="'24px'"
+      [paddingTopContent]="'32px'"
+      [secureCode]="code$ | async"
+      [status]="(authorization$ | async)?.status"
+      [textHeaderContent]="codePopInfoMessage$ | async"
+      [textPrimaryButton]="'common.accept' | translate"
+      [textSecondaryButton]="'common.cancelRequest' | translate"
+      [titleHeader]="'checkout.validateSettings' | translate"
+      (arrayCodeChangeEmitter)="handleSetCodeValue($event)"
+      (event)="handlePopEvent($event)"
+      (stringCodeCompleteEmitter)="handleValidateCode($event)"
+    ></pqf-secure-code-pop-up>
+  </div>
+  <div class="buttons" *ngIf="selectedQuotation$ | async">
+    <button
+      class="reject"
+      *ngIf="!(isOpenPopUpCode$ | async) && (selectedQuotation$ | async)?.offerConfig"
+      (click)="handlePopUpReject(true)"
+      >{{ 'offerAdjustment.details.rejectFit' | translate }}</button
+    >
+    <button
+      class="validate"
+      *ngIf="(optionBarActivitySelected$ | async) === 3 && !(isOpenPopUpCode$ | async)"
+      (click)="handleValidateAdjustment()"
+      >{{ 'offerAdjustment.details.validate' | translate }}</button
+    >
+  </div>
+</div>
+<app-pop-up-generic
+  id="reject-pop-up"
+  *ngIf="isOpenPopUpReject$ | async"
+  [titleHeader]="'Proquifa Net'"
+  [activeButtons]="true"
+  [rightButtonLabel]="'Aceptar'"
+  [activeBtn]="!lodashIsEmpty(rejectReason)"
+  [width]="(viewType$ | async) === viewTypes.small ? '745px' : '785px'"
+  [height]="(viewType$ | async) === viewTypes.small ? '590px' : '610px'"
+  (evento)="handlePopUpReject($event, 'reject')"
+>
+  <div class="container">
+    <div class="file-one">
+      <img src="assets/Images/alerta.svg" alt="alert" />
+    </div>
+    <div class="file-two">
+      <p>{{ 'offerAdjustment.details.questionAdjustmentReject' | translate }} </p>
+      <span>{{ (clientName$ | async) + ' · Cot. ' + (selectedQuotation$ | async)?.Folio + ' ?' }}</span>
+    </div>
+    <div class="file-three">
+      <div class="container">
+        <label>{{ 'offerAdjustment.details.rejectReason' | translate }}</label>
+        <div>
+          <app-drop-down-list
+            [activeMinWidth]="false"
+            [subtitleActive]="false"
+            [colorOnlyInSelected]="true"
+            [items]="rejectReason$ | async"
+            [isSearchable]="(rejectReason$ | async)?.length > 5"
+            [itemSelected]="rejectReason"
+            (valueDropList)="rejectReason = $event"
+          >
+          </app-drop-down-list>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-pop-up-generic>

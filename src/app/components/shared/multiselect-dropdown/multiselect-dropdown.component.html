@@ -1,0 +1,36 @@
+<div [ngClass]="dropListClass" [style.min-width]="activeMinWidth ? '230px' : 'initial'">
+  <div class="container-drop">
+    <div class="Title" (click)="openDropList()">
+      <p [ngClass]="align" *ngIf="titleSelect.length === 0">{{ title }}</p>
+      <div *ngIf="titleSelect.length > 0" class="tiposSelected">
+        <p [ngClass]="align" *ngFor="let name of titleSelect; let i = index" [style.size]="size"
+          >{{ name }}<span *ngIf="titleSelect.length > 1 && i < titleSelect.length - 1">,</span></p
+        >
+      </div>
+      <img [src]="srcImagen" width="11" height="6" alt="" />
+    </div>
+
+    <div [hidden]="!showDropList" class="content" [style.width]="widthContent" [style.margin-left]="marginLeftContent">
+      <div>
+        <div style="overflow: auto;">
+          <ul class="lista" *ngIf="arrayAux != undefined">
+            <div
+              *ngFor="let item of arrayAux; let i = index"
+              (click)="selectItem((item.checked = !item.checked), item, i)"
+              [style.pointerEvents]="item.disable ? 'none' : 'auto'"
+              [style.opacity]="item.disable ? '0.3' : '1'"
+              class="container-li"
+            >
+              <div class="border-separator">
+                <li [style.min-height]="heightLi" [style.align-items]="'left'" class="list">
+                  <img alt="" class="imgCheck" [src]="item.checkImg" />
+                  <label>{{ item.nombre }}</label>
+                </li>
+              </div>
+            </div>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

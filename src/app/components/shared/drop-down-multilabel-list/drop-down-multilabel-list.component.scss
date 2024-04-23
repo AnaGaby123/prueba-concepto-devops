@@ -1,0 +1,332 @@
+@use 'base' as s;
+
+:host {
+  width: 100%;
+  height: 100%;
+  $grayColor: s.$gnGrisRata;
+
+  & * {
+    box-sizing: border-box;
+  }
+
+  & > .drop-list-container {
+    width: 100%;
+    padding: 0;
+    position: relative;
+    display: inline-block;
+
+    &.dropList {
+      & > .container-drop {
+        & > .title {
+          border: 1px solid #d8d9dd !important;
+        }
+      }
+    }
+
+    &.dropListSelect {
+      & > .container-drop {
+        & > .title {
+          border: 1px solid #eceef0 !important;
+        }
+      }
+    }
+
+    & > .label-container {
+      @include s.flexRowNoWrap;
+      @include s.absoluteCenter;
+      width: 100%;
+      height: 19px;
+      justify-content: space-between;
+      margin-bottom: 3px;
+
+      & > img:nth-of-type(1) {
+        width: 7px;
+      }
+
+      & > div:nth-of-type(1) {
+        width: calc(100% - 8px);
+        box-sizing: border-box;
+        @include s.multiLineTextTruncateSinHeight(1, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+
+        & > label:nth-of-type(1) {
+          $textSize: (
+            'base': 13px,
+            'macBookAir': 16px,
+          );
+          @include s.escaledFontFormat($textSize, regular, s.$pqBlack2);
+          @include s.Roboto-Regular;
+
+          &.label-default {
+            color: s.$pqBlack2;
+          }
+
+          &.label-danger {
+            color: s.$pqDanger !important;
+          }
+        }
+      }
+    }
+
+    & > .label-disable-edit-container {
+      @include s.flexRow;
+      @include s.absoluteCenter;
+      width: 100%;
+      box-sizing: border-box;
+      justify-content: flex-start;
+
+      & > div:nth-of-type(1) {
+        width: 100%;
+        box-sizing: border-box;
+        @include s.multiLineTextTruncateSinHeight(1, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+
+        & > label:nth-of-type(1) {
+          $textSize: (
+            'base': 13px,
+            'macBookAir': 16px,
+          );
+          @include s.escaledFontFormat($textSize, regular, s.$pqBlack2);
+          @include s.Roboto-Regular;
+        }
+      }
+    }
+
+    & > .container-drop {
+      width: 100%;
+      position: relative;
+
+      & > .title {
+        @include s.flexRow;
+        width: 100%;
+        padding: 10px 5px;
+        color: s.$pqBlack2;
+        box-sizing: border-box;
+        border: 1px solid #d8d9dd;
+        justify-content: space-between;
+        align-items: center;
+        background: #ffffff;
+        position: relative;
+        cursor: pointer;
+        flex-direction: row;
+
+        &.title-danger {
+          border: 1px solid #dc3545 !important;
+        }
+
+        & > .img-initial {
+          @include s.flexRow;
+          justify-content: center;
+          width: 20px;
+          height: 100%;
+          box-sizing: border-box;
+          padding: 0 5px;
+          transition: 1s;
+          flex-shrink: 0;
+
+          & > .magnifying-glass {
+            width: 14px;
+            height: 14px;
+            margin-left: 5px;
+          }
+
+          & > .arrow {
+            width: 11px;
+            height: 6px;
+            top: 9px;
+            right: 7px;
+          }
+        }
+
+        & > .content-info {
+          @include s.flexColumn;
+          flex: 1;
+
+          & > div {
+            @include s.flexRow;
+            width: 100%;
+            justify-content: flex-start;
+            @include s.multiLineTextTruncateSinHeight(1, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+
+            & > p {
+              $textSize: (
+                'base': 13px,
+                'macBookAir': 16px,
+              );
+              @include s.escaledFontFormat($textSize, regular, s.$pqBlack2);
+              @include s.Roboto-Regular;
+              width: 100%;
+
+              & > span:nth-of-type(2) {
+                margin-left: 4px;
+              }
+            }
+
+            input {
+              width: 100%;
+              height: 100%;
+              border: 0;
+              outline: none;
+              $textSize: (
+                'base': 13px,
+                'macBookAir': 16px,
+              );
+              @include s.escaledFontFormat($textSize, regular, s.$pqBlack2);
+              @include s.Roboto-Regular;
+            }
+
+            input::placeholder {
+              @include s.placeholder(s.$pqBlack4, 0);
+              $textSize: (
+                'base': 13px,
+                'macBookAir': 16px,
+              );
+              @include s.escaledFontFormat($textSize, regular, s.$pqPlaceholder);
+              @include s.Roboto-Regular;
+              width: 100%;
+              font-size: 13px !important;
+              @include s.responsive_layout('macBookAir') {
+                font-size: 16px !important;
+              }
+            }
+          }
+        }
+      }
+
+      & > .content {
+        width: 100%;
+        max-height: 200px;
+        top: 56px;
+        background-color: s.$pqWhite;
+        border: 1px solid s.$gnInactivo;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+        box-sizing: border-box;
+        position: absolute;
+        transition: all 1s;
+        z-index: 100;
+
+        & > div:nth-of-type(1) {
+          width: 100%;
+
+          & > div:nth-of-type(1) {
+            width: 100%;
+            overflow: auto;
+
+            & > .options {
+              @include s.windowsScrollbars('none');
+              max-height: 125px;
+              overflow: auto;
+              margin: 0 !important;
+
+              & > .options-container {
+                width: 100%;
+
+                &:hover {
+                  background-color: #eceef0;
+                }
+
+                & > .border-separator {
+                  width: calc(100% - 30px);
+                  border-bottom: 0.5px solid #eceef0;
+                  margin: 0 auto;
+
+                  & > .option {
+                    width: 100%;
+                    min-height: 25px;
+                    font-weight: lighter;
+                    display: flex;
+                    flex-direction: column;
+                    box-sizing: border-box;
+                    justify-content: center;
+                    padding: 9px 0;
+
+                    & > .selected {
+                      @include s.Roboto-Regular;
+                    }
+
+                    & > label {
+                      @include s.Roboto-Light;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .tooltip {
+    position: relative !important;
+    z-index: 1;
+  }
+
+  .tooltip .tooltiptext {
+    border: 1px solid s.$pqGray2;
+    visibility: hidden;
+    width: 160px;
+    background-color: s.$gnAzulObscuro;
+    color: #fff;
+    text-align: left;
+    position: absolute;
+    z-index: 10;
+    bottom: 100%;
+    left: 5px;
+    margin-left: -60px;
+    padding: 10px 15px;
+    opacity: 0;
+    transition: opacity 1s;
+
+    & > span {
+      color: s.$gnDorado;
+    }
+  }
+
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > .drop-list-container {
+      & > .label-container {
+        height: 21px;
+
+        & > img:nth-of-type(1) {
+          width: 8px;
+        }
+
+        & > div:nth-of-type(1) {
+          width: calc(100% - 9px);
+        }
+      }
+
+      & > .label-disable-edit-container {
+        height: 30px;
+      }
+
+      & > .container-drop {
+        & > .title {
+          height: 30px;
+        }
+
+        & > .content {
+          top: 29px;
+
+          & > div:nth-of-type(1) {
+            & > div:nth-of-type(1) {
+              & > .options {
+                & > .options-container {
+                  & > .border-separator {
+                    width: calc(100% - 60px);
+                    border-bottom: 0.5px solid #eceef0;
+                    margin: 0 auto;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

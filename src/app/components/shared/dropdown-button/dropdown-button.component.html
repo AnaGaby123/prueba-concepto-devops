@@ -1,0 +1,25 @@
+<section id="principal-container">
+  <div class="menu" id="container" tabindex="0" (blur)="closeCombo()">
+    <div (click)="openCombo()">
+      <div [ngClass]="isOpen ? 'icons close' : 'icons'">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <div class="text">
+        <label>{{ value?.label ? value.label : 'N/A' }}</label>
+      </div>
+    </div>
+    <section class="section" id="section" #submenuOptions [style.height.px]="isOpen ? submenuOptions.scrollHeight : 0">
+      <div>
+        <ul
+          [ngClass]="value.value === option.value ? 'listaHamburguesa itemSelect' : 'listaHamburguesa'"
+          *ngFor="let option of options; let i = index"
+          (click)="selectOption(option)"
+        >
+          <li [ngClass]="i === options.length - 1 ? 'sinLine' : ''">{{ option.label }}</li>
+        </ul>
+      </div>
+    </section>
+  </div>
+</section>

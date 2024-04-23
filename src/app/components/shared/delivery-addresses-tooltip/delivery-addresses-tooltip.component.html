@@ -1,0 +1,15 @@
+<div class="delivery-addresses-tooltip">
+  <div class="floating-container">
+    <label (click)="openTooltip()">{{ deliverySelected ? buildAddressFormat(deliverySelected) : 'N/D' }}</label>
+    <div class="pieces-floating-input" *ngIf="isTooltipOpen">
+      <div
+        class="list"
+        *ngFor="let address of deliveriesAddress"
+        (click)="selectAddress(address)"
+        [ngClass]="{active: lodashIsEqual(address.IdDireccion, deliverySelected?.IdDireccion)}"
+      >
+        <label>{{ buildAddressFormat(address) }}</label>
+      </div>
+    </div>
+  </div>
+</div>

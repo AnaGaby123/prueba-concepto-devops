@@ -1,0 +1,40 @@
+<div id="clients-details-form">
+  <div class="container">
+    <div class="tabs" *ngIf="!(contractDetails$ | async)">
+      <app-tabs
+        [options]="tabOptions$ | async"
+        [tapSelected]="selectedTab$ | async"
+        (onSelectOption)="setTab($event)"
+      ></app-tabs>
+    </div>
+    <div class="container-outlet">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  <footer>
+    <div class="buttons" *ngIf="enableEdit$ | async">
+      <button *ngIf="editMode$ | async" (click)="cancelForm()" [ngClass]="'enable'">{{ 'common.cancel' | translate }}</button>
+      <button *ngIf="!(editMode$ | async)" [ngClass]="'enable'" (click)="cancelAdd()">{{ 'common.cancel' | translate }}</button>
+      <div>
+        <button
+          (click)="saveData()"
+          [ngClass]="(saveValidatorsBySteps$ | async) ? 'enable' : 'disable'"
+          [disabled]="!(saveValidatorsBySteps$ | async)"
+        >
+          {{ 'common.save' | translate }}
+        </button>
+        <button
+          *ngIf="showGenerateContract$ | async"
+          [ngClass]="(activateGenerateContractButton$ | async) ? 'btnGenerate' : 'btnGenerateDisabled'"
+          [disabled]="!(activateGenerateContractButton$ | async)"
+          (click)="generateContract()"
+        >
+          {{ 'formClient.generateContract' | translate }}
+        </button>
+      </div>
+    </div>
+    <div class="oneButton" *ngIf="!(enableEdit$ | async)">
+      <button (click)="enableEditMode()">{{ 'common.edit' | translate }}</button>
+    </div>
+  </footer>
+</div>

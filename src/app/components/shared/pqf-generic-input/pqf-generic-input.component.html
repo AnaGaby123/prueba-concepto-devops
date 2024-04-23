@@ -1,0 +1,195 @@
+<!--DOCS: EL INPUT CON ALINEACIÓN VERTICAL-->
+<div class="content-generic-input-column" *ngIf="isAlignColumn">
+  <div class="content-label-row" *ngIf="label">
+    <img
+      *ngIf="isRequired && showAsterisk && !isReadonly"
+      alt=""
+      [src]="
+        !isActive
+          ? './assets/Images/gray-asterisk.svg'
+          : !error && !forceError
+          ? './assets/Images/asterisco.svg'
+          : './assets/Images/asterisco_red.svg'
+      "
+    />
+    <label
+      *ngIf="label"
+      [ngClass]="{
+        'text-label-error-required': (error || forceError) && isActive,
+        'not-active-label': !isActive,
+        'label-bold': isReadonly
+      }"
+      >{{ label }}
+    </label>
+    <span *ngIf="isRequired && showMessageRequired"> (Campo Obligatorio) </span>
+  </div>
+  <div class="container-input-column" *ngIf="!isReadonly">
+    <input
+      #inputElement
+      size="1"
+      [formControl]="input"
+      [max]="maxNumber"
+      [maxlength]="maxLength!"
+      [min]="minNumber"
+      [minlength]="minLength"
+      [placeholder]="placeholder ?? label ?? 'Escribe...'"
+      [readOnly]="isReadonly || !isActive"
+      [required]="isRequired"
+      [style.text-align]="textAlign"
+      [type]="type"
+      [ngClass]="{
+        'text-normal': !error && !forceError && isActive,
+        'text-error': (error || forceError) && isActive,
+        'borderless-input': isReadonly && isActive,
+        'not-active-input': !isActive
+      }"
+      [value]="input.value"
+      [style.width]="width ? width : 'auto'"
+      (blur)="handleOnBlurEvent()"
+      (focus)="handleOnFocusEvent()"
+      (beforeinput)="handleBeforeInputEvent($event)"
+      (paste)="handlePasteEvent($event)"
+      (keypress)="handleKeyPressEvent($event)"
+      (compositionstart)="handleCompositionEvent($event)"
+      (compositionend)="handleCompositionEvent($event)"
+      (compositionupdate)="handleCompositionEvent($event)"
+      (ngModelChange)="handleNgModelChange($event)"
+    />
+
+    <label
+      *ngIf="extraString"
+      [ngClass]="{
+        'text-extra-error': (error || forceError) && isActive,
+        'text-extra-not-active': !isActive,
+        'text-extra-normal': !error && !forceError && isActive
+      }"
+      >{{ extraString }}</label
+    >
+  </div>
+  <div class="container-input-readonly" *ngIf="isReadonly">
+    <!--    <div class="icons" *ngIf="!isNotReadonly">-->
+    <!--      <img [src]="'assets/Images/components-src/generic-input/' + icon + '.svg'" />-->
+    <!--    </div>-->
+    <label class="label-value">
+      {{
+        this.input.value !== undefined && this.input.value !== null && this.input.value !== '' ? this.input.value : 'N/D'
+      }}</label
+    >
+
+    <label class="label-extra-text" *ngIf="extraString">{{ extraString }}</label>
+  </div>
+  <div class="feedback" *ngIf="showFeedback && feedback">
+    <p
+      [ngClass]="{
+        'feedback-success': (!error && !forceError && input.value) || value,
+        'feedback-error': error || forceError,
+        'normal-color': !error && !forceError,
+        'not-active-feedback': !isActive,
+        readonly: isReadonly
+      }"
+      >{{ feedback }}</p
+    >
+  </div>
+</div>
+
+<!--DOCS: EL INPUT CON ALINEACIÓN HORIZONTAL-->
+<div class="content-generic-input-row-main" *ngIf="!isAlignColumn">
+  <div
+    class="content-label-row"
+    *ngIf="label"
+    [style.margin-bottom]="isRequired && showMessageRequired && feedback ? '0' : isRequired && feedback ? '20px' : '0'"
+    [style.margin-top]="
+      isRequired && showMessageRequired && feedback ? '8px' : isRequired && showMessageRequired ? '27px' : '0'
+    "
+  >
+    <img
+      *ngIf="isRequired && showAsterisk"
+      alt=""
+      [src]="
+        !isActive
+          ? './assets/Images/gray-asterisk.svg'
+          : !error && !forceError
+          ? './assets/Images/asterisco.svg'
+          : './assets/Images/asterisco_red.svg'
+      "
+    />
+    <label
+      *ngIf="label"
+      [ngClass]="{
+        'text-label-error-required': (error || forceError) && isActive,
+        'not-active-label': !isActive,
+        'label-bold': isReadonly
+      }"
+      >{{ label }}
+    </label>
+  </div>
+  <div class="container-input-row-general">
+    <span *ngIf="isRequired && showMessageRequired"> (Campo Obligatorio) </span>
+    <div class="container-input-row" *ngIf="!isReadonly">
+      <input
+        #inputElement
+        size="1"
+        [formControl]="input"
+        [max]="maxNumber"
+        [maxlength]="maxLength!"
+        [min]="minNumber"
+        [minlength]="minLength"
+        [placeholder]="placeholder ?? label ?? 'Escribe...'"
+        [readOnly]="isReadonly || !isActive"
+        [required]="isRequired"
+        [style.text-align]="textAlign"
+        [type]="type"
+        [ngClass]="{
+          'text-normal': !error && !forceError && isActive,
+          'text-error': (error || forceError) && isActive,
+          'borderless-input': isReadonly && isActive,
+          'not-active-input': !isActive
+        }"
+        [value]="input.value"
+        [style.width]="width ? width : 'auto'"
+        (blur)="handleOnBlurEvent()"
+        (focus)="handleOnFocusEvent()"
+        (beforeinput)="handleBeforeInputEvent($event)"
+        (paste)="handlePasteEvent($event)"
+        (keypress)="handleKeyPressEvent($event)"
+        (compositionstart)="handleCompositionEvent($event)"
+        (compositionend)="handleCompositionEvent($event)"
+        (compositionupdate)="handleCompositionEvent($event)"
+        (ngModelChange)="handleNgModelChange($event)"
+      />
+      <label
+        *ngIf="extraString"
+        [ngClass]="{
+          'text-extra-error': (error || forceError) && isActive,
+          'text-extra-not-active': !isActive,
+          'text-extra-normal': !error && !forceError && isActive
+        }"
+        >{{ extraString }}</label
+      >
+    </div>
+    <div class="container-input-readonly" *ngIf="isReadonly">
+      <!--    <div class="icons" *ngIf="!isNotReadonly">-->
+      <!--      <img [src]="'assets/Images/components-src/generic-input/' + icon + '.svg'" />-->
+      <!--    </div>-->
+      <label class="label-value">
+        {{
+          this.input.value !== undefined && this.input.value !== null && this.input.value !== '' ? this.input.value : 'N/D'
+        }}</label
+      >
+      <label class="label-extra-text" *ngIf="extraString">{{ extraString }}</label>
+    </div>
+
+    <div class="feedback" *ngIf="showFeedback && feedback">
+      <p
+        [ngClass]="{
+          'feedback-success': (!error && !forceError && input.value) || value,
+          'feedback-error': error || forceError,
+          'normal-color': !error && !forceError,
+          'not-active-feedback': !isActive,
+          readonly: isReadonly
+        }"
+        >{{ feedback }}</p
+      >
+    </div>
+  </div>
+</div>

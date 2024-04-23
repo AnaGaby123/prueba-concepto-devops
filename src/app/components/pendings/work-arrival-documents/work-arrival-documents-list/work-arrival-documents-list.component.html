@@ -1,0 +1,60 @@
+<div class="dashboard-container" id="work-arrival-documents-list-container">
+  <div class="left-container">
+    <label class="title">{{ 'common.providers' | translate }}</label>
+    <div class="filters">
+      <div>
+        <app-hamburger-menu [options]="burgerOptions$ | async" [value]="(selectedBurgerOption$ | async)?.value">
+        </app-hamburger-menu>
+      </div>
+      <div>
+        <app-search
+          [placeholder]="'common.provider' | translate"
+          [searchTerm]="searchTerm$ | async"
+          (textSearch)="handleSearchTerm($event)"
+        >
+        </app-search>
+      </div>
+    </div>
+    <div class="list-container">
+      <virtual-scroller class="virtual-list" *ngIf="!lodashIsEmpty(providers)">
+        <div class="item" *ngFor="let provider of providers" (click)="setSelectedProvider(provider)">
+          <div class="number">
+            <label>#{{ provider.Index }}</label>
+          </div>
+          <div class="content">
+            <label class="title">{{ provider.provider }}</label>
+            <label class="subtitle"
+              >{{ provider.oc }} {{ 'common.oc' | translate }} · {{ provider.products }}
+              {{ provider.products === 1 ? ('common.product' | translate) : ('common.products' | translate) }}</label
+            >
+            <label class="total-value"
+              >{{ 'workArrivalDocuments.inspectionDate' | translate }} {{ provider.date | dateFormatSlashShort }}</label
+            >
+          </div>
+          <div class="arrow">
+            <img alt="Detalles" src="assets/Images/arrows/arrow_right.svg" />
+          </div>
+        </div>
+      </virtual-scroller>
+      <div class="without-results" *ngIf="lodashIsEmpty(providers) && (providersStatus$ | async) !== 1">
+        <app-without-results [title]="'common.withoutResults' | translate"></app-without-results>
+      </div>
+      <div class="loader" *ngIf="(providersStatus$ | async) === 1">
+        <app-loading></app-loading>
+      </div>
+    </div>
+    <div class="footer">
+      <label>#{{ 1 }}</label>
+      <label>{{ '1' }} {{ 1 === 1 ? ('common.provider' | translate) : ('common.providers' | translate) }}</label>
+      <label>{{ '1' }} {{ 'common.oc' | translate }}</label>
+      <label>{{ '1' }} {{ 1 === 1 ? ('common.product' | translate) : ('common.products' | translate) }}</label>
+    </div>
+  </div>
+  <div class="right-container">
+    <ng-container *ngIf="true">
+      <app-doughnut-chart [title]="'common.providers' | translate" [titleDetails]="'totals' | translate" [typeChart]="1">
+      </app-doughnut-chart>
+    </ng-container>
+    <!--    <app-loading class="loading" *ngIf="isLoadingChartData$ | async"></app-loading>-->
+  </div>
+</div>

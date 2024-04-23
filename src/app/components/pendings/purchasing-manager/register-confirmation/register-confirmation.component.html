@@ -1,0 +1,28 @@
+<div class="component-container" id="register-confirmation-container">
+  <div class="header">
+    <app-header-bar [activeBack]="isDetails$ | async" [title]="title$ | async" (goBack)="goBack()"></app-header-bar>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="footer" *ngIf="!(isDetails$ | async)">
+    <ng-container>
+      <div>
+        <img alt="" src="assets/Images/labels/programada.svg" />
+        <label>{{ 'registerConfirmation.scheduledDelivery' | translate }}</label>
+      </div>
+      <div>
+        <img alt="" src="assets/Images/labels/unica.svg" />
+        <label>{{ 'registerConfirmation.singleDelivery' | translate }}</label>
+      </div>
+      <div>
+        <label class="label-dark">FEE:</label>
+        <label>{{ 'dailyMeeting.deliveryDate' | translate }}</label>
+      </div>
+      <div>
+        <label class="label-dark">OC:</label>
+        <label>{{ 'processPurchase.purchaseOrder' | translate }}</label>
+      </div>
+    </ng-container>
+  </div>
+</div>

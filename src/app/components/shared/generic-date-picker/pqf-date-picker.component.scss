@@ -1,0 +1,355 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  & > .date-picker {
+    width: 100%;
+
+    & > .label-container {
+      @include s.absoluteCenter;
+      @include s.flexRow;
+      height: 19px;
+      justify-content: flex-start;
+      margin-bottom: 8px;
+      overflow: hidden;
+      width: 100%;
+
+      & > div:nth-of-type(1) {
+        flex: 1 1 auto;
+        @include s.multiLineTextTruncateSinHeight(1, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+
+        & > label:nth-of-type(1) {
+          @include s.responsive-font-format($font-size-map: s.$responsive-font-16-16, $color: s.$dark-proquifa);
+        }
+      }
+    }
+
+    & > .date-picker-container {
+      @include s.flexColumn;
+      gap: 8px;
+      position: relative;
+      width: 100%;
+
+      & > .datepicker {
+        @include s.absolute100;
+        color: s.$pqBlack2;
+        display: flex;
+
+        & > .labelInside {
+          @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+          @include s.Roboto-Bold;
+          align-self: center;
+          padding: 0 0 0 10px;
+          width: 100px;
+        }
+
+        & > .picker-img {
+          cursor: pointer;
+          max-height: max-content;
+          overflow: hidden;
+        }
+
+        & > .datepicker__input {
+          @include s.absolute100;
+          @include s.responsive-font-format(
+            $color: s.$dark-proquifa,
+            $font-family: s.$font-family_roboto_bold,
+            $font-size-map: s.$responsive-font-13-16,
+            $font-weight: s.$font_weight_bold
+          );
+          background-color: s.$dark-proquifa-f;
+          background-image: url('../../../../assets/Images/calendar.svg');
+          background-position: right;
+          background-repeat: no-repeat;
+          border-radius: 4px;
+          border: 1px solid s.$pqBlack2;
+          height: 40px;
+          outline: none;
+
+          &.enabled {
+            cursor: pointer;
+          }
+
+          &::-webkit-input-placeholder {
+            /* WebKit, Blink, Edge */
+            color: s.$pqGray3;
+          }
+
+          &:-moz-placeholder {
+            /* Mozilla Firefox 4 to 18 */
+            color: s.$pqGray3;
+          }
+
+          &::-moz-placeholder {
+            /* Mozilla Firefox 19+ */
+            color: s.$pqGray3;
+          }
+
+          &::-ms-input-placeholder {
+            /* Internet Explorer 10-11 */
+            color: s.$pqGray3;
+          }
+
+          &::-ms-input-placeholder {
+            /* Microsoft Edge */
+            color: s.$pqGray3;
+          }
+
+          &::placeholder {
+            /* Most modern browsers support this now. */
+            color: s.$pqGray3;
+          }
+        }
+      }
+
+      & > .imgDate {
+        align-items: center;
+        display: flex;
+        height: 100%;
+
+        & > .pointer {
+          cursor: pointer;
+        }
+
+        & > img {
+          height: 100%;
+          margin-left: 8px;
+        }
+      }
+
+      & > .datepicker__calendar {
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        background-color: s.$pqWhite !important;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+        cursor: default;
+        position: absolute;
+        right: 0;
+        top: 30px;
+        user-select: none;
+        z-index: 1000;
+
+        &.close {
+          height: 0;
+          overflow: hidden;
+          width: 0;
+        }
+
+        & > .content {
+          @include s.absolute100;
+          position: relative;
+
+          & > .triangle {
+            font-size: 0;
+            height: 0;
+            line-height: 0;
+            position: absolute;
+            right: 7px;
+            width: 0;
+
+            &.top {
+              border-left: 8px solid transparent;
+              border-right: 8px solid transparent;
+              border-top: 8px solid s.$pqWhite;
+              bottom: -7px;
+            }
+
+            &.down {
+              border-bottom: 8px solid s.$pqBlack2; /* base flecha y color*/
+              border-left: 8px solid transparent; /* izquierda flecha */
+              border-right: 8px solid transparent; /* derecha flecha */
+              top: -8px;
+            }
+          }
+
+          & > .datepicker__calendar__nav {
+            -ms-flex-align: center;
+            -ms-flex-pack: center;
+            -webkit-box-align: center;
+            -webkit-box-pack: center;
+            background-color: s.$pqBlack2;
+            display: grid;
+            height: 37px;
+            grid-column-gap: 3px;
+            justify-content: space-between;
+            padding: 0 5px;
+            grid-template-columns: repeat(7, 24px);
+            align-items: center;
+
+            & > .datepicker__calendar__nav__arrow {
+              -webkit-transition: 0.37s;
+              cursor: pointer;
+              transition: 0.37s;
+              height: 14px;
+              justify-self: center;
+              display: flex;
+
+              & > .datepicker__calendar__nav__chevron {
+                -webkit-transition: 0.37s;
+                fill: s.$pqWhite;
+                transition: 0.37s;
+                height: 100%;
+              }
+
+              & > .datepicker__calendar__nav__chevron:hover {
+                fill: s.$pqWhite;
+              }
+            }
+
+            & > .datepicker__calendar__nav__header {
+              @include s.Roboto-Bold;
+              @include s.absoluteCenter;
+              @include s.escaledFontFormat(s.$textSize11to13, bold, s.$pqWhite);
+              @include s.flexRow;
+              overflow: hidden;
+              text-align: center;
+              grid-column-end: span 5;
+
+              & > span {
+                flex: 0 0 auto;
+                line-height: initial;
+              }
+
+              input[type='number']::-webkit-inner-spin-button,
+              input[type='number']::-webkit-outer-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+              }
+
+              input[type='number'] {
+                -moz-appearance: textfield;
+              }
+
+              & > .datepicker__calendar__nav__header__year {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormat(s.$textSize11to13, bold, s.$pqWhite);
+                background-color: s.$pqBlack2;
+                border: 1px solid s.$pqBlack2;
+                height: auto;
+                margin: 0;
+                padding: 0 3px;
+                transition: 0.32s;
+                width: 35px;
+              }
+
+              & > .datepicker__calendar__nav__header__year:focus.ng-invalid {
+                border: 1px solid s.$gnRojoSemaforo;
+              }
+
+              & > .datepicker__calendar__nav__header__year:focus.ng-valid {
+                border: 1px solid s.$pqBlack2;
+              }
+
+              & > .datepicker__calendar__nav__header__year:focus {
+                outline: none;
+              }
+            }
+          }
+
+          & > .datepicker__calendar__content {
+            @include s.escaledFontFormat(s.$textSize10to12, regular, s.$pqBlack2);
+            background-color: s.$pqWhite;
+            overflow: hidden;
+            padding: 5px;
+
+            & > .datepicker__calendar__labels {
+              display: grid;
+              grid-template-columns: repeat(7, 24px);
+              margin-bottom: 3px;
+              grid-column-gap: 3px;
+              width: 100%;
+              grid-template-rows: 24px;
+              place-items: center;
+
+              & > .datepicker__calendar__label {
+                color: s.$pqBlack2 !important;
+                font-weight: s.$font_weight_bold !important;
+              }
+            }
+
+            & > .datepicker__calendar__month {
+              display: grid;
+              grid-column-gap: 3px;
+              grid-row-gap: 3px;
+              grid-template-columns: repeat(7, 24px);
+              grid-template-rows: repeat(6, 24px);
+
+              & > .datepicker__calendar__month__day {
+                -webkit-transition: 0.37s;
+                border-radius: 50%;
+                display: grid;
+                place-items: center;
+                text-align: center;
+                transition: 0.37s;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > .date-picker {
+      & > .label-container {
+        height: 21px;
+      }
+
+      & > .date-picker-container {
+        @include s.flexColumn;
+        height: 30px;
+
+        & > .datepicker {
+          & > .labelInside {
+            width: 130px;
+          }
+        }
+
+        & > .datepicker__calendar {
+          & > .content {
+            & > .triangle {
+              right: 9px;
+            }
+
+            & > .datepicker__calendar__nav {
+              grid-template-columns: repeat(7, 27px);
+              grid-column-gap: 5px;
+              height: 37px;
+
+              & > .datepicker__calendar__nav__arrow {
+                height: 14px;
+
+                & > img {
+                  width: 100%;
+                }
+              }
+            }
+
+            & > .datepicker__calendar__content {
+              & > .datepicker__calendar__labels {
+                grid-column-gap: 5px;
+                grid-template-columns: repeat(7, 27px);
+                grid-template-rows: 27px;
+                margin-bottom: 5px;
+              }
+
+              & > .datepicker__calendar__month {
+                grid-column-gap: 5px;
+                grid-row-gap: 5px;
+                grid-template-columns: repeat(7, 27px);
+                grid-template-rows: repeat(6, 27px);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

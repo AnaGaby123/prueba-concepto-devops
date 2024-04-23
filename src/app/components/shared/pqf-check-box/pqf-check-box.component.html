@@ -1,0 +1,8 @@
+<div class="check-box-container" (click)="selected()" [ngClass]="{inactive: inactive}">
+  <div class="box-container">
+    <img alt="check" class="image-check" [src]="getCheckImage()" draggable="false" />
+  </div>
+  <div class="text-container" *ngIf="label">
+    <label [ngClass]="getTextCheckColor()" [style.font-family]="fontFamily">{{ label }} </label>
+  </div>
+</div>

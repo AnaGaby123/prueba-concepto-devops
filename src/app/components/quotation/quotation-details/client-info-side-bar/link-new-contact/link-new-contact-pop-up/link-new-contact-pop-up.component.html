@@ -1,0 +1,18 @@
+<app-pop-up-generic
+  [rightButtonLabel]="'quotation.continue' | translate"
+  [activeButtons]="true"
+  [height]="'395px'"
+  (evento)="onClose($event)"
+>
+  <div id="pop-up-new-contact">
+    <img src="assets/Images/alerta.svg" alt="alerta" />
+    <div class="content">
+      <div class="info">
+        <label>
+          {{ 'quotation.linkNewContactMessage' | translate }} <span>{{ selectedClientName$ | async }}</span>
+        </label>
+        <label>{{ 'quotation.continueQuestion' | translate }}</label>
+      </div>
+    </div>
+  </div>
+</app-pop-up-generic>

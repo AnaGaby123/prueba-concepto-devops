@@ -1,0 +1,222 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  .product {
+    @include s.absolute100();
+    display: flex;
+    flex-direction: column;
+    padding: 25px 18px;
+    position: relative;
+
+    & > .content-item {
+      @include s.absoluteCenter();
+      @include s.flexRow();
+      padding: 15px 0;
+      width: 100%;
+
+      & > img {
+        animation: animateZoom 0.4s;
+        width: 70px;
+      }
+
+      & > .img-logo {
+        display: block;
+      }
+
+      & > .img-logo-hover {
+        display: none;
+      }
+    }
+
+    & > .footer-item {
+      @include s.absoluteLeft();
+      @include s.flexColumn();
+      flex: 1;
+      gap: 12px;
+      justify-content: space-between;
+      line-height: 20px;
+      width: 100%;
+
+      & > div {
+        width: 100%;
+      }
+
+      & > .titleFooter {
+        @include s.flexRowNoWrap();
+        gap: 5px;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize13to15, bold, s.$pqBlack2);
+          @include s.Roboto-Bold();
+          align-self: center;
+        }
+
+        & > .centerPagination {
+          & > img {
+            animation: animatezoom 0.2s;
+            height: 15px;
+            margin: 0 3px;
+          }
+
+          & > .img-logo {
+            display: block;
+          }
+
+          & > .img-logo-hover {
+            display: none;
+          }
+        }
+
+        & > span {
+          @include s.escaledFontFormat(s.$textSize13to15, bold, s.$pqGreen);
+          @include s.Roboto-Bold();
+          align-self: center;
+        }
+      }
+
+      & > .description {
+        @include s.flexRow();
+        overflow: hidden;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+          @include s.multiLineTextTruncate(3, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+          @include s.Roboto-Regular();
+        }
+      }
+
+      & > .totals {
+        @include s.flexRow();
+        border-bottom: 1px solid s.$pqWhite;
+        justify-content: space-between;
+        width: 100%;
+
+        & > div {
+          @include s.multiLineTextTruncate(1, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+
+          & > span {
+            @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqGreen);
+            @include s.Roboto-Bold();
+            text-align: center;
+          }
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+            @include s.Roboto-Bold();
+            height: 14px;
+          }
+        }
+      }
+
+      & > .prices {
+        @include s.flexRow();
+        height: 40px;
+        justify-content: space-between;
+        width: 100%;
+
+        & > .content-left {
+          @include s.flexColumn();
+          justify-content: space-around;
+
+          & .content-1 {
+            @include s.flexRow();
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+              @include s.Roboto-Bold();
+            }
+          }
+
+          & .content-2 {
+            @include s.flexRow();
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqGreen);
+              @include s.Roboto-Regular();
+            }
+          }
+        }
+
+        & > .content-right {
+          @include s.flexRow();
+          align-items: flex-end;
+          padding-bottom: 3px;
+
+          & label {
+            @include s.escaledFontFormat(s.$textSize14to17, bold, s.$pqGreen);
+            @include s.Roboto-Bold();
+          }
+        }
+      }
+    }
+
+    &:hover {
+      * {
+        cursor: pointer;
+      }
+
+      & > .content-item {
+        & > img {
+          animation: animateZoom 0.4s;
+        }
+
+        & > .img-logo {
+          display: none;
+        }
+
+        & > .img-logo-hover {
+          display: block;
+        }
+      }
+
+      & > .footer-item {
+        min-height: 50%;
+
+        & > .titleFooter {
+          & > .centerPagination {
+            & > .img-logo {
+              display: none;
+            }
+
+            & > .img-logo-hover {
+              display: block;
+            }
+
+            & > img {
+              animation: animateZoom 0.4s;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // EFECTOS DEL ITEM, SE CAMABIE EL COLOR CON EL NOMBRE DE LA CLASE
+  & > .default {
+    background-color: #ffffff;
+
+    &:hover {
+      background-color: #ffffff;
+    }
+  }
+
+  & > .blue {
+    background-color: rgba(s.$pqGreen, 0.08);
+
+    &:hover {
+      background-color: rgba(s.$pqGreen, 0.11);
+    }
+  }
+
+  & > .yellow {
+    background-color: rgba(s.$pqYellow2, 0.5);
+
+    &:hover {
+      background-color: rgba(s.$pqYellow2, 0.92);
+    }
+  }
+}

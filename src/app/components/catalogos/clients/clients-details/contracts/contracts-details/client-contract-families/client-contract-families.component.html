@@ -1,0 +1,134 @@
+<div id="client-contract-families-container">
+  <div class="client-contract-brands-linked-container">
+    <div class="client-contract-brands-linked">
+      <div class="title-container">
+        <label class="title textUpperCase">
+          {{ 'common.brands' | translate }}
+        </label>
+        <app-search [searchTerm]="searchTermBrand$ | async" [placeholder]="'Buscar'" (textSearch)="handleSearchByBrand($event)">
+        </app-search>
+      </div>
+      <div class="brand-list-container">
+        <div *ngIf="!lodashIsEmpty(listBrand$ | async)" class="brand-list">
+          <div
+            class="brand-item"
+            *ngFor="let item of listBrand$ | async"
+            [ngClass]="item.isSelected ? 'active' : ''"
+            (click)="selectBrand(item)"
+          >
+            <div class="brand-selected"></div>
+            <div class="brand-data">
+              <div class="brand-name">
+                <label>{{ item.NombreMarca }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="loading" *ngIf="lodashIsEmpty(listBrand$ | async) && (statusBrandList$ | async)">
+          <app-loading></app-loading>
+        </div>
+        <div class="without-results" *ngIf="lodashIsEmpty(listBrand$ | async) && !(statusBrandList$ | async)">
+          <app-without-results></app-without-results>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="client-contract-brands-linked-families">
+    <div class="title">
+      <label>
+        {{ (selectedContractBrand$ | async)?.NombreMarca || 'N/D'
+        }}<span>
+          · {{ (familiesByBrand$ | async)?.length }}
+          {{ (familiesByBrand$ | async)?.length === 1 ? ('common.family' | translate) : ('common.families' | translate) }}</span
+        >
+      </label>
+    </div>
+    <div class="cards">
+      <app-pqf-card
+        [enableMessage]="true"
+        [options]="familiesForCard$ | async"
+        [withoutOptionsMessage]="'common.withoutFamilies' | translate"
+        (handleOptionSelected)="selectFamily($event)"
+      ></app-pqf-card>
+    </div>
+    <div *ngIf="(selectedTabConfiguration$ | async) && (tabsConfiguration$ | async)" class="tabs">
+      <app-tabs
+        [options]="tabsConfiguration$ | async"
+        [tapSelected]="selectedTabConfiguration$ | async"
+        (onSelectOption)="selectLevelConfigurationTab($event)"
+      >
+      </app-tabs>
+    </div>
+    <div class="family-configuration">
+      <app-generals
+        *ngIf="(selectedTabConfiguration$ | async)?.id === 1 && (hasConfigurationProvider | async)"
+        [actualConfiguration]="actualConfiguration$ | async"
+        [isMexican]="isMexican$ | async"
+        [activateCancelConfigButton]="activateCancelConfigButton$ | async"
+        [activateSaveConfigButton]="activateSaveConfigButton$ | async"
+        [selectedSubConfigOption]="selectedSubConfigOption | async"
+        [subConfigurationTabs]="tabsSubConfiguration$ | async"
+        [viewType]="viewType$ | async"
+        (emitSelectedSubConfigOption)="handleSelectedOption($event)"
+      ></app-generals>
+      <app-provider-price-list
+        *ngIf="(selectedTabConfiguration$ | async)?.id === 2 && (hasConfigurationProvider | async)"
+        [activateCancelConfigButton]="activateCancelConfigButton$ | async"
+        [activateSaveConfigButton]="activateSaveConfigButton$ | async"
+        [actualConfiguration]="actualConfiguration$ | async"
+        [clientIncomeLevel]="clientIncomeLevel$ | async"
+        [isMexican]="isMexican$ | async"
+        [selectedSubConfigOption]="selectedSubConfigOption | async"
+        [selectedTabConfiguration]="selectedTabConfiguration$ | async"
+        [subConfigurationTabs]="tabsSubConfiguration$ | async"
+        [viewType]="viewType$ | async"
+        (emitSelectedSubConfigOption)="handleSelectedOption($event)"
+      ></app-provider-price-list>
+      <app-characteristic-grouper
+        *ngIf="(selectedTabConfiguration$ | async)?.id === 3 && (hasConfigurationProvider | async)"
+        [activateCancelConfigButton]="activateCancelConfigButton$ | async"
+        [activateSaveConfigButton]="activateSaveConfigButton$ | async"
+        [actualConfiguration]="actualConfiguration$ | async"
+        [clientIncomeLevel]="clientIncomeLevel$ | async"
+        [isMexican]="isMexican$ | async"
+        [selectedSubConfigOption]="selectedSubConfigOption | async"
+        [selectedTabConfiguration]="selectedTabConfiguration$ | async"
+        [subConfigurationTabs]="tabsSubConfiguration$ | async"
+        [viewType]="viewType$ | async"
+        (emitSelectedSubConfigOption)="handleSelectedOption($event)"
+      ></app-characteristic-grouper>
+      <app-product
+        *ngIf="(selectedTabConfiguration$ | async)?.id === 4 && (hasConfigurationProvider | async)"
+        [activateCancelConfigButton]="activateCancelConfigButton$ | async"
+        [activateSaveConfigButton]="activateSaveConfigButton$ | async"
+        [actualConfiguration]="actualConfiguration$ | async"
+        [clientIncomeLevel]="clientIncomeLevel$ | async"
+        [isMexican]="isMexican$ | async"
+        [selectedSubConfigOption]="selectedSubConfigOption | async"
+        [selectedTabConfiguration]="selectedTabConfiguration$ | async"
+        [subConfigurationTabs]="tabsSubConfiguration$ | async"
+        [viewType]="viewType$ | async"
+        (emitSelectedSubConfigOption)="handleSelectedOption($event)"
+      ></app-product>
+      <div class="withoutResults" *ngIf="!(hasConfigurationProvider | async)">
+        <app-without-results [title]="titleNotConfiguration"></app-without-results>
+      </div>
+    </div>
+  </div>
+</div>
+<app-alert *ngIf="activeAlert$ | async" [alertaTxt]="textAlert" (confirmacion)="cancelConfiguration($event)"></app-alert>
+<app-pop-up-generic
+  class="pop-alert"
+  *ngIf="activeCancelPop$ | async"
+  [activeButtons]="true"
+  [height]="(viewType$ | async) === viewTypes.small ? '300px' : '360px'"
+  [width]="(viewType$ | async) === viewTypes.small ? '500px' : '620px'"
+  (evento)="handleActiveAlert($event)"
+>
+  <div class="container">
+    <img alt="alert" src="assets/Images/alerta.svg" />
+    <div>
+      <label>{{ 'common.titleModalCancel' | translate }}</label>
+    </div>
+  </div>
+</app-pop-up-generic>

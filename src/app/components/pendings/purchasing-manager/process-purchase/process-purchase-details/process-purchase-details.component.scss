@@ -1,0 +1,80 @@
+@use 'base' as s;
+
+:host {
+  width: 100%;
+  height: 100%;
+
+  #offer-adjustment-details {
+    @include s.flexRowNoWrap;
+    width: 100%;
+    height: calc(100% - 54px);
+  }
+
+  & > footer {
+    @include s.flexRowNoWrap;
+    @include s.absoluteCenter;
+    width: 100%;
+    height: 54px;
+    border-top: 2px solid s.$pqBlack;
+    box-sizing: border-box;
+
+    & > div:nth-of-type(1) {
+      @include s.flexRowNoWrap;
+      @include s.absoluteCenter;
+      box-sizing: border-box;
+      width: 100%;
+      height: 100%;
+      padding-right: 16px;
+      padding-left: 16px;
+      justify-content: center;
+
+      & > div {
+        @include s.flexRowNoWrap;
+        @include s.absoluteCenter;
+        width: auto;
+        padding-left: 10px;
+        padding-right: 10px;
+
+        & > label:nth-of-type(1) {
+          margin-right: 4px;
+        }
+
+        & > .normal {
+          @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+          @include s.Roboto-Bold;
+        }
+
+        & > .red {
+          @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqTextAlert);
+          @include s.Roboto-Bold;
+        }
+
+        & > .yellow {
+          @include s.escaledFontFormat(s.$textSize12to14, bold, s.$orange);
+          @include s.Roboto-Bold;
+        }
+
+        & > .green {
+          @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqGreen2);
+          @include s.Roboto-Bold;
+        }
+
+        & > label:nth-of-type(2),
+        .text {
+          @include s.escaledFontFormat(s.$textSize12to14, normal, s.$pqBlack2);
+          @include s.Roboto-Regular;
+        }
+
+        & > img {
+          margin-right: 5px;
+          height: 17px;
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #offer-adjustment-details {
+    }
+  }
+}

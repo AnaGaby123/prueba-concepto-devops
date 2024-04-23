@@ -1,0 +1,14 @@
+<div class="component-container" id="close-offer-container">
+  <div class="header">
+    <app-header-bar
+      [activeBack]="(isInDetailsView$ | async) && !(isInReviewView$ | async)"
+      [name]="(isInDetailsView$ | async) ? (client$ | async)?.Nombre : ''"
+      [title]="title$ | async"
+      (goBack)="goBack()"
+    >
+    </app-header-bar>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+</div>

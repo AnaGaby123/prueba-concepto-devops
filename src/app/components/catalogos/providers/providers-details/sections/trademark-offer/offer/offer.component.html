@@ -1,0 +1,83 @@
+<div class="main">
+  <label class="title">{{ 'formProvider.step8.titleOffer' | translate }}</label>
+  <div class="cards" [ngClass]="(enableEdit$ | async) && 'enabled'">
+    <app-pqf-card
+      [enableMessage]="true"
+      [options]="families$ | async"
+      [withoutOptionsMessage]="'common.withoutFamilies' | translate"
+      (handleOptionSelected)="handleSelectedFamilyChange($event)"
+    ></app-pqf-card>
+  </div>
+  <div class="tabs">
+    <app-tabs
+      *ngIf="(families$ | async)?.length > 0"
+      [options]="levelConfigurationTabs$ | async"
+      [tapSelected]="selectedLevelConfigurationTab$ | async"
+      (onSelectOption)="handleLevelConfigurationTabChange($event)"
+    >
+    </app-tabs>
+  </div>
+  <app-generals
+    class="main-container"
+    *ngIf="(selectedLevelConfigurationTab$ | async)?.id === 1 && (families$ | async)?.length > 0"
+    [actualConfiguration]="actualConfiguration$ | async"
+    [deliveryRoutes]="deliveryRoutes$ | async"
+    [editMode]="editMode$ | async"
+    [enableEdit]="enableEdit$ | async"
+    [industryFamily]="industryFamily$ | async"
+    [levelSubConfigurationTabs]="levelSubConfigurationTabs$ | async"
+    [providerIsMexican]="providerIsMexican$ | async"
+    [selectedLevelSubConfiguration]="selectedLevelSubConfiguration$ | async"
+    [viewType]="viewType$ | async"
+  >
+  </app-generals>
+  <app-list-price
+    class="main-container"
+    *ngIf="(selectedLevelConfigurationTab$ | async)?.id === 2 && disponible && (families$ | async)?.length > 0"
+    [actualConfiguration]="actualConfiguration$ | async"
+    [deliveryRoutes]="deliveryRoutes$ | async"
+    [editMode]="editMode$ | async"
+    [enableEdit]="enableEdit$ | async"
+    [industryFamily]="industryFamily$ | async"
+    [levelSubConfigurationTabs]="levelSubConfigurationTabs$ | async"
+    [providerIsMexican]="providerIsMexican$ | async"
+    [selectedLevelSubConfiguration]="selectedLevelSubConfiguration$ | async"
+    [viewType]="viewType$ | async"
+  >
+  </app-list-price>
+  <div *ngIf="(selectedLevelConfigurationTab$ | async)?.id === 2 && !disponible" class="without-results">
+    <app-without-results [title]="'NO DISPONIBLE'"></app-without-results>
+  </div>
+  <app-offer-classification
+    class="main-container"
+    *ngIf="(selectedLevelConfigurationTab$ | async)?.id === 3 && (families$ | async)?.length > 0"
+    [actualConfiguration]="actualConfiguration$ | async"
+    [deliveryRoutes]="deliveryRoutes$ | async"
+    [editMode]="editMode$ | async"
+    [enableEdit]="enableEdit$ | async"
+    [industryFamily]="industryFamily$ | async"
+    [levelSubConfigurationTabs]="levelSubConfigurationTabs$ | async"
+    [providerIsMexican]="providerIsMexican$ | async"
+    [selectedLevelSubConfiguration]="selectedLevelSubConfiguration$ | async"
+    [viewType]="viewType$ | async"
+  >
+  </app-offer-classification>
+  <app-product
+    class="main-container"
+    *ngIf="(selectedLevelConfigurationTab$ | async)?.id === 4 && disponible && (families$ | async)?.length > 0"
+    [actualConfiguration]="actualConfiguration$ | async"
+    [deliveryRoutes]="deliveryRoutes$ | async"
+    [editMode]="editMode$ | async"
+    [enableEdit]="enableEdit$ | async"
+    [industryFamily]="industryFamily$ | async"
+    [levelSubConfigurationTabs]="levelSubConfigurationTabs$ | async"
+    [providerIsMexican]="providerIsMexican$ | async"
+    [selectedLevelSubConfiguration]="selectedLevelSubConfiguration$ | async"
+    [viewType]="viewType$ | async"
+  >
+  </app-product>
+  <div class="without-results" *ngIf="(selectedLevelConfigurationTab$ | async)?.id === 4 && !disponible">
+    <app-without-results [title]="'NO DISPONIBLE'"></app-without-results>
+  </div>
+  <div class="main-container" *ngIf="(selectedLevelConfigurationTab$ | async)?.id === 5"></div>
+</div>

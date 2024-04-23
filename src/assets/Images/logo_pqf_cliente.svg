@@ -1,0 +1,16 @@
+<svg width="35" height="39" viewBox="0 0 35 39" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Capacitaciones">
+<path id="Vector" d="M17.5 0.576172C26.8956 0.579967 34.6163 7.9093 35 17.1894V17.8653H29.788V17.1894C29.4367 10.7144 24.0151 5.64653 17.4557 5.66256C10.8964 5.67816 5.49964 10.7713 5.18 17.248V17.8653H0V17.0776C0.442771 7.84099 8.14614 0.577015 17.5 0.576172Z" fill="url(#paint0_linear_2812_15902)"/>
+<path id="Vector_2" d="M5.17958 19.9746L5.1741 25.6927L17.4945 33.1903L29.8204 25.7095L29.8259 19.9746H35L34.9945 29.0008L17.4945 38.9505L0 28.9793L0.00548193 19.9746H5.17958Z" fill="url(#paint1_linear_2812_15902)"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_2812_15902" x1="517.72" y1="1581.67" x2="517.72" y2="2142.29" gradientUnits="userSpaceOnUse">
+<stop stop-color="#58595B"/>
+<stop offset="1" stop-color="#403F41"/>
+</linearGradient>
+<linearGradient id="paint1_linear_2812_15902" x1="517.825" y1="1787.54" x2="636.195" y2="1787.54" gradientUnits="userSpaceOnUse">
+<stop stop-color="#438E9C"/>
+<stop offset="1" stop-color="#326D78"/>
+</linearGradient>
+</defs>
+</svg>

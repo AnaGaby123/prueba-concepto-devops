@@ -1,0 +1,13 @@
+<div id="warehouse-dashboard">
+  <div class="graph-container">
+    <div class="tabs-container">
+      <app-tabs [options]="tabs$ | async" [tapSelected]="tabSelected$ | async"></app-tabs>
+    </div>
+    <div class="chart">
+      <app-doughnut-chart [title]="'common.clients' | translate"></app-doughnut-chart>
+    </div>
+    <div class="button">
+      <button (click)="navigate()">{{ 'common.enter' | translate }}</button>
+    </div>
+  </div>
+</div>

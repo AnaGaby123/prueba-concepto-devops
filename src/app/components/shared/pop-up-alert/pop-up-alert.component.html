@@ -1,0 +1,33 @@
+<div class="w3-container">
+  <div id="id01" class="modal" #pop>
+    <div class="modal-content">
+      <header class="header">
+        <h1> PROQUIFA NET </h1>
+      </header>
+      <div class="contenido">
+        <div class="datos">
+          <div class="alerta">
+            <img src="assets/Images/alerta.svg" alt="" class="alert" />
+          </div>
+          <div class="alertaTxt">
+            <p class="dato"
+              >{{ textInitial }}
+              <label *ngIf="textInter !== 'Error'" class="highlight" [style.color]="highlightColor">
+                {{ textInter }}
+              </label>
+              {{ textFinal }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <footer class="footer2" *ngIf="activarBoton">
+        <div type="submit" class="btnOk" (click)="close(false)">
+          <label> Cancelar </label>
+        </div>
+        <div type="submit" class="btnOk" (click)="close(true)">
+          <label> Aceptar </label>
+        </div>
+      </footer>
+    </div>
+  </div>
+</div>

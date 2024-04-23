@@ -1,0 +1,37 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  & > #payment-order {
+    @include s.absolute100;
+    @include s.flexColumn;
+    overflow: hidden;
+
+    & > .header-bar {
+      flex: 0 0 50px;
+      width: 100%;
+    }
+
+    & > .outlet {
+      flex: 1 1 auto;
+      overflow: hidden;
+      width: 100%;
+    }
+
+    & > footer {
+      @include s.flexRow;
+      align-items: center;
+      border-top: 2px solid;
+      flex: 0 0 50px;
+      justify-content: center;
+    }
+
+    @include s.responsive_layout('macBookAir') {
+    }
+  }
+}

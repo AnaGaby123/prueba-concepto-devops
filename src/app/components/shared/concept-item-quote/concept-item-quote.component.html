@@ -1,0 +1,85 @@
+<div class="concept-column">
+  <div class="cat-product">
+    <label class="index" *ngIf="item?.number">#{{ item?.number }} · </label>
+    <img alt="" class="img-label" [src]="item?.imgLabel" />
+    <img alt="" class="img-brand" *ngIf="item?.imgBrand" [src]="item?.imgBrand" />
+
+    <!--        DOCS: SI ES PRODUCTO CAPACITACION-->
+    <label class="cat" *ngIf="item?.family === productsTypes.trainings || item?.family === productsTypes.training">
+      {{ item?.cat }} · {{ item?.typeMode }}
+    </label>
+
+    <!--    DOCS: SI ES PRODUCTO DE PUBLICACIÓN -->
+    <label class="cat" *ngIf="item?.family === productsTypes.publications">
+      {{ item?.cat }} · {{ item?.formatPublication }}
+    </label>
+
+    <!--        DOCS: TODOS LOS PRODUCTOS, MENOS CAPACITACIÓN Y PUBLICACIÓN-->
+    <label
+      class="cat"
+      *ngIf="
+        item?.family !== productsTypes.trainings &&
+        item?.family !== productsTypes.training &&
+        item?.family !== productsTypes.publications
+      "
+    >
+      {{ 'descriptionItemQuote.catalogNumber' | translate }} {{ item?.cat }} · {{ item?.presentation }}
+      {{ item?.amountPresentation }} {{ item?.unity }}
+    </label>
+  </div>
+  <label class="product-description">{{ item?.description }}</label>
+  <div class="details-family">
+    <!--     DOCS: CUANDO EL PRODUCTO ES DE TIPO PUBLICACIÓN-->
+    <label class="product-family">{{ item?.family }}</label>
+    <label class="controlled" *ngIf="item?.controlled">
+      {{ '· ' + ('descriptionItemQuote.controlled' | translate) }}
+    </label>
+    <label class="publications-author" *ngIf="item?.family === productsTypes.publications">
+      {{ ' · ' }} {{ 'descriptionItemQuote.author' | translate }}: {{ item?.author }}
+    </label>
+  </div>
+  <div class="date-container">
+    <label class="validation"> {{ 'descriptionItemQuote.validation' | translate }}: </label>
+    <label class="date"> Hasta el {{ item?.dateValidation | dateFormatSlashShort }} </label>
+  </div>
+  <!--  DOCS: FECHA DISPONIBILIDAD CUANDO EL PRODUCTO ES BACK ORDER-->
+  <div class="date-container" *ngIf="item?.availability === availabilityTypes.backorder">
+    <label class="validation"> {{ 'descriptionItemQuote.availability' | translate }}: </label>
+    <label class="date"> {{ item?.dateAvailability ? (item?.dateAvailability | dateFormatSlashShort) : 'N/D' }} </label>
+  </div>
+
+  <!--      DOCS: FECHAS DE CAPACITACIÓN-->
+  <div class="dates-trainings" *ngIf="item?.family === productsTypes.trainings || item?.family === productsTypes.training">
+    <label> {{ item?.datesSuggested?.length }} {{ 'descriptionItemQuote.suggestedDates' | translate }}: </label>
+    <label *ngFor="let date of item.datesSuggested"> {{ date.FechaRegistro | dateFormatSlashShort }} </label>
+  </div>
+  <div class="rate-conversion-container" *ngIf="item?.conversionRate">
+    <label class="rate-conversion">{{ 'descriptionItemQuote.conversionRate' | translate }} {{ item?.conversionRate }} % </label>
+    <img alt="car" src="assets/Images/components-src/concept-item-quote/car-fast.svg" />
+  </div>
+  <div class="alternate-complementary-container" *ngIf="item?.alternate || item?.complementary">
+    <label class="alternate" *ngIf="item?.alternate">
+      {{ 'descriptionItemQuote.alternate' | translate }} {{ item?.alternate }} {{ ' · ' }}</label
+    >
+    <label class="complementary" *ngIf="item?.complementary"
+      >{{ 'descriptionItemQuote.complementary' | translate }} {{ item?.complementary }}
+    </label>
+  </div>
+  <label class="quotations-linked" *ngIf="item?.linkedQuoted?.length > 0">
+    {{ item?.linkedQuoted?.length }}
+    {{
+      item?.linkedQuoted?.length === 1
+        ? ('descriptionItemQuote.linkedQuotation' | translate)
+        : ('descriptionItemQuote.linkedQuotations' | translate)
+    }}
+  </label>
+  <label class="without-quote" *ngIf="item?.withoutQuotes">
+    {{ 'descriptionItemQuote.withoutQuote' | translate }}
+  </label>
+  <label class="express" *ngIf="item?.expressFreight">
+    {{ 'descriptionItemQuote.express' | translate }}
+  </label>
+  <label class="more-info" *ngIf="item?.availability === availabilityTypes.notmarketable">
+    {{ 'descriptionItemQuote.moreInfo' | translate }}
+  </label>
+</div>

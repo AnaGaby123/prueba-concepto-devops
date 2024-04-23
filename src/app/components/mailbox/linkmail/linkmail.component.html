@@ -1,0 +1,96 @@
+<div class="container">
+  <div class="top-container">
+    <div class="left-container">
+      <div class="title">
+        <label
+          >ARCHIVOS RECIBIDOS · <span>{{ countFilesNotLinked$ | async }}</span></label
+        >
+      </div>
+      <div class="cards-menu">
+        <app-pqf-card
+          [options]="filesCardOptions$ | async"
+          [withoutOptionsMessage]="'Sin archivos'"
+          [enableMessage]="true"
+          (handleOptionSelected)="selectFile($event)"
+        >
+        </app-pqf-card>
+      </div>
+      <div class="loading" *ngIf="(currentMail$ | async).fileToPreviewIsLoading">
+        <div class="loadingContainer">
+          <div class="load-circle">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+          </div>
+        </div>
+      </div>
+      <div
+        *ngIf="!(currentMail$ | async).fileToPreviewIsSelected && !(currentMail$ | async).fileToPreviewIsLoading"
+        class="without-results"
+      >
+        <app-without-results [title]="(currentMail$ | async).fileMessage"></app-without-results>
+      </div>
+      <div
+        class="view-file"
+        *ngIf="(currentMail$ | async).fileToPreviewIsSelected && !(currentMail$ | async).fileToPreviewIsLoading"
+      >
+        <app-upload-view-file
+          [datasFile]="{path: mailUrlFileActive$ | async, titulo: ''}"
+          [activePadding]="false"
+          [internalPadding]="'0'"
+        ></app-upload-view-file>
+      </div>
+    </div>
+    <div class="right-container">
+      <div class="title">
+        <label
+          >OC PENDIENTES DE AJUSTE · <span>{{ countOCPendingNotLinked$ | async }}</span></label
+        >
+      </div>
+      <div class="cards-menu">
+        <app-pqf-card
+          [options]="ocPendingCardOptions$ | async"
+          [withoutOptionsMessage]="'Sin archivos'"
+          [enableMessage]="true"
+          (handleOptionSelected)="selectOCFile($event)"
+        >
+        </app-pqf-card>
+      </div>
+      <div class="loading" *ngIf="(currentMail$ | async).ocToPreviewIsLoading">
+        <div class="loadingContainer">
+          <div class="load-circle">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+          </div>
+        </div>
+      </div>
+      <div
+        *ngIf="!(currentMail$ | async).ocToPreviewIsSelected && !(currentMail$ | async).ocToPreviewIsLoading"
+        class="without-results"
+      >
+        <app-without-results [title]="(currentMail$ | async).ocMessage"></app-without-results>
+      </div>
+      <div
+        class="view-file"
+        *ngIf="(currentMail$ | async).ocToPreviewIsSelected && !(currentMail$ | async).ocToPreviewIsLoading"
+      >
+        <app-upload-view-file
+          [datasFile]="{path: mailUrlOCPendingActive$ | async, titulo: ''}"
+          [activePadding]="false"
+          [internalPadding]="'0'"
+        ></app-upload-view-file>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-container">
+    <div
+      [ngClass]="(currentMail$ | async).fileIsActive && (currentMail$ | async).ocIsActive ? 'active' : 'disabled'"
+      [style.pointer-events]="(currentMail$ | async).fileIsActive && (currentMail$ | async).ocIsActive ? 'auto' : 'none'"
+      (click)="linkFiles()"
+      class="button"
+    >
+      <label>VINCULAR</label>
+    </div>
+  </div>
+</div>

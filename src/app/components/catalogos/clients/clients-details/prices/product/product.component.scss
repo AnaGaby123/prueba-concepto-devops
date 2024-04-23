@@ -1,0 +1,257 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.flexColumn;
+  flex: 1;
+  overflow: hidden;
+
+  & > .product-container {
+    @include s.flexRowNoWrap;
+    flex: 1;
+    gap: 15px;
+    overflow: hidden;
+    padding: 30px 0 0 15px;
+
+    & > .left-container {
+      @include s.flexColumn;
+      flex: 0 0 280px;
+
+      & > .title {
+        @include s.Novecento-Bold;
+        @include s.escaledFontFormat(s.$textSize14to17, bold, s.$pqBlack2);
+        border-bottom: 1px solid s.$pqBlack2;
+        padding: 6px 0;
+      }
+
+      & > .drop-list-container {
+        margin-top: 15px;
+      }
+
+      & > .search-container {
+        @include s.flexRow;
+        align-items: center;
+        gap: 10px;
+        justify-content: space-between;
+        padding: 15px 0;
+
+        & > app-search {
+          flex: 1;
+        }
+
+        & > img {
+          cursor: pointer;
+          height: 24px;
+          width: 24px;
+        }
+      }
+
+      & > .product-list-container {
+        @include s.flexColumn;
+        border-bottom: 1px solid s.$pqGray2;
+        border-top: 1px solid s.$pqGray2;
+        flex: 1;
+        overflow: auto;
+
+        & > .product-list {
+          @include s.flexColumn;
+          flex: 1;
+          overflow: auto;
+
+          & .product-item {
+            cursor: pointer;
+          }
+        }
+      }
+
+      & > .loading,
+      & > .without-results {
+        @include s.absoluteCenter;
+        @include s.flexColumn;
+        border-bottom: 1px solid s.$pqGray2;
+        border-top: 1px solid s.$pqGray2;
+        flex: 1;
+        padding: 25px;
+      }
+
+      & > .footer {
+        @include s.flexRow;
+        @include s.absoluteCenter;
+        flex: 0 0 45px;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+          @include s.Roboto-Regular;
+        }
+      }
+    }
+
+    & > .right-container {
+      @include s.flexColumn;
+      flex: 1 1 auto;
+
+      & > .tabs {
+        flex: 0 0 auto;
+        position: relative;
+
+        & > .breakdown {
+          position: absolute;
+          right: 8px;
+          top: -6px;
+        }
+      }
+
+      & > .center-container {
+        @include s.flexColumn;
+        background-color: s.$pqGray2;
+        display: grid;
+        flex: 1 1 auto;
+        grid-template-columns: 100%;
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        & > .performance {
+          min-width: 1280px;
+          padding-top: 10px;
+        }
+
+        & > .price-container {
+          @include s.flexColumn;
+          flex: 1;
+          overflow-y: auto;
+          padding-top: 15px;
+
+          & > .provider-list-price,
+          & > .discount-freight,
+          & > .import,
+          & > .custom-agent-cost,
+          & > .expenses {
+            @include s.flexColumn;
+            align-items: center;
+            border-bottom: 1px solid s.$boxShadow;
+            padding: 15px;
+
+            & > * {
+              display: block;
+              max-width: 950px;
+            }
+          }
+
+          & > .fixed,
+          & > .utility {
+            align-items: center;
+            border-bottom: 1px solid s.$boxShadow;
+            display: flex;
+            flex-direction: column;
+            margin: 0 20px;
+            padding: 20px;
+
+            & > * {
+              display: block;
+              max-width: 950px;
+            }
+          }
+        }
+
+        & > .send-time-container {
+          @include s.flexColumn;
+          margin: 15px;
+          overflow: hidden;
+
+          & > div {
+            @include s.flexColumn;
+            align-items: center;
+            flex: 0 0 auto;
+            padding: 25px;
+
+            & > .green-title {
+              @include s.Novecento-Bold;
+              @include s.escaledFontFormat(s.$textSize14to16, bold, s.$pqGreen);
+              margin-bottom: 10px;
+              text-align: center;
+              width: 100%;
+            }
+
+            & > .route-name {
+              @include s.Roboto-Bold;
+              @include s.escaledFontFormat(s.$textSize14to16, bold, s.$pqBlack2);
+              text-align: center;
+            }
+          }
+
+          & > .route-details {
+            @include s.flexColumn;
+            border-top: 1px solid s.$boxShadow;
+            overflow: auto;
+            flex: 1;
+          }
+        }
+      }
+    }
+
+    & > .without-results {
+      @include s.absoluteCenter;
+      @include s.flexColumn;
+      background-color: s.$pqGray2;
+      flex: 1 1 auto;
+      padding: 25px;
+    }
+
+    @include s.media-query(s.$standard) {
+      gap: 20px;
+      padding: 35px 20px 0 20px;
+      & > .left-container {
+        flex: 0 0 310px;
+
+        & > .search-container {
+          gap: 15px;
+          padding: 20px 0;
+
+          & > img {
+            height: 27px;
+            width: 27px;
+          }
+        }
+
+        & > .footer {
+          flex: 0 0 50px;
+        }
+      }
+      & > .right-container {
+        & > .center-container {
+          & > .performance {
+            padding-top: 15px;
+          }
+
+          & > .price-container {
+            padding-top: 20px;
+
+            & > .provider-list-price,
+            & > .discount-freight,
+            & > .import,
+            & > .custom-agent-cost,
+            & > .expenses {
+              @include s.flexColumn;
+              padding: 20px;
+            }
+          }
+
+          & > .send-time-container {
+            margin: 15px 20px;
+
+            & > div {
+              padding: 30px;
+
+              & > .green-title {
+                margin-bottom: 12px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

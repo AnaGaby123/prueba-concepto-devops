@@ -1,0 +1,51 @@
+<div class="total-value-container">
+  <div class="total-percentage" [ngClass]="columnTotalValue?.isDisabled ? 'disabled-content' : ''">
+    <label
+      class="gray"
+      *ngIf="
+        columnTotalValue?.priceGroup &&
+        (columnTotalValue?.type === productsTypes.trainings || columnTotalValue?.type === productsTypes.training)
+      "
+      >{{ 'formProduct.general.groupPrice' | translate }}
+    </label>
+    <label
+      class="green"
+      *ngIf="
+        columnTotalValue?.priceGroup &&
+        columnTotalValue?.numberPeopleGroup &&
+        (columnTotalValue?.type === productsTypes.trainings || columnTotalValue?.type === productsTypes.training)
+      "
+      >{{ columnTotalValue?.numberPeopleGroup }}
+      {{
+        columnTotalValue?.numberPeopleGroup === 1
+          ? ('formProduct.step1.person' | translate)
+          : ('formProduct.step1.people' | translate)
+      }}</label
+    >
+    <label class="green" *ngIf="columnTotalValue?.currency || columnTotalValue?.value">
+      {{
+        (columnTotalValue?.value | currency: columnTotalValue.currency:'symbol-narrow':'1.2-2') +
+          ' ' +
+          columnTotalValue?.currency
+      }}
+    </label>
+    <div class="clock-container" *ngIf="columnTotalValue?.timeDelivery && columnTotalValue?.showTimeDelivery">
+      <img alt="clock" src="assets/Images/quotation/clock.svg" />
+      <label>{{ columnTotalValue.timeDelivery }} {{ 'quotation.details.businessDays' | translate }}</label>
+    </div>
+    <div class="tooltip" *ngIf="percentage?.length === 2">
+      <div>
+        <div>
+          <img
+            alt="indicator_price"
+            [src]="percentage?.[1] ? 'assets/Images/strategy/price_down.svg' : 'assets/Images/strategy/price_up.svg'"
+          />
+          <p>{{ percentage?.[0] | number: '1.0-0' }}%</p>
+        </div>
+      </div>
+      <div class="tooltip-text">
+        <p>{{ percentage?.[1] ? 'Abajo del Precio de Lista' : 'Arriba del Precio de Lista' }}</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,31 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+  @include s.flexColumn;
+
+  & > .mapContainer {
+    @include s.flexRow;
+    flex: 1;
+
+    & > .map {
+      @include s.flexRow;
+      border-radius: 0 0 26px 26px;
+      flex: 1;
+      overflow: hidden;
+    }
+  }
+
+  & > .close {
+    top: 10%;
+    right: 2%;
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+  }
+}

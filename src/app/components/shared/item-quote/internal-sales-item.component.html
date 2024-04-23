@@ -1,0 +1,236 @@
+<div
+  #internalSales
+  class="container-item"
+  [ngClass]="
+    internalSalesItem?.isSelected
+      ? 'selected'
+      : internalSalesItem?.isDelete
+      ? 'delete'
+      : internalSalesItem?.backgroundColorByTypeItem
+      ? typeItemClasses[internalSalesItem?.backgroundColorByTypeItem]
+      : 'original'
+  "
+  id="internalItem"
+  [style.cursor]="
+    internalSalesItem?.activeGenericEmitter || internalSalesItem?.activeGenericEmitterFreight ? 'pointer' : 'default'
+  "
+  (click)="
+    internalSalesItem?.activeGenericEmitter
+      ? handleAction(
+          {event: $event, target: internalSales, value: true, action: nameActionsInternalSalesItem.InternalSalesAction},
+          internalSalesItem?.data,
+          internalSalesItem,
+          internalSalesItem?.index
+        )
+      : internalSalesItem?.activeGenericEmitterFreight
+      ? handleAction(
+          {event: $event, target: internalSales, value: true, action: nameActionsInternalSalesItem.InternalSalesFreightAction},
+          internalSalesItem?.data,
+          internalSalesItem,
+          internalSalesItem?.index
+        )
+      : null
+  "
+>
+  <div class="selected-indicator" *ngIf="internalSalesItem?.isSelected !== undefined"></div>
+  <div class="options-column" *ngIf="internalSalesItem?.columnOptions">
+    <div [ngSwitch]="internalSalesItem?.columnOptions?.typeOption">
+      <app-checks-red-green
+        *ngSwitchCase="typeOptionsColumn.ChecksBoxRedGreen"
+        [columnOptions]="internalSalesItem?.columnOptions"
+        (valueEmitter)="handleAction($event, internalSalesItem?.data, internalSalesItem, internalSalesItem?.index)"
+      ></app-checks-red-green>
+      <app-checks-red-green
+        *ngSwitchCase="typeOptionsColumn.OnlyCheckBoxRedGreen"
+        [columnOptions]="internalSalesItem?.columnOptions"
+        [showOnlyCheck]="true"
+        (valueEmitter)="handleAction($event, internalSalesItem?.data, internalSalesItem, internalSalesItem?.index)"
+      ></app-checks-red-green>
+      <app-checks-yellow-green
+        *ngSwitchCase="typeOptionsColumn.CheckBoxYellowGreen"
+        [columnOptions]="internalSalesItem?.columnOptions"
+        (valueEmitter)="handleAction($event, internalSalesItem?.data, internalSalesItem, internalSalesItem?.index)"
+      ></app-checks-yellow-green>
+      <app-check-normal-item
+        *ngSwitchCase="typeOptionsColumn.CheckBoxNormal"
+        [columnOptions]="internalSalesItem?.columnOptions"
+        (valueEmitter)="handleAction($event, internalSalesItem?.data, internalSalesItem, internalSalesItem?.index)"
+      ></app-check-normal-item>
+      <app-radio-button-item
+        *ngSwitchCase="typeOptionsColumn.RadioButton"
+        [columnOptions]="internalSalesItem?.columnOptions"
+        (valueEmitter)="handleAction($event, internalSalesItem?.data, internalSalesItem, internalSalesItem?.index)"
+      ></app-radio-button-item>
+      <app-indicator-item *ngSwitchCase="typeOptionsColumn.IndicatorStatus" [columnOptions]="internalSalesItem?.columnOptions">
+      </app-indicator-item>
+
+      <div *ngSwitchDefault></div>
+    </div>
+  </div>
+  <div class="number-column" *ngIf="internalSalesItem?.columnNumberItem">
+    <app-number-item [columnNumberItem]="internalSalesItem?.columnNumberItem"></app-number-item>
+  </div>
+  <div class="img-type-quote" *ngIf="internalSalesItem?.columnImgTypeItem">
+    <app-img-type-item [columnImgTypeItem]="internalSalesItem?.columnImgTypeItem"></app-img-type-item>
+  </div>
+  <div class="img-type-presentation-column" *ngIf="internalSalesItem?.columnImgTypePresentationProduct">
+    <app-img-type-presentation-product-item
+      [columnImgTypePresentationProduct]="internalSalesItem?.columnImgTypePresentationProduct"
+    ></app-img-type-presentation-product-item>
+  </div>
+  <div class="concept-column" *ngIf="internalSalesItem?.columnConcept">
+    <app-concept-item
+      [columnConcept]="internalSalesItem?.columnConcept"
+      (valueEmitter)="handleAction($event, internalSalesItem?.data, internalSalesItem, internalSalesItem?.index)"
+    ></app-concept-item>
+  </div>
+  <div class="notes-column" *ngIf="internalSalesItem?.columnNotes">
+    <app-notes-item
+      [columnNotes]="internalSalesItem?.columnNotes"
+      (valueEmitter)="handleAction($event, internalSalesItem?.data, internalSalesItem, internalSalesItem?.index)"
+    >
+    </app-notes-item>
+  </div>
+  <div class="brand-column" *ngIf="internalSalesItem?.columnBrand">
+    <app-brand-item
+      [columnBrand]="internalSalesItem?.columnBrand"
+      (valueEmitter)="handleAction($event, internalSalesItem?.data, internalSalesItem, internalSalesItem?.index)"
+    ></app-brand-item>
+  </div>
+  <div class="delivery-time-column" *ngIf="internalSalesItem?.columnDeliveryTime">
+    <app-delivery-time-item
+      [columnDeliveryTime]="internalSalesItem?.columnDeliveryTime"
+      (valueEmitter)="handleAction($event, internalSalesItem?.data, internalSalesItem, internalSalesItem?.index)"
+    ></app-delivery-time-item>
+  </div>
+  <div class="delivery-time-suggested-column" *ngIf="internalSalesItem?.columnDeliveryTimeSuggested">
+    <app-delivery-time-suggested-item
+      [columnDeliveryTimeSuggested]="internalSalesItem?.columnDeliveryTimeSuggested"
+    ></app-delivery-time-suggested-item>
+  </div>
+  <div class="pieces-column" *ngIf="internalSalesItem?.columnNumberPieces">
+    <app-number-pieces-item
+      [columnNumberPieces]="internalSalesItem?.columnNumberPieces"
+      (valueEmitter)="handleAction($event, internalSalesItem?.data, internalSalesItem, internalSalesItem?.index)"
+    ></app-number-pieces-item>
+  </div>
+  <div class="requested-price-column" *ngIf="internalSalesItem?.columnRequestedPrice">
+    <app-requested-price-item
+      [columnRequestedPrice]="internalSalesItem?.columnRequestedPrice"
+      (valueEmitter)="handleAction($event, internalSalesItem?.data, internalSalesItem, internalSalesItem?.index)"
+    ></app-requested-price-item>
+  </div>
+  <div class="adjustment-price-column" *ngIf="internalSalesItem?.columnAdjustmentPrice">
+    <app-adjustment-price-item [columnAdjustmentPrice]="internalSalesItem?.columnAdjustmentPrice"></app-adjustment-price-item>
+  </div>
+  <div class="agreed-price-column" *ngIf="internalSalesItem?.columnAgreedPrice">
+    <app-label-number-item [column]="internalSalesItem?.columnAgreedPrice"></app-label-number-item>
+  </div>
+  <div class="unit-price-column" *ngIf="internalSalesItem?.columnUnitPrice">
+    <app-unit-price-item
+      [columnUnitPrice]="internalSalesItem?.columnUnitPrice"
+      (valueEmitter)="handleAction($event, internalSalesItem?.data, internalSalesItem, internalSalesItem?.index)"
+    ></app-unit-price-item>
+  </div>
+  <div
+    class="pro-freight-column"
+    *ngIf="internalSalesItem?.columnProFreight && internalSalesItem?.columnProFreight?.showColumn"
+  >
+    <app-label-number-item [colorLabel]="'red'" [column]="internalSalesItem?.columnProFreight"></app-label-number-item>
+  </div>
+  <div class="subtotal-column" *ngIf="internalSalesItem?.columnSubtotal">
+    <app-label-number-item [colorLabel]="'ocean'" [column]="internalSalesItem?.columnSubtotal"></app-label-number-item>
+  </div>
+  <div class="iva-column" *ngIf="internalSalesItem?.columnIva">
+    <app-label-number-item [column]="internalSalesItem?.columnIva"></app-label-number-item>
+  </div>
+  <div class="delivery-restrictions-column" *ngIf="internalSalesItem?.columnDeliveryRestrictions?.showColumn">
+    <app-delivery-restrictions-item
+      [columnDeliveryRestrictions]="internalSalesItem?.columnDeliveryRestrictions"
+    ></app-delivery-restrictions-item>
+  </div>
+  <div class="value-total-column" *ngIf="internalSalesItem?.columnTotalValue">
+    <app-total-value-item [columnTotalValue]="internalSalesItem?.columnTotalValue"></app-total-value-item>
+  </div>
+  <div class="cancel-reason-column" *ngIf="internalSalesItem?.columnCancelReason">
+    <app-cancel-reason-item
+      [columnCancelReason]="internalSalesItem?.columnCancelReason"
+      (valueEmitter)="handleAction($event, internalSalesItem?.data, internalSalesItem, internalSalesItem?.index)"
+    ></app-cancel-reason-item>
+  </div>
+  <div class="see-resume-column" *ngIf="internalSalesItem?.columnSeeResume">
+    <app-see-resume-item
+      [columnSeeResume]="internalSalesItem?.columnSeeResume"
+      (valueEmitter)="handleAction($event, internalSalesItem?.data, internalSalesItem, internalSalesItem?.index)"
+    ></app-see-resume-item>
+  </div>
+  <div class="state-column" *ngIf="internalSalesItem?.columnState">
+    <app-state-item [columnState]="internalSalesItem?.columnState"></app-state-item>
+  </div>
+  <div class="last-follow-up-column" *ngIf="internalSalesItem?.columnDateLastFollow">
+    <app-date-last-follow-item
+      [columnDateLastFollow]="internalSalesItem?.columnDateLastFollow"
+      (valueEmitter)="handleAction($event, internalSalesItem?.data, internalSalesItem, internalSalesItem?.index)"
+    ></app-date-last-follow-item>
+  </div>
+  <div class="purchase-arrival-date-column" *ngIf="internalSalesItem?.columnArrivalDate">
+    <app-arrival-date-item
+      [columnArrivalDate]="internalSalesItem?.columnArrivalDate"
+      (valueEmitter)="handleAction($event, internalSalesItem?.data, internalSalesItem, internalSalesItem?.index)"
+    >
+    </app-arrival-date-item>
+  </div>
+  <div class="research-response-column" *ngIf="internalSalesItem?.columnResearchResponse">
+    <app-research-response-item
+      [columnResearchResponse]="internalSalesItem?.columnResearchResponse"
+    ></app-research-response-item>
+  </div>
+  <div
+    class="checks-type-adjustment-column"
+    *ngIf="internalSalesItem?.columnChecksTypeAdjustment?.showColumn"
+    [style.flex]="
+      internalSalesItem?.columnChecksTypeAdjustment?.numberChecksActive === 1
+        ? '0 0 130px'
+        : internalSalesItem?.columnChecksTypeAdjustment?.numberChecksActive === 2
+        ? '0 0 240px'
+        : internalSalesItem?.columnChecksTypeAdjustment?.numberChecksActive === 3
+        ? '0 0 350px'
+        : '0 0 460px'
+    "
+  >
+    <app-checks-type-adjustment-item
+      [columnChecksTypeAdjustment]="internalSalesItem?.columnChecksTypeAdjustment"
+      (valueEmitter)="handleAction($event, internalSalesItem?.data, internalSalesItem, internalSalesItem?.index)"
+    ></app-checks-type-adjustment-item>
+  </div>
+  <div class="arrow-column" *ngIf="internalSalesItem?.columnArrow">
+    <app-arrow-item
+      [columnArrow]="internalSalesItem?.columnArrow"
+      (valueEmitter)="handleAction($event, internalSalesItem?.data, internalSalesItem, internalSalesItem?.index)"
+    ></app-arrow-item>
+  </div>
+  <div class="comment-column" *ngIf="internalSalesItem?.columnComments">
+    <app-comments-item
+      [columnComments]="internalSalesItem?.columnComments"
+      (valueEmitter)="handleAction($event, internalSalesItem?.data, internalSalesItem, internalSalesItem?.index)"
+    ></app-comments-item>
+  </div>
+  <div class="delete-column" *ngIf="internalSalesItem?.columnDelete?.showColumn">
+    <app-delete-item
+      [columnDelete]="internalSalesItem?.columnDelete"
+      (valueEmitter)="handleAction($event, internalSalesItem?.data, internalSalesItem, internalSalesItem?.index)"
+    ></app-delete-item>
+  </div>
+  <div class="trash-reverse-setting-column" *ngIf="internalSalesItem?.columnTrashReverseSetting">
+    <app-trash-reverse-setting-item
+      [columnTrashReverseSetting]="internalSalesItem?.columnTrashReverseSetting"
+      (valueEmitter)="handleAction($event, internalSalesItem?.data, internalSalesItem, internalSalesItem?.index)"
+    ></app-trash-reverse-setting-item>
+  </div>
+  <div class="see-more-column" *ngIf="internalSalesItem?.columnSeeMore">
+    <app-see-more-item
+      [columnSeeMore]="internalSalesItem?.columnSeeMore"
+      (valueEmitter)="handleAction($event, internalSalesItem?.data, internalSalesItem, internalSalesItem?.index)"
+    ></app-see-more-item>
+  </div>
+</div>

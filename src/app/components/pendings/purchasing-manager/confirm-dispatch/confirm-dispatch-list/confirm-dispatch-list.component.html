@@ -1,0 +1,200 @@
+<div class="dashboard-container" id="confirm-dispatch-list">
+  <div class="left-container">
+    <label class="title">{{ 'processPurchase.providers' | translate }}</label>
+    <div class="filters">
+      <div class="filter-by-type">
+        <app-hamburger-menu [options]="sortList$ | async" [value]="(sort$ | async).value" (valueEmit)="setTypeSort($event)">
+        </app-hamburger-menu>
+      </div>
+      <div class="filter-by-search">
+        <app-search
+          [activeRefresh]="true"
+          [imageFill]="'#008894'"
+          [isSearchByType]="true"
+          [placeholder]="'Buscar'"
+          [searchTerm]="searchTerm$ | async"
+          [typeSelected]="typeOfSearch$ | async"
+          [typesOfSearch]="listTypesOfSearch$ | async"
+          (textSearch)="handleKeySearch($event)"
+          (handleTypeSelected)="setSearchType($event)"
+        >
+        </app-search>
+      </div>
+    </div>
+    <div class="list-container">
+      <virtual-scroller
+        *ngIf="(providers$ | async)?.length > 0 && !(isLoadingProviders$ | async)"
+        [items]="providers$ | async"
+        (vsUpdate)="listProvidersScrollItems = $event"
+      >
+        <div class="client" *ngFor="let provider of listProvidersScrollItems" (click)="setProvider(provider)">
+          <div class="index">
+            <label>{{ '#' + provider.Index }}</label>
+          </div>
+          <div>
+            <div class="name">
+              <label>{{ provider.Nombre }}</label>
+            </div>
+            <div class="classification">
+              <label>{{ provider.OrdenesDeCompra }} OC</label>
+              <label> · </label>
+              <label>{{ provider.TotalUSD | currency: 'USD':'symbol-narrow':'0.2-4' }} USD</label>
+            </div>
+            <div class="cant">
+              <label
+                >{{ provider.TotalPiezas }}
+                {{
+                  provider.TotalPiezas === 1
+                    ? ('registerConfirmation.pza' | translate)
+                    : ('registerConfirmation.pzas' | translate)
+                }}</label
+              >
+              <label> · </label>
+              <label
+                >{{ provider.TotalProducto }}
+                {{
+                  provider.TotalProducto === 1
+                    ? ('registerConfirmation.product' | translate)
+                    : ('registerConfirmation.products' | translate)
+                }}</label
+              >
+            </div>
+            <div class="states">
+              <ng-container *ngIf="provider.PartidasProgramadas > 0">
+                <img alt="programming" src="assets/Images/labels/programada.svg" />
+                <label class="programming">{{ provider.PartidasProgramadas }}</label>
+                <label class="programming"> · </label>
+              </ng-container>
+              <ng-container *ngIf="provider.PartidasUnicas > 0">
+                <img alt="only" src="assets/Images/labels/unica.svg" />
+                <label class="only">{{ provider.PartidasUnicas }}</label>
+                <label class="only"> · </label>
+              </ng-container>
+              <ng-container *ngIf="provider.PartidasFExpress > 0">
+                <img alt="freight-express" src="assets/Images/labels/flete_express.svg" />
+                <label class="freight-express">{{ provider.PartidasFExpress }}</label>
+                <label class="freight-express"> · </label>
+              </ng-container>
+              <ng-container *ngIf="provider.PartidasFNormal > 0">
+                <img alt="freight-normal" src="assets/Images/labels/flete_normal.svg" />
+                <label class="freight-normal">{{ provider.PartidasFNormal }}</label>
+              </ng-container>
+            </div>
+            <div class="last-file">
+              <div class="days">
+                <label class="day">3 + Días:</label>
+                <label class="result">{{ provider.TRTresMasDias }}</label>
+                <label class="day">3 Días:</label>
+                <label class="result">{{ provider.TRTresDias }}</label>
+                <label class="day">2 Días:</label>
+                <label class="result">{{ provider.TRDosDias }}</label>
+                <label class="day">1 Día:</label>
+                <label class="result">{{ provider.TRUnDia }}</label>
+              </div>
+              <div class="date">
+                <!-- TODO: Agregar validación -->
+                <label
+                  class="fee"
+                  [ngClass]="
+                    provider.FEEProximaSemaforo === 'EN TIEMPO'
+                      ? 'green'
+                      : provider.FEEProximaSemaforo === 'URGENTE'
+                      ? 'yellow'
+                      : provider.FEEProximaSemaforo === 'FUERA DE TIEMPO'
+                      ? 'red'
+                      : 'green'
+                  "
+                  >FEE+:</label
+                >
+                <label
+                  class="fee"
+                  [ngClass]="
+                    provider.FEEProximaSemaforo === 'EN TIEMPO'
+                      ? 'green'
+                      : provider.FEEProximaSemaforo === 'URGENTE'
+                      ? 'yellow'
+                      : provider.FEEProximaSemaforo === 'FUERA DE TIEMPO'
+                      ? 'red'
+                      : 'green'
+                  "
+                  >{{ provider.FechaEstimadaEntrega | dateFormatSlashShort }}</label
+                >
+              </div>
+            </div>
+          </div>
+          <div class="arrow">
+            <img alt="arrow" src="assets/Images/quotation/arrow_default.svg" />
+          </div>
+        </div>
+      </virtual-scroller>
+      <div class="without-results" *ngIf="(providers$ | async).length === 0 && !(isLoadingProviders$ | async)">
+        <app-without-results></app-without-results>
+      </div>
+      <div class="loader" *ngIf="isLoadingProviders$ | async">
+        <app-loading></app-loading>
+      </div>
+    </div>
+    <div class="footer">
+      <label>{{ '#' + ((totals$ | async).totalResults | number: '1.0-0') }}</label>
+      <label>{{ (totals$ | async).oc }} {{ 'OC' }}</label>
+      <label>{{ ((totals$ | async).products | number: '1.0-0') + (true ? ' Producto' : ' Productos') }}</label>
+      <label>{{ ((totals$ | async).pieces | number: '1.0-0') + (false ? ' Pieza' : ' Piezas') }}</label>
+      <label
+        >{{ 'Monto Total' }} {{ (totals$ | async).amountTotal | currency: 'USD':'symbol-narrow':'2.2-4' }} {{ 'USD' }}</label
+      >
+    </div>
+  </div>
+  <div class="right-container">
+    <ng-container *ngIf="true">
+      <app-doughnut-chart
+        *ngIf="!(isLoadingDataCharts$ | async)"
+        [data]="donutChartDataProviders$ | async"
+        [fontSize]="'small'"
+        [optionDetailsHover]="donutDataProvidersDetailsHover$ | async"
+        [optionDetails]="donutDataProvidersDetails$ | async"
+        [titleDetails]="'Totales'"
+        [title]="'processPurchase.providers' | translate"
+        [typeChart]="1"
+      >
+      </app-doughnut-chart>
+      <app-doughnut-chart
+        *ngIf="!(isLoadingDataCharts$ | async)"
+        [data]="donutChartDataFreight$ | async"
+        [fontSize]="'small'"
+        [optionDetailsHover]="donutDataFreightDetailsHover$ | async"
+        [optionDetails]="donutDataFreightDetails$ | async"
+        [titleDetails]="'Totales'"
+        [title]="'registerConfirmation.freight' | translate"
+        [typeChart]="1"
+      >
+      </app-doughnut-chart>
+      <app-doughnut-chart
+        *ngIf="!(isLoadingDataCharts$ | async)"
+        [data]="donutChartDataDelivery$ | async"
+        [fontSize]="'small'"
+        [optionDetailsHover]="donutDataDeliveryDetailsHover$ | async"
+        [optionDetails]="donutDataDeliveryDetails$ | async"
+        [titleDetails]="'Totales'"
+        [title]="'registerConfirmation.delivery' | translate"
+        [typeChart]="1"
+      >
+      </app-doughnut-chart>
+      <app-bar-chart
+        *ngIf="!(isLoadingDataCharts$ | async)"
+        [fontColorBottom]="'#008894'"
+        [textDataLabel]="'Partidas'"
+        [title]="'registerConfirmation.referenceTime' | translate"
+        [values]="valuesBarChartTime$ | async"
+      >
+      </app-bar-chart>
+      <app-bar-chart
+        *ngIf="!(isLoadingDataCharts$ | async)"
+        [textDataLabel]="'Partidas'"
+        [title]="'registerConfirmation.deliveryTrafficLight' | translate"
+        [values]="valuesBarChartDelivery$ | async"
+      >
+      </app-bar-chart>
+    </ng-container>
+    <app-loading class="loading" *ngIf="isLoadingDataCharts$ | async"></app-loading>
+  </div>
+</div>

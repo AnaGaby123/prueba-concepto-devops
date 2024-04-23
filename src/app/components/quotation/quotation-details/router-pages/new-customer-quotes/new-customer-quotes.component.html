@@ -1,0 +1,379 @@
+<div class="container-principal">
+  <div class="container-data-client">
+    <img class="img-log" src="assets/Images/clientes/logo_proquifa_hover.svg" alt="imgPhone" />
+    <span class="ability">{{ 'quotation.details.noticeCustomer.step1.enabledClient' | translate }}</span>
+    <div class="col-regis sms">
+      <label>{{ 'quotation.details.noticeCustomer.step1.ID' | translate }}</label>
+      <span>{{ 'quotation.details.noticeCustomer.step1.new' | translate }}</span>
+    </div>
+    <div class="col-regis sms">
+      <label>{{ 'quotation.details.noticeCustomer.step1.creationDate' | translate }}</label>
+      <span>{{ currentDate | dateFormatSlash }}</span>
+    </div>
+    <div class="col-regis xl">
+      <app-generic-input
+        [label]="'quotation.details.noticeCustomer.step1.alias' | translate"
+        [required]="true"
+        [typeValidation]="inputValidators.AlphaAndSpaces"
+        [value]="(selectedClient$ | async)?.Alias"
+        (errorData)="validate('Alias', $event)"
+        (textData)="setInputDataClient('Alias', $event)"
+      ></app-generic-input>
+    </div>
+    <div class="col-grid-1">
+      <app-generic-input
+        [label]="'quotation.details.noticeCustomer.step1.name' | translate"
+        [required]="true"
+        [typeValidation]="inputValidators.AlphaAndSpaces"
+        (errorData)="validate('Nombre', $event)"
+        (textData)="setInputDataClient('Nombre', $event)"
+      ></app-generic-input>
+    </div>
+    <div class="xm">
+      <app-drop-down-list
+        [fontSize]="'13px'"
+        [height]="(viewType$ | async) === viewTypes.small ? '25px' : '30px'"
+        [label]="'quotation.details.noticeCustomer.step1.rol' | translate"
+        [required]="true"
+        [itemSelected]="selectedClientRole$ | async"
+        [items]="itemRoles$ | async"
+        [capitalize]="false"
+        [isSearchable]="(itemRoles$ | async)?.length > 5"
+        (valueDropList)="setInputDataClient('IdCatRolCliente', $event.value)"
+      ></app-drop-down-list>
+    </div>
+    <div class="xm">
+      <app-drop-down-list
+        [fontSize]="'13px'"
+        [height]="(viewType$ | async) === viewTypes.small ? '25px' : '30px'"
+        [itemSelected]="selectedCatSector$ | async"
+        [items]="itemCatSector$ | async"
+        [label]="'quotation.details.noticeCustomer.step1.sector' | translate"
+        [required]="true"
+        [isSearchable]="(itemCatSector$ | async)?.length > 5"
+        [capitalize]="false"
+        (valueDropList)="setInputDataClient('IdCatSector', $event.value)"
+      ></app-drop-down-list>
+    </div>
+    <div class="xm">
+      <app-drop-down-list
+        [fontSize]="'13px'"
+        [height]="(viewType$ | async) === viewTypes.small ? '25px' : '30px'"
+        [itemSelected]="selectedCatIndustry$ | async"
+        [items]="itemCatIndustry$ | async"
+        [label]="'quotation.details.noticeCustomer.step1.industry' | translate"
+        [required]="true"
+        [isSearchable]="(itemCatIndustry$ | async)?.length > 5"
+        [capitalize]="false"
+        (valueDropList)="setInputDataClient('IdCatIndustria', $event.value)"
+      ></app-drop-down-list>
+    </div>
+    <div class="col-flex">
+      <label class="label-seg">{{ 'quotation.details.noticeCustomer.step1.Segmentation' | translate }}</label>
+      <img
+        [alt]="(selectedClient$ | async)?.NivelIngreso"
+        [src]="
+          (selectedClient$ | async)?.NivelIngreso
+            ? 'assets/Images/clientes/niveles-ingreso/' + incomeLevelHelper((selectedClient$ | async)?.NivelIngreso) + '.svg'
+            : 'assets/Images/clientes/niveles-ingreso/bajo.svg'
+        "
+      />
+      <img
+        [alt]="(selectedClient$ | async)?.Categoria"
+        [src]="
+          (selectedClient$ | async)?.Categoria
+            ? 'assets/Images/clientes/categorias/' + lodashToLower((selectedClient$ | async)?.Categoria) + '.svg'
+            : 'assets/Images/clientes/categorias/rest.svg'
+        "
+      />
+    </div>
+  </div>
+  <div class="dates-address">
+    <div class="delivery-address">
+      <label class="address-label">{{ 'quotation.details.noticeCustomer.step1.DeliveryAddress' | translate }}</label>
+      <app-drop-down-list
+        [fontSize]="(viewType$ | async) === viewTypes.standard ? '16px' : '14px'"
+        [itemSelected]="deliveryAddressSelected$ | async"
+        [items]="deliveryAddresses$ | async"
+        [capitalize]="false"
+        (valueDropList)="setDropDelveryAddress($event)"
+      ></app-drop-down-list>
+    </div>
+    <div class="delivery-route">
+      <app-drop-down-list
+        [activeMinWidth]="false"
+        [disable]="isPickUp$ | async"
+        [fontSize]="(viewType$ | async) === viewTypes.standard ? '16px' : '14px'"
+        [height]="(viewType$ | async) === viewTypes.small ? '25px' : '30px'"
+        [items]="itemRoutesList$ | async"
+        [itemSelected]="selectedRoute$ | async"
+        [label]="'formProvider.step1.deleveryRoute' | translate"
+        [capitalize]="false"
+        [isSearchable]="(itemRoutesList$ | async)?.length > 5"
+        [required]="true"
+        (valueDropList)="setDropDataAddress('IdCatRutaEntrega', $event)"
+      ></app-drop-down-list>
+    </div>
+    <div class="region">
+      <app-drop-down-list
+        [activeMinWidth]="false"
+        [disable]="isPickUp$ | async"
+        [fontSize]="(viewType$ | async) === viewTypes.standard ? '16px' : '14px'"
+        [height]="(viewType$ | async) === viewTypes.small ? '25px' : '30px'"
+        [items]="itemZoneList$ | async"
+        [isSearchable]="(itemZoneList$ | async)?.length > 5"
+        [itemSelected]="selectedZone$ | async"
+        [label]="'quotation.details.noticeCustomer.step1.region' | translate"
+        [capitalize]="false"
+        [required]="true"
+        (valueDropList)="setDropDataAddress('IdCatZona', $event)"
+      ></app-drop-down-list>
+    </div>
+    <div class="search">
+      <div class="col-regis">
+        <app-search
+          [activeRefresh]="true"
+          [borderColor]="'#008894'"
+          [imageFill]="'#008894'"
+          [isExpandable]="true"
+          [placeholder]="'google-maps.placeholder' | translate"
+          [resultItems]="predictionsList"
+          [searchTerm]="searchTermGoogleMaps"
+          (textSearch)="handleKeySearch($event)"
+          (handleSearchTermSelected)="changeSearchTerm($event)"
+          (handleItemSelected)="handleItemSelected($event)"
+          (handleClearSearchTerm)="handleClearSearchTerm()"
+          [isDisable]="isPickUp$ | async"
+        ></app-search>
+      </div>
+    </div>
+    <div class="country">
+      <app-drop-down-list
+        [disable]="(isPickUp$ | async) ? true : !(allowEditForm$ | async)"
+        [fontSize]="(viewType$ | async) === viewTypes.standard ? '16px' : '14px'"
+        [itemSelected]="selectedCountry$ | async"
+        [items]="itemListCountry$ | async"
+        [label]="'quotation.details.noticeCustomer.step1.country' | translate"
+        [isSearchable]="true"
+        [capitalize]="false"
+        (valueDropList)="setDropDataAddress('IdCatPais', $event)"
+      ></app-drop-down-list>
+    </div>
+    <div class="street">
+      <app-generic-input
+        [fontSize]="'13px'"
+        [height]="(viewType$ | async) === viewTypes.small ? '25px' : '30px'"
+        [isDisable]="(isPickUp$ | async) ? true : !(allowEditForm$ | async)"
+        [label]="'quotation.details.noticeCustomer.step1.street' | translate"
+        [maxlength]="100"
+        [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+        [value]="(selectDirection$ | async)?.Calle"
+        (textData)="setInputAddressForm('Calle', $event)"
+        (errorData)="validate($event, 'Calle')"
+      ></app-generic-input>
+    </div>
+    <div class="cp-numbers">
+      <div>
+        <app-generic-input
+          [fontSize]="'13px'"
+          [height]="(viewType$ | async) === viewTypes.small ? '25px' : '30px'"
+          [isDisable]="(isPickUp$ | async) ? true : !(allowEditForm$ | async)"
+          [label]="'quotation.details.noticeCustomer.step1.externalNumber' | translate"
+          [maxlength]="4"
+          [minlength]="1"
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          [value]="(selectDirection$ | async)?.NumeroExterior"
+          (textData)="setInputAddressForm('NumeroExterior', $event)"
+          (errorData)="validate('NumeroExterior', $event)"
+        ></app-generic-input>
+      </div>
+      <div>
+        <app-generic-input
+          [fontSize]="'13px'"
+          [height]="(viewType$ | async) === viewTypes.small ? '25px' : '30px'"
+          [isDisable]="(isPickUp$ | async) ? true : !(allowEditForm$ | async)"
+          [label]="'quotation.details.noticeCustomer.step1.apartmentNumber' | translate"
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          [value]="(selectDirection$ | async)?.NumeroInterior"
+          (textData)="setInputAddressForm('NumeroInterior', $event)"
+          (errorData)="validate('NumeroInterior', $event)"
+        ></app-generic-input>
+      </div>
+      <div>
+        <app-generic-input
+          [activeErrors]="!(zipCodeValid$ | async)"
+          [fontSize]="'13px'"
+          [height]="(viewType$ | async) === viewTypes.small ? '25px' : '30px'"
+          [isDisable]="(isPickUp$ | async) ? true : !(allowEditForm$ | async) || lodashIsEmpty(selectedCountry$ | async)"
+          [label]="'quotation.details.noticeCustomer.step1.zipCode' | translate"
+          [maxlength]="(isMexicanAddress$ | async) ? 5 : 10"
+          [typeValidation]="(isMexicanAddress$ | async) ? inputValidators.Number : inputValidators.AlphaAndSpacesAndNumbers"
+          [value]="(selectDirection$ | async)?.CodigoPostal"
+          (textData)="handleKeySearchCP($event)"
+          (errorData)="validate('CodigoPostal', $event)"
+        ></app-generic-input>
+      </div>
+    </div>
+    <div class="state">
+      <app-generic-input
+        [fontSize]="'13px'"
+        [height]="(viewType$ | async) === viewTypes.small ? '25px' : '30px'"
+        [isDisable]="(isPickUp$ | async) ? true : !(allowEditForm$ | async)"
+        [maxlength]="50"
+        [label]="'quotation.details.noticeCustomer.step1.state' | translate"
+        [typeValidation]="inputValidators.AlphaAndSpaces"
+        [value]="(selectDirection$ | async)?.Estado"
+        (textData)="setInputAddressForm('Estado', $event)"
+        (errorData)="validate('Estado', $event)"
+      ></app-generic-input>
+    </div>
+    <div class="city">
+      <app-generic-input
+        [fontSize]="'13px'"
+        [height]="(viewType$ | async) === viewTypes.small ? '25px' : '30px'"
+        [isDisable]="(isPickUp$ | async) ? true : !(allowEditForm$ | async)"
+        [label]="'quotation.details.noticeCustomer.step1.onlyCity' | translate"
+        [maxlength]="50"
+        [typeValidation]="inputValidators.AlphaAndSpaces"
+        [value]="(selectDirection$ | async)?.Ciudad"
+        (textData)="setInputAddressForm('Ciudad', $event)"
+        (errorData)="validate('Ciudad', $event)"
+      ></app-generic-input>
+    </div>
+    <div class="municipality">
+      <app-generic-input
+        [fontSize]="'13px'"
+        [height]="(viewType$ | async) === viewTypes.small ? '25px' : '30px'"
+        [isDisable]="(isPickUp$ | async) ? true : !(allowEditForm$ | async)"
+        [maxlength]="50"
+        [label]="'quotation.details.noticeCustomer.step1.municipality' | translate"
+        [typeValidation]="inputValidators.AlphaAndSpaces"
+        [value]="(selectDirection$ | async)?.Municipio"
+        (textData)="setInputAddressForm('Municipio', $event)"
+        (errorData)="validate('Municipio', $event)"
+      ></app-generic-input>
+    </div>
+    <div class="suburb">
+      <app-generic-input
+        [fontSize]="'13px'"
+        [height]="(viewType$ | async) === viewTypes.small ? '25px' : '30px'"
+        [isDisable]="(isPickUp$ | async) ? true : !(allowEditForm$ | async)"
+        [label]="'quotation.details.noticeCustomer.step1.Suburb' | translate"
+        [maxlength]="50"
+        [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+        [value]="(selectDirection$ | async)?.Colonia"
+        (textData)="setInputAddressForm('Colonia', $event)"
+        (errorData)="validate('Colonia', $event)"
+      ></app-generic-input>
+    </div>
+    <div class="distance" *ngIf="showMapConfig$ | async">
+      <div class="col-regis">
+        <app-generic-input
+          [enableEdit]="false"
+          [fontColor]="(showMapRoutes$ | async) ? '#424242' : '#c2c3c9'"
+          [labelFontColor]="(showMapRoutes$ | async) ? '#424242' : '#c2c3c9'"
+          [label]="'* ' + ('quotation.details.noticeCustomer.step1.distance' | translate)"
+          [placeholder]="'quotation.details.noticeCustomer.step1.km' | translate"
+          [typeValidation]="inputValidators.DecimalNumber"
+          [value]="
+            (clientDistance$ | async) !== null
+              ? (clientDistance$ | async) + ' Km'
+              : ('quotation.details.noticeCustomer.step1.km' | translate)
+          "
+        ></app-generic-input>
+      </div>
+    </div>
+    <div class="payShipping">
+      <app-check-box
+        [label]="'formProvider.step1.paysFreight' | translate"
+        (event)="setPayShipping($event)"
+        [check]="selectPayShippingGuide$ | async"
+        [disabled]="routeIsInternalMessaging | async"
+        [labelFontStyle]="!(routeIsInternalMessaging | async) ? 'robotoRegular16Proquifa' : 'labelRobotoRegularDisable13'"
+      ></app-check-box>
+    </div>
+    <div class="saveBtn">
+      <button
+        [ngClass]="((isPickUp$ | async) ? true : !(allowEditForm$ | async)) ? 'disabled' : 'enable'"
+        (click)="setResetForm()"
+        >{{ 'quotation.details.noticeCustomer.step1.cleanForm' | translate }}</button
+      >
+    </div>
+  </div>
+  <div class="contacts">
+    <div class="listContact">
+      <div class="borderLine">
+        <label class="title">{{ 'formClient.step1.contacts' | translate }}</label>
+        <label class="required-data">{{ 'formClient.step1.requireData' | translate }}</label>
+      </div>
+      <div class="contactContainer">
+        <div>
+          <div class="contactGrid">
+            <virtual-scroller [items]="contactClient$ | async" (vsUpdate)="contactsListScroll = $event">
+              <app-contact-item
+                *ngFor="let contact of contactsListScroll; let i = index"
+                [enableEdit]="true"
+                [contact]="buildContact(contact)"
+                (clickOnContact)="handleEditContact(contact, i)"
+                (disableContact)="removeContact(i)"
+              ></app-contact-item>
+              <app-contact-item
+                *ngIf="
+                  !Array.isArray(contactClient$ | async) ||
+                  (Array.isArray(contactClient$ | async) && (contactClient$ | async)?.length === 0)
+                "
+                [enableEdit]="true"
+                [contact]="null"
+                (click)="addNewContact()"
+              ></app-contact-item>
+            </virtual-scroller>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <button class="btn cancel enable" (click)="cancelAdd()">
+    {{ 'common.cancel' | translate }}
+  </button>
+  <button
+    [ngClass]="(errors.length === 0 || (isPickUp$ | async)) && (isValidFormClient$ | async) ? 'enable' : 'disable'"
+    [disabled]="!(isValidFormClient$ | async)"
+    class="btn save"
+    (click)="saveForm()"
+  >
+    {{ 'common.save' | translate }}
+  </button>
+</footer>
+
+<app-pop-up-generic
+  class="add-address-pop"
+  *ngIf="isShowMap$ | async"
+  [titleHeader]="'quotation.details.noticeCustomer.step1.distanceMap' | translate"
+  [height]="(viewType$ | async) === viewTypes.small ? '600px' : '745px'"
+  [width]="(viewType$ | async) === viewTypes.small ? '650px' : '800px'"
+>
+  <app-map
+    *ngIf="isShowMap$ | async"
+    [clientCoords]="clientCords$ | async"
+    [clientRoute]="route$ | async"
+    (event)="closeMap($event.lat, $event.lng)"
+  ></app-map>
+</app-pop-up-generic>
+<app-pop-up-generic
+  class="pop-alert"
+  *ngIf="alertExit$ | async"
+  [activeButtons]="true"
+  [width]="(viewType$ | async) === viewTypes.small ? '500px' : '620px'"
+  [height]="(viewType$ | async) === viewTypes.small ? '300px' : '360px'"
+  (evento)="discardOrContinue($event)"
+>
+  <div class="container">
+    <img src="assets/Images/alerta.svg" alt="alert" />
+    <div>
+      <label>{{ 'formProduct.general.titleModal' | translate }}</label>
+    </div>
+  </div>
+</app-pop-up-generic>

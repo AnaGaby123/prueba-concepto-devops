@@ -1,0 +1,8 @@
+<div id="contracts">
+  <div class="list" *ngIf="!(contractDetails$ | async)">
+    <app-contracts-list></app-contracts-list>
+  </div>
+  <div class="details" *ngIf="contractDetails$ | async">
+    <app-contracts-details></app-contracts-details>
+  </div>
+</div>

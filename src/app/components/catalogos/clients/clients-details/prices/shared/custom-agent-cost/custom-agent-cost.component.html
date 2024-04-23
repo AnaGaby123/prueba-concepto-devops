@@ -1,0 +1,133 @@
+<div class="custom-agent-cost">
+  <h4>{{ 'formProvider.step8.subtitles.customAgentCost' | translate }}</h4>
+  <div class="grid-drops">
+    <div class="drop-container">
+      <label>Agente Aduanal</label>
+      <label class="green">{{ actualConfiguration?.selectedCustomsAgent?.label || 'N/D' }}</label>
+    </div>
+    <div class="drop-container">
+      <label>Punto de despacho</label>
+      <label class="green">{{ actualConfiguration?.selectedCustoms?.label || 'N/D' }}</label>
+    </div>
+    <div class="drop-container last">
+      <label>Tarifa AA</label>
+      <label class="green">{{ actualConfiguration?.selectedCustomsAgentConcept?.label || 'N/D' }}</label>
+    </div>
+    <div class="input-container first" *ngIf="!actualConfiguration?.ConceptoAgenteAduanal?.PorcentajeAPedimento">
+      <label>Cuenta de exportación</label>
+      <label class="green"
+        >{{ (actualConfiguration?.ConceptoAgenteAduanal?.MontoExportacion | currency: 'USD':'symbol-narrow':'1.2-2') || 'N/D' }}
+        USD
+      </label>
+    </div>
+    <div class="input-container" *ngIf="!actualConfiguration?.ConceptoAgenteAduanal?.PorcentajeAPedimento">
+      <label>Cuenta de importación</label>
+      <label class="green"
+        >{{ (actualConfiguration?.ConceptoAgenteAduanal?.MontoImportacion | currency: 'USD':'symbol-narrow':'1.2-2') || 'N/D' }}
+        USD
+      </label>
+    </div>
+    <div class="input-container center" *ngIf="actualConfiguration?.ConceptoAgenteAduanal?.PorcentajeAPedimento">
+      <label>Porcentaje a pedimento</label>
+      <label class="green">{{ actualConfiguration?.ConceptoAgenteAduanal?.Porcentaje | percentageTransform }}</label>
+    </div>
+  </div>
+  <div class="grid-inputs">
+    <div class="input-container">
+      <label>VUCEM</label>
+      <label class="green"
+        >{{
+          (actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.VUCEM | currency: 'USD':'symbol-narrow':'1.2-2') || 'N/D'
+        }}
+        USD
+      </label>
+    </div>
+    <div class="input-container big">
+      <label>Servicio Logística</label>
+      <label class="green"
+        >{{
+          (actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.ServicioLogistica
+            | currency: 'USD':'symbol-narrow':'1.2-2') || 'N/D'
+        }}
+        USD
+      </label>
+    </div>
+    <div class="input-container">
+      <label>TM</label>
+      <label class="green"
+        >{{
+          (actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.TM | currency: 'USD':'symbol-narrow':'1.2-2') || 'N/D'
+        }}
+        USD</label
+      >
+    </div>
+    <div class="input-container">
+      <label>Validación</label>
+      <label class="green"
+        >{{
+          (actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.Validacion | currency: 'USD':'symbol-narrow':'1.2-2') ||
+            'N/D'
+        }}
+        USD
+      </label>
+    </div>
+    <div class="input-container">
+      <label>Previo</label>
+      <label class="green"
+        >{{
+          (actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.Previo | currency: 'USD':'symbol-narrow':'1.2-2') || 'N/D'
+        }}
+        USD
+      </label>
+    </div>
+    <div class="input-container big">
+      <label>Desconsolidación</label>
+      <label class="green"
+        >{{
+          (actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.Desconsolidacion
+            | currency: 'USD':'symbol-narrow':'1.2-2') || 'N/D'
+        }}
+        USD
+      </label>
+    </div>
+    <div class="input-container">
+      <label>Maniobras</label>
+      <label class="green"
+        >{{
+          (actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.Maniobras | currency: 'USD':'symbol-narrow':'1.2-2') ||
+            'N/D'
+        }}
+        USD
+      </label>
+    </div>
+    <div class="input-container">
+      <label>Tránsito</label>
+      <label class="green"
+        >{{
+          (actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.Transito | currency: 'USD':'symbol-narrow':'1.2-2') ||
+            'N/D'
+        }}
+        USD
+      </label>
+    </div>
+    <div class="input-container big area9">
+      <label>Clasificación y Proceso</label>
+      <label class="green"
+        >{{
+          (actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.ClasificacionProceso
+            | currency: 'USD':'symbol-narrow':'1.2-2') || 'N/D'
+        }}
+        USD
+      </label>
+    </div>
+    <div class="input-container area10">
+      <label>InBond</label>
+      <label class="green"
+        >{{
+          (actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.InBond | currency: 'USD':'symbol-narrow':'1.2-2') || 'N/D'
+        }}
+        USD
+      </label>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,157 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  $left-container-flex: (
+    'base': 580px,
+    'macBookAir': 680px,
+  );
+  $graphics-padding: (
+    'base': 80px 0 140px 0,
+    'macBookAir': 150px 0 270px 0,
+  );
+  $graphics-structure: (
+    'top': 1,
+    'bottom': 0,
+  );
+  $graphics-gap: (
+    'base': 25px 0,
+    'macBookAir': 40px 0,
+  );
+
+  @include s.pending-dashboard-structure($left-container-flex, $graphics-padding, $graphics-structure, $graphics-gap);
+
+  & > #purchase-promise-list-container {
+    & > .left-container {
+      & > .filters {
+        & > div:nth-of-type(1) {
+          width: 40%;
+        }
+
+        & > div:nth-of-type(2) {
+          justify-content: flex-end;
+          width: 60%;
+        }
+
+        & > div {
+          @include s.flexRow;
+          align-items: center;
+          justify-content: center;
+          width: 50%;
+        }
+      }
+
+      & > .list-container {
+        & > .virtual-list {
+          & .item {
+            & > .content {
+              @include s.flexColumn;
+              height: 100%;
+              justify-content: space-between;
+              overflow: hidden;
+
+              & > .customer {
+                @include s.flexRow;
+                margin-bottom: 5px;
+
+                & > .title {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font-family-roboto_bold,
+                    $font-weight: s.$font-weight-bold,
+                    $font-size-map: s.$responsive-font-17-21,
+                    $color: s.$pqGreen
+                  );
+                }
+              }
+
+              & > .oc {
+                @include s.flexRow;
+                margin-bottom: 5px;
+
+                & > label {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font-family-roboto_bold,
+                    $font-weight: s.$font-weight-bold,
+                    $font-size-map: s.$responsive-font-16-20
+                  );
+                  margin-right: 8px;
+                }
+
+                & > .sinOc {
+                  color: s.$pqTextAlert !important;
+                }
+              }
+
+              & > .date {
+                @include s.flexRow;
+
+                & > label {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font-family-roboto_regular,
+                    $font-weight: s.$font-weight-regular,
+                    $font-size-map: s.$responsive-font-14-16
+                  );
+                }
+              }
+            }
+
+            & > .arrow {
+              @include s.right-arrow-in-item-list;
+            }
+          }
+        }
+      }
+
+      & > .footer {
+        @include s.flexRow;
+        border-top: 1px solid s.$pqBlack2;
+        justify-content: space-between;
+
+        & > label {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-roboto_regular,
+            $font-weight: s.$font-weight-regular,
+            $font-size-map: s.$responsive-font-10-12-b
+          );
+          @include s.flexRow;
+        }
+      }
+    }
+
+    & > .right-container {
+      & > app-doughnut-chart {
+        grid-column-end: span 2;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      & > .loading {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+
+  @include s.media-query(s.$standard) {
+    & > #purchase-promise-list-container {
+      & > .left-container {
+        & > .list-container {
+          & > .virtual-list {
+            & .item {
+              & > img {
+                height: 27px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,160 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  z-index: 10;
+
+  & > div {
+    position: fixed;
+    transition: all 0.3s ease-in-out;
+
+    & > div {
+      @include s.flexColumn;
+      overflow: hidden;
+      position: relative;
+      background-color: transparent;
+      padding: 10px;
+      box-sizing: content-box;
+
+      & > .container {
+        @include s.flexColumn;
+        box-sizing: border-box;
+        flex: 1;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        box-shadow: 0 0 10px -1px rgba(0, 0, 0, 0.1);
+        position: relative;
+
+        & .notes-container {
+          @include s.flexColumn;
+          align-items: center;
+          row-gap: 4px;
+          position: relative;
+          width: auto;
+
+          * {
+            cursor: pointer;
+          }
+
+          & > .tooltip-text {
+            width: 240px;
+            //width: max-content;
+            &.bot {
+              top: calc(100% - 5px);
+
+              &::before {
+                top: -5px;
+                rotate: 180deg;
+              }
+            }
+
+            & > .system {
+              @include s.flexColumn;
+              background-color: s.$main-proquifa-b;
+              row-gap: 4px;
+              padding: 4px 8px;
+
+              & > .title {
+                @include s.responsive-font-format(
+                  $font-family: s.$font-family-roboto_regular,
+                  $font-weight: s.$font-weight-regular,
+                  $font-size-map: s.$responsive-font-8-8,
+                  $color: s.$pqWhite
+                );
+              }
+
+              & > .body {
+                @include s.multiLineTextTruncateSinHeight($lines: 5, $lineHeight: 1em, $wordBreak: break-word);
+                @include s.responsive-font-format(
+                  $font-family: s.$font-family-roboto_regular,
+                  $font-weight: s.$font-weight-regular,
+                  $font-size-map: s.$responsive-font-12-12,
+                  $color: s.$pqWhite
+                );
+              }
+            }
+
+            & > .item {
+              @include s.flexColumn;
+              background-color: s.$main-proquifa-c;
+              row-gap: 4px;
+              padding: 4px 8px;
+
+              & > .title {
+                @include s.responsive-font-format(
+                  $font-family: s.$font-family-roboto_regular,
+                  $font-weight: s.$font-weight-regular,
+                  $font-size-map: s.$responsive-font-8-8,
+                  $color: s.$pqWhite
+                );
+              }
+
+              & > .body {
+                @include s.multiLineTextTruncateSinHeight($lines: 5, $lineHeight: 1em, $wordBreak: break-word);
+                @include s.responsive-font-format(
+                  $font-family: s.$font-family-roboto_regular,
+                  $font-weight: s.$font-weight-regular,
+                  $font-size-map: s.$responsive-font-12-12,
+                  $color: s.$pqWhite
+                );
+              }
+            }
+          }
+        }
+      }
+
+      & > .triangle {
+        width: 8px;
+        height: 8px;
+        position: absolute;
+        background-color: s.$main-proquifa-c;
+
+        &.top-start,
+        &.top-center,
+        &.top-end {
+          transform: rotate(45deg);
+        }
+
+        &.bottom-start,
+        &.bottom-center,
+        &.bottom-end {
+          transform: rotate(225deg);
+        }
+
+        &.right-start,
+        &.right-center,
+        &.right-end {
+          transform: rotate(135deg);
+        }
+
+        &.left-start,
+        &.left-center,
+        &.left-end {
+          transform: rotate(315deg);
+        }
+      }
+    }
+  }
+
+  @include s.media-query(s.$standard) {
+    & > div {
+      & > div {
+        & > .container {
+          & .notes-container {
+            & > .tooltip-text {
+              width: 385px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,130 @@
+@use 'base' as s;
+
+:host {
+  width: 100%;
+  height: 100%;
+}
+
+.principal {
+  @include s.flexColumn;
+  height: 100%;
+  width: 100%;
+}
+
+.cargaDoc {
+  width: 100%;
+  height: 100%;
+  background-color: #eceef0;
+  justify-content: center;
+  display: flex;
+  position: relative;
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.carga {
+  display: none;
+
+  &::-webkit-file-upload-button {
+    opacity: 0;
+  }
+}
+
+.textoImagen {
+  @include s.escaledFontFormat(s.$textSize45to50, bold, s.$pqGray3);
+  @include s.Roboto-Bold;
+  text-align: center;
+  position: relative;
+  margin-top: 5px;
+}
+
+.imgeArchivo {
+  height: 265px;
+  width: 204px;
+  display: flex;
+  position: relative;
+  @include s.absoluteCenter;
+  text-align: center;
+}
+
+.cargarDocumento {
+  @include s.flexColumn;
+  align-items: center;
+  position: relative;
+  height: 100%;
+  justify-content: center;
+  width: 100%;
+}
+
+.extension {
+  @include s.escaledFontFormat(s.$textSize20to25, regular, s.$pqGray3);
+  @include s.Roboto-Regular;
+}
+
+.vistDoc {
+  width: 100%;
+  height: 100%;
+  @include s.flexColumn;
+  box-sizing: border-box;
+}
+
+.contentRefuse {
+  height: 100%;
+  overflow: auto;
+  width: 80%;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.contenidoDoc {
+  @include s.flexRowWrap;
+  @include s.absoluteCenter;
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+  & > iframe {
+    width: 100%;
+  }
+
+  & > .reloadFile {
+    @include s.flexRow;
+    @include s.absoluteCenter;
+    width: 100%;
+    justify-content: flex-end;
+    position: absolute;
+    bottom: -50px;
+    right: 0;
+
+    & > img:nth-of-type(1) {
+      width: 40px;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.recargar {
+  width: 100%;
+  height: 5%;
+  display: flex;
+  box-sizing: border-box;
+  justify-content: flex-end;
+}
+
+.cargarDocumento {
+  @include s.flexColumn;
+  align-items: center;
+  position: relative;
+  height: 100%;
+  justify-content: center;
+  width: 100%;
+}
+
+.disablePadding {
+  padding: 0 !important;
+}

@@ -1,0 +1,175 @@
+<div
+  class="drop-list-container"
+  [style.min-width]="activeMinWidth ? '230px' : 'initial'"
+  [style.display]="controlInLine ? 'flex' : ''"
+  [style.text-align]="textAlign"
+>
+  <div class="label-container" *ngIf="label !== ''" [style.margin-bottom]="controlInLine ? '0' : '3px'">
+    <img
+      *ngIf="required && showAsterisk && enableEdit && (!errors || !showIndicatorOfErrors) && !disable"
+      alt=""
+      src="assets/Images/asterisco.svg"
+    />
+    <img
+      *ngIf="required && showAsterisk && enableEdit && (!errors || !showIndicatorOfErrors) && disable"
+      alt=""
+      src="assets/Images/gray-asterisk.svg"
+    />
+    <img
+      *ngIf="required && showAsterisk && enableEdit && errors && showIndicatorOfErrors"
+      alt=""
+      src="assets/Images/asterisco_red.svg"
+    />
+    <div [style.padding-right]="controlInLine ? '7px' : ''">
+      <label
+        [ngClass]="errors && showIndicatorOfErrors ? 'label-danger' : 'label-default'"
+        [style.font-family]="!enableEdit && font === 'Roboto-Regular' ? 'Roboto-Bold' : font"
+        [style.color]="disable ? labelDisableFontColor : labelFontColor"
+      >
+        {{ label }}
+      </label>
+    </div>
+  </div>
+  <div class="label-disable-edit-container" *ngIf="!enableEdit" [style.height]="checkIsDefaultSize() && height">
+    <div [ngClass]="multiline">
+      <label [style.color]="disable ? '#c2c3c9' : ''">{{ itemSelected?.label ? itemSelected?.label : 'N/D' }}</label>
+    </div>
+  </div>
+  <div class="container-drop" *ngIf="enableEdit" data-test="dropComponent">
+    <div
+      class="title"
+      [ngClass]="errors && showIndicatorOfErrors ? 'title-danger' : ''"
+      [style.align-items]="checkIsDefaultSize() ? 'flex-start' : 'center'"
+      [style.border-color]="disable ? disableBorderColor : borderColor"
+      [style.cursor]="disable ? 'default' : 'pointer'"
+      [style.height]="height"
+      [class.noBorder]="hasBorder === false"
+      [style.padding-top]="checkIsDefaultSizeMacBookAir() ? '4.5px' : checkIsDefaultSizeIpad() && '4px'"
+      (click)="openDropList($event)"
+    >
+      <div *ngIf="isSearchable" class="img-initial">
+        <img
+          alt=""
+          class="magnifying-glass"
+          [src]="disable ? 'assets/Images/disabled-magnifying-glass.svg' : 'assets/Images/lupa.svg'"
+        />
+      </div>
+      <div class="content-info" [style.padding-left]="!isSearchable && '10px'">
+        <div *ngIf="!isSearchable" [ngClass]="multiline">
+          <p [ngClass]="align" [style.margin-right]="marginRight" [style.color]="disable ? disableFontColor : fontColor">
+            <span class="circle" *ngIf="itemSelected?.circleColor" [style.background-color]="itemSelected?.circleColor"></span>
+            <label *ngIf="itemSelected?.labelColors">
+              <span
+                *ngFor="let itemPoint of itemSelected?.labelColors; let i = index"
+                class="circleArray"
+                [style.background-color]="itemPoint"
+                [style.z-index]="itemSelected?.labelColors.length - (i + 1)"
+              ></span>
+            </label>
+            <span [style.color]="itemSelected?.labelColor !== '' ? itemSelected?.labelColor : secondaryColor">
+              {{ itemSelected?.label ? itemSelected?.label : placeholder }}
+            </span>
+            <span
+              *ngIf="itemSelected?.labelConcat !== ''"
+              [style.color]="itemSelected?.labelConcatColor !== '' ? itemSelected?.labelConcatColor : secondaryColor"
+            >
+              {{ itemSelected?.labelConcat }}
+            </span>
+            <span
+              *ngIf="subtitleActive && itemSelected?.label && itemSelected?.subtitle"
+              [style.color]="secondaryColor"
+              [style.font-family]="font"
+            >
+              · {{ itemSelected?.subtitle }}
+            </span>
+          </p>
+        </div>
+        <div *ngIf="isSearchable">
+          <input
+            [class.disable]="disable"
+            [ngClass]="align"
+            placeholder="{{ title || 'N/D' }}"
+            [(ngModel)]="searchTerm"
+            (ngModelChange)="changeSearchTerm($event)"
+          />
+        </div>
+      </div>
+      <div class="img-final" [style.align-items]="checkIsDefaultSize() ? 'flex-start' : 'center'">
+        <img
+          alt=""
+          class="arrow"
+          [style.margin-top]="checkIsDefaultSizeMacBookAir() ? '6.5px' : checkIsDefaultSizeIpad() && '5px'"
+          *ngIf="(!showDropList && isSearchable) || !isSearchable"
+          [src]="disable ? srcDisableImage : srcImage"
+        />
+      </div>
+    </div>
+    <div
+      class="content"
+      [hidden]="!showDropList"
+      [style.width]="widthContent"
+      [style.margin-left]="marginLeftContent"
+      [style.top]="optionsPosition === 'bottom' && height"
+      [style.bottom]="optionsPosition === 'top' && height"
+      [ngClass]="optionsPosition"
+    >
+      <div>
+        <div>
+          <ul class="options" [style.max-height]="maxHeightOptions" *ngIf="arrayAux != undefined && arrayAux.length > 0">
+            <div
+              class="options-container"
+              *ngFor="let item of arrayAux; let i = index; trackBy: handleTrackByFn"
+              [style.background-color]="item.value === itemSelected?.value ? colorSelected : null"
+              (click)="selectItem(item)"
+            >
+              <div class="border-separator" [style.display]="display" [style.justify-content]="justify">
+                <li class="option" [style.min-height]="heightLi" [style.align-items]="'left'">
+                  <div class="main-labels">
+                    <app-check-box
+                      *ngIf="activeCheckItem"
+                      class="check"
+                      [check]="item.isSelected"
+                      [height]="'14px'"
+                    ></app-check-box>
+                    <span *ngIf="item.circleColor" class="circle" [style.background-color]="item.circleColor"></span>
+                    <label *ngIf="item.labelColors" class="circles">
+                      <span
+                        *ngFor="let itemPoint of item.labelColors; let i = index"
+                        class="circleArray"
+                        [style.background-color]="itemPoint"
+                        [style.z-index]="item.labelColors.length - i"
+                      ></span>
+                    </label>
+                    <label
+                      class="option-name"
+                      [ngClass]="item.value === itemSelected?.value ? 'selected' : null"
+                      [style.color]="item.labelColor !== '' && !colorOnlyInSelected ? item.labelColor : secondaryColor"
+                      [style.font-size]="optionsFontSize"
+                      [style.text-align]="textAlign"
+                    >
+                      {{ item.label }}
+                    </label>
+                  </div>
+                  <label *ngIf="subtitleActive" [style.font-size]="optionsFontSize" [style.color]="secondaryColor">{{
+                    item.subtitle
+                  }}</label>
+                </li>
+              </div>
+            </div>
+          </ul>
+          <ul class="options" *ngIf="arrayAux.length === 0">
+            <div class="options-container">
+              <div class="border-separator" [style.display]="display" [style.justify-content]="justify">
+                <li class="option" [style.min-height]="heightLi" [style.align-items]="'center'">
+                  <label [style.color]="secondaryColor" [style.font-size]="optionsFontSize" [style.text-align]="textAlign">{{
+                    'common.withoutResults' | translate
+                  }}</label>
+                </li>
+              </div>
+            </div>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

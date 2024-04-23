@@ -1,0 +1,27 @@
+<div class="principal">
+  <div *ngIf="!(contract$ | async)?.ClienteEnvia">
+    <app-upload-view-file *ngIf="(contractStatusNumber | async) === 3" [datasFile]="{path: pathContract | async, titulo: ''}">
+    </app-upload-view-file>
+    <div *ngIf="(contractStatusNumber | async) === 1" class="loading">
+      <div class="loadingContainer">
+        <div class="load-circle">
+          <div class="line"></div>
+          <div class="line"></div>
+          <div class="line"></div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="(contractStatusNumber | async) === 2" class="failed">
+      <label class="textUpperCase">{{ 'common.notAvailable' | translate }}</label>
+    </div>
+  </div>
+  <div>
+    <app-upload-view-file
+      [datasFile]="signedContract$ | async"
+      (handleFileUpload)="handleSignedContractUpload($event)"
+      [isDisable]="(contractStatusNumber | async) !== 3"
+      [showReplaceFile]="true"
+    >
+    </app-upload-view-file>
+  </div>
+</div>

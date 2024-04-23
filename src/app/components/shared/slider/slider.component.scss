@@ -1,0 +1,157 @@
+@use 'base' as s;
+
+:host {
+  width: 100%;
+  display: flex;
+
+  #slider {
+    @include s.flexColumn;
+    width: 100%;
+
+    & > .container-slider {
+      @include s.flexColumn;
+      height: 26px;
+      position: relative;
+      justify-content: center;
+
+      & > .line-one,
+      .line-two,
+      .line-three {
+        position: absolute;
+        border-right: 1px solid s.$redPopUpText;
+        height: 19px;
+        z-index: -1;
+      }
+
+      & > .line-two {
+        width: 0.1%;
+        margin-left: 5%;
+      }
+
+      & > .line-three {
+        width: 0.1%;
+        margin-left: 10%;
+      }
+
+      & > span {
+        position: absolute;
+        z-index: 9;
+        color: black;
+        text-align: center;
+        top: -15px;
+        white-space: pre;
+        @include s.Roboto-Bold;
+      }
+
+      & > .green {
+        @include s.escaledFontFormat(s.$textSize11to12, bold, s.$pqGreen2);
+      }
+
+      & > .danger {
+        @include s.escaledFontFormat(s.$textSize11to12, bold, s.$redPopUpText);
+      }
+
+      & > input:nth-of-type(1) {
+        width: 100%;
+        border: 0 !important;
+        height: 1px;
+      }
+
+      // Se desactivan los estilos de fábrica
+      & > input[type='range'],
+      input[type='range']::-webkit-slider-runnable-track,
+      input[type='range']::-webkit-slider-thumb {
+        -webkit-appearance: none;
+      }
+
+      // En los navegadores de tipo webkit los input enfocados ( on focus ) tienen una sombra azulada.
+      & > input[type='range']:focus {
+        outline: none;
+      }
+
+      & > input[type='range']:focus::-webkit-slider-runnable-track {
+        outline: none;
+      }
+
+      // Thumb en navegadores de tipo webkit
+      & > input[type='range']::-webkit-slider-thumb {
+        background-color: s.$pqGreen;
+        width: 20px;
+        height: 20px;
+        border: 1px solid white;
+        border-radius: 50%;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+        margin-top: -9px;
+      }
+
+      // Thumb en navegadores Microsoft Edge
+      & > input[type='range']::-ms-thumb {
+        background-color: s.$pqGreen;
+        width: 20px;
+        height: 20px;
+        border: 1px solid white;
+        border-radius: 50%;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+      }
+
+      // Thumb en navegadores Mozilla
+      & > input[type='range']::-moz-range-thumb {
+        background-color: s.$pqGreen;
+        width: 15px;
+        height: 15px;
+        border: 1px solid white;
+        border-radius: 50%;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+      }
+
+      // Track en navegadores de tipo webkit
+      & > input[type='range']::-webkit-slider-runnable-track {
+        background-color: s.$pqGreen;
+        height: 2px;
+      }
+
+      // Track en navegadores Mozilla
+      & > input[type='range']::-moz-range-track {
+        background-color: s.$pqGreen;
+        height: 2px;
+      }
+
+      // Track en navegadores Microsoft Edge
+      & > input[type='range']::-ms-track {
+        background-color: s.$pqGreen;
+        height: 2px;
+      }
+    }
+
+    & > .values-footer {
+      @include s.flexRowNoWrap;
+      width: 100%;
+
+      & > label {
+        @include s.Roboto-Bold;
+      }
+
+      & > label:nth-of-type(2) {
+        @include s.escaledFontFormat(s.$textSize11to12, bold, s.$pqGreen);
+      }
+    }
+
+    & > .with-lines {
+      justify-content: space-between;
+
+      & > label:nth-of-type(1) {
+        @include s.escaledFontFormat(s.$textSize11to12, bold, s.$redPopUpText);
+        padding-left: 10%;
+      }
+    }
+
+    & > .without-lines {
+      justify-content: flex-end;
+
+      & > label:nth-of-type(1) {
+        @include s.escaledFontFormat(s.$textSize11to12, bold, s.$pqGreen);
+        padding-left: 10%;
+      }
+    }
+  }
+}

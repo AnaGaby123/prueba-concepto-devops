@@ -1,0 +1,26 @@
+<div class="product-item" [ngClass]="product.isSelected ? 'selected' : ''" (click)="handleSelectedProductChange()">
+  <div class="select-indicator"></div>
+  <div class="item-content">
+    <div class="title">
+      <label class="title">
+        #{{ product.Index }} · CAT {{ product?.Catalogo || 'N/D' }} · {{ product.DescripcionProducto }}
+      </label>
+    </div>
+    <div class="subtitle">
+      <label>
+        {{ product?.PrecioLista }} {{ product?.MonedaVentaProveedor }}
+        <span *ngIf="product?.PrecioListaMonedaProveedor">
+          · {{ product?.PrecioListaMonedaProveedor.toFixed(2) }} {{ product?.ClaveMonedaPagos }}
+        </span>
+        <span *ngIf="!product?.PrecioListaMonedaProveedor"> N/D</span>
+      </label>
+    </div>
+    <div class="has-config-indicator">
+      <img
+        alt="filtro"
+        src="assets/Images/clientes/enfoque.svg"
+        *ngIf="product.NivelConfiguracionProductoProveedor === 'Producto'"
+      />
+    </div>
+  </div>
+</div>

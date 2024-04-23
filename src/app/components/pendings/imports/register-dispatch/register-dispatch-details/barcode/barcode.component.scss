@@ -1,0 +1,55 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  height: 100%;
+  width: 100%;
+
+  & > #barcode-container {
+    @include s.flexColumn;
+    @include s.absoluteCenter;
+    flex: 1 1 auto;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+
+    & > input {
+      opacity: 0;
+      position: absolute;
+    }
+
+    & > .code {
+      padding-bottom: 40px;
+    }
+
+    & > .texts {
+      @include s.flexColumn;
+      @include s.absoluteCenter;
+      margin-bottom: 60px;
+
+      & > label:nth-of-type(1) {
+        @include s.escaledFontFormat(s.$textSize60to70, bold, s.$pqBlack2);
+        @include s.Roboto-Bold;
+      }
+
+      & > label:nth-of-type(2) {
+        @include s.escaledFontFormat(s.$textSize60to70, normal, s.$pqGreen);
+        @include s.Roboto-Regular;
+      }
+    }
+
+    & > button {
+      &.active {
+        @include s.pqButton();
+      }
+
+      &.disabled {
+        @include s.pqButtonDisable();
+      }
+    }
+  }
+}

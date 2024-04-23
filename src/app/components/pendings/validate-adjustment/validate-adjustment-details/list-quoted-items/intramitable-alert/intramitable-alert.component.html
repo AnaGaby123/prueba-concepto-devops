@@ -1,0 +1,20 @@
+<app-pop-up-generic
+  id="intramitable-pop-up"
+  [activeButtons]="true"
+  [width]="'620px'"
+  [height]="'360px'"
+  (evento)="onClose($event)"
+>
+  <div class="container">
+    <div>
+      <img src="assets/Images/alerta.svg" alt="Alerta" />
+    </div>
+    <div>
+      <label>
+        <span>{{ (client$ | async).Nombre }} · OC-{{ (orderSelected$ | async).OrdenDeCompra }}</span
+        ><br />
+        {{ 'preProcessing.notTramitable' | translate }}
+      </label>
+    </div>
+  </div>
+</app-pop-up-generic>

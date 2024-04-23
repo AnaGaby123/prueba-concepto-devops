@@ -1,0 +1,110 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  height: 100%;
+  width: 100%;
+
+  #pop-up-container {
+    @include s.flexColumn;
+    height: 100%;
+    width: 100%;
+
+    & > .product {
+      @include s.flexColumn;
+      flex: 0 1 74px;
+      padding: 26px 30px;
+
+      & > .title {
+        @include s.flexRow;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize17to22, '', s.$pqGreen);
+          @include s.Novecento-Bold;
+        }
+      }
+
+      & > .name {
+        @include s.flexRow;
+
+        & > label {
+          text-align: start;
+          @include s.escaledFontFormat(s.$textSize16to20, '', s.$pqBlack2);
+          @include s.Roboto-Bold;
+        }
+      }
+    }
+
+    & > .back-order {
+      @include s.flexRow;
+      padding: 43px 30px;
+      height: 100%;
+      flex: 1;
+      overflow: hidden;
+
+      & > .list {
+        @include s.flexColumn;
+        border-top: 1px solid;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+
+        & > .item {
+          @include s.flexColumn;
+          height: 97px;
+          min-height: 97px;
+          box-sizing: border-box;
+          padding: 15px;
+          border-bottom: 1px solid s.$pqGray2;
+          justify-content: space-between;
+
+          & > .data {
+            @include s.flexRow;
+            justify-content: space-between;
+
+            & > .index {
+              & > label {
+                @include s.escaledFontFormat(s.$textSize13to15, '', s.$pqBlack2);
+                @include s.Roboto-Bold;
+                margin-right: 5px;
+              }
+
+              & > .event {
+                color: s.$pqGreen;
+              }
+            }
+          }
+
+          & > .observations {
+            @include s.flexRow;
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize13to15, '', s.$pqBlack2);
+              @include s.Roboto-Bold;
+              margin-right: 5px;
+            }
+
+            & > .text {
+              @include s.Roboto-Regular;
+            }
+          }
+        }
+      }
+    }
+
+    & > .totals {
+      @include s.flexRow;
+      justify-content: center;
+      flex: 0 0 70px;
+      border-bottom: 1px solid;
+
+      & > label {
+        @include s.escaledFontFormat(s.$textSize13to14, '', s.$pqBlack2);
+        @include s.Roboto-Regular;
+      }
+    }
+  }
+}

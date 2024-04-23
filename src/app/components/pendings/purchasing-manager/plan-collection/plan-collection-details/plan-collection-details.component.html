@@ -1,0 +1,308 @@
+<div class="container-details" id="plan-collection-details-content">
+  <div class="left-container">
+    <div class="title">
+      <label> {{ 'planCollection.ordersByBuy' | translate }}</label>
+    </div>
+    <div class="tabs">
+      <app-tabs [options]="options$ | async"></app-tabs>
+    </div>
+    <div class="search">
+      <app-search class="search" [placeholder]="'planCollection.orderBuys' | translate"></app-search>
+    </div>
+    <div class="list-container">
+      <virtual-scroller class="virtual" *ngIf="true">
+        <div class="item">
+          <div class="select" *ngIf="true"></div>
+          <div class="content-left">
+            <label
+              ># {{ 1 }} · <span> {{ 'OC-031021-7593' }} · </span> {{ 17520 | currency: 'USD':'symbol-narrow':'1.2-2' }}
+            </label>
+            <label
+              >{{ 199 }} {{ false ? ('common.pza' | translate) : ('common.pzas' | translate) }} · {{ 94 }}
+              {{ false ? ('common.product' | translate) : ('common.products' | translate) }}
+            </label>
+            <!--cuando se tenga la fecha se pone el translate-->
+            <label class="text-date">{{ 'FEA: 22/Julio/2022' }} </label>
+          </div>
+          <div class="content-right">
+            <label *ngIf="true" class="ocean"
+              >{{ 0 }} + {{ false ? ('common.day' | translate) : ('common.days' | translate) }}</label
+            >
+            <label class="fee" [ngClass]="false ? 'green' : 'red'">{{ 'FER: ' }}{{ '10/Mayo/2022' }}</label>
+          </div>
+        </div>
+        <div class="item">
+          <div class="content-left">
+            <label
+              ># {{ 2 }} · <span> {{ 'OC-031021-7593' }} · </span> {{ 17520 | currency: 'USD':'symbol-narrow':'1.2-2' }}
+            </label>
+            <label
+              >{{ 199 }} {{ false ? ('common.pza' | translate) : ('common.pzas' | translate) }} · {{ 94 }}
+              {{ false ? ('common.product' | translate) : ('common.products' | translate) }}
+            </label>
+            <!--cuando se tenga la fecha se pone el translate-->
+            <label class="text-date">{{ 'FEA: 22/Julio/2022' }} </label>
+          </div>
+          <div class="content-right">
+            <label *ngIf="true" class="ocean"
+              >{{ 0 }} + {{ false ? ('common.day' | translate) : ('common.days' | translate) }}</label
+            >
+            <label class="fee" [ngClass]="true ? 'green' : 'red'">{{ 'FER: ' }}{{ '10/Mayo/2022' }}</label>
+          </div>
+        </div>
+        <div class="item">
+          <div class="content-left">
+            <label
+              ># {{ 3 }} · <span> {{ 'OC-031021-7593' }} · </span> {{ 17520 | currency: 'USD':'symbol-narrow':'1.2-2' }}
+            </label>
+            <label
+              >{{ 199 }} {{ false ? ('common.pza' | translate) : ('common.pzas' | translate) }} · {{ 94 }}
+              {{ false ? ('common.product' | translate) : ('common.products' | translate) }}
+            </label>
+            <!--cuando se tenga la fecha se pone el translate-->
+            <label class="text-date">{{ 'FEA: 22/Julio/2022' }} </label>
+          </div>
+          <div class="content-right">
+            <label *ngIf="true" class="ocean"
+              >{{ 0 }} + {{ false ? ('common.day' | translate) : ('common.days' | translate) }}</label
+            >
+            <label class="fee" [ngClass]="true ? 'green' : 'red'">{{ 'FER: ' }}{{ '10/Mayo/2022' }}</label>
+          </div>
+        </div>
+        <div class="item">
+          <div class="content-left">
+            <label
+              ># {{ 4 }} · <span> {{ 'OC-031021-7593' }} · </span> {{ 17520 | currency: 'USD':'symbol-narrow':'1.2-2' }}
+            </label>
+            <label
+              >{{ 199 }} {{ false ? ('common.pza' | translate) : ('common.pzas' | translate) }} · {{ 94 }}
+              {{ false ? ('common.product' | translate) : ('common.products' | translate) }}
+            </label>
+            <!--cuando se tenga la fecha se pone el translate-->
+            <label class="text-date">{{ 'FEA: 22/Julio/2022' }} </label>
+          </div>
+          <div class="content-right">
+            <label *ngIf="true" class="ocean"
+              >{{ 0 }} + {{ false ? ('common.day' | translate) : ('common.days' | translate) }}</label
+            >
+            <label class="fee" [ngClass]="true ? 'green' : 'red'">{{ 'FER: ' }}{{ '10/Mayo/2022' }}</label>
+          </div>
+        </div>
+      </virtual-scroller>
+      <app-loading class="loading" *ngIf="false"></app-loading>
+      <app-without-results class="without-results" *ngIf="false"></app-without-results>
+    </div>
+    <div class="result-total">
+      <label>#{{ 4 }}</label>
+      <label>{{ 199 }} {{ false ? ('common.piece' | translate) : ('common.pieces' | translate) }}</label>
+      <label>{{ 94 }} {{ false ? ('common.product' | translate) : ('common.products' | translate) }}</label>
+      <label>{{ 'common.totalAmount' | translate }} {{ 17520 | currency: 'USD':'symbol-narrow':'1.2-2' }} USD</label>
+    </div>
+  </div>
+  <div class="right-container">
+    <div class="title">
+      <label
+        >#{{ 2 }} ·
+        <span class="aqua">{{ 'OC-031021-3333' }} </span>
+        <span>{{ '· FEA: 10/JULIO/2022 ' }} </span>
+        <span class="green">{{ '· FEA: 10/AGOSTO/ 2022' }}</span>
+      </label>
+    </div>
+    <div class="content-provider-data">
+      <app-provider-contacts
+        [availableCredit]="'Credito Disponible $1,500.00 USD'"
+        [backGroundColor]="'rgb(0, 136, 148,0.05)'"
+        [padding]="'15px 20px'"
+        [typeContact]="'planCollection.contactTitle' | translate"
+      ></app-provider-contacts>
+    </div>
+    <div class="section-direction">
+      <div class="section-collection">
+        <div class="content column">
+          <div class="step">
+            <label class="text-blue">{{ 'planCollection.directionCollection' | translate }}</label>
+            <app-check-box
+              [check]="useDirection"
+              [fontSize]="(viewType$ | async) === appViewTypes.small ? '16px' : '18px'"
+              [height]="(viewType$ | async) === appViewTypes.small ? '19px' : '21px'"
+              [labelFontStyle]="useDirection === false ? 'robotoBoldGray13' : 'robotoBoldGreen13'"
+              [label]="'planCollection.useDirection' | translate"
+              (event)="activateDirection(useDirection)"
+            ></app-check-box>
+          </div>
+          <label class="text-bold-black">{{ 'planCollection.mainAddress' | translate }}</label>
+          <label class="text-direction"
+            >Rio Rhin 57, Cuauhtémoc, 06500 Ciudad de México, CDMX en caso de ser extensa pasar a dos renglones</label
+          >
+        </div>
+        <div class="content">
+          <label id="text-date-collection">{{ 'planCollection.dateCollection' | translate }}</label>
+          <div class="content content-dates">
+            <div class="content">
+              <app-custom-position-pop-up
+                *ngIf="popupIsOpen"
+                class="popup"
+                [adjustForSmallTarget]="10"
+                [borderRadius]="'8px'"
+                [closeButton]="false"
+                [maxHeight]="'66px'"
+                [minHeight]="'66px'"
+                [minWidth]="(viewType$ | async) === appViewTypes.small ? '570px' : '610px'"
+                [popUpPosition]="'bottom-end'"
+                [target]="popupTarget"
+                (mouseleave)="handleClosePopup()"
+              >
+                <div [ngClass]="NotSchedule === true ? 'text-blue' : 'text-gray'" id="content-hours">
+                  <app-check-box
+                    [check]="NotSchedule"
+                    [fontColor]="NotSchedule === true ? '#008894' : '#c2c3c9'"
+                    [fontSize]="(viewType$ | async) === appViewTypes.small ? '13px' : '15px'"
+                    [label]="'Horario De'"
+                    (event)="activateSchedule(NotSchedule)"
+                  ></app-check-box>
+                  <app-drop-down-list
+                    [activeMinWidth]="false"
+                    [disable]="!NotSchedule"
+                    [placeholder]="'9:00'"
+                  ></app-drop-down-list>
+                  <label>a</label>
+                  <app-drop-down-list
+                    [activeMinWidth]="false"
+                    [disable]="!NotSchedule"
+                    [placeholder]="'14:00'"
+                  ></app-drop-down-list>
+                  <label>De</label>
+                  <app-drop-down-list
+                    [activeMinWidth]="false"
+                    [disable]="!NotSchedule"
+                    [placeholder]="'15:00'"
+                  ></app-drop-down-list>
+                  <label>a</label>
+                  <app-drop-down-list
+                    [activeMinWidth]="false"
+                    [disable]="!NotSchedule"
+                    [placeholder]="'16:00'"
+                  ></app-drop-down-list>
+                </div>
+              </app-custom-position-pop-up>
+              <app-date-picker
+                [disabledCalendarDays]="selectNonWorkingDays$ | async"
+                [label]="('planCollection.dateDayCollection' | translate) + ' 1'"
+              ></app-date-picker>
+              <a (click)="handleOpenPopup($event.target)"> {{ 'planCollection.addSchedule' | translate }} </a>
+            </div>
+            <div class="content">
+              <app-date-picker
+                [disabledCalendarDays]="selectNonWorkingDays$ | async"
+                [label]="('planCollection.dateDayCollection' | translate) + ' 2'"
+              ></app-date-picker>
+              <a (click)="handleOpenPopup($event.target)">{{ 'planCollection.addSchedule' | translate }}</a>
+            </div>
+            <div class="content">
+              <app-date-picker
+                [disabledCalendarDays]="selectNonWorkingDays$ | async"
+                [label]="('planCollection.dateDayCollection' | translate) + ' 3'"
+              ></app-date-picker>
+              <a (click)="handleOpenPopup($event.target)">{{ 'planCollection.addSchedule' | translate }}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <app-generic-text-area
+        [fontSize]="(viewType$ | async) === 'macBookAir' ? '20px' : '16px'"
+        [height]="(viewType$ | async) === appViewTypes.small ? '80px' : '110px'"
+        [placeholder]="'Escribe Aquí'"
+        [title]="'planCollection.comment' | translate"
+      ></app-generic-text-area>
+    </div>
+    <div class="table-container">
+      <div class="table">
+        <div class="header">
+          <div class="number">
+            <label>#</label>
+          </div>
+          <div class="description">
+            <label>{{ 'monitoringDispatch.description' | translate }}</label>
+          </div>
+          <div class="co">
+            <label>{{ 'OC' | translate }}</label>
+          </div>
+          <div class="client">
+            <label>{{ 'common.client' | translate }}</label>
+          </div>
+        </div>
+        <div class="body">
+          <virtual-scroller [enableUnequalChildrenSizes]="true" *ngIf="true">
+            <div class="item">
+              <div>
+                <div class="number">
+                  <label>{{ 1 }}</label>
+                </div>
+                <div class="description">
+                  <div class="label">
+                    <label>{{
+                      'MBL-0443P Polydimethylsiloxane (500mg) Polydime solo podrán ser dos renglones \n' +
+                        'solo podrán ser dos renglones y habilitar tooltip …'
+                    }}</label>
+                    <div class="tooltip-text">
+                      <p>{{
+                        'MBL-0443P Polydimethylsiloxane (500mg) Polydime solo podrán ser dos renglones \n' +
+                          'solo podrán ser dos renglones y habilitar tooltip …'
+                      }}</p>
+                    </div>
+                  </div>
+                  <div class="prices">
+                    <label>{{ 2 }} {{ false ? ('common.pza' | translate) : ('common.pzas' | translate) }} · </label>
+                    <div class="price">
+                      <div class="tooltip">
+                        <div>
+                          <label>CU {{ 39.72 | currency: 'USD' }} · </label>
+                        </div>
+                      </div>
+                    </div>
+                    <label>CT {{ 50 | currency: 'USD':'symbol-narrow':'1.2-2' }}</label>
+                  </div>
+                </div>
+                <div class="oc">
+                  <label>{{ '375647-9485' }}</label>
+                </div>
+                <div class="client">
+                  <label>{{ 'Laboratorios Aranda' }}</label>
+                  <label class="ocean">{{ '020821-1107' }}</label>
+                  <!-- el dateForm se colocará cuando se obtiene la fecha-->
+                  <label [ngClass]="false ? 'green' : 'red'">FEE: {{ '23/Agosto/2021' }}</label>
+                </div>
+              </div>
+            </div>
+          </virtual-scroller>
+          <app-loading class="loading" *ngIf="false"></app-loading>
+          <app-without-results class="without-results" *ngIf="false"></app-without-results>
+        </div>
+        <div class="footer">
+          <div class="number">
+            <label>#{{ 3 }}</label>
+          </div>
+          <div class="description">
+            <label>{{ 3 }} {{ false ? ('common.pza' | translate) : ('common.pzas' | translate) }}</label>
+            <label>{{ 'common.totalAmount' | translate }} {{ 20468680 | currency: 'USD':'symbol-narrow':'1.2-2' }}</label>
+            <label>{{ 1 }} {{ true ? ('common.client' | translate) : ('common.clients' | translate) }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="buttons">
+      <button [ngClass]="false ? 'active' : 'disabled'">{{ 'common.register' | translate }}</button>
+    </div>
+  </div>
+  <app-pop-up-generic
+    *ngIf="useDirection"
+    [activeBtn]="true"
+    [activeButtons]="true"
+    [height]="(viewType$ | async) === appViewTypes.small ? '650px' : '700px'"
+    [titleHeader]="'planCollection.directionTemporaryAdd' | translate"
+    [width]="(viewType$ | async) === appViewTypes.small ? '750px' : '800px'"
+    (evento)="handleCloseContact()"
+  >
+    <app-plan-collection-contact></app-plan-collection-contact>
+  </app-pop-up-generic>
+</div>

@@ -1,0 +1,22 @@
+<div class="w3-container">
+  <div id="pop" class="modal" #pop>
+    <div class="modal-content" [style.height]="height" [style.width]="width">
+      <header class="header">
+        <h1> PROQUIFA NET </h1>
+      </header>
+      <div class="contenido">
+        <img src="assets/Images/arrows/flecha_blanca_encirculoverde.svg" alt="" class="alert" />
+        <div class="alertaTxt">
+          <div>
+            <p id="info" class="dato"
+              >¡{{ text || ('common.youSaved' | translate) }}
+              <span id="info-span">{{ successText || ('common.successfully' | translate) }}</span></p
+            >
+            <br />
+          </div>
+          <p id="extra-info" class="dato">{{ extraText }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

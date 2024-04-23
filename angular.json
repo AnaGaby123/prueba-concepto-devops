@@ -1,0 +1,403 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "ProquifaDotNet": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "allowedCommonJsDependencies": ["blob-to-sha256", "lottie-web", "accounting", "moment"],
+            "outputPath": "dist/ProquifaDotNet",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.app.json",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              "src/web.config",
+              "src/functions_structure.json",
+              "src/manifest.webmanifest"
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/styles"]
+            },
+            "styles": [
+              "src/styles.scss",
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
+            ],
+            "scripts": [],
+            "ngswConfigPath": "ngsw-config.json"
+          },
+          "configurations": {
+            "prod": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "outputPath": "dist/prod",
+              "aot": true,
+              "baseHref": "/ProquifaDotNet/",
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "15mb",
+                  "maximumError": "20mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "400kb",
+                  "maximumError": "500kb"
+                }
+              ]
+            },
+            "prod-debug": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod-debug.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "outputPath": "dist/prod",
+              "aot": false,
+              "baseHref": "/",
+              "namedChunks": true,
+              "extractLicenses": false,
+              "vendorChunk": false,
+              "buildOptimizer": false,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "15mb",
+                  "maximumError": "20mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "400kb",
+                  "maximumError": "500kb"
+                }
+              ]
+            },
+            "uat": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.uat.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "outputPath": "dist/uat",
+              "aot": true,
+              "baseHref": "/ProquifaDotNet/",
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "15mb",
+                  "maximumError": "20mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "400kb",
+                  "maximumError": "500kb"
+                }
+              ]
+            },
+            "uat-debug": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.uat-debug.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "outputPath": "dist/uat",
+              "aot": false,
+              "baseHref": "/",
+              "namedChunks": false,
+              "extractLicenses": false,
+              "vendorChunk": false,
+              "buildOptimizer": false,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "15mb",
+                  "maximumError": "20mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "400kb",
+                  "maximumError": "500kb"
+                }
+              ]
+            },
+            "qa": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.qa.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "outputPath": "dist/qa",
+              "aot": true,
+              "baseHref": "/ProquifaDotNet/",
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "15mb",
+                  "maximumError": "20mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "400kb",
+                  "maximumError": "500kb"
+                }
+              ]
+            },
+            "dev": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dev.ts"
+                }
+              ],
+              "outputPath": "dist/dev",
+              "aot": true,
+              "baseHref": "/ProquifaDotNet/",
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "namedChunks": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "15mb",
+                  "maximumError": "20mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "400kb",
+                  "maximumError": "500kb"
+                }
+              ]
+            },
+            "local": {
+              "outputPath": "dist/ProquifaDotNet",
+              "aot": false,
+              "baseHref": "/",
+              "optimization": false,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "namedChunks": true,
+              "extractLicenses": false,
+              "vendorChunk": true,
+              "buildOptimizer": false,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "15mb",
+                  "maximumError": "20mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "400kb",
+                  "maximumError": "500kb"
+                }
+              ]
+            }
+          },
+          "defaultConfiguration": "local"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "ProquifaDotNet:build"
+          },
+          "configurations": {
+            "prod": {
+              "browserTarget": "ProquifaDotNet:build:prod"
+            },
+            "prod-debug": {
+              "browserTarget": "ProquifaDotNet:build:prod-debug"
+            },
+            "uat": {
+              "browserTarget": "ProquifaDotNet:build:uat"
+            },
+            "uat-debug": {
+              "browserTarget": "ProquifaDotNet:build:uat-debug"
+            },
+            "qa": {
+              "browserTarget": "ProquifaDotNet:build:qa"
+            },
+            "dev": {
+              "browserTarget": "ProquifaDotNet:build:dev"
+            },
+            "local": {
+              "browserTarget": "ProquifaDotNet:build:local"
+            }
+          },
+          "defaultConfiguration": "local"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "ProquifaDotNet:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-builders/jest:run",
+          "options": {
+            "main": "src/test.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.spec.json",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              "src/web.config",
+              "src/functions_structure.json",
+              "src/manifest.webmanifest"
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/styles"]
+            },
+            "styles": [
+              "src/styles.scss",
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "e2e/protractor.conf.js",
+            "devServerTarget": "ProquifaDotNet:serve"
+          },
+          "configurations": {
+            "uat": {
+              "devServerTarget": "ProquifaDotNet:serve:uat"
+            },
+            "qa": {
+              "devServerTarget": "ProquifaDotNet:serve:qa"
+            }
+          }
+        }
+      }
+    },
+    "api-catalogos": {
+      "projectType": "library",
+      "root": "projects/api-catalogos",
+      "sourceRoot": "projects/api-catalogos/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/api-catalogos/tsconfig.lib.json",
+            "project": "projects/api-catalogos/ng-package.json"
+          },
+          "configurations": {
+            "uat": {
+              "tsConfig": "projects/api-catalogos/tsconfig.lib.prod.json"
+            },
+            "qa": {
+              "tsConfig": "projects/api-catalogos/tsconfig.lib.prod.json"
+            }
+          }
+        }
+      }
+    },
+    "api-logistica": {
+      "projectType": "library",
+      "root": "projects/api-logistica",
+      "sourceRoot": "projects/api-logistica/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/api-logistica/tsconfig.lib.json",
+            "project": "projects/api-logistica/ng-package.json"
+          },
+          "configurations": {
+            "uat": {
+              "tsConfig": "projects/api-logistica/tsconfig.lib.prod.json"
+            },
+            "qa": {
+              "tsConfig": "projects/api-logistica/tsconfig.lib.prod.json"
+            }
+          }
+        }
+      }
+    },
+    "api-finanzas": {
+      "projectType": "library",
+      "root": "projects/api-finanzas",
+      "sourceRoot": "projects/api-finanzas/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/api-finanzas/tsconfig.lib.json",
+            "project": "projects/api-finanzas/ng-package.json"
+          },
+          "configurations": {
+            "uat": {
+              "tsConfig": "projects/api-finanzas/tsconfig.lib.prod.json"
+            },
+            "qa": {
+              "tsConfig": "projects/api-finanzas/tsconfig.lib.prod.json"
+            }
+          }
+        }
+      }
+    }
+  }
+}

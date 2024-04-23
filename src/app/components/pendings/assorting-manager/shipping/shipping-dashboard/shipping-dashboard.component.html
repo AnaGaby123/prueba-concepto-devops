@@ -1,0 +1,100 @@
+<div class="divPrincipal">
+  <div class="VistaInicial">
+    <div id="botonera">
+      <app-tabs></app-tabs>
+    </div>
+    <div class="graficas">
+      <div class="productos">
+        <div>
+          <div class="tituloGrafica">
+            <label>CLIENTES</label>
+          </div>
+          <div class="grafica">
+            <app-doughnut-chart></app-doughnut-chart>
+          </div>
+        </div>
+      </div>
+      <div class="productos">
+        <div>
+          <div class="tituloGrafica">
+            <label>PRIORIDADES</label>
+          </div>
+          <div class="grafica">
+            <app-doughnut-chart></app-doughnut-chart>
+          </div>
+        </div>
+      </div>
+      <div class="prioridades">
+        <div>
+          <div class="tituloGrafica">
+            <label>PRIORIDAD 1</label>
+          </div>
+          <div class="grafica">
+            <app-doughnut-chart></app-doughnut-chart>
+          </div>
+        </div>
+        <div>
+          <div class="tituloGrafica">
+            <label>PRIORIDAD 2</label>
+          </div>
+          <div class="grafica">
+            <app-doughnut-chart></app-doughnut-chart>
+          </div>
+        </div>
+        <div>
+          <div class="tituloGrafica">
+            <label>PRIORIDAD 3</label>
+          </div>
+          <div class="grafica">
+            <app-doughnut-chart></app-doughnut-chart>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="button">
+      <button (click)="navigate()">INGRESAR</button>
+    </div>
+  </div>
+</div>
+<app-pop-up-generic
+  *ngIf="modal"
+  class="pop-up"
+  [width]="'579px'"
+  [height]="'622px'"
+  [showClose]="true"
+  (evento)="handleModal(false)"
+  [titleHeader]="'Estadísticas del usuario'"
+>
+  <div class="container">
+    <div class="datos">
+      <div class="totalesHistoricos">
+        <label class="titulo">Totales Históricos</label>
+        <div class="valores">
+          <p class="dato">{{ 1485 | acFormatNumber }}</p>
+          <p class="campo">Partidas {{ 'Packing list' }}</p>
+        </div>
+        <div class="valores">
+          <p class="dato">{{ 1485 | acFormatNumber }} </p>
+          <p class="campo">Piezas {{ 'Packing list' }}</p>
+        </div>
+        <div class="valores">
+          <p class="dato">{{ 1485 | acFormatNumber }}</p>
+          <p class="campo">Hallazgos encontrados</p>
+        </div>
+      </div>
+      <div class="insPorPrioridad">
+        <label class="titulo">{{ 'Packing list' }} por prioridad</label>
+        <div [ngStyle]="{width: '205px', height: '210px', 'max-width': '368px', 'padding-left': '13%'}">
+          <app-doughnut-chart></app-doughnut-chart>
+        </div>
+      </div>
+    </div>
+    <div class="graficaPuntos">
+      <div class="header">
+        <label class="titulo">Totales Históricos</label>
+        <app-drop-down-list></app-drop-down-list>
+      </div>
+      <div class="content"></div>
+    </div>
+  </div>
+</app-pop-up-generic>

@@ -1,0 +1,626 @@
+<div class="delivery-billing">
+  <div class="container">
+    <div class="billing">
+      <div class="titleSection">
+        <label>{{ 'clientCatalog.billing' | translate }}</label>
+      </div>
+      <div class="billing-container">
+        <div class="billing-data">
+          <div class="company-name">
+            <app-generic-input
+              [label]="'clientCatalog.companyName' | translate"
+              [value]="(billing$ | async)?.RazonSocial"
+              [required]="true"
+              [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+              [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+              [maxlength]="120"
+              (textData)="setDataBilling($event, 'RazonSocial')"
+            >
+            </app-generic-input>
+          </div>
+          <div class="mercantile-society-name">
+            <app-drop-down-list
+              [capitalize]="false"
+              [label]="'clientCatalog.mercantileSocietyName' | translate"
+              [itemSelected]="selectMercantileSocietySelected$ | async"
+              [items]="selectMercantileSocietyTypes$ | async"
+              [subtitleActive]="false"
+              [activeMinWidth]="false"
+              [isSearchable]="(selectMercantileSocietyTypes$ | async)?.length > 5"
+              [required]="true"
+              [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+              (valueDropList)="setDataBillingDropList($event, 'IdCatTipoSociedadMercantil', 'MercantileSocietySelected')"
+            >
+            </app-drop-down-list>
+          </div>
+          <div class="tax-regime">
+            <app-drop-down-list
+              [capitalize]="false"
+              [label]="'clientCatalog.taxRegime' | translate"
+              [itemSelected]="selectTaxRegimeSelected$ | async"
+              [items]="selectTaxRegime$ | async"
+              [subtitleActive]="false"
+              [isSearchable]="(selectTaxRegime$ | async)?.length > 5"
+              [activeMinWidth]="false"
+              [required]="true"
+              [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+              (valueDropList)="setDataBillingDropList($event, 'IdCatRegimenFiscal', 'TaxRegimeSelected')"
+            >
+            </app-drop-down-list>
+          </div>
+          <div class="rfc">
+            <app-generic-input
+              [label]="'clientCatalog.rfc' | translate"
+              [value]="(billing$ | async)?.RFC"
+              [required]="true"
+              [forceActiveErrors]="!(rfcValidation$ | async)"
+              [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+              [typeValidation]="inputValidators.RFC"
+              [maxlength]="50"
+              (textData)="setDataBilling($event, 'RFC')"
+            >
+            </app-generic-input>
+          </div>
+          <div class="fiscal-address">
+            <app-generic-input
+              [label]="'clientCatalog.fiscalAddress' | translate"
+              [value]="directionData((selectClientDirection$ | async)?.Direccion)"
+              [enableEdit]="false"
+              [typeValidation]="inputValidators.Alphanumeric"
+              [truncateText]="true"
+            >
+            </app-generic-input>
+            <div class="oneButton">
+              <button
+                *ngIf="
+                  (selectClientDirection$ | async)?.Direccion?.IdDireccion === defaultId &&
+                  (selectClientDirection$ | async)?.Direccion?.IdCatPais === null
+                "
+                (click)="handleAddress(false)"
+                [ngClass]="(enableEdit$ | async) ? 'enableBtn' : 'disableBtn'"
+                [disabled]="!(enableEdit$ | async)"
+                >{{ 'clientCatalog.addAddress' | translate }}</button
+              >
+              <button
+                *ngIf="
+                  (selectClientDirection$ | async)?.Direccion?.IdDireccion !== defaultId ||
+                  (selectClientDirection$ | async)?.Direccion?.IdCatPais !== null
+                "
+                (click)="handleAddress(true)"
+                [ngClass]="(enableEdit$ | async) ? 'enableBtn' : 'disableBtn'"
+                [disabled]="!(enableEdit$ | async)"
+                >{{ 'clientCatalog.editAddress' | translate }}</button
+              >
+            </div>
+          </div>
+          <div class="offer-currency">
+            <app-drop-down-list
+              [capitalize]="false"
+              [label]="'clientCatalog.offerCurrency' | translate"
+              [itemSelected]="selectOfferCurrencySelected$ | async"
+              [items]="selectDropListCurrency$ | async"
+              [subtitleActive]="false"
+              [activeMinWidth]="false"
+              [required]="true"
+              [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+              (valueDropList)="setDataBillingDropList($event, 'IdCatMonedaTramitacion', 'OfferCurrencySelected')"
+            >
+            </app-drop-down-list>
+          </div>
+          <div class="billing-currency">
+            <app-drop-down-list
+              [capitalize]="false"
+              [label]="'clientCatalog.billingCurrency' | translate"
+              [itemSelected]="selectBillingCurrencySelected$ | async"
+              [items]="selectDropListCurrency$ | async"
+              [subtitleActive]="false"
+              [activeMinWidth]="false"
+              [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+              (valueDropList)="setDataBillingDropList($event, 'IdCatMoneda', 'BillingCurrencySelected')"
+            >
+            </app-drop-down-list>
+          </div>
+          <div class="type-change">
+            <app-drop-down-list
+              [capitalize]="false"
+              [label]="'clientCatalog.typeChange' | translate"
+              [itemSelected]="selectTypeChangesSelected$ | async"
+              [items]="selectTypesChanges$ | async"
+              [required]="!((selectOfferCurrencySelected$ | async)?.label === (selectBillingCurrencySelected$ | async)?.label)"
+              [subtitleActive]="false"
+              [activeMinWidth]="false"
+              [disable]="(selectOfferCurrencySelected$ | async)?.value === (selectBillingCurrencySelected$ | async)?.value"
+              [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+              (valueDropList)="setTypeChange($event)"
+            >
+            </app-drop-down-list>
+            <div *ngIf="(selectTypeChangesSelected$ | async)?.value === '2'">
+              <div class="text">
+                <label>* {{ 'clientCatalog.validateTo' | translate }}:</label>
+              </div>
+              <div class="date" [ngClass]="{enableEdit: enableEdit$ | async}">
+                <app-date-picker
+                  [dateFormat]="'DD/MMMM/YYYY'"
+                  [style.height]="(viewType$ | async) === viewTypes.small ? '22px' : '24px'"
+                  [color]="false"
+                  [borderInputColor]="'white'"
+                  [imageAdd]="false"
+                  [textAlign]="'center'"
+                  [placeholder]="'dd/mm/aa'"
+                  [sizeInput]="(viewType$ | async) === viewTypes.small ? '12px' : '14px'"
+                  [fontColor]="'#008894'"
+                  [date]="selectClienteTCDOFVigencia$ | async"
+                  [enableEdit]="enableEdit$ | async"
+                  (onSelect)="handleValidationDate($event)"
+                ></app-date-picker>
+              </div>
+            </div>
+          </div>
+          <div class="how-billing">
+            <app-drop-down-list
+              [capitalize]="false"
+              [label]="'clientCatalog.howBilling' | translate"
+              [itemSelected]="selectWhoBillsSelected$ | async"
+              [items]="selectEnterprise$ | async"
+              [isSearchable]="(selectEnterprise$ | async)?.length > 5"
+              [subtitleActive]="false"
+              [activeMinWidth]="false"
+              [required]="true"
+              [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+              (valueDropList)="setDataBillingDropList($event, 'IdEmpresa', 'CompanySelected')"
+            >
+            </app-drop-down-list>
+
+            <div>
+              <app-check-box
+                [label]="'clientCatalog.billingPublicationsToo' | translate"
+                [check]="(billing$ | async)?.MismaEmpresaFacturaPublicaciones"
+                (event)="setDataBilling($event, 'MismaEmpresaFacturaPublicaciones')"
+                [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+                [enabledIconNoSelected]="!(billing$ | async)?.MismaEmpresaFacturaPublicaciones"
+                [labelFontStyle]="
+                  (billing$ | async)?.MismaEmpresaFacturaPublicaciones ? 'labelRobotoRegularProquifa13' : 'robotoRegular13'
+                "
+                [height]="(viewType$ | async) === viewTypes.small ? '17px' : '20px'"
+                [disabled]="lodashIsEmpty(selectWhoBillsSelected$ | async)"
+              >
+              </app-check-box>
+            </div>
+          </div>
+          <div class="send-email">
+            <app-check-box
+              class="check"
+              [label]="'clientCatalog.sendToMail' | translate"
+              [check]="(billing$ | async)?.EnviarPorCorreo"
+              (event)="setDataBilling($event, 'EnviarPorCorreo')"
+              [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+              [enabledIconNoSelected]="!(billing$ | async)?.EnviarPorCorreo"
+              [height]="(viewType$ | async) === viewTypes.small ? '17px' : '20px'"
+              [labelFontStyle]="(billing$ | async)?.EnviarPorCorreo ? 'labelRobotoRegularProquifa13' : 'robotoRegular13'"
+            >
+            </app-check-box>
+            <app-generic-input
+              class="input"
+              *ngIf="(enableEdit$ | async) || (billing$ | async)?.EnviarPorCorreo"
+              [label]="'common.email' | translate"
+              [required]="(billing$ | async)?.EnviarPorCorreo"
+              [value]="(billing$ | async)?.Correo"
+              [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+              [typeValidation]="inputValidators.Email"
+              (textData)="setDataBilling($event, 'Correo')"
+            >
+            </app-generic-input>
+          </div>
+        </div>
+        <div class="validate-addenda">
+          <div class="title">
+            <label>{{ 'clientCatalog.applyAddenda' | translate }}</label>
+          </div>
+          <div class="validate-addenda-option">
+            <app-check-box
+              [enableEdit]="enableEdit$ | async"
+              [check]="(billing$ | async)?.AddendaDeLineaDeOrden"
+              (event)="setDataBilling($event, 'AddendaDeLineaDeOrden')"
+              [label]="'clientCatalog.lineOrderAddenda' | translate"
+              [enabledIconNoSelected]="!(billing$ | async)?.AddendaDeLineaDeOrden"
+              [labelFontStyle]="(billing$ | async)?.AddendaDeLineaDeOrden ? 'robotoRegular14Proquifa' : 'robotoRegular14'"
+            ></app-check-box>
+            <app-check-box
+              [enableEdit]="enableEdit$ | async"
+              [check]="(billing$ | async)?.AddendaDeCorreo"
+              (event)="setDataBilling($event, 'AddendaDeCorreo')"
+              [label]="'clientCatalog.emailAddenda' | translate"
+              [enabledIconNoSelected]="!(billing$ | async)?.AddendaDeCorreo"
+              [labelFontStyle]="(billing$ | async)?.AddendaDeCorreo ? 'robotoRegular14Proquifa' : 'robotoRegular14'"
+            ></app-check-box>
+          </div>
+        </div>
+        <div class="validate-cdfi">
+          <div class="title-cfdi">
+            <label>{{ 'clientCatalog.validateCFDI' | translate }}</label>
+          </div>
+          <div class="validate-cfdi-option">
+            <div *ngIf="((billing$ | async)?.TipoValidacionPortal && !(enableEdit$ | async)) || (enableEdit$ | async)">
+              <app-radio-button
+                [label]="'Portal'"
+                [labelFontStyle]="
+                  (billing$ | async)?.TipoValidacionPortal ? 'labelRobotoRegularProquifa14' : 'labelRobotoRegular14'
+                "
+                [height]="(viewType$ | async) === 'macBookAir' ? '20px' : '17px'"
+                [value]="(billing$ | async)?.TipoValidacionPortal"
+                (emitSelected)="setCFDIValidation($event, 'TipoValidacionPortal')"
+                [activeLocalState]="false"
+                [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+              >
+              </app-radio-button>
+            </div>
+            <div *ngIf="((billing$ | async)?.TipoValidacionSAT && !(enableEdit$ | async)) || (enableEdit$ | async)">
+              <app-radio-button
+                [label]="'SAT'"
+                [labelFontStyle]="
+                  (billing$ | async)?.TipoValidacionSAT ? 'labelRobotoRegularProquifa14' : 'labelRobotoRegular14'
+                "
+                [height]="(viewType$ | async) === 'macBookAir' ? '20px' : '17px'"
+                [value]="(billing$ | async)?.TipoValidacionSAT"
+                (emitSelected)="setCFDIValidation($event, 'TipoValidacionSAT')"
+                [activeLocalState]="false"
+                [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+              >
+              </app-radio-button>
+            </div>
+            <div *ngIf="((billing$ | async)?.TipoValidacionCorreo && !(enableEdit$ | async)) || (enableEdit$ | async)">
+              <app-radio-button
+                [label]="'attendReview.email' | translate"
+                [labelFontStyle]="
+                  (billing$ | async)?.TipoValidacionCorreo ? 'labelRobotoRegularProquifa14' : 'labelRobotoRegular14'
+                "
+                [height]="(viewType$ | async) === 'macBookAir' ? '20px' : '17px'"
+                [value]="(billing$ | async)?.TipoValidacionCorreo"
+                (emitSelected)="setCFDIValidation($event, 'TipoValidacionCorreo')"
+                [activeLocalState]="false"
+                [radioPaddingRight]="'0px'"
+                [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+              >
+              </app-radio-button>
+            </div>
+          </div>
+          <div class="validate-cfdi-option-container">
+            <div class="portal" *ngIf="(billing$ | async)?.TipoValidacionPortal && enableEdit$ | async">
+              <div>
+                <app-generic-input
+                  [typeValidation]="inputValidators.Alphanumeric"
+                  [label]="'URL'"
+                  [value]="(billing$ | async)?.URL"
+                  (textData)="setDataBilling($event, 'URL')"
+                  [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+                ></app-generic-input>
+              </div>
+              <div>
+                <app-generic-input
+                  [typeValidation]="inputValidators.Alphanumeric"
+                  [label]="'common.user' | translate"
+                  [value]="(billing$ | async)?.Usuario"
+                  [maxlength]="50"
+                  (textData)="setDataBilling($event, 'Usuario')"
+                  [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+                >
+                </app-generic-input>
+              </div>
+              <div>
+                <app-generic-input
+                  [typeValidation]="inputValidators.Alphanumeric"
+                  [label]="'common.password' | translate"
+                  [value]="(billing$ | async)?.Contrasena"
+                  [maxlength]="50"
+                  (textData)="setDataBilling($event, 'Contrasena')"
+                  [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+                >
+                </app-generic-input>
+              </div>
+            </div>
+            <div class="sat" *ngIf="(billing$ | async)?.TipoValidacionSAT && enableEdit$ | async">
+              <div class="satDatos">
+                <label class="labelRobotoBold">{{ 'clientCatalog.satValidation' | translate }}</label>
+                <a href="https://verificacfdi.facturaelectronica.sat.gob.mx" target="_blank"
+                  >https://verificacfdi.facturaelectronica.sat.gob.mx</a
+                >
+              </div>
+            </div>
+            <div class="email" *ngIf="(billing$ | async)?.TipoValidacionCorreo">
+              <div class="email-form" *ngIf="!(editMode$ | async) || (enableEdit$ | async)">
+                <div class="email">
+                  <div class="text">
+                    <label>{{ 'attendReview.email' | translate }}</label>
+                  </div>
+                  <div class="content">
+                    <app-generic-input
+                      [typeValidation]="inputValidators.Email"
+                      [value]="(selectEmail$ | async)?.Correo"
+                      (textData)="setEmail($event)"
+                      (errorData)="setErrorData($event)"
+                    >
+                    </app-generic-input>
+                  </div>
+                </div>
+                <div class="buttton">
+                  <button
+                    [ngClass]="(selectEmailValidation$ | async) && validEmail ? 'btn-enable ' : 'btn-disable'"
+                    (click)="addEmail()"
+                    [disabled]="(selectEmailValidationDisable$ | async) || !validEmail"
+                  >
+                    {{ 'common.add' | translate }}</button
+                  >
+                </div>
+              </div>
+              <div class="email-list" *ngIf="(billing$ | async)?.CorreosCFDI?.length > 0">
+                <div *ngFor="let correo of (billing$ | async)?.CorreosCFDI; let i = index">
+                  <div>
+                    <label class="sinPadding paddingLarge">{{ correo.Correo }}</label>
+                    <img
+                      alt=""
+                      src="assets/Images/polizasEliminar.svg"
+                      (click)="deleteEmail(correo)"
+                      *ngIf="!(editMode$ | async) || (enableEdit$ | async)"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="comments-with-theme">
+          <div class="title">
+            <label>{{ 'clientCatalog.comments' | translate }}</label>
+          </div>
+          <div class="comments-container">
+            <div class="comments-form" *ngIf="!(editMode$ | async) || (enableEdit$ | async)">
+              <div class="theme">
+                <app-drop-down-list
+                  [label]="'clientCatalog.theme' | translate"
+                  [activeMinWidth]="false"
+                  [subtitleActive]="false"
+                  (valueDropList)="setDataThemeDropList($event)"
+                  [itemSelected]="(selectComment$ | async)?.ThemeSelected"
+                  [items]="selectThemes$ | async"
+                  [capitalize]="false"
+                >
+                </app-drop-down-list>
+              </div>
+              <div class="comment">
+                <app-generic-input
+                  [label]="'common.comment' | translate"
+                  [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+                  (textData)="setTextComment($event)"
+                  [value]="(selectComment$ | async)?.Comentario"
+                >
+                </app-generic-input>
+              </div>
+              <div class="button">
+                <button
+                  [ngClass]="(commentValidation$ | async) ? 'btn-enable' : 'btn-disable'"
+                  [disabled]="commentValidationDisable$ | async"
+                  (click)="addComent()"
+                  >{{ 'common.add' | translate }}</button
+                >
+              </div>
+            </div>
+            <div class="comments-list" *ngIf="(billing$ | async)?.Comentarios?.length > 0">
+              <div *ngFor="let coment of (billing$ | async)?.Comentarios; let i = index">
+                <div>
+                  <div class="info">
+                    <span>{{ coment.TemaComentario }}</span>
+                    <label>{{ coment.Comentario }}</label>
+                  </div>
+                  <div (click)="deleteComent(coment)" *ngIf="!(editMode$ | async) || (enableEdit$ | async)">
+                    <img alt="" src="assets/Images/cerrar.svg" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="delivery">
+      <div class="titleSection">
+        <label>{{ 'clientCatalog.delivery' | translate }}</label>
+      </div>
+      <div class="delivery-data">
+        <div
+          class="month-restriction"
+          *ngIf="
+            (selectBillingMonthlyRestriction$ | async)?.RestriccionFinDeMes || !(editMode$ | async) || (enableEdit$ | async)
+          "
+        >
+          <div>
+            <app-radio-button
+              [label]="'clientCatalog.doesNotReceiveDeliveries' | translate"
+              [labelFontStyle]="
+                (selectBillingMonthlyRestriction$ | async)?.RestriccionFinDeMes
+                  ? 'labelRobotoRegularProquifa14'
+                  : 'labelRobotoRegular14'
+              "
+              [height]="(viewType$ | async) === 'macBookAir' ? '20px' : '17px'"
+              [enableEdit]="enableEdit$ | async"
+              [value]="(selectBillingMonthlyRestriction$ | async)?.RestriccionFinDeMes"
+              (emitValue)="setRestricitionType($event, 'RestriccionFinDeMes')"
+            >
+            </app-radio-button>
+          </div>
+          <div class="row">
+            <div class="input-number">
+              <app-generic-input
+                [placeholder]="'0'"
+                [max]="21"
+                [typeValidation]="inputValidators.Number"
+                [value]="(selectBillingMonthlyRestriction$ | async)?.DiasAntesFinDeMes"
+                [isDisable]="!(selectBillingMonthlyRestriction$ | async)?.RestriccionFinDeMes"
+                [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+                (textData)="setDataRestriction($event, 'DiasAntesFinDeMes')"
+              >
+              </app-generic-input>
+            </div>
+            <div class="info-colum">
+              <label>{{ 'clientCatalog.daysBeforeMonthEnd' | translate }}</label>
+              <span>({{ 'clientCatalog.max21Days' | translate }})</span>
+            </div>
+          </div>
+          <div>
+            <app-check-box
+              *ngIf="enableEdit$ | async"
+              [check]="(selectBillingMonthlyRestriction$ | async)?.EntregaConRemision"
+              (event)="setDataRestriction($event, 'EntregaConRemision')"
+              [enabledIconNoSelected]="!(selectBillingMonthlyRestriction$ | async)?.EntregaConRemision"
+              [labelFontStyle]="
+                (selectBillingMonthlyRestriction$ | async)?.EntregaConRemision ? 'robotoRegular14Proquifa' : 'robotoRegular14'
+              "
+              [label]="'checkout.deliveryWithReferral' | translate"
+            >
+            </app-check-box>
+          </div>
+        </div>
+        <div
+          class="monthly-restriction"
+          *ngIf="
+            (selectBillingMonthlyRestriction$ | async)?.RestriccionMensual || !(editMode$ | async) || (enableEdit$ | async)
+          "
+        >
+          <div class="datocFactura">
+            <app-radio-button
+              [label]="'clientCatalog.doesNotReceiveDeliveries' | translate"
+              [labelFontStyle]="
+                (selectBillingMonthlyRestriction$ | async)?.RestriccionMensual
+                  ? 'labelRobotoRegularProquifa14'
+                  : 'labelRobotoRegular14'
+              "
+              [height]="(viewType$ | async) === 'macBookAir' ? '20px' : '17px'"
+              [enableEdit]="enableEdit$ | async"
+              [value]="(selectBillingMonthlyRestriction$ | async)?.RestriccionMensual"
+              (emitValue)="setRestricitionType($event, 'RestriccionMensual')"
+            >
+            </app-radio-button>
+          </div>
+          <div class="row">
+            <div class="infoColum">
+              <label>{{ 'clientCatalog.fromTheDay' | translate }}</label>
+              <span>({{ 'clientCatalog.ofAllTheMonths' | translate }})</span>
+            </div>
+            <div class="inputNumber">
+              <app-generic-input
+                [placeholder]="'0'"
+                [typeValidation]="inputValidators.Number"
+                [value]="(selectBillingMonthlyRestriction$ | async)?.APartirDelDia"
+                (textData)="setDataRestriction($event, 'APartirDelDia')"
+                [isDisable]="!(selectBillingMonthlyRestriction$ | async)?.RestriccionMensual"
+                [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+              >
+              </app-generic-input>
+            </div>
+          </div>
+        </div>
+        <div class="temporal-restriction">
+          <div class="header">
+            <app-check-box
+              [enableEdit]="enableEdit$ | async"
+              [check]="(billing$ | async)?.RestriccionesTemporales"
+              (event)="setDataBilling($event, 'RestriccionesTemporales')"
+              [label]="'clientCatalog.temporaryRestriction' | translate"
+              [enabledIconNoSelected]="!(billing$ | async)?.RestriccionesTemporales"
+              [labelFontStyle]="(billing$ | async)?.RestriccionesTemporales ? 'robotoRegular14Proquifa' : 'robotoRegular14'"
+            ></app-check-box>
+          </div>
+          <div class="row" *ngIf="!(editMode$ | async) || (enableEdit$ | async)">
+            <div class="title">
+              <app-generic-input
+                [label]="'eventConsole.title' | translate"
+                [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+                [value]="(temporalRestriction$ | async)?.Titulo"
+                [maxlength]="100"
+                (textData)="setTitle($event)"
+                [isDisable]="!(billing$ | async)?.RestriccionesTemporales"
+              >
+              </app-generic-input>
+            </div>
+            <div
+              class="restriction-start"
+              [ngClass]="!(billing$ | async)?.RestriccionesTemporales ? 'opacity' : 'opacicityNormal'"
+            >
+              <app-date-picker
+                dateFormat="YYYYMMDD"
+                [color]="false"
+                [heightInput]="'25px'"
+                (fecha)="setDateStart($event)"
+                [date]="(temporalRestriction$ | async)?.FechaInicioDate"
+                [rangeStart]="initialDate"
+                [label]="'clientCatalog.from' | translate"
+                [disabledCalendarDays]="selectNonWorkingDays$ | async"
+                [disabled]="!(billing$ | async)?.RestriccionesTemporales"
+              ></app-date-picker>
+            </div>
+            <div class="data" [ngClass]="true ? 'opacity' : 'opacicityNormal'">
+              <app-date-picker
+                dateFormat="YYYYMMDD"
+                [color]="false"
+                (fecha)="setDateEnd($event)"
+                [date]="(temporalRestriction$ | async)?.FechaFinDate"
+                [rangeStart]="(temporalRestriction$ | async)?.FechaInicioDate"
+                [label]="'clientCatalog.until' | translate"
+                [disabledCalendarDays]="selectNonWorkingDays$ | async"
+                [disabled]="!(billing$ | async)?.RestriccionesTemporales"
+              ></app-date-picker>
+            </div>
+            <div class="button">
+              <button
+                [ngClass]="(selectRestrictionValidation$ | async) ? 'btn-enable' : 'btn-disable'"
+                [disabled]="selectRestrictionValidationDisable$ | async"
+                (click)="addEvent()"
+                >{{ 'common.add' | translate }}</button
+              >
+            </div>
+          </div>
+          <div class="row">
+            <div class="event-list-container">
+              <div class="event-list">
+                <div *ngFor="let evento of (billing$ | async)?.RestriccionesT; let i = index">
+                  <div>
+                    <div
+                      class="info"
+                      [ngClass]="(billing$ | async)?.RestriccionesTemporales ? 'enable-restriction' : 'disable-restriction'"
+                    >
+                      <label class="title">{{ evento.Titulo }}</label>
+                      <label>
+                        ·
+                        <span class="dates"
+                          >{{ evento.FechaInicio | dateFormatSlash }} a {{ evento.FechaFin | dateFormatSlash }}
+                        </span></label
+                      >
+                    </div>
+                    <div>
+                      <img
+                        alt="Eliminar"
+                        src="assets/Images/cerrar.svg"
+                        (click)="deleteEvent(evento)"
+                        *ngIf="(enableEdit$ | async) && (billing$ | async)?.RestriccionesTemporales"
+                        class="activeDelete"
+                      />
+                      <img
+                        alt="Eliminar"
+                        src="assets/Images/cerrar_gris.svg"
+                        *ngIf="(enableEdit$ | async) && !(billing$ | async)?.RestriccionesTemporales"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <label *ngIf="!(editMode$ | async) || (enableEdit$ | async)"
+      >{{ '*' }} {{ 'formClient.step5.contractPopUp.requiredData' | translate }}</label
+    >
+  </div>
+</div>

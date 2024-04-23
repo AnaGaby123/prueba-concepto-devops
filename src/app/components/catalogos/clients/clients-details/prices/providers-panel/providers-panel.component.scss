@@ -1,0 +1,76 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  & > aside {
+    @include s.flexColumn;
+    flex: 0 0 100%;
+    padding: 15px 15px 0 15px;
+
+    & > .title {
+      @include s.Novecento-Bold;
+      @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+      flex: 0 0 auto;
+      margin-bottom: 15px;
+    }
+
+    & > .search {
+      flex: 0 0 auto;
+      margin-bottom: 15px;
+    }
+
+    & > .list-container {
+      @include s.flexColumn;
+      border-bottom: 1px solid s.$pqGray3;
+      border-top: 1px solid s.$pqGray3;
+      flex: 1 1 auto;
+
+      & > .virtual {
+        @include s.fixVirtualScroller;
+        flex: 0 1 100%;
+
+        & .item {
+          @include s.flexColumn;
+        }
+      }
+
+      & > .loading-complete,
+      & > .without-results {
+        @include s.absolute100;
+        @include s.gridCenter;
+      }
+      & > .loading {
+        @include s.gridCenter;
+      }
+    }
+
+    & > .footer {
+      @include s.absoluteCenter;
+      @include s.flexRow;
+      flex: 0 0 45px;
+
+      & > label {
+        @include s.Roboto-Regular;
+        @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > aside {
+      padding: 20px 20px 0 20px;
+
+      & > .title {
+        margin-bottom: 20px;
+        flex: 0 0 auto;
+      }
+
+      & > .search {
+        margin-bottom: 20px;
+      }
+    }
+  }
+}

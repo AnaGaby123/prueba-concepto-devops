@@ -1,0 +1,104 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  & > .total-value-container {
+    width: 100%;
+    & > .total-percentage {
+      @include s.flexColumn;
+      justify-content: flex-end;
+      align-items: flex-end;
+      & > .green {
+        @include s.responsive-font-format(
+          $font-family: s.$font_family_roboto_bold,
+          $font-weight: s.$font_weight_bold,
+          $font-size-map: s.$responsive-font-14-14,
+          $color: s.$main-proquifa
+        );
+      }
+
+      & > .gray {
+        @include s.responsive-font-format(
+          $font-family: s.$font_family_roboto_regular,
+          $font-weight: s.$font_weight_regular,
+          $font-size-map: s.$responsive-font-12-12,
+          $color: s.$dark-proquifa-d
+        );
+      }
+
+      & > .clock-container {
+        @include s.flexRowNoWrap();
+        align-items: center;
+        gap: 5px;
+        justify-content: flex-end;
+
+        & > .clock {
+          height: 11px;
+        }
+        & > label {
+          @include s.responsive-font-format(
+            $color: s.$pqOrange3,
+            $font-family: s.$font-family_roboto_bold,
+            $font-size-map: s.$responsive-font-10-12-b,
+            $font-weight: s.$font-weight-bold
+          );
+        }
+      }
+
+      & > .tooltip {
+        @include s.tooltip(auto, auto, auto, 180px, 'right_0');
+        & > div:nth-of-type(1) {
+          @include s.flexRowNoWrap;
+          @include s.absoluteCenter;
+          justify-content: flex-end;
+          width: 100%;
+          & > div:nth-of-type(1) {
+            @include s.flexRowNoWrap;
+            align-items: center;
+            width: auto;
+            margin-left: 4px;
+            & > img:nth-of-type(1) {
+              padding-right: 3px;
+              height: 12px;
+            }
+            & > p:nth-of-type(1) {
+              @include s.responsive-font-format(
+                $font-family: s.$font_family_roboto_bold,
+                $font-weight: s.$font_weight_bold,
+                $font-size-map: s.$responsive-font-14-14,
+                $color: s.$pqBlack2
+              );
+              letter-spacing: 0;
+              text-align: center;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+          }
+        }
+        & > .tooltip-text {
+          min-width: 150px !important;
+
+          & > p {
+            width: 100% !important;
+          }
+        }
+      }
+
+      &.disabled-content {
+        & > .green {
+          color: s.$dark-proquifa-d;
+        }
+
+        & > .clock-container {
+          & > label {
+            color: s.$dark-proquifa-d;
+          }
+        }
+      }
+    }
+  }
+}

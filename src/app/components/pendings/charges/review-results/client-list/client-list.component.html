@@ -1,0 +1,124 @@
+<div id="client-list">
+  <div class="filter">
+    <div class="title">
+      <label>{{ 'reviewResults.reviewResults' | translate }}</label>
+    </div>
+    <div class="keyPad">
+      <app-tabs [options]="tabs$ | async" [tapSelected]="tab$ | async" (onSelectOption)="setTab($event)"></app-tabs>
+    </div>
+    <div class="filter-amount">
+      <app-chip [dataChips]="listChip$ | async" (activeChip)="setChip($event)"></app-chip>
+    </div>
+  </div>
+  <div class="content">
+    <div class="list" #list>
+      <div>
+        <virtual-scroller
+          [items]="reviews$ | async"
+          (vsUpdate)="reviewsScroller = $event"
+          (vsEnd)="fetchMore($event)"
+          *ngIf="!(isLoading$ | async)"
+        >
+          <div class="item" *ngFor="let review of reviewsScroller">
+            <div class="content-customer">
+              <div class="left">
+                <div class="customer">
+                  <div class="data">
+                    <label class="pqf">#{{ review.Index }}</label>
+                    <label class="pqf">·</label>
+                    <label>{{ review.NombreCliente }}</label>
+                  </div>
+                  <div>
+                    <img
+                      alt=""
+                      [src]="
+                        review.Digital
+                          ? 'assets/Images/labels/fisica.svg'
+                          : review.Fisica
+                          ? 'assets/Images/labels/fisica.svg'
+                          : 'assets/Images/labels/hibrida.svg'
+                      "
+                    />
+                  </div>
+                </div>
+                <div class="value">
+                  <label>{{
+                    ('common.totalValue' | translate) + ' ' + (review.MontoTotal | currency: 'USD':'symbol':'1.2-2')
+                  }}</label>
+                </div>
+                <div class="invoice">
+                  <label>{{ ('common.invoice' | translate) + ' ' + review.NumeroFactura }}</label>
+                  <label>·</label>
+                  <label class="text">P.I {{ review.NumeroOrdenDeCompra }}</label>
+                </div>
+                <div class="date">
+                  <label>Fecha deseada de Revisión: {{ review.FechaDeseadaRevision | dateFormatSlashShort }}</label>
+                </div>
+                <div class="date">
+                  <label>Fecha real de Revisión: {{ review.FechaRealRevision | dateFormatSlashShort }}</label>
+                </div>
+                <div class="carrier">
+                  <label>{{ ('reviewResults.carrier' | translate) + ': ' + review.NombreUsuarioDestino }}</label>
+                  <label class="name"></label>
+                </div>
+                <div class="more-info">
+                  <label (click)="selectedReviewC(review)">Ver más</label>
+                  <label
+                    class="text"
+                    [ngClass]="
+                      review.Reprogramada
+                        ? 'orange'
+                        : review.RevisionNoRealizada || (review.Realizada && review.FueraDeTiempo)
+                        ? 'red'
+                        : ''
+                    "
+                  >
+                    {{
+                      review.Reprogramada
+                        ? ('reviewResults.rescheduled' | translate)
+                        : review.Realizada
+                        ? ('reviewResults.execute' | translate)
+                        : ('reviewResults.outOfTime' | translate)
+                    }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </virtual-scroller>
+        <div class="load-circle" *ngIf="isLoading$ | async">
+          <app-loading></app-loading>
+        </div>
+      </div>
+    </div>
+    <div class="total">
+      <label
+        >#
+        {{
+          (totals$ | async)?.Clientes +
+            ' ' +
+            ((totals$ | async)?.Clientes === 1 ? ('common.client' | translate) : ('common.clients' | translate))
+        }}</label
+      >
+      <label
+        >#{{
+          (reviews$ | async)?.length +
+            ' ' +
+            ((reviews$ | async)?.length === 1 ? ('reviewResults.review' | translate) : ('reviewResults.reviews' | translate))
+        }}</label
+      >
+      <label> Total {{ (totals$ | async).Total | currency: 'USD':'symbol':'1.2-2' }} </label>
+    </div>
+  </div>
+</div>
+<app-physical-review *ngIf="(activePop$ | async) && (reviewCustomer$ | async).Fisica" (eventClose)="emitPopUp($event)">
+</app-physical-review>
+<app-delivery-and-review
+  *ngIf="(activePop$ | async) && (reviewCustomer$ | async).EntregaRevision"
+  (eventClose)="emitPopUp($event)"
+>
+</app-delivery-and-review>
+<app-digital-review *ngIf="(activePop$ | async) && (reviewCustomer$ | async).Digital" (eventClose)="emitPopUp($event)">
+</app-digital-review>
+<app-hybrid-review *ngIf="(activePop$ | async) && (reviewCustomer$ | async).Hibrida" (eventClose)="emitPopUp($event)">
+</app-hybrid-review>

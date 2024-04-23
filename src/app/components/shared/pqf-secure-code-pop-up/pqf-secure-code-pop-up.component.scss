@@ -1,0 +1,141 @@
+@use 'base' as s;
+
+:host {
+  * {
+    box-sizing: border-box;
+  }
+
+  #secure-code-pop-up-container {
+    @include s.flexColumn;
+    align-items: center;
+    margin: 0 40px;
+
+    & > .image-container {
+      margin-bottom: 16px;
+
+      & > img {
+        @include s.default-transition();
+        height: 64px;
+        margin: 4px;
+        width: 64px;
+      }
+    }
+
+    & > .text-header {
+      @include s.responsive-font-format(
+        $font-family: s.$font-family-roboto_bold,
+        $font-weight: s.$font-weight-bold,
+        $font-size-map: s.$responsive-font-16-16
+      );
+      margin-bottom: 16px;
+      text-align: center;
+      white-space: break-spaces;
+    }
+
+    & > .inputs-container {
+      @include s.flexRowNoWrap;
+      column-gap: 24px;
+
+      &.shaked {
+        animation: shake 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+        transform: translate3d(0, 0, 0);
+        backface-visibility: hidden;
+        perspective: 1000px;
+
+        & > input {
+          background-color: s.$alert-f;
+          border-color: s.$alert;
+          color: s.$alert-b;
+        }
+      }
+
+      & > input {
+        @include s.responsive-font-format(
+          $font-family: s.$font-family-roboto_bold,
+          $font-weight: s.$font-weight-bold,
+          $font-size-map: s.$responsive-font-80-80
+        );
+        border: 3px solid s.$main-proquifa-b;
+        height: 128px;
+        outline: none;
+        padding: 21px;
+        text-align: center;
+        width: 94px;
+      }
+    }
+
+    & > .message-code-status {
+      @include s.responsive-font-format(
+        $font-family: s.$font-family-roboto_bold,
+        $font-weight: s.$font-weight-bold,
+        $font-size-map: s.$responsive-font-16-16
+      );
+      margin-top: 16px;
+      text-align: center;
+    }
+
+    &.success {
+      & > .image-container {
+        margin-bottom: 52px;
+      }
+
+      & > .inputs-container {
+        & > input {
+          background-color: s.$success-f;
+          border-color: s.$success;
+          color: s.$success-b;
+          cursor: default;
+        }
+      }
+
+      & > .message-code-status {
+        @include s.responsive-font-format(
+          $font-family: s.$font-family-roboto_bold,
+          $font-weight: s.$font-weight-bold,
+          $font-size-map: s.$responsive-font-16-16,
+          $color: s.$success
+        );
+        margin-bottom: 16px;
+      }
+    }
+
+    &.error {
+      & > .inputs-container {
+        & > input {
+          background-color: s.$alert-f;
+          border-color: s.$alert;
+          color: s.$alert-b;
+        }
+      }
+
+      & > .message-code-status {
+        @include s.responsive-font-format(
+          $font-family: s.$font-family-roboto_bold,
+          $font-weight: s.$font-weight-bold,
+          $font-size-map: s.$responsive-font-16-16,
+          $color: s.$alert
+        );
+        margin-bottom: 16px;
+      }
+    }
+
+    &.expired {
+      & > .text-header {
+        color: s.$dark-proquifa-d;
+      }
+
+      & > .inputs-container {
+        & > input {
+          background-color: s.$dark-proquifa-e;
+          border-color: s.$dark-proquifa-d;
+          color: s.$dark-proquifa-b;
+          cursor: default;
+        }
+      }
+
+      & > .message-code-status {
+        color: s.$alert;
+      }
+    }
+  }
+}

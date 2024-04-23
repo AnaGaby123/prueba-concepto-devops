@@ -1,0 +1,670 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  #purchase-order-items {
+    @include s.flexColumn;
+    flex: 1;
+    overflow: hidden;
+    padding: 15px 0 0 15px;
+
+    & > .data-general {
+      @include s.flexColumn;
+
+      & > .preprocess-order {
+        @include s.flexRow;
+        border-bottom: 1px solid s.$pqBlack2;
+        padding-bottom: 10px;
+        & > div {
+          @include s.flexRow;
+          align-items: center;
+          & > label {
+            @include s.responsive-font-format(
+              $font-family: s.$font-family-novecento_bold,
+              $font-weight: s.$font-weight-bold,
+              $font-size-map: s.$responsive-font-17-21
+            );
+            &.red {
+              color: s.$pqRed;
+            }
+            margin-right: 5px;
+            & > .edit {
+              cursor: pointer;
+              height: 18px;
+              vertical-align: baseline;
+            }
+          }
+
+          & > .pqf {
+            color: s.$pqGreen !important;
+          }
+        }
+      }
+
+      & > .client {
+        @include s.flexRow;
+        padding: 15px 0;
+        overflow: auto;
+      }
+    }
+
+    & > .validate-info-order {
+      @include s.flexColumn;
+      @include s.opacityColor();
+      padding: 15px;
+
+      & > .title {
+        @include s.flexRow;
+
+        & > label {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-novecento_bold,
+            $font-weight: s.$font-weight-bold,
+            $font-size-map: s.$responsive-font-15-18
+          );
+        }
+      }
+
+      & > .compare-info {
+        display: grid;
+        grid-template-columns: 1fr 2fr 1fr auto;
+        grid-template-rows: auto;
+        padding-top: 10px;
+        row-gap: 10px;
+
+        & > .details {
+          @include s.flexRow;
+
+          & > div:nth-child(1) {
+            @include s.flexRow;
+
+            & > div {
+              & > img {
+                width: 20px;
+                margin-right: 7px;
+              }
+            }
+          }
+
+          & > div:nth-child(2) {
+            @include s.flexColumn;
+
+            & > div {
+              @include s.flexRow;
+
+              & > label {
+                margin-bottom: 3px;
+              }
+
+              & > .text-bold {
+                margin-right: 8px;
+                @include s.responsive-font-format(
+                  $font-family: s.$font-family-roboto_bold,
+                  $font-weight: s.$font-weight-bold,
+                  $font-size-map: s.$responsive-font-14-16
+                );
+              }
+
+              & > .text {
+                @include s.responsive-font-format(
+                  $font-family: s.$font-family-roboto_regular,
+                  $font-weight: s.$font-weight-regular,
+                  $font-size-map: s.$responsive-font-12-14
+                );
+              }
+
+              & > .pqf {
+                color: s.$pqGreen !important;
+              }
+            }
+          }
+        }
+
+        & > .address {
+          grid-column-end: span 2;
+        }
+        & > .freight {
+          grid-column-end: span 1;
+        }
+      }
+    }
+
+    & > .order-items {
+      @include s.flexColumn;
+      padding-top: 15px;
+
+      & > .items {
+        @include s.flexRow;
+
+        & > .title {
+          & > label {
+            @include s.responsive-font-format(
+              $font-family: s.$font-family-novecento_bold,
+              $font-weight: s.$font-weight-regular,
+              $font-size-map: s.$responsive-font-15-18
+            );
+          }
+        }
+      }
+    }
+
+    & > .table-container {
+      @include s.flexColumn;
+      overflow-x: auto;
+      flex: 1;
+
+      & > .container {
+        @include s.flexColumn;
+        min-width: 1750px;
+        height: 100%;
+        flex: 1;
+        & > .header {
+          border-bottom: 1px solid s.$pqBlack;
+        }
+        & > virtual-scroller {
+          @include s.fixVirtualScroller();
+          @include s.absolute100;
+          overflow-x: hidden;
+          ::ng-deep .scrollable-content {
+            @include s.flexColumn;
+            & > .item {
+              min-width: 1750px;
+            }
+
+            & div.incidence {
+              background-color: s.$orangeLight;
+            }
+
+            & div.incidence {
+              @include s.flexRow;
+              background-color: s.$orangeLight;
+              justify-content: flex-start;
+              min-width: 1750px;
+              padding: 12px;
+              position: relative;
+
+              & > .tab {
+                background-color: s.$orangeLight;
+                height: 14px;
+                left: 20px;
+                position: absolute;
+                top: -7px;
+                transform: rotate(45deg);
+                width: 14px;
+              }
+
+              & > .content {
+                @include s.flexColumn;
+                flex: 1;
+                align-items: flex-start;
+
+                & > div:nth-child(1) {
+                  margin-bottom: 8px;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize13to14, bold, s.$pqBlack2);
+                    @include s.Roboto-Bold;
+                  }
+                }
+
+                & > div:nth-child(2) {
+                  @include s.flexRow;
+                  width: 100%;
+                  justify-content: space-between;
+                  align-items: center;
+                  margin-bottom: 12px;
+                }
+
+                & > div:nth-child(3) {
+                  @include s.flexRow;
+                  justify-content: flex-start;
+                  align-items: center;
+                  width: 100%;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize13to14, bold, s.$pqBlack2);
+                    @include s.Roboto-Bold;
+                    margin-right: 5px;
+                  }
+                }
+              }
+
+              & > .image {
+                @include s.flexColumn;
+                @include s.absoluteCenter;
+                width: 130px;
+                height: 100%;
+
+                & > img {
+                  width: 65px;
+                  height: 13px;
+                }
+              }
+            }
+          }
+        }
+        & > .without-results {
+          @include s.flexRow;
+          flex: 1;
+          align-items: center;
+          justify-content: center;
+
+          & > app-without-results {
+            @include s.absoluteCenter;
+            @include s.flexRow;
+            flex: 1;
+          }
+        }
+        & > .loader {
+          @include s.flexRow;
+          flex: 1;
+          justify-content: center;
+
+          & > app-loading {
+            @include s.flexRow;
+          }
+        }
+      }
+    }
+
+    & > .totals {
+      @include s.flexRow;
+      padding: 6px 0 10px 0;
+      border-top: 1px solid s.$pqBlack2;
+      width: 100%;
+      align-content: space-between;
+      justify-content: flex-start;
+
+      & > .total-purchases {
+        @include s.flexRow;
+        justify-content: center;
+        width: 100%;
+
+        & > label {
+          @include s.responsive-font-format(
+            $color: s.$pqBlack2,
+            $font-family: s.$font_family_roboto_regular,
+            $font-size-map: s.$responsive-font-12-14,
+            $font-weight: s.$font_weight_regular,
+            $font-style: s.$font-style-normal
+          );
+        }
+      }
+
+      & > .total-section {
+        @include s.flexRow;
+        //DOCS: width -> 50px de labels (subtotal,iva,total) | 8px de padding | 145px de totals
+        width: 240px;
+        align-items: flex-end;
+        column-gap: 8px;
+
+        & > .labels {
+          @include s.flexColumn;
+          width: 60px;
+          align-items: flex-end;
+          row-gap: 5px;
+
+          label {
+            @include s.responsive-font-format(
+              s.$font_family_roboto,
+              s.$font_weight_regular,
+              s.$responsive-font-12-14,
+              s.$font-style-normal
+            );
+          }
+
+          & > .total {
+            @include s.responsive-font-format(
+              s.$font_family_roboto,
+              s.$font_weight_bold,
+              s.$responsive-font-16-20,
+              s.$font_weight_bold
+            );
+          }
+        }
+
+        & > .totals {
+          @include s.flexColumn;
+          width: 175px;
+          align-items: flex-end;
+          row-gap: 5px;
+
+          label {
+            @include s.responsive-font-format(
+              s.$font_family_roboto,
+              s.$font_weight_regular,
+              s.$responsive-font-12-14,
+              s.$font-style-normal,
+              s.$pqGreen
+            );
+          }
+
+          & > .total {
+            @include s.responsive-font-format(
+              s.$font_family_roboto,
+              s.$font_weight_bold,
+              s.$responsive-font-16-20,
+              s.$font_weight_bold,
+              s.$success
+            );
+          }
+        }
+      }
+    }
+
+    & > .options {
+      @include s.flexRow;
+      align-items: center;
+      border-top: 1px solid s.$pqBlack2;
+      column-gap: 20px;
+      height: 50px;
+      justify-content: flex-end;
+      padding-right: 15px;
+
+      & > div {
+        & .btnActiveCancel {
+          @include s.pqButton(166px, 250px, s.$pqGreen);
+        }
+
+        & .btnDisableCancel {
+          @include s.pqButtonDisable(135px, 210px);
+          cursor: default;
+        }
+
+        & .btnActiveNotCovered {
+          $max-width-map: (
+            'base': 215px,
+            'macBookAir': 345px,
+          );
+          /*            @include pqButton(166px, 210px, 25px, 30px, $pqYellow);*/
+          @include s.pqfButton($background-color: s.$pqYellow, $max-width-map: $max-width-map);
+        }
+
+        & .btnActiveFreight {
+          $max-width-map: (
+            'base': 215px,
+            'macBookAir': 345px,
+          );
+          /*            @include pqButton(166px, 210px, 25px, 30px, $pqYellow);*/
+          @include s.pqfButton($background-color: s.$pqYellow3, $font-color: s.$pqWhite, $max-width-map: $max-width-map);
+        }
+
+        & .btnDisableNotCovered {
+          @include s.pqButton(166px, 210px, 25px, 30px, s.$pqGray3);
+          pointer-events: none;
+        }
+
+        & > .btnActive-apply {
+          @include s.pqButton(135px, 210px);
+        }
+
+        & > .btnDisable-apply {
+          @include s.pqButtonDisable(135px, 210px);
+          cursor: default;
+        }
+
+        & > .btnActive-process {
+          @include s.pqButton(265px, 410px, 25px, 30px, s.$pqGreen2);
+        }
+
+        & > .btnDisable-process {
+          @include s.pqButtonDisable(265px, 410px);
+          cursor: default;
+        }
+      }
+
+      & > div {
+        position: relative;
+
+        & > app-strategy-pop-up {
+          & .header {
+            height: 59px;
+            @include s.flexRow;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+
+            & > div:nth-child(1) {
+              flex: 1;
+              display: flex;
+              flex-direction: row;
+              justify-content: flex-start;
+              align-items: center;
+
+              & > img {
+                margin-right: 5px;
+              }
+
+              & > label {
+                @include s.Roboto-Bold;
+                font-size: 15px;
+                color: #008894;
+                font-weight: bold;
+              }
+            }
+
+            & > div:nth-child(2) {
+              & > img {
+                height: 20px;
+                width: 20px;
+                cursor: pointer;
+              }
+            }
+          }
+
+          & .resume {
+            @include s.flexRow;
+            height: 55px;
+            background-color: rgba(0, 136, 148, 0.05);
+            padding: 0 20px;
+            justify-content: space-between;
+
+            & > div {
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+
+              & > label:nth-child(1) {
+                @include s.Roboto-Bold;
+                font-size: 12px;
+                font-weight: bold;
+                margin-bottom: 1px;
+              }
+
+              & > label:nth-child(2) {
+                @include s.Roboto-Bold;
+                font-size: 14px;
+                font-weight: bold;
+                color: #008894;
+              }
+
+              & > .expired-debt-text {
+                color: #cc4757 !important;
+              }
+
+              & > .remainder {
+                color: #e29d2a !important;
+              }
+            }
+          }
+
+          & .body {
+            @include s.flexRow;
+            flex: 1;
+            overflow: hidden;
+            padding: 0 20px 20px 20px;
+
+            & > .chart {
+              width: 330px;
+            }
+
+            & > .detail-container {
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+              padding-top: 15px;
+              overflow: hidden;
+
+              & > .detail {
+                flex: 1;
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+
+                & > .title {
+                  display: flex;
+                  flex-direction: row;
+                  flex-shrink: 0;
+                  justify-content: flex-start;
+                  align-items: center;
+                  border-bottom: solid 1px #424242;
+                  padding: 5px 0;
+
+                  & > div {
+                    width: 14px;
+                    height: 14px;
+                    border-radius: 50%;
+                    background-color: #cc4757;
+                    margin-right: 6px;
+                  }
+
+                  & > label {
+                    @include s.Roboto-Bold;
+                    font-size: 13px;
+                    font-weight: bold;
+                  }
+                }
+
+                & > .content {
+                  flex: 1;
+                  overflow: auto;
+
+                  & > .item {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    padding: 10px;
+
+                    &:hover {
+                      background-color: #eceef0;
+                    }
+
+                    & > div:nth-child(1) {
+                      display: flex;
+                      flex-direction: column;
+                      flex: 1;
+
+                      & > .title {
+                        @include s.Roboto-Bold;
+                        font-size: 13px;
+                        font-weight: bold;
+                        margin-bottom: 3px;
+
+                        & > span {
+                          color: #008894;
+                          text-decoration: underline;
+                        }
+                      }
+
+                      & > .subtitle {
+                        font-size: 12px;
+                      }
+                    }
+
+                    & > div:nth-child(2) {
+                      & > label {
+                        color: #d73655;
+                        font-size: 11px;
+                      }
+                    }
+                  }
+                }
+
+                & > .with-out-results {
+                  display: flex;
+                  flex-direction: column;
+                  flex: 1;
+                  overflow: hidden;
+                  justify-content: center;
+                  align-items: center;
+                }
+
+                & > .footer {
+                  display: flex;
+                  flex-direction: row;
+                  flex-shrink: 0;
+                  justify-content: center;
+                  align-items: center;
+                  position: relative;
+                  padding: 3px 10px;
+                  border-top: solid 1px #424242;
+
+                  & > label {
+                    font-size: 11px;
+                  }
+
+                  & > .total {
+                    position: absolute;
+                    right: 10px;
+                    top: 3px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    @include s.media-query(s.$standard) {
+      padding: 20px 0 0 20px;
+    }
+  }
+
+  #cancel-pop-up {
+    & .container {
+      height: 100%;
+      width: 100%;
+      padding: 10px 0;
+      @include s.flexColumn;
+
+      & > div {
+        flex: 1;
+        overflow: hidden;
+        @include s.flexColumn;
+        @include s.absoluteCenter;
+        padding: 0 30px;
+
+        & > img {
+          width: 60px;
+          height: 60px;
+        }
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize26to29, regular, s.$pqBlack2);
+          @include s.Roboto-Regular;
+          margin-bottom: 0;
+          margin-right: 5px;
+        }
+
+        & > span {
+          @include s.escaledFontFormat(s.$textSize26to29, regular, s.$pqGreen);
+          @include s.Roboto-Bold;
+        }
+      }
+    }
+  }
+}
+
+.subtotal {
+  @include s.Roboto-Regular;
+  @include s.escaledFontFormat(s.$textSize12to13, regular, s.$pqBlack2);
+  margin-bottom: 5px;
+}

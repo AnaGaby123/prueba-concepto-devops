@@ -1,0 +1,14 @@
+<div id="execute-collection-container">
+  <div class="header-bar">
+    <app-header-bar
+      [title]="(isInRebillView$ | async) ? ('attendReview.reBill' | translate) : (title$ | async)"
+      [activeBack]="(isDetails$ | async) && (actualRoute$ | async) !== 'executePayment'"
+      [name]="(name$ | async)?.NombreCliente"
+      (goBack)="goBack()"
+    >
+    </app-header-bar>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+</div>

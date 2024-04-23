@@ -1,0 +1,184 @@
+<div id="generate-order-list">
+  <div class="header">
+    <label>2 · {{ 'planDispatchDetails.consolidate' | translate }}</label>
+    <div class="icons">
+      <img src="assets/Images/plan-dispatch/list-hover.svg" />
+      <img src="assets/Images/plan-dispatch/donut.svg" (click)="emitValue()"
+    /></div>
+    x
+  </div>
+  <div class="body">
+    <div class="table-container">
+      <div class="table">
+        <div class="headerTable">
+          <div class="name"></div>
+          <div class="number">
+            <label>IGI</label>
+          </div>
+          <div class="number">
+            <label>DTA</label>
+          </div>
+          <div class="number">
+            <label>IVA</label>
+          </div>
+          <div class="number">
+            <label>IMP</label>
+          </div>
+          <div class="number">
+            <label>VAC</label>
+          </div>
+          <div class="number">
+            <label>FTE</label>
+          </div>
+          <div class="number">
+            <label>VAD</label>
+          </div>
+          <div class="total">
+            <label>{{ 'planDispatchDetails.importEstimatedValue' | translate }}</label>
+          </div>
+        </div>
+        <div class="bodyTable">
+          <virtual-scroller [enableUnequalChildrenSizes]="true">
+            <div class="item">
+              <div clasS="top">
+                <div class="name">
+                  <label>Biophoretics INC</label>
+                </div>
+                <div class="number">
+                  <label>{{ 66.68 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                </div>
+                <div class="number">
+                  <label>{{ 106.7 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                </div>
+                <div class="number">
+                  <label>{{ 0.0 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                </div>
+                <div class="number">
+                  <label>{{ 173.39 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                </div>
+                <div class="number">
+                  <label>{{ 1268.23 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                </div>
+                <div class="number">
+                  <label>{{ 65.55 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                </div>
+                <div class="number">
+                  <label>{{ 1333.78 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                </div>
+                <div class="total">
+                  <label>{{ 1507.18 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                </div>
+              </div>
+              <div class="bottom">
+                <div class="sub-item">
+                  <div class="name">
+                    <div>
+                      <label
+                        ><span>#{{ 1 }} · </span> {{ '4286602' }} ·
+                        {{ 'Isoelectric focusing horizontal gels 3-10, 125mm x 300um Units' }}</label
+                      >
+                    </div>
+                    <label>{{ 4 }} {{ 'common.pzas' | translate }} · CU {{ 317.05 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                  </div>
+                  <div class="number">
+                    <label>{{ 317.05 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                  </div>
+                  <div class="number">
+                    <label>{{ 106.7 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                  </div>
+                  <div class="number">
+                    <label>{{ 0.0 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                  </div>
+                  <div class="number">
+                    <label>{{ 173.39 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                  </div>
+                  <div class="number">
+                    <label>{{ 1268.23 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                  </div>
+                  <div class="number">
+                    <label>{{ 65.55 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                  </div>
+                  <div class="number">
+                    <label>{{ 1333.78 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                  </div>
+                  <div class="total">
+                    <label>{{ 1507.18 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                  </div>
+                </div>
+                <div class="sub-item">
+                  <div class="name">
+                    <div>
+                      <label
+                        ><span>#{{ 1 }} · </span> {{ '4286602' }} ·
+                        {{ 'Isoelectric focusing horizontal gels 3-10, 125mm x 300um Units' }}</label
+                      >
+                    </div>
+                    <label>{{ 4 }} {{ 'common.pzas' | translate }} · CU {{ 317.05 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                  </div>
+                  <div class="number">
+                    <label>{{ 317.05 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                  </div>
+                  <div class="number">
+                    <label>{{ 106.7 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                  </div>
+                  <div class="number">
+                    <label>{{ 0.0 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                  </div>
+                  <div class="number">
+                    <label>{{ 173.39 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                  </div>
+                  <div class="number">
+                    <label>{{ 1268.23 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                  </div>
+                  <div class="number">
+                    <label>{{ 65.55 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                  </div>
+                  <div class="number">
+                    <label>{{ 1333.78 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                  </div>
+                  <div class="total">
+                    <label>{{ 1507.18 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </virtual-scroller>
+        </div>
+        <div class="footerTable">
+          <div class="name">
+            <label>#{{ 2 }}</label>
+            <label>{{ 24 }} {{ 'common.pieces' | translate }}</label>
+          </div>
+          <div class="number">
+            <label>{{ 66.68 | currency: 'USD':'symbol':'1.2-2' }}</label>
+          </div>
+          <div class="number">
+            <label>{{ 106.7 | currency: 'USD':'symbol':'1.2-2' }}</label>
+          </div>
+          <div class="number">
+            <label>{{ 0.0 | currency: 'USD':'symbol':'1.2-2' }}</label>
+          </div>
+          <div class="number">
+            <label>{{ 173.39 | currency: 'USD':'symbol':'1.2-2' }}</label>
+          </div>
+          <div class="number">
+            <label>{{ 1268.23 | currency: 'USD':'symbol':'1.2-2' }}</label>
+          </div>
+          <div class="number">
+            <label>{{ 65.55 | currency: 'USD':'symbol':'1.2-2' }}</label>
+          </div>
+          <div class="number">
+            <label>{{ 1333.78 | currency: 'USD':'symbol':'1.2-2' }}</label>
+          </div>
+          <div class="total">
+            <label>{{ 1507.18 | currency: 'USD':'symbol':'1.2-2' }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <button [ngClass]="'active'">{{ 'common.save' | translate }}</button>
+    <button [ngClass]="'active-green'">{{ 'common.generate' | translate }}</button>
+  </div>
+</div>

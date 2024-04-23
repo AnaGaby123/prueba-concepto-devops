@@ -1,0 +1,377 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  & #inspector-step1 {
+    @include s.absolute100;
+    @include s.flexColumn;
+    justify-content: flex-start;
+
+    & > .content {
+      @include s.flexRow;
+      flex: 1;
+      margin-top: 10px;
+
+      & > .left {
+        @include s.flexColumn;
+        flex: 1 1 auto;
+        border-right: 1px solid s.$pqGray2;
+
+        & > .title {
+          & > label {
+            @include s.Novecento-Demibold;
+            @include s.escaledFontFormat(s.$textSize17to21, demibold, s.$pqGreen);
+          }
+        }
+
+        & > .left-section {
+          display: grid;
+          flex: 1;
+          grid-template-columns: repeat(2, 1fr);
+          grid-template-rows: repeat(2, 1fr);
+          grid-column-gap: 30px;
+          grid-row-gap: 25px;
+          margin: 15px 15px 0 0;
+
+          & > .description {
+            grid-area: 1 / 1 / 2 / 2;
+            @include s.flexColumn;
+
+            & > .header {
+              @include s.flexRow;
+
+              & > div {
+                flex: 1;
+                padding-bottom: 3px;
+                border-bottom: 0.5px solid s.$pqBlack2;
+
+                & > label {
+                  @include s.Roboto-Bold;
+                  @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+                }
+              }
+            }
+
+            & > .content {
+              @include s.flexColumn;
+              flex: 1;
+              padding-top: 10px;
+
+              & > div {
+                flex: 1;
+
+                & > .label {
+                  @include s.flexRow;
+                  margin-bottom: 3px;
+
+                  & > .title {
+                    flex: 1;
+
+                    & > label {
+                      @include s.Roboto-Medium;
+                      @include s.escaledFontFormat(s.$textSize13to16, medium, s.$pqBlack2);
+                    }
+                  }
+
+                  & > .indicators {
+                    @include s.flexRow;
+                    align-items: center;
+
+                    & > div {
+                      @include s.flexRow;
+                      align-items: baseline;
+
+                      & > .orange {
+                        @include s.pqCircle(8px, s.$pqOrange);
+                        margin: 0 5px;
+                      }
+
+                      & > .green {
+                        @include s.pqCircle(8px, s.$pqGreen2);
+                        margin: 0 5px;
+                      }
+
+                      & > label {
+                        @include s.Roboto-Regular;
+                        @include s.escaledFontFormat(s.$textSize11to12, regular, s.$pqBlack5);
+                      }
+                    }
+
+                    & > div:first-child {
+                      margin: 0 5px;
+                    }
+                  }
+                }
+              }
+
+              /*              & > div:last-child {
+                display: grid;
+                grid-template-columns: 2fr 1fr;
+                grid-template-rows: 1fr;
+                grid-column-gap: 20px;
+                grid-row-gap: 25px;
+
+                & > .drop1 {
+                  grid-area: 1 / 1 / 2 / 2;
+                }
+                & > .drop2 {
+                  grid-area: 1 / 2 / 2 / 3;
+                }
+              }*/
+            }
+          }
+
+          & > .handling {
+            grid-area: 1 / 2 / 2 / 3;
+            @include s.flexColumn;
+
+            & > .header {
+              @include s.flexRow;
+
+              & > div {
+                flex: 1;
+                padding-bottom: 3px;
+                border-bottom: 0.5px solid s.$pqBlack2;
+
+                & > label {
+                  @include s.Roboto-Bold;
+                  @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+                }
+              }
+            }
+
+            & > .content {
+              @include s.flexColumn;
+              flex: 1;
+              padding-top: 10px;
+
+              & > div {
+                flex: 1;
+              }
+            }
+          }
+
+          & > .documentation {
+            grid-area: 2 / 1 / 3 / 3;
+            @include s.flexColumn;
+
+            & > .header {
+              @include s.flexRow;
+              align-items: center;
+              padding-bottom: 3px;
+              border-bottom: 0.5px solid s.$pqBlack2;
+
+              & > .label-enable {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqGreen);
+                margin-left: 10px;
+              }
+
+              & > .label-disable {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+                margin-left: 10px;
+              }
+            }
+
+            & > .content {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              grid-template-rows: 1fr;
+              grid-column-gap: 20px;
+              grid-row-gap: 25px;
+              padding-top: 10px;
+
+              & > .input1 {
+                @include s.flexColumn;
+                grid-area: 1 / 1 / 2 / 2;
+                flex: 1;
+
+                & > label {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize12to14, regular, s.$gnRojoSemaforo);
+                  margin-top: 5px;
+                }
+              }
+
+              & > .input2 {
+                grid-area: 1 / 2 / 2 / 3;
+                flex: 1;
+              }
+            }
+          }
+        }
+
+        & > .left-section-alone {
+          @include s.flexRow;
+          flex: 1;
+          margin: 15px 15px 0 0;
+
+          & > .description-alone {
+            @include s.flexColumn;
+            flex: 1;
+
+            & > .header {
+              @include s.flexRow;
+              align-items: center;
+              padding-bottom: 3px;
+              border-bottom: 0.5px solid s.$pqBlack2;
+
+              & > label {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+              }
+            }
+
+            & > .content {
+              display: grid;
+              grid-template-columns: repeat(2, 1fr);
+              grid-template-rows: 1fr;
+              grid-column-gap: 20px;
+              grid-row-gap: 25px;
+              padding-top: 10px;
+
+              & > .input1 {
+                grid-area: 1 / 1 / 2 / 2;
+                flex: 1;
+              }
+
+              & > .input2 {
+                grid-area: 1 / 2 / 2 / 3;
+                flex: 1;
+              }
+            }
+          }
+        }
+      }
+
+      & > .right {
+        @include s.flexColumn;
+        flex: 1 1 auto;
+
+        & > .image-container {
+          @include s.flexRow;
+          @include s.borderTypeCamera;
+          max-height: 100%;
+          max-width: 100%;
+          flex: 1;
+          margin: 15px 0 15px 15px;
+
+          & > img {
+            max-height: 100%;
+            max-width: 100%;
+          }
+        }
+      }
+    }
+
+    & > .footer {
+      @include s.flexRow;
+      justify-content: flex-end;
+
+      & > .button-active {
+        @include s.pqButton();
+      }
+
+      & > .button-disable {
+        @include s.pqButtonDisable();
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .content {
+        margin-top: 15px;
+
+        & > .left {
+          & > .left-section {
+            grid-column-gap: 40px;
+            grid-row-gap: 35px;
+            margin: 20px 20px 0 0;
+
+            & > .description {
+              & > .header {
+                & > div {
+                  padding-bottom: 5px;
+                }
+              }
+
+              & > .content {
+                padding-top: 15px;
+
+                & > div {
+                  & > .label {
+                    & > .indicators {
+                      & > div {
+                        & > .orange {
+                          @include s.pqCircle(10px, s.$pqOrange);
+                        }
+
+                        & > .green {
+                          @include s.pqCircle(10px, s.$pqGreen2);
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+
+            & > .handling {
+              & > .header {
+                & > div {
+                  padding-bottom: 5px;
+                }
+              }
+
+              & > .content {
+                padding-top: 15px;
+              }
+            }
+
+            & > .documentation {
+              & > .header {
+                padding-bottom: 5px;
+
+                & > label {
+                  margin-left: 15px;
+                }
+              }
+
+              & > .content {
+                grid-column-gap: 40px;
+                grid-row-gap: 35px;
+                padding-top: 15px;
+              }
+            }
+          }
+
+          & > .left-section-alone {
+            margin: 20px 20px 0 0;
+
+            & > .description-alone {
+              & > .header {
+                padding-bottom: 5px;
+              }
+
+              & > .content {
+                padding-top: 15px;
+              }
+            }
+          }
+        }
+
+        & > .right {
+          & > .image-container {
+            margin-bottom: 50px;
+            padding: 20px 0 20px 20px;
+          }
+        }
+      }
+    }
+  }
+}

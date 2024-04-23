@@ -1,0 +1,16 @@
+@use 'base' as s;
+
+app-pop-up-generic {
+  ::ng-deep .modal {
+    background: none;
+
+    & > .modal-content {
+      transition: none;
+    }
+  }
+  & .content {
+    @include s.flexColumn;
+    flex: 1;
+    overflow: hidden;
+  }
+}

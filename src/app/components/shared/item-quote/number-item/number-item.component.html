@@ -1,0 +1,8 @@
+<div class="container-label">
+  <label
+    [ngClass]="columnNumberItem?.isDisabled ? 'disabled' : ''"
+    *ngIf="columnNumberItem?.number > 0 && !columnNumberItem?.showArrow"
+    >{{ columnNumberItem?.number }}</label
+  >
+  <img alt="" src="assets/Images/quotation/arrow.svg" *ngIf="columnNumberItem?.showArrow || columnNumberItem?.number < 0" />
+</div>

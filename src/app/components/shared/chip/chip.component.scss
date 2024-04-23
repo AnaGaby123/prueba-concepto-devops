@@ -1,0 +1,57 @@
+@use 'base' as s;
+
+:host {
+  display: flex;
+
+  .chip {
+    @include s.flexRowNoWrap;
+    @include s.default-transition($duration: 0.2s);
+    width: 100%;
+    min-height: 20px;
+    align-items: center;
+    box-sizing: border-box;
+    border-radius: 10px;
+    cursor: pointer;
+    flex: 1;
+    padding: 0 10px;
+    margin: 0 10px 0 0;
+
+    & > * {
+      cursor: pointer;
+    }
+
+    & > label {
+      @include s.escaledFontFormat(s.$textSize11to12, regular, s.$pqBlack2);
+      @include s.Novecento-Bold;
+      @include s.fontScalingFix;
+      white-space: pre;
+    }
+
+    & > .circle {
+      @include s.pqCircle(9px, white);
+    }
+
+    & > label:nth-of-type(1) {
+      padding-left: 5px;
+    }
+
+    & > .space {
+      padding-left: 5px;
+    }
+  }
+
+  & > .chip-disable {
+    cursor: default !important;
+
+    & > * {
+      cursor: default !important;
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    .chip {
+      min-height: 28px;
+      border-radius: 14px;
+    }
+  }
+}

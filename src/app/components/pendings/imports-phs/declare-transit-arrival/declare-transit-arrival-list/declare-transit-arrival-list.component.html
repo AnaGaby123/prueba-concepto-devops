@@ -1,0 +1,115 @@
+<div class="dashboard-container" id="declare-transit-list-container">
+  <div class="left-container">
+    <label class="title">{{ 'loadMissing.providers' | translate }}</label>
+    <div class="tabs">
+      <app-tabs
+        [options]="optionsTab$ | async"
+        [tapSelected]="selectedTab$ | async"
+        (onSelectOption)="setTab($event)"
+      ></app-tabs>
+    </div>
+    <div class="filters">
+      <div class="filter-by-type">
+        <app-hamburger-menu
+          [options]="dataByOrder$ | async"
+          [value]="(orderSelected$ | async).value"
+          (valueEmit)="setFilter($event)"
+        ></app-hamburger-menu>
+      </div>
+      <div class="filter-search">
+        <app-search
+          [placeholder]="'loadMissing.providers' | translate"
+          [searchTerm]="searchTerm$ | async"
+          (textSearch)="handleKeySearch($event)"
+        ></app-search>
+      </div>
+    </div>
+    <div class="list-container">
+      <virtual-scroller
+        *ngIf="(statusProviders$ | async) === 3 && !lodashIsEmpty(providers$ | async)"
+        [items]="providers$ | async"
+        (vsUpdate)="providersScroll = $event"
+        (vsEnd)="fetchMore($event)"
+      >
+        <div class="provider" *ngFor="let provider of providersScroll" (click)="selectProvider(provider)">
+          <div class="index">
+            <label>{{ '#' + provider.Index }}</label>
+          </div>
+          <div class="details">
+            <div class="name">
+              <label>{{ provider.NombreProveedor }}</label>
+            </div>
+            <div class="amount">
+              <label>
+                {{
+                  provider.NumeroDePiezas +
+                    ' ' +
+                    (1 === 1 ? ('common.pieces' | translate) : ('common.piece' | translate)) +
+                    ' · ' +
+                    (provider.TotalUSD | currency: 'USD':'symbol-narrow':'2.2-4') +
+                    ' USD'
+                }}</label
+              >
+            </div>
+            <div class="oc">
+              <label>{{ ('preProcessing.purchaseOrders' | translate) + ': ' + provider.TotalOrdenesDeCompra }}</label>
+            </div>
+            <div class="status">
+              <img alt="" src="assets/Images/labels/fuera-de-tiempo.svg" />
+              <label>{{ provider.TotalFueraDeTiempo }}</label>
+              <label>·</label>
+              <img alt="" src="assets/Images/labels/urgente.svg" />
+              <label class="urgent">{{ provider.TotalUrgente }}</label>
+              <label>·</label>
+              <img alt="" src="assets/Images/labels/en-tiempo.svg" />
+              <label class="in-time">{{ provider.TotalEnTiempo }}</label>
+            </div>
+          </div>
+          <div class="row">
+            <img alt="" src="assets/Images/arrows/arrow_right.svg" />
+          </div>
+        </div>
+      </virtual-scroller>
+      <div class="without-results" *ngIf="(statusProviders$ | async) !== 1 && lodashIsEmpty(providers$ | async)">
+        <app-without-results [title]="'Sin resultados'"></app-without-results>
+      </div>
+      <div class="loader" *ngIf="(statusProviders$ | async) === 1">
+        <app-loading></app-loading>
+      </div>
+    </div>
+    <!--    *ngIf="(statusProviders$ | async) === 3 && !lodashIsEmpty(providers$ | async)"-->
+    <div class="footer">
+      <label>{{ '#' + (totalProviders$ | async | number: '1.0-0') }}</label>
+      <label>{{ 'OC ' + (totals$ | async)?.OrdenesDeCompra }}</label>
+      <label>{{
+        (totals$ | async)?.Piezas + ' ' + (1 === 1 ? ('common.pieces' | translate) : ('common.piece' | translate))
+      }}</label>
+      <label>{{
+        ('common.totalAmount' | translate) +
+          ' ' +
+          ((totals$ | async)?.MontoTotal | currency: 'USD':'symbol-narrow':'2.2-4') +
+          ' USD'
+      }}</label>
+    </div>
+  </div>
+  <div class="right-container">
+    <ng-container *ngIf="true">
+      <app-doughnut-chart
+        *ngIf="(statusCharts$ | async) === 3"
+        [data]="dataDonutChart$ | async"
+        [optionDetailsHover]="dataDetailsHover$ | async"
+        [optionDetails]="detailsDonutChart$ | async"
+        [titleDetails]="'donutChart.titleTotals' | translate"
+        [title]="'loadMissing.providers' | translate"
+        [typeChart]="1"
+      >
+      </app-doughnut-chart>
+      <app-bar-chart
+        *ngIf="(statusCharts$ | async) === 3"
+        [title]="'manageBackOrder.deliveryTrafficLight' | translate"
+        [values]="dataBarChartDelivery$ | async"
+      ></app-bar-chart>
+    </ng-container>
+    <app-loading class="loading" *ngIf="(statusCharts$ | async) === 1"></app-loading>
+  </div>
+</div>

@@ -1,0 +1,131 @@
+<div id="non-shippable-content">
+  <div class="content">
+    <div class="left">
+      <div class="checks">
+        <div>
+          <app-check-box
+            [spanText]="'closeOffer.tableLabels.catalog' | translate"
+            [label]="': ' + 'Descripción'"
+            [labelFontStyle]="'labelRobotoRegularProquifa13'"
+          ></app-check-box>
+        </div>
+        <div>
+          <app-check-box
+            [spanText]="'inspector.batch' | translate"
+            [label]="': ' + 'R050W0'"
+            [labelFontStyle]="'labelRobotoRegularProquifa13'"
+          ></app-check-box>
+        </div>
+        <div>
+          <app-check-box
+            [spanText]="'inspector.description' | translate"
+            [label]="': ' + 'Sertraline Hydrochloride (100mg) USP'"
+            [labelFontStyle]="'labelRobotoRegularProquifa13'"
+          ></app-check-box>
+        </div>
+        <div>
+          <app-check-box
+            [spanText]="'inspector.expiration' | translate"
+            [label]="': ' + 'No disponible'"
+            [labelFontStyle]="'labelRobotoRegularProquifa13'"
+          ></app-check-box>
+        </div>
+        <div>
+          <app-check-box
+            [spanText]="'formProduct.step2.presentation' | translate"
+            [label]="': ' + '100 mg'"
+            [labelFontStyle]="'labelRobotoRegularProquifa13'"
+          ></app-check-box>
+        </div>
+        <div>
+          <app-check-box
+            [spanText]="'inspector.physicallyConformable' | translate"
+            [label]="': ' + 'R050W0'"
+            [labelFontStyle]="'labelRobotoRegularProquifa13'"
+          ></app-check-box>
+        </div>
+        <div>
+          <app-check-box
+            [spanText]="'quotation.details.documentation' | translate"
+            [label]="': ' + 'Hoja y/o Certificado'"
+            [labelFontStyle]="'labelRobotoRegularDisable13'"
+            [disabled]="true"
+          ></app-check-box>
+        </div>
+      </div>
+      <div class="report">
+        <div class="title">
+          <label>{{ 'inspector.rejectionReport' | translate }}</label>
+        </div>
+        <div class="content">
+          <app-generic-text-area [height]="'inherit'"></app-generic-text-area>
+        </div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="content">
+        <div class="main-image">
+          <div class="title">
+            <label
+              >{{ 'inspector.photoCapture' | translate }} <span>({{ 'inspector.mandatory' | translate }})</span></label
+            >
+          </div>
+          <div class="camera-content">
+            <div class="message" *ngIf="true">
+              <label>{{ 'ENFOCA EL PRODUCTO' }}</label>
+            </div>
+            <div class="camera-container" *ngIf="false">
+              <video autoplay id="videoElement" #video></video>
+            </div>
+            <div class="leftTop"></div>
+            <div class="rightTop"></div>
+            <div class="leftBot"></div>
+            <div class="rightBot"></div>
+          </div>
+        </div>
+        <div class="img1">
+          <div class="content">
+            <label>{{ 'Frente' }}</label>
+            <div class="container">
+              <div class="message" *ngIf="false">
+                <label>{{ 'Coloca la pieza en la orientación correcta, para tomar la foto.' }}</label>
+              </div>
+              <img alt="" [src]="'assets/Images/muestra_inspeccionar.webp'" />
+            </div>
+            <div class="takePhoto">
+              <img alt="" src="assets/Images/tomar-foto.svg" />
+            </div>
+          </div>
+        </div>
+        <div class="img2">
+          <div class="content">
+            <label>{{ 'Arriba' }}</label>
+            <div class="container">
+              <div class="message" *ngIf="false">
+                <label>{{ 'Coloca la pieza en la orientación correcta, para tomar la foto.' }}</label>
+              </div>
+              <img alt="" [src]="'assets/Images/muestra_inspeccionar.webp'" />
+            </div>
+            <div class="takePhoto">
+              <img alt="" src="assets/Images/tomar-foto.svg" />
+            </div>
+          </div>
+        </div>
+        <div class="img3">
+          <div class="content">
+            <label>{{ 'Abajo' }}</label>
+            <div class="container">
+              <div class="message" *ngIf="false">
+                <label>{{ 'Coloca la pieza en la orientación correcta, para tomar la foto.' }}</label>
+              </div>
+              <img alt="" [src]="'assets/Images/muestra_inspeccionar.webp'" />
+            </div>
+            <div class="takePhoto">
+              <img alt="" src="assets/Images/tomar-foto.svg" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

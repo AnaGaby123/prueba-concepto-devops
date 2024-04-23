@@ -1,0 +1,61 @@
+<app-pop-up-generic [titleHeader]="'quotation.details.previewQuotation' | translate" [width]="width" [height]="height">
+  <div class="configure-container">
+    <div
+      class="view-files-container"
+      #filesContainer
+      (scroll)="onScroll()"
+      *ngIf="
+        (typeQuotation$ | async)?.labelKey !== TOTAL_QUOTATION
+          ? (selectBase64FileStatus$ | async) === apiSuccess && (selectBase64FileInvestigationStatus$ | async) === apiSuccess
+          : (selectBase64FileStatus$ | async) === apiSuccess
+      "
+    >
+      <div class="content-file">
+        <app-upload-view-file [datasFile]="{path: selectBase64File$ | async, titulo: ''}"></app-upload-view-file>
+      </div>
+      <div class="content-file" *ngIf="(typeQuotation$ | async)?.labelKey !== TOTAL_QUOTATION">
+        <app-upload-view-file [datasFile]="{path: selectBase64FileInvestigation$ | async, titulo: ''}"></app-upload-view-file>
+      </div>
+    </div>
+    <div
+      class="loading-container"
+      *ngIf="
+        (typeQuotation$ | async)?.labelKey !== TOTAL_QUOTATION
+          ? (selectBase64FileStatus$ | async) === apiLoading || (selectBase64FileInvestigationStatus$ | async) === apiLoading
+          : (selectBase64FileStatus$ | async) === apiLoading
+      "
+    >
+      <app-loading></app-loading>
+    </div>
+    <div
+      class="loading-container"
+      *ngIf="
+        (typeQuotation$ | async)?.labelKey !== TOTAL_QUOTATION
+          ? (selectBase64FileStatus$ | async) === apiFailed || (selectBase64FileInvestigationStatus$ | async) === apiFailed
+          : (selectBase64FileStatus$ | async) === apiFailed
+      "
+    >
+      <app-without-results [title]="'quotation.getPDFFailed' | translate"></app-without-results>
+    </div>
+
+    <div class="buttons">
+      <button class="active" (click)="onClose(false)">
+        <label> {{ 'quotation.details.section.freight.exit' | translate }}</label>
+      </button>
+      <button
+        [ngClass]="
+          ((typeQuotation$ | async)?.labelKey === TOTAL_QUOTATION && (selectBase64File$ | async)) ||
+          ((typeQuotation$ | async)?.labelKey === PARTIAL_QUOTATION &&
+            (selectBase64File$ | async) &&
+            value &&
+            (selectBase64FileInvestigationStatus$ | async))
+            ? 'active'
+            : 'disable'
+        "
+        (click)="onClose(true)"
+      >
+        <label> {{ 'common.accept' | translate }}</label>
+      </button>
+    </div>
+  </div>
+</app-pop-up-generic>

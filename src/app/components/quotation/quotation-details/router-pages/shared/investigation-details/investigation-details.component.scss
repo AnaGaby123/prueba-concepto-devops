@@ -1,0 +1,312 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  display: flex;
+  height: 100%;
+  position: absolute;
+  right: 0;
+
+  #right-sidebar {
+    @include s.flexRowNoWrap();
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.4s ease-in-out;
+    width: auto;
+    background-color: s.$main-proquifa-f;
+
+    &.hide {
+      width: 0;
+    }
+
+    &.show {
+      width: 443px;
+    }
+
+    & > .content {
+      @include s.flexColumn();
+      min-width: 443px;
+      overflow: hidden;
+      position: relative;
+      width: auto;
+
+      & > .header-container {
+        background-color: s.$main-proquifa-c;
+        padding: 12px 0;
+
+        & > .header {
+          @include s.flexRow;
+          gap: 21px;
+          justify-content: center;
+
+          & > img {
+            height: 24px;
+          }
+
+          & > label {
+            @include s.responsive-font-format(
+              $color: s.$pqWhite,
+              $font-family: s.$font_family_roboto_bold,
+              $font-size-map: s.$responsive-font-20-20,
+              $font-weight: s.$font-weight-bold
+            );
+          }
+        }
+      }
+
+      & > .content {
+        @include s.flexColumn;
+        height: 100%;
+        margin: 24px 20px;
+        overflow-y: auto;
+
+        & > .history-chat {
+          flex: 0 0 200px;
+        }
+
+        & > .radios {
+          align-items: center;
+          display: flex;
+          justify-content: space-between;
+          padding: 24px 22px 0 22px;
+        }
+
+        & > .details,
+        & > .comments {
+          @include s.flexColumn;
+          gap: 12px;
+          padding: 16px 22px 0 22px;
+
+          & > .title {
+            background-color: s.$main-proquifa;
+            padding: 6.5px 8px;
+
+            & > label {
+              @include s.responsive-font-format(
+                $color: s.$pqWhite,
+                $font-family: s.$font_family_roboto_bold,
+                $font-size-map: s.$responsive-font-16-16,
+                $font-weight: s.$font-weight-bold
+              );
+            }
+          }
+        }
+
+        & > .details {
+          position: relative;
+
+          & > .container {
+            @include s.flexColumn;
+            background-color: s.$pqWhite;
+            border-radius: 8px;
+            border: 1px solid s.$main-proquifa;
+
+            & > .info-full {
+              @include s.flexColumn;
+              gap: 12px;
+              padding: 12px 8px;
+              & > .details {
+                & > .product-logo-type {
+                  @include s.flexRow;
+                  column-gap: 3px;
+
+                  & > .logo {
+                    height: 20px;
+                  }
+
+                  & > label {
+                    @include s.responsive-font-format(
+                      $color: s.$pqGreen,
+                      $font-family: s.$font-family_roboto_bold,
+                      $font-size-map: s.$responsive-font-16-16,
+                      $font-weight: s.$font-weight_bold
+                    );
+                    display: flex;
+                    align-items: center;
+                    flex: 1;
+                  }
+                }
+
+                & > .type-subtype {
+                  margin-top: 4px;
+                  @include s.responsive-font-format(
+                    $font-family: s.$font-family_roboto_bold,
+                    $font-size-map: s.$responsive-font-14-14,
+                    $font-weight: s.$font-weight_bold
+                  );
+                }
+
+                & > .description {
+                  @include s.flexColumn;
+                  border-bottom: 1px solid s.$dark-proquifa-d;
+                  padding: 12px 0 16px 0;
+                  row-gap: 12px;
+
+                  & > label {
+                    @include s.responsive-font-format($font-size-map: s.$responsive-font-14-14);
+                    -webkit-box-orient: vertical;
+                    -webkit-line-clamp: 3;
+                    display: -webkit-box;
+                    overflow: hidden;
+                    text-align: start;
+                    text-overflow: ellipsis;
+                  }
+
+                  & > .totals {
+                    @include s.flexRowNoWrap;
+                    column-gap: 16px;
+
+                    & > .alternative,
+                    & > .complementary {
+                      & > label {
+                        @include s.responsive-font-format(
+                          $font-family: s.$font-family_roboto_bold,
+                          $font-size-map: s.$responsive-font-14-14,
+                          $font-weight: s.$font-weight_bold
+                        );
+                      }
+                    }
+
+                    & > .complementary {
+                      & > label {
+                        color: s.$main-proquifa;
+                      }
+                    }
+                  }
+                }
+
+                & > .footer {
+                  @include s.flexRow;
+                  margin-top: 12px;
+
+                  & > .presentation-details {
+                    @include s.flexColumn;
+                    flex: 1;
+                    row-gap: 5px;
+
+                    & > .presentation {
+                      @include s.responsive-font-format(
+                        $font-family: s.$font-family_roboto_bold,
+                        $font-size-map: s.$responsive-font-14-14,
+                        $font-weight: s.$font-weight_bold
+                      );
+                    }
+
+                    & > .use {
+                      @include s.responsive-font-format($font-size-map: s.$responsive-font-14-14);
+                    }
+                  }
+
+                  & > .price {
+                    @include s.flexColumn;
+                    align-items: center;
+                    justify-content: center;
+
+                    & > label {
+                      @include s.responsive-font-format(
+                        $color: s.$main-proquifa,
+                        $font-family: s.$font-family_roboto_bold,
+                        $font-size-map: s.$responsive-font-17-17,
+                        $font-weight: s.$font-weight_bold
+                      );
+                    }
+                  }
+                }
+              }
+              & > .message-configuration {
+                border-radius: 4px;
+                box-shadow: inset 0 0 0 1px s.$alert-e;
+                padding: 4px 8px;
+                & > label {
+                  @include s.responsive-font-format(
+                    $color: s.$alert,
+                    $font-family: s.$font_family_roboto_bold,
+                    $font-size-map: s.$responsive-font-10-10,
+                    $font-weight: s.$font-weight-bold
+                  );
+                }
+              }
+            }
+          }
+        }
+      }
+
+      & > .buttons {
+        $max-width-map: (
+          'base': 250px,
+          'macBookAir': 345px,
+        );
+        @include s.flexColumn;
+        align-items: center;
+        row-gap: 16px;
+        justify-content: center;
+        margin-bottom: 20px;
+
+        & > .accept {
+          @include s.pqfButton($max-width-map: $max-width-map);
+
+          &.disable {
+            @include s.pqfDisableButton($max-width-map: $max-width-map);
+          }
+        }
+
+        & > .add-to-quotation {
+          @include s.pqfButton($background-color: inherit, $font-color: s.$dark-proquifa, $max-width-map: $max-width-map);
+        }
+        & > .add-to-quotation-disabled {
+          @include s.pqfDisableButton(
+            $background-color: inherit,
+            $max-width-map: $max-width-map,
+            $font-color: s.$dark-proquifa
+          );
+        }
+      }
+    }
+  }
+
+  .arrow {
+    width: 16px;
+    height: 21px;
+    cursor: pointer;
+    position: absolute;
+    top: calc(50% + 42px);
+    z-index: 3;
+    left: 0;
+
+    & > img {
+      height: 21px;
+      opacity: 1;
+      transform: scaleX(1);
+      transition: transform 0.8s ease-in-out;
+      width: 16px;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+
+    & > .reverse {
+      transform: scaleX(-1);
+    }
+  }
+
+  @include s.media-query(s.$standard) {
+    .arrow {
+      height: 32px;
+      width: 23px;
+
+      & > img {
+        height: 32px;
+        width: 23px;
+      }
+
+      & > .reverse {
+        width: 32px;
+      }
+    }
+  }
+}

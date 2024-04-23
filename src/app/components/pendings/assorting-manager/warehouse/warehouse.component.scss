@@ -1,0 +1,191 @@
+@use 'base' as s;
+
+:host {
+  @include s.absolute100;
+
+  #warehouse-container {
+    @include s.absolute100;
+    @include s.flexColumn;
+
+    & > .header-bar {
+      flex: 0 0 50px;
+    }
+
+    & > .data-header {
+      @include s.flexRowNoWrap;
+      flex: 0 0 auto;
+      padding: 0 20px;
+
+      & > .content {
+        width: 100%;
+        box-sizing: border-box;
+        margin: 15px 0;
+        flex-direction: row;
+        display: flex;
+
+        & > .item {
+          @include s.flexRowNoWrap;
+          align-items: center;
+          border-right: 2px solid s.$graySeparator;
+          padding-right: 20px;
+
+          &:last-of-type {
+            border-right: none;
+          }
+
+          label {
+            text-transform: uppercase;
+          }
+
+          & > .title {
+            @include s.flexColumn;
+            margin-right: 15px;
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize12to16, bold, s.$grayText);
+              @include s.Roboto-Bold;
+            }
+          }
+
+          & > .number {
+            @include s.flexRowNoWrap;
+            align-items: flex-start;
+
+            & > .total {
+              @include s.escaledFontFormat(s.$textSize30to46, bold, s.$greenActive);
+              @include s.Roboto-Bold;
+
+              &.ocean {
+                color: s.$pqGreen;
+              }
+            }
+
+            & > .super-index {
+              @include s.escaledFontFormat(s.$textSize15to19, bold, s.$redPopUpText);
+              @include s.Roboto-Bold;
+              margin-left: 5px;
+            }
+
+            &.tooltip {
+              @include s.tooltip();
+            }
+          }
+
+          & > .image {
+            margin-left: 15px;
+
+            & > img {
+              width: 16px;
+            }
+          }
+
+          & > .big-image {
+            cursor: pointer;
+            margin-left: 15px;
+
+            & > img {
+              width: 25px;
+            }
+          }
+        }
+
+        & > .pa {
+          padding-left: 20px;
+        }
+      }
+    }
+
+    & > .outlet {
+      flex: 1 1 auto;
+      overflow: hidden;
+    }
+  }
+
+  & > .pop-up {
+    & .container {
+      @include s.flexColumn;
+      flex: 1 1 100%;
+
+      & > .first-section {
+        @include s.flexRowNoWrap;
+        flex: 1 1 30%;
+
+        & > div {
+          @include s.flexColumn;
+          align-items: flex-start;
+          flex: 1 1 40%;
+
+          & > .title {
+            @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqGreen);
+            @include s.Roboto-Bold;
+            text-align: start;
+            border-bottom: 1px solid s.$pqGray3;
+            padding: 8px 0;
+            width: 100%;
+          }
+        }
+
+        & > .historical-totals {
+          margin: 10px 10px 10px 20px;
+
+          & > .title {
+            margin-bottom: 30px;
+          }
+
+          & > div {
+            @include s.flexColumn;
+            align-items: flex-start;
+            margin-bottom: 30px;
+
+            & > label:nth-of-type(1) {
+              @include s.escaledFontFormat(s.$textSize16to21, bold, s.$pqGreen);
+              @include s.Roboto-Bold;
+            }
+
+            & > label:nth-of-type(2) {
+              @include s.escaledFontFormat(s.$textSize13to15, bold, s.$pqBlack2);
+              @include s.Roboto-Regular;
+            }
+          }
+        }
+      }
+
+      & > .second-section {
+        @include s.flexColumn;
+        align-items: flex-start;
+        flex: 1 1 60%;
+        margin: 0 20px;
+
+        & > .header {
+          @include s.flexRowNoWrap;
+          border-bottom: 1px solid s.$pqGray3;
+          padding: 8px 0;
+          width: 100%;
+
+          & > .titulo {
+            @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqGreen);
+            @include s.Roboto-Bold;
+            text-align: start;
+            width: 100%;
+          }
+        }
+
+        & > .content {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > #warehouse-container {
+      & > .header-bar {
+        height: 64px;
+      }
+
+      & > .outlet {
+        height: calc(100% - 64px);
+      }
+    }
+  }
+}

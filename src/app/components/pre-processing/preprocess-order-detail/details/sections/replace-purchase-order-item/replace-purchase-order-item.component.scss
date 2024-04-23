@@ -1,0 +1,805 @@
+@use 'base' as s;
+
+:host {
+  width: 100%;
+  height: 100%;
+
+  #principal {
+    @include s.flexColumn;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    box-sizing: border-box;
+    padding-bottom: 20px;
+
+    & > .title {
+      @include s.flexRow;
+      max-height: 50px;
+      height: 100px;
+      box-sizing: border-box;
+      align-items: center;
+      padding-left: 20px;
+      padding-right: 20px;
+
+      & > div {
+        @include s.flexRow;
+        height: 100%;
+        width: 100%;
+        border-bottom: 1px solid s.$pqBlack2;
+        align-items: center;
+
+        & > label {
+          $textSize: (
+            'base': 17px,
+            'macBookAir': 24px,
+          );
+          @include s.escaledFontFormat($textSize, '', s.$pqBlack2);
+          @include s.Novecento-Bold;
+        }
+
+        & > .pqf {
+          color: s.$pqGreen !important;
+        }
+      }
+    }
+
+    & > .itemData {
+      @include s.flexColumn;
+      max-height: 129px;
+      height: 100%;
+      box-sizing: border-box;
+      padding-top: 13px;
+      padding-left: 20px;
+      padding-right: 20px;
+
+      & > .subTitle {
+        @include s.flexRow;
+
+        & > label {
+          $textSize: (
+            'base': 17px,
+            'macBookAir': 21px,
+          );
+          @include s.escaledFontFormat($textSize, '', s.$pqGreen);
+          @include s.Novecento-Bold;
+        }
+      }
+
+      & > .data-item {
+        @include s.flexRow;
+        height: 100%;
+        box-sizing: border-box;
+        padding-top: 9px;
+        padding-bottom: 20px;
+
+        & > .content-description {
+          padding-top: initial !important;
+          //max-width: calc(100% - 578px);
+          margin-left: initial;
+
+          & > .cat {
+            @include s.flexRow();
+            box-sizing: border-box;
+            padding-bottom: 5px;
+
+            & > label {
+              @include s.Roboto-Regular;
+              @include s.escaledFontFormatImportant(s.$textSize13to16, refular, s.$pqBlack2);
+
+              & > span {
+                @include s.Roboto-Bold;
+                vertical-align: baseline;
+              }
+
+              & > img {
+                height: 15px;
+                margin-top: -2px;
+              }
+            }
+          }
+
+          & > .content {
+            @include s.flexRow();
+            align-items: center;
+            box-sizing: border-box;
+            padding-bottom: 5px;
+
+            & > .img {
+              height: 10px;
+            }
+
+            & > label {
+              margin-left: 5px;
+              $textSize: (
+                'base': 14px,
+                'macBookAir': 14px,
+              );
+              @include s.escaledFontFormat($textSize, '', s.$pqBlack2);
+              @include s.Roboto-Light;
+            }
+          }
+
+          & > .trademark {
+            @include s.flexRow();
+
+            & > label {
+              @include s.Roboto-Regular;
+              @include s.escaledFontFormatImportant(s.$textSize11to13, regular, s.$pqBlack2);
+            }
+
+            & > .current-quotation {
+              color: s.$pqGreen2;
+            }
+
+            & > .expiring-quotation {
+              color: s.$pqOrange3;
+            }
+
+            & > .expired-quotation {
+              color: s.$redExpired;
+            }
+
+            & > .img {
+              height: 20px;
+            }
+          }
+        }
+
+        & > div {
+          @include s.flexColumn;
+          //justify-content: space-between;
+          box-sizing: border-box;
+          padding-bottom: 14px;
+          width: 100%;
+          margin-left: 25px;
+        }
+
+        & > .tee {
+          max-width: 110px;
+
+          & > div {
+            @include s.flexRow;
+            padding-bottom: 15px;
+            justify-content: flex-end;
+
+            & > label:nth-child(1) {
+              $textSize: (
+                'base': 13px,
+                'macBookAir': 13px,
+              );
+              @include s.escaledFontFormat($textSize, '', s.$pqBlack2);
+              @include s.Roboto-Regular;
+            }
+
+            & > label:nth-child(2) {
+              $textSize: (
+                'base': 14px,
+                'macBookAir': 14px,
+              );
+              @include s.escaledFontFormat($textSize, '', s.$pqBlack2);
+              @include s.Roboto-Regular;
+            }
+          }
+
+          :nth-child(2) {
+            justify-content: center;
+          }
+        }
+
+        & > .count {
+          max-width: 72px;
+
+          & > div {
+            @include s.flexRow;
+            padding-bottom: 15px;
+            justify-content: flex-end;
+
+            & > label:nth-child(1) {
+              $textSize: (
+                'base': 13px,
+                'macBookAir': 13px,
+              );
+              @include s.escaledFontFormat($textSize, '', s.$pqBlack2);
+              @include s.Roboto-Regular;
+            }
+
+            & > label:nth-child(2) {
+              $textSize: (
+                'base': 12px,
+                'macBookAir': 12px,
+              );
+              @include s.escaledFontFormat($textSize, '', s.$pqGreen);
+              @include s.Roboto-Regular;
+            }
+          }
+
+          :nth-child(2) {
+            justify-content: center;
+          }
+        }
+
+        & > .priceUnit {
+          max-width: 100px;
+
+          & > div {
+            @include s.flexRow;
+            padding-bottom: 15px;
+            justify-content: flex-end;
+
+            & > label:nth-child(1) {
+              $textSize: (
+                'base': 13px,
+                'macBookAir': 13px,
+              );
+              @include s.escaledFontFormat($textSize, '', s.$pqBlack2);
+              @include s.Roboto-Regular;
+            }
+
+            & > label:nth-child(2) {
+              $textSize: (
+                'base': 14px,
+                'macBookAir': 14px,
+              );
+              @include s.escaledFontFormat($textSize, '', s.$pqBlack2);
+              @include s.Roboto-Light;
+            }
+          }
+        }
+
+        & > .subTotal {
+          max-width: 100px;
+
+          & > div {
+            @include s.flexRow;
+            padding-bottom: 15px;
+            justify-content: flex-end;
+
+            & > label:nth-child(1) {
+              $textSize: (
+                'base': 13px,
+                'macBookAir': 13px,
+              );
+              @include s.escaledFontFormat($textSize, '', s.$pqBlack2);
+              @include s.Roboto-Regular;
+            }
+
+            & > label:nth-child(2) {
+              $textSize: (
+                'base': 14px,
+                'macBookAir': 14px,
+              );
+              @include s.escaledFontFormat($textSize, '', s.$pqGreen);
+              @include s.Roboto-Light;
+            }
+          }
+        }
+
+        & > .iva {
+          max-width: 95px;
+
+          & > div {
+            @include s.flexRow;
+            padding-bottom: 15px;
+            justify-content: flex-end;
+
+            & > label:nth-child(1) {
+              $textSize: (
+                'base': 13px,
+                'macBookAir': 13px,
+              );
+              @include s.escaledFontFormat($textSize, '', s.$pqBlack2);
+              @include s.Roboto-Regular;
+            }
+
+            & > label:nth-child(2) {
+              $textSize: (
+                'base': 14px,
+                'macBookAir': 14px,
+              );
+              @include s.escaledFontFormat($textSize, '', s.$pqBlack2);
+              @include s.Roboto-Light;
+            }
+          }
+        }
+
+        & > .total {
+          max-width: 115px;
+
+          & > div {
+            @include s.flexRow;
+            align-items: center;
+            padding-bottom: 15px;
+            justify-content: flex-end;
+
+            & > label:nth-child(1) {
+              $textSize: (
+                'base': 13px,
+                'macBookAir': 14px,
+              );
+              @include s.escaledFontFormat($textSize, '', s.$pqBlack2);
+              @include s.Roboto-Regular;
+            }
+          }
+
+          :nth-child(2) {
+            justify-content: flex-end;
+          }
+
+          & > .value {
+            flex-wrap: wrap;
+
+            & > div:nth-child(1) {
+              @include s.flexRow;
+
+              & > label {
+                $textSize: (
+                  'base': 13px,
+                  'macBookAir': 14px,
+                );
+                @include s.escaledFontFormat($textSize, '', s.$pqGreen);
+                @include s.Roboto-Bold;
+              }
+            }
+
+            & > .percent {
+              @include s.flexRow;
+              @include s.tooltip(auto, auto, auto, 150px, 'right_0');
+
+              & > div {
+                @include s.flexRow;
+                box-sizing: border-box;
+                padding-left: 3px;
+
+                & > label {
+                  $textSize: (
+                    'base': 14px,
+                    'macBookAir': 14px,
+                  );
+                  @include s.escaledFontFormat($textSize, '', s.$pqBlack2);
+                  @include s.Roboto-Bold;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    & > .search {
+      @include s.flexRow;
+      max-height: 112px;
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+
+      @include s.opacityColor();
+
+      & > div {
+        @include s.flexRow;
+        justify-content: center;
+        max-width: 784px;
+        width: 100%;
+      }
+    }
+
+    & > .quotes {
+      @include s.flexRow;
+      width: 100%;
+
+      & > app-botonera-card {
+        width: 100%;
+      }
+    }
+
+    & > .items {
+      @include s.flexColumn;
+      height: 100%;
+      width: 100%;
+      box-sizing: border-box;
+      padding-right: 20px;
+      padding-left: 20px;
+      padding-top: 20px;
+
+      & > .title {
+        @include s.flexRow;
+        width: 100%;
+
+        & > label {
+          $textSize: (
+            'base': 15px,
+            'macBookAir': 21px,
+          );
+          @include s.escaledFontFormat($textSize, '', s.$pqBlack2);
+          @include s.Novecento-Bold;
+        }
+      }
+
+      & > .section-list {
+        overflow: auto;
+        height: 100%;
+
+        & > .container-list {
+          min-width: 1100px;
+          @include s.flexColumn;
+          width: 100%;
+          height: 100%;
+          overflow: auto;
+
+          & > .header {
+            @include s.flexRow;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 5px 15px 5px 15px;
+            border-bottom: 1px solid s.$pqBlack2;
+
+            & > div {
+              @include s.flexRow;
+
+              & > label {
+                $textSize: (
+                  'base': 13px,
+                  'macBookAir': 13px,
+                );
+                @include s.escaledFontFormat($textSize, '', s.$pqBlack2);
+                @include s.Roboto-Regular;
+              }
+            }
+
+            & > .select {
+              max-width: 25px;
+              width: 100%;
+            }
+
+            & > .index {
+              justify-content: center;
+              max-width: 58px;
+              width: 100%;
+            }
+
+            & > .typeItem {
+              max-width: 17px;
+              width: 100%;
+            }
+
+            & > .cat {
+              justify-content: center;
+              max-width: 100px;
+              width: 100%;
+            }
+
+            & > .concept {
+              max-width: calc(100% - 917px);
+              width: 100%;
+            }
+
+            & > .trademark {
+              max-width: 150px;
+              width: 100%;
+            }
+
+            & > .tee {
+              max-width: 110px;
+              width: 100%;
+            }
+
+            & > .amount {
+              justify-content: center;
+              max-width: 71px;
+              width: 100%;
+            }
+
+            & > .price {
+              justify-content: center;
+              max-width: 129px;
+              width: 100%;
+            }
+
+            & > .value {
+              justify-content: center;
+              max-width: 142px;
+              width: 100%;
+            }
+
+            & > .status {
+              max-width: 115px;
+              width: 100%;
+            }
+          }
+
+          & > .list {
+            width: 100%;
+            height: 100%;
+            //overflow: auto;
+            & > div {
+              @include s.flexColumn;
+              width: 100%;
+              height: 100%;
+
+              & > virtual-scroller {
+                width: 100%;
+                height: 100%;
+
+                & > ::ng-deep .scrollable-content {
+                  width: 100%;
+                  height: 100%;
+                }
+
+                & > ::ng-deep .scrollable-content > .items {
+                  @include s.flexRow;
+                  width: 100%;
+                  min-height: 55px;
+                  max-height: 55px;
+                  box-sizing: border-box;
+                  padding: 5px 15px 5px 15px;
+                  border-bottom: 1px solid s.$pqGray2;
+                  align-items: center;
+
+                  & > div {
+                    @include s.flexRow;
+                    width: 100%;
+                    height: 100%;
+
+                    & > div {
+                      @include s.flexRow;
+                      align-items: center;
+                    }
+
+                    & > .select {
+                      max-width: 25px;
+                      width: 100%;
+                      justify-content: center;
+                      cursor: pointer;
+                    }
+
+                    & > .index {
+                      justify-content: center;
+                      max-width: 58px;
+                      width: 100%;
+
+                      & > label {
+                        $textSize: (
+                          'base': 13px,
+                          'macBookAir': 13px,
+                        );
+                        @include s.escaledFontFormat($textSize, '', s.$pqBlack2);
+                        @include s.Roboto-Bold;
+                      }
+                    }
+
+                    & > .typeItem {
+                      justify-content: center;
+                      max-width: 17px;
+                      width: 100%;
+                    }
+
+                    & > .cat {
+                      justify-content: center;
+                      max-width: 100px;
+                      width: 100%;
+
+                      & > label {
+                        text-align: center;
+                        margin-left: 5px;
+                        $textSize: (
+                          'base': 13px,
+                          'macBookAir': 13px,
+                        );
+                        @include s.escaledFontFormat($textSize, '', s.$pqBlack2);
+                        @include s.Roboto-Bold;
+                      }
+                    }
+
+                    & > .concept {
+                      max-width: calc(100% - 917px);
+                      width: 100%;
+
+                      & > label {
+                        @include s.multiLineTextTruncateSinHeight();
+                        margin-left: 5px;
+                        $textSize: (
+                          'base': 14px,
+                          'macBookAir': 14px,
+                        );
+                        @include s.escaledFontFormat($textSize, '', s.$pqBlack2);
+                        @include s.Roboto-Light;
+                      }
+                    }
+
+                    & > .trademark {
+                      max-width: 150px;
+                      width: 100%;
+
+                      & > label {
+                        margin-left: 5px;
+                        $textSize: (
+                          'base': 14px,
+                          'macBookAir': 14px,
+                        );
+                        @include s.escaledFontFormat($textSize, '', s.$pqBlack2);
+                        @include s.Roboto-Light;
+                      }
+                    }
+
+                    & > .tee {
+                      max-width: 110px;
+                      width: 100%;
+                      justify-content: center;
+
+                      & > label {
+                        margin-left: 5px;
+                        $textSize: (
+                          'base': 14px,
+                          'macBookAir': 14px,
+                        );
+                        @include s.escaledFontFormat($textSize, '', s.$pqBlack2);
+                        @include s.Roboto-Regular;
+                      }
+                    }
+
+                    & > .amount {
+                      max-width: 71px;
+                      width: 100%;
+                      justify-content: center;
+
+                      & > label {
+                        margin-left: 5px;
+                        $textSize: (
+                          'base': 14px,
+                          'macBookAir': 13px,
+                        );
+                        @include s.escaledFontFormat($textSize, '', s.$pqGreen);
+                        @include s.Roboto-Regular;
+                      }
+                    }
+
+                    & > .price {
+                      max-width: 129px;
+                      width: 100%;
+                      justify-content: center;
+
+                      & > label {
+                        margin-left: 5px;
+                        $textSize: (
+                          'base': 14px,
+                          'macBookAir': 14px,
+                        );
+                        @include s.escaledFontFormat($textSize, '', s.$pqBlack2);
+                        @include s.Roboto-Light;
+                      }
+                    }
+
+                    & > .value {
+                      justify-content: center;
+                      max-width: 142px;
+                      width: 100%;
+
+                      & > label {
+                        margin-left: 5px;
+                        $textSize: (
+                          'base': 14px,
+                          'macBookAir': 14px,
+                        );
+                        @include s.escaledFontFormat($textSize, '', s.$pqGreen);
+                        @include s.Roboto-Bold;
+                      }
+                    }
+
+                    & > .status {
+                      max-width: 115px;
+                      width: 100%;
+                      justify-content: center;
+
+                      & > label {
+                        margin-left: 5px;
+                        $textSize: (
+                          'base': 12px,
+                          'macBookAir': 12px,
+                        );
+                        @include s.escaledFontFormat($textSize, '', s.$pqBlack2);
+                        @include s.Roboto-Bold;
+                      }
+                    }
+                  }
+                }
+
+                & > ::ng-deep .scrollable-content > .items:hover {
+                  background-color: s.$pqGray2;
+                }
+              }
+            }
+
+            & > .without-results {
+              @include s.flexColumn;
+              @include s.absoluteCenter;
+              flex: 1 1 auto;
+
+              & > app-without-results {
+                @include s.flexRow;
+                flex: 1 1 auto;
+              }
+            }
+          }
+
+          & > .total {
+            @include s.flexRow;
+            justify-content: center;
+            max-height: 56px;
+            height: 100%;
+            border-top: 1px solid s.$pqBlack2;
+            box-sizing: border-box;
+            padding-top: 5px;
+
+            & > label {
+              @include s.Roboto-Regular;
+              @include s.escaledFontFormatImportant(s.$textSize13to16, regular, s.$pqBlack2);
+            }
+          }
+        }
+      }
+    }
+
+    & > .buttons {
+      @include s.flexRow;
+      width: 100%;
+      box-sizing: border-box;
+      padding-left: 20px;
+      padding-right: 20px;
+      max-height: 50px;
+      height: 100%;
+
+      & > div {
+        @include s.flexRow;
+        width: 100%;
+        height: 100%;
+        padding-top: 20px;
+        border-top: 1px solid s.$pqBlack2;
+        justify-content: space-between;
+
+        & > .cancel {
+          @include s.flexRowImportant;
+          justify-content: center !important;
+          @include s.pqButton();
+        }
+
+        & > .add {
+          @include s.flexRowImportant;
+          @include s.pqButton(135px, 170px, 25px, 30px, #4ba92b);
+          justify-content: center !important;
+        }
+
+        & > .addDisabled {
+          @include s.flexRowImportant;
+          @include s.pqButton(135px, 170px, 25px, 30px, s.$pqGray3);
+          justify-content: center !important;
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #principal {
+      & > .title {
+        max-height: 61px;
+      }
+
+      & > .itemData {
+        & > .data-item {
+          & > div {
+            margin-left: 30px;
+          }
+        }
+      }
+
+      & > .items {
+        & > .section-list {
+          & > .container-list {
+            & > .total {
+              @include s.flexRow;
+              max-height: 86px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

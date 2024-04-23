@@ -1,0 +1,8 @@
+<div id="collection-monitoring">
+  <div class="header-bar">
+    <app-header-bar [title]="title$ | async" [activeBack]="isDetails$ | async" (click)="goBack()"></app-header-bar>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+</div>

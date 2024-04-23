@@ -1,0 +1,234 @@
+<div id="regulation-restriction-non-tariff">
+  <div class="product-info">
+    <div class="title">
+      <label>{{ 'common.product' | translate }}</label>
+    </div>
+    <app-product-item-general-info></app-product-item-general-info>
+  </div>
+  <div class="general-data">
+    <div class="title">
+      <label>{{ 'formProduct.general.generalData' | translate }}</label>
+    </div>
+    <div class="content">
+      <div class="principal-data">
+        <div class="classification">
+          <app-drop-down-list
+            [enableEdit]="enableEdit$ | async"
+            [itemSelected]="selectedClassification$ | async"
+            [items]="catClassificationRegulation$ | async"
+            [isSearchable]="(catClassificationRegulation$ | async)?.length > 5"
+            [label]="'formProduct.step2.regulatoryClassification' | translate"
+            (valueDropList)="setSelectedClassification($event)"
+          ></app-drop-down-list>
+        </div>
+        <div class="fraction">
+          <app-generic-input
+            [enableEdit]="enableEdit$ | async"
+            [label]="'formProduct.step2.tariffFraction' | translate"
+            [maxlength]="15"
+            [minlength]="14"
+            [typeValidation]="inputValidators.NumberAndDots"
+            [value]="(producto$ | async)?.FraccionArancelaria"
+            (textData)="setProductData($event, 'FraccionArancelaria')"
+          ></app-generic-input>
+        </div>
+        <div class="import-fraction">
+          <app-generic-input
+            [enableEdit]="enableEdit$ | async"
+            [label]="'formProduct.step2.importFraction' | translate"
+            [maxlength]="15"
+            [minlength]="14"
+            [typeValidation]="inputValidators.NumberAndDots"
+            [value]="(producto$ | async)?.FraccionImportacion"
+            (textData)="setProductData($event, 'FraccionImportacion')"
+          ></app-generic-input>
+        </div>
+        <div class="regulatory-notes">
+          <app-generic-input
+            [enableEdit]="enableEdit$ | async"
+            [label]="'formProduct.step2.importRegulatoryNotes' | translate"
+            [maxlength]="500"
+            [typeValidation]="inputValidators.AlphaAndSpaces"
+            [value]="(configuration$ | async)?.NotasRegulatoriasALaImportacion"
+            (textData)="setLetterRegulatory($event)"
+          ></app-generic-input>
+        </div>
+      </div>
+      <div class="permissions" *ngIf="(configurationType$ | async) !== 'Labware'">
+        <div class="psicotropics">
+          <div class="title">
+            <label>{{ 'formProduct.step2.psicotropicsPermissions' | translate }}</label>
+          </div>
+          <div class="inputs">
+            <div class="available">
+              <app-generic-input-file
+                [acceptedExtensions]="'application/pdf'"
+                [disabled]="!(enableEdit$ | async)"
+                [enableEdit]="enableEdit$ | async"
+                [fileName]="
+                  (vProduct$ | async)?.ArchivoCartaDeDisponibilidad
+                    ? getFileName((vProduct$ | async)?.ArchivoCartaDeDisponibilidad?.FileKey)
+                    : null
+                "
+                [idFile]="(vProduct$ | async)?.IdArchivoCartaDeDisponibilidad"
+                [label]="'formProduct.step2.availabilityLetter' | translate"
+                [placeholder]="'.Pdf'"
+                (emitExternalFile)="getExternalFile('ArchivoCartaDeDisponibilidad')"
+                (emitFileToDelete)="setIdFileToDelete(null, 'ArchivoCartaDeDisponibilidad')"
+                (autoEmitFile)="setNewFile($event, 'ArchivoCartaDeDisponibilidad')"
+              ></app-generic-input-file>
+            </div>
+            <div class="use">
+              <app-generic-input-file
+                [acceptedExtensions]="'application/pdf'"
+                [disabled]="!(enableEdit$ | async)"
+                [enableEdit]="enableEdit$ | async"
+                [fileName]="
+                  (vProduct$ | async)?.ArchivoCartaDeUso ? getFileName((vProduct$ | async)?.ArchivoCartaDeUso?.FileKey) : null
+                "
+                [idFile]="(vProduct$ | async)?.IdArchivoCartaDeUso"
+                [label]="'formProduct.step2.letterOfUse' | translate"
+                [placeholder]="'.Pdf'"
+                (emitExternalFile)="getExternalFile('ArchivoCartaDeUso')"
+                (emitFileToDelete)="setIdFileToDelete(null, 'ArchivoCartaDeUso')"
+                (autoEmitFile)="setNewFile($event, 'ArchivoCartaDeUso')"
+              ></app-generic-input-file>
+            </div>
+            <div class="plaza">
+              <app-generic-input-file
+                [acceptedExtensions]="'application/pdf'"
+                [disabled]="!(enableEdit$ | async)"
+                [enableEdit]="enableEdit$ | async"
+                [fileName]="
+                  (vProduct$ | async)?.ArchivoPermisoDeAdquisicionEnPlaza
+                    ? getFileName((vProduct$ | async)?.ArchivoPermisoDeAdquisicionEnPlaza?.FileKey)
+                    : null
+                "
+                [idFile]="(vProduct$ | async)?.IdArchivoPermisoDeAdquisicionEnPlaza"
+                [label]="'formProduct.step2.placeAcquisitionPermit' | translate"
+                [placeholder]="'.Pdf'"
+                (emitExternalFile)="getExternalFile('ArchivoPermisoDeAdquisicionEnPlaza')"
+                (emitFileToDelete)="setIdFileToDelete(null, 'ArchivoPermisoDeAdquisicionEnPlaza')"
+                (autoEmitFile)="setNewFile($event, 'ArchivoPermisoDeAdquisicionEnPlaza')"
+              ></app-generic-input-file>
+            </div>
+            <div class="import">
+              <app-generic-input-file
+                [acceptedExtensions]="'application/pdf'"
+                [disabled]="!(enableEdit$ | async)"
+                [enableEdit]="enableEdit$ | async"
+                [fileName]="
+                  (vProduct$ | async)?.ArchivoPermisoDeImprotacion
+                    ? getFileName((vProduct$ | async)?.ArchivoPermisoDeImprotacion?.FileKey)
+                    : null
+                "
+                [idFile]="(vProduct$ | async)?.IdArchivoPermisoDeImprotacion"
+                [label]="'formProduct.step2.importLicense' | translate"
+                [placeholder]="'.Pdf'"
+                (emitExternalFile)="getExternalFile('ArchivoPermisoDeImprotacion')"
+                (emitFileToDelete)="setIdFileToDelete(null, 'ArchivoPermisoDeImprotacion')"
+                (autoEmitFile)="setNewFile($event, 'ArchivoPermisoDeImprotacion')"
+              ></app-generic-input-file>
+            </div>
+          </div>
+        </div>
+        <div class="general">
+          <div class="title">
+            <label>{{ 'formProduct.step2.generalPermissions' | translate }}</label>
+          </div>
+          <div class="inputs">
+            <div class="available">
+              <app-generic-input-file
+                [acceptedExtensions]="'application/pdf'"
+                [disabled]="!(enableEdit$ | async)"
+                [enableEdit]="enableEdit$ | async"
+                [fileName]="
+                  (vProduct$ | async)?.ArchivoAvisoDeQuimicosEsenciales
+                    ? getFileName((vProduct$ | async)?.ArchivoAvisoDeQuimicosEsenciales?.FileKey)
+                    : null
+                "
+                [idFile]="(vProduct$ | async)?.IdArchivoAvisoDeQuimicosEsenciales"
+                [label]="'formProduct.step2.essentialChemicalsNotice' | translate"
+                [placeholder]="'.Pdf'"
+                (emitExternalFile)="getExternalFile('ArchivoAvisoDeQuimicosEsenciales')"
+                (autoEmitFile)="setNewFile($event, 'ArchivoAvisoDeQuimicosEsenciales')"
+                (emitFileToDelete)="setIdFileToDelete(null, 'ArchivoAvisoDeQuimicosEsenciales')"
+              ></app-generic-input-file>
+            </div>
+            <div class="use">
+              <app-generic-input-file
+                [acceptedExtensions]="'application/pdf'"
+                [disabled]="!(enableEdit$ | async)"
+                [enableEdit]="enableEdit$ | async"
+                [fileName]="
+                  (vProduct$ | async)?.ArchivoZoosanitarios
+                    ? getFileName((vProduct$ | async)?.ArchivoZoosanitarios?.FileKey)
+                    : null
+                "
+                [idFile]="(vProduct$ | async)?.IdArchivoZoosanitarios"
+                [label]="'formProduct.step2.zoosanitary' | translate"
+                [placeholder]="'.Pdf'"
+                (autoEmitFile)="setNewFile($event, 'ArchivoZoosanitarios')"
+                (emitExternalFile)="getExternalFile('ArchivoZoosanitarios')"
+                (emitFileToDelete)="setIdFileToDelete(null, 'ArchivoZoosanitarios')"
+              ></app-generic-input-file>
+            </div>
+            <div class="plaza">
+              <app-generic-input-file
+                [acceptedExtensions]="'application/pdf'"
+                [disabled]="!(enableEdit$ | async)"
+                [enableEdit]="enableEdit$ | async"
+                [fileName]="
+                  (vProduct$ | async)?.ArchivoCicoplafest ? getFileName((vProduct$ | async)?.ArchivoCicoplafest?.FileKey) : null
+                "
+                [idFile]="(vProduct$ | async)?.IdArchivoCicoplafest"
+                [label]="'formProduct.step2.cicoplafest' | translate"
+                [placeholder]="'.Pdf'"
+                (autoEmitFile)="setNewFile($event, 'ArchivoCicoplafest')"
+                (emitExternalFile)="getExternalFile('ArchivoCicoplafest')"
+                (emitFileToDelete)="setIdFileToDelete(null, 'ArchivoCicoplafest')"
+              ></app-generic-input-file>
+            </div>
+            <div class="import">
+              <app-generic-input-file
+                [acceptedExtensions]="'application/pdf'"
+                [disabled]="!(enableEdit$ | async)"
+                [enableEdit]="enableEdit$ | async"
+                [fileName]="
+                  (vProduct$ | async)?.ArchivoOtroPermiso ? getFileName((vProduct$ | async)?.ArchivoOtroPermiso?.FileKey) : null
+                "
+                [idFile]="(vProduct$ | async)?.IdArchivoOtroPermiso"
+                [label]="'formProduct.step2.others' | translate"
+                [placeholder]="'.Pdf'"
+                (autoEmitFile)="setNewFile($event, 'ArchivoOtroPermiso')"
+                (emitExternalFile)="getExternalFile('ArchivoOtroPermiso')"
+                (emitFileToDelete)="setIdFileToDelete(null, 'ArchivoOtroPermiso')"
+              ></app-generic-input-file>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="otherData" *ngIf="(configurationType$ | async) === 'Labware'">
+        <div class="sanitary">
+          <app-generic-input
+            [enableEdit]="enableEdit$ | async"
+            [label]="'formProduct.step2.sanitaryRegistrationNumber' | translate"
+            [maxlength]="50"
+            [typeValidation]="inputValidators.Number"
+            [value]="(configuration$ | async)?.NumeroDeRegistroSanitario"
+            (textData)="setLabwareData($event)"
+          ></app-generic-input>
+        </div>
+        <div class="date">
+          <app-date-picker
+            [dateFormat]="'YYYYMMDD'"
+            [date]="sanitaryDate$ | async"
+            [disabled]="!(enableEdit$ | async)"
+            [label]="'formProduct.step2.expirationOfSanitaryRegistration' | translate"
+            (fecha)="setDate($event)"
+          ></app-date-picker>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,215 @@
+import {
+  AttributeDashboard,
+  CorreoRecibidoClienteRequerimientoObj,
+  GMCorreoPedidoSolicitarFEA,
+  PretramitarPedidoPartidaDetalle,
+  Resumen,
+  VPpPedidoObj,
+} from 'api-logistica';
+import {IClientItemForNotProcessed} from '@appModels/store/pendings/not-processed/not-processed-list/not-processed-list.models';
+import {filter, forEach, isEmpty, map as _map} from 'lodash-es';
+
+import {IDropListMulti} from '@appModels/drop-list/drop-list-option';
+import * as apiCatalogs from 'api-catalogos';
+import {
+  initialTotalAmountNotProcess,
+  IOrderNotProcessed,
+  IPpPartidaPedidoObjNotProcess,
+} from '@appModels/store/pendings/not-processed/not-processed-details/not-processed-details.models';
+import {initialPpIncidenceQuote} from '@appModels/store/pre-processing/preprocess-order-details/sections/quoted-items/quoted-items.models';
+import {IConceptItemQuote} from '@appModels/shared-components/concept-item-quote';
+import {buildStringFamily} from '@appUtil/strings';
+import {AVAILABILITY_TYPES} from '@appUtil/common.protocols';
+
+enum NotProcessedStatus {
+  Todo = 'Todos',
+  ConOC = 'Con OC',
+  SinOC = 'Sin OC',
+}
+
+enum NotProcessedStatusApiResponse {
+  Total = 'Total',
+  ConOrdenDeCompratrue = 'ConOrdenDeCompratrue',
+  SinOrdenDeCompratrue = 'SinOrdenDeCompratrue',
+}
+
+const MapNotProcessedStatusFromApi = {
+  [NotProcessedStatus.Todo]: NotProcessedStatusApiResponse.Total,
+  [NotProcessedStatus.ConOC]: NotProcessedStatusApiResponse.ConOrdenDeCompratrue,
+  [NotProcessedStatus.SinOC]: NotProcessedStatusApiResponse.SinOrdenDeCompratrue,
+};
+const buildClientsFromNotProcessedDashboard = (
+  clientsList: Array<Resumen>,
+): Array<IClientItemForNotProcessed> => {
+  return _map(
+    clientsList,
+    (o: Resumen): IClientItemForNotProcessed => {
+      const newObject: IClientItemForNotProcessed = {...o, IdCliente: o.DescripcionLlave};
+      forEach(o.Atributos, (i: AttributeDashboard) => {
+        newObject[i.DescriptionField] = i.ValueField;
+      });
+      return newObject;
+    },
+  );
+};
+
+const buildOrdersInSubDashboardDetails = (orders: VPpPedidoObj[]): IOrderNotProcessed[] =>
+  _map(
+    orders,
+    (o: VPpPedidoObj, index): IOrderNotProcessed => {
+      return {
+        ...o,
+        FechaEstimadaAjusteAux: orders[0].FechaEstimadaAjuste,
+        FechaEstimadaAjusteDate: o.FechaEstimadaAjuste
+          ? new Date(o.FechaEstimadaAjuste)
+          : new Date(),
+        // selectedPpPedidoContactForDrop: {} as IDropListMulti,
+        // selectedDeliveryContactForDrop: {} as IDropListMulti,
+        mailData: {} as CorreoRecibidoClienteRequerimientoObj,
+        user: {} as apiCatalogs.Usuario,
+        items: {Results: [], TotalResults: 0},
+        totalAmount: initialTotalAmountNotProcess(),
+        ppPedidoInstruccionesEntrega: {},
+        Index: index,
+      };
+    },
+  );
+
+const buildPurchaseItemsNotProcess = (
+  items: PretramitarPedidoPartidaDetalle[],
+): IPpPartidaPedidoObjNotProcess[] =>
+  _map(
+    items,
+    (o: PretramitarPedidoPartidaDetalle): IPpPartidaPedidoObjNotProcess => ({
+      ...o,
+      tempUnitPrice: Number(o.PrecioUnitario.toFixed(2)),
+      tempQuantity: o.NumeroDePiezas,
+      quantityInputIsOpen: false,
+      priceInputIsOpen: false,
+      conceptQuote: buildConceptItems(o),
+      isNegative: 0 > o?.PorcentajeSobrePrecioLista,
+      percentage: Math.abs(o?.PorcentajeSobrePrecioLista),
+      ListaPPPartidaPedidoOriginales: isEmpty(o.ListaPPPartidaPedidoOriginales)
+        ? o.ListaPPPartidaPedidoOriginales
+        : _map(
+            o.ListaPPPartidaPedidoOriginales,
+            (i): IPpPartidaPedidoObjNotProcess => ({
+              ...i,
+              tempUnitPrice: Number(i.PrecioUnitario.toFixed(2)),
+              tempQuantity: i.NumeroDePiezas,
+              quantityInputIsOpen: false,
+              priceInputIsOpen: false,
+              isNegative: i.PrecioUnitario < i.cotPartidaCotizacionDetalle.vProducto.PrecioLista,
+              percentage: Math.abs(
+                ((i.PrecioUnitario - i.cotPartidaCotizacionDetalle.vProducto.PrecioLista) /
+                  i.cotPartidaCotizacionDetalle.vProducto.PrecioLista) *
+                  100,
+              ),
+            }),
+          ),
+      hasInheritIncidences: !!o.ppIncidenciaPartida,
+      Tramitada: o.Tramitada,
+      Validada: o.ppIncidenciaPartida !== null ? false : o.Validada === null ? null : true,
+      //DOCS: OBJETO PretramitarPedidoPartidaObj
+      ppIncidenciaPartida: o.ppIncidenciaPartida
+        ? o.ppIncidenciaPartida
+        : initialPpIncidenceQuote(),
+      isInViewQuotesLinked: false,
+      quotesLinked: [],
+      needsToReloadLinkeds: true,
+      imageHover: `assets/Images/logos/${o?.cotPartidaCotizacionDetalle?.vProducto?.NombreImagenMarca?.trim()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')}_hover.svg`,
+    }),
+  );
+
+const buildConceptItems = (item: IPpPartidaPedidoObjNotProcess): IConceptItemQuote => {
+  const concept: IConceptItemQuote = {
+    number: null,
+    imgBrand: null,
+    imgLabel:
+      'assets/Images/labels/productos/' +
+      (item?.cotPartidaCotizacionDetalle?.gMCotPartidasDetalle?.VPartidaCotizacion
+        ?.DisponibilidadClave === AVAILABILITY_TYPES.discontinued
+        ? 'discontinued.svg'
+        : item?.cotPartidaCotizacionDetalle?.gMCotPartidasDetalle?.VPartidaCotizacion
+            ?.DisponibilidadClave === AVAILABILITY_TYPES.available
+        ? 'available.svg'
+        : item?.cotPartidaCotizacionDetalle?.gMCotPartidasDetalle?.VPartidaCotizacion
+            ?.DisponibilidadClave === AVAILABILITY_TYPES.backorder
+        ? 'back-order.svg'
+        : item?.cotPartidaCotizacionDetalle?.gMCotPartidasDetalle?.VPartidaCotizacion
+            ?.DisponibilidadClave === AVAILABILITY_TYPES.notmarketable
+        ? 'not-marketed.svg'
+        : 'available.svg'),
+    cat:
+      item?.cotPartidaCotizacionDetalle?.gMCotPartidasDetalle?.VPartidaCotizacion?.Catalogo ??
+      'N/D',
+    presentation:
+      item?.cotPartidaCotizacionDetalle?.gMCotPartidasDetalle?.VPartidaCotizacion
+        ?.TipoPresentacion ?? 'N/D',
+    amountPresentation:
+      item?.cotPartidaCotizacionDetalle?.gMCotPartidasDetalle?.VPartidaCotizacion?.Presentacion ??
+      'N/D',
+    unity:
+      item?.cotPartidaCotizacionDetalle?.gMCotPartidasDetalle?.VPartidaCotizacion?.Unidad ?? 'N/D',
+    description:
+      item?.cotPartidaCotizacionDetalle?.gMCotPartidasDetalle?.VPartidaCotizacion?.Descripcion ??
+      'N/D',
+    family: buildStringFamily(
+      item?.cotPartidaCotizacionDetalle?.gMCotPartidasDetalle?.VPartidaCotizacion?.Tipo,
+      item?.cotPartidaCotizacionDetalle?.gMCotPartidasDetalle?.VPartidaCotizacion?.Subtipo,
+      item?.cotPartidaCotizacionDetalle?.gMCotPartidasDetalle?.VPartidaCotizacion?.Control,
+      ' · ',
+    ),
+    author: item?.cotPartidaCotizacionDetalle?.vProducto?.Autor ?? 'N/D',
+    formatPublication: item?.cotPartidaCotizacionDetalle?.vProducto.FormatoPublicacion ?? 'N/D',
+    typeMode: item?.cotPartidaCotizacionDetalle?.vProducto?.MedioDifusion ?? 'N/D',
+    controlled:
+      item?.cotPartidaCotizacionDetalle?.gMCotPartidasDetalle?.VPartidaCotizacion?.Controlado,
+    dateValidation: item?.cotPartidaCotizacionDetalle?.vProducto?.FechaCaducidadVigenciaCuraduria,
+    dateAvailability: 'REVISAR',
+    availability: item?.cotPartidaCotizacionDetalle?.vProducto?.Disponibilidad,
+    datesSuggested:
+      item?.cotPartidaCotizacionDetalle?.gMCotPartidasDetalle?.fechasRealizacionCapacitacion,
+    expressFreight:
+      item?.cotPartidaCotizacionDetalle?.gMCotPartidasDetalle?.VPartidaCotizacion?.FleteDesglosado,
+    conversionRate: null,
+    alternate: null,
+    complementary: null,
+    withoutQuotes: null,
+    // linkedQuoted: item?.CotizacionesVinculadas,
+  };
+  return concept;
+};
+
+const buildBodyRequestFEA = (order: IOrderNotProcessed): GMCorreoPedidoSolicitarFEA => {
+  const incidences: IPpPartidaPedidoObjNotProcess[] = filter(
+    order.items.Results,
+    (o: IPpPartidaPedidoObjNotProcess) => o.Activo === true,
+  );
+  const gmCorreoPedidoSolciitarFea: GMCorreoPedidoSolicitarFEA = {
+    IdPPPedido: order.IdPPPedido,
+    ListaPartidasIncidencias: _map(incidences, (o: IPpPartidaPedidoObjNotProcess) => {
+      return {
+        ppIncidenciaPartida: o?.IdPPIncidenciaPartidaPedido ? {...o.ppIncidenciaPartida} : null,
+        ppPartidaPedido: o,
+      };
+    }),
+    Contacto: order.contact,
+    Observaciones: order.ObservacionesFEA,
+    FEA: order.FechaEstimadaAjusteDate.toISOString(),
+    ppPedidoConfiguracion: order.ppPedidoConfiguracion,
+  };
+  return gmCorreoPedidoSolciitarFea;
+};
+
+export {
+  NotProcessedStatus,
+  NotProcessedStatusApiResponse,
+  MapNotProcessedStatusFromApi,
+  buildClientsFromNotProcessedDashboard,
+  buildOrdersInSubDashboardDetails,
+  buildBodyRequestFEA,
+  buildPurchaseItemsNotProcess,
+};

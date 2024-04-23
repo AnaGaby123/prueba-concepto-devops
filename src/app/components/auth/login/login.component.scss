@@ -1,0 +1,133 @@
+@use 'base' as s;
+:host {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+* {
+  @include s.default-transition();
+  box-sizing: border-box;
+}
+#login {
+  display: grid;
+  flex: 0 0 100%;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: 20px;
+  overflow: hidden;
+  & > .form-content {
+    align-items: center;
+    grid-column-end: span 4;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 1fr auto;
+    grid-column-gap: 20px;
+    padding: 40px 0;
+    & > .content {
+      @include s.flexColumn;
+      grid-area: 1 / 2 / 2 / 4;
+      row-gap: 40px;
+      & > .form-control {
+        @include s.flexColumn;
+        align-items: flex-start;
+        row-gap: 20px;
+        & > label {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-novecento_bold,
+            $font-weight: s.$font-weight-bold,
+            $font-size-map: s.$responsive-font-20-32,
+            $color: s.$dark-proquifa
+          );
+        }
+        & > .pass {
+          position: relative;
+          width: 100%;
+          & > svg {
+            cursor: pointer;
+            position: absolute;
+            right: 16px;
+            top: calc(50% - 13px);
+          }
+        }
+        & > .error {
+          @include s.flexRow;
+          height: 15px;
+          & > label {
+            @include s.responsive-font-format(
+              $font-style: s.$font-style-italic,
+              $font-size-map: s.$responsive-font-16-16,
+              $color: s.$alert
+            );
+          }
+        }
+      }
+      & > button {
+        width: 100%;
+        @include s.responsive-font-format(
+          $font-family: s.$font-family-novecento_bold,
+          $font-weight: s.$font-weight-bold,
+          $font-size-map: s.$responsive-font-16-20,
+          $color: s.$dark-proquifa-d
+        );
+        border-radius: 4px;
+        padding: 16px;
+        pointer-events: none;
+        &.active {
+          background-color: s.$pqGreen;
+          color: s.$pqWhite;
+          cursor: pointer;
+          pointer-events: initial;
+        }
+      }
+    }
+    & > .powered {
+      @include s.flexRow;
+      grid-area: 2 / 2 / 3 / 4;
+      justify-content: center;
+    }
+  }
+  & > .image {
+    grid-column-end: span 8;
+    overflow: hidden;
+    position: relative;
+    & > .background {
+      object-fit: cover;
+      width: 100%;
+      min-height: 100%;
+    }
+    & > .group {
+      height: 79px;
+      position: absolute;
+      right: 40px;
+      top: 40px;
+      width: 180px;
+    }
+  }
+  @include s.media-query(s.$standard) {
+    & > .image {
+      & > .group {
+        width: 224px;
+      }
+    }
+  }
+}
+input {
+  border-radius: 4px;
+  border: 1px solid s.$dark-proquifa-d;
+  height: 48px;
+  padding: 16px;
+  width: 100%;
+  &:focus {
+    border: 1px solid s.$pqGreen;
+  }
+  &::placeholder {
+    color: s.$dark-proquifa-d;
+  }
+  &.passwordInput {
+    padding: 16px 45px 16px 16px;
+  }
+  &.invalid {
+    border: 1px solid s.$alert;
+    color: s.$alert;
+    -webkit-text-fill-color: s.$alert;
+  }
+}

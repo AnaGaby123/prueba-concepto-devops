@@ -1,0 +1,177 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+  @include s.flexColumn;
+  overflow: hidden;
+
+  #client-contract-families-container {
+    @include s.flexRow;
+    flex: 1;
+    overflow: hidden;
+
+    & > .client-contract-brands-linked-container {
+      display: flex;
+      flex: 0 0 270px;
+      padding-right: 15px;
+      position: relative;
+
+      & > .client-contract-brands-linked {
+        @include s.flexColumn;
+        flex: 1;
+
+        & > .title-container {
+          @include s.flexColumn;
+          margin-bottom: 15px;
+          row-gap: 20px;
+
+          & > .title {
+            @include s.Novecento-Bold;
+            @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+          }
+        }
+
+        & > .brand-list-container {
+          @include s.flexRow;
+          flex: 1;
+
+          & > .brand-list {
+            @include s.flexColumn;
+            flex: 1;
+            overflow-y: auto;
+
+            & > .brand-item {
+              @include s.flexRow;
+              position: relative;
+              width: 100%;
+
+              & > .brand-selected {
+                width: 5px;
+              }
+
+              & > .brand-data {
+                @include s.flexRow;
+                align-items: center;
+                border-bottom: 1px solid rgba(66, 66, 66, 0.1);
+                flex: 1;
+                padding: 15px;
+
+                & > .brand-name {
+                  @include s.flexRow;
+
+                  & > label {
+                    @include s.Roboto-Bold;
+                    @include s.escaledFontFormat(s.$textSize16to18, bold, s.$pqBlack2);
+                  }
+                }
+              }
+            }
+
+            & > .brand-item:hover {
+              background-color: s.$pqGray2;
+              cursor: pointer;
+            }
+
+            & > .active {
+              background-color: s.$pqGray2;
+              pointer-events: none;
+
+              & > .brand-selected {
+                background: s.$pqGreen !important;
+              }
+            }
+          }
+
+          & > .loading,
+          & > .without-results {
+            display: flex;
+            flex: 1;
+            align-items: center;
+          }
+        }
+      }
+    }
+
+    & > .client-contract-brands-linked-families {
+      @include s.flexColumn;
+      flex: 1;
+      height: 100%;
+      order: 0;
+      overflow: hidden;
+      border-left: 1px solid #eceef0;
+
+      & > .title {
+        padding-left: 20px;
+
+        & > label {
+          @include s.Novecento-Bold;
+          @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+
+          & > span {
+            color: s.$pqGreen;
+            vertical-align: baseline;
+          }
+        }
+      }
+
+      & > .cards {
+        display: flex;
+        padding-top: 10px;
+      }
+
+      & > .tabs {
+        display: flex;
+        flex: 0 0 30px;
+        padding: 30px 0 30px 20px;
+      }
+
+      & > .family-configuration {
+        @include s.flexRow;
+        flex: 1;
+        overflow: auto;
+        padding-left: 20px;
+
+        & > .withoutResults {
+          @include s.absoluteCenter;
+          @include s.flexRow;
+          flex: 1;
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .client-contract-brands-linked-container {
+        padding-right: 20px;
+        flex: 0 0 350px;
+      }
+    }
+  }
+
+  .pop-alert {
+    & .container {
+      @include s.absoluteCenter;
+      @include s.flexColumn;
+      align-items: center;
+
+      & > img {
+        @include s.default-transition();
+        height: 50px;
+        margin-bottom: 20px;
+        width: 50px;
+      }
+
+      & > div {
+        padding: 0 40px;
+
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize26to29, regular, s.$pqBlack2);
+        }
+      }
+    }
+  }
+}

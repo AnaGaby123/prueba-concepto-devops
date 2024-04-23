@@ -1,0 +1,272 @@
+@use 'base' as s;
+
+:host {
+  @include s.reset-line-height;
+  flex: 1;
+  //TODO:  INPUT CON ALINEACIÓN VERTICAL
+  & > .content-generic-input-column {
+    @include s.flexColumn;
+    row-gap: 8px;
+
+    & > .content-label-row {
+      @include s.flexRow;
+      column-gap: 4px;
+      align-items: center;
+
+      & > label {
+        @include s.default-transition;
+        @include s.responsive_font-format($font-size-map: s.$responsive-font-16-16);
+      }
+
+      & > span {
+        @include s.responsive_font-format($font-size-map: s.$responsive-font-16-16, $color: s.$graySeparator);
+      }
+
+      //DOCS: Estilo cuando el input es requerido
+      & > .text-label-error-required {
+        @include s.responsive-font-format(
+          $font-size-map: s.$responsive-font-16-16,
+          $color: s.$pqAlert,
+          $font-family: s.$font_family_roboto_regular
+        );
+      }
+
+      //DOCS: LABEL BOLD CUANDO ES MODO LECTURA
+      & > .label-bold {
+        @include s.responsive-font-format(
+          $font-size-map: s.$responsive-font-16-16,
+          $color: s.$pqBlack2,
+          $font-family: s.$font_family_roboto_bold
+        );
+      }
+
+      //DOCS: Estilo para el label cuando está inactivo el input
+      & > .not-active-label {
+        @include s.responsive_font-format($font-size-map: s.$responsive-font-16-16, $color: s.$dark-proquifa-d);
+      }
+    }
+
+    & > .container-input-column {
+      @include s.flexRow;
+      align-items: center;
+      column-gap: 8px;
+      height: 40px;
+      position: relative;
+    }
+  }
+
+  //TODO: INPUT CON ALINEACIÓN HORIZONTAL
+  & .content-generic-input-row-main {
+    @include s.flexRow;
+    column-gap: 8px;
+    align-items: center;
+
+    & > .content-label-row {
+      @include s.flexRow;
+      height: 40px;
+      column-gap: 4px;
+      align-items: center;
+
+      & > label {
+        @include s.default-transition;
+        @include s.responsive_font-format($font-size-map: s.$responsive-font-16-16);
+        text-align: end;
+      }
+
+      //DOCS: Estilo cuando el input es requerido
+      & > .text-label-error-required {
+        @include s.responsive-font-format(
+          $font-size-map: s.$responsive-font-16-16,
+          $color: s.$pqAlert,
+          $font-family: s.$font_family_roboto_regular
+        );
+      }
+
+      //DOCS: Estilo para el label cuando está inactivo el input
+      & > .not-active-label {
+        @include s.responsive_font-format($font-size-map: s.$responsive-font-16-16, $color: s.$dark-proquifa-d);
+      }
+
+      //DOCS: LABEL BOLD CUANDO ES MODO LECTURA
+      & > .label-bold {
+        @include s.responsive-font-format(
+          $font-size-map: s.$responsive-font-16-16,
+          $color: s.$pqBlack2,
+          $font-family: s.$font_family_roboto_bold
+        );
+      }
+    }
+
+    & > .container-input-row-general {
+      @include s.flexColumn;
+      flex: 1;
+
+      & > span {
+        @include s.responsive-font-format(
+          $font-size-map: s.$responsive-font-16-16,
+          $color: s.$graySeparator,
+          $font-family: s.$font_family_roboto_regular
+        );
+        margin-bottom: 8px;
+      }
+
+      & > .container-input-row {
+        @include s.flexRow;
+        align-items: center;
+        column-gap: 8px;
+        height: 40px;
+        position: relative;
+        flex: 1;
+      }
+    }
+  }
+
+  //TODO: ESTILOS GENERALES
+
+  //DOCS: ESTILOS EN INPUT
+  & input {
+    @include s.responsive-font-format;
+    @include s.default-transition;
+    background-color: s.$dark-proquifa-f;
+    border-radius: 4px;
+    border: 1px solid s.$pqBlack2;
+    flex: 1;
+    outline: none;
+    padding: 10px 8px;
+    height: 40px;
+
+    &::placeholder {
+      @include s.default-transition();
+      @include s.Roboto-Regular;
+      color: s.$dark-proquifa-d;
+    }
+
+    /* Chrome, Safari, Edge, Opera */
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }
+
+    /* Firefox */
+    &[type='number'] {
+      -moz-appearance: textfield;
+    }
+  }
+
+  //DOCS: ESTILO TEXTO DEL INPUT CUANDO DETECTA UN ERROR O FORCE ERROR
+  & .text-error {
+    @include s.responsive-font-format(
+      $font-size-map: s.$responsive-font-16-16,
+      $color: s.$pqAlert,
+      $font-family: s.$font_family_roboto_bold
+    );
+    border-color: s.$pqAlert;
+  }
+
+  //DOCS: APLICAR NEGRILLADO AL ESCRIBIR EN EL INPUT
+  & .text-normal {
+    @include s.responsive-font-format(
+      $font-size-map: s.$responsive-font-16-16,
+      $color: s.$pqBlack2,
+      $font-family: s.$font_family_roboto_bold
+    );
+  }
+
+  //DOCS: ESTILO AL CONTENEDOR DEL INPUT CUANDO ESTA INACTIVO
+  & .not-active-input {
+    @include s.responsive-font-format(
+      $font-size-map: s.$responsive-font-16-16,
+      $color: s.$dark-proquifa-d,
+      $font-family: s.$font_family_roboto_regular
+    );
+    background-color: s.$dark-proquifa-e;
+    border: 1px solid s.$dark-proquifa-d;
+
+    &[value] {
+      @include s.Roboto-Regular;
+      @include s.responsive-font-format(
+        $font-size-map: s.$responsive-font-16-16,
+        $color: s.$dark-proquifa-d,
+        $font-family: s.$font_family_roboto_regular
+      );
+    }
+  }
+
+  //DOCS: ESTILOS AL TEXTO EXTRA DESPUES DEL INPUT
+  & .text-extra-normal {
+    @include s.responsive-font-format(
+      $font-size-map: s.$responsive-font-16-16,
+      $color: s.$pqBlack2,
+      $font-family: s.$font_family_roboto_regular
+    );
+  }
+
+  & .text-extra-error {
+    @include s.responsive-font-format(
+      $font-size-map: s.$responsive-font-16-16,
+      $color: s.$pqAlert,
+      $font-family: s.$font_family_roboto_regular
+    );
+  }
+
+  & .text-extra-not-active {
+    @include s.responsive-font-format(
+      $font-size-map: s.$responsive-font-16-16,
+      $color: s.$dark-proquifa-d,
+      $font-family: s.$font_family_roboto_regular
+    );
+  }
+
+  //DOCS: ESTILOS PARA EL INPUT EN MODO LECTURA
+  & .container-input-readonly {
+    @include s.flexRow;
+    height: 40px;
+    align-items: center;
+    column-gap: 8px;
+
+    & > .icons {
+      padding: 5px 4px;
+    }
+
+    & > .label-value {
+      @include s.responsive-font-format(
+        $font-size-map: s.$responsive-font-16-16,
+        $color: s.$pqBlack2,
+        $font-family: s.$font_family_roboto_bold
+      );
+    }
+
+    & > .label-extra-text {
+      @include s.responsive-font-format(
+        $font-size-map: s.$responsive-font-16-16,
+        $color: s.$pqBlack2,
+        $font-family: s.$font_family_roboto_regular
+      );
+    }
+  }
+
+  //DOCS: ESTILOS EL TEXTO FEEDBACK
+  & .feedback {
+    margin-top: 4px;
+
+    & > .normal-color {
+      @include s.responsive-font-format($font-size-map: s.$responsive-font-14-14, $color: s.$pqBlack2);
+    }
+
+    & > .feedback-success {
+      @include s.responsive-font-format($font-size-map: s.$responsive-font-14-14, $color: s.$pqGreen2);
+    }
+
+    & > .feedback-error {
+      @include s.responsive-font-format($font-size-map: s.$responsive-font-14-14, $color: s.$pqAlert);
+    }
+
+    & > .not-active-feedback {
+      @include s.responsive-font-format($font-size-map: s.$responsive-font-14-14, $color: s.$dark-proquifa-d);
+    }
+
+    & > .readonly {
+      @include s.responsive-font-format($font-size-map: s.$responsive-font-14-14, $color: s.$pqBlack2);
+    }
+  }
+}

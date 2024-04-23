@@ -1,0 +1,13 @@
+@use 'base' as s;
+
+:host {
+  @include s.flexColumn;
+  flex: 1 1 auto;
+  overflow: hidden;
+
+  #details-preprocess-container {
+    @include s.flexColumn;
+    flex: 1 1 auto;
+    overflow: hidden;
+  }
+}

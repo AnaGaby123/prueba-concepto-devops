@@ -1,0 +1,18 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  width: 100%;
+  & > .type-item-container {
+    @include s.flexRow;
+    justify-content: center;
+    width: 100%;
+    & > img {
+      width: 17px;
+      height: 17px;
+    }
+  }
+}

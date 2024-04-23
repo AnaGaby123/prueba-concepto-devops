@@ -1,0 +1,126 @@
+<div class="date-picker">
+  <div *ngIf="label" class="label-container">
+    <div>
+      <label
+        [style.font-family]="isReadonly ? 'Roboto-Bold' : labelFont"
+        [style.color]="disabled ? labelDisableFontColor : labelFontColor"
+      >
+        {{ label }}
+      </label>
+    </div>
+  </div>
+
+  <div *ngIf="!isReadonly" class="date-picker-container" [ngClass]="{notEditing: !enableEdit}">
+    <div
+      class="datepicker"
+      [ngStyle]="{'font-family': fontFamily}"
+      [style.border-color]="disabled ? disableBorderColor : borderInputColor"
+    >
+      <input
+        class="datepicker__input"
+        [class.active]="validInput"
+        [ngClass]="!disabled && 'enabled'"
+        [disabled]="disabled"
+        [placeholder]="placeholder"
+        [style.font-weight]="weightInput"
+        [style.padding-bottom]="paddingInput"
+        [style.color]="disabled ? disableFontColor : fontColor"
+        [style.text-decoration]="textDecoration"
+        [style.text-align]="textAlign"
+        (click)="onInputClick()"
+        [(ngModel)]="inputText"
+        readonly
+      />
+      <img
+        *ngIf="!imageAdd"
+        [src]="disabled ? 'assets/Images/calendar_disabled.svg' : 'assets/Images/calendar-' + checkColor + '.svg'"
+        alt=""
+        class="picker-img"
+        (click)="!disabled && onInputClick()"
+      />
+    </div>
+    <!--    <div class="imgDate" *ngIf="imageAdd">
+      <img
+        *ngIf="isMulticolor === false; else multicolor"
+        [ngClass]="!disabled && 'pointer'"
+        [src]="disabled ? 'assets/Images/calendar_disabled.svg' : 'assets/Images/calendar-ocean.svg'"
+        alt=""
+        (click)="!disabled && onInputClick()"
+      />
+      <ng-template #multicolor>
+        <img
+          [ngClass]="!disabled && 'pointer'"
+          [src]="disabled ? 'assets/Images/calendar_disabled.svg' : 'assets/Images/calendar-' + checkColor + '.svg'"
+          alt=""
+          (click)="!disabled && onInputClick()"
+        />
+      </ng-template>
+    </div>-->
+    <div
+      class="datepicker__calendar"
+      [ngClass]="{close: !showCalendar}"
+      [style.top]="
+        (viewType$ | async) === viewtypes.small
+          ? position === 'down'
+            ? '35px'
+            : '-245px'
+          : position === 'down'
+          ? '40px'
+          : '-280px'
+      "
+      id="calendar"
+    >
+      <div class="content">
+        <div class="triangle" [style.margin-left]="!imageAdd && '-8px'" [ngClass]="position"></div>
+        <div class="datepicker__calendar__nav">
+          <div class="datepicker__calendar__nav__arrow">
+            <img src="assets/Images/arrows/arrow-calendar-left.svg" alt="arrow-calendar-left" (click)="onArrowClick('left')" />
+          </div>
+          <div class="datepicker__calendar__nav__header">
+            <span>{{ currentMonth }} {{ selectedYearNumber }}</span>
+          </div>
+          <div class="datepicker__calendar__nav__arrow">
+            <img
+              src="assets/Images/arrows/arrow-calendar-right.svg"
+              alt="arrow-calendar-right"
+              (click)="onArrowClick('right')"
+            />
+          </div>
+        </div>
+        <div class="datepicker__calendar__content">
+          <div class="datepicker__calendar__labels">
+            <p class="datepicker__calendar__label" *ngFor="let day of dayNamesOrdered">
+              {{ day }}
+            </p>
+          </div>
+          <div class="datepicker__calendar__month">
+            <div
+              *ngFor="let day of calendarDays"
+              class="datepicker__calendar__month__day"
+              [ngStyle]="{
+                cursor: !day.enable ? 'initial' : 'pointer',
+                'background-color':
+                  dayHover === day.day && !isChosenDay(day.day) ? colors.lightGrey2 : getDayBackgroundColor(day.day),
+                border: getDayBorderColor(day.day),
+                color: getDayFontColor(day),
+                'pointer-events': !day.enable ? 'none' : '',
+                'font-family': getDayFontFamily(day)
+              }"
+              (click)="onSelectDay(day.day)"
+              (mouseenter)="dayHover = day.day"
+              (mouseleave)="dayHover = null"
+            >
+              <span *ngIf="day.day !== 0">
+                {{ day.day.getDate() }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isReadonly">
+    {{ date | dateFormatSlash }}
+  </div>
+</div>

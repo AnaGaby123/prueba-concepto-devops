@@ -1,0 +1,39 @@
+<div id="contacts-customs-agents" [ngClass]="{disabled: !enableEdit}">
+  <div class="contact" *ngIf="contact" (click)="enableEdit && handleClickOnContact(contact)">
+    <div class="contactImg">
+      <img alt="" [src]="'assets/Images/contacto_gris.svg'" />
+      <img alt="" [src]="'assets/Images/contacto.svg'" />
+    </div>
+    <div class="infoGeneral">
+      <label id="contact-name">{{ contact?.name }} {{ contact?.surName }} {{ contact?.mSurName || 'N/D' }}</label>
+      <label id="contact-department">{{ contact?.department || 'N/D' }} · {{ contact?.job || 'N/D' }}</label>
+      <label id="contact-email">{{ contact?.mail?.Correo }}</label>
+      <label id="contact-phone">{{ 'Tel. ' + contact?.phone?.Numero }}</label>
+      <div>
+        <img
+          id="disabled-contact"
+          *ngIf="enableEdit"
+          alt=""
+          src="assets/Images/eliminar.svg"
+          (click)="handleDisableContact(contact, $event)"
+        />
+      </div>
+    </div>
+    <div class="rightSeparator"></div>
+    <div class="downSeparator"></div>
+  </div>
+  <div
+    *ngIf="!contact"
+    id="add-contact-container"
+    class="contact"
+    style="align-items: center;"
+    [style.justify-content]="'center'"
+    (click)="enableEdit && handleClickOnPlus()"
+  >
+    <div class="iconAdd" [style.cursor]="'pointer'">
+      <img alt="" src="assets/Images/mas_agregar.svg" />
+    </div>
+    <div class="rightSeparator"></div>
+    <div class="downSeparator"></div>
+  </div>
+</div>

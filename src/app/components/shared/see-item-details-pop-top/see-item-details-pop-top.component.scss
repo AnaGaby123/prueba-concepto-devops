@@ -1,0 +1,180 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  width: 100%;
+
+  & > .item-details-container {
+    @include s.flexRow;
+    padding: 16px 30px 22px 30px;
+    column-gap: 16px;
+    background-color: s.$main-proquifa-f;
+
+    & > .img-type-presentation {
+      @include s.gridCenter;
+      flex: 0 0 150px;
+      & > img {
+        max-height: 100%;
+        max-width: 100%;
+        overflow: hidden;
+      }
+    }
+
+    & > .info-container-general {
+      @include s.flexColumn;
+      row-gap: 16px;
+      width: 100%;
+
+      & > .info-container-top {
+        @include s.flexRow;
+        column-gap: 20px;
+
+        & > .info-details-container {
+          @include s.flexColumn;
+          row-gap: 6px;
+          width: 100%;
+
+          & > .info-container {
+            @include s.flexRow;
+            column-gap: 4px;
+            flex-wrap: wrap;
+            align-items: center;
+            & > .img-brand {
+              @include s.gridCenter;
+              flex: 0 0 28px;
+              height: 15px;
+              & > img {
+                max-height: 100%;
+                max-width: 100%;
+                overflow: hidden;
+              }
+            }
+            & > .img-availability {
+              @include s.gridCenter;
+              height: 20px;
+              & > img {
+                max-height: 100%;
+                max-width: 100%;
+                overflow: hidden;
+              }
+            }
+            & > .green {
+              @include s.responsive-font-format(
+                $color: s.$main-proquifa,
+                $font-family: s.$font-family-roboto_bold,
+                $font-size-map: s.$responsive-font-14-16,
+                $font-weight: s.$font-weight-bold
+              );
+            }
+          }
+
+          & > .description-container {
+            @include s.flexRow;
+            column-gap: 6px;
+            align-items: center;
+            & > .img-type-item {
+              @include s.gridCenter;
+              height: 17px;
+              & > img {
+                max-height: 100%;
+                max-width: 100%;
+                overflow: hidden;
+              }
+            }
+            & > .description {
+              @include s.multiLineTextTruncateSinHeight($lines: 1);
+              @include s.responsive-font-format(
+                $color: s.$pqBlack2,
+                $font-family: s.$font_family_roboto_regular,
+                $font-size-map: s.$responsive-font-15-17,
+                $font-weight: s.$font_weight_regular
+              );
+
+              text-align: start;
+            }
+          }
+
+          & > .family-container {
+            @include s.flexRow;
+            & > label {
+              @include s.responsive-font-format(
+                $color: s.$main-proquifa,
+                $font-family: s.$font_family_roboto_bold,
+                $font-size-map: s.$responsive-font-12-14,
+                $font-weight: s.$font_weight_bold
+              );
+            }
+            & > .controlled {
+              white-space: break-spaces;
+              color: s.$complementario-b;
+            }
+            & > .author {
+              white-space: break-spaces;
+              color: s.$pqBlack2;
+            }
+          }
+        }
+      }
+
+      & > .info-container-bottom {
+        @include s.flexRowWrap;
+        column-gap: 25px;
+        row-gap: 8px;
+        & > label {
+          @include s.responsive-font-format(
+            $color: s.$dark-proquifa-d,
+            $font-family: s.$font-family_roboto,
+            $font-size-map: s.$responsive-font-12-14,
+            $font-weight: s.$font-weight_regular
+          );
+          & > span {
+            vertical-align: baseline;
+            @include s.responsive-font-format(
+              $color: s.$pqGreen,
+              $font-family: s.$font-family-roboto_bold,
+              $font-size-map: s.$responsive-font-12-14,
+              $font-weight: s.$font-weight-bold
+            );
+          }
+        }
+      }
+    }
+    & > .container-unit-price {
+      @include s.flexColumn;
+      row-gap: 3px;
+      flex: 0 0 200px;
+      align-items: flex-end;
+      justify-content: center;
+
+      & > .label-price {
+        @include s.responsive-font-format(
+          $color: s.$dark-proquifa-d,
+          $font-family: s.$font-family_roboto,
+          $font-size-map: s.$responsive-font-12-14,
+          $font-weight: s.$font-weight_regular
+        );
+      }
+
+      & > .amount {
+        @include s.responsive-font-format(
+          $color: s.$main-proquifa,
+          $font-family: s.$font-family_roboto_bold,
+          $font-size-map: s.$responsive-font-18-20,
+          $font-weight: s.$font-weight_bold
+        );
+        text-align: right;
+      }
+      & > .people {
+        @include s.responsive-font-format(
+          $color: s.$dark-proquifa-d,
+          $font-family: s.$font-family_roboto_bold,
+          $font-size-map: s.$responsive-font-14-16,
+          $font-weight: s.$font-weight_bold
+        );
+      }
+    }
+  }
+}

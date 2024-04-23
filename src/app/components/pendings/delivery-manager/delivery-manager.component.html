@@ -1,0 +1,8 @@
+<div id="delivery-manager">
+  <div class="header">
+    <app-header-bar [title]="title$ | async" [activeBack]="detailsMode$ | async" (goBack)="returnMainPage()"></app-header-bar>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+</div>

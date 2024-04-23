@@ -1,0 +1,56 @@
+<div id="payment-conditions" *ngIf="!lodashIsEmpty(paymentConditionsOBj$ | async)">
+  <div class="aqua-info">
+    <span>{{ 'followPPurchase.justification' | translate }}</span>
+    <label>{{ (paymentConditionsOBj$ | async)?.JustificacionAjuste }}</label>
+  </div>
+  <div class="content">
+    <div class="title">
+      <label
+        >{{ 'common.paymentConditions' | translate }}: <span>{{ quotationPaymenCondition$ | async }}</span></label
+      >
+    </div>
+    <div class="aqua">
+      <div class="controls">
+        <div class="drop">
+          <label class="title">{{ 'closeOffer.changePaymentCondition' | translate }}</label>
+          <app-drop-down-list
+            [items]="catPaymentConditions$ | async"
+            [isSearchable]="(catPaymentConditions$ | async)?.length > 5"
+            [itemSelected]="selectedPaymentCondition$ | async"
+            (valueDropList)="setFormValue('IdCatCondicionesDePago', $event)"
+          ></app-drop-down-list>
+        </div>
+        <div class="input" [ngClass]="{disable: disableDays$ | async}">
+          <label class="title">{{ 'offerAdjustment.details.additionalDays' | translate }}</label>
+          <div class="days">
+            <app-generic-input
+              [placeholder]="'0'"
+              [textAlign]="'center'"
+              [typeValidation]="inputValidators.DecimalNumber"
+              [value]="(paymentConditionsOBj$ | async)?.DiasAdicionales"
+              [isDisable]="disableDays$ | async"
+              [fontColor]="(paymentConditionsOBj$ | async)?.DiasAdicionales <= 10 ? '#008894' : '#cc4757'"
+              (textData)="setFormValue('DiasAdicionales', $event)"
+            ></app-generic-input>
+            <div class="extra-string" [ngClass]="{red: (paymentConditionsOBj$ | async)?.DiasAdicionales > 10}">{{
+              'common.days' | translate
+            }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="comments">
+      <app-generic-text-area
+        [title]="'closeOffer.adjustmentComments' | translate"
+        [placeholder]="'Escribe aquí'"
+        [height]="'90px'"
+        [value]="(paymentConditionsOBj$ | async)?.Comentarios"
+        [required]="true"
+        (emitData)="setFormValue('Comentarios', $event)"
+      ></app-generic-text-area>
+    </div>
+  </div>
+</div>
+<div class="without-results" *ngIf="lodashIsEmpty(paymentConditionsOBj$ | async)">
+  <app-without-results [title]="'No tienes ajustes por validar'"></app-without-results>
+</div>

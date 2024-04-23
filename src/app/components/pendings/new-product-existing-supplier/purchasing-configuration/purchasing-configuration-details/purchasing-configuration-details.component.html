@@ -1,0 +1,171 @@
+<div class="details-container">
+  <div class="left-container">
+    <div class="filters">
+      <label>{{ 'newProductExistingSupplier.purchasingConfiguration.families' | translate }}</label>
+      <pqf-search
+        [placeholder]="'Ingresar texto'"
+        [searchTerm]="searchTerm$ | async"
+        (textSearch)="handleKeySearch($event)"
+      ></pqf-search>
+      <pqf-filter-options
+        [filterText]="('filters.orderBy' | translate) + ': '"
+        [flexDirection]="'column'"
+        [onlyOneOption]="true"
+        [options]="filterOptions$ | async"
+        (selectedOptionEmitter)="setFilterSelected($event)"
+      >
+      </pqf-filter-options>
+    </div>
+    <div class="list-items" *ngIf="!lodashIsEmpty(familiesList$ | async) && (familiesListStatus$ | async) !== 1">
+      <virtual-scroller>
+        <div
+          class="item"
+          *ngFor="let family of familiesList$ | async; trackBy: familyItemQuotation"
+          [ngClass]="{
+            active: family.isSelected,
+            disabled:
+              family.IdCotPartidaCotizacionInvestigacion === (familySelected | async)?.IdCotPartidaCotizacionInvestigacion
+          }"
+          (click)="setFamily(family)"
+        >
+          <div class="index">
+            <label>#{{ family.Index }}</label>
+          </div>
+          <div class="data-container">
+            <div class="brand-information">
+              <div class="brand-name">
+                <label>{{ family.NombreMarca }}</label>
+              </div>
+              <div class="family">
+                <label>{{ family.CatTipoProductoNombre }}</label>
+                <label *ngIf="family.CatSubTipoProductoNombre !== 'N/A'">{{ ' · ' + family.CatSubTipoProductoNombre }}</label>
+                <label *ngIf="family.CatControlNombre !== 'N/A'">{{ ' · ' + family.CatControlNombre }}</label>
+              </div>
+              <div class="provider-name">
+                <label>{{ family.NombreProveedor }}</label>
+              </div>
+            </div>
+            <div class="date">
+              <label>{{ 'newProductExistingSupplier.purchasingConfiguration.creationDatePending' | translate }} : </label>
+              <label>{{ family.FechaCreacionPendiente | dateFormatSlashShortNumbers }}</label>
+            </div>
+          </div>
+          <div class="arrow">
+            <img
+              [src]="
+                family.isSelected
+                  ? 'assets/Images/arrows/arrow-selected-dashboard-item.svg'
+                  : 'assets/Images/arrows/arrow-dashboard-item.svg'
+              "
+            />
+          </div>
+        </div>
+      </virtual-scroller>
+    </div>
+    <div class="loading" *ngIf="lodashIsEmpty(familiesList$ | async) && (familiesListStatus$ | async) === 1">
+      <app-loading></app-loading>
+    </div>
+    <div class="without-results" *ngIf="lodashIsEmpty(familiesList$ | async) && (familiesListStatus$ | async) !== 1">
+      <label>{{ 'common.withoutResults' | translate }}</label>
+    </div>
+    <div class="footer">
+      <label>
+        {{ (familiesList$ | async)?.length }}
+        {{
+          (familiesList$ | async)?.length === 1
+            ? ('newProductExistingSupplier.purchasingConfiguration.pendingInlist' | translate)
+            : ('newProductExistingSupplier.purchasingConfiguration.pendingsInlist' | translate)
+        }}
+      </label>
+    </div>
+  </div>
+  <div class="right-container">
+    <div class="card-brand-container" *ngIf="!lodashIsEmpty(familiesList$ | async) && (detailsFamilyStatus$ | async) !== 1">
+      <div class="information-container">
+        <div class="image-brand">
+          <img #imageElement alt="" [src]="setImage((familySelected | async)?.imageHover)" (error)="errorImage()" />
+        </div>
+        <div class="card-brand-data">
+          <div class="provider-name">
+            <label>{{ (familySelected | async)?.NombreMarca }}</label>
+          </div>
+          <div class="details">
+            <div class="brand-name">
+              <label>{{ (familySelected | async)?.CatTipoProductoNombre }}</label>
+              <label *ngIf="(familySelected | async)?.CatSubTipoProductoNombre !== 'N/A'">{{
+                ' · ' + (familySelected | async)?.CatSubTipoProductoNombre
+              }}</label>
+              <label *ngIf="(familySelected | async)?.CatControlNombre !== 'N/A'">{{
+                ' · ' + (familySelected | async)?.CatControlNombre
+              }}</label>
+            </div>
+            <div class="family-data">
+              <label>{{ (familySelected | async)?.NombreProveedor }}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="more-details">
+        <label>Más información</label>
+      </div>
+    </div>
+    <div class="price-list-container" *ngIf="!lodashIsEmpty(familiesList$ | async) && (detailsFamilyStatus$ | async) !== 1">
+      <app-provider-list-price
+        [isMexican]="(familySelected | async)?.Mexicano"
+        [actualConfiguration]="(familySelected | async)?.configuration"
+      ></app-provider-list-price>
+      <app-discount-freight
+        [isMexican]="(familySelected | async)?.Mexicano"
+        [actualConfiguration]="(familySelected | async)?.configuration"
+      ></app-discount-freight>
+      <app-import
+        *ngIf="!(familySelected | async)?.Mexicano"
+        [actualConfiguration]="(familySelected | async)?.configuration"
+      ></app-import>
+      <app-custom-agents
+        *ngIf="!(familySelected | async)?.Mexicano"
+        [actualConfiguration]="(familySelected | async)?.configuration"
+      >
+      </app-custom-agents>
+      <app-expenses
+        *ngIf="!(familySelected | async)?.Mexicano"
+        [actualConfiguration]="(familySelected | async)?.configuration"
+      ></app-expenses>
+    </div>
+    <div class="without-pending" *ngIf="lodashIsEmpty(familiesList$ | async) && (detailsFamilyStatus$ | async) !== 1">
+      <label>{{ 'newProductExistingSupplier.purchasingConfiguration.selectPending' | translate }}</label>
+    </div>
+    <div class="loading" *ngIf="(detailsFamilyStatus$ | async) === 1">
+      <app-loading></app-loading>
+    </div>
+    <div class="buttons-container">
+      <button
+        [ngClass]="(hasChanges | async) ? 'cancel' : 'disable'"
+        [disabled]="!(hasChanges | async)"
+        (click)="cancelConfiguration()"
+        >{{ 'common.cancel' | translate }}
+      </button>
+      <button
+        [disabled]="!(saveValidation$ | async)"
+        [ngClass]="(saveValidation$ | async) ? 'save-changes' : 'disable'"
+        (click)="saveConfiguration()"
+        >{{ 'newProductExistingSupplier.purchasingConfiguration.buttons.saveChanges' | translate }}</button
+      >
+      <button
+        [disabled]="!(finishValidation$ | async)"
+        [ngClass]="(finishValidation$ | async) ? 'close-pending' : 'disable'"
+        (click)="saveConfiguration(true)"
+        >{{ 'newProductExistingSupplier.purchasingConfiguration.buttons.finishPending' | translate }}</button
+      >
+    </div>
+    <pqf-pop-up
+      *ngIf="isActivePop | async"
+      [textPrimaryButton]="'common.discard' | translate"
+      [textSecondaryButton]="'common.exit' | translate"
+      [text]="'common.discardMessage' | translate"
+      [widthButton]="'md'"
+      (event)="eventEmitterPopUp($event)"
+    >
+    </pqf-pop-up>
+  </div>
+</div>

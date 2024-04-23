@@ -1,0 +1,32 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  width: 100%;
+  height: 100%;
+
+  & > #event-console {
+    @include s.flexColumn;
+    justify-content: flex-start;
+    width: 100%;
+    height: 100%;
+
+    & > .header {
+      height: 44px;
+    }
+
+    & > .outlet {
+      flex: 1;
+      overflow: hidden;
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .header {
+        height: 65px;
+      }
+    }
+  }
+}

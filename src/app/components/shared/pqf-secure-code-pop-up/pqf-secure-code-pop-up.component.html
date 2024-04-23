@@ -1,0 +1,62 @@
+<pqf-generic-pop-up
+  [isActivePrimaryButton]="isActivePrimaryButton"
+  [isShowClose]="isShowClose"
+  [onlyPrimaryButton]="onlyPrimaryButton"
+  [onlySecondaryButton]="onlySecondaryButton"
+  [textPrimaryButton]="textPrimaryButton"
+  [textSecondaryButton]="textSecondaryButton"
+  [height]="height"
+  [paddingTopContent]="paddingTopContent"
+  [paddingBottomContent]="paddingBottomContent"
+  (event)="handleClose($event)"
+>
+  <div id="secure-code-pop-up-container" [ngClass]="getStatusSecureCode()">
+    <div class="image-container">
+      <img alt="status" [src]="getCheckImage()" />
+    </div>
+    <label class="text-header" *ngIf="status !== statusSecurePop.success">{{ textHeaderContent }}</label>
+    <div class="inputs-container" [ngClass]="{shaked: status === statusSecurePop.error}">
+      <input
+        #input1
+        [maxLength]="1"
+        [readonly]="status === statusSecurePop.success || status === statusSecurePop.expired"
+        [value]="codeSecure[0]"
+        (beforeinput)="handleValidateNumber($event, 0)"
+        (keyup)="handleValidateNumberUp($event, 0)"
+      />
+      <input
+        #input2
+        [maxLength]="1"
+        [readonly]="status === statusSecurePop.success || status === statusSecurePop.expired"
+        [value]="codeSecure[1]"
+        (beforeinput)="handleValidateNumber($event, 1)"
+        (keyup)="handleValidateNumberUp($event, 1)"
+      />
+      <input
+        #input3
+        [maxLength]="1"
+        [readonly]="status === statusSecurePop.success || status === statusSecurePop.expired"
+        [value]="codeSecure[2]"
+        (beforeinput)="handleValidateNumber($event, 2)"
+        (keyup)="handleValidateNumberUp($event, 2)"
+      />
+      <input
+        #input4
+        [maxLength]="1"
+        [readonly]="status === statusSecurePop.success || status === statusSecurePop.expired"
+        [value]="codeSecure[3]"
+        (beforeinput)="handleValidateNumber($event, 3)"
+        (keyup)="handleValidateNumberUp($event, 3)"
+      />
+    </div>
+    <label class="message-code-status">{{
+      status === statusSecurePop.default
+        ? ('popUps.secureCodeDefault' | translate)
+        : status === statusSecurePop.expired
+        ? ('popUps.secureCodeExpired' | translate)
+        : status === statusSecurePop.success
+        ? ('popUps.secureCodeCorrect' | translate)
+        : ('popUps.secureCodeIncorrect' | translate)
+    }}</label>
+  </div>
+</pqf-generic-pop-up>

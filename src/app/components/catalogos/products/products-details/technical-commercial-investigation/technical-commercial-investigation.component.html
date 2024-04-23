@@ -1,0 +1,961 @@
+<div class="container">
+  <div class="general-data-title" *ngIf="((editMode$ | async) && !(enableEdit$ | async)) || (editMode$ | async)">
+    <label>{{ 'formProduct.general.product' | translate }}</label>
+  </div>
+  <div class="item-product" *ngIf="((editMode$ | async) && !(enableEdit$ | async)) || (editMode$ | async)">
+    <app-product-item-general-info></app-product-item-general-info>
+  </div>
+  <div class="general-data" *ngIf="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)">
+    <div class="brand">
+      <div class="brands">
+        <app-drop-down-list
+          [disable]="false"
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [isSearchable]="true"
+          [itemSelected]="selectedTrademark$ | async"
+          [items]="listTrademark$ | async"
+          [label]="'formProduct.general.brand' | translate"
+          [required]="true"
+          [subtitleActive]="false"
+          (valueDropList)="setValueDropDownList($event, 'IdMarca', 'selectedTradeMark')"
+        >
+        </app-drop-down-list>
+      </div>
+      <div class="type-products">
+        <app-drop-down-list
+          [capitalize]="false"
+          [disable]="lodashIsEmpty((productDetail$ | async)?.selectedTradeMark)"
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [itemSelected]="selectedTypeProductFamily$ | async"
+          [isSearchable]="(selectTypeProductsFamily$ | async)?.length > 5"
+          [items]="selectTypeProductsFamily$ | async"
+          [label]="'formProduct.general.typeProductFamily' | translate"
+          [required]="true"
+          (valueDropList)="setValueDropDownList($event, 'IdMarcaFamilia', 'productTypeFamilySelected')"
+        >
+        </app-drop-down-list>
+      </div>
+      <div class="provider">
+        <label
+          >{{ (productDetails$ | async)?.NombreProveedor ? (productDetails$ | async)?.NombreProveedor : 'N/D' }}
+          <span
+            >· {{ (productDetails$ | async)?.ProveedoresAlternativos?.length }}
+            {{ (productDetails$ | async)?.ProveedoresAlternativos?.length === 1 ? 'secundario' : 'secundarios' }}</span
+          ></label
+        >
+      </div>
+    </div>
+    <div class="brand-not-found">
+      <label class="message" (click)="redirectToBrands()">{{ 'formProduct.general.brandsLink' | translate }} </label>
+    </div>
+  </div>
+  <div
+    class="product-data-container"
+    *ngIf="
+      !lodashIsEmpty((productDetail$ | async)?.selectedTradeMark) &&
+      !lodashIsEmpty((productDetail$ | async)?.productTypeFamilySelected)
+    "
+  >
+    <div class="product-data-title">
+      <label>{{ 'formProduct.general.productData' | translate }}</label>
+    </div>
+    <div class="product-data-form" *ngIf="!(selectValidationTraining$ | async)">
+      <div class="inputDescription">
+        <app-generic-input
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [label]="'formProduct.general.productDescription' | translate"
+          [maxlength]="700"
+          [required]="true"
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          [value]="(productDetails$ | async)?.Descripcion"
+          [minlength]="3"
+          (textData)="setValueInput($event, 'Descripcion')"
+        >
+        </app-generic-input>
+      </div>
+      <div class="inputCatalog">
+        <app-generic-input
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [label]="'formProduct.general.catalogNumber' | translate"
+          [required]="true"
+          [typeValidation]="inputValidators.AlphaNumberAndDashesAndSlashAndColon"
+          [value]="(productDetails$ | async)?.Catalogo"
+          [maxlength]="200"
+          [minlength]="2"
+          (textData)="setValueInput($event, 'Catalogo')"
+        ></app-generic-input>
+      </div>
+      <div class="inputAmount">
+        <app-generic-input
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [label]="'formProduct.general.quantity' | translate"
+          [maxlength]="50"
+          [required]="true"
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          [value]="(productDetails$ | async)?.Presentacion"
+          (textData)="setValueInput($event, 'Presentacion')"
+        ></app-generic-input>
+      </div>
+      <div class="inputUnit">
+        <app-drop-down-list
+          [activeMinWidth]="false"
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [itemSelected]="selectedUnit$ | async"
+          [items]="selectCatUnit$ | async"
+          [label]="'formProduct.general.unit' | translate"
+          [required]="true"
+          [isSearchable]="(selectCatUnit$ | async)?.length > 5"
+          [capitalize]="false"
+          (valueDropList)="setValueDropDownList($event, 'IdCatUnidad', 'unitSelected')"
+        ></app-drop-down-list>
+      </div>
+      <div class="inputList">
+        <app-generic-input
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [labelInsidePlaceHolderRight]="providerBuyCurrency$ | async"
+          [extraString]="providerBuyCurrency$ | async"
+          [extraStringStyleFont]="'Roboto-Regular-Black-13-16'"
+          [label]="'formProduct.general.providerPriceList' | translate"
+          [maxlength]="14"
+          [required]="true"
+          [typeValidation]="inputValidators.DecimalNumber"
+          [value]="(productDetails$ | async)?.PrecioListaMonedaProveedor"
+          (textData)="setValueInput($event, 'PrecioListaMonedaProveedor')"
+        ></app-generic-input>
+      </div>
+      <div class="validityCuratorship">
+        <app-date-picker
+          [dateFormat]="'YYYYMMDD'"
+          [date]="selectDateValidityCuratorships | async"
+          [disabledCalendarDays]="selectNonWorkingDays$ | async"
+          [disabled]="(!(editMode$ | async) && !(enableEdit$ | async)) || !(enableEdit$ | async)"
+          [labelInsidePlaceHolder]="'Hasta el'"
+          [labelInside]="true"
+          [label]="'formProduct.general.validityCuratorship' | translate"
+          [rangeStart]="rangeStart"
+          (fecha)="setDataValidityCuratorships($event)"
+        >
+        </app-date-picker>
+      </div>
+      <div class="CharacteristicGrouper">
+        <app-drop-down-list
+          [activeMinWidth]="false"
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [itemSelected]="selectCharacterisitcGrouperSelected$ | async"
+          [items]="selectCharacterisitcGrouper$ | async"
+          [isSearchable]="(selectCharacterisitcGrouper$ | async)?.length > 5"
+          [label]="'formProduct.general.CharacteristicGrouper' | translate"
+          (valueDropList)="setValueDropDownList($event, 'IdAgrupadorCaracteristica', 'characteristicGrouperSelected')"
+        ></app-drop-down-list>
+      </div>
+      <div class="availability">
+        <app-drop-down-list
+          [activeMinWidth]="false"
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [itemSelected]="selectedAvailability$ | async"
+          [items]="selectAvailabilitys$ | async"
+          [label]="'formProduct.general.availability' | translate"
+          [capitalize]="false"
+          [required]="true"
+          [isSearchable]="(selectAvailabilitys$ | async)?.length > 5"
+          (valueDropList)="setValueDropDownList($event, 'IdCatDisponibilidad', 'availabilitySelected')"
+        ></app-drop-down-list>
+      </div>
+      <div class="date-availability" *ngIf="selectedAvailabilityIsBackOrder$ | async">
+        <div class="title" *ngIf="!(enableEdit$ | async)">
+          <label> {{ 'formProduct.step1.backOrderAvailabilityDate' | translate }}</label>
+        </div>
+        <div class="data" *ngIf="!(enableEdit$ | async)">
+          <label>{{ backOrderAvailabilityDate$ | async | dateFormatSlashShort }}</label>
+        </div>
+        <app-date-picker
+          *ngIf="enableEdit$ | async"
+          [dateFormat]="'YYYYMMDD'"
+          [date]="backOrderAvailabilityDate$ | async"
+          [disabledCalendarDays]="selectNonWorkingDays$ | async"
+          [disabled]="(!(editMode$ | async) && !(enableEdit$ | async)) || !(enableEdit$ | async)"
+          [label]="
+            (selectedAvailabilityIsBackOrder$ | async)
+              ? '* ' + ('formProduct.step1.backOrderAvailabilityDate' | translate)
+              : ('formProduct.step1.backOrderAvailabilityDate' | translate)
+          "
+          [rangeStart]="rangeStart"
+          (fecha)="setBackOrderAvailabilityDate($event)"
+        >
+        </app-date-picker>
+      </div>
+      <div class="purchase-restriction" *ngIf="!(selectValidationPublications$ | async)">
+        <app-drop-down-list
+          [activeMinWidth]="false"
+          [capitalize]="false"
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [itemSelected]="selectedCatBillingRestriction$ | async"
+          [items]="selectCatBillingRestriction$ | async"
+          [isSearchable]="(selectCatBillingRestriction$ | async)?.length > 5"
+          [label]="'formProduct.general.purchaseRestriction' | translate"
+          (valueDropList)="setValueDropDownListConfiguration($event, 'IdCatRestriccionDeCompra', 'billingRestrictionSelected')"
+        ></app-drop-down-list>
+      </div>
+      <div class="pieces" *ngIf="!(selectValidationPublications$ | async)">
+        <app-generic-input
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [isDisable]="(selectedCatBillingRestriction$ | async)?.label !== 'Límite de Piezas' && (enableEdit$ | async)"
+          [label]="'formProduct.general.pieces' | translate"
+          [maxlength]="10"
+          [required]="(selectedCatBillingRestriction$ | async)?.label === 'Límite de Piezas'"
+          [labelInsidePlaceHolderRight]="'al Mes'"
+          [extraString]="'al Mes'"
+          [extraStringStyleFont]="'Roboto-Regular-Black-13-16'"
+          [typeValidation]="inputValidators.Int"
+          [value]="(productDetails$ | async)?.NumeroDePiezas"
+          (textData)="setValueInput($event, 'NumeroDePiezas')"
+        ></app-generic-input>
+      </div>
+      <div class="tariff-fraction" *ngIf="selectValidationPublications$ | async">
+        <app-generic-input
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [label]="'formProduct.general.tariffFraction' | translate"
+          [maxlength]="10"
+          [minlength]="10"
+          [required]="selectIsPhysicalProduct$ | async"
+          [typeValidation]="inputValidators.NumberAndDots"
+          [value]="(productDetails$ | async)?.FraccionArancelaria"
+          (textData)="setValueInput($event, 'FraccionArancelaria')"
+        ></app-generic-input>
+      </div>
+      <div class="importation-fraction" *ngIf="selectValidationPublications$ | async">
+        <app-generic-input
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [label]="'formProduct.general.importationFraction' | translate"
+          [maxlength]="10"
+          [minlength]="10"
+          [required]="selectIsPhysicalProduct$ | async"
+          [typeValidation]="inputValidators.NumberAndDots"
+          [value]="(productDetails$ | async)?.FraccionImportacion"
+          (textData)="setValueInput($event, 'FraccionImportacion')"
+        ></app-generic-input>
+      </div>
+    </div>
+    <div class="product-data-form" *ngIf="selectValidationTraining$ | async">
+      <div class="name">
+        <app-generic-input
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [label]="'formProduct.step1.trainingName' | translate"
+          [maxlength]="700"
+          [required]="true"
+          [showAsterisk]="true"
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          [value]="(productDetails$ | async)?.Descripcion"
+          [minlength]="3"
+          (textData)="setValueInput($event, 'Descripcion')"
+        ></app-generic-input>
+      </div>
+      <div class="description">
+        <app-generic-input
+          [enableEdit]="enableEdit$ | async"
+          [label]="'formProduct.step1.detailedDescription' | translate"
+          [maxlength]="500"
+          [required]="true"
+          [showAsterisk]="true"
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          [value]="(selectProductTraining$ | async)?.DescripcionDetallada"
+          [minlength]="3"
+          (textData)="setValueInputWithConfiguration($event, 'DescripcionDetallada')"
+        ></app-generic-input>
+      </div>
+      <div class="availability">
+        <app-drop-down-list
+          [activeMinWidth]="false"
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [itemSelected]="selectedAvailability$ | async"
+          [items]="selectAvailabilitys$ | async"
+          [label]="'formProduct.step1.availability' | translate"
+          [required]="true"
+          [showAsterisk]="true"
+          [isSearchable]="(selectAvailabilitys$ | async)?.length > 5"
+          (valueDropList)="setValueDropDownList($event, 'IdCatDisponibilidad', 'availabilitySelected')"
+        >
+        </app-drop-down-list>
+      </div>
+      <div class="price" [ngClass]="(enableEdit$ | async) ? 'edit' : 'read'">
+        <div class="title">
+          <label [ngClass]="(enableEdit$ | async) ? 'read' : 'edit'"
+            >{{ (enableEdit$ | async) ? '*' : '' }} {{ 'formProduct.step1.price' | translate }}</label
+          >
+        </div>
+        <div class="price-read" *ngIf="!(enableEdit$ | async)">
+          <label
+            >{{ (selectProductTraining$ | async)?.PrecioPorPersona ? 'Por Persona' : 'Por Grupo'
+            }}<span *ngIf="(selectProductTraining$ | async)?.PrecioPorPersona">
+              · {{ (productDetails$ | async)?.PrecioListaMonedaProveedor | currency }}</span
+            >
+            <span *ngIf="(selectProductTraining$ | async)?.PrecioPorGrupo">
+              · {{ (selectProductTraining$ | async)?.NumeroDePersonasPorGrupo }}
+              {{
+                (selectProductTraining$ | async)?.NumeroDePersonasPorGrupo === 1
+                  ? ('formProduct.step1.person' | translate)
+                  : ('formProduct.step1.people' | translate)
+              }}
+              {{ (productDetails$ | async)?.PrecioListaMonedaProveedor | currency }}</span
+            >
+            {{ 'USD' }}
+          </label>
+        </div>
+        <div class="persons" *ngIf="enableEdit$ | async">
+          <app-radio-button
+            *ngIf="enableEdit$ | async"
+            [activeLocalState]="false"
+            [enableEdit]="enableEdit$ | async"
+            [height]="viewTypes.small ? '20px' : '23px'"
+            [labelFontStyle]="(selectProductTraining$ | async)?.PrecioPorPersona ? 'labelRobotoRegularProquifa13' : 'default'"
+            [label]="'Por Persona'"
+            [value]="(selectProductTraining$ | async)?.PrecioPorPersona"
+            (emitValue)="setValueInputWithConfiguration($event, 'PrecioPorPersona')"
+          ></app-radio-button>
+          <app-generic-input
+            *ngIf="enableEdit$ | async"
+            [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+            [isDisable]="!(selectProductTraining$ | async)?.PrecioPorPersona"
+            [labelInsidePlaceHolderRight]="'USD'"
+            [maxlength]="14"
+            [min]="0"
+            [placeholder]="'$'"
+            [textAlign]="'center'"
+            [typeValidation]="inputValidators.DecimalNumber"
+            [value]="
+              (selectProductTraining$ | async)?.PrecioPorPersona ? (productDetails$ | async)?.PrecioListaMonedaProveedor : null
+            "
+            [required]="(selectProductTraining$ | async)?.PrecioPorPersona"
+            (textData)="setValueInput($event, 'PrecioListaMonedaProveedor')"
+          ></app-generic-input>
+        </div>
+      </div>
+      <div class="price2" *ngIf="enableEdit$ | async">
+        <div class="groups">
+          <app-radio-button
+            [activeLocalState]="false"
+            [enableEdit]="enableEdit$ | async"
+            [height]="viewTypes.small ? '20px' : '23px'"
+            [labelFontStyle]="(selectProductTraining$ | async)?.PrecioPorGrupo ? 'labelRobotoRegularProquifa13' : 'default'"
+            [label]="'Por Grupo'"
+            [value]="(selectProductTraining$ | async)?.PrecioPorGrupo"
+            (emitValue)="setValueInputWithConfiguration($event, 'PrecioPorGrupo')"
+          ></app-radio-button>
+          <app-generic-input
+            [isDisable]="!(selectProductTraining$ | async)?.PrecioPorGrupo"
+            [labelInsidePlaceHolderRight]="'formProduct.step1.people' | translate"
+            [maxlength]="10"
+            [min]="0"
+            [placeholder]="'#'"
+            [textAlign]="'center'"
+            [typeValidation]="inputValidators.Int"
+            [value]="(selectProductTraining$ | async)?.NumeroDePersonasPorGrupo"
+            [required]="(selectProductTraining$ | async)?.PrecioPorGrupo"
+            (textData)="setValueInputWithConfiguration($event, 'NumeroDePersonasPorGrupo')"
+          ></app-generic-input>
+          <app-generic-input
+            [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+            [isDisable]="!(selectProductTraining$ | async)?.PrecioPorGrupo"
+            [labelInsidePlaceHolderRight]="'USD'"
+            [maxlength]="14"
+            [min]="0"
+            [placeholder]="'$'"
+            [textAlign]="'center'"
+            [typeValidation]="inputValidators.DecimalNumber"
+            [value]="
+              (selectProductTraining$ | async)?.PrecioPorGrupo ? (productDetails$ | async)?.PrecioListaMonedaProveedor : null
+            "
+            [required]="(selectProductTraining$ | async)?.PrecioPorGrupo"
+            (textData)="setValueInput($event, 'PrecioListaMonedaProveedor')"
+          ></app-generic-input>
+        </div>
+      </div>
+
+      <div class="validity">
+        <div class="title" *ngIf="!(enableEdit$ | async)">
+          <label> {{ 'formProduct.step1.validity' | translate }}</label>
+        </div>
+        <div class="data" *ngIf="!(enableEdit$ | async)">
+          <label
+            >{{ 'Hasta el' }}
+            <span>{{ (productDetails$ | async)?.FechaCaducidadVigenciaCuraduria | dateFormatSlashShort }}</span></label
+          >
+        </div>
+        <app-date-picker
+          *ngIf="enableEdit$ | async"
+          [dateFormat]="'YYYYMMDD'"
+          [date]="selectDateValidityCuratorships | async"
+          [disabledCalendarDays]="selectNonWorkingDays$ | async"
+          [disabled]="(!(editMode$ | async) && !(enableEdit$ | async)) || !(enableEdit$ | async)"
+          [enableEdit]="false"
+          [labelInside]="true"
+          [label]="'formProduct.general.validityCuratorship' | translate"
+          [rangeStart]="rangeStart"
+          (fecha)="setDataValidityCuratorships($event)"
+        >
+        </app-date-picker>
+      </div>
+    </div>
+  </div>
+  <div
+    class="family-data-container"
+    *ngIf="
+      !lodashIsEmpty((productDetail$ | async)?.selectedTradeMark) &&
+      !lodashIsEmpty((productDetail$ | async)?.productTypeFamilySelected)
+    "
+  >
+    <div class="family-data-title">
+      <label>{{ 'formProduct.general.family' | translate }}</label>
+    </div>
+    <div
+      class="biologicAndReactiveStandar"
+      [ngClass]="
+        (selectValidationStandarAndReactiveChemist$ | async)
+          ? 'biologic-reactive-standard-chemist'
+          : 'biologic-reactive-standard'
+      "
+      *ngIf="(selectValidationStandarAndReactiveBiologic$ | async) || (selectValidationStandarAndReactiveChemist$ | async)"
+    >
+      <div class="subtype">
+        <app-generic-input
+          [enableEdit]="false"
+          [label]="'* Subtipo'"
+          [required]="true"
+          [showAsterisk]="true"
+          [value]="(productDetails$ | async)?.Subtipo"
+        ></app-generic-input>
+      </div>
+      <div class="control">
+        <app-generic-input
+          [enableEdit]="false"
+          [label]="'* Control'"
+          [required]="true"
+          [showAsterisk]="true"
+          [value]="(productDetails$ | async)?.Control"
+        ></app-generic-input>
+      </div>
+      <div class="clasfication">
+        <app-drop-down-list
+          [activeMinWidth]="false"
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [itemSelected]="selectCatClassificationsSelected$ | async"
+          [items]="selectCatClassifications$ | async"
+          [label]="'Clasificación'"
+          [isSearchable]="(selectCatClassifications$ | async)?.length > 5"
+          (valueDropList)="
+            setValueDropDownList($event, 'IdCatClasificacionInformativaProducto', 'classificationProductSelected')
+          "
+        ></app-drop-down-list>
+      </div>
+
+      <div class="physicalState">
+        <app-drop-down-list
+          (valueDropList)="setValueDropDownListConfiguration($event, 'IdCatEstadoFisico', 'selectedPhysicalState')"
+          [activeMinWidth]="false"
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [itemSelected]="selectPhysicalStateSelected$ | async"
+          [items]="selectCatPhysicalState$ | async"
+          [isSearchable]="(selectCatPhysicalState$ | async)?.length > 5"
+          [label]="'Estado Físico'"
+        ></app-drop-down-list>
+      </div>
+      <div class="use">
+        <app-drop-down-list
+          (valueDropList)="setValueDropDownListConfiguration($event, 'IdCatUso', 'useSelected')"
+          [activeMinWidth]="false"
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [itemSelected]="selectedUse$ | async"
+          [items]="selectUses$ | async"
+          [isSearchable]="(selectUses$ | async)?.length > 5"
+          [label]="'Uso'"
+          [required]="true"
+        ></app-drop-down-list>
+      </div>
+      <div class="inputUse" *ngIf="selectValidationStandarAndReactiveBiologic$ | async">
+        <app-drop-down-list
+          (valueDropList)="setValueDropDownList($event, 'IdCatDepositarioInternacional', 'internationalDepositarySelected')"
+          [activeMinWidth]="false"
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [itemSelected]="selectInternationalDepositarySelected$ | async"
+          [items]="selectInternationalDepositary$ | async"
+          [isSearchable]="(selectInternationalDepositary$ | async)?.length > 5"
+          [label]="'Depositario Internacional'"
+          [required]="false"
+        ></app-drop-down-list>
+      </div>
+      <div class="inputPurity" *ngIf="selectValidationStandarAndReactiveChemist$ | async">
+        <app-generic-input
+          (textData)="setValueInputWithConfiguration($event, 'Pureza')"
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [label]="'Pureza'"
+          [maxlength]="14"
+          [required]="false"
+          [typeValidation]="inputValidators.Percentage"
+          [value]="selectPurity$ | async"
+        ></app-generic-input>
+      </div>
+      <div class="cas" *ngIf="selectValidationStandarAndReactiveChemist$ | async">
+        <app-generic-input
+          (textData)="setValueInputWithConfiguration($event, 'CAS')"
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [forceActiveErrors]="!(selectValidateCas$ | async)"
+          [label]="'CAS'"
+          [required]="true"
+          [typeValidation]="inputValidators.CASNumber"
+          [value]="selectCAS$ | async"
+        ></app-generic-input>
+      </div>
+      <div class="synonyms" *ngIf="selectValidationStandarAndReactiveChemist$ | async">
+        <app-generic-input
+          (textData)="setValueInputWithConfiguration($event, 'Sinonimos')"
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [label]="'Sinónimos'"
+          [maxlength]="200"
+          [typeValidation]="inputValidators.AlphaAndSpaces"
+          [value]="selectSynonyms$ | async"
+          [minlength]="3"
+        ></app-generic-input>
+      </div>
+
+      <div class="molecularStructure" *ngIf="selectValidationStandarAndReactiveChemist$ | async">
+        <app-generic-input-file
+          [acceptedExtensions]="'application/pdf,.pdf'"
+          [disabled]="!(enableEdit$ | async)"
+          [enableEdit]="enableEdit$ | async"
+          [fileName]="
+            (productDetails$ | async)?.ArchivoEstructuraMolecular
+              ? getFileName((productDetails$ | async)?.ArchivoEstructuraMolecular?.FileKey)
+              : null
+          "
+          [file]="selectStructureMolecular$ | async"
+          [idFile]="(productDetails$ | async)?.ArchivoEstructuraMolecular?.IdArchivo"
+          [label]="
+            !(productDetails$ | async)?.Producto?.TieneCAS && (enableEdit$ | async)
+              ? '* Cargar Archivo Estructura Molecular'
+              : 'Cargar Archivo Estructura Molecular'
+          "
+          (emitExternalFile)="getExternalFile('ArchivoEstructuraMolecular')"
+          (autoEmitFile)="setNewFile($event, 'ArchivoEstructuraMolecular')"
+          (emitFileToDelete)="setIdFileToDelete(null, 'ArchivoEstructuraMolecular')"
+        ></app-generic-input-file>
+      </div>
+
+      <div class="molecularForm" *ngIf="selectValidationStandarAndReactiveChemist$ | async">
+        <app-generic-input
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.molecularForm' | translate"
+          [maxlength]="200"
+          [typeValidation]="inputValidators.AcceptAll"
+          [value]="selectMolecularForm$ | async"
+          [minlength]="3"
+          (textData)="setValueInputWithConfiguration($event, 'FormulaQuimica')"
+        ></app-generic-input>
+      </div>
+      <div class="presentationType">
+        <app-drop-down-list
+          [activeMinWidth]="false"
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [itemSelected]="selectedtypePresentation$ | async"
+          [items]="selectTypesPresentation$ | async"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.presentationType' | translate"
+          [required]="true"
+          [isSearchable]="(selectTypesPresentation$ | async)?.length > 5"
+          (valueDropList)="setValueDropDownListConfiguration($event, 'IdCatTipoPresentacion', 'typePresentationSelected')"
+        ></app-drop-down-list>
+      </div>
+      <div class="aplication">
+        <app-drop-down-list
+          [activeMinWidth]="false"
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [itemSelected]="selectedtypeAplication$ | async"
+          [items]="selectTypesApplication$ | async"
+          [isSearchable]="(selectTypesApplication$ | async)?.length > 5"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.application' | translate"
+          [required]="false"
+          (valueDropList)="setValueDropDownListConfiguration($event, 'IdCatAplicacion', 'typeApplicationSelected')"
+        ></app-drop-down-list>
+      </div>
+      <div class="transportationWay">
+        <app-drop-down-list
+          [activeMinWidth]="false"
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [itemSelected]="selectTransportationWay$ | async"
+          [items]="selectTransportationsWay$ | async"
+          [isSearchable]="(selectTransportationsWay$ | async)?.length > 5"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.conveyance' | translate"
+          [required]="false"
+          (valueDropList)="setValueDropDownListConfiguration($event, 'IdCatMedioTransporte', 'transportationWaySelected')"
+        ></app-drop-down-list>
+      </div>
+      <div class="transportationManagment">
+        <app-drop-down-list
+          [activeMinWidth]="false"
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [itemSelected]="selectTransportationManagmentSelected$ | async"
+          [items]="selectTransportationManagment$ | async"
+          [isSearchable]="(selectTransportationManagment$ | async)?.length > 5"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.transportationManagement' | translate"
+          [required]="false"
+          (valueDropList)="
+            setValueDropDownListConfiguration($event, 'IdCatManejoTransporte', 'transportationManagementSelected')
+          "
+        ></app-drop-down-list>
+      </div>
+      <div class="storage">
+        <app-drop-down-list
+          [activeMinWidth]="false"
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [itemSelected]="selectStorageSelected$ | async"
+          [items]="selectTransportationManagment$ | async"
+          [isSearchable]="(selectTransportationManagment$ | async)?.length > 5"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.handlingStorage' | translate"
+          [required]="false"
+          (valueDropList)="setValueDropDownListConfiguration($event, 'IdCatManejoAlmacenaje', 'storageSelected')"
+        ></app-drop-down-list>
+      </div>
+      <div class="purity">
+        <app-generic-input
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.danger' | translate"
+          [maxlength]="500"
+          [required]="false"
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          [value]="(productDetails$ | async)?.Peligrosidad"
+          [minlength]="3"
+          (textData)="setValueInput($event, 'Peligrosidad')"
+        ></app-generic-input>
+      </div>
+
+      <div class="notes">
+        <app-generic-input
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [label]="'Notas'"
+          [maxlength]="500"
+          [required]="false"
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          [value]="(productDetails$ | async)?.Nota"
+          [minlength]="3"
+          (textData)="setValueInput($event, 'Nota')"
+        ></app-generic-input>
+      </div>
+    </div>
+    <div class="publications" *ngIf="selectValidationPublications$ | async">
+      <div class="form-data">
+        <div class="inputFamily">
+          <app-drop-down-list
+            [activeMinWidth]="false"
+            [enableEdit]="false"
+            [itemSelected]="selectedTypeProductFamily$ | async"
+            [items]="selectTypeProductsFamily$ | async"
+            [isSearchable]="(selectTypeProductsFamily$ | async)?.length > 5"
+            [label]="'formProduct.general.typeProductFamily' | translate"
+            [required]="true"
+          ></app-drop-down-list>
+        </div>
+
+        <div class="inputAutor">
+          <app-generic-input
+            [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+            [label]="'Autor'"
+            [maxlength]="200"
+            [required]="true"
+            [typeValidation]="inputValidators.AlphaAndSpaces"
+            [value]="(productDetails$ | async)?.ProductoPublicacion?.Autor"
+            [minlength]="3"
+            (textData)="setValuePublications($event, 'Autor')"
+          ></app-generic-input>
+        </div>
+        <div class="inputPublicationFormat">
+          <app-drop-down-list
+            [activeMinWidth]="false"
+            [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+            [itemSelected]="selectePublicationsFormatSelected$ | async"
+            [items]="selectCatPublicationsFormat$ | async"
+            [isSearchable]="(selectCatPublicationsFormat$ | async)?.length > 5"
+            [label]="'Formato de Publicación'"
+            [required]="true"
+            (valueDropList)="setValueDropDownListConfiguration($event, 'IdCatFormatoPublicacion', 'publicationsFormatSelected')"
+          ></app-drop-down-list>
+        </div>
+        <div class="inputISBN">
+          <app-generic-input
+            [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+            [label]="'ISBN No.'"
+            [maxlength]="200"
+            [typeValidation]="inputValidators.NumberAndDashes"
+            [value]="(productDetails$ | async)?.ProductoPublicacion?.ISBN"
+            (textData)="setValuePublications($event, 'ISBN')"
+          ></app-generic-input>
+        </div>
+        <div class="inputEditor">
+          <app-generic-input
+            [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+            [label]="'Editorial'"
+            [maxlength]="200"
+            [required]="false"
+            [typeValidation]="inputValidators.AlphaAndSpaces"
+            [value]="(productDetails$ | async)?.ProductoPublicacion?.Editorial"
+            [minlength]="3"
+            (textData)="setValuePublications($event, 'Editorial')"
+          ></app-generic-input>
+        </div>
+        <div class="inputEdition">
+          <app-generic-input
+            [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+            [label]="'Edición'"
+            [maxlength]="200"
+            [required]="false"
+            [typeValidation]="inputValidators.Alphanumeric"
+            [value]="(productDetails$ | async)?.ProductoPublicacion?.Edicion"
+            [minlength]="3"
+            (textData)="setValuePublications($event, 'Edicion')"
+          ></app-generic-input>
+        </div>
+      </div>
+      <div class="supplements">
+        <div class="supplements-title">
+          <label>{{ 'formProduct.general.supplements' | translate }}</label>
+        </div>
+        <div class="supplements-form-data" *ngIf="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)">
+          <div class="description">
+            <app-generic-input
+              [label]="'* Descripción'"
+              [maxlength]="700"
+              [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+              [minlength]="3"
+              [value]="(supplementProduct$ | async)?.Descripcion"
+              (textData)="setValueSupplementProduct($event, 'Descripcion')"
+            ></app-generic-input>
+          </div>
+          <div class="isbn">
+            <app-generic-input
+              [label]="'ISBN No.'"
+              [maxlength]="200"
+              [typeValidation]="inputValidators.NumberAndDashes"
+              [value]="(supplementProduct$ | async)?.ISBN"
+              (textData)="setValueSupplementProduct($event, 'ISBN')"
+            ></app-generic-input>
+          </div>
+          <div class="editorial">
+            <app-generic-input
+              [label]="'Editorial'"
+              [maxlength]="200"
+              [typeValidation]="inputValidators.AlphaAndSpaces"
+              [value]="(supplementProduct$ | async)?.Editorial"
+              [minlength]="3"
+              (textData)="setValueSupplementProduct($event, 'Editorial')"
+            ></app-generic-input>
+          </div>
+          <div class="edicion">
+            <app-generic-input
+              [label]="'Edición'"
+              [maxlength]="200"
+              [typeValidation]="inputValidators.Alphanumeric"
+              [value]="(supplementProduct$ | async)?.Edicion"
+              [minlength]="3"
+              (textData)="setValueSupplementProduct($event, 'Edicion')"
+            ></app-generic-input>
+          </div>
+          <div class="btn-save">
+            <button
+              [disabled]="!(selectValidationSuplemmentaryProduct$ | async)"
+              [ngClass]="(selectValidationSuplemmentaryProduct$ | async) ? 'enable' : 'disable'"
+              (click)="saveData()"
+            >
+              {{ 'common.add' | translate }}
+            </button>
+          </div>
+        </div>
+        <div class="chips">
+          <div class="fileChip">
+            <div class="rounded" *ngFor="let supplement of selectsSupplementaryProducts$ | async; let i = index">
+              <label>
+                #{{ i + 1 }} · <span class="title">{{ supplement.Descripcion }}</span>
+                <span class="isbnEditor">
+                  {{ buildSupplementData(supplement) }}
+                </span>
+              </label>
+
+              <div (click)="deleteSupplement(supplement)" *ngIf="!(editMode$ | async) || (enableEdit$ | async)">
+                <img src="assets/Images/cerrar.svg" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="notes">
+          <app-generic-input
+            class="picker"
+            [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+            [label]="'Notas'"
+            [maxlength]="500"
+            [required]="false"
+            [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+            [value]="(productDetails$ | async)?.Nota"
+            [minlength]="3"
+            (textData)="setValueInput($event, 'Nota')"
+          ></app-generic-input>
+        </div>
+      </div>
+    </div>
+    <div class="labware" *ngIf="selectValidationLabware$ | async">
+      <div class="type-products">
+        <app-drop-down-list
+          [activeMinWidth]="false"
+          [capitalize]="false"
+          [enableEdit]="false"
+          [itemSelected]="selectedTypeProductFamily$ | async"
+          [items]="selectTypeProductsFamily$ | async"
+          [isSearchable]="(selectTypeProductsFamily$ | async)?.length > 5"
+          [label]="'formProduct.general.typeProductFamily' | translate"
+          [required]="true"
+        >
+        </app-drop-down-list>
+      </div>
+      <div class="notes">
+        <app-generic-input
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [label]="'Notas'"
+          [maxlength]="500"
+          [required]="false"
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          [value]="(productDetails$ | async)?.Nota"
+          [minlength]="3"
+          (textData)="setValueInput($event, 'Nota')"
+        ></app-generic-input>
+      </div>
+    </div>
+    <div class="medicalDevices" *ngIf="selectValidationMedicalDevices$ | async">
+      <div class="type-products">
+        <app-drop-down-list
+          [activeMinWidth]="false"
+          [capitalize]="false"
+          [enableEdit]="false"
+          [itemSelected]="selectedTypeProductFamily$ | async"
+          [items]="selectTypeProductsFamily$ | async"
+          [isSearchable]="(selectTypeProductsFamily$ | async)?.length > 5"
+          [label]="'formProduct.general.typeProductFamily' | translate"
+          [required]="true"
+        >
+        </app-drop-down-list>
+      </div>
+      <div class="health-register">
+        <app-generic-input
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [label]="'formProduct.general.healthRegister' | translate"
+          [maxlength]="50"
+          [required]="false"
+          [typeValidation]="inputValidators.Number"
+          [value]="(selectProductMedicalDevices$ | async)?.NumeroDeRegistroSanitario"
+          (textData)="setValueInputWithConfiguration($event, 'NumeroDeRegistroSanitario')"
+        ></app-generic-input>
+      </div>
+      <div class="expiration-health-register">
+        <app-date-picker
+          [dateFormat]="'YYYYMMDD'"
+          [date]="selectDateExpirationHealthRegister$ | async"
+          [disabledCalendarDays]="selectNonWorkingDays$ | async"
+          [disabled]="(!(editMode$ | async) && !(enableEdit$ | async)) || !(enableEdit$ | async)"
+          [label]="'formProduct.general.expirationHealthRegister' | translate"
+          [rangeStart]="rangeStart"
+          (fecha)="setDataExpirationHealthRegister($event)"
+        >
+        </app-date-picker>
+      </div>
+      <div class="storage">
+        <app-drop-down-list
+          [activeMinWidth]="false"
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [itemSelected]="selectStorageSelected$ | async"
+          [items]="selectTransportationManagment$ | async"
+          [isSearchable]="(selectTransportationManagment$ | async)?.length > 5"
+          [label]="'Manejo Almacenaje'"
+          [required]="false"
+          (valueDropList)="setValueDropDownListConfiguration($event, 'IdCatManejoAlmacenaje', 'storageSelected')"
+        ></app-drop-down-list>
+      </div>
+      <div class="notes">
+        <app-generic-input
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [label]="'Notas'"
+          [maxlength]="500"
+          [required]="false"
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          [value]="(productDetails$ | async)?.Nota"
+          [minlength]="3"
+          (textData)="setValueInput($event, 'Nota')"
+        ></app-generic-input>
+      </div>
+    </div>
+    <div class="training" *ngIf="selectValidationTraining$ | async">
+      <div class="productType">
+        <app-generic-input
+          [enableEdit]="false"
+          [label]="'Tipo de producto (Familia)'"
+          [required]="true"
+          [showAsterisk]="true"
+          [value]="'Capacitaciones'"
+        >
+        </app-generic-input>
+      </div>
+      <div class="model" [ngClass]="(enableEdit$ | async) ? 'edit' : 'read'">
+        <div class="radios">
+          <app-drop-down-list
+            [activeMinWidth]="false"
+            [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+            [itemSelected]="selecttedDiffusionModel$ | async"
+            [items]="broadcastMediaRadios$ | async"
+            [isSearchable]="(broadcastMediaRadios$ | async)?.length > 5"
+            [label]="((enableEdit$ | async) ? '* ' : '') + 'Modelo de Difusión'"
+            (valueDropList)="setValueInputWithConfiguration($event, 'IdCatMedioDifusion')"
+          ></app-drop-down-list>
+        </div>
+      </div>
+      <div class="duration">
+        <div class="title" *ngIf="!(enableEdit$ | async)">
+          <label>{{ 'formProduct.step1.durationOfEvent' | translate }}</label>
+        </div>
+        <div class="duration-read" *ngIf="!(enableEdit$ | async)">
+          <label>
+            {{ (selectProductTraining$ | async)?.DuracionEvento }} <span>{{ ' Horas' }}</span>
+          </label>
+        </div>
+        <app-generic-input
+          *ngIf="enableEdit$ | async"
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [labelInsidePlaceHolderRight]="'Horas'"
+          [label]="'Duración del evento'"
+          [placeholder]="'#'"
+          [required]="true"
+          [showAsterisk]="true"
+          [textAlign]="'center'"
+          [maxlength]="10"
+          [typeValidation]="inputValidators.Int"
+          [value]="(selectProductTraining$ | async)?.DuracionEvento"
+          (textData)="setValueInputWithConfiguration($event, 'DuracionEvento')"
+        ></app-generic-input>
+      </div>
+      <div class="notes">
+        <app-generic-input
+          [enableEdit]="((editMode$ | async) && (enableEdit$ | async)) || (enableEdit$ | async)"
+          [label]="'Notas'"
+          [maxlength]="500"
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          [value]="(productDetails$ | async)?.Nota"
+          [minlength]="3"
+          (textData)="setValueInput($event, 'Nota')"
+        ></app-generic-input>
+      </div>
+    </div>
+  </div>
+  <div
+    class="without-results"
+    *ngIf="
+      lodashIsEmpty((productDetail$ | async)?.productTypeFamilySelected) &&
+      lodashIsEmpty((productDetail$ | async)?.selectedTradeMarkd)
+    "
+  >
+    <app-without-results
+      [title]="'selecciona una marca y un tipo de familia para habilitar esta sección'"
+    ></app-without-results>
+  </div>
+</div>

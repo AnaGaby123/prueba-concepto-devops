@@ -1,0 +1,252 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  & > .drop-list-container {
+    @include s.flexColumn;
+
+    &:hover {
+      & > .selected-option {
+        & > .image {
+          & > img:nth-of-type(1) {
+            display: none;
+          }
+
+          & > img:nth-of-type(2) {
+            display: block;
+          }
+        }
+
+        & > .content-info {
+          & > div {
+            & > .label {
+              color: s.$pqGreen;
+            }
+          }
+        }
+      }
+    }
+
+    &.selected {
+      & > .selected-option {
+        background-color: s.$pqGray2;
+
+        & > .image {
+          & > img:nth-of-type(1) {
+            display: none;
+          }
+
+          & > img:nth-of-type(2) {
+            display: block;
+          }
+        }
+
+        & > .content-info {
+          & > div {
+            & > .label {
+              color: s.$pqGreen;
+            }
+          }
+        }
+      }
+    }
+
+    & > .selected-option {
+      @include s.flexColumn;
+      align-items: center;
+      cursor: pointer;
+      overflow: initial;
+      padding: 8px;
+
+      & * {
+        cursor: pointer;
+      }
+
+      & > .image {
+        height: 38px;
+        margin-bottom: 8px;
+
+        & > img {
+          animation: fadeIn 0.4s ease-in-out;
+          height: 100%;
+        }
+
+        & > img:nth-of-type(1) {
+          display: block;
+        }
+
+        & > img:nth-of-type(2) {
+          display: none;
+        }
+      }
+
+      & > .content-info {
+        @include s.flexRowWrap;
+        align-items: flex-start;
+        height: 27px;
+        justify-content: center;
+        max-width: 100%;
+
+        & > div {
+          @include s.flexRowNoWrap;
+          align-items: center;
+          max-width: 100%;
+
+          & > p {
+            @include s.escaledFontFormat(s.$textSize12to15, regular, s.$pqBlack2);
+            @include s.truncateText;
+            text-align: center;
+            transition: all 0.2s ease-in-out;
+            width: 100%;
+
+            & > span {
+              line-height: 1;
+              vertical-align: baseline;
+            }
+          }
+
+          & > .label {
+            white-space: pre;
+          }
+
+          & > img {
+            height: 5px;
+            margin-left: 7px;
+            margin-top: -1px;
+          }
+        }
+      }
+    }
+
+    & > .relative-container {
+      flex: 0 0 0;
+      position: relative;
+
+      & > .content {
+        background-color: s.$pqWhite;
+        border: 1px solid s.$pqGray2;
+        box-sizing: border-box;
+        box-shadow: rgba(236, 238, 240, 0.5) -2px 2px 5px 0px, rgba(236, 238, 240, 0.5) 2px 2px 5px 0px;
+        max-height: 200px;
+        position: absolute;
+        top: 0;
+        transition: all 0.2s ease-in-out;
+        width: 100%;
+        z-index: 100;
+
+        & > div {
+          width: 100%;
+
+          & > div {
+            overflow: auto;
+            width: 100%;
+
+            & > .options {
+              @include s.windowsScrollbars('none');
+              margin: 0 !important;
+              overflow: auto;
+
+              & > .options-container {
+                cursor: pointer;
+                transition: background-color 0.2s ease-in-out;
+                width: 100%;
+
+                & * {
+                  cursor: pointer;
+                }
+
+                &:last-child > .border-separator {
+                  border-bottom: none;
+                }
+
+                &:hover {
+                  background-color: #eceef0;
+                }
+
+                & > .border-separator {
+                  border-bottom: 0.5px solid #eceef0;
+                  margin: 0 auto;
+                  width: calc(100% - 30px);
+
+                  & > .option {
+                    @include s.flexColumn;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 6px 0;
+                    width: 100%;
+
+                    & > .main-labels {
+                      @include s.flexRowNoWrap;
+                      align-items: center;
+
+                      & > label {
+                        @include s.escaledFontFormat(s.$textSize13to16, light, s.$pqBlack2);
+                        @include s.Roboto-Light;
+                        text-align: center;
+
+                        &.selected {
+                          @include s.Roboto-Regular;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > .drop-list-container {
+      & > .selected-option {
+        padding: 9px;
+
+        & > .image {
+          height: 44px;
+        }
+
+        & > .content-info {
+          height: 33px;
+
+          & > div {
+            & > img {
+              height: 7px;
+            }
+          }
+        }
+      }
+
+      & > .relative-container {
+        & > .content {
+          & > div {
+            & > div {
+              & > .options {
+                & > .options-container {
+                  & > .border-separator {
+                    margin: 0 auto;
+                    width: calc(100% - 60px);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

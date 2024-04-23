@@ -1,0 +1,165 @@
+<div class="dashboard-container" id="check-oc-not-arrived-list">
+  <div class="left-container">
+    <label class="title">{{ 'processPurchase.providers' | translate }}</label>
+    <div class="filters">
+      <div class="filter-by-type">
+        <app-hamburger-menu [options]="sortList$ | async" [value]="(sort$ | async).value" (valueEmit)="setTypeSort($event)">
+        </app-hamburger-menu>
+      </div>
+      <div class="filter-by-date">
+        <app-search
+          [activeRefresh]="true"
+          [imageFill]="'#008894'"
+          [isSearchByType]="true"
+          [placeholder]="'Buscar'"
+          [searchTerm]="searchTerm$ | async"
+          [typeSelected]="typeOfSearch$ | async"
+          [typesOfSearch]="listTypesOfSearch$ | async"
+          (handleTypeSelected)="setSearchType($event)"
+          (textSearch)="handleKeySearch($event)"
+        >
+        </app-search>
+      </div>
+    </div>
+    <div class="list-container">
+      <virtual-scroller
+        *ngIf="(listProviders$ | async)?.length > 0 && !(isLoadingProviders$ | async)"
+        [items]="listProviders$ | async"
+        (vsUpdate)="listProviderScrollItems = $event"
+      >
+        <div class="client" *ngFor="let provider of listProviderScrollItems" (click)="setProvider(provider)">
+          <div class="index">
+            <label>{{ '#' + provider.Index }}</label>
+          </div>
+          <div>
+            <div class="name">
+              <label>{{ provider.Nombre }}</label>
+            </div>
+            <div class="classification">
+              <label>{{ provider.TotalOC + ' OC' }}</label>
+              <label> · </label>
+              <label>{{ (provider.MontoTotal | currency: 'USD':'symbol-narrow':'0.2-4') + ' USD' }}</label>
+            </div>
+            <div class="cant">
+              <label>{{
+                provider.TotalPiezas +
+                  ' ' +
+                  (provider.TotalPiezas === 1
+                    ? ('registerConfirmation.pza' | translate)
+                    : ('registerConfirmation.pzas' | translate))
+              }}</label>
+              <label> · </label>
+              <label>{{
+                provider.TotalProductos +
+                  ' ' +
+                  (provider.TotalProductos === 1
+                    ? ('registerConfirmation.product' | translate)
+                    : ('registerConfirmation.products' | translate))
+              }}</label>
+            </div>
+            <div class="states">
+              <img alt="programada" src="assets/Images/labels/programada.svg" />
+              <label class="regular">{{ provider.TotalProgramadas }}</label>
+              <label> · </label>
+              <img alt="unica" src="assets/Images/labels/unica.svg" />
+              <label>{{ provider.Unica }}</label>
+              <label> · </label>
+              <img alt="flete_express" src="assets/Images/labels/flete_express.svg" />
+              <label class="expressFreight">{{ provider.TotalFleteExpress }}</label>
+              <label> · </label>
+              <img alt="flete_normal" src="assets/Images/labels/flete_normal.svg" />
+              <label class="expressFreight">{{ provider.TotalFleteNormal }}</label>
+            </div>
+            <div class="last-file">
+              <div class="days">
+                <label class="day">3 + Días:</label>
+                <label class="result">{{ provider.AMasDe3Dias }}</label>
+                <label class="day">3 Días:</label>
+                <label class="result">{{ provider.A3Dias }}</label>
+                <label class="day">2 Días:</label>
+                <label class="result">{{ provider.A2Dias }}</label>
+                <label class="day">1 Día:</label>
+                <label class="result">{{ provider.A1Dia }}</label>
+              </div>
+              <div class="date">
+                <label class="fee" [ngClass]="'green'">FEE+:</label>
+                <label class="fee">{{ provider.FechaOCMasAntigua | dateFormatSlashShort }}</label>
+              </div>
+            </div>
+          </div>
+          <div class="arrow">
+            <img alt="arrow" src="assets/Images/quotation/arrow_default.svg" />
+          </div>
+        </div>
+      </virtual-scroller>
+      <div class="without-results" *ngIf="(listProviders$ | async).length === 0 && !(isLoadingProviders$ | async)">
+        <app-without-results></app-without-results>
+      </div>
+      <div class="loader" *ngIf="isLoadingProviders$ | async">
+        <app-loading></app-loading>
+      </div>
+    </div>
+    <div class="footer">
+      <label>{{ '#' + (totalProviders$ | async | number: '1.0-0') }}</label>
+      <label>{{ (totalOc$ | async) + ' OC' }}</label>
+      <label>{{
+        (totalProducts$ | async | number: '1.0-0') + ((totalProducts$ | async) === 1 ? ' Producto' : ' Productos')
+      }}</label>
+      <label>{{ (totalPieces$ | async | number: '1.0-0') + ((totalPieces$ | async) === 1 ? ' Pieza' : ' Piezas') }}</label>
+      <label>{{ 'Monto Total ' + (totalAmount$ | async | currency: 'USD':'symbol-narrow':'2.2-4') + ' USD' }}</label>
+    </div>
+  </div>
+  <div class="right-container">
+    <ng-container *ngIf="true">
+      <app-doughnut-chart
+        *ngIf="!(isLoadingDonutCharts$ | async)"
+        [data]="donutChartDataProviders$ | async"
+        [fontSize]="'small'"
+        [optionDetailsHover]="donutDataProvidersDetailsHover$ | async"
+        [optionDetails]="donutDataProvidersDetails$ | async"
+        [titleDetails]="'Totales'"
+        [title]="'processPurchase.providers' | translate"
+        [typeChart]="1"
+      >
+      </app-doughnut-chart>
+      <app-doughnut-chart
+        *ngIf="!(isLoadingDonutCharts$ | async)"
+        [data]="donutChartDataFreight$ | async"
+        [fontSize]="'small'"
+        [optionDetailsHover]="donutDataFreightDetailsHover$ | async"
+        [optionDetails]="donutDataFreightDetails$ | async"
+        [titleDetails]="'Totales'"
+        [title]="'registerConfirmation.freight' | translate"
+        [typeChart]="1"
+      >
+      </app-doughnut-chart>
+      <app-doughnut-chart
+        *ngIf="!(isLoadingDonutCharts$ | async)"
+        [data]="donutChartDataDelivery$ | async"
+        [fontSize]="'small'"
+        [optionDetailsHover]="donutDataDeliveryDetailsHover$ | async"
+        [optionDetails]="donutDataDeliveryDetails$ | async"
+        [titleDetails]="'Totales'"
+        [title]="'registerConfirmation.delivery' | translate"
+        [typeChart]="1"
+      >
+      </app-doughnut-chart>
+      <app-bar-chart
+        *ngIf="!(isLoadingBarCharts$ | async)"
+        [fontColorBottom]="'#008894'"
+        [textDataLabel]="'Partidas'"
+        [title]="'registerConfirmation.referenceTime' | translate"
+        [values]="valuesBarChartTime$ | async"
+      >
+      </app-bar-chart>
+      <app-bar-chart
+        *ngIf="!(isLoadingBarCharts$ | async)"
+        [textDataLabel]="'Partidas'"
+        [title]="'registerConfirmation.deliveryTrafficLight' | translate"
+        [values]="valuesBarChartDelivery$ | async"
+      >
+      </app-bar-chart>
+    </ng-container>
+    <app-loading class="loading" *ngIf="(isLoadingDonutCharts$ | async) && (isLoadingBarCharts$ | async)"></app-loading>
+  </div>
+</div>

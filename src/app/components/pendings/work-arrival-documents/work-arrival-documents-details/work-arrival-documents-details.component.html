@@ -1,0 +1,119 @@
+<div id="work-arrival-documents-details">
+  <div class="contact-container">
+    <div class="title">
+      <label>{{ 'purchasePromise.contactData' | translate }}</label>
+    </div>
+    <div class="data">
+      <div>
+        <div class="row">
+          <div class="image">
+            <img src="assets/Images/contacto.svg" alt="" />
+          </div>
+          <label class="bold">José Ramón Ruíz Fernández</label>
+        </div>
+        <div class="row">
+          <div class="image">
+            <img src="assets/Images/quotation/mail.svg" alt="" />
+          </div>
+          <label>jose.ruiz@empresa.com</label>
+        </div>
+        <div class="row">
+          <div class="image">
+            <img src="assets/Images/quotation/phone.svg" alt="" />
+          </div>
+          <label>01 (55) 364 74 85 · Ext. 1245</label>
+        </div>
+      </div>
+      <div>
+        <div class="row">
+          <label class="bold">{{ 'purchasePromise.department' | translate }}: </label>
+          <label>Compras</label>
+        </div>
+        <div class="row">
+          <label class="bold">{{ 'purchasePromise.position' | translate }}: </label>
+          <label>Administrativo</label>
+        </div>
+      </div>
+      <div>
+        <div class="row">
+          <label class="bold">{{ 'purchasePromise.decisionLevel' | translate }}: </label>
+          <label>Bajo</label>
+        </div>
+        <div class="row">
+          <label class="green bold">Cliente con Crédito</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="products-container">
+    <div class="left-container">
+      <div class="title">
+        <label>{{ 'common.products' | translate }}</label>
+      </div>
+      <div class="filters">
+        <app-search
+          [placeholder]="'common.provider' | translate"
+          [searchTerm]="searchTerm$ | async"
+          (textSearch)="handleSearchTerm($event)"
+        >
+        </app-search>
+      </div>
+      <div class="orders-list-container">
+        <!--&& (providersStatus$ | async) === 3-->
+        <virtual-scroller class="virtual-list" *ngIf="!lodashIsEmpty(products)">
+          <div class="item active" *ngFor="let product of products" (click)="setSelectedProduct(product)">
+            <div class="indicator"></div>
+            <div class="content">
+              <div class="title">
+                <label
+                  >#{{ product.Index }} · <span>{{ product.catalog }}</span> · {{ product.product }}</label
+                >
+              </div>
+              <label class="subtitle"
+                >{{ 'common.oc' | translate }}-{{ product.oc }} · {{ 'workArrivalDocuments.internalOrder' | translate }}
+                {{ product.internalOrder }}</label
+              >
+              <label class="black-info"
+                >{{ 'workArrivalDocuments.inspectionDate' | translate }}: {{ product.date | dateFormatSlashShort }}</label
+              >
+              <label class="gray-info"
+                >{{ 'workArrivalDocuments.fee' | translate }}: {{ product.date2 | dateFormatSlashShort }} ·
+                {{ 'workArrivalDocuments.dre' | translate }}: {{ product.dre }} · {{ 'common.type' | translate }}:
+                {{ product.type }} · {{ 'common.lot' | translate }}: {{ product.lot }}
+              </label>
+            </div>
+          </div>
+        </virtual-scroller>
+        <div class="without-results" *ngIf="lodashIsEmpty(products) && (productsStatus$ | async) !== 1">
+          <app-without-results [title]="'common.withoutResults' | translate"></app-without-results>
+        </div>
+        <div class="loadingContent" *ngIf="(productsStatus$ | async) === 1">
+          <app-loading></app-loading>
+        </div>
+      </div>
+      <div class="totals">
+        <label>#{{ 1 }}</label>
+        <label>{{ '1' }} {{ 1 === 1 ? ('common.provider' | translate) : ('common.providers' | translate) }}</label>
+        <label>{{ '1' }} {{ 'common.oc' | translate }}</label>
+        <label>{{ '1' }} {{ 1 === 1 ? ('common.product' | translate) : ('common.products' | translate) }}</label>
+      </div>
+    </div>
+    <div class="right-container">
+      <div class="title">
+        <label
+          >#{{ selectedProduct.Index }} · <span>{{ selectedProduct.catalog }}</span> · {{ selectedProduct.product }}
+        </label>
+      </div>
+      <div class="file">
+        <app-upload-view-file></app-upload-view-file>
+      </div>
+      <div class="security-sheet">
+        <label>{{ 'workArrivalDocuments.securitySheet' | translate }}</label>
+        <app-generic-input-file class="input"></app-generic-input-file>
+      </div>
+      <div class="button">
+        <button class="active">{{ 'common.accept' | translate }}</button>
+      </div>
+    </div>
+  </div>
+</div>

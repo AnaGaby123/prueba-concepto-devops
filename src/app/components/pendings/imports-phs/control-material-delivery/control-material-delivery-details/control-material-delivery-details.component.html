@@ -1,0 +1,148 @@
+<div id="control-material-delivery-details">
+  <div class="content">
+    <div class="list">
+      <div class="content">
+        <div class="header-list">
+          <div class="title">
+            <label>{{ 'registerDispatch.dispatchOrder' | translate }}</label>
+          </div>
+          <div class="filters">
+            <div class="hamburger">
+              <app-hamburger-menu
+                [options]="dataFilterOrder$ | async"
+                [value]="(paramOrder$ | async).value"
+                (valueEmit)="setParamOrder($event)"
+              ></app-hamburger-menu>
+            </div>
+            <div class="search">
+              <app-search placeholder="Orden de despacho" (textSearch)="handleKeySearch($event)"></app-search>
+            </div>
+          </div>
+        </div>
+        <div class="body-list">
+          <div class="list-content">
+            <virtual-scroller
+              [items]="dispatchOrders$ | async"
+              (vsUpdate)="ordersScroller = $event"
+              *ngIf="!(isLoading$ | async) && (dispatchOrders$ | async)?.length > 0"
+            >
+              <div class="item" *ngFor="let order of ordersScroller" (click)="setSelectedOrder(order)">
+                <div
+                  class="indicator"
+                  [ngClass]="
+                    (selectedOrder$ | async)?.IdImpOrdenDespacho === order.IdImpOrdenDespacho ? 'indicator-active' : ''
+                  "
+                ></div>
+                <div class="order">
+                  <div class="item-content">
+                    <div class="index">
+                      <label
+                        ><span>#{{ order.index }} · </span>{{ order.Folio + ' · '
+                        }}<span>{{
+                          order.FechaEstimadaDeEntrega ? (order.FechaEstimadaDeEntrega | dateFormatSlashShort) : 'N/D'
+                        }}</span></label
+                      >
+                    </div>
+                    <div class="pieces">
+                      <label>{{
+                        (order.MontoTotalUSD | currency: 'USD':'symbol-narrow':'2.2-4') +
+                          ' USD' +
+                          ' · ' +
+                          (order.Piezas ? order.Piezas : 0) +
+                          ' ' +
+                          (order.Piezas === 1 ? ('common.piece' | translate) : ('common.pieces' | translate))
+                      }}</label>
+                    </div>
+                    <div class="importer">
+                      <label
+                        >{{ 'planDispatchDetails.importer' | translate }}: {{ order.RazonSocialEmpresaImportador }} ·
+                        {{ 'planDispatchDetails.exporter' | translate }}: {{ order.RazonSocialEmpresaExportador }} ·
+                        {{ 'planDispatchDetails.forHire' | translate }}: {{ order.Fletera }}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </virtual-scroller>
+            <div class="without-results" *ngIf="isLoading$ | async">
+              <app-loading></app-loading>
+            </div>
+          </div>
+        </div>
+        <div class="footer-list">
+          <div class="footer-content">
+            <label>#{{ (dispatchOrders$ | async)?.length }}</label>
+            <label>{{
+              (agent$ | async)?.Piezas +
+                ' ' +
+                ((agent$ | async)?.Piezas === 1 ? ('common.piece' | translate) : ('common.pieces' | translate))
+            }}</label>
+            <label
+              >{{ 'common.totalAmount' | translate }}:
+              {{ (agent$ | async)?.MontoTotalUSD | currency: 'USD':'symbol':'1.2-2' }}</label
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="right-content">
+      <div class="header-content">
+        <div class="left">
+          <label *ngIf="(selectedOrder$ | async) !== undefined && (dispatchOrders$ | async)?.length > 0"
+            ><span>#{{ (selectedOrder$ | async)?.index }} ·</span>
+            {{ 'OD- ' + (selectedOrder$ | async)?.Folio }}
+          </label>
+        </div>
+        <div class="right">
+          <label>{{ 'controlMaterialDelivery.numberOfPackagesDelivered' | translate }}</label>
+          <app-generic-input
+            [value]="(selectedOrder$ | async)?.numberOfPackages"
+            (textData)="setNumberPackages($event)"
+          ></app-generic-input>
+        </div>
+      </div>
+      <div class="body-content">
+        <app-upload-view-file
+          *ngIf="isShowFile && !(statusFile$ | async) && (base64$ | async)"
+          (handleFileUpload)="setUploadFile($event)"
+          [datasFile]="{
+            path: (base64$ | async) ? (base64$ | async) : '',
+            titulo: ''
+          }"
+        >
+        </app-upload-view-file>
+        <app-loading class="loading" *ngIf="statusFile$ | async"></app-loading>
+        <app-without-results
+          class="loading"
+          *ngIf="!(base64$ | async) && !(statusFile$ | async)"
+          [title]="'PDF NO DISPONIBLE'"
+        ></app-without-results>
+      </div>
+      <footer *ngIf="base64$ | async; let base64">
+        <button
+          *ngIf="selectedOrder$ | async; let selectedOrder"
+          [className]="(selectedOrder$ | async)?.numberOfPackages > 0 && (base64$ | async) ? 'active' : 'disabled'"
+          (click)="selectedOrder?.numberOfPackages > 0 && base64 && (activeCheck = !activeCheck)"
+          >{{ 'controlMaterialDelivery.print' | translate }}</button
+        >
+      </footer>
+    </div>
+  </div>
+</div>
+<app-pop-up-generic [width]="'620px'" [height]="'360px'" *ngIf="activeCheck">
+  <div class="container">
+    <div class="content">
+      <div>
+        <img src="assets/Images/alerta.svg" />
+      </div>
+      <div class="text">
+        <label>¿Se imprimió correctamente el</label>
+        <label class="pqf">{{ 'AR-' + (selectedOrder$ | async)?.Folio }}?</label>
+      </div>
+    </div>
+    <div class="buttons">
+      <button (click)="activeCheck = !activeCheck">{{ 'REIMPRIMIR' }}</button>
+      <button (click)="savePending()">{{ 'common.accept' | translate }}</button>
+    </div>
+  </div>
+</app-pop-up-generic>

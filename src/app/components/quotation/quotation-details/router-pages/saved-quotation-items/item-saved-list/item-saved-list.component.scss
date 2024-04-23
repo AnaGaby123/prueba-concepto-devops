@@ -1,0 +1,132 @@
+@use 'base' as s;
+* {
+  box-sizing: border-box;
+  line-height: normal;
+}
+:host {
+  @include s.absolute100();
+  @include s.flexColumn;
+  overflow: hidden;
+  flex-direction: column;
+  .table-container {
+    @include s.flexColumn;
+    flex: 1;
+    overflow: auto;
+    & > .container {
+      @include s.flexColumn;
+      min-width: 1750px;
+      flex: 1;
+      & > .header {
+        border-bottom: 1px solid s.$pqBlack;
+      }
+      & > virtual-scroller {
+        @include s.fixVirtualScroller();
+        @include s.absolute100;
+        ::ng-deep .scrollable-content {
+          @include s.flexColumn;
+        }
+      }
+      & > .without-results {
+        @include s.absoluteCenter;
+      }
+    }
+  }
+  & > .totals {
+    @include s.flexRow();
+    flex: 0 0 50px;
+    padding: 10px 0;
+    border-top: 1px solid s.$dark-proquifa;
+    border-bottom: 1px solid s.$dark-proquifa;
+    margin-bottom: 20px;
+    width: 100%;
+    & > .total-items-quotation {
+      @include s.flexRowNoWrap();
+      justify-content: space-between;
+      padding-left: 12px;
+      width: 100%;
+      & > div {
+        @include s.flexRow();
+        align-items: baseline;
+        width: 100%;
+        & > label {
+          @include s.responsive-font-format($font-family: s.$font_family_roboto, $font-size-map: s.$responsive-font-12-14);
+        }
+
+        &.left-initial {
+          justify-items: initial;
+        }
+      }
+      & > .total-products {
+        @include s.flexColumn;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        & > .freight {
+          @include s.responsive-font-format(
+            $font-weight: s.$font-weight-bold,
+            $font-family: s.$font_family_roboto_bold,
+            $font-size-map: s.$responsive-font-12-14
+          );
+          text-decoration: underline;
+          cursor: pointer;
+        }
+      }
+      & > .totals {
+        @include s.flexRowNoWrap;
+        justify-content: flex-end;
+        margin-bottom: 15px;
+        padding: 0 12px;
+        width: 100%;
+        & > .left {
+          @include s.flexColumn;
+          padding-right: 4px;
+          & > label {
+            @include s.responsive-font-format(
+              $color: s.$dark-proquifa,
+              $font-family: s.$font_family_roboto,
+              $font-size-map: s.$responsive-font-12-14
+            );
+            text-align: right;
+            &.big {
+              @include s.responsive-font-format(
+                $color: s.$dark-proquifa,
+                $font-family: s.$font_family_roboto_bold,
+                $font-size-map: s.$responsive-font-16-20,
+                $font-weight: s.$font-weight_bold
+              );
+            }
+          }
+        }
+        & > .right {
+          @include s.flexColumn;
+          & > label {
+            @include s.responsive-font-format(
+              $color: s.$main-proquifa,
+              $font-family: s.$font_family_roboto,
+              $font-size-map: s.$responsive-font-12-14
+            );
+            text-align: right;
+            &.big {
+              @include s.responsive-font-format(
+                $color: s.$success,
+                $font-family: s.$font_family_roboto_bold,
+                $font-size-map: s.$responsive-font-16-20,
+                $font-weight: s.$font-weight_bold
+              );
+            }
+          }
+        }
+      }
+      & > .left-initial {
+        justify-content: initial;
+      }
+    }
+  }
+}
+
+.pop-generic {
+  & .content {
+    @include s.flexColumn;
+    flex: 1;
+    overflow: hidden;
+  }
+}

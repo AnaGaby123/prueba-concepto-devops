@@ -1,0 +1,18 @@
+<div id="guide-client">
+  <div class="header-bar">
+    <app-header-bar [title]="'GUÍA CLIENTE'" [activeBack]="false"></app-header-bar>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+  <footer>
+    <div>
+      <div>
+        <label
+          ><span>{{ 'strategy.details.internalOrderShort' | translate }}: </span
+          >{{ 'strategy.details.internalOrder' | translate }}</label
+        >
+      </div>
+    </div>
+  </footer>
+</div>

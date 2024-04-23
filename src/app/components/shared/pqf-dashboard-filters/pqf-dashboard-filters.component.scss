@@ -1,0 +1,17 @@
+@use 'base' as s;
+
+#pqf-dashboard-filters {
+  @include s.flexColumn;
+  row-gap: 16px;
+  @include s.media-query(s.$standard) {
+    @include s.flexRowNoWrapReverse;
+    row-gap: 24px;
+    justify-content: flex-end;
+    & > .search {
+      min-width: 280px;
+      position: absolute;
+      right: calc(100% - 24%);
+      width: 15%;
+    }
+  }
+}

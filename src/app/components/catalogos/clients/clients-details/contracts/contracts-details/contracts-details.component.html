@@ -1,0 +1,17 @@
+<div id="contracts-details">
+  <label class="title" *ngIf="!(isEditMode$ | async)">{{ 'formClient.step5.newContract' | translate }}</label>
+  <label class="title" *ngIf="isEditMode$ | async">{{ 'formClient.step5.editContract' | translate }}</label>
+  <div class="barContainer">
+    <app-bar-activities
+      [enableLeftArrow]="(addContractActualStep$ | async) === 1"
+      [enableRightArrow]="(addContractActualStep$ | async) === 0 && (activeAdvanceContract$ | async)"
+      [options]="contractBarActivities | async"
+      [selectedOption]="addContractActualStep$ | async"
+      (handleOptionSelected)="addStepsContract($event)"
+    >
+    </app-bar-activities>
+  </div>
+  <app-client-contract-brands *ngIf="(addContractActualStep$ | async) === 0"></app-client-contract-brands>
+  <app-client-contract-families *ngIf="(addContractActualStep$ | async) === 1"></app-client-contract-families>
+  <app-client-contract-contract *ngIf="(addContractActualStep$ | async) === 2"></app-client-contract-contract>
+</div>

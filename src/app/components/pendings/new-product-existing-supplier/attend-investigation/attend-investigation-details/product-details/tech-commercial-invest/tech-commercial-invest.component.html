@@ -1,0 +1,871 @@
+<div class="container">
+  <div class="add-product">
+    <label>{{ 'attendInvestigation.attendInvestigationDetail.addProductTechnicalCommercial' | translate }}</label>
+  </div>
+  <div class="general-data-title">
+    <label>{{ 'formProduct.general.generalData' | translate }}</label>
+  </div>
+  <div class="general-data">
+    <div class="brand">
+      <div class="brands">
+        <app-drop-down-list
+          [disable]="true"
+          [isSearchable]="true"
+          [itemSelected]="selectedTrademark$ | async"
+          [items]="listTrademark$ | async"
+          [label]="'formProduct.general.brand' | translate"
+          [required]="true"
+          [subtitleActive]="false"
+          (valueDropList)="setValueDropDownList($event, 'IdMarca', 'selectedTradeMark')"
+        >
+        </app-drop-down-list>
+      </div>
+      <div class="type-products">
+        <app-drop-down-list
+          [capitalize]="false"
+          [disable]="lodashIsEmpty((productDetail$ | async)?.selectedTradeMark)"
+          [itemSelected]="selectedTypeProductFamily$ | async"
+          [items]="selectTypeProductsFamily$ | async"
+          [isSearchable]="(selectTypeProductsFamily$ | async)?.length > 5"
+          [label]="'formProduct.general.typeProductFamily' | translate"
+          [required]="true"
+          (valueDropList)="setValueDropDownList($event, 'IdMarcaFamilia', 'productTypeFamilySelected')"
+        >
+        </app-drop-down-list>
+      </div>
+      <div class="provider">
+        <label
+          >{{ (productDetails$ | async)?.NombreProveedor ? (productDetails$ | async)?.NombreProveedor : 'N/D' }}
+          <span
+            >· {{ (productDetails$ | async)?.ProveedoresAlternativos.length }}
+            {{ (productDetails$ | async)?.ProveedoresAlternativos.length === 1 ? 'secundario' : 'secundarios' }}</span
+          ></label
+        >
+      </div>
+    </div>
+  </div>
+  <div class="product-data">
+    <div
+      class="product-data-container"
+      *ngIf="
+        !lodashIsEmpty((productDetail$ | async)?.selectedTradeMark) &&
+        !lodashIsEmpty((productDetail$ | async)?.productTypeFamilySelected)
+      "
+    >
+      <div class="product-data-title">
+        <label>{{ 'formProduct.general.productData' | translate }}</label>
+      </div>
+      <div class="product-data-form" *ngIf="!(selectValidationTraining$ | async)">
+        <div class="inputDescription">
+          <app-generic-input
+            [label]="'formProduct.general.productDescription' | translate"
+            [maxlength]="700"
+            [required]="true"
+            [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+            [value]="(productDetails$ | async)?.Descripcion"
+            [minlength]="3"
+            (textData)="setValueInput($event, 'Descripcion')"
+          >
+          </app-generic-input>
+        </div>
+        <div class="inputCatalog">
+          <app-generic-input
+            [label]="'formProduct.general.catalogNumber' | translate"
+            [required]="true"
+            [typeValidation]="inputValidators.AlphaNumberAndDashesAndSlashAndColon"
+            [value]="(productDetails$ | async)?.Catalogo"
+            [maxlength]="200"
+            [minlength]="2"
+            (textData)="setValueInput($event, 'Catalogo')"
+          ></app-generic-input>
+        </div>
+        <div class="inputAmount">
+          <app-generic-input
+            [label]="'formProduct.general.quantity' | translate"
+            [maxlength]="14"
+            [required]="true"
+            [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+            [value]="(productDetails$ | async)?.Presentacion"
+            (textData)="setValueInput($event, 'Presentacion')"
+          ></app-generic-input>
+        </div>
+        <div class="inputUnit">
+          <app-drop-down-list
+            [activeMinWidth]="false"
+            [capitalize]="false"
+            [itemSelected]="selectedUnit$ | async"
+            [items]="selectCatUnit$ | async"
+            [isSearchable]="(selectCatUnit$ | async)?.length > 5"
+            [label]="'formProduct.general.unit' | translate"
+            [required]="true"
+            (valueDropList)="setValueDropDownList($event, 'IdCatUnidad', 'unitSelected')"
+          ></app-drop-down-list>
+        </div>
+        <div class="inputList">
+          <app-generic-input
+            [extraStringStyleFont]="'Roboto-Regular-Black-13-16'"
+            [extraString]="providerCurrency$ | async"
+            [labelInsidePlaceHolderRight]="providerCurrency$ | async"
+            [label]="'formProduct.general.providerPriceList' | translate"
+            [maxlength]="14"
+            [required]="true"
+            [typeValidation]="inputValidators.DecimalNumber"
+            [value]="(productDetails$ | async)?.PrecioListaMonedaProveedor"
+            (textData)="setValueInput($event, 'PrecioListaMonedaProveedor')"
+          ></app-generic-input>
+        </div>
+        <div class="validityCuratorship">
+          <app-date-picker
+            [dateFormat]="'YYYYMMDD'"
+            [date]="selectDateValidityCuratorships | async"
+            [disabledCalendarDays]="selectNonWorkingDays$ | async"
+            [labelInsidePlaceHolder]="'Hasta el'"
+            [labelInside]="true"
+            [label]="'formProduct.general.validityCuratorship' | translate"
+            [rangeStart]="rangeStart"
+            (fecha)="setDataValidityCuratorships($event)"
+          >
+          </app-date-picker>
+        </div>
+        <div class="CharacteristicGrouper">
+          <app-drop-down-list
+            [activeMinWidth]="false"
+            [itemSelected]="selectCharacterisitcGrouperSelected$ | async"
+            [items]="selectCharacterisitcGrouper$ | async"
+            [isSearchable]="(selectCharacterisitcGrouper$ | async)?.length > 5"
+            [label]="'formProduct.general.CharacteristicGrouper' | translate"
+            (valueDropList)="setValueDropDownList($event, 'IdAgrupadorCaracteristica', 'characteristicGrouperSelected')"
+          ></app-drop-down-list>
+        </div>
+        <div class="availability">
+          <app-drop-down-list
+            [activeMinWidth]="false"
+            [itemSelected]="selectedAvailability$ | async"
+            [items]="ListAvailability$ | async"
+            [isSearchable]="(ListAvailability$ | async)?.length > 5"
+            [capitalize]="false"
+            [label]="'formProduct.general.availability' | translate"
+            [required]="true"
+            (valueDropList)="setValueDropDownList($event, 'IdCatDisponibilidad', 'availabilitySelected')"
+          ></app-drop-down-list>
+        </div>
+        <div class="date-availability">
+          <app-date-picker
+            [dateFormat]="'YYYYMMDD'"
+            [date]="selectedAvailabilityBackOrder$ | async"
+            [disabledCalendarDays]="selectNonWorkingDays$ | async"
+            [label]="
+              (availabilityIsBackOrder$ | async)
+                ? '* ' + ('formProduct.step1.backOrderAvailabilityDate' | translate)
+                : ('formProduct.step1.backOrderAvailabilityDate' | translate)
+            "
+            [rangeStart]="rangeStart"
+            [disabled]="!(availabilityIsBackOrder$ | async)"
+            (fecha)="setBackOrderAvailabilityDate($event)"
+          >
+          </app-date-picker>
+        </div>
+        <div class="purchase-restriction" *ngIf="!(selectValidationPublications$ | async)">
+          <app-drop-down-list
+            [activeMinWidth]="false"
+            [capitalize]="false"
+            [itemSelected]="selectedCatBillingRestriction$ | async"
+            [items]="selectCatBillingRestriction$ | async"
+            [isSearchable]="(selectCatBillingRestriction$ | async)?.length > 5"
+            [label]="'formProduct.general.purchaseRestriction' | translate"
+            (valueDropList)="
+              setValueDropDownListConfiguration($event, 'IdCatRestriccionDeCompra', 'billingRestrictionSelected')
+            "
+          ></app-drop-down-list>
+        </div>
+        <div class="pieces" *ngIf="!(selectValidationPublications$ | async)">
+          <app-generic-input
+            [isDisable]="(selectedCatBillingRestriction$ | async)?.label !== 'Límite de Piezas'"
+            [label]="'formProduct.general.pieces' | translate"
+            [maxlength]="10"
+            [required]="(selectedCatBillingRestriction$ | async)?.label === 'Límite de Piezas'"
+            [labelInsidePlaceHolderRight]="'al Mes'"
+            [extraString]="'al Mes'"
+            [extraStringStyleFont]="'Roboto-Regular-Black-13-16'"
+            [typeValidation]="inputValidators.Int"
+            [value]="(productDetails$ | async)?.NumeroDePiezas"
+            (textData)="setValueInput($event, 'NumeroDePiezas')"
+          ></app-generic-input>
+        </div>
+        <div class="tariff-fraction" *ngIf="selectValidationPublications$ | async">
+          <app-generic-input
+            [label]="'formProduct.general.tariffFraction' | translate"
+            [maxlength]="10"
+            [minlength]="10"
+            [required]="selectIsPhysicalProduct$ | async"
+            [typeValidation]="inputValidators.NumberAndDots"
+            [value]="(productDetails$ | async)?.FraccionArancelaria"
+            (textData)="setValueInput($event, 'FraccionArancelaria')"
+          ></app-generic-input>
+        </div>
+        <div class="importation-fraction" *ngIf="selectValidationPublications$ | async">
+          <app-generic-input
+            [label]="'formProduct.general.importationFraction' | translate"
+            [maxlength]="10"
+            [minlength]="10"
+            [required]="selectIsPhysicalProduct$ | async"
+            [typeValidation]="inputValidators.NumberAndDots"
+            [value]="(productDetails$ | async)?.FraccionImportacion"
+            (textData)="setValueInput($event, 'FraccionImportacion')"
+          ></app-generic-input>
+        </div>
+      </div>
+      <div class="product-data-form" *ngIf="selectValidationTraining$ | async">
+        <div class="name">
+          <app-generic-input
+            [label]="'formProduct.step1.trainingName' | translate"
+            [maxlength]="700"
+            [required]="true"
+            [showAsterisk]="true"
+            [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+            [value]="(productDetails$ | async)?.Descripcion"
+            [minlength]="3"
+            (textData)="setValueInput($event, 'Descripcion')"
+          ></app-generic-input>
+        </div>
+        <div class="description">
+          <app-generic-input
+            [label]="'formProduct.step1.detailedDescription' | translate"
+            [maxlength]="500"
+            [required]="true"
+            [showAsterisk]="true"
+            [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+            [value]="(selectProductTraining$ | async)?.DescripcionDetallada"
+            [minlength]="3"
+            (textData)="setValueInputWithConfiguration($event, 'DescripcionDetallada')"
+          ></app-generic-input>
+        </div>
+        <div class="availability">
+          <app-drop-down-list
+            [activeMinWidth]="false"
+            [itemSelected]="selectedAvailability$ | async"
+            [items]="ListAvailability$ | async"
+            [isSearchable]="(ListAvailability$ | async)?.length > 5"
+            [label]="'formProduct.step1.availability' | translate"
+            [required]="true"
+            [showAsterisk]="true"
+            (valueDropList)="setValueDropDownList($event, 'IdCatDisponibilidad', 'availabilitySelected')"
+          >
+          </app-drop-down-list>
+        </div>
+        <div class="price" [ngClass]="true ? 'edit' : 'read'">
+          <div class="title">
+            <label [ngClass]="true ? 'read' : 'edit'">{{ true ? '*' : '' }} {{ 'formProduct.step1.price' | translate }}</label>
+          </div>
+          <div class="persons">
+            <app-radio-button
+              [activeLocalState]="false"
+              [height]="viewTypes.small ? '20px' : '23px'"
+              [labelFontStyle]="(selectProductTraining$ | async)?.PrecioPorPersona ? 'labelRobotoRegularProquifa13' : 'default'"
+              [label]="'Por Persona'"
+              [value]="(selectProductTraining$ | async)?.PrecioPorPersona"
+              (emitValue)="setValueInputWithConfiguration($event, 'PrecioPorPersona')"
+            ></app-radio-button>
+            <app-generic-input
+              [isDisable]="!(selectProductTraining$ | async)?.PrecioPorPersona"
+              [labelInsidePlaceHolderRight]="'USD'"
+              [maxlength]="14"
+              [min]="0"
+              [placeholder]="'$'"
+              [textAlign]="'center'"
+              [typeValidation]="inputValidators.DecimalNumber"
+              [value]="(selectProductTraining$ | async)?.PrecioPorPersona ? (productDetails$ | async)?.PrecioLista : null"
+              [required]="(selectProductTraining$ | async)?.PrecioPorPersona"
+              (textData)="setValueInput($event, 'PrecioListaMonedaProveedor')"
+            ></app-generic-input>
+          </div>
+        </div>
+        <div class="price2">
+          <div class="groups">
+            <app-radio-button
+              [activeLocalState]="false"
+              [height]="viewTypes.small ? '20px' : '23px'"
+              [labelFontStyle]="(selectProductTraining$ | async)?.PrecioPorGrupo ? 'labelRobotoRegularProquifa13' : 'default'"
+              [label]="'Por Grupo'"
+              [value]="(selectProductTraining$ | async)?.PrecioPorGrupo"
+              (emitValue)="setValueInputWithConfiguration($event, 'PrecioPorGrupo')"
+            ></app-radio-button>
+            <app-generic-input
+              [isDisable]="!(selectProductTraining$ | async)?.PrecioPorGrupo"
+              [labelInsidePlaceHolderRight]="'formProduct.step1.people' | translate"
+              [maxlength]="10"
+              [min]="0"
+              [placeholder]="'#'"
+              [textAlign]="'center'"
+              [typeValidation]="inputValidators.Int"
+              [value]="(selectProductTraining$ | async)?.NumeroDePersonasPorGrupo"
+              [required]="(selectProductTraining$ | async)?.PrecioPorGrupo"
+              (textData)="setValueInputWithConfiguration($event, 'NumeroDePersonasPorGrupo')"
+            ></app-generic-input>
+            <app-generic-input
+              [isDisable]="!(selectProductTraining$ | async)?.PrecioPorGrupo"
+              [labelInsidePlaceHolderRight]="'USD'"
+              [maxlength]="14"
+              [min]="0"
+              [placeholder]="'$'"
+              [textAlign]="'center'"
+              [typeValidation]="inputValidators.DecimalNumber"
+              [value]="(selectProductTraining$ | async)?.PrecioPorGrupo ? (productDetails$ | async)?.PrecioLista : null"
+              [required]="(selectProductTraining$ | async)?.PrecioPorGrupo"
+              (textData)="setValueInput($event, 'PrecioLista')"
+            ></app-generic-input>
+          </div>
+        </div>
+
+        <div class="validity">
+          <app-date-picker
+            [dateFormat]="'YYYYMMDD'"
+            [date]="selectDateValidityCuratorships | async"
+            [disabledCalendarDays]="selectNonWorkingDays$ | async"
+            [enableEdit]="false"
+            [labelInsidePlaceHolder]="'Hasta el'"
+            [labelInside]="true"
+            [label]="'formProduct.general.validityCuratorship' | translate"
+            [rangeStart]="rangeStart"
+            (fecha)="setDataValidityCuratorships($event)"
+          >
+          </app-date-picker>
+        </div>
+      </div>
+    </div>
+    <div
+      class="family-data-container"
+      *ngIf="
+        !lodashIsEmpty((productDetail$ | async)?.selectedTradeMark) &&
+        !lodashIsEmpty((productDetail$ | async)?.productTypeFamilySelected)
+      "
+    >
+      <div class="family-data">
+        <div class="family-data-title">
+          <label>{{ 'formProduct.general.family' | translate }}</label>
+        </div>
+        <div
+          class="biologicAndReactiveStandar"
+          [ngClass]="
+            (selectValidationStandarAndReactiveChemist$ | async)
+              ? 'biologicAndReactiveStandarChemist'
+              : 'biologicAndReactiveStandar'
+          "
+          *ngIf="(selectValidationStandarAndReactiveBiologic$ | async) || (selectValidationStandarAndReactiveChemist$ | async)"
+        >
+          <div class="subtype">
+            <app-generic-input
+              [enableEdit]="false"
+              [label]="'* Subtipo'"
+              [required]="true"
+              [showAsterisk]="true"
+              [value]="(productDetails$ | async)?.Subtipo"
+            ></app-generic-input>
+          </div>
+          <div class="control">
+            <app-generic-input
+              [enableEdit]="false"
+              [label]="'* Control'"
+              [required]="true"
+              [showAsterisk]="true"
+              [value]="(productDetails$ | async)?.Control"
+            ></app-generic-input>
+          </div>
+          <div class="clasfication">
+            <app-drop-down-list
+              [activeMinWidth]="false"
+              [itemSelected]="selectCatClassificationsSelected$ | async"
+              [items]="selectCatClassifications$ | async"
+              [isSearchable]="(selectCatClassifications$ | async)?.length > 5"
+              [label]="'Clasificación'"
+              (valueDropList)="
+                setValueDropDownList($event, 'IdCatClasificacionInformativaProducto', 'classificationProductSelected')
+              "
+            ></app-drop-down-list>
+          </div>
+
+          <div class="physicalState">
+            <app-drop-down-list
+              [activeMinWidth]="false"
+              [itemSelected]="selectPhysicalStateSelected$ | async"
+              [items]="selectCatPhysicalState$ | async"
+              [label]="'Estado Físico'"
+              [isSearchable]="(selectCatPhysicalState$ | async)?.length > 5"
+              (valueDropList)="setValueDropDownListConfiguration($event, 'IdCatEstadoFisico', 'selectedPhysicalState')"
+            ></app-drop-down-list>
+          </div>
+          <div class="use">
+            <app-drop-down-list
+              [activeMinWidth]="false"
+              [itemSelected]="selectedUse$ | async"
+              [items]="selectUses$ | async"
+              [isSearchable]="(selectUses$ | async)?.length > 5"
+              [label]="'Uso'"
+              [required]="true"
+              (valueDropList)="setValueDropDownListConfiguration($event, 'IdCatUso', 'useSelected')"
+            ></app-drop-down-list>
+          </div>
+          <div class="inputUse" *ngIf="selectValidationStandarAndReactiveBiologic$ | async">
+            <app-drop-down-list
+              [activeMinWidth]="false"
+              [itemSelected]="selectInternationalDepositarySelected$ | async"
+              [items]="selectInternationalDepositary$ | async"
+              [label]="'Depositario Internacional'"
+              [isSearchable]="(selectInternationalDepositary$ | async)?.length > 5"
+              [required]="false"
+              (valueDropList)="setValueDropDownList($event, 'IdCatDepositarioInternacional', 'internationalDepositarySelected')"
+            ></app-drop-down-list>
+          </div>
+          <div class="inputPurity" *ngIf="selectValidationStandarAndReactiveChemist$ | async">
+            <app-generic-input
+              [label]="'Pureza'"
+              [maxlength]="14"
+              [required]="false"
+              [typeValidation]="inputValidators.Percentage"
+              [value]="selectPurity$ | async"
+              (textData)="setValueInputWithConfiguration($event, 'Pureza')"
+            ></app-generic-input>
+          </div>
+          <div class="cas" *ngIf="selectValidationStandarAndReactiveChemist$ | async">
+            <app-generic-input
+              [forceActiveErrors]="!(selectValidateCas$ | async)"
+              [label]="'CAS'"
+              [required]="true"
+              [typeValidation]="inputValidators.CASNumber"
+              [value]="selectCAS$ | async"
+              (textData)="setValueInputWithConfiguration($event, 'CAS')"
+            ></app-generic-input>
+          </div>
+          <div class="synonyms" *ngIf="selectValidationStandarAndReactiveChemist$ | async">
+            <app-generic-input
+              [label]="'Sinónimos'"
+              [maxlength]="200"
+              [required]="!(productDetails$ | async)?.Producto?.TieneCAS"
+              [typeValidation]="inputValidators.AlphaAndSpaces"
+              [value]="selectSynonyms$ | async"
+              [minlength]="3"
+              (textData)="setValueInputWithConfiguration($event, 'Sinonimos')"
+            ></app-generic-input>
+          </div>
+
+          <div class="molecularStructure" *ngIf="selectValidationStandarAndReactiveChemist$ | async">
+            <app-generic-input-file
+              [acceptedExtensions]="'application/pdf,.pdf'"
+              [fileName]="
+                (productDetails$ | async)?.ArchivoEstructuraMolecular
+                  ? getFileName((productDetails$ | async)?.ArchivoEstructuraMolecular?.FileKey)
+                  : null
+              "
+              [file]="selectStructureMolecular$ | async"
+              [idFile]="(productDetails$ | async)?.ArchivoEstructuraMolecular?.IdArchivo"
+              [label]="
+                !(productDetails$ | async)?.Producto?.TieneCAS
+                  ? '* Cargar Archivo Estructura Molecular'
+                  : 'Cargar Archivo Estructura Molecular'
+              "
+              (autoEmitFile)="setNewFile($event, 'ArchivoEstructuraMolecular')"
+              (emitFileToDelete)="setIdFileToDelete(null, 'ArchivoEstructuraMolecular')"
+            ></app-generic-input-file>
+          </div>
+
+          <div class="molecularForm" *ngIf="selectValidationStandarAndReactiveChemist$ | async">
+            <app-generic-input
+              [label]="'Fórmula Molecular'"
+              [maxlength]="200"
+              [required]="!(productDetails$ | async)?.Producto?.TieneCAS"
+              [typeValidation]="inputValidators.AcceptAll"
+              [value]="selectMolecularForm$ | async"
+              [minlength]="3"
+              (textData)="setValueInputWithConfiguration($event, 'FormulaQuimica')"
+            ></app-generic-input>
+          </div>
+          <div class="presentationType">
+            <app-drop-down-list
+              [activeMinWidth]="false"
+              [itemSelected]="selectedtypePresentation$ | async"
+              [items]="selectTypesPresentation$ | async"
+              [label]="'newProductExistingSupplier.regulatoryResearch.details.presentationType' | translate"
+              [required]="true"
+              [isSearchable]="(selectTypesPresentation$ | async)?.length > 5"
+              (valueDropList)="setValueDropDownListConfiguration($event, 'IdCatTipoPresentacion', 'typePresentationSelected')"
+            ></app-drop-down-list>
+          </div>
+          <div class="aplication">
+            <app-drop-down-list
+              [activeMinWidth]="false"
+              [itemSelected]="selectedtypeAplication$ | async"
+              [items]="selectTypesApplication$ | async"
+              [isSearchable]="(selectTypesApplication$ | async)?.length > 5"
+              [label]="'newProductExistingSupplier.regulatoryResearch.details.application' | translate"
+              [required]="false"
+              (valueDropList)="setValueDropDownListConfiguration($event, 'IdCatAplicacion', 'typeApplicationSelected')"
+            ></app-drop-down-list>
+          </div>
+          <div class="transportationWay">
+            <app-drop-down-list
+              [activeMinWidth]="false"
+              [itemSelected]="selectTransportationWay$ | async"
+              [items]="selectTransportationsWay$ | async"
+              [isSearchable]="(selectTransportationsWay$ | async)?.length > 5"
+              [label]="'newProductExistingSupplier.regulatoryResearch.details.conveyance' | translate"
+              [required]="false"
+              (valueDropList)="setValueDropDownListConfiguration($event, 'IdCatMedioTransporte', 'transportationWaySelected')"
+            ></app-drop-down-list>
+          </div>
+          <div class="transportationManagment">
+            <app-drop-down-list
+              [activeMinWidth]="false"
+              [itemSelected]="selectTransportationManagmentSelected$ | async"
+              [items]="selectTransportationManagment$ | async"
+              [isSearchable]="(selectTransportationManagment$ | async)?.length > 5"
+              [label]="'newProductExistingSupplier.regulatoryResearch.details.transportationManagement' | translate"
+              [required]="false"
+              (valueDropList)="
+                setValueDropDownListConfiguration($event, 'IdCatManejoTransporte', 'transportationManagementSelected')
+              "
+            ></app-drop-down-list>
+          </div>
+          <div class="storage">
+            <app-drop-down-list
+              [activeMinWidth]="false"
+              [itemSelected]="selectStorageSelected$ | async"
+              [items]="selectTransportationManagment$ | async"
+              [isSearchable]="(selectTransportationManagment$ | async)?.length > 5"
+              [label]="'newProductExistingSupplier.regulatoryResearch.details.handlingStorage' | translate"
+              [required]="false"
+              (valueDropList)="setValueDropDownListConfiguration($event, 'IdCatManejoAlmacenaje', 'storageSelected')"
+            ></app-drop-down-list>
+          </div>
+          <div class="purity">
+            <app-generic-input
+              [label]="'Peligrosidad'"
+              [maxlength]="500"
+              [required]="false"
+              [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+              [value]="(productDetails$ | async)?.Peligrosidad"
+              [minlength]="3"
+              (textData)="setValueInput($event, 'Peligrosidad')"
+            ></app-generic-input>
+          </div>
+
+          <div class="notes">
+            <app-generic-input
+              [label]="'Notas'"
+              [maxlength]="500"
+              [required]="false"
+              [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+              [value]="(productDetails$ | async)?.Nota"
+              [minlength]="3"
+              (textData)="setValueInput($event, 'Nota')"
+            ></app-generic-input>
+          </div>
+        </div>
+        <div class="publications" *ngIf="selectValidationPublications$ | async">
+          <div class="form-data">
+            <div class="inputFamily">
+              <app-drop-down-list
+                [activeMinWidth]="false"
+                [enableEdit]="false"
+                [itemSelected]="selectedTypeProductFamily$ | async"
+                [items]="selectTypeProductsFamily$ | async"
+                [isSearchable]="(selectTypeProductsFamily$ | async)?.length > 5"
+                [label]="'formProduct.general.typeProductFamily' | translate"
+                [required]="true"
+              ></app-drop-down-list>
+            </div>
+
+            <div class="inputAutor">
+              <app-generic-input
+                [label]="'Autor'"
+                [maxlength]="200"
+                [required]="true"
+                [typeValidation]="inputValidators.AlphaAndSpaces"
+                [value]="(productDetails$ | async)?.ProductoPublicacion?.Autor"
+                [minlength]="3"
+                (textData)="setValuePublications($event, 'Autor')"
+              ></app-generic-input>
+            </div>
+            <div class="inputPublicationFormat">
+              <app-drop-down-list
+                [activeMinWidth]="false"
+                [itemSelected]="selectePublicationsFormatSelected$ | async"
+                [items]="selectCatPublicationsFormat$ | async"
+                [isSearchable]="(selectCatPublicationsFormat$ | async)?.length > 5"
+                [label]="'Formato de Publicación'"
+                [required]="true"
+                (valueDropList)="
+                  setValueDropDownListConfiguration($event, 'IdCatFormatoPublicacion', 'publicationsFormatSelected')
+                "
+              ></app-drop-down-list>
+            </div>
+            <div class="inputISBN">
+              <app-generic-input
+                [label]="'ISBN No.'"
+                [maxlength]="200"
+                [typeValidation]="inputValidators.NumberAndDashes"
+                [value]="(productDetails$ | async)?.ProductoPublicacion?.ISBN"
+                (textData)="setValuePublications($event, 'ISBN')"
+              ></app-generic-input>
+            </div>
+            <div class="inputEditor">
+              <app-generic-input
+                [label]="'Editorial'"
+                [maxlength]="200"
+                [required]="false"
+                [typeValidation]="inputValidators.AlphaAndSpaces"
+                [value]="(productDetails$ | async)?.ProductoPublicacion?.Editorial"
+                [minlength]="3"
+                (textData)="setValuePublications($event, 'Editorial')"
+              ></app-generic-input>
+            </div>
+            <div class="inputEdition">
+              <app-generic-input
+                [label]="'Edición'"
+                [maxlength]="200"
+                [required]="false"
+                [typeValidation]="inputValidators.Alphanumeric"
+                [value]="(productDetails$ | async)?.ProductoPublicacion?.Edicion"
+                [minlength]="3"
+                (textData)="setValuePublications($event, 'Edicion')"
+              ></app-generic-input>
+            </div>
+          </div>
+          <div class="supplements">
+            <div class="supplements-title">
+              <label>{{ 'formProduct.general.supplements' | translate }}</label>
+            </div>
+            <div class="supplements-form-data">
+              <div class="description">
+                <app-generic-input
+                  [label]="'* Descripción'"
+                  [maxlength]="700"
+                  [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+                  [minlength]="3"
+                  [value]="(supplementProduct$ | async)?.Descripcion"
+                  (textData)="setValueSupplementProduct($event, 'Descripcion')"
+                ></app-generic-input>
+              </div>
+              <div class="isbn">
+                <app-generic-input
+                  [label]="'ISBN No.'"
+                  [maxlength]="200"
+                  [typeValidation]="inputValidators.NumberAndDashes"
+                  [value]="(supplementProduct$ | async)?.ISBN"
+                  (textData)="setValueSupplementProduct($event, 'ISBN')"
+                ></app-generic-input>
+              </div>
+              <div class="editorial">
+                <app-generic-input
+                  [label]="'Editorial'"
+                  [maxlength]="200"
+                  [typeValidation]="inputValidators.AlphaAndSpaces"
+                  [value]="(supplementProduct$ | async)?.Editorial"
+                  [minlength]="3"
+                  (textData)="setValueSupplementProduct($event, 'Editorial')"
+                ></app-generic-input>
+              </div>
+              <div class="edicion">
+                <app-generic-input
+                  [label]="'Edición'"
+                  [maxlength]="200"
+                  [typeValidation]="inputValidators.Alphanumeric"
+                  [value]="(supplementProduct$ | async)?.Edicion"
+                  [minlength]="3"
+                  (textData)="setValueSupplementProduct($event, 'Edicion')"
+                ></app-generic-input>
+              </div>
+              <div class="btn-save">
+                <button
+                  [disabled]="!(selectValidationSuplemmentaryProduct$ | async)"
+                  [ngClass]="(selectValidationSuplemmentaryProduct$ | async) ? 'enable' : 'disable'"
+                  (click)="saveData()"
+                  >{{ 'common.add' | translate }}</button
+                >
+              </div>
+            </div>
+            <div class="chips">
+              <div class="fileChip">
+                <div class="rounded" *ngFor="let supplement of selectsSupplementaryProducts$ | async; let i = index">
+                  <label>
+                    #{{ i + 1 }} · <span class="title">{{ supplement.Descripcion }}</span>
+                    <span class="isbnEditor">
+                      {{ buildSupplementData(supplement) }}
+                    </span>
+                  </label>
+
+                  <div (click)="deleteSupplement(supplement)"><img src="assets/Images/cerrar.svg" /></div>
+                </div>
+              </div>
+            </div>
+            <div class="notes">
+              <app-generic-input
+                class="picker"
+                [label]="'Notas'"
+                [maxlength]="500"
+                [required]="false"
+                [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+                [value]="(productDetails$ | async)?.Nota"
+                [minlength]="3"
+                (textData)="setValueInput($event, 'Nota')"
+              ></app-generic-input>
+            </div>
+          </div>
+        </div>
+        <div class="labware" *ngIf="selectValidationLabware$ | async">
+          <div class="type-products">
+            <app-drop-down-list
+              [activeMinWidth]="false"
+              [capitalize]="false"
+              [enableEdit]="false"
+              [itemSelected]="selectedTypeProductFamily$ | async"
+              [items]="selectTypeProductsFamily$ | async"
+              [isSearchable]="(selectTypeProductsFamily$ | async)?.length > 5"
+              [label]="'formProduct.general.typeProductFamily' | translate"
+              [required]="true"
+            >
+            </app-drop-down-list>
+          </div>
+          <div class="notes">
+            <app-generic-input
+              [label]="'Notas'"
+              [maxlength]="500"
+              [required]="false"
+              [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+              [value]="(productDetails$ | async)?.Nota"
+              [minlength]="3"
+              (textData)="setValueInput($event, 'Nota')"
+            ></app-generic-input>
+          </div>
+        </div>
+        <div class="medicalDevices" *ngIf="selectValidationMedicalDevices$ | async">
+          <div class="type-products">
+            <app-drop-down-list
+              [activeMinWidth]="false"
+              [capitalize]="false"
+              [enableEdit]="false"
+              [itemSelected]="selectedTypeProductFamily$ | async"
+              [items]="selectTypeProductsFamily$ | async"
+              [isSearchable]="(selectTypeProductsFamily$ | async)?.length > 5"
+              [label]="'formProduct.general.typeProductFamily' | translate"
+              [required]="true"
+            >
+            </app-drop-down-list>
+          </div>
+          <div class="health-register">
+            <app-generic-input
+              [label]="'formProduct.general.healthRegister' | translate"
+              [maxlength]="50"
+              [required]="false"
+              [typeValidation]="inputValidators.Number"
+              [value]="(selectProductMedicalDevices$ | async)?.NumeroDeRegistroSanitario"
+              (textData)="setValueInputWithConfiguration($event, 'NumeroDeRegistroSanitario')"
+            ></app-generic-input>
+          </div>
+          <div class="expiration-health-register">
+            <app-date-picker
+              [dateFormat]="'YYYYMMDD'"
+              [date]="selectDateExpirationHealthRegister$ | async"
+              [disabledCalendarDays]="selectNonWorkingDays$ | async"
+              [label]="'formProduct.general.expirationHealthRegister' | translate"
+              [rangeStart]="rangeStart"
+              (fecha)="setDataExpirationHealthRegister($event)"
+            >
+            </app-date-picker>
+          </div>
+          <div class="storage">
+            <app-drop-down-list
+              [activeMinWidth]="false"
+              [itemSelected]="selectStorageSelected$ | async"
+              [items]="selectTransportationManagment$ | async"
+              [isSearchable]="(selectTransportationManagment$ | async)?.length > 5"
+              [label]="'Manejo Almacenaje'"
+              [required]="false"
+              (valueDropList)="setValueDropDownListConfiguration($event, 'IdCatManejoAlmacenaje', 'storageSelected')"
+            ></app-drop-down-list>
+          </div>
+          <div class="notes">
+            <app-generic-input
+              [label]="'Notas'"
+              [maxlength]="500"
+              [required]="false"
+              [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+              [value]="(productDetails$ | async)?.Nota"
+              [minlength]="3"
+              (textData)="setValueInput($event, 'Nota')"
+            ></app-generic-input>
+          </div>
+        </div>
+        <div class="training" *ngIf="selectValidationTraining$ | async">
+          <div class="productType">
+            <app-generic-input
+              [enableEdit]="false"
+              [label]="'Tipo de producto (Familia)'"
+              [required]="true"
+              [showAsterisk]="true"
+              [value]="'Capacitaciones'"
+            >
+            </app-generic-input>
+          </div>
+          <div class="model" [ngClass]="true ? 'edit' : 'read'">
+            <div class="radios">
+              <app-drop-down-list
+                [activeMinWidth]="false"
+                [itemSelected]="selectedDiffusionModel$ | async"
+                [items]="broadcastMediaRadios$ | async"
+                [isSearchable]="(broadcastMediaRadios$ | async)?.length > 5"
+                [label]="'* Modelo de Difusión'"
+                (valueDropList)="setValueInputWithConfiguration($event, 'IdCatMedioDifusion')"
+              ></app-drop-down-list>
+            </div>
+          </div>
+          <div class="duration">
+            <app-generic-input
+              [labelInsidePlaceHolderRight]="'Horas'"
+              [label]="'Duración del evento'"
+              [placeholder]="'#'"
+              [required]="true"
+              [showAsterisk]="true"
+              [textAlign]="'center'"
+              [maxlength]="10"
+              [typeValidation]="inputValidators.Int"
+              [value]="(selectProductTraining$ | async)?.DuracionEvento"
+              (textData)="setValueInputWithConfiguration($event, 'DuracionEvento')"
+            ></app-generic-input>
+          </div>
+          <div class="notes">
+            <app-generic-input
+              [label]="'Notas'"
+              [maxlength]="500"
+              [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+              [value]="(productDetails$ | async)?.Nota"
+              [minlength]="3"
+              (textData)="setValueInput($event, 'Nota')"
+            ></app-generic-input>
+          </div>
+        </div>
+        <div class="files-container" *ngIf="(gmProviderResponse$ | async)?.file; let file">
+          <label class="title">{{
+            'attendInvestigation.attendInvestigationDetail.evidenceProviderResponse' | translate
+          }}</label>
+          <div class="file" (click)="handleSeeFile(file)">
+            <label>{{ (gmProviderResponse$ | async)?.file.name }}</label>
+          </div>
+        </div>
+      </div>
+      <div class="required">
+        <label>*{{ 'common.requiredField' | translate }}</label>
+      </div>
+    </div>
+    <div
+      class="without-results"
+      *ngIf="
+        lodashIsEmpty((productDetail$ | async)?.productTypeFamilySelected) &&
+        lodashIsEmpty((productDetail$ | async)?.selectedTradeMarkd)
+      "
+    >
+      <app-without-results
+        [title]="'selecciona una marca y un tipo de familia para habilitar esta sección'"
+      ></app-without-results>
+    </div>
+  </div>
+</div>

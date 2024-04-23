@@ -1,0 +1,101 @@
+<div id="close-offer-details-container">
+  <div class="container">
+    <div class="arrow" [ngClass]="leftContainerIsOpen ? '' : 'close'">
+      <img src="assets/Images/arrows/flecha_mostrar.svg" alt="" (click)="handleLeftContainer()" />
+    </div>
+    <div class="left-container" [ngClass]="leftContainerIsOpen ? '' : 'close'">
+      <div class="slide">
+        <div class="client-title">
+          <label class="textUpperCase">{{ 'closeOffer.client' | translate }} · </label>
+        </div>
+        <div class="client">
+          <div>
+            <img src="" alt="" />
+          </div>
+          <div class="client-info">
+            <div>
+              <label></label>
+            </div>
+            <label>{{ 'closeOffer.client' | translate }}</label>
+          </div>
+        </div>
+        <div class="extra-data">
+          <div>
+            <label>{{ 'closeOffer.request' | translate }}</label>
+            <label></label>
+          </div>
+          <div>
+            <label>{{ 'closeOffer.classification' | translate }}</label>
+            <label></label>
+          </div>
+        </div>
+        <div class="contact-data">
+          <div>
+            <label>{{ 'closeOffer.contactData' | translate }}</label>
+          </div>
+          <div class="image">
+            <img src="assets/Images/contacto.svg" alt="contact" />
+            <label class="bold"></label>
+          </div>
+          <div class="image">
+            <img src="assets/Images/quotation/mail.svg" alt="mail" />
+            <label></label>
+          </div>
+          <div class="image">
+            <img src="assets/Images/quotation/phone.svg" alt="phone" />
+            <label></label>
+          </div>
+          <div class="data">
+            <label>{{ 'closeOffer.dept' | translate }}: </label>
+            <label></label>
+          </div>
+          <div class="data">
+            <label>{{ 'closeOffer.position' | translate }}: </label>
+            <label></label>
+          </div>
+          <div class="data">
+            <label>{{ 'closeOffer.decisionLevel' | translate }}: </label>
+            <label></label>
+          </div>
+          <div class="data">
+            <label>{{ 'closeOffer.descriptionPosition' | translate }}: </label>
+            <label></label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="right-container">
+      <div class="content">
+        <div class="carousel"></div>
+        <div class="center-container">
+          <div class="center">
+            <router-outlet></router-outlet>
+          </div>
+          <aside></aside>
+        </div>
+      </div>
+      <footer>
+        <div>
+          <label>OC: </label>
+          <label>{{ 'process.purchaseOrder' | translate }}</label>
+        </div>
+        <div>
+          <img src="assets/Images/pre-processing/originales.svg" alt="" />
+          <label>{{ 'preProcessing.typeOfItem.originals' | translate }}</label>
+        </div>
+        <div>
+          <img src="assets/Images/pre-processing/alternativas.svg" alt="" />
+          <label>{{ 'preProcessing.typeOfItem.alternatives' | translate }}</label>
+        </div>
+        <div>
+          <img src="assets/Images/pre-processing/complementarias.svg" alt="" />
+          <label>{{ 'preProcessing.typeOfItem.complementary' | translate }}</label>
+        </div>
+        <div>
+          <img src="assets/Images/pre-processing/complementarias.svg" alt="" />
+          <label>{{ 'preProcessing.typeOfItem.scheduled' | translate }}</label>
+        </div>
+      </footer>
+    </div>
+  </div>
+</div>

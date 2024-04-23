@@ -1,0 +1,443 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  & > #shipping-console-list {
+    @include s.flexColumn;
+    @include s.absolute100;
+
+    & > .content {
+      @include s.flexColumn;
+      flex: 1;
+      overflow: hidden;
+      padding: 20px;
+
+      & > .top-container {
+        @include s.flexColumn;
+
+        & > .filters {
+          @include s.flexRow;
+          flex: 0 0 auto;
+          padding: 20px 0;
+
+          & > .hamburger {
+            @include s.flexRow;
+            width: 50%;
+          }
+
+          & > .search {
+            @include s.flexRow;
+            justify-content: flex-end;
+            width: 50%;
+
+            & > div {
+              width: 50%;
+            }
+          }
+        }
+      }
+
+      & > .table-container {
+        @include s.flexColumn;
+        flex: 1;
+
+        & > .header {
+          @include s.flexRow;
+          border-bottom: 1px solid s.$pqBlack2;
+          flex: 0 0 auto;
+          padding: 10px 0 10px 10px;
+
+          & > .index {
+            @include s.flexRow;
+            justify-content: center;
+            width: 27px;
+
+            & > label {
+              @include s.Roboto-Bold;
+              @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+            }
+          }
+
+          & > .icons {
+            width: 60px;
+          }
+
+          & > .priority {
+            @include s.flexRow;
+            justify-content: center;
+            width: 5%;
+
+            & > label {
+              @include s.Roboto-Bold;
+              @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+            }
+          }
+
+          & > .client {
+            @include s.flexRow;
+            justify-content: center;
+            width: 10%;
+
+            & > label {
+              @include s.Roboto-Bold;
+              @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+            }
+          }
+
+          & > .zone {
+            @include s.flexRow;
+            justify-content: center;
+            width: 20%;
+
+            & > label {
+              @include s.Roboto-Bold;
+              @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+            }
+          }
+
+          & > .contact {
+            @include s.flexRow;
+            justify-content: center;
+            width: 10%;
+
+            & > label {
+              @include s.Roboto-Bold;
+              @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+            }
+          }
+
+          & > .FEE {
+            @include s.flexRow;
+            justify-content: center;
+            width: 12%;
+
+            & > label {
+              @include s.Roboto-Bold;
+              @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+            }
+          }
+
+          & > .remainingDays {
+            @include s.flexRow;
+            justify-content: center;
+            width: 8%;
+
+            & > label {
+              @include s.Roboto-Bold;
+              @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+            }
+          }
+
+          & > .end {
+            @include s.flexRow;
+            flex: 1;
+          }
+        }
+
+        & > .body {
+          @include s.flexColumn;
+          flex: 1;
+
+          & > virtual-scroller {
+            @include s.absolute100;
+
+            & > ::ng-deep .scrollable-content {
+              max-width: 100% !important;
+              max-height: 100% !important;
+            }
+
+            .item {
+              @include s.flexColumn;
+              border-bottom: 1px solid s.$pqGray;
+              flex: 0 0 auto;
+
+              & > .principal {
+                @include s.flexRow;
+
+                &:hover {
+                  background-color: s.$pqGray2;
+                }
+
+                & > .selector {
+                  width: 5px;
+                  margin-right: 5px;
+
+                  & .selected {
+                    background-color: s.$pqGreen;
+                  }
+                }
+
+                & > .index {
+                  @include s.flexRow;
+                  @include s.absoluteCenter;
+                  width: 27px;
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                  }
+                }
+
+                & > .icons {
+                  @include s.flexRow;
+                  align-items: center;
+                  justify-content: center;
+
+                  & > div {
+                    padding: 0 5px;
+
+                    & > img {
+                      cursor: pointer;
+                      height: 15px;
+                    }
+                  }
+                }
+
+                & > .priority {
+                  @include s.flexRow;
+                  @include s.absoluteCenter;
+                  width: 5%;
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                  }
+                }
+
+                & > .client {
+                  @include s.flexRow;
+                  @include s.absoluteCenter;
+                  width: 10%;
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                  }
+                }
+
+                & > .zone {
+                  @include s.flexColumn;
+                  @include s.absoluteCenter;
+                  padding: 5px 0;
+                  width: 20%;
+
+                  & > span {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen);
+                    text-align: center;
+                  }
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to14, regular, s.$pqBlack2);
+                    text-align: center;
+                  }
+                }
+
+                & > .contact {
+                  @include s.flexColumn;
+                  @include s.absoluteCenter;
+                  padding: 5px 0;
+                  width: 10%;
+
+                  & > span {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen);
+                    text-align: center;
+                  }
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                    text-align: center;
+                  }
+                }
+
+                & > .FEE {
+                  @include s.flexRow;
+                  @include s.absoluteCenter;
+                  width: 12%;
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                  }
+                }
+
+                & > .remainingDays {
+                  @include s.flexRow;
+                  @include s.absoluteCenter;
+                  width: 8%;
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                  }
+                }
+
+                & > .end {
+                  @include s.flexRow;
+                  flex: 1;
+
+                  & > .info {
+                    @include s.flexColumn;
+                    @include s.absoluteCenter;
+                    padding: 5px 10px;
+                    flex: 1;
+
+                    & > label {
+                      @include s.Roboto-Regular;
+                      @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen);
+                      text-align: center;
+                    }
+                  }
+
+                  & > .filter {
+                    @include s.flexRow;
+                    align-items: center;
+                    flex: 1;
+                    justify-content: center;
+                    padding: 0 5px;
+
+                    & > label {
+                      @include s.flexRow;
+                      @include s.Roboto-Regular;
+                      @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                      flex: none;
+
+                      & > img {
+                        cursor: pointer;
+                        padding-left: 10px;
+                        max-width: 23px;
+                      }
+                    }
+                  }
+                }
+              }
+
+              & > .secundary {
+                @include s.flexColumn;
+                background-color: s.$pqGray5;
+                max-height: 217px;
+                padding: 20px 40px;
+
+                & > .items {
+                  @include s.flexRow;
+                  border-bottom: 1px solid s.$pqPlaceholder;
+                  padding-bottom: 5px;
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqPlaceholder);
+                    padding-left: 40px;
+                  }
+                }
+
+                & > .list-items {
+                  @include s.flexColumn;
+                  padding: 0 40px;
+                  border-bottom: 1px solid s.$pqPlaceholder;
+                  overflow-y: auto;
+
+                  & > .item {
+                    @include s.flexRow;
+                    border-bottom: 1px solid s.$pqGray;
+                    padding: 10px 0;
+                    justify-content: center;
+
+                    & > .content {
+                      @include s.flexRow;
+                      flex: 0 0 auto;
+
+                      & > label:nth-of-type(1) {
+                        @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                        @include s.Roboto-Regular;
+                        padding-right: 4px;
+                      }
+
+                      & > label:nth-of-type(2) {
+                        @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen);
+                        @include s.Roboto-Regular;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    & > footer {
+      @include s.flexRow;
+      @include s.absoluteCenter;
+      border-top: 2px solid s.$pqBlack2;
+      height: 50px;
+
+      & > .content {
+        @include s.flexRow;
+        @include s.absoluteCenter;
+
+        & > label {
+          @include s.absoluteCenter;
+          @include s.flexRow;
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize13to14, regular, s.$pqBlack2);
+          padding: 0 20px;
+          white-space: pre;
+
+          & > span {
+            @include s.Roboto-Bold;
+          }
+
+          & > img {
+            margin-right: 6px;
+          }
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > #shipping-console-list {
+        & > .table-container {
+          & > .header {
+            & > .icons {
+              width: 70px;
+            }
+          }
+
+          & > .body {
+            & > virtual-scroller {
+              .item {
+                & > .principal {
+                  & > .end {
+                    & > .filter {
+                      & > label {
+                        & > img {
+                          max-width: 30px;
+                        }
+                      }
+                    }
+                  }
+                }
+
+                & > .secundary {
+                  max-height: 252px;
+
+                  & > .list-items {
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

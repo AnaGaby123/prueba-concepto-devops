@@ -1,0 +1,44 @@
+<div #popUp [style.top]="popUpTopProperty" [style.left]="popUpLeftProperty">
+  <div
+    [style.border-radius]="borderRadius"
+    [style.max-height]="maxHeight"
+    [style.max-width]="maxWidth"
+    [style.min-height]="minHeight"
+    [style.min-width]="minWidth"
+    (click)="handleStopEvents($event)"
+  >
+    <div
+      class="container"
+      [style.background-color]="backgroundColor"
+      [style.border-color]="borderColor"
+      [style.border-radius]="borderRadius"
+      [style.padding]="padding"
+      [style.z-index]="zIndexInvert ? 3 : 2"
+    >
+      <img
+        class="close-button"
+        alt=""
+        *ngIf="closeButton"
+        [src]="closeButtonImage"
+        [style.height]="closeButtonSize"
+        [style.right]="closeButtonSeparation"
+        [style.top]="closeButtonSeparation"
+        [style.width]="closeButtonSize"
+        (click)="closePopUp()"
+      />
+      <ng-content class="content"></ng-content>
+    </div>
+    <div
+      class="triangle"
+      [ngClass]="popUpPosition"
+      [style.background-color]="triangleBackgroundColor"
+      [style.border-bottom-color]="borderColor"
+      [style.border-right-color]="borderColor"
+      [style.bottom]="triangleBottomPosition"
+      [style.left]="triangleLeftPosition"
+      [style.right]="triangleRightPosition"
+      [style.top]="triangleTopPosition"
+      [style.z-index]="zIndexInvert ? 2 : 3"
+    ></div>
+  </div>
+</div>

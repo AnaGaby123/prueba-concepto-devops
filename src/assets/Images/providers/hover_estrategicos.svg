@@ -1,0 +1,187 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='52.18' height='55.22' viewBox='0 0 52.18 55.22'>
+  <defs>
+    <style>.cls-1, .cls-2 {
+      fill: none;
+    }
+
+    .cls-2 {
+      clip-rule: evenodd;
+    }
+
+    .cls-3 {
+      clip-path: url(#clip-path);
+    }
+
+    .cls-4 {
+      clip-path: url(#clip-path-2);
+    }
+
+    .cls-5 {
+      fill: #008894;
+    }
+
+    .cls-6 {
+      clip-path: url(#clip-path-3);
+    }
+
+    .cls-7 {
+      fill: #fff;
+    }
+
+    .cls-8 {
+      clip-path: url(#clip-path-5);
+    }
+
+    .cls-9 {
+      clip-path: url(#clip-path-7);
+    }
+
+    .cls-10 {
+      clip-path: url(#clip-path-9);
+    }
+
+    .cls-11 {
+      clip-path: url(#clip-path-11);
+    }
+
+    .cls-12 {
+      clip-path: url(#clip-path-13);
+    }
+
+    .cls-13 {
+      clip-path: url(#clip-path-15);
+    }
+
+    .cls-14 {
+      clip-path: url(#clip-path-17);
+    }
+
+    .cls-15 {
+      clip-path: url(#clip-path-19);
+    }
+
+    .cls-16 {
+      clip-path: url(#clip-path-21);
+    }
+
+    .cls-17 {
+      clip-path: url(#clip-path-23);
+    }</style>
+    <clipPath id='clip-path' transform='translate(5 6.3)'>
+      <rect class='cls-1' y='19.67' width='37.2' height='24.24' rx='2' />
+    </clipPath>
+    <clipPath id='clip-path-2' transform='translate(5 6.3)'>
+      <rect class='cls-1' x='-264' y='-871.93' width='2560' height='1875' />
+    </clipPath>
+    <clipPath id='clip-path-3' transform='translate(5 6.3)'>
+      <path class='cls-2'
+            d='M10.2,25.73a3.74,3.74,0,1,1-3.84,3.74A3.8,3.8,0,0,1,10.2,25.73ZM3.6,39.07a6.72,6.72,0,0,1,3.61-5.94,4.57,4.57,0,0,0,2.56,1.09L8.92,35l1.31,3.84L11.48,35l-.83-.81a4.53,4.53,0,0,0,2.54-1.09,6.72,6.72,0,0,1,3.61,5.94Z' />
+    </clipPath>
+    <clipPath id='clip-path-5' transform='translate(5 6.3)'>
+      <rect class='cls-1' x='19.8' y='28.16' width='14.4' height='1.21' rx='0.5' />
+    </clipPath>
+    <clipPath id='clip-path-7' transform='translate(5 6.3)'>
+      <rect class='cls-1' x='19.8' y='31.79' width='14.4' height='1.21' rx='0.5' />
+    </clipPath>
+    <clipPath id='clip-path-9' transform='translate(5 6.3)'>
+      <rect class='cls-1' x='19.8' y='34.82' width='14.4' height='1.21' rx='0.5' />
+    </clipPath>
+    <clipPath id='clip-path-11' transform='translate(5 6.3)'>
+      <rect class='cls-1' x='19.8' y='37.85' width='14.4' height='1.21' rx='0.5' />
+    </clipPath>
+    <clipPath id='clip-path-13' transform='translate(5 6.3)'>
+      <rect class='cls-1' x='13.54' y='-2.65' width='20.61' height='31.2' rx='2'
+            transform='translate(6.22 33.58) rotate(-78)' />
+    </clipPath>
+    <clipPath id='clip-path-15' transform='translate(5 6.3)'>
+      <path class='cls-2'
+            d='M18,6.45a3.17,3.17,0,1,1-3.81,2.43A3.19,3.19,0,0,1,18,6.45Zm-7.77,9.93a5.73,5.73,0,0,1,4-4.31,3.77,3.77,0,0,0,1.9,1.36l-.83.48.4,3.41,1.69-2.92-.54-.82a3.72,3.72,0,0,0,2.28-.47,5.72,5.72,0,0,1,1.91,5.57Z' />
+    </clipPath>
+    <clipPath id='clip-path-17' transform='translate(5 6.3)'>
+      <rect class='cls-1' x='30.76' y='5.86' width='1.03' height='12.08' rx='0.5'
+            transform='translate(13.13 40.01) rotate(-78)' />
+    </clipPath>
+    <clipPath id='clip-path-19' transform='translate(5 6.3)'>
+      <rect class='cls-1' x='30.11' y='8.88' width='1.03' height='12.08' rx='0.5'
+            transform='translate(9.67 41.77) rotate(-78)' />
+    </clipPath>
+    <clipPath id='clip-path-21' transform='translate(5 6.3)'>
+      <rect class='cls-1' x='29.58' y='11.4' width='1.03' height='12.08' rx='0.5'
+            transform='translate(6.78 43.25) rotate(-78)' />
+    </clipPath>
+    <clipPath id='clip-path-23' transform='translate(5 6.3)'>
+      <rect class='cls-1' x='29.04' y='13.92' width='1.03' height='12.08' rx='0.5'
+            transform='translate(3.89 44.72) rotate(-78)' />
+    </clipPath>
+  </defs>
+  <g id='Layer_2' data-name='Layer 2'>
+    <g id='Layer_1-2' data-name='Layer 1'>
+      <g class='cls-3'>
+        <g class='cls-4'>
+          <rect class='cls-5' y='20.97' width='47.2' height='34.24' />
+        </g>
+      </g>
+      <g class='cls-6'>
+        <g class='cls-4'>
+          <rect class='cls-7' x='3.6' y='27.04' width='23.2' height='23.33' />
+        </g>
+      </g>
+      <g class='cls-8'>
+        <g class='cls-4'>
+          <rect class='cls-7' x='19.8' y='29.46' width='24.4' height='11.21' />
+        </g>
+      </g>
+      <g class='cls-9'>
+        <g class='cls-4'>
+          <rect class='cls-7' x='19.8' y='33.1' width='24.4' height='11.21' />
+        </g>
+      </g>
+      <g class='cls-10'>
+        <g class='cls-4'>
+          <rect class='cls-7' x='19.8' y='36.13' width='24.4' height='11.21' />
+        </g>
+      </g>
+      <g class='cls-11'>
+        <g class='cls-4'>
+          <rect class='cls-7' x='19.8' y='39.16' width='24.4' height='11.21' />
+        </g>
+      </g>
+      <g class='cls-12'>
+        <g class='cls-4'>
+          <rect class='cls-5' x='8.54' y='-7.65' width='30.61' height='41.2'
+                transform='translate(11.22 39.88) rotate(-78)' />
+        </g>
+      </g>
+      <g class='cls-13'>
+        <g class='cls-4'>
+          <rect class='cls-7' x='6.18' y='1.45' width='21.33' height='21.07'
+                transform='translate(6.62 32.28) rotate(-78)' />
+        </g>
+      </g>
+      <g class='cls-14'>
+        <g class='cls-4'>
+          <rect class='cls-7' x='25.76' y='0.86' width='11.03' height='22.08'
+                transform='translate(18.13 46.31) rotate(-78)' />
+        </g>
+      </g>
+      <g class='cls-15'>
+        <g class='cls-4'>
+          <rect class='cls-7' x='25.11' y='3.88' width='11.03' height='22.08'
+                transform='translate(14.67 48.08) rotate(-78)' />
+        </g>
+      </g>
+      <g class='cls-16'>
+        <g class='cls-4'>
+          <rect class='cls-7' x='24.58' y='6.4' width='11.03' height='22.08'
+                transform='translate(11.78 49.55) rotate(-78)' />
+        </g>
+      </g>
+      <g class='cls-17'>
+        <g class='cls-4'>
+          <rect class='cls-7' x='24.04' y='8.92' width='11.03' height='22.08'
+                transform='translate(8.89 51.02) rotate(-78)' />
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

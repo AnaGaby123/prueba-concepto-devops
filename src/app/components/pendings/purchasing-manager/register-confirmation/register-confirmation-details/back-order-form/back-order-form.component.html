@@ -1,0 +1,125 @@
+<div class="back-order-container">
+  <div class="close-button"><img src="assets/Images/purple-x.svg" alt="" class="absolute" (click)="cancelConfig()" /> </div>
+  <div class="form-container">
+    <div class="form">
+      <div class="date">
+        <app-date-picker
+          class="date-picker"
+          dateFormat="YYYYMMDD"
+          [labelFontColor]="'#6a6aae'"
+          [label]="'registerConfirmation.providerFDP' | translate"
+          [color]="false"
+          [disabled]="false"
+          [isMulticolor]="true"
+          [checkColor]="'purple'"
+          [disabledCalendarDays]="selectNonWorkingDays$ | async"
+          [date]="item?.ocPartidaEdicionBackOrder?.FechaEstimadaDisponibilidadProveedorDate"
+          (fecha)="handleDate('FechaEstimadaDisponibilidadProveedor', $event)"
+          [rangeStart]="fdpStartRank"
+        ></app-date-picker>
+        <app-date-picker
+          class="date-picker"
+          dateFormat="YYYYMMDD"
+          [labelFontColor]="'#6a6aae'"
+          [label]="'registerConfirmation.fea' | translate"
+          [color]="false"
+          [isMulticolor]="true"
+          [checkColor]="'purple'"
+          [disabled]="!item?.ocPartidaEdicionBackOrder?.FechaEstimadaDisponibilidadProveedorDate"
+          [disabledCalendarDays]="selectNonWorkingDays$ | async"
+          [date]="item?.ocPartidaEdicionBackOrder?.FechaEstimadaArriboDate"
+          [rangeStart]="feaStartRank"
+          (fecha)="handleDate('FechaEstimadaArribo', $event)"
+        ></app-date-picker>
+        <app-date-picker
+          class="date-picker"
+          dateFormat="YYYYMMDD"
+          [labelFontColor]="'#6a6aae'"
+          [label]="'registerConfirmation.monitoringDate' | translate"
+          [color]="false"
+          [isMulticolor]="true"
+          [checkColor]="'purple'"
+          [disabled]="
+            !item?.ocPartidaEdicionBackOrder?.FechaEstimadaDisponibilidadProveedorDate ||
+            !item?.ocPartidaEdicionBackOrder?.FechaEstimadaArriboDate ||
+            !item?.ocPartidaEdicionBackOrder?.FechaEstimadaEntregaDate
+          "
+          [disabledCalendarDays]="selectNonWorkingDays$ | async"
+          [date]="item?.ocPartidaEdicionBackOrder?.FechaMonitoreoDate"
+          [rangeStart]="feaStartRank"
+          [rangeEnd]="monitoringEndRank"
+          (fecha)="handleDate('FechaMonitoreo', $event)"
+        ></app-date-picker>
+      </div>
+      <div>
+        <app-date-picker
+          class="date-picker"
+          dateFormat="YYYYMMDD"
+          [labelFontColor]="'#6a6aae'"
+          [label]="'registerConfirmation.feeNew' | translate"
+          [color]="false"
+          [disabledCalendarDays]="selectNonWorkingDays$ | async"
+          [disabled]="
+            !item?.ocPartidaEdicionBackOrder?.FechaEstimadaDisponibilidadProveedorDate ||
+            !item?.ocPartidaEdicionBackOrder?.FechaEstimadaArriboDate
+          "
+          [date]="item?.ocPartidaEdicionBackOrder?.FechaEstimadaEntregaDate"
+          [rangeStart]="feeNewStartRank"
+          [isMulticolor]="true"
+          [checkColor]="'purple'"
+          (fecha)="handleDate('FechaEstimadaEntrega', $event)"
+        ></app-date-picker>
+        <div class="input">
+          <div>
+            <app-generic-input
+              [fontSize]="viewType === 'iPad' ? '13px' : '16px'"
+              [isDisable]="
+                item?.backOrderConfig ||
+                (nameComponent === registerConfirmation && arrayLength === 4) ||
+                (nameComponent !== registerConfirmation && arrayLength === 3)
+              "
+              [label]="'common.pieces' | translate"
+              [labelFontColor]="'#6a6aae'"
+              [placeholder]="'0'"
+              [textAlign]="'center'"
+              [typeValidation]="inputValidators.Number"
+              [value]="item?.ocPartidaEdicionBackOrder?.NumeroDePiezas"
+              (textData)="saveInputValue('NumeroDePiezas', $event)"
+            ></app-generic-input>
+          </div>
+          <label>{{ 'common.fromMinus' | translate }} {{ item?.tempNumeroDePiezas }}</label>
+        </div>
+        <app-generic-input-file
+          [acceptedExtensions]="'application/pdf,.pdf'"
+          [file]="item?.ocPartidaEdicionBackOrder?.File"
+          (autoEmitFile)="saveInputValue('File', $event)"
+          [buttonsColor]="'purple'"
+          [label]="'registerConfirmation.uploadDocument' | translate"
+          [labelFontColor]="'#6a6aae'"
+        ></app-generic-input-file>
+      </div>
+      <div class="text-area">
+        <app-generic-text-area
+          class="text-area"
+          [fontSize]="viewType === 'iPad' ? '13px' : '16px'"
+          [height]="viewType === 'iPad' ? '151px' : '182px'"
+          [title]="'registerConfirmation.changeJustification' | translate"
+          [titleFontColor]="'#6a6aae'"
+          [value]="item?.ocPartidaEdicionBackOrder?.Justificacion"
+          (emitData)="saveInputValue('Justificacion', $event)"
+        ></app-generic-text-area>
+      </div>
+    </div>
+    <div class="buttons">
+      <button *ngIf="!item?.backOrderConfig || !isTheLastIndex" [ngClass]="'active'" (click)="cancelConfig()">{{
+        'common.cancel' | translate
+      }}</button>
+      <button *ngIf="item?.backOrderConfig && isTheLastIndex" [ngClass]="'active'" (click)="deleteConfig()">{{
+        'common.uncheck' | translate
+      }}</button>
+      <button [disabled]="!saveValidator" [ngClass]="saveValidator ? 'active' : 'disabled'" (click)="saveConfig()">{{
+        'common.accept' | translate
+      }}</button>
+    </div>
+  </div>
+</div>

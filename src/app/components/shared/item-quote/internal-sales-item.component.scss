@@ -1,0 +1,169 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  & > .container-item {
+    @include s.flexRow;
+    //padding: 0 16px;
+    justify-content: space-between;
+
+    &:hover {
+      background-color: s.$dark-proquifa-e;
+      & > div {
+        background-color: s.$dark-proquifa-e;
+      }
+    }
+
+    &.delete {
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(232, 232, 232, 0.5); /* Color gris semi-transparente */
+        z-index: 1;
+      }
+      & > .trash-reverse-setting-column {
+        position: relative;
+        z-index: 2;
+      }
+    }
+
+    &.saving {
+      background-color: s.$pqSaving;
+      & > div {
+        background-color: s.$pqSaving;
+      }
+    }
+    &.alternative,
+    &.promotion {
+      background-color: s.$pqAlternativePromotion;
+      & > div {
+        background-color: s.$pqAlternativePromotion;
+      }
+    }
+    &.complementary {
+      background-color: s.$pqComplementary;
+      & > div {
+        background-color: s.$pqComplementary;
+      }
+    }
+    & > div {
+      @include s.flexRow;
+      align-items: center;
+      padding: 12px 10px;
+    }
+    &.selected {
+      background-color: s.$dark-proquifa-e;
+      & > div {
+        background-color: s.$dark-proquifa-e;
+      }
+      & .selected-indicator {
+        background-color: s.$pqGreen;
+      }
+    }
+
+    & .selected-indicator {
+      padding: 0;
+      width: 5px;
+    }
+
+    & > .options-column {
+      flex: 0 0 90px;
+      justify-content: center;
+    }
+    & > .number-column {
+      flex: 0 0 33px;
+      padding: 0 5px;
+      justify-content: center;
+    }
+    & > .img-type-quote {
+      flex: 0 0 37px;
+    }
+    & > .img-type-presentation-column {
+      padding-left: 10px;
+      margin-right: 4px;
+      flex: 0 0 55px;
+    }
+    & > .concept-column {
+      flex: 0 0 294px;
+    }
+    & > .notes-column {
+      flex: 0 0 47px;
+    }
+    & > .brand-column {
+      flex: 0 0 169px;
+    }
+    & > .delivery-time-suggested-column,
+    & > .delivery-time-column {
+      justify-content: center;
+      flex: 0 0 95px;
+    }
+    & > .pieces-column {
+      flex: 0 0 52px;
+      justify-content: center;
+    }
+    & > .requested-price-column,
+    & > .adjustment-price-column,
+    & > .agreed-price-column,
+    & > .unit-price-column {
+      justify-content: flex-end;
+      flex: 0 0 185px;
+    }
+    & > .pro-freight-column,
+    & > .subtotal-column,
+    & > .iva-column {
+      justify-content: flex-end;
+      min-width: 150px;
+    }
+    & > .delivery-restrictions-column {
+      flex: 0 0 135px;
+    }
+    & > .value-total-column {
+      justify-content: flex-end;
+      flex: 0 0 197px;
+    }
+    & > .last-follow-up-column {
+      flex: 0 0 82px;
+    }
+    & > .see-resume-column,
+    & > .cancel-reason-column,
+    & > .purchase-arrival-date-column {
+      flex: 0 0 226px;
+    }
+    & > .state-column,
+    & > .research-response-column {
+      flex: 0 0 96px;
+    }
+    //& > .add-item-quotation-column,
+    //& > .checks-type-adjustment-column {
+    //  flex: 0 0 460px;
+    //}
+    & > .arrow-column {
+      min-width: 52px;
+    }
+    & > .comment-column,
+    & > .delete-column,
+    & > .trash-column {
+      flex: 0 0 44px;
+    }
+    & > .trash-reverse-setting-column {
+      flex: 0 0 54px;
+    }
+    & > .see-more-column {
+      flex: 0 0 65px;
+    }
+
+    &:hover {
+      background-color: s.$dark-proquifa-e;
+      & > div {
+        background-color: s.$dark-proquifa-e;
+      }
+    }
+  }
+}

@@ -1,0 +1,92 @@
+@use "sass:map";
+
+/// Breakpoints names
+$small: 'small';
+$standard: 'standard';
+
+
+/// Breakpoints
+$breakpoints-pqf: ($small: 0px, $standard: 1920px);
+
+
+
+/*
+ * Media queries breakpoints
+ * ========================================================================== */
+
+$breakpoints: (
+  'extraSmall': (
+    max-width: 1700px,
+  ),
+  'small': (
+    min-width: 50em,
+  ),
+  /* 800px */ 'medium':
+  (
+    min-width: 64em,
+  ),
+  /* 1024px */ 'mid':
+  (
+    min-width: 75em,
+  ),
+  /* 1200px */ 'large':
+  (
+    min-width: 80em,
+  ),
+  /* 1280px */ 'detailBar':
+  (
+    min-width: 86em,
+  ),
+  /* 1376px */ 'extraLarge':
+  (
+    min-width: 92em,
+  ),
+  /* 1472px */ 'iPadPro':
+  (
+    min-width: 1366px,
+  ),
+  'macBookAir': (
+    min-width: 2100px,
+  ),
+  'media-1600': (
+    min-width: 1600px,
+  ),
+  'media-1700': (
+    min-width: 1700px,
+  ),
+  'media-1800': (
+    min-width: 1800px,
+  ),
+  'media-1900': (
+    min-width: 1900px,
+  ),
+  'media-2000': (
+    min-width: 2000px,
+  ),
+  'media-2100': (
+    min-width: 2100px,
+  ),
+  'media-2200': (
+    min-width: 2200px,
+  ),
+  'media-2300': (
+    min-width: 2300px,
+  ),
+  'media-2400': (
+    min-width: 2400px,
+  ),
+  'media-2500': (
+    min-width: 2500px,
+  ),
+);
+
+
+@mixin media-query($breakpoint-name) {
+  @if map-has-key($breakpoints-pqf, $breakpoint-name) {
+    @media (min-width: map.get($breakpoints-pqf, $breakpoint-name)) {
+      @content;
+    }
+  } @else {
+    @warn "No existe el tamaño `#{$breakpoint-name}`. "+"en la lista de breakpoints, revise el map de `$breakpoints`.";
+  }
+}

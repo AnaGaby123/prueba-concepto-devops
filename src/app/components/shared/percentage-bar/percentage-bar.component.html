@@ -1,0 +1,27 @@
+<div class="container">
+  <div class="container-bar" *ngIf="total > 0">
+    <div *ngFor="let item of items" class="item" [style.width]="item.percentage ? item.percentage : '0'">
+      <div class="bar" [style.background-color]="item.color ? item.color : '#424242'"></div>
+    </div>
+  </div>
+  <div class="container-bar" *ngIf="total === 0">
+    <div class="item empty" [style.width]="'100%'">
+      <div class="bar" [style.background-color]="'#e6e6ec'"></div>
+    </div>
+  </div>
+  <div class="container-info">
+    <div *ngFor="let info of items" class="info" [style.width]="info.percentage ? info.percentage : '0'">
+      <div class="title">
+        <div *ngIf="info.title" [style.background-color]="info.color ? info.color : '#424242'"></div>
+        <label *ngIf="info.title">
+          {{ info.title ? info.title : 'SIN TÍTULO' }} {{ info.percentage ? info.percentage : '' }}
+        </label>
+      </div>
+      <div class="subtitle">
+        <label [style.color]="info.color ? info.color : '#424242'">
+          {{ info.subtitle ? info.subtitle : '' }}
+        </label>
+      </div>
+    </div>
+  </div>
+</div>

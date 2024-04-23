@@ -1,0 +1,172 @@
+<div id="checkout-resume-container">
+  <div class="left-container">
+    <div class="title">
+      <label>{{ 'checkout.invoicing' | translate }}</label>
+    </div>
+    <div
+      class="credit"
+      [ngClass]="{
+        red: (purchaseOrderDetails$ | async)?.catCondicionesDePago.SinCredito,
+        green: !(purchaseOrderDetails$ | async)?.catCondicionesDePago.SinCredito
+      }"
+    >
+      <label>{{
+        (purchaseOrderDetails$ | async)?.catCondicionesDePago.SinCredito
+          ? ('checkout.clientWithoutCredit' | translate)
+          : ('checkout.clientWithCredit' | translate)
+      }}</label>
+    </div>
+    <div
+      class="credit"
+      *ngIf="
+        (purchaseOrderDetails$ | async)?.tpPedido?.FacturaPorAdelantado ||
+        (purchaseOrderDetails$ | async)?.tpPedido?.EntregaConRemision
+      "
+      [ngClass]="'ocean'"
+    >
+      <label>{{
+        (purchaseOrderDetails$ | async)?.tpPedido?.FacturaPorAdelantado
+          ? ('checkout.invoiceInAdvance' | translate)
+          : ('checkout.deliveryWithReferral' | translate)
+      }}</label>
+    </div>
+    <div class="data-container">
+      <div class="data">
+        <label>{{ 'checkout.businessName' | translate }}</label>
+        <label>{{
+          (purchaseOrderDetails$ | async)?.DatosFacturacionClienteDetallePorDefecto.DatosFacturacionCliente.RazonSocial
+        }}</label>
+      </div>
+      <div class="data">
+        <label>{{ 'common.rfc' | translate }}</label>
+        <label>{{
+          (purchaseOrderDetails$ | async)?.DatosFacturacionClienteDetallePorDefecto.DatosFacturacionCliente.RFC
+        }}</label>
+      </div>
+      <div class="data">
+        <label>{{ 'common.coin' | translate }}</label>
+        <label>{{
+          (purchaseOrderDetails$ | async)?.DatosFacturacionClienteDetallePorDefecto?.DatosFacturacionCliente?.catMoneda?.Moneda
+        }}</label>
+      </div>
+      <div class="data">
+        <label>{{ 'checkout.whoBills' | translate }}</label>
+        <label>{{ (purchaseOrderDetails$ | async)?.EmpresaFactura.RazonSocial }}</label>
+      </div>
+      <div class="data">
+        <label>{{ 'checkout.cfdiUsage' | translate }}</label>
+        <label
+          >{{ (purchaseOrderDetails$ | async)?.catUsoCFDI?.ClaveUso }} -
+          {{ (purchaseOrderDetails$ | async)?.catUsoCFDI?.Uso }}</label
+        >
+      </div>
+      <div class="data">
+        <label>{{ 'checkout.payMethod' | translate }}</label>
+        <label>{{ (purchaseOrderDetails$ | async)?.catMetodoDePagoCFDI.MetodoDePagoCFDI }}</label>
+      </div>
+      <div class="data">
+        <label>{{ 'checkout.paymentConditions' | translate }}</label>
+        <label>{{ (purchaseOrderDetails$ | async)?.catCondicionesDePago.CondicionesDePago }}</label>
+      </div>
+      <div class="data">
+        <label>{{ 'checkout.invoiceComments' | translate }}</label>
+        <app-generic-text-area
+          [enableEdit]="false"
+          [height]="'100%'"
+          [value]="(purchaseOrderDetails$ | async)?.tpPedido?.ComentariosFacturacion"
+        >
+        </app-generic-text-area>
+      </div>
+    </div>
+  </div>
+  <div class="right-container">
+    <div class="quote-info" *ngIf="purchaseOrder$ | async; let oc">
+      <label class="folio" [ngClass]="(purchaseOrder$ | async)?.OcInterna && 'orange'" (click)="openViewFile(true, oc)"
+        >{{ (purchaseOrder$ | async)?.OcInterna ? 'OC INTERNA' : (purchaseOrder$ | async)?.NumeroOrdenDeCompra }}
+      </label>
+      <label class="total">
+        · VT {{ (purchaseOrder$ | async)?.Total | currency: (purchaseOrder$ | async)?.ClaveMoneda:'symbol-narrow':'1.2-2' }}
+        {{ (purchaseOrder$ | async)?.ClaveMoneda }}
+      </label>
+      <label class="products"> · {{ (purchaseOrder$ | async)?.Productos }} {{ 'common.products' | translate }} </label>
+    </div>
+    <div class="table-container">
+      <div class="container">
+        <app-header-internal-sales-item
+          class="header"
+          [internalSalesItem]="itemHeaderResume$ | async"
+        ></app-header-internal-sales-item>
+        <virtual-scroller
+          [items]="itemsResume$ | async"
+          [enableUnequalChildrenSizes]="true"
+          (vsUpdate)="itemsResume = $event"
+          [bufferAmount]="24"
+        >
+          <app-internal-sales-item
+            *ngFor="let item of itemsResume; let i = index; trackBy: handleTrackByItemBy"
+            [internalSalesItem]="item"
+            (valueEmitter)="globalItemEventsHandler($event)"
+          ></app-internal-sales-item>
+        </virtual-scroller>
+      </div>
+    </div>
+    <div class="totals-container">
+      <div class="entries">
+        <label
+          >{{ (items$ | async)?.length || 0 }}
+          {{ (items$ | async)?.length === 1 ? ('checkout.item' | translate) : ('checkout.items' | translate) }}</label
+        >
+      </div>
+      <div class="totals">
+        <div class="subtotal">
+          <label>{{ 'common.subtotal' | translate }}:</label>
+          <label
+            >{{
+              (purchaseOrder$ | async)?.purchaseOrderDetails?.Subtotal
+                | currency: (purchaseOrder$ | async)?.ClaveMoneda:'symbol-narrow':'1.2-2'
+            }}
+            {{ (purchaseOrder$ | async)?.ClaveMoneda }}</label
+          >
+        </div>
+        <div class="iva">
+          <label>{{ 'common.tax' | translate }}:</label>
+          <label
+            >{{
+              (purchaseOrder$ | async)?.purchaseOrderDetails?.TotalIVA
+                | currency: (purchaseOrder$ | async)?.ClaveMoneda:'symbol-narrow':'1.2-2'
+            }}
+            {{ (purchaseOrder$ | async)?.ClaveMoneda }}</label
+          >
+        </div>
+        <div class="total">
+          <label>{{ 'common.total' | translate }}:</label>
+          <label
+            >{{
+              (purchaseOrder$ | async)?.purchaseOrderDetails?.Total
+                | currency: (purchaseOrder$ | async)?.ClaveMoneda:'symbol-narrow':'1.2-2'
+            }}
+            {{ (purchaseOrder$ | async)?.ClaveMoneda }}</label
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<pqf-draggable-modal
+  *ngIf="viewFile"
+  [titleHeader]="(selectedPurchaseOrder$ | async).NumeroOrdenDeCompra"
+  (closeModal)="openViewFile(false, null)"
+  [isLoading]="loadingFile$ | async"
+>
+  <app-upload-view-file *ngIf="isPDF$ | async" [datasFile]="{path: base64$ | async, titulo: ''}"></app-upload-view-file>
+  <div *ngIf="!(isPDF$ | async)" class="imageFile">
+    <div class="fill" *ngIf="selectedPurchaseOrder$ | async; let purchaseOrder">
+      <div class="dowload" *ngIf="base64$ | async" (click)="download(purchaseOrder.IdArchivo)">
+        <img src="assets/Images/descargar.svg" />
+      </div>
+    </div>
+    <div>
+      <img [src]="base64$ | async" class="img" />
+    </div>
+  </div>
+</pqf-draggable-modal>

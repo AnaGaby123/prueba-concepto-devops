@@ -1,0 +1,123 @@
+<div id="inspector-step1">
+  <div class="content">
+    <div class="left">
+      <div class="title">
+        <label>{{ 'inspector.itemLevelInspection' | translate }}</label>
+      </div>
+      <div *ngIf="true" class="left-section">
+        <div class="description">
+          <div class="header">
+            <div>
+              <label>{{ 'common.description' | translate }}</label>
+            </div>
+          </div>
+          <div class="content">
+            <div>
+              <app-drop-down-list
+                [label]="'formProduct.step2.presentation' | translate"
+                [font]="'Roboto-Medium'"
+              ></app-drop-down-list>
+            </div>
+            <div>
+              <div class="label">
+                <div class="title">
+                  <label>{{ 'declareArrival.lot' | translate }}</label>
+                </div>
+                <div class="indicators">
+                  <div>
+                    <div class="orange"></div>
+                    <label>{{ 'inspector.previous' | translate }}</label>
+                  </div>
+                  <div>
+                    <div class="green"></div>
+                    <label>{{ 'inspector.valid' | translate }}</label>
+                  </div>
+                </div>
+              </div>
+              <app-drop-down-list></app-drop-down-list>
+            </div>
+            <div>
+              <div class="drop1">
+                <app-date-picker [label]="'Caducidad'" [labelFont]="'Roboto-Medium'"></app-date-picker>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="handling">
+          <div class="header">
+            <div>
+              <label>{{ 'inspector.handling' | translate }}</label>
+            </div>
+          </div>
+          <div class="content">
+            <div>
+              <app-drop-down-list [label]="'inspector.storage' | translate" [font]="'Roboto-Medium'"></app-drop-down-list>
+            </div>
+            <div>
+              <app-drop-down-list
+                [label]="'inspector.transportation' | translate"
+                [font]="'Roboto-Medium'"
+              ></app-drop-down-list>
+            </div>
+            <div></div>
+          </div>
+        </div>
+        <div class="documentation">
+          <div class="header">
+            <app-check-box></app-check-box>
+            <label [ngClass]="'label-disable'">{{ 'inspector.applyDocumentation' | translate }}</label>
+          </div>
+          <div class="content">
+            <div class="input1">
+              <app-generic-input-file
+                [label]="'* ' + ('formProduct.step2.certificate' | translate)"
+                [labelFont]="'Roboto-Medium'"
+                [showSeeSelectedFile]="false"
+                [disabled]="true"
+              ></app-generic-input-file>
+              <label *ngIf="false">{{ '* ' + ('inspector.mandatoryCharge' | translate) }}</label>
+            </div>
+            <div class="input2">
+              <app-generic-input-file
+                [label]="'inspector.safetySheet' | translate"
+                [labelFont]="'Roboto-Medium'"
+                [showSeeSelectedFile]="false"
+                [disabled]="true"
+              ></app-generic-input-file>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="false" class="left-section-alone">
+        <div class="description-alone">
+          <div class="header">
+            <label>{{ 'common.description' | translate }}</label>
+          </div>
+          <div class="content">
+            <div class="input1">
+              <app-generic-input
+                [label]="'declareArrival.edition' | translate"
+                [labelFont]="'Roboto-Medium'"
+              ></app-generic-input>
+            </div>
+            <div class="input2">
+              <app-drop-down-list [label]="'inspector.idiom' | translate" [font]="'Roboto-Medium'"></app-drop-down-list>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="image-container">
+        <img alt="" src="assets/Images/muestra_inspeccionar.webp" />
+        <div class="leftTop"></div>
+        <div class="rightTop"></div>
+        <div class="leftBot"></div>
+        <div class="rightBot"></div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <button [ngClass]="'button-disable'">{{ 'common.next' | translate }}</button>
+  </div>
+</div>

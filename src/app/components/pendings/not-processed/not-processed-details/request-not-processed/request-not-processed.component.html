@@ -1,0 +1,69 @@
+<div id="request-not-processed" [ngClass]="isOpen ? 'show' : 'hide'">
+  <section>
+    <div class="content">
+      <div class="info" [style.height]="'calc(100% - ' + files.scrollHeight + 'px)'">
+        <div class="title">
+          <label>{{ 'quotation.details.titleRequest' | translate }}</label>
+        </div>
+        <div class="folio">
+          <label [ngClass]="!(order$ | async)?.IdArchivo ? 'red' : ''">{{
+            (order$ | async)?.IdArchivo ? (order$ | async)?.OrdenDeCompra : 'SIN OC'
+          }}</label>
+          <label>{{ (order$ | async)?.mailData?.CorreoRecibido?.CorreoEmisor }}</label>
+        </div>
+        <div class="message" *ngIf="(order$ | async)?.mailData?.CorreoRecibido">
+          <label>{{ (order$ | async)?.mailData?.CorreoRecibido?.Asunto }}</label>
+        </div>
+        <div class="without-results" *ngIf="!(order$ | async)?.mailData?.CorreoRecibido && (apiStatusMail$ | async) === 3">
+          <app-without-results [title]="'NO SE ENCONTRÓ INFORMACIÓN'"></app-without-results>
+        </div>
+      </div>
+
+      <div #files id="files" class="files">
+        <div class="file" *ngFor="let mail of (order$ | async)?.mailData?.Archivo; let i = index">
+          <label class="index">{{ i + 1 }}</label>
+          <img alt="file" src="assets/Images/quotation/file.svg" />
+          <label class="btn" (click)="viewFile(mail)">{{ mail.FileKey | onlyFileNamePdf }}</label>
+        </div>
+      </div>
+      <div class="under-construction" *ngIf="(apiStatusMail$ | async) === 1">
+        <div>
+          <div class="loadingContainer">
+            <div class="load-circle">
+              <div class="line"></div>
+              <div class="line"></div>
+              <div class="line"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="arrow">
+    <img alt="arrow" src="assets/Images/arrows/flecha_cuadro.svg" [ngClass]="{reverse: !isOpen}" (click)="onClick()" />
+  </div>
+</div>
+<!--<app-draggable-modal-->
+<!--  *ngIf="openPdf$ | async"-->
+<!--  [titleHeader]="-->
+<!--    !lodash.isEmpty(fileSelected)-->
+<!--      ? (fileSelected.FileKey | onlyFileNamePdf)-->
+<!--      : (invoice$ | async) !== null-->
+<!--      ? (invoice$ | async)-->
+<!--      : ''-->
+<!--  "-->
+<!--  [isLoading]="viewFileLoading$ | async"-->
+<!--  (closeModal)="openPop(false)"-->
+<!--&gt;-->
+<!--  <app-upload-view-file [datasFile]="{path: base64$ | async, titulo: ''}" *ngIf="isPdf"></app-upload-view-file>-->
+<!--  <div *ngIf="!isPdf" class="imageFile">-->
+<!--    <div class="fill">-->
+<!--      <div class="dowload" (click)="download(fileSelected)">-->
+<!--        <img src="assets/Images/descargar.svg" />-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--      <img [src]="base64$ | async" class="img" />-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</app-draggable-modal>-->

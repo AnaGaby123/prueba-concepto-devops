@@ -1,0 +1,22 @@
+<div class="pieces-container">
+  <div class="floating-container" (click)="handleStopEvents($event)">
+    <label
+      #piecesInputDispatch
+      [ngClass]="columnNumberPieces?.isEdit ? 'underline' : ''"
+      *ngIf="columnNumberPieces?.value"
+      (click)="columnNumberPieces?.isEdit && isNumber(columnNumberPieces?.value) ? handleClickLabel() : null"
+    >
+      {{ columnNumberPieces?.value }}
+    </label>
+    <div class="pieces-floating-input" #piecesInput *ngIf="clickEvent" (click)="handleStopEvents($event)">
+      <input
+        placeholder="0"
+        (keypress)="
+          handleValidateDecimalNumber($event, piecesInput, +numberPieces, nameActionsInternalSalesItem.NumberPiecesAction)
+        "
+        [(ngModel)]="numberPieces"
+        (keyup.enter)="changeQuantity($event, piecesInput, +numberPieces, nameActionsInternalSalesItem.NumberPiecesAction)"
+      />
+    </div>
+  </div>
+</div>

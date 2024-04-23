@@ -1,0 +1,40 @@
+<div class="container">
+  <div class="body">
+    <app-provider-list-filters class="filter-container"></app-provider-list-filters>
+    <div class="center-container">
+      <virtual-scroller
+        *ngIf="!lodashIsEmpty(providers$ | async)"
+        class="virtual-scroller"
+        [items]="providers$ | async"
+        (vsEnd)="fetchMore($event)"
+        (vsUpdate)="scrollItems = $event"
+      >
+        <app-generic-grid-item
+          *ngFor="let provider of scrollItems; let i = index"
+          [item]="buildItem(provider)"
+          (click)="navigateToAddEditProviders(true, provider)"
+        ></app-generic-grid-item>
+      </virtual-scroller>
+
+      <div class="loading-container" *ngIf="(providersRequestStatus$ | async) === 1 && !lodashIsEmpty(providers$ | async)">
+        <app-loading></app-loading>
+      </div>
+      <div class="loading" *ngIf="(providersRequestStatus$ | async) === 1 && lodashIsEmpty(providers$ | async)">
+        <app-loading></app-loading>
+      </div>
+      <div class="loading" *ngIf="(providersRequestStatus$ | async) !== 1 && lodashIsEmpty(providers$ | async)">
+        <app-without-results></app-without-results>
+      </div>
+    </div>
+    <div class="totals">
+      <p>
+        #{{ totalProviders$ | async | number: '1.0-0' }}{{ (totalProviders$ | async) === 1 ? ' Proveedor' : ' Proveedores' }}</p
+      >
+    </div>
+  </div>
+  <footer class="footer">
+    <!--DOCS: Se elimina engrane hasta siguiente etapa ya que no esta definido el módulo-->
+    <!--<img alt="engrane" class="mesh" src="assets/Images/catalogo/engraneGrisGrande.png" />-->
+    <button (click)="navigateToAddEditProviders(false, null)">{{ 'common.add' | translate }}</button>
+  </footer>
+</div>

@@ -1,0 +1,25 @@
+<section class="principal">
+  <div class="menu" id="container" tabindex="0" (blur)="closeCombo()">
+    <div class="box" (click)="handleComboContraction()" [ngClass]="position">
+      <div class="icons" [ngClass]="isOpen && 'open'">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="label">
+        <label>{{ value ? value.label : 'N/A' }}</label>
+      </div>
+    </div>
+    <section class="section" id="section" #submenuOptions [style.height.px]="isOpen ? submenuOptions.scrollHeight : 0">
+      <div>
+        <ul
+          [ngClass]="value === option.value ? 'burger-item selected' : 'burger-item'"
+          *ngFor="let option of options; let i = index"
+          (click)="selectOption(option)"
+        >
+          <li>{{ option.label }}</li>
+        </ul>
+      </div>
+    </section>
+  </div>
+</section>

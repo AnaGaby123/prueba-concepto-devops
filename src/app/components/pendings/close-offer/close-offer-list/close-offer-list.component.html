@@ -1,0 +1,140 @@
+<div class="dashboard-container" id="close-offer-list-container">
+  <div class="left-container">
+    <label class="title textUpperCase">{{ 'notProcessed.clients' | translate }}</label>
+    <div class="tabs">
+      <app-tabs
+        [options]="tabOptions$ | async"
+        [tapSelected]="selectedTabOption$ | async"
+        (onSelectOption)="setTabOptionSelected($event)"
+      >
+      </app-tabs>
+    </div>
+    <div class="filters">
+      <div class="filter-by-type">
+        <app-hamburger-menu
+          [options]="burgerOptions$ | async"
+          [title]="(selectedBurgerOption$ | async).label"
+          [value]="(selectedBurgerOption$ | async).value"
+          (valueEmit)="setBurgerOption($event)"
+        >
+        </app-hamburger-menu>
+      </div>
+      <div class="filter-by-date">
+        <app-date-range (emitValues)="setDateRange($event)"></app-date-range>
+      </div>
+    </div>
+    <div class="search-bar">
+      <app-search
+        [imageFill]="'#008894'"
+        [isSearchByType]="true"
+        [placeholder]="'Cliente, Estrategia'"
+        [searchTerm]="searchTerm$ | async"
+        [typeSelected]="selectedSearchTypeOption$ | async"
+        [typesOfSearch]="searchTypeOptions$ | async"
+        (handleTypeSelected)="setSearchType($event)"
+        (textSearch)="handleOCSearch($event)"
+      >
+      </app-search>
+    </div>
+    <div class="list-container">
+      <virtual-scroller
+        class="virtual-list"
+        *ngIf="(clients$ | async)?.length > 0 && (apiStatus$ | async) === 3"
+        [items]="clients$ | async"
+        (vsUpdate)="clientList = $event"
+      >
+        <div class="item" *ngFor="let client of clientList" (click)="selectedClient(client)">
+          <div class="number">
+            <label>#{{ client.Index }}</label>
+          </div>
+          <div class="content">
+            <label class="title">{{ client.Nombre }}</label>
+            <label class="subtitle">Estrategia: {{ client.Estrategia }}</label>
+            <div class="totals">
+              <img alt="dolar" src="assets/Images/close-offer/dolar-sign.svg" />
+              <label
+                >{{ client.Total }}
+                {{ client.Total === 1 ? ('closeOffer.quotation' | translate) : ('closeOffer.quotes' | translate) }}
+                ·
+              </label>
+              <div *ngIf="client.EstadoCotizacionEnviada && client.EstadoCotizacionEnviada > 0">
+                <img alt="nueva" class="new" src="assets/Images/close-offer/new-label.svg" />
+                <label class="new">
+                  {{
+                    client.EstadoCotizacionEnviada +
+                      ' ' +
+                      (client.EstadoCotizacionEnviada === 1
+                        ? ('common.quotation' | translate)
+                        : ('common.quotation' | translate))
+                  }}</label
+                >
+              </div>
+              <div *ngIf="client.EstadoCotizacionEnProgreso && client.EstadoCotizacionEnProgreso > 0">
+                <img alt="En progreso" class="in-progress" src="assets/Images/close-offer/in-progress-label.svg" />
+                <label class="in-progress">
+                  {{
+                    client.EstadoCotizacionEnProgreso +
+                      ' ' +
+                      (client.EstadoCotizacionEnProgreso === 1
+                        ? ('common.quotation' | translate)
+                        : ('common.quotations' | translate))
+                  }}</label
+                >
+              </div>
+              <div *ngIf="client.EstadoCotizacionAjusteDeOferta && client.EstadoCotizacionAjusteDeOferta > 0">
+                <img alt="Ajuste oferta" class="ajuste-oferta" src="assets/Images/close-offer/ajuste-oferta-label.svg" />
+                <label class="in-adjustment">
+                  {{
+                    client.EstadoCotizacionAjusteDeOferta +
+                      ' ' +
+                      (client.EstadoCotizacionAjusteDeOferta === 1
+                        ? ('common.quotation' | translate)
+                        : ('common.quotations' | translate))
+                  }}</label
+                >
+              </div>
+            </div>
+            <label class="total-value">Valor total en Cierre {{ client.TotalCotizadoUSD | currency }} USD</label>
+          </div>
+          <div class="arrow">
+            <img alt="Detalles" src="assets/Images/arrows/arrow_right.svg" />
+          </div>
+        </div>
+      </virtual-scroller>
+      <div class="without-results" *ngIf="(clients$ | async)?.length === 0 && (apiStatus$ | async) === 3">
+        <app-without-results [title]="'common.withoutResults' | translate"></app-without-results>
+      </div>
+      <div class="loader" *ngIf="(apiStatus$ | async) === 1">
+        <app-loading></app-loading>
+      </div>
+    </div>
+    <div class="footer">
+      <label>#{{ (clients$ | async)?.length }}</label>
+      <label>
+        {{ (totalQuotations$ | async) ? (totalQuotations$ | async) : 0 }}
+        {{ (totalQuotations$ | async) !== 1 ? ('closeOffer.quotes' | translate) : ('closeOffer.quotation' | translate) }}
+      </label>
+      <label>
+        {{ ('strategy.details.valueTotalClosing' | translate) + ': ' }}
+        {{ ((totalsOfClients$ | async) ? (totalsOfClients$ | async) : 0) | currency }} USD
+      </label>
+    </div>
+  </div>
+  <div class="right-container">
+    <ng-container *ngIf="(apiStatus$ | async) === 3">
+      <app-doughnut-chart
+        [data]="doughnutChartData$ | async"
+        [optionDetails]="doughnutCharDetails$ | async"
+        [optionDetailsHover]="doughnutChartDetailsHover$ | async"
+        [titleDetails]="'totals' | translate"
+        [title]="'preProcessing.clients' | translate"
+        [typeChart]="1"
+      >
+      </app-doughnut-chart>
+      <app-bar-chart [title]="'closeOffer.quotes' | translate" [values]="barChart$ | async"></app-bar-chart>
+    </ng-container>
+    <div class="loading" *ngIf="(apiStatus$ | async) === 1">
+      <app-loading></app-loading>
+    </div>
+  </div>
+</div>

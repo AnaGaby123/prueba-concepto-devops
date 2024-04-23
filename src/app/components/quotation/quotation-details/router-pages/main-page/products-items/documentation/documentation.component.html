@@ -1,0 +1,36 @@
+<label>{{ 'quotation.details.documentation' | translate }}</label>
+<div class="content">
+  <div *ngFor="let fileName of filesNames">
+    <img src="assets/Images/document.svg" />
+    <ng-container [ngSwitch]="fileName">
+      <!--      <label-->
+      <!--        class="text line"-->
+      <!--        *ngSwitchCase="'Permiso de Adquisicion en Plaza'"-->
+      <!--        (click)="downloadFile('ArchivoPermisoDeAdquisicionEnPlaza', location)"-->
+      <!--      >-->
+      <!--        {{ 'formProduct.step2.placeAcquisitionPermit' | translate }}-->
+      <!--      </label>-->
+      <label
+        class="text line"
+        *ngSwitchCase="'Carta de Disponibilidad'"
+        (click)="downloadFile('ArchivoCartaDeDisponibilidad', location)"
+      >
+        {{ 'formProduct.step2.availabilityLetter' | translate }}
+      </label>
+      <label
+        class="text line"
+        *ngSwitchCase="'Estructura Molecular'"
+        (click)="downloadFile('ArchivoEstructuraMolecular', location)"
+      >
+        {{ 'quotation.details.section.detailsProducts.molecularStructure' | translate }}
+      </label>
+      <label class="text line" *ngSwitchCase="'Hoja Seguridad'" (click)="downloadFile('ArchivoHojaSeguridad', location)">
+        {{ 'quotation.details.section.detailsProducts.safetySheet' | translate }}
+      </label>
+      <label class="text line" *ngSwitchCase="'Certificado'" (click)="downloadFile('ArchivoCertificadoLote', location)">
+        {{ 'quotation.details.section.detailsProducts.certificate' | translate }}
+      </label>
+    </ng-container>
+  </div>
+  <div *ngIf="lodashIsEmpty(filesNames)" class="text-container"><label class="normal-text">N/D</label></div>
+</div>

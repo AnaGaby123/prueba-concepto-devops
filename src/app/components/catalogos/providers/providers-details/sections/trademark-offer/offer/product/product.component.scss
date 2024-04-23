@@ -1,0 +1,238 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.flexColumn;
+  flex: 1;
+  overflow: hidden;
+
+  & > .product-container {
+    @include s.flexRow;
+    flex: 1;
+    gap: 15px;
+    overflow: hidden;
+    padding-top: 30px;
+
+    & > .left-container {
+      @include s.flexColumn;
+      flex: 0 0 280px;
+
+      & > .subtitle {
+        @include s.Novecento-Bold;
+        @include s.escaledFontFormat(s.$textSize14to17, bold, s.$pqBlack2);
+        border-bottom: 1px solid s.$pqBlack2;
+        padding: 6px 0;
+      }
+
+      & > .drop-list-container {
+        margin-top: 15px;
+      }
+
+      & > .class-search {
+        @include s.flexRow;
+        align-items: center;
+        gap: 10px;
+        justify-content: space-between;
+        padding: 15px 0;
+
+        & > app-search {
+          flex: 1;
+        }
+
+        & > img {
+          cursor: pointer;
+          height: 24px;
+          width: 24px;
+        }
+      }
+
+      & > .price-list-container {
+        @include s.flexColumn;
+        border-bottom: 1px solid s.$pqGray2;
+        border-top: 1px solid s.$pqGray2;
+        flex: 1;
+        overflow: auto;
+
+        & > .price-list {
+          @include s.flexColumn;
+          flex: 1;
+          overflow: auto;
+
+          & .product-item {
+            @include s.flexColumn;
+            flex: 1;
+          }
+
+          & .price-item.selected {
+            & > .select-indicator {
+              background-color: s.$pqGreen;
+            }
+          }
+        }
+      }
+
+      & > .loading,
+      & > .without-results {
+        @include s.absoluteCenter;
+        @include s.flexColumn;
+        border-bottom: 1px solid s.$pqGray2;
+        border-top: 1px solid s.$pqGray2;
+        flex: 1 1 auto;
+        overflow: auto;
+      }
+
+      & > .footer {
+        @include s.absoluteCenter;
+        @include s.flexRow;
+        flex: 0 0 45px;
+
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+        }
+      }
+    }
+
+    & > .right-container {
+      @include s.flexColumn;
+      flex: 1 1 auto;
+      overflow: hidden;
+
+      & > .center-container {
+        @include s.flexColumn;
+        background-color: s.$pqGray2;
+        display: grid;
+        flex: 1 1 auto;
+        grid-template-columns: 100%;
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        & > .performance {
+          min-width: 1280px;
+          padding-top: 10px;
+        }
+
+        & > .price-container {
+          @include s.flexColumn;
+          flex: 1;
+          min-width: 1200px;
+          overflow-y: auto;
+          padding-top: 15px;
+
+          & > .provider-list-price,
+          & > .discount-freight,
+          & > .import,
+          & > .custom-agent-cost,
+          & > .expenses {
+            @include s.flexColumn;
+            align-items: center;
+            border-bottom: 1px solid s.$boxShadow;
+            padding: 15px;
+
+            & > * {
+              display: block;
+              max-width: 950px;
+            }
+          }
+        }
+
+        & > .send-time-container {
+          @include s.flexColumn;
+          overflow-y: auto;
+
+          & > div {
+            @include s.flexColumn;
+            align-items: center;
+            border-bottom: 1px solid s.$pqGray2;
+            flex: 0 0 auto;
+            padding: 20px;
+
+            & > .green-title {
+              @include s.Novecento-Bold;
+              @include s.escaledFontFormat(s.$textSize14to16, bold, s.$pqGreen);
+              margin-bottom: 12px;
+              text-align: center;
+              width: 100%;
+            }
+          }
+        }
+      }
+    }
+
+    & > .without-results {
+      @include s.absoluteCenter;
+      @include s.flexColumn;
+      background-color: s.$pqGray2;
+      flex: 1 1 auto;
+      padding: 25px;
+    }
+
+    @include s.responsive_layout('media-1700') {
+      & > .right-container {
+        & > .center-container {
+          & > .send-time-container {
+            @include s.flexRow;
+            margin-top: 30px;
+
+            & > div {
+              flex: 1;
+              margin: 0;
+
+              &.route-details {
+                flex: 1;
+              }
+            }
+          }
+        }
+      }
+    }
+    @include s.responsive_layout('macBookAir') {
+      gap: 20px;
+      padding: 35px 20px 0 20px;
+      & > .left-container {
+        flex: 0 0 310px;
+
+        & > .drop-list-container {
+          margin-top: 20px;
+        }
+
+        & > .class-search {
+          gap: 15px;
+          padding: 20px 0;
+
+          & > img {
+            height: 27px;
+            width: 27px;
+          }
+        }
+
+        & > .footer {
+          flex: 0 0 50px;
+        }
+      }
+      & > .right-container {
+        & > .center-container {
+          & > .performance {
+            padding-top: 15px;
+          }
+
+          & > .price-container {
+            padding-top: 20px;
+
+            & > .provider-list-price,
+            & > .discount-freight,
+            & > .import,
+            & > .custom-agent-cost,
+            & > .expenses {
+              @include s.flexColumn;
+              padding: 20px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

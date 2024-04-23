@@ -1,0 +1,350 @@
+<div class="generalDataClients">
+  <div class="content">
+    <div class="general-data">
+      <div class="client-data">
+        <div class="client-image">
+          <img
+            #imageElement
+            alt="logo"
+            [src]="setImage((selectedClient$ | async)?.Activo, (selectedClient$ | async)?.imageHover)"
+            (error)="errorImage()"
+          />
+        </div>
+        <div class="status">
+          <label *ngIf="!(editMode$ | async); else check">{{ 'formClient.step1.enabledClient' | translate }}</label>
+          <ng-template #check>
+            <app-check-box
+              [label]="
+                !(enableEdit$ | async)
+                  ? (selectedClient$ | async)?.Activo
+                    ? ('formClient.step1.enabledClient' | translate)
+                    : ('formClient.step1.disabledClient' | translate)
+                  : ('formClient.step1.enableClient' | translate)
+              "
+              [fontBold]="true"
+              [fontSize]="(viewType$ | async) === viewTypes.small ? '13px' : '16px'"
+              [fontColor]="(enableEdit$ | async) ? '#008894' : (selectedClient$ | async)?.Activo ? '#39b54a' : '#A0A0A0'"
+              [enabledIconNoSelected]="false"
+              [check]="(selectedClient$ | async)?.Activo"
+              [enableEdit]="(editMode$ | async) && (enableEdit$ | async)"
+              [readOnlyCheckImage]="
+                !(enableEdit$ | async) ? 'assets/Images/check-empty-green-light.svg' : 'assets/Images/check.svg'
+              "
+              (event)="setDataClient('Activo', $event)"
+            ></app-check-box>
+          </ng-template>
+        </div>
+        <div class="date">
+          <div>
+            <label>{{ 'formClient.step1.creationDate' | translate }}</label>
+          </div>
+          <div [style.height]="(viewType$ | async) === viewTypes.small ? '25px' : '30px'">
+            <span>{{ (selectedClient$ | async)?.FechaRegistro | dateFormatSlash }}</span>
+          </div>
+        </div>
+        <div class="alias">
+          <app-generic-input
+            [label]="'formClient.step1.alias' | translate"
+            [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+            [required]="true"
+            [maxlength]="300"
+            [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+            [value]="(selectedClient$ | async)?.Alias"
+            (textData)="setDataClient('Alias', $event)"
+          >
+          </app-generic-input>
+        </div>
+        <div class="name">
+          <app-generic-input
+            [label]="'formClient.step1.name' | translate"
+            [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+            [required]="true"
+            [maxlength]="300"
+            [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+            [value]="(selectedClient$ | async)?.Nombre"
+            (textData)="setDataClient('Nombre', $event)"
+          >
+          </app-generic-input>
+        </div>
+        <div class="role">
+          <app-drop-down-list
+            [activeMinWidth]="false"
+            [label]="'formClient.step1.role' | translate"
+            [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+            [required]="true"
+            [items]="selectRoles$ | async"
+            [itemSelected]="clientRole$ | async"
+            [capitalize]="false"
+            (valueDropList)="setDropData('IdCatRolCliente', 'NombreCatRolCliente', $event)"
+          >
+          </app-drop-down-list>
+        </div>
+        <div class="commercial-leader">
+          <app-drop-down-list
+            [label]="'formClient.step1.commercialLeader' | translate"
+            [enableEdit]="(enableEdit$ | async) || !(editMode$ | async)"
+            [disable]="(enableEdit$ | async) ? !(selectIsUserCommercialLeaderOrCoordinatorESAC$ | async) : false"
+            [items]="commercialLeaders$ | async"
+            [isSearchable]="(commercialLeaders$ | async)?.length > 5"
+            [itemSelected]="selectedCommercialLeader$ | async"
+            [required]="selectIsUserCommercialLeaderOrCoordinatorESAC$ | async"
+            [capitalize]="false"
+            (valueDropList)="setDropData('IdUsuarioCoordinadorDeVentaInterna', '', $event)"
+          ></app-drop-down-list>
+        </div>
+        <div class="seller">
+          <app-drop-down-list
+            [label]="'inspector.seller' | translate"
+            [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+            [disable]="(enableEdit$ | async) ? !(isUserCoordinadorDeVentaInterna$ | async) : false"
+            [activeMinWidth]="false"
+            [subtitleActive]="false"
+            [isSearchable]="(optionSellers$ | async)?.length > 5"
+            [items]="optionSellers$ | async"
+            [itemSelected]="seller$ | async"
+            [required]="isUserCoordinadorDeVentaInterna$ | async"
+            [capitalize]="false"
+            (valueDropList)="setDropData('IdUsuarioVendedor', 'UsuarioVendedor', $event)"
+          ></app-drop-down-list>
+        </div>
+        <div class="coordinator-esac">
+          <app-drop-down-list
+            [label]="'formClient.step1.coordinatorESAC' | translate"
+            [enableEdit]="(enableEdit$ | async) || !(editMode$ | async)"
+            [disable]="(enableEdit$ | async) ? !(selectIsUserCommercialLeaderOrCoordinatorESAC$ | async) : false"
+            [items]="coordinatorESACList$ | async"
+            [isSearchable]="(coordinatorESACList$ | async)?.length > 5"
+            [itemSelected]="selectedCoordinatorESA$ | async"
+            [required]="selectIsUserCommercialLeaderOrCoordinatorESAC$ | async"
+            [capitalize]="false"
+            (valueDropList)="setDropData('IdUsuarioCoordinadorDeServicioAlCliente', '', $event)"
+          ></app-drop-down-list>
+        </div>
+        <div class="esac">
+          <app-drop-down-list
+            [label]="'ESAC'"
+            [enableEdit]="(enableEdit$ | async) || !(editMode$ | async)"
+            [disable]="(enableEdit$ | async) ? !(isUserCoordinadorDeServicioAlCliente$ | async) : false"
+            [items]="esacList$ | async"
+            [isSearchable]="(esacList$ | async)?.length > 5"
+            [itemSelected]="selectedEsac$ | async"
+            [capitalize]="false"
+            [required]="isUserCoordinadorDeServicioAlCliente$ | async"
+            (valueDropList)="setDropData('IdUsuarioESAC', 'ESAC', $event)"
+          ></app-drop-down-list>
+        </div>
+        <div class="collector">
+          <app-drop-down-list
+            [label]="'Cobrador'"
+            [enableEdit]="enableEdit$ | async"
+            [disable]="(enableEdit$ | async) ? !(isUserAnalistaDeCuentasPorCobrar$ | async) : false"
+            [items]="collectorList$ | async"
+            [isSearchable]="(collectorList$ | async)?.length > 5"
+            [itemSelected]="selectedCollector$ | async"
+            (valueDropList)="setDropData('IdUsuarioCobrador', 'Cobrador', $event)"
+          ></app-drop-down-list>
+        </div>
+        <div class="important">
+          <label>{{ 'formClient.step1.segmentation' | translate }}: </label>
+          <img
+            [alt]="(selectedClient$ | async)?.NivelIngreso"
+            [src]="
+              (selectedClient$ | async)?.NivelIngreso
+                ? 'assets/Images/clientes/niveles-ingreso/' +
+                  incomeLevelHelper((selectedClient$ | async)?.NivelIngreso) +
+                  '.svg'
+                : 'assets/Images/clientes/niveles-ingreso/bajo.svg'
+            "
+          />
+          <img
+            [alt]="(selectedClient$ | async)?.Categoria"
+            [src]="
+              (selectedClient$ | async)?.Categoria
+                ? 'assets/Images/clientes/categorias/' + lodashToLower((selectedClient$ | async)?.Categoria) + '.svg'
+                : 'assets/Images/clientes/categorias/rest.svg'
+            "
+          />
+        </div>
+        <div class="sector">
+          <app-drop-down-list
+            [activeMinWidth]="false"
+            [label]="'formClient.step1.sector' | translate"
+            [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+            [required]="true"
+            [items]="selectSectors$ | async"
+            [itemSelected]="sector$ | async"
+            [capitalize]="false"
+            (valueDropList)="setDropData('IdCatSector', 'Sector', $event)"
+          >
+          </app-drop-down-list>
+        </div>
+        <div class="industry">
+          <app-drop-down-list
+            [activeMinWidth]="false"
+            [label]="'formClient.step1.industry' | translate"
+            [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+            [required]="true"
+            [items]="selectIndustries$ | async"
+            [itemSelected]="industry$ | async"
+            [isSearchable]="(selectIndustries$ | async)?.length > 5"
+            [capitalize]="false"
+            (valueDropList)="setDropData('IdCatIndustria', 'Industria', $event)"
+          ></app-drop-down-list>
+        </div>
+        <div class="deseado fundamental">
+          <div class="input">
+            <app-generic-input
+              [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+              [extraStringStyleFont]="'RobotoRegularProquifa13to16'"
+              [extraString]="'%'"
+              [label]="'formClient.step1.fundamentalObjective' | translate"
+              [max]="100"
+              [min]="0"
+              [required]="true"
+              [typeValidation]="inputValidators.Percentage"
+              [value]="(selectedClient$ | async)?.ObjetivoCrecimientoFundamental"
+              (textData)="setDataClient('ObjetivoCrecimientoFundamental', $event)"
+            >
+            </app-generic-input>
+            <div class="percentage" *ngIf="enableEdit$ | async"><span>%</span></div>
+          </div>
+        </div>
+        <div class="deseado">
+          <div class="input">
+            <app-generic-input
+              [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+              [extraStringStyleFont]="'RobotoRegularProquifa13to16'"
+              [extraString]="'%'"
+              [label]="'formClient.step1.desiredObjective' | translate"
+              [max]="100"
+              [min]="0"
+              [required]="true"
+              [typeValidation]="inputValidators.Percentage"
+              [value]="(selectedClient$ | async)?.ObjetivoCrecimientoDeseado"
+              (textData)="setDataClient('ObjetivoCrecimientoDeseado', $event)"
+            >
+            </app-generic-input>
+            <div class="percentage" *ngIf="enableEdit$ | async"><span>%</span></div>
+          </div>
+        </div>
+        <div class="check1">
+          <app-check-box
+            [labelFontStyle]="(selectedClient$ | async)?.RecogeEnProquifa ? 'robotoRegular16Proquifa' : 'robotoRegular13'"
+            [label]="'Recoge en Proquifa'"
+            [secondaryLabel]="'Dirección de Entrega'"
+            [secondaryLabelFontStyle]="
+              (selectedClient$ | async)?.RecogeEnProquifa ? 'labelRobotoRegularProquifa11' : 'robotoRegularRegularBlack11'
+            "
+            [check]="(selectedClient$ | async)?.RecogeEnProquifa"
+            [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+            [enabledIconNoSelected]="!(selectedClient$ | async)?.RecogeEnProquifa"
+            (event)="setDataClient('RecogeEnProquifa', $event)"
+          ></app-check-box>
+        </div>
+        <div class="check2">
+          <app-check-box
+            [labelFontStyle]="
+              (selectedClient$ | async)?.RestringirVentaSustanciasControladas ? 'robotoRegular16Proquifa' : 'robotoRegular13'
+            "
+            [label]="'formClient.step1.restrictingSaleControlledSubstances' | translate"
+            [check]="(selectedClient$ | async)?.RestringirVentaSustanciasControladas"
+            [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+            [enabledIconNoSelected]="!(selectedClient$ | async)?.RestringirVentaSustanciasControladas"
+            (event)="setDataClient('RestringirVentaSustanciasControladas', $event)"
+          ></app-check-box>
+        </div>
+        <!-- // DOCS: SE COMENTA PORQUE NO SERÁ UTILIZADO POR EL MOMENTO, QUEDA EN ESPERA SI SE ELIMINA DEFINITIVAMENTE.
+        SI SE VUELVE A UTILIZAR POR FAVOR DESCOMENTAR EL CSS DEL CHECKBOX .check3-->
+        <!--        <div class="check3">
+          <app-check-box
+            [labelFontStyle]="(selectedClient$ | async)?.NoAplicaGastoDeEnvio ? 'robotoRegular16Proquifa' : 'robotoRegular13'"
+            [label]="'formClient.step1.noShippingCostsApply' | translate"
+            [check]="(selectedClient$ | async)?.NoAplicaGastoDeEnvio"
+            [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+            [enabledIconNoSelected]="!(selectedClient$ | async)?.NoAplicaGastoDeEnvio"
+            (event)="setDataClient('NoAplicaGastoDeEnvio', $event)"
+          ></app-check-box>
+        </div>-->
+      </div>
+      <div class="aqua">
+        <label *ngIf="!(enableEdit$ | async)">{{ 'Tercero Autorizado' }}</label>
+        <div class="editable" *ngIf="enableEdit$ | async">
+          <app-check-box
+            [backGroundCheckColor]="'#ffffff'"
+            [label]="'formClient.step1.authorizedThirdParty' | translate"
+            [check]="(selectedClient$ | async)?.EsTerceroAutorizado"
+            (event)="setDataClient('EsTerceroAutorizado', $event)"
+          >
+          </app-check-box>
+          <div class="drop">
+            <div class="list">
+              <app-drop-down-list
+                [isSearchable]="true"
+                [items]="tercerosAutorizadosList$ | async"
+                [itemSelected]="authorizedThirdSelected$ | async"
+                [disable]="!(selectedClient$ | async)?.EsTerceroAutorizado"
+                [capitalize]="false"
+                (valueDropList)="setAuthorizedThirdSelected($event)"
+              ></app-drop-down-list>
+            </div>
+            <div class="button">
+              <button
+                [ngClass]="!lodashIsEmpty(authorizedThirdSelected$ | async) ? 'btn-enable' : 'btn-disable'"
+                [disabled]="!(selectedClient$ | async)?.EsTerceroAutorizado || lodashIsEmpty(authorizedThirdSelected$ | async)"
+                (click)="addTercero()"
+                >{{ 'common.add' | translate }}</button
+              >
+            </div>
+          </div>
+        </div>
+        <div class="authorized">
+          <div class="authorized-item" *ngFor="let item of clientAuthorized$ | async">
+            <div class="text">
+              <label>{{ item.NombreTerceroAutorizado }}</label></div
+            >
+            <div class="image">
+              <img *ngIf="enableEdit$ | async" (click)="removeTercero(item)" alt="" src="assets/Images/cerrar.svg" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="required-field">
+      <p *ngIf="!(editMode$ | async) || (enableEdit$ | async)"><span>*</span>{{ 'common.requiredField' | translate }} </p>
+    </div>
+    <div class="contacts">
+      <div class="listContact">
+        <div class="borderLine">
+          <label class="title">{{ 'formClient.step1.contacts' | translate }}</label>
+        </div>
+        <div class="contactContainer">
+          <div *ngIf="(contacts$ | async)?.length > 0 || !(editMode$ | async) || (enableEdit$ | async)">
+            <div class="contactGrid">
+              <virtual-scroller [items]="contacts$ | async" (vsUpdate)="contactsListScroll = $event">
+                <app-contact-item
+                  *ngFor="let contact of contactsListScroll"
+                  [contact]="buildContact(contact)"
+                  [enableEdit]="enableEdit$ | async"
+                  (clickOnContact)="handleContact(contact, true)"
+                  (disableContact)="removeContact(contact)"
+                ></app-contact-item>
+                <app-contact-item
+                  *ngIf="enableEdit$ | async"
+                  [enableEdit]="enableEdit$ | async"
+                  [contact]="null"
+                  (click)="handleContact(null, false)"
+                ></app-contact-item>
+              </virtual-scroller>
+            </div>
+          </div>
+          <div class="center" *ngIf="(contacts$ | async)?.length === 0 && (editMode$ | async) && !(enableEdit$ | async)">
+            <app-without-results></app-without-results>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="message">
+      <label class="required-data">*Al menos agrega un contacto para avanzar</label>
+    </div>
+  </div>
+</div>

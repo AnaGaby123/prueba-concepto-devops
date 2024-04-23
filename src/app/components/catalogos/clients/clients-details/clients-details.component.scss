@@ -1,0 +1,184 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  #clients-details-form {
+    @include s.flexColumn;
+    @include s.absolute100;
+
+    & > .container {
+      @include s.flexColumn;
+      flex: 1;
+      overflow: hidden;
+
+      & > .tabs {
+        @include s.flexRow;
+        flex: 0 0 35px;
+        margin-top: 20px;
+      }
+
+      & .container-outlet {
+        flex: 1 1 auto;
+        padding-top: 20px;
+        width: 100%;
+        overflow: hidden;
+      }
+    }
+
+    & > footer {
+      @include s.generic-main-component-footer;
+      padding: 0 20px;
+
+      & > .buttons {
+        @include s.flexRow;
+        flex: 1;
+        justify-content: space-between;
+
+        & > .enable {
+          @include s.pqfButton();
+        }
+
+        & > div {
+          & > .enable {
+            @include s.pqfButton();
+          }
+
+          & > .disable {
+            @include s.pqfDisableButton();
+          }
+
+          $max-width-map: (
+            'base': 210px,
+            'macBookAir': 300px,
+          );
+
+          & > .btnGenerate {
+            @include s.pqfButton($max-width-map: $max-width-map, $background-color: s.$pqGreen2);
+          }
+
+          & > .btnGenerateDisabled {
+            @include s.pqfDisableButton($max-width-map: $max-width-map);
+          }
+
+          & > button:nth-of-type(2) {
+            margin-left: 15px;
+          }
+        }
+      }
+
+      & > .oneButton {
+        @include s.flexRow;
+        flex: 1;
+        justify-content: flex-end;
+
+        & > button {
+          @include s.pqfButton();
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .container {
+        & > .tabs {
+          flex: 0 0 40px;
+          margin-top: 25px;
+        }
+
+        & > .container-outlet {
+          padding-top: 30px;
+        }
+      }
+    }
+  }
+
+  .pop-alert {
+    & .container {
+      @include s.flexColumn;
+      @include s.absoluteCenter;
+      align-items: center;
+
+      & > img {
+        @include s.default-transition();
+        height: 50px;
+        margin-bottom: 20px;
+        width: 50px;
+      }
+
+      & > div {
+        @include s.flexColumn;
+        padding: 0 40px;
+
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize26to29, regular, s.$pqBlack2);
+        }
+
+        & > label:nth-of-type(2) {
+          padding-top: 10px;
+        }
+
+        & > .configuracion {
+          @include s.flexRow;
+          flex: 50px;
+          width: 100%;
+          padding-top: 15px;
+
+          & > div:nth-child(1) {
+            width: 60%;
+            display: flex;
+            justify-content: flex-end;
+          }
+
+          & > div:nth-child(2) {
+            width: 40%;
+            display: flex;
+            box-sizing: border-box;
+            padding-left: 8px;
+
+            & > div {
+              display: flex;
+              align-items: center;
+
+              & > img {
+                height: 17px;
+              }
+
+              & > .textAlert {
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormat(s.$textSize16to18, regular, s.$pqOrange4);
+                padding-left: 10px;
+              }
+
+              @include s.responsive_layout('macBookAir') {
+                & > div {
+                  & > img {
+                    height: 20px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      @include s.responsive_layout('macBookAir') {
+        & .container {
+          & > img {
+            height: 60px;
+            margin-bottom: 25px;
+            width: 60px;
+          }
+
+          & > div {
+            padding: 0 45px;
+          }
+        }
+      }
+    }
+  }
+}

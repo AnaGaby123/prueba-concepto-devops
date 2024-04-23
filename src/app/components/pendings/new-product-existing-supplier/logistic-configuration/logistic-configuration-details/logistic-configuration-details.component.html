@@ -1,0 +1,45 @@
+<div class="card-brand-container">
+  <div class="information-container">
+    <div class="image-brand">
+      <img #imageElement alt="brand" [src]="(configurationLogisticSelected$ | async)?.imageHover" (error)="errorImage()" />
+    </div>
+    <div class="card-brand-data">
+      <div class="provider-name">
+        <label>{{ (configurationLogisticSelected$ | async)?.NombreMarca }}</label>
+      </div>
+      <div class="details">
+        <div class="brand-name">
+          <label
+            >{{
+              (configurationLogisticSelected$ | async)?.CatTipoProductoNombre !== 'N/A'
+                ? (configurationLogisticSelected$ | async)?.CatTipoProductoNombre
+                : ''
+            }}
+            {{
+              (configurationLogisticSelected$ | async)?.CatSubTipoProductoNombre !== 'N/A'
+                ? ' · ' + (configurationLogisticSelected$ | async)?.CatSubTipoProductoNombre
+                : ''
+            }}
+            {{
+              (configurationLogisticSelected$ | async)?.CatControlNombre !== 'N/A'
+                ? ' · ' + (configurationLogisticSelected$ | async)?.CatControlNombre
+                : ''
+            }}
+          </label>
+        </div>
+        <div class="family-data">
+          <label>{{ (configurationLogisticSelected$ | async)?.NombreProveedor }}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="more-details">
+    <label>{{ 'common.moreInfo' | translate }}</label>
+  </div>
+</div>
+
+<app-logistic-configuration-routes
+  *ngIf="(apiStatusDetails$ | async) !== 1 && (configurationLogisticList$ | async)?.length > 0"
+  [deliveryRoutes]="(configurationLogisticSelected$ | async)?.detailsConfiguration"
+  [enableEdit]="true"
+></app-logistic-configuration-routes>

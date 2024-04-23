@@ -1,0 +1,318 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  #week {
+    @include s.absolute100;
+    @include s.flexColumn;
+
+    & > .content-container {
+      @include s.absolute100;
+      @include s.flexColumn;
+      overflow: auto;
+
+      & > .header {
+        @include s.flexRowNoWrap;
+        flex: 0 0 50px;
+        min-width: 2000px;
+        border-bottom: 1px solid s.$pqBlack;
+
+        & > div {
+          @include s.flexRowNoWrap;
+          @include s.absoluteCenter;
+          flex: 1 0 400px;
+
+          & > div {
+            & > label {
+              @include s.escaledFontFormat(s.$textSize16to18, bold, s.$pqBlack2);
+              @include s.Novecento-Bold;
+            }
+          }
+
+          & > .active {
+            background-color: s.$pqGreen;
+            border-radius: 16px;
+            padding: 3px 15px;
+
+            & > label {
+              color: s.$pqWhite;
+            }
+          }
+        }
+      }
+
+      & > .content {
+        @include s.flexRowNoWrap;
+        flex: 1 0 auto;
+
+        & > div {
+          @include s.flexColumn;
+          flex: 1 0 400px;
+
+          & > .items {
+            @include s.flexColumn;
+            flex: 1 1 auto;
+            overflow: hidden;
+
+            & > virtual-scroller {
+              width: 100%;
+              height: 100%;
+
+              .card {
+                @include s.flexColumn;
+                padding: 21px 30px 0 30px;
+                margin-top: -1px;
+
+                & * {
+                  cursor: pointer;
+                }
+
+                &:hover {
+                  background-color: s.$pqGray2;
+                }
+
+                & > .card-content {
+                  @include s.flexRowNoWrap;
+                  @include s.absolute100;
+                  border-bottom: 1px solid s.$pqGray2;
+                  padding: 0 5px 20px 5px;
+
+                  & > .index {
+                    @include s.flexRowNoWrap;
+                    @include s.absoluteTop;
+                    width: 40px;
+                    height: 100%;
+                    box-sizing: border-box;
+
+                    & > label {
+                      @include s.escaledFontFormat(s.$textSize23to26, regular, s.$pqBlack2);
+                      @include s.Roboto-Regular;
+                    }
+
+                    & > img {
+                      width: 23px;
+                    }
+                  }
+
+                  & > .info {
+                    @include s.flexColumn;
+                    width: calc(100% - 50px);
+
+                    & > .line-one {
+                      @include s.flexRowNoWrap;
+                      width: 100%;
+                      align-items: flex-start;
+                      justify-content: space-between;
+
+                      & > label {
+                        @include s.escaledFontFormat(s.$textSize23to26, bold, s.$pqGreen);
+                        @include s.Roboto-Bold;
+                      }
+                    }
+
+                    & > .line-two {
+                      padding-top: 3px;
+
+                      & > label {
+                        @include s.escaledFontFormat(s.$textSize20to23, bold, s.$pqBlack2);
+                        @include s.Roboto-Bold;
+                      }
+                    }
+
+                    & > .line-three {
+                      padding-top: 5px;
+
+                      & > label {
+                        @include s.escaledFontFormat(s.$textSize18to21, regular, s.$pqBlack2);
+                        @include s.Roboto-Regular;
+                      }
+                    }
+
+                    & > .line-four {
+                      @include s.flexRowNoWrap;
+                      padding-top: 7px;
+
+                      & label {
+                        @include s.escaledFontFormat(s.$textSize14to17, regular, s.$pqTextGris);
+                        @include s.Roboto-Regular;
+                      }
+
+                      & > div {
+                        @include s.flexRowNoWrap;
+                        align-items: center;
+                        padding-left: 5px;
+
+                        & > label {
+                          padding-left: 4px;
+                          padding-right: 12px;
+                        }
+
+                        & > span {
+                          display: inline-block;
+                        }
+
+                        & > .green {
+                          @include s.pqCircle(12px, s.$pqGreen2);
+                        }
+
+                        & > .yellow {
+                          @include s.pqCircle(12px, s.$pqOrange6);
+                        }
+
+                        & > .orange {
+                          @include s.pqCircle(12px, s.$pqOrange7);
+                        }
+
+                        & > .red {
+                          @include s.pqCircle(12px, s.$pqRed2);
+                        }
+
+                        & > .purple {
+                          @include s.pqCircle(12px, s.$purple);
+                        }
+                      }
+                    }
+
+                    & > .line-five {
+                      padding-top: 10px;
+                    }
+                  }
+                }
+              }
+
+              .back-purple {
+                background-color: #6a6aae15;
+              }
+
+              .back-orange {
+                background-color: #eca73515;
+              }
+            }
+
+            & > .without-results {
+              @include s.flexRow;
+              align-items: center;
+              flex: 1;
+            }
+          }
+
+          & > .footer {
+            @include s.flexRowNoWrap;
+            flex: 0 0 50px;
+            border-top: 1px solid s.$pqBlack;
+            justify-content: space-between;
+            padding: 7px 0;
+            margin: 0 15px;
+
+            & > div {
+              @include s.flexColumn;
+
+              & label {
+                @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+                @include s.Roboto-Regular;
+              }
+
+              & > .line-one {
+                padding-bottom: 5px;
+              }
+
+              & > .line-one,
+              .line-two {
+                @include s.flexRowNoWrap;
+                align-items: flex-start;
+
+                & > label {
+                  padding-left: 3px;
+                }
+
+                & > span {
+                  display: inline-block;
+                }
+
+                & > .green {
+                  @include s.pqCircle(12px, s.$pqGreen2);
+                }
+
+                & > .yellow {
+                  @include s.pqCircle(12px, s.$pqOrange6);
+                }
+
+                & > .orange {
+                  @include s.pqCircle(12px, s.$pqOrange7);
+                }
+
+                & > .red {
+                  @include s.pqCircle(12px, s.$pqRed2);
+                }
+
+                & > .purple {
+                  @include s.pqCircle(12px, s.$purple);
+                }
+              }
+            }
+
+            & > .column-one,
+            .column-two,
+            .column-three {
+              padding-right: 15px;
+            }
+
+            & > .column-four {
+              padding-right: 10px;
+            }
+
+            & > .column-four,
+            .column-five {
+              align-items: flex-end;
+            }
+
+            & > .total-results {
+              & > label {
+                padding-left: 4px;
+                padding-right: 12px;
+              }
+            }
+          }
+        }
+
+        & > .mon,
+        .tues,
+        .wed,
+        .thurs {
+          border-right: 1px solid s.$pqGray2;
+        }
+      }
+
+      & > .loader {
+        @include s.flexRow;
+        align-items: center;
+        flex: 1;
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #week {
+      & > .content-container {
+        & > .header {
+          min-width: 2250px;
+
+          & > div {
+            flex: 1 0 450px;
+          }
+        }
+
+        & > .content {
+          & > div {
+            flex: 1 0 450px;
+          }
+        }
+      }
+    }
+  }
+}

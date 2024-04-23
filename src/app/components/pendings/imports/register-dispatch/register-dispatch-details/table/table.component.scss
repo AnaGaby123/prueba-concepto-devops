@@ -1,0 +1,305 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  height: 100%;
+  width: 100%;
+
+  & > #table-container {
+    @include s.flexColumn;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    padding: 20px 20px 0 20px;
+
+    & > .title {
+      @include s.flexRow;
+
+      & > label {
+        @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+        @include s.Novecento-Bold;
+        flex: 0 0 auto;
+        padding-bottom: 10px;
+        white-space: pre;
+      }
+    }
+
+    & > .header-container {
+      @include s.flexColumn;
+    }
+
+    & > .table-container {
+      @include s.flexColumn;
+      border: 1px solid s.$pqBlack2;
+      flex: 1 1 auto;
+      overflow-x: auto;
+      overflow-y: hidden;
+
+      & > .table {
+        @include s.flexColumn;
+        flex: 1 1 100%;
+        min-width: 1250px;
+        overflow: hidden;
+
+        & > .header {
+          @include s.flexRowNoWrap;
+          border-bottom: 1px solid s.$pqBlack2;
+          flex: 0 0 38px;
+          min-width: 1250px;
+          padding: 0 20px;
+
+          & > div {
+            @include s.flexRowNoWrap;
+            @include s.absoluteCenter;
+            padding: 0 5px;
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize13to15, bold, s.$pqBlack2);
+              @include s.Novecento-Bold;
+              text-align: center;
+            }
+          }
+
+          & > .name {
+            flex: 1 1 auto;
+          }
+
+          & > .small {
+            flex: 0 0 105px;
+          }
+
+          & > .big {
+            flex: 0 0 180px;
+          }
+        }
+
+        & > .body {
+          @include s.flexColumn;
+          flex: 1 1 auto;
+          min-width: 1250px;
+          overflow: auto;
+
+          & > virtual-scroller {
+            height: 100%;
+            width: 100%;
+
+            & .item {
+              @include s.flexColumn;
+              border-bottom: 1px solid s.$pqBlack2;
+
+              & .top {
+                @include s.flexRowNoWrap;
+                @include s.default-transition($duration: 0.2s);
+                border-bottom: 1px solid s.$pqGray2;
+                padding: 0 20px;
+
+                & > div {
+                  @include s.flexRowNoWrap;
+                  @include s.absoluteCenter;
+                  padding: 15px 5px;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                    @include s.Roboto-Regular;
+                  }
+
+                  & > .bold {
+                    @include s.escaledFontFormat(s.$textSize15to20, regular, s.$pqBlack2);
+                    @include s.Roboto-Bold;
+
+                    &.ocean {
+                      color: s.$pqGreen;
+                    }
+                  }
+                }
+
+                & > .name {
+                  flex: 1 1 auto;
+                  justify-content: flex-start;
+                }
+
+                & > .small {
+                  flex: 0 0 105px;
+                }
+
+                & > .big {
+                  flex: 0 0 180px;
+                }
+              }
+
+              & .bottom {
+                @include s.flexColumn;
+
+                & .item-bottom {
+                  @include s.flexRowNoWrap;
+                  @include s.default-transition($duration: 0.2s);
+                  border-bottom: 1px solid s.$pqGray2;
+                  padding: 0 20px;
+
+                  & > div {
+                    @include s.flexRowNoWrap;
+                    @include s.absoluteCenter;
+                    padding: 15px 5px;
+
+                    & > label {
+                      @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                      @include s.Roboto-Regular;
+                    }
+
+                    & > .bold {
+                      @include s.escaledFontFormat(s.$textSize15to20, regular, s.$pqBlack2);
+                      @include s.Roboto-Bold;
+
+                      &.ocean {
+                        color: s.$pqGreen;
+                      }
+                    }
+                  }
+
+                  & > .name {
+                    @include s.flexColumn;
+                    align-items: flex-start;
+                    flex: 1 1 auto;
+
+                    & > div {
+                      @include s.multiLineTextTruncateSinHeight($lineHeight: 1.1em);
+                      margin-bottom: 4px;
+
+                      & > label {
+                        @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                        @include s.Roboto-Regular;
+
+                        & > span {
+                          @include s.Roboto-Bold;
+                          vertical-align: baseline;
+                        }
+                      }
+                    }
+
+                    & > label {
+                      @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen);
+                      @include s.Roboto-Regular;
+                    }
+                  }
+
+                  & > .small {
+                    flex: 0 0 105px;
+                  }
+
+                  & > .big {
+                    flex: 0 0 180px;
+                  }
+                }
+              }
+            }
+
+            & > ::ng-deep .scrollable-content > .without-results {
+              @include s.flexColumn;
+              @include s.absoluteCenter;
+              flex: 1 1 auto;
+              overflow: hidden;
+              padding: 50px;
+            }
+
+            & .loading {
+              @include s.flexColumn;
+              @include s.absoluteCenter;
+              height: 100%;
+              width: 100%;
+            }
+          }
+
+          & > .loading {
+            @include s.flexColumn;
+            @include s.absoluteCenter;
+            height: 100%;
+            width: 100%;
+          }
+        }
+
+        & > .footer {
+          @include s.flexRowNoWrap;
+          border-top: 1px solid s.$pqBlack2;
+          flex: 0 0 38px;
+          min-width: 1250px;
+          padding: 0 20px;
+
+          & > div {
+            @include s.flexRowNoWrap;
+            @include s.absoluteCenter;
+            padding: 0 5px;
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+              @include s.Novecento-Bold;
+            }
+          }
+
+          & > .name {
+            flex: 1 1 auto;
+            justify-content: flex-start;
+
+            & > label:first-of-type {
+              margin-right: 40px;
+            }
+          }
+
+          & > .small {
+            flex: 0 0 105px;
+          }
+
+          & > .big {
+            flex: 0 0 180px;
+          }
+        }
+      }
+    }
+
+    & > .button {
+      @include s.flexRow;
+      align-items: center;
+      justify-content: flex-end;
+      height: 59px;
+
+      & > .active {
+        @include s.pqButton;
+      }
+
+      & > .disabled {
+        @include s.pqButtonDisable;
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .title {
+        padding-bottom: 14px;
+      }
+
+      & > .table-container {
+        & > .table {
+          & > .header {
+            flex: 0 0 43px;
+
+            & > div {
+              & > img {
+                height: 21px;
+                width: 21px;
+              }
+            }
+          }
+
+          & > .footer {
+            flex: 0 0 43px;
+          }
+        }
+      }
+
+      & > .button {
+        height: 69px;
+      }
+    }
+  }
+}

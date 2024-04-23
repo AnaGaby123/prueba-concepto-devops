@@ -1,0 +1,123 @@
+@use 'base' as s;
+
+#order-confirmation-dialog {
+  ::ng-deep .modal {
+    background: none;
+
+    & > .modal-content {
+      transition: none;
+    }
+  }
+
+  & .container {
+    @include s.flexColumn;
+    width: 100%;
+    height: 100%;
+    justify-content: flex-start;
+
+    & * {
+      box-sizing: border-box;
+    }
+
+    & > .header {
+      @include s.flexRow;
+      justify-content: center;
+      padding-top: 48px;
+      height: 123px;
+
+      & > img {
+        width: 58px;
+        height: 58px;
+      }
+    }
+
+    & > .resume {
+      @include s.flexColumn;
+      align-items: center;
+      padding: 0 60px 35px 60px;
+
+      & > label:nth-child(odd) {
+        $textSize: (
+          'base': 26px,
+        );
+        @include s.escaledFontFormat($textSize, regular, s.$pqBlack2);
+        @include s.Roboto-Regular;
+        margin-bottom: 5px;
+      }
+
+      & > label:nth-child(even) {
+        $textSize: (
+          'base': 26px,
+        );
+        @include s.escaledFontFormat($textSize, bold, s.$pqGreen);
+        @include s.Roboto-Bold;
+        margin-bottom: 5px;
+      }
+    }
+
+    & > .totals {
+      @include s.flexColumn;
+      @include s.absoluteCenter;
+      height: 135px;
+      background-color: s.$redAlertHover;
+
+      & > label:first-of-type {
+        $textSize: (
+          'base': 26px,
+        );
+        @include s.escaledFontFormat($textSize, regular, s.$pqGreen);
+        @include s.Roboto-Regular;
+        margin-bottom: 5px;
+      }
+
+      & > label:last-of-type {
+        $textSize: (
+          'base': 25px,
+        );
+        @include s.escaledFontFormat($textSize, regular, s.$pqBlack2);
+        @include s.Roboto-Regular;
+        margin-bottom: 5px;
+      }
+
+      & > label:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+@include s.media-query(s.$standard) {
+  #code-pop-up {
+    & .container {
+      & > .header {
+        height: 150px;
+
+        & > .image {
+          width: 216px;
+        }
+
+        & > .client-data {
+          padding: 33px 0;
+        }
+      }
+
+      & > .code {
+        padding: 35px 0;
+
+        & > label:first-child {
+          margin-bottom: 29px;
+        }
+      }
+
+      & > .inputs {
+        & > .shaked {
+          & > input {
+            width: 73px;
+            height: 56px;
+            margin-right: 33px;
+          }
+        }
+      }
+    }
+  }
+}

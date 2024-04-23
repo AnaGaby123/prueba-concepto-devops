@@ -1,0 +1,98 @@
+<div class="dashboard-container" id="declare-arrival-list">
+  <div class="left-container">
+    <label class="title">{{ 'processPurchase.providers' | translate }}</label>
+    <div class="tabs">
+      <app-tabs [options]="tabs$ | async" [tapSelected]="tab$ | async" (onSelectOption)="setTab($event)"></app-tabs>
+    </div>
+    <div class="filters">
+      <div class="filter-by-type">
+        <app-hamburger-menu [options]="sortList$ | async" [value]="(sort$ | async).value" (valueEmit)="setTypeSort($event)">
+        </app-hamburger-menu>
+      </div>
+      <div class="filter-by-search">
+        <app-search
+          [placeholder]="'processPurchase.provider' | translate"
+          [searchTerm]="searchTerm$ | async"
+          (textSearch)="handleKeySearch($event)"
+        >
+        </app-search>
+      </div>
+    </div>
+    <div class="list-container">
+      <virtual-scroller
+        *ngIf="!(isLoadingProviders$ | async)"
+        [items]="providers$ | async"
+        (vsUpdate)="providersScroll = $event"
+        (vsEnd)="fetchMore($event)"
+      >
+        <div class="provider" *ngFor="let provider of providersScroll" (click)="selectProvider(provider)">
+          <div class="index">
+            <label>{{ '#' + provider.Index }}</label>
+          </div>
+          <div>
+            <div class="name">
+              <label>{{ provider.NombreProveedor }}</label>
+            </div>
+            <div class="classification">
+              <label>{{ provider.NumeroDePiezas + ' ' + (provider.NumeroDePiezas === 0 ? 'pza' : 'pzas') }}</label>
+              <label>·</label>
+              <label>{{
+                ((provider.TotalUSD ? provider.TotalUSD : 0) | currency: 'USD':'symbol-narrow':'2.2-4') + ' USD'
+              }}</label>
+            </div>
+            <div class="states">
+              <label>{{ ('preProcessing.purchaseOrders' | translate) + ': ' + provider.TotalOrdenesDeCompra }}</label>
+            </div>
+            <div class="status">
+              <img alt="" src="assets/Images/labels/fuera-de-tiempo.svg" />
+              <label>{{ provider.TotalFueraDeTiempo }}</label>
+              <label>·</label>
+              <img alt="" src="assets/Images/labels/urgente.svg" />
+              <label class="urgent">{{ provider.TotalUrgente }}</label>
+              <label>·</label>
+              <img alt="" src="assets/Images/labels/en-tiempo.svg" />
+              <label class="in-time">{{ provider.TotalEnTiempo }}</label>
+            </div>
+          </div>
+          <div class="arrow">
+            <img alt="arrow" src="assets/Images/quotation/arrow_default.svg" />
+          </div>
+        </div>
+      </virtual-scroller>
+      <div class="without-results" *ngIf="(providers$ | async).length === 0 && !(isLoadingProviders$ | async)">
+        <app-without-results></app-without-results>
+      </div>
+      <div class="loader" *ngIf="isLoadingProviders$ | async">
+        <app-loading></app-loading>
+      </div>
+    </div>
+    <div class="footer">
+      <label>{{ '#' + (totalProviders$ | async | number: '1.0-0') }}</label>
+      <label>{{ (totals$ | async)?.OrdenesDeCompra + ' OC' }}</label>
+      <label>{{ (0 | number: '1.0-0') + (1 === 1 ? ' Producto' : ' Productos') }}</label>
+      <label>{{
+        ((totals$ | async)?.Piezas | number: '1.0-0') + ((totals$ | async)?.Piezas === 1 ? ' Pieza' : ' Piezas')
+      }}</label>
+      <label>{{
+        'Monto Total ' +
+          (((totals$ | async)?.MontoTotal ? (totals$ | async)?.MontoTotal : 0) | currency: 'USD':'symbol-narrow':'2.2-4') +
+          ' USD'
+      }}</label>
+    </div>
+  </div>
+  <div class="right-container">
+    <ng-container *ngIf="true">
+      <app-doughnut-chart
+        [data]="dataDonutChart$ | async"
+        [optionDetailsHover]="dataDetailsHover$ | async"
+        [optionDetails]="dataDetailsDonutChart$ | async"
+        [titleDetails]="'donutChart.titleTotals' | translate"
+        [title]="'processPurchase.providers' | translate"
+        [typeChart]="1"
+      >
+      </app-doughnut-chart>
+      <app-bar-chart [title]="'manageBackOrder.deliveryTrafficLight' | translate"></app-bar-chart>
+    </ng-container>
+    <app-loading class="loading" *ngIf="false"></app-loading>
+  </div>
+</div>

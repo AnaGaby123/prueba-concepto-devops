@@ -1,0 +1,238 @@
+<section>
+  <div class="body">
+    <div class="left-container">
+      <label class="box-title">DOCUMENTOS RECIBIDOS</label>
+      <div class="filters">
+        <div class="burger">
+          <app-burger-menu
+            [options]="filterOptions"
+            [value]="orderValueId$ | async"
+            (valueEmit)="orderMails($event)"
+          ></app-burger-menu>
+        </div>
+        <div class="search">
+          <app-search
+            [searchTerm]="searchTerm$ | async"
+            [placeholder]="('dailyMeeting.customer' | translate) + ', ' + ('common.mail' | translate)"
+            (textSearch)="handleSearch($event)"
+          ></app-search>
+        </div>
+      </div>
+      <div *ngIf="(mails$ | async).length > 0" class="mail-list">
+        <virtual-scroller
+          [items]="mails$ | async"
+          (vsUpdate)="scrolledMails = $event"
+          (vsEnd)="fetchMore($event)"
+          [enableUnequalChildrenSizes]="true"
+        >
+          <div
+            *ngFor="let mail of scrolledMails; let i = index; trackBy: handleTrackByItem"
+            (click)="selectEmail(mail)"
+            [ngClass]="mail.isSelected ? 'mail-item selected' : 'mail-item'"
+          >
+            <div class="mail-indicator"></div>
+            <div class="mail-content">
+              <div class="number">
+                <label>#{{ mail.Index }}</label>
+              </div>
+              <div class="notRead">
+                <div *ngIf="!mail.Leido" class="circle-new"></div>
+              </div>
+              <div class="sender">
+                <label class="sender green-title">{{ mail.Nombre ? mail.Nombre : 'N/D' }}</label>
+              </div>
+              <div class="date">
+                <label>{{ mail.FechaRecepcion | dateAgoFormat }}</label>
+              </div>
+              <div class="email">
+                <label class="email">{{ mail.CorreoEmisor }}</label>
+              </div>
+              <div class="files">
+                <img *ngIf="mail.ArchivosAdjuntos > 0" src="assets/Images/archivo_adjunto.svg" alt="" />
+              </div>
+              <div class="subject">
+                <label class="subject">{{ mail.Asunto }}</label>
+              </div>
+              <div class="mail-text">
+                <label class="mail-text">{{ mail.Contenido }}</label>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="(mails$ | async).length > 0 && (isLoading$ | async) === 1" class="without-results">
+            <app-loading></app-loading>
+          </div>
+        </virtual-scroller>
+      </div>
+      <div *ngIf="(mails$ | async).length === 0 && (isLoading$ | async) != 1" class="without-results">
+        <app-without-results></app-without-results>
+      </div>
+      <div *ngIf="(mails$ | async).length === 0 && (isLoading$ | async) === 1" class="without-results">
+        <app-loading></app-loading>
+      </div>
+
+      <div class="mail-list-footer">
+        <label>#{{ (totalsFooter$ | async)?.Correos }}</label>
+        <label
+          >{{ (totalsFooter$ | async)?.Contactos }}
+          {{
+            (totalsFooter$ | async)?.Contactos === 1
+              ? ('notProcessed.contact' | translate)
+              : ('formClient.step1.contacts' | translate)
+          }}</label
+        >
+        <label
+          >{{ (totalsFooter$ | async)?.Documentos }}
+          {{
+            (totalsFooter$ | async)?.Documentos === 1 ? ('common.document' | translate) : ('loadMissing.documents' | translate)
+          }}</label
+        >
+      </div>
+    </div>
+    <div class="right-container">
+      <div
+        class="email-container"
+        *ngIf="(mailIsSelected$ | async) && !(isMessageLoading$ | async)"
+        [ngClass]="
+          (userIsESAC || userIsCoordinadorDeServicioAlCliente) && (oCPending$ | async).OCPending > 0 ? 'padding-50' : ''
+        "
+      >
+        <div
+          *ngIf="(userIsESAC || userIsCoordinadorDeServicioAlCliente) && (oCPending$ | async).OCPending > 0"
+          @mailboxNotificationShow
+          class="oc-pending"
+        >
+          <label *ngIf="(oCPending$ | async).OCPendingList"
+            >{{ (selectedMail$ | async).Cliente?.Nombre ? (selectedMail$ | async).Cliente?.Nombre : 'N/D' }} ·
+            {{ 'common.have' | translate }} {{ countOCPendingNotLinked$ | async }}
+            {{ 'common.ocEarringsAdjustment' | translate }} ·
+          </label>
+          <label *ngIf="!(oCPending$ | async).OCPendingList"
+            >{{ (selectedMail$ | async).Cliente?.Nombre ? (selectedMail$ | async).Cliente?.Nombre : 'N/D' }} ·
+            {{ 'common.have' | translate }} {{ (oCPending$ | async).OCPending }}
+            {{ 'common.ocEarringsAdjustment' | translate }} ·
+          </label>
+          <label (click)="redirectTolinkMail()" class="underline-link"> {{ 'common.seeOC' | translate }}</label>
+        </div>
+        <div class="email-info">
+          <div class="header">
+            <div class="left">
+              <label class="green-title"
+                >{{ (selectedDropClient$ | async)?.label || (selectedMail$ | async).vCorreoCliente?.Nombre || 'N/D' }}
+              </label>
+              <div class="sender">
+                <label>{{ 'common.from' | translate }}: </label>
+                <label>{{ (selectedMail$ | async).CorreoRecibido?.CorreoEmisor }}</label>
+              </div>
+              <div class="subject">
+                <label>{{ 'quotation.details.subject' | translate }}: </label>
+                <label>{{ (selectedMail$ | async).CorreoRecibido?.Asunto }}</label>
+              </div>
+            </div>
+            <div
+              class="right"
+              [ngClass]="{
+                drop:
+                  (userIsESAC || userIsEVI || userIsCoordinadorDeServicioAlCliente) && (clientsWithSameMail$ | async).length > 1
+              }"
+            >
+              <div
+                *ngIf="
+                  (userIsESAC || userIsEVI || userIsCoordinadorDeServicioAlCliente) && (clientsWithSameMail$ | async).length > 1
+                "
+              >
+                <app-drop-down-list
+                  [items]="clientsWithSameMail$ | async"
+                  [itemSelected]="selectedDropClient$ | async"
+                  [disable]="blockClassificationsEdition$ | async"
+                  [isSearchable]="true"
+                  [capitalize]="false"
+                  (valueDropList)="handleSelectedDropClient($event)"
+                ></app-drop-down-list>
+              </div>
+              <label class="date">{{ (selectedMail$ | async).CorreoRecibido?.FechaRecepcion | longDateWithHourFormat }}</label>
+            </div>
+          </div>
+          <div class="content">
+            <pre class="text">{{ (selectedMail$ | async).CorreoRecibidoContenido?.Contenido }}</pre>
+            <div class="files" *ngIf="!lodashIsEmpty((selectedMail$ | async)?.Archivos)">
+              <div *ngFor="let archivo of (selectedMail$ | async)?.Archivos" class="file">
+                <img src="assets/Images/document.svg" alt="" />
+                <div class="tooltip">
+                  <img *ngIf="archivo.isLinked" class="link-icon" src="assets/Images/vinculo.svg" alt="" />
+                  <a (click)="handleShowFile(archivo)" class="file-name">{{ archivo.FileKey | onlyFileNamePdf }}</a>
+                  <a *ngIf="archivo.isLinked" (click)="unlink(archivo.IdArchivo)" class="file-inactivate underline-link"
+                    >Desvincular</a
+                  >
+                  <div class="tooltip-text">
+                    <p>{{ archivo.FileKey | onlyFileNamePdf }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="classifications">
+          <div *ngIf="(blockClassificationsEdition$ | async) && userIsEVI" class="disable-classifications"></div>
+          <label [ngClass]="(blockClassificationsEdition$ | async) ? 'disabled' : ''" class="main-label"
+            >Clasificaciones:</label
+          >
+          <app-omission-classification class="classification" [classifications]="clientReceivedMails$ | async">
+          </app-omission-classification>
+        </div>
+        <div class="footer">
+          <button
+            (click)="deleteMail()"
+            class="button"
+            [ngClass]="
+              (defaultClassifIsSelected$ | async) && (userIsESAC || userIsCoordinadorDeServicioAlCliente)
+                ? 'delete-active'
+                : 'disable'
+            "
+            [style.pointer-events]="
+              (defaultClassifIsSelected$ | async) && (userIsESAC || userIsCoordinadorDeServicioAlCliente) ? 'auto' : 'none'
+            "
+            >{{ 'delete' | translate }}
+          </button>
+          <button
+            (click)="sendMail()"
+            class="button"
+            [ngClass]="
+              ((validation$ | async) && !(defaultClassifIsSelected$ | async)) ||
+              ((defaultClassifIsSelected$ | async) && !userIsESAC && !userIsCoordinadorDeServicioAlCliente && !userIsSuper)
+                ? 'active'
+                : 'disable'
+            "
+            [style.pointer-events]="
+              ((validation$ | async) && !(defaultClassifIsSelected$ | async)) ||
+              ((defaultClassifIsSelected$ | async) && !userIsESAC && !userIsCoordinadorDeServicioAlCliente && !userIsSuper)
+                ? 'auto'
+                : 'none'
+            "
+          >
+            {{ 'common.send' | translate }}
+          </button>
+        </div>
+      </div>
+      <div class="without-results" *ngIf="!(mailIsSelected$ | async) && !(isMessageLoading$ | async)">
+        <app-without-results [title]="'SELECCIONA UN CORREO'"></app-without-results>
+      </div>
+      <div class="loading" *ngIf="isMessageLoading$ | async">
+        <div class="loadingContainer">
+          <div class="load-circle">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="circle-new"></div>
+    <label>Correo Nuevo</label>
+    <img src="assets/Images/archivo_adjunto.svg" />
+    <label>Archivos Adjuntos</label>
+    <img *ngIf="userIsEVI" src="assets/Images/vinculo.svg" />
+    <label *ngIf="userIsEVI">OC Vinculada</label>
+  </div>
+</section>

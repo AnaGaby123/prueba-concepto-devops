@@ -1,0 +1,89 @@
+<section id="principal" class="principal">
+  <div class="title">
+    <label>{{ 'preProcessing.addItem' | translate }}</label>
+    <label class="pqf"> · </label>
+    <label class="pqf">OC - {{ (order$ | async).OrdenDeCompra }}</label>
+  </div>
+  <div class="search">
+    <div>
+      <app-search
+        [imageFill]="'#008894'"
+        [borderColor]="'#008894'"
+        [placeholder]="'Buscar'"
+        [searchTerm]="searchTerm$ | async"
+        [resultItems]="optionsListSearch$ | async"
+        [itemSelected]="itemSelected$ | async"
+        [activeRefresh]="true"
+        [isExpandable]="true"
+        [isLoading]="optionsLoading$ | async"
+        [isSearchByType]="true"
+        [typesOfSearch]="searchTypes$ | async"
+        [typeSelected]="searchTypeSelected$ | async"
+        (textSearch)="handleKeySearch($event)"
+        (handleSearchTermSelected)="handleSearchTermSelected($event)"
+        (handleItemSelected)="handleOption($event)"
+        (handleClearSearchTerm)="clearSearchTerm()"
+        (handleTypeSelected)="handleTypeOfSearch($event)"
+      >
+      </app-search>
+    </div>
+  </div>
+  <div class="quotes">
+    <app-pqf-card [enableMessage]="true" [options]="optionsCard$ | async" (handleOptionSelected)="selectItemQuote($event)">
+    </app-pqf-card>
+  </div>
+  <div class="items">
+    <div class="title">
+      <label>{{ 'preProcessing.items' | translate }}</label>
+    </div>
+    <div class="table-container">
+      <div class="container">
+        <app-header-internal-sales-item
+          class="header"
+          [internalSalesItem]="selectHeaderInternalSalesItem$ | async"
+          (valueEmitter)="globalItemEventHeadersHandler($event)"
+        ></app-header-internal-sales-item>
+        <virtual-scroller
+          *ngIf="!lodashIsEmpty(selectInternalSalesItem$ | async) && (apiStatus$ | async) === 3"
+          [bufferAmount]="24"
+          [items]="selectInternalSalesItem$ | async"
+          (vsUpdate)="itemsInternal = $event"
+        >
+          <app-internal-sales-item
+            *ngFor="let item of itemsInternal; let index = index; trackBy: handleTrackByItem"
+            [internalSalesItem]="item"
+            (valueEmitter)="globalItemEventsHandler($event)"
+          ></app-internal-sales-item>
+        </virtual-scroller>
+        <div class="without-results" *ngIf="lodashIsEmpty(selectInternalSalesItem$ | async) && (apiStatus$ | async) === 3">
+          <app-without-results
+            [title]="
+              (selectInternalSalesItem$ | async)?.length === 0 && lodashIsEmpty(itemSelected$ | async)
+                ? ('common.withoutItemsAdd' | translate)
+                : ''
+            "
+          ></app-without-results>
+        </div>
+        <div class="loader" *ngIf="(apiStatus$ | async) === 1">
+          <app-loading></app-loading>
+        </div>
+      </div>
+    </div>
+    <div class="total">
+      <label
+        >{{ '#' + (items$ | async)?.length + '' }}
+        {{ (items$ | async)?.length === 1 ? ('common.item' | translate) : ('preProcessing.items' | translate) }}
+      </label>
+    </div>
+  </div>
+  <div class="buttons">
+    <div>
+      <div class="cancel" (click)="returnList()">
+        <label>{{ 'common.cancel' | translate }}</label>
+      </div>
+      <div [ngClass]="(activeBtnAdd$ | async) ? 'add' : 'addDisabled'" (click)="addItems()">
+        <label>{{ 'common.add' | translate }}</label>
+      </div>
+    </div>
+  </div>
+</section>

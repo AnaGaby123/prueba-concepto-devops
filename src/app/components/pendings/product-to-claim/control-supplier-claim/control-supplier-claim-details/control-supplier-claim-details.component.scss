@@ -1,0 +1,781 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  width: 100%;
+  height: 100%;
+
+  #control-supplier-claim-details {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    & > section {
+      @include s.flexRowNoWrap;
+      height: 100%;
+
+      & > .list-container {
+        @include s.flexColumn;
+        flex: 0 0 540px;
+        box-sizing: border-box;
+        padding: 15px 15px 35px;
+        background-color: s.$pqWhite;
+        border-right: 1px solid s.$pqGray2;
+
+        & > .title {
+          @include s.flexRowNoWrap;
+          width: 100%;
+          margin-bottom: 10px;
+
+          & > label:nth-of-type(1) {
+            @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+            @include s.Novecento-Bold;
+          }
+        }
+
+        & > .tabs {
+          @include s.flexRowNoWrap;
+          width: 100%;
+          height: 55px;
+          margin-bottom: 15px;
+        }
+
+        & > .filters {
+          @include s.flexRowNoWrap;
+          width: 100%;
+          height: 55px;
+          justify-content: space-between;
+          box-sizing: border-box;
+          padding-bottom: 15px;
+          align-items: center;
+
+          & > .filter-by-type {
+            width: 30%;
+          }
+
+          & > .filter-search {
+            flex: 1;
+          }
+
+          & > div {
+            @include s.flexRow;
+            align-items: center;
+            justify-content: center;
+            width: 50%;
+          }
+        }
+
+        & > .list-clients {
+          width: 100%;
+          flex: 1;
+          border-top: 1px solid s.$pqBlack2;
+          border-bottom: 1px solid s.$pqBlack2;
+          overflow: hidden;
+
+          & > virtual-scroller {
+            width: 100%;
+            height: 100%;
+
+            .item {
+              @include s.flexRow;
+              border-bottom: 1px solid s.$pqGray2;
+
+              &:hover {
+                background-color: s.$pqGray2;
+              }
+
+              * {
+                cursor: pointer;
+              }
+
+              & > .indicator {
+                background-color: s.$pqGreen;
+                width: 5px;
+                @include s.responsive_layout('macBookAir') {
+                  width: 7px;
+                }
+              }
+
+              & > .item-content {
+                @include s.flexColumn;
+                flex: 1;
+                padding: 20px 15px;
+
+                & > .index {
+                  & > label {
+                    @include s.Roboto-Bold;
+                    @include s.escaledFontFormat(s.$textSize15to20, bold, s.$pqBlack2);
+
+                    & > span {
+                      vertical-align: baseline;
+                      color: s.$pqGreen;
+                    }
+                  }
+                }
+
+                & > .product {
+                  padding-top: 3px;
+
+                  & > label {
+                    @include s.Roboto-Bold;
+                    @include s.escaledFontFormat(s.$textSize15to20, bold, s.$pqBlack2);
+                  }
+                }
+
+                & > .fee {
+                  padding-top: 5px;
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize14to18, regular, s.$pqBlack2);
+                  }
+                }
+              }
+
+              & > .status {
+                @include s.flexRow;
+                @include s.absoluteCenter;
+                padding-right: 15px;
+
+                & > img {
+                  @include s.imageLabel;
+                }
+              }
+
+              &.active {
+                background-color: s.$pqGray2;
+              }
+            }
+          }
+        }
+
+        & > .totals {
+          @include s.flexRowNoWrap;
+          @include s.absoluteCenter;
+          width: 100%;
+          height: 24px;
+          justify-content: center;
+          padding: 0 20px;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize12to14, '', s.$pqBlack2);
+            @include s.Roboto-Regular;
+          }
+        }
+      }
+
+      & > .right-container {
+        @include s.flexColumn;
+        flex: 1;
+        overflow: hidden;
+        padding: 20px;
+
+        & > div {
+          @include s.flexRow;
+          padding-bottom: 10px;
+
+          & > .text {
+            @include s.flexRow;
+            align-items: center;
+            max-width: 88%;
+
+            & > .title {
+              @include s.escaledFontFormat(s.$textSize15to21, bold, s.$pqBlack2);
+              @include s.Novecento-Bold;
+              @include s.truncateText;
+              flex: 0 0 auto;
+              white-space: pre;
+
+              & > span {
+                color: s.$pqGreen;
+                vertical-align: baseline;
+              }
+
+              & > .underline {
+                text-decoration: underline;
+              }
+            }
+          }
+
+          & > .image {
+            @include s.flexRow;
+            align-items: center;
+
+            & > img {
+              @include s.imageLabel;
+            }
+          }
+        }
+
+        & > .header-container {
+          @include s.flexColumn;
+
+          & > .header {
+            @include s.flexRow;
+            border-bottom: 1px solid s.$pqBlack2;
+            border-top: 1px solid s.$pqBlack2;
+            padding: 15px 0;
+
+            & > div {
+              margin-right: 30px;
+            }
+
+            & > div:last-of-type {
+              margin-right: 0;
+            }
+
+            & > .client-container {
+              @include s.flexColumn;
+              flex: 1;
+
+              & > .client-title {
+                @include s.flexRowNoWrap;
+                justify-content: flex-start;
+                margin-bottom: 10px;
+
+                & > label {
+                  @include s.escaledFontFormat(s.$textSize15to21, bold, s.$pqBlack2);
+                  @include s.Novecento-Bold;
+                }
+              }
+
+              & > .client {
+                @include s.flexRowNoWrap;
+
+                & > div:nth-of-type(1) {
+                  @include s.flexColumn;
+                  @include s.absoluteCenter;
+                  flex: 0 0 122px;
+                  height: 70px;
+                  padding-right: 18px;
+
+                  & > img {
+                    max-height: 100%;
+                    max-width: 100%;
+                  }
+                }
+
+                & > .client-info {
+                  @include s.flexColumn;
+                  flex: 1;
+                  justify-content: center;
+                  // overflow: hidden;
+
+                  & > div {
+                    @include s.multiLineTextTruncateSinHeight($lineHeight: 1.1em);
+                    margin-bottom: 4px;
+                    max-width: 200px;
+
+                    & > label {
+                      @include s.escaledFontFormat(s.$textSize14to20, bold, s.$pqGreen);
+                      @include s.Roboto-Bold;
+                    }
+                  }
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                    @include s.Roboto-Regular;
+                  }
+                }
+              }
+            }
+
+            & > .contact-data {
+              @include s.flexColumn;
+
+              & > .title {
+                @include s.flexColumn;
+                margin-bottom: 12px;
+
+                & > label {
+                  @include s.escaledFontFormat(s.$textSize15to21, bold, s.$pqGreen);
+                  @include s.Roboto-Bold;
+                }
+              }
+
+              & > .data {
+                @include s.flexRow;
+
+                & > div {
+                  @include s.flexColumn;
+                  margin-right: 30px;
+
+                  & > .row {
+                    @include s.flexRowNoWrap;
+                    align-items: center;
+                    height: 18px;
+                    margin-bottom: 5px;
+
+                    & > .image {
+                      @include s.absoluteCenter;
+                      @include s.flexColumn;
+                      height: 18px;
+                      margin-right: 5px;
+                      width: 18px;
+
+                      & > img {
+                        max-height: 100%;
+                        max-width: 100%;
+                      }
+                    }
+
+                    & > label {
+                      @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                      @include s.Roboto-Regular;
+                      white-space: pre-wrap;
+
+                      &.bold {
+                        @include s.Roboto-Bold;
+                      }
+
+                      &.green {
+                        @include s.escaledFontFormat(s.$textSize14to18, bold, s.$pqGreen2);
+                        @include s.Roboto-Bold;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        & > .body {
+          @include s.flexColumn;
+          flex: 1;
+          overflow: auto;
+
+          & > .title {
+            @include s.escaledFontFormat(s.$textSize15to21, bold, s.$pqBlack2);
+            @include s.Novecento-Bold;
+            padding: 15px 0 10px 0;
+          }
+
+          & > .info-content {
+            @include s.flexRow;
+
+            & > .left {
+              @include s.flexColumn;
+              //@include Roboto-Regular;
+              //@include escaledFontFormat($textSize13to16, regular, $pqBlack2);
+              margin-right: 10%;
+
+              & > .top {
+                @include s.flexRow;
+                justify-content: space-between;
+
+                & > .top-left {
+                  @include s.flexColumn;
+
+                  & > span {
+                    @include s.Roboto-Bold;
+                    @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+                    padding: 5px 0;
+                    vertical-align: baseline;
+                  }
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                  }
+                }
+
+                & > .top-right {
+                  @include s.flexColumn;
+
+                  & > span {
+                    @include s.Roboto-Bold;
+                    @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+                    padding: 5px 0;
+                    vertical-align: baseline;
+                  }
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                  }
+                }
+              }
+
+              & > .bot {
+                @include s.flexColumn;
+                padding-top: 10px;
+
+                & > span {
+                  @include s.Roboto-Bold;
+                  @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+                  padding: 5px 0;
+                  vertical-align: baseline;
+                }
+
+                & > label {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                }
+              }
+            }
+
+            & > .right {
+              @include s.flexColumn;
+
+              & > .top {
+                @include s.flexRow;
+
+                & > .top-left {
+                  @include s.flexColumn;
+                  width: 250px;
+
+                  & > span {
+                    @include s.Roboto-Bold;
+                    @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+                    padding: 5px 0;
+                    vertical-align: baseline;
+                  }
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                  }
+                }
+
+                & > .top-right {
+                  @include s.flexColumn;
+
+                  & > span {
+                    @include s.Roboto-Bold;
+                    @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+                    padding: 5px 0;
+                    vertical-align: baseline;
+                  }
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqTextAlert);
+                  }
+                }
+              }
+
+              & > .bot {
+                @include s.flexRow;
+                padding-top: 10px;
+
+                & > .bot-left {
+                  @include s.flexColumn;
+                  width: 250px;
+
+                  & > span {
+                    @include s.Roboto-Bold;
+                    @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+                    padding: 5px 0;
+                    vertical-align: baseline;
+                  }
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                  }
+                }
+
+                & > .bot-right {
+                  @include s.flexColumn;
+
+                  & > span {
+                    @include s.Roboto-Bold;
+                    @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+                    padding: 5px 0;
+                    vertical-align: baseline;
+                  }
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                  }
+                }
+              }
+            }
+          }
+
+          & > .image-content {
+            @include s.flexColumn;
+            background-color: s.$pqGray2;
+            margin-top: 20px;
+            flex: 1 0 300px;
+            overflow: hidden;
+
+            & > .text {
+              @include s.flexRow;
+              justify-content: center;
+              padding-top: 10px;
+
+              & > div {
+                @include s.flexRow;
+                justify-content: space-between;
+                width: 400px;
+
+                & > label {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize14to20, regular, s.$pqGreen);
+                  cursor: pointer;
+
+                  &:hover {
+                    text-decoration: underline;
+                  }
+
+                  &.bold {
+                    @include s.Roboto-Bold;
+                    text-decoration: underline;
+                  }
+                }
+              }
+            }
+
+            & > .image {
+              @include s.flexColumn;
+              @include s.absoluteCenter;
+              overflow: hidden;
+              padding: 20px 0;
+              flex: 1 0 275px;
+
+              & > img {
+                flex: 1;
+                overflow: hidden;
+                min-height: 260px;
+              }
+            }
+          }
+
+          & > .actions-content {
+            & > .title {
+              padding: 15px 0;
+
+              & > label {
+                @include s.escaledFontFormat(s.$textSize15to21, bold, s.$pqBlack2);
+                @include s.Novecento-Bold;
+              }
+            }
+
+            & > .content1 {
+              @include s.flexRow;
+
+              & > .phs {
+                width: 200px;
+                @include s.flexColumn;
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+
+                & > span {
+                  @include s.Roboto-Bold;
+                  padding-bottom: 10px;
+                  vertical-align: baseline;
+                }
+              }
+
+              & > .qpf {
+                @include s.flexColumn;
+                margin-right: 50px;
+
+                & > span {
+                  @include s.Roboto-Bold;
+                  @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+                  padding-bottom: 5px;
+                  vertical-align: baseline;
+                }
+
+                & > .picker {
+                  height: 25px;
+                  width: 200px;
+                  @include s.responsive_layout('macBookAir') {
+                    height: 30px;
+                  }
+                }
+              }
+
+              & > .comments {
+                @include s.flexColumn;
+                flex: 1;
+
+                & > span {
+                  @include s.Roboto-Bold;
+                  @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+                  padding-bottom: 5px;
+                  vertical-align: baseline;
+                }
+              }
+            }
+
+            & > .content2 {
+              padding: 10px 0 15px 0;
+
+              & > label {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+                display: block;
+                padding-bottom: 5px;
+              }
+
+              & > .files {
+                @include s.flexRow;
+                align-items: center;
+
+                & > .file {
+                  margin-right: 20px;
+                  width: 450px;
+                }
+
+                & > div {
+                  @include s.flexRowNoWrap;
+                  overflow-x: auto;
+
+                  & > .file-name {
+                    @include s.flexRowNoWrap;
+                    align-items: center;
+                    background-color: rgba(s.$pqGreen, 0.05);
+                    border-radius: 15px;
+                    margin-right: 13px;
+                    padding: 5px 11px;
+
+                    & > label {
+                      @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqGreen);
+                      @include s.Roboto-Regular;
+                      margin-right: 5px;
+                      max-width: 120px;
+                      overflow: hidden;
+                      text-decoration: underline;
+                      text-overflow: ellipsis;
+                      padding-right: 5px;
+                      white-space: nowrap;
+                    }
+
+                    & > img {
+                      height: 12px;
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          & > .rb-content {
+            @include s.flexRow;
+            //@include Roboto-Regular;
+            //@include escaledFontFormat($textSize13to16, regular, $pqBlack2);
+            background-color: rgba(s.$pqGray3, 0.2);
+            padding: 0 10px;
+
+            &.green {
+              background-color: rgba(s.$pqGreen, 0.05);
+            }
+
+            & > .content1 {
+              @include s.flexColumn;
+              padding-right: 20px;
+              width: 40%;
+
+              & > div {
+                @include s.flexRow;
+                align-items: center;
+                padding: 10px 0;
+
+                & > label {
+                  @include s.Roboto-Bold;
+                  @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+                  padding-right: 5px;
+                }
+              }
+            }
+
+            & > .content2 {
+              @include s.flexColumn;
+              padding-right: 20px;
+              width: 35%;
+
+              & > div {
+                @include s.flexRow;
+                align-items: center;
+                padding: 10px 0;
+
+                & > label {
+                  @include s.Roboto-Bold;
+                  @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+                  padding-right: 5px;
+                }
+              }
+            }
+
+            & > .content3 {
+              @include s.flexColumn;
+              width: 25%;
+
+              & > div {
+                @include s.flexRow;
+                align-items: center;
+                padding: 10px 0;
+
+                & > label {
+                  @include s.Roboto-Bold;
+                  @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+                  padding-right: 5px;
+                }
+              }
+            }
+          }
+        }
+
+        & > .button {
+          @include s.flexRow;
+          justify-content: flex-end;
+          align-items: flex-end;
+          padding-top: 15px;
+
+          & > button {
+            @include s.pqButton();
+          }
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > #control-supplier-claim-details {
+      & > section {
+        & > .list-container {
+          flex: 0 0 650px;
+          padding: 20px 20px 45px;
+        }
+
+        & > .right-container {
+          & > .title {
+            & > img {
+              height: 20px;
+            }
+          }
+
+          & > .body {
+            & > .image-content {
+              & > .image {
+                & > img {
+                  height: 265px;
+                }
+              }
+            }
+
+            & > .actions-content {
+              & > .content1 {
+                & > .picker {
+                  height: 30px;
+                }
+              }
+            }
+          }
+
+          & > .button {
+            padding-top: 20px;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,103 @@
+@use 'base' as s;
+
+:host {
+  * {
+    box-sizing: border-box;
+  }
+
+  & > .provider-list-price-container {
+    @include s.flexColumn;
+    align-items: center;
+    border-bottom: 1px solid s.$dark-proquifa-d;
+    padding-bottom: 24px;
+
+    & > label {
+      @include s.responsive-font-format(
+        $font-family: s.$font-family-roboto_bold,
+        $font-weight: s.$font-weight-bold,
+        $font-size-map: s.$responsive-font-14-16
+      );
+      margin-bottom: 16px;
+    }
+
+    & > .provider-list-price {
+      @include s.flexColumn;
+      align-items: center;
+      row-gap: 16px;
+      width: 100%;
+
+      & > .pieces-container {
+        @include s.flexRowNoWrap;
+        column-gap: 16px;
+
+        & > .toggle-container {
+          @include s.flexRowNoWrap;
+          align-items: center;
+          column-gap: 8px;
+
+          & > label {
+            @include s.responsive-font-format($font-size-map: s.$responsive-font-16-16);
+          }
+        }
+
+        & > .pieces {
+          display: grid;
+          grid-template-columns: 100px 28px;
+          align-items: center;
+          column-gap: 8px;
+
+          & > label {
+            @include s.responsive-font-format($font-size-map: s.$responsive-font-16-16);
+          }
+        }
+      }
+
+      & > .consolidation-container {
+        @include s.flexColumn;
+        padding: 0 24px;
+        row-gap: 16px;
+        width: 100%;
+
+        & > .consolidation-form {
+          align-items: center;
+          column-gap: 8px;
+          @include s.flexRowNoWrap;
+
+          & > .families-list-consolidation {
+            flex: 1;
+          }
+        }
+
+        & > .consolidation-list-container {
+          @include s.flexRowWrap;
+          column-gap: 16px;
+          row-gap: 4px;
+
+          & > label {
+            @include s.responsive-font-format(
+              $font-family: s.$font-family-roboto_bold,
+              $font-weight: s.$font-weight-bold,
+              $font-size-map: s.$responsive-font-16-16
+            );
+          }
+        }
+      }
+    }
+  }
+
+  @include s.media-query('standard') {
+    & > .provider-list-price-container {
+      & > .provider-list-price {
+        & > .consolidation-container {
+          padding: 0 32px;
+          row-gap: 24px;
+
+          & > .consolidation-list-container {
+            column-gap: 24px;
+            row-gap: 8px;
+          }
+        }
+      }
+    }
+  }
+}

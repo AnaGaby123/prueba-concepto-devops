@@ -1,0 +1,69 @@
+@use 'base' as s;
+
+:host {
+  * {
+    box-sizing: border-box;
+  }
+
+  & > .expenses-container {
+    @include s.flexColumn;
+    align-items: center;
+    border-bottom: 1px solid s.$dark-proquifa-d;
+    padding: 24px 13px;
+
+    & > label {
+      @include s.responsive-font-format(
+        $font-family: s.$font-family-roboto_bold,
+        $font-weight: s.$font-weight-bold,
+        $font-size-map: s.$responsive-font-16-16
+      );
+      margin-bottom: 16px;
+    }
+
+    & > .expenses {
+      display: grid;
+      grid-column-gap: 20px;
+      grid-row-gap: 16px;
+      grid-template-columns: repeat(9, 1fr);
+      justify-items: center;
+      width: 100%;
+
+      & > div {
+        display: grid;
+        align-items: center;
+        grid-column-end: span 3;
+        grid-column-gap: 8px;
+        grid-template-columns: minmax(122px, 150px) 177px;
+        justify-items: flex-start;
+
+        & > label {
+          @include s.responsive-font-format($font-size-map: s.$responsive-font-16-16);
+          justify-self: flex-end;
+          text-align: end;
+        }
+
+        & > .generic-input-container {
+          @include s.flexRowNoWrap;
+          align-items: center;
+          gap: 8px;
+
+          & > span {
+            @include s.responsive-font-format($font-size-map: s.$responsive-font-16-16);
+          }
+        }
+      }
+    }
+  }
+
+  @include s.media-query('standard') {
+    & > .discount-freight-container {
+      padding: 24px 40px;
+
+      & > .discount-freight {
+        & > div {
+          grid-template-columns: minmax(150px, 170px) 177px;
+        }
+      }
+    }
+  }
+}

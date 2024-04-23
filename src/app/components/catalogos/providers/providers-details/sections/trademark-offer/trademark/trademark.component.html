@@ -1,0 +1,100 @@
+<div class="container" cdkDropListGroup>
+  <div class="container-trademark">
+    <label class="title">{{ 'formProvider.step4.titleTrademark' | translate }}</label>
+    <div class="search-bar">
+      <app-search
+        [placeholder]="itemSearch"
+        [searchTerm]="selectSearchTerm$ | async"
+        (textSearch)="handleKeySearch($event)"
+      ></app-search>
+    </div>
+    <div class="trademark-list">
+      <virtual-scroller
+        class="virtual-scroller"
+        id="all-items"
+        *ngIf="!lodashIsEmpty(trademarks$ | async)"
+        [cdkDropListData]="scrollItems"
+        [cdkDropListEnterPredicate]="noReturnPredicate"
+        [items]="trademarks$ | async"
+        cdkDropList
+        cdkDropListConnectedTo="selectedBrandsContainer"
+        cdkDropListSortingDisabled
+        (vsEnd)="fetchMore($event)"
+        (vsUpdate)="scrollItems = $event"
+      >
+        <app-generic-grid-item
+          class="trademark-item"
+          id="{{ 'trademark_' + item.IdMarca }}"
+          *ngFor="let item of scrollItems; let i = index"
+          [cdkDragData]="item"
+          [item]="buildItem(item)"
+          [ngClass]="!(enableEdit$ | async) && 'trademark-item-disable'"
+          [showRightImage]="true"
+          cdkDrag
+          (emitRightImageClick)="handleEmitRightImageClick(item)"
+        ></app-generic-grid-item>
+      </virtual-scroller>
+      <div class="loading" *ngIf="(apiStatus$ | async) === 1 && !lodashIsEmpty(trademarks$ | async)">
+        <app-loading></app-loading>
+      </div>
+      <div class="loading-complete" *ngIf="(apiStatus$ | async) === 1 && lodashIsEmpty(trademarks$ | async)">
+        <app-loading></app-loading>
+      </div>
+      <div class="without-results" *ngIf="(apiStatus$ | async) !== 1 && lodashIsEmpty(trademarks$ | async)">
+        <app-without-results [title]="'NO HAY MARCAS'"></app-without-results>
+      </div>
+    </div>
+    <div class="footer">
+      <label class="trademark-list-total"
+        >#{{ totalTradeMark$ | async }} {{ 'formProvider.step4.titleTrademark' | translate }}</label
+      >
+    </div>
+  </div>
+  <div class="separator"></div>
+  <div class="container-trademark-associated">
+    <label class="title">{{ 'formProvider.step4.titleAsociadas' | translate }}</label>
+    <div class="list">
+      <app-associated-trademark-item
+        *ngFor="let item of associated$ | async; let i = index; trackBy: handleTrackBy"
+        id="{{ 'selectedBrand' + i }}"
+        [editMode]="editMode$ | async"
+        [enableEdit]="enableEdit$ | async"
+        [index]="i"
+        [item]="item"
+        [selectedProviderId]="selectedProviderId$ | async"
+        (changeMainProviderChange)="handleChangeMainProviderChange($event)"
+        (deleteTrademarkClick)="handleDeleteTrademarkClick($event)"
+        (trademarkFamilyChange)="handleTrademarkFamilyChange($event)"
+      ></app-associated-trademark-item>
+    </div>
+    <div class="without-results" *ngIf="lodashIsEmpty(associated$ | async) && (associatedApiStatus$ | async) !== 1">
+      <app-without-results [title]="'NO HAY ASOCIACIADAS'"></app-without-results>
+    </div>
+    <div class="loading" *ngIf="(associatedApiStatus$ | async) === 1">
+      <app-loading></app-loading>
+    </div>
+    <div class="footer">
+      <label class="trademark-list-total"
+        >#{{ (associated$ | async).length }} {{ 'formProvider.step4.titleAsociadas' | translate }}</label
+      >
+      <label class="required">Al menos asocia una marca y habilita una familia para configurar una oferta</label>
+    </div>
+  </div>
+</div>
+<app-pop-up-generic
+  class="pop"
+  *ngIf="alertPopIsOpen"
+  [activeButtons]="true"
+  [height]="(viewType$ | async) === viewTypes.small ? '382px' : '446px'"
+  [width]="(viewType$ | async) === viewTypes.small ? '558px' : '651px'"
+  (evento)="handlePopClosed($event)"
+>
+  <div class="pop-container">
+    <img src="assets/Images/alerta.svg" alt="warning" />
+    <p class="message"
+      >La familia {{ buildFamilyName() }} de {{ preselectedTrademarkFamilyChange.family.NombreMarca }} tiene como proveedor
+      principal a {{ preselectedTrademarkFamilyChange?.family.NombreProveedor }}</p
+    >
+    <p class="question">¿Deseas cambiarlo por el Proveedor {{ selectedProviderName$ | async }}?</p>
+  </div>
+</app-pop-up-generic>

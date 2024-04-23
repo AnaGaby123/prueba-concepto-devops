@@ -1,0 +1,957 @@
+@use "sass:math";
+@use 'displayed' as *;
+@use 'colors' as *;
+@use 'reusable-mixin' as rm;
+// update font-grows
+$font-size-8: (
+  'font-size': 8,
+  'line-height': 12
+);
+$font-size-10: (
+  'font-size': 10,
+  'line-height': 12
+);
+$font-size-11: (
+  'font-size': 11,
+  'line-height': 15
+);
+$font-size-11-b: (
+  'font-size': 11,
+  'line-height': 13
+);
+$font-size-12: (
+  'font-size': 12,
+  'line-height': 16
+);
+$font-size-12-b: (
+  'font-size': 12,
+  'line-height': 14
+);
+$font-size-13: (
+  'font-size': 13,
+  'line-height': 15
+);
+$font-size-14: (
+  'font-size': 14,
+  'line-height': 16
+);
+$font-size-15: (
+  'font-size': 15,
+  'line-height': 18
+);
+$font-size-14-b: (
+  'font-size': 14,
+  'line-height': 20
+);
+$font-size-16: (
+  'font-size': 16,
+  'line-height': 20
+);
+$font-size-17: (
+  'font-size': 17,
+  'line-height': 20
+);
+$font-size-18: (
+  'font-size': 18,
+  'line-height': 21
+);
+$font-size-19: (
+  'font-size': 19,
+  'line-height': 23
+);
+$font-size-19-b: (
+  'font-size': 19,
+  'line-height': 31
+);
+$font-size-20: (
+  'font-size': 20,
+  'line-height': 24
+);
+$font-size-21: (
+  'font-size': 21,
+  'line-height': 25
+);
+$font-size-22: (
+  'font-size': 22,
+  'line-height': 26
+);
+$font-size-24: (
+  'font-size': 24,
+  'line-height': 28
+);
+$font-size-25: (
+  'font-size': 25,
+  'line-height': 30
+);
+$font-size-26: (
+  'font-size': 26,
+  'line-height': 30
+);
+$font-size-32: (
+  'font-size': 32,
+  'line-height': 36
+);
+$font-size-40: (
+  'font-size': 40,
+  'line-height': 48
+);
+$font-size-48: (
+  'font-size': 48,
+  'line-height': 56
+);
+$font-size-80: (
+  'font-size': 80,
+  'line-height': 80
+);
+$responsive-font-8-8: (
+  $small: $font-size-8,
+  $standard: $font-size-8
+);
+$responsive-font-10-10: (
+  $small: $font-size-10,
+  $standard: $font-size-10
+);
+$responsive-font-10-12-b: (
+  $small: $font-size-10,
+  $standard: $font-size-12-b,
+);
+$responsive-font-11-13: (
+  $small: $font-size-11,
+  $standard: $font-size-13,
+);
+$responsive-font-11-b-11-b: (
+  $small: $font-size-11-b,
+  $standard: $font-size-11-b
+);
+$responsive-font-12-12: (
+  $small: $font-size-12,
+  $standard: $font-size-12,
+);
+$responsive-font-12-b-12-b: (
+  $small: $font-size-12-b,
+  $standard: $font-size-12-b,
+);
+$responsive-font-12-14: (
+  $small: $font-size-12,
+  $standard: $font-size-14,
+);
+$responsive-font-12-14-b: (
+  $small: $font-size-12-b,
+  $standard: $font-size-14,
+);
+$responsive-font-13-13: (
+  $small: $font-size-13,
+  $standard: $font-size-13
+);
+$responsive-font-13-16: (
+  $small: $font-size-13,
+  $standard: $font-size-16,
+);
+$responsive-font-14-14: (
+  $small: $font-size-14,
+  $standard: $font-size-14,
+);
+$responsive-font-14-14-b: (
+  $small: $font-size-14-b,
+  $standard: $font-size-14-b,
+);
+$responsive-font-14-16: (
+  $small: $font-size-14,
+  $standard: $font-size-16,
+);
+$responsive-font-14-18: (
+  $small: $font-size-14,
+  $standard: $font-size-18,
+);
+$responsive-font-14-24: (
+  $small: $font-size-14,
+  $standard: $font-size-24,
+);
+$responsive-font-15-15: (
+  $small: $font-size-15,
+  $standard: $font-size-15,
+);
+$responsive-font-15-17: (
+  $small: $font-size-15,
+  $standard: $font-size-17,
+);
+$responsive-font-16-16: (
+  $small: $font-size-16,
+  $standard: $font-size-16,
+);
+$responsive-font-16-20: (
+  $small: $font-size-16,
+  $standard: $font-size-20,
+);
+$responsive-font-16-21: (
+  $small: $font-size-16,
+  $standard: $font-size-21,
+);
+$responsive-font-16-22: (
+  $small: $font-size-16,
+  $standard: $font-size-22,
+);
+$responsive-font-17-17: (
+  $small: $font-size-17,
+  $standard: $font-size-17,
+);
+$responsive-font-17-21: (
+  $small: $font-size-17,
+  $standard: $font-size-21,
+);
+$responsive-font-17-24: (
+  $small: $font-size-17,
+  $standard: $font-size-24,
+);
+$responsive-font-15-18: (
+  $small: $font-size-15,
+  $standard: $font-size-18,
+);
+$responsive-font-18-18: (
+  $small: $font-size-18,
+  $standard: $font-size-18,
+);
+$responsive-font-16-19: (
+  $small: $font-size-16,
+  $standard: $font-size-19,
+);
+$responsive-font-18-20: (
+  $small: $font-size-18,
+  $standard: $font-size-20,
+);
+$responsive-font-19-19: (
+  $small: $font-size-19,
+  $standard: $font-size-19,
+);
+$responsive-font-19-b-19-b: (
+  $small: $font-size-19-b,
+  $standard: $font-size-19-b,
+);
+$responsive-font-20-20: (
+  $small: $font-size-20,
+  $standard: $font-size-20,
+);
+$responsive-font-20-24: (
+  $small: $font-size-20,
+  $standard: $font-size-24,
+);
+$responsive-font-20-32: (
+  $small: $font-size-20,
+  $standard: $font-size-32,
+);
+$responsive-font-21-21: (
+  $small: $font-size-21,
+  $standard: $font-size-21,
+);
+$responsive-font-22-22: (
+  $small: $font-size-22,
+  $standard: $font-size-22,
+);
+$responsive-font-24-24: (
+  $small: $font-size-24,
+  $standard: $font-size-24,
+);
+$responsive-font-25-25: (
+  $small: $font-size-25,
+  $standard: $font-size-25,
+);
+$responsive-font-26-26: (
+  $small: $font-size-26,
+  $standard: $font-size-26,
+);
+$responsive-font-32-32: (
+  $small: $font-size-32,
+  $standard: $font-size-32,
+);
+$responsive-font-40-48: (
+  $small: $font-size-48,
+  $standard: $font-size-40,
+);
+$responsive-font-80-80: (
+  $small: $font-size-80,
+  $standard: $font-size-80,
+);
+/* ------------------------------------- */
+
+/* -----------Mixin de Fonts------------ */
+
+/* ------------------------------------- */
+
+// font family
+$font_family_novecento: 'Novecento';
+$font_family_novecento_demibold: 'Novecento-Demibold';
+$font_family_novecento_bold: 'Novecento-Bold';
+
+$font_family_roboto: 'Roboto';
+$font_family_roboto_thin: 'Roboto-Thin';
+$font_family_roboto_light: 'Roboto-Light';
+$font_family_roboto_regular: 'Roboto-Regular';
+$font_family_roboto_medium: 'Roboto-Medium';
+$font_family_roboto_bold: 'Roboto-Bold';
+$font_family_roboto_black: 'Roboto-Black';
+
+$font_family_roboto_thin_italic: 'Roboto-Thin-Italic';
+$font_family_roboto_light_italic: 'Roboto-Light-Italic';
+$font_family_roboto_regular_italic: 'Roboto-Regular-Italic';
+$font_family_roboto_medium_italic: 'Roboto-Medium-Italic';
+$font_family_roboto_bold_italic: 'Roboto-Bold-Italic';
+$font_family_roboto_black_italic: 'Roboto-Black-Italic';
+
+// font-weight
+$font_weight_thin: 100;
+$font_weight_light: 300;
+$font_weight_regular: 400;
+$font_weight_medium: 500;
+$font_weight_semi_bold: 600;
+$font_weight_bold: 700;
+$font_weight_black: 900;
+$font-style-normal: normal;
+$font-style-italic: italic;
+
+// font-grows
+$textSize12: (
+  'base': 12px,
+  'macBookAir': 12px,
+);
+$textSize13: (
+  'base': 13px,
+  'macBookAir': 13px,
+);
+$textSize14: (
+  'base': 14px,
+  'macBookAir': 14px,
+);
+$textSize8to9: (
+  'base': 8px,
+  'macBookAir': 9px,
+);
+$textSize8to10: (
+  'base': 8px,
+  'macBookAir': 10px,
+);
+$textSize9to11: (
+  'base': 9px,
+  'macBookAir': 11px,
+);
+$textSize9to12: (
+  'base': 9px,
+  'macBookAir': 12px,
+);
+$textSize10to11: (
+  'base': 10px,
+  'macBookAir': 11px,
+);
+$textSize10to12: (
+  'base': 10px,
+  'macBookAir': 12px,
+);
+$textSize10to14: (
+  'base': 10px,
+  'macBookAir': 14px,
+);
+$textSize11to12: (
+  'base': 11px,
+  'macBookAir': 12px,
+);
+$textSize10to13: (
+  'base': 10px,
+  'macBookAir': 13px,
+);
+$textSize11to13: (
+  'base': 11px,
+  'macBookAir': 13px,
+);
+$textSize12to13: (
+  'base': 12px,
+  'macBookAir': 13px,
+);
+$textSize12to14: (
+  'base': 12px,
+  'macBookAir': 14px,
+);
+$textSize12to15: (
+  'base': 12px,
+  'macBookAir': 15px,
+);
+$textSize12to18: (
+  'base': 12px,
+  'macBookAir': 18px,
+);
+$textSize12to19: (
+  'base': 12px,
+  'macBookAir': 19px,
+);
+$textSize11to15: (
+  'base': 11px,
+  'macBookAir': 15px,
+);
+$textSize11to16: (
+  'base': 11px,
+  'macBookAir': 16px,
+);
+$textSize12to16: (
+  'base': 12px,
+  'macBookAir': 16px,
+);
+$textSize13to14: (
+  'base': 13px,
+  'macBookAir': 14px,
+);
+$textSize13to15: (
+  'base': 13px,
+  'macBookAir': 15px,
+);
+$textSize13to16: (
+  'base': 13px,
+  'macBookAir': 16px,
+);
+$textSize13to17: (
+  'base': 13px,
+  'macBookAir': 17px,
+);
+$textSize13to18: (
+  'base': 13px,
+  'macBookAir': 18px,
+);
+$textSize14to16: (
+  'base': 14px,
+  'macBookAir': 16px,
+);
+$textSize15to16: (
+  'base': 15px,
+  'macBookAir': 16px,
+);
+$textSize14to18: (
+  'base': 14px,
+  'macBookAir': 18px,
+);
+$textSize14to20: (
+  'base': 14px,
+  'macBookAir': 20px,
+);
+$textSize14to24: (
+  'base': 14px,
+  'macBookAir': 24px,
+);
+$textSize14to22: (
+  'base': 14px,
+  'macBookAir': 22px,
+);
+$textSize14to17: (
+  'base': 14px,
+  'macBookAir': 17px,
+);
+$textSize15to17: (
+  'base': 15px,
+  'macBookAir': 17px,
+);
+
+$textSize16to18: (
+  'base': 16px,
+  'macBookAir': 18px,
+);
+$textSize15to18: (
+  'base': 15px,
+  'macBookAir': 18px,
+);
+$textSize13to19: (
+  'base': 13px,
+  'macBookAir': 19px,
+);
+$textSize14to19: (
+  'base': 14px,
+  'macBookAir': 19px,
+);
+$textSize15to19: (
+  'base': 15px,
+  'macBookAir': 19px,
+);
+$textSize13to20: (
+  'base': 13px,
+  'macBookAir': 20px,
+);
+$textSize15to20: (
+  'base': 15px,
+  'macBookAir': 20px,
+);
+$textSize15to21: (
+  'base': 15px,
+  'macBookAir': 21px,
+);
+$textSize16to19: (
+  'base': 16px,
+  'macBookAir': 19px,
+);
+$textSize16to20: (
+  'base': 16px,
+  'macBookAir': 20px,
+);
+$textSize14to21: (
+  'base': 14px,
+  'macBookAir': 21px,
+);
+$textSize16to21: (
+  'base': 16px,
+  'macBookAir': 21px,
+);
+$textSize16to24: (
+  'base': 16px,
+  'macBookAir': 24px,
+);
+$textSize17to20: (
+  'base': 17px,
+  'macBookAir': 20px,
+);
+$textSize17to21: (
+  'base': 17px,
+  'macBookAir': 21px,
+);
+$textSize18to21: (
+  'base': 18px,
+  'macBookAir': 21px,
+);
+$textSize17to18: (
+  'base': 17px,
+  'macBookAir': 18px,
+);
+$textSize17to22: (
+  'base': 17px,
+  'macBookAir': 22px,
+);
+$textSize17to24: (
+  'base': 17px,
+  'macBookAir': 24px,
+);
+$textSize18to24: (
+  'base': 18px,
+  'macBookAir': 24px,
+);
+$textSize19to23: (
+  'base': 18px,
+  'macBookAir': 23px,
+);
+$textSize19to24: (
+  'base': 19px,
+  'macBookAir': 24px,
+);
+$textSize20to24: (
+  'base': 20px,
+  'macBookAir': 24px,
+);
+$textSize14to25: (
+  'base': 14px,
+  'macBookAir': 25px,
+);
+$textSize20to25: (
+  'base': 20px,
+  'macBookAir': 25px,
+);
+$textSize21to26: (
+  'base': 21px,
+  'macBookAir': 26px,
+);
+$textSize21to23: (
+  'base': 21px,
+  'macBookAir': 23px,
+);
+$textSize20to23: (
+  'base': 20px,
+  'macBookAir': 23px,
+);
+$textSize23to26: (
+  'base': 23px,
+  'macBookAir': 26px,
+);
+$textSize21to28: (
+  'base': 21px,
+  'macBookAir': 28px,
+);
+$textSize20to28: (
+  'base': 20px,
+  'macBookAir': 28px,
+);
+$textSize22to28: (
+  'base': 22px,
+  'macBookAir': 28px,
+);
+$textSize25to30: (
+  'base': 25px,
+  'macBookAir': 30px,
+);
+$textSize26to29: (
+  'base': 26px,
+  'macBookAir': 29px,
+);
+$textSize30to35: (
+  'base': 30px,
+  'macBookAir': 35px,
+);
+$textSize30to46: (
+  'base': 30px,
+  'macBookAir': 46px,
+);
+$textSize40to45: (
+  'base': 40px,
+  'macBookAir': 45px,
+);
+$textSize40to50: (
+  'base': 40px,
+  'macBookAir': 50px,
+);
+$textSize45to50: (
+  'base': 45px,
+  'macBookAir': 50px,
+);
+$textSize60to70: (
+  'base': 60px,
+  'macBookAir': 70px,
+);
+$defaultGridItemHeightSize: (
+  'base': 245px,
+  'macBookAir': 285px,
+);
+$contactItemHeightSizeMap: (
+  'base': 138px,
+  'macBookAir': 155px,
+);
+
+
+@mixin Novecento() {
+  font-family: $font_family_novecento;
+  font-weight: $font_weight_regular;
+  font-display: swap;
+}
+
+@mixin Novecento-Demibold() {
+  font-family: $font-family_novecento_demibold;
+  font-weight: $font_weight_semi_bold;
+  font-display: swap;
+}
+
+@mixin Novecento-Bold() {
+  font-family: $font_family_novecento_bold;
+  font-weight: $font_weight_bold;
+  font-display: swap;
+}
+
+@mixin Novecento-Bold-Important() {
+  font-family: $font_family_novecento_bold !important;
+  font-weight: $font_weight_bold;
+  font-display: swap;
+}
+
+@mixin Roboto-Thin() {
+  font-family: $font_family_roboto_thin;
+  font-weight: $font_weight_thin;
+  font-style: normal;
+}
+
+@mixin Roboto-Light() {
+  font-family: $font_family_roboto_light;
+  font-weight: $font_weight_light;
+  font-style: normal;
+}
+
+@mixin Roboto-Regular() {
+  font-family: $font_family_roboto_regular;
+  font-weight: $font_weight_regular;
+  font-style: normal;
+}
+
+@mixin Roboto-Regular-Important() {
+  font-family: $font_family_roboto_regular !important;
+  font-weight: $font_weight_regular;
+  font-style: normal;
+}
+
+@mixin Roboto-Medium() {
+  font-family: $font_family_roboto_medium;
+  font-weight: $font_weight_medium;
+  font-style: normal;
+}
+
+@mixin Roboto-Bold() {
+  font-family: $font_family_roboto_bold;
+  font-weight: $font_weight_bold;
+  font-style: normal;
+}
+@mixin Roboto() {
+  font-family: $font_family_roboto;
+  font-weight: $font_weight_regular;
+  font-style: normal;
+}
+
+@mixin Roboto-Bold-Important() {
+  font-family: $font_family_roboto_bold !important;
+  font-weight: $font_weight_bold;
+  font-style: normal;
+}
+
+@mixin Roboto-Black() {
+  font-family: $font_family_roboto_black;
+  font-weight: $font_weight_black;
+  font-style: normal;
+}
+
+@mixin Roboto-Black-Important() {
+  font-family: $font_family_roboto_black !important;
+  font-weight: $font_weight_black;
+  font-style: normal;
+}
+
+@mixin Roboto-Thin-Italic() {
+  font-family: $font_family_roboto_thin_italic;
+  font-weight: $font_weight_thin;
+  font-style: italic;
+}
+
+@mixin Roboto-Light-Italic() {
+  font-family: $font_family_roboto_light_italic;
+  font-weight: $font_weight_light;
+  font-style: italic;
+}
+
+@mixin Roboto-Regular-Italic() {
+  font-family: $font_family_roboto_regular_italic;
+  font-weight: $font_weight_light;
+  font-style: italic;
+}
+
+@mixin Roboto-Medium-Italic() {
+  font-family: $font_family_roboto_medium_italic;
+  font-weight: $font_weight_medium;
+  font-style: italic;
+}
+
+@mixin Roboto-Bold-Italic() {
+  font-family: $font_family_roboto_bold_italic;
+  font-weight: $font_weight_bold;
+  font-style: italic;
+}
+
+@mixin Roboto-Black-Italic() {
+  font-family: $font_family_roboto_black_italic;
+  font-weight: $font_weight_black;
+  font-style: italic;
+}
+
+@mixin fontFormat($fontFamily, $fontSize, $fontWeight, $color) {
+  font-family: $fontFamily;
+  font-size: $fontSize;
+  font-weight: $fontWeight;
+  color: $color;
+}
+
+@mixin fontFormatImportant($fontSize, $fontFamily, $color) {
+  font-size: $fontSize !important;
+  font-family: $fontFamily !important;
+  color: $color !important;
+}
+
+@mixin escaledFontFormat($font-size-map, $fontWeight, $color) {
+  @include rm.font-size-map($font-size-map);
+  @include rm.fontScalingFix;
+  font-weight: $fontWeight;
+  color: $color;
+  transition: all 0.4s;
+  vertical-align: baseline;
+}
+
+@mixin escaledFontFormatImportant($font-size-map, $fontWeight, $color) {
+  @include rm.font-size-map-important($font-size-map);
+  @include rm.fontScalingFixImportant;
+  font-weight: $fontWeight !important;
+  color: $color !important;
+  transition: all 0.4s;
+}
+// DOCS: Corta el texto y coloca puntos suspensivos cuando el texto es muy largo (Solo cuando es una linea)
+@mixin text-ellipsis-one-line {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre;
+  word-break: break-all;
+}
+
+// DOCS: Corta el texto y coloca puntos suspensivos cuando el texto es muy largo (se usa cuando es más de una linea)
+@mixin multiLineTextTruncate(
+  $lines: 2,
+  $lineHeight: 1.5em,
+  $height: 3em,
+  $bgcolor: rgba(255, 255, 255, 1),
+  $transColor: rgba(25, 255, 255, 0)
+) {
+  @supports (-webkit-line-clamp: $lines) {
+    display: block;
+    display: -webkit-box !important;
+    line-height: $lineHeight;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    // -moz-line-clamp: 1;
+    // -moz-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: $height;
+  }
+  @supports not (-webkit-line-clamp: $lines) {
+    position: relative;
+    height: $height !important;
+    line-height: $lineHeight;
+    overflow: hidden;
+    width: 100%;
+    &:before {
+      content: '\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background: transparent linear-gradient(to right, $transColor, $bgcolor 50%) repeat scroll 0% 0%;
+    }
+  }
+}
+
+@mixin multiLineTextTruncateSinHeight(
+  $lines: 2,
+  $lineHeight: 1.5em,
+  $bgcolor: rgba(255, 255, 255, 1),
+  $transColor: rgba(25, 255, 255, 0),
+  $wordBreak: break-all
+) {
+  @supports (-webkit-line-clamp: $lines) {
+    display: block;
+    display: -webkit-box !important;
+    line-height: $lineHeight;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: $wordBreak;
+  }
+  @supports not (-webkit-line-clamp: $lines) {
+    position: relative;
+    line-height: $lineHeight;
+    overflow: hidden;
+    width: 100%;
+    word-break: $wordBreak;
+    &:before {
+      content: '\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background: transparent linear-gradient(to right, $transColor, $bgcolor 50%) repeat scroll 0% 0%;
+    }
+  }
+}
+
+// DOCS: Corta el texto y coloca puntos suspencibos cuando el texto es muy largo (Solo cuando es una linea)
+@mixin truncateText() {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@mixin placeholder($color, $opacity: 1, $fontSize: 16px, $fontFamily: Roboto-Regular) {
+  &::placeholder {
+    color: $color;
+    opacity: $opacity;
+    font-size: $fontSize;
+    font-family: $fontFamily;
+  }
+
+  &::-webkit-input-placeholder {
+    /* WebKit, Blink, Edge */
+    color: $color;
+    opacity: $opacity;
+    font-size: $fontSize;
+    font-family: $fontFamily;
+  }
+  &:-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
+    color: $color;
+    opacity: $opacity;
+    font-size: $fontSize;
+    font-family: $fontFamily;
+  }
+  &::-moz-placeholder {
+    /* Mozilla Firefox 19+ */
+    color: $color;
+    opacity: $opacity;
+    font-size: $fontSize;
+    font-family: $fontFamily;
+  }
+  &:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: $color;
+    opacity: $opacity;
+    font-size: $fontSize;
+    font-family: $fontFamily;
+  }
+}
+
+
+/////////////////////////////////////////////////////////////
+@mixin _normalize-font {
+  font-stretch: normal;
+  letter-spacing: normal;
+}
+
+/// Apply styles to a font using media queries.
+///
+/// @param {string} $font-family
+///   The font-family attribute.
+/// @param {string} $font-weight
+///   The font-weight attribute.
+/// @param {map} $font-size-map
+///   A map with font-size property for each breakpoint.
+/// @param {string} $color
+///   The color attribute.
+/// @return {void}
+@mixin responsive-font-format(
+  $font-family: $font-family-roboto_regular,
+  $font-weight: $font-weight-regular,
+  $font-size-map: $responsive-font-14-16,
+  $font-style: $font-style-normal,
+  $color: $dark-proquifa) {
+  &, & * {
+    @include _normalize-font;
+    @include _responsive-font-size($font-size-map);
+    transition: font-size 0.3s ease-in-out;
+    color: $color;
+    font-family: $font-family;
+    font-style: $font-style;
+    font-weight: $font-weight;
+  }
+}
+
+/// Convert pixeles to rem
+///
+/// @param {number} $pixels
+///   Pixels to convert.
+/// @return {number} `The measure in rem`.
+@function _pixels-to-rem($pixels) {
+  @debug $pixels;
+  @debug $browser-context;
+  @debug math.div($pixels, $browser-context) * 1rem;
+  @return math.div($pixels, $browser-context) * 1rem;
+}
+
+
+/// Apply font-size property with media queries
+///
+/// @param {map} $font-size-map
+///   A map with font-size property for each breakpoint.
+/// @return {number} `The measure in rem`.
+@mixin _responsive-font-size($font-size-maps) {
+  @each $breakpoint, $font-size-map in $font-size-maps {
+    @each $property, $value in $font-size-map {
+      @include media-query($breakpoint) {
+        #{$property}: $value * 1px;
+      }
+    }
+  }
+}
+
+@mixin reset-line-height(){
+  &, & *{
+    box-sizing: border-box;
+    line-height: 1;
+  }
+}

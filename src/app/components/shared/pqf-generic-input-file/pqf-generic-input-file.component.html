@@ -1,0 +1,87 @@
+<div class="input-file-container">
+  <!--  DOCS: MUESTRA LABEL DEL TITULO-->
+  <div class="label-container" *ngIf="label">
+    <label
+      [ngClass]="{readOnly: isReadonly}"
+      [style.color]="!fileIsNotSelected ? '#be2016' : !isActive ? labelDisabledFontColor : labelFontColor"
+      >{{ label }}</label
+    >
+  </div>
+  <!--  FIN TITULO-->
+  <!-- DOCS: MUESTRA EL INPUT PARA SUBIR ARCHIVO-->
+  <div
+    class="input-container"
+    [ngClass]="{
+      disabled: !isActive,
+      readOnly: isReadonly,
+      empty: lodashIsEmpty(files),
+      oneFile: files.length === 1,
+      someFiles: files.length > 1,
+      error: !fileIsNotSelected
+    }"
+  >
+    <div
+      class="box"
+      [style.background-color]="(files.length >= 1 && isActive) || isReadonly ? '#FFFFFF' : !isActive ? '#E8E8E8' : '#F7F7F7'"
+    >
+      <label
+        *ngIf="files.length <= 1"
+        [ngClass]="{
+          placeholder: lodashIsEmpty(files) && !isReadonly,
+          'placeholder-error': !fileIsNotSelected,
+          'file-selected': files.length === 1
+        }"
+        [style.cursor]="files[0]?.FileKey ? 'pointer' : ''"
+        (click)="getExternalFile(files[0]?.FileKey)"
+      >
+        <img
+          alt="file"
+          class="file"
+          src="assets/Images/components-src/generic-input-file/file.svg"
+          *ngIf="files.length === 1"
+        />
+
+        <span class="name-file">
+          {{
+            lodashIsEmpty(files) && !isReadonly ? placeholder : lodashIsEmpty(files) && isReadonly ? 'N/D' : getNameFile(files)
+          }}
+        </span>
+        <img
+          alt="close"
+          class="close"
+          src="assets/Images/pqf-close.svg"
+          *ngIf="files.length === 1 && !isReadonly"
+          (click)="removeFile($event)"
+        />
+      </label>
+      <label class="someFiles" *ngIf="files.length > 1" (click)="handlePopOpen(true)">{{
+        'common.seeAllFiles' | translate
+      }}</label>
+    </div>
+    <div
+      class="button"
+      *ngIf="onlyOneFile ? !isReadonly && files.length === 0 : !isReadonly"
+      [ngClass]="{notEmpty: !lodashIsEmpty(files)}"
+    >
+      <label class="input-file" [for]="id">
+        <input
+          type="file"
+          [accept]="acceptedExtensions"
+          [disabled]="!isActive"
+          [id]="id"
+          (change)="isActive && selectFile($event)"
+          (cancel)="closeFileBrowser($event)"
+        />
+        <img alt="" *ngIf="!isReadonly" [src]="getSelectOrReloadImage()" />
+        <span *ngIf="!lodashIsEmpty(files)">{{ 'common.add' | translate }}</span>
+      </label>
+    </div>
+  </div>
+</div>
+<pqf-generic-pop-up-files
+  *ngIf="showPop"
+  [files]="files"
+  (event)="handlePopOpen($event.value)"
+  (fileToDelete)="removeFile(null, $event)"
+  (emitExternalFile)="getExternalFile($event)"
+></pqf-generic-pop-up-files>

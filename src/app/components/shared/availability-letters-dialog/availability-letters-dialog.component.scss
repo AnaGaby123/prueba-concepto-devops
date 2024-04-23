@@ -1,0 +1,117 @@
+@import 'base.scss';
+
+:host {
+  #request-with-errors-pop-up {
+    ::ng-deep .modal {
+      background: none;
+
+      & > .modal-content {
+        transition: none;
+      }
+    }
+  }
+  .container {
+    @include flexColumn;
+    gap: 24px;
+    height: 100%;
+    justify-content: flex-start;
+    padding: 32px;
+    & * {
+      box-sizing: border-box;
+    }
+    & > .instructions {
+      @include flexColumn;
+      justify-content: center;
+      & > label {
+        @include responsive-font-format(
+          $color: $main-proquifa,
+          $font-size-map: $responsive-font-14-16,
+          $font_weight: $font_weight_bold,
+          $font-family: $font_family_roboto_bold
+        );
+      }
+      & > div {
+        @include flexColumn;
+        justify-content: center;
+        & > label {
+          @include responsive-font-format(
+            $color: $main-proquifa,
+            $font-size-map: $responsive-font-14-16,
+            $font_weight: $font_weight_bold,
+            $font-family: $font_family_roboto_bold
+          );
+        }
+      }
+    }
+    & > .legal-representative {
+      @include flexRow;
+      align-items: center;
+      justify-content: center;
+    }
+    & > .file-section {
+      @include flexColumn;
+      align-items: center;
+      &.disabled {
+        & > .file-container {
+          & > .file {
+            background-color: $dark-proquifa-f;
+            border-color: $dark-proquifa-d;
+            & > label {
+              color: $dark-proquifa-d;
+            }
+            & > img {
+              cursor: default;
+              pointer-events: none;
+            }
+          }
+          & > .see-more {
+            pointer-events: none;
+            & > label {
+              color: $dark-proquifa-d;
+              cursor: default;
+            }
+          }
+        }
+      }
+      & > .file-container {
+        @include flexRowNoWrap;
+        align-items: center;
+        gap: 32px;
+        & > .file {
+          @include flexRow;
+          align-items: center;
+          background-color: $main-proquifa-f;
+          border-radius: 100px;
+          border: 1px solid $pqGreen;
+          column-gap: 9px;
+          padding: 2px 8px;
+          width: 300px;
+
+          & > label {
+            @include responsive-font-format($font-size-map: $responsive-font-16-16, $color: $pqGreen);
+            @include text-ellipsis-one-line;
+            text-align: left;
+            width: 100%;
+          }
+
+          & > img {
+            cursor: pointer;
+            height: 16px;
+          }
+        }
+        & > .see-more {
+          & > label {
+            @include responsive-font-format(
+              $color: $main-proquifa,
+              $font-size-map: $responsive-font-14-16,
+              $font_weight: $font_weight_regular,
+              $font-family: $font_family_roboto_regular
+            );
+            text-decoration: underline;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+}

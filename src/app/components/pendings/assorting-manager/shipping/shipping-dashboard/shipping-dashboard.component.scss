@@ -1,0 +1,160 @@
+@use 'base' as s;
+
+:host {
+  width: 100%;
+  height: 100%;
+
+  & > .divPrincipal {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    & .VistaInicial {
+      @include s.flexColumn;
+      flex: 1 1 auto;
+      overflow: hidden;
+
+      & #botonera {
+        box-sizing: content-box;
+        flex: 0 0 50px;
+        position: relative;
+      }
+
+      & > .graficas {
+        @include s.flexRow;
+        flex: 1 1 auto;
+        overflow: hidden;
+
+        & > div {
+          @include s.flexColumn;
+          align-items: center;
+          overflow: hidden;
+
+          & > div {
+            @include s.flexColumn;
+            align-items: center;
+            flex: 1;
+            overflow: hidden;
+            padding-bottom: 40px;
+
+            & > .tituloGrafica {
+              flex: 0 0 auto;
+
+              & > label {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormat(s.$textSize20to25, bold, s.$pqBlack2);
+              }
+            }
+
+            & > .grafica {
+              flex: 1 1 auto;
+              overflow: hidden;
+            }
+          }
+        }
+
+        & > .productos {
+          flex: 2;
+        }
+
+        & > .prioridades {
+          flex: 1.5;
+        }
+      }
+
+      & > .button {
+        @include s.flexRow;
+        justify-content: flex-end;
+        flex: 0 0 auto;
+        margin-top: 30px;
+        padding: 20px;
+
+        & > button {
+          @include s.pqButton();
+        }
+      }
+    }
+  }
+
+  & > .pop-up {
+    & .container {
+      @include s.flexColumn;
+      flex: 1 1 100%;
+
+      & .datos {
+        @include s.flexRowNoWrap;
+        flex: 1 1 50%;
+
+        & > div {
+          @include s.flexColumn;
+          align-items: flex-start;
+          flex: 1 1 40%;
+
+          & > .titulo {
+            @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqGreen);
+            @include s.Roboto-Bold;
+            text-align: start;
+            border-bottom: 1px solid s.$pqGray3;
+            padding: 8px 0;
+            width: 100%;
+          }
+        }
+
+        & > .totalesHistoricos {
+          margin: 10px 10px 10px 20px;
+
+          & > .titulo {
+            margin-bottom: 30px;
+          }
+
+          & > .valores {
+            @include s.flexColumn;
+            align-items: flex-start;
+            margin-bottom: 30px;
+
+            & > .dato {
+              @include s.escaledFontFormat(s.$textSize16to21, bold, s.$pqGreen);
+              @include s.Roboto-Bold;
+            }
+
+            & > .campo {
+              @include s.escaledFontFormat(s.$textSize13to15, bold, s.$pqBlack2);
+              @include s.Roboto-Regular;
+            }
+          }
+        }
+
+        & > .insPorPrioridad {
+          margin: 10px 20px 10px 10px;
+        }
+      }
+
+      & .graficaPuntos {
+        @include s.flexColumn;
+        align-items: flex-start;
+        flex: 1 1 40%;
+        margin: 0 20px;
+
+        & > .header {
+          @include s.flexRowNoWrap;
+          border-bottom: 1px solid s.$pqGray3;
+          padding: 8px 0;
+          width: 100%;
+
+          & > .titulo {
+            @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqGreen);
+            @include s.Roboto-Bold;
+            text-align: start;
+            width: 100%;
+          }
+        }
+
+        & > .content {
+          width: 100%;
+        }
+      }
+    }
+  }
+}

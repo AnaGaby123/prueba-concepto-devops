@@ -1,0 +1,964 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  .delivery-billing {
+    @include s.absolute100;
+    @include s.flexColumn;
+    overflow: auto;
+
+    & > .container {
+      @include s.flexColumn;
+      flex: 1;
+
+      & > div {
+        & > .titleSection {
+          @include s.flexRow;
+          border-bottom: 1px solid #242424;
+          padding-bottom: 5px;
+
+          & > label {
+            @include s.Novecento-Bold;
+            @include s.escaledFontFormatImportant(s.$textSize17to21, bold, s.$pqBlack2);
+          }
+        }
+      }
+
+      & > .billing {
+        & > .billing-container {
+          padding: 20px 60px;
+
+          & > .billing-data {
+            display: grid;
+            grid-column-gap: 15px;
+            grid-row-gap: 40px;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, auto);
+            margin-bottom: 20px;
+
+            & > .fiscal-address {
+              @include s.flexRow;
+              grid-column-end: span 2;
+
+              & > .oneButton {
+                @include s.flexRow;
+                align-items: flex-end;
+                flex: 1;
+                margin-left: 10px;
+
+                & > button {
+                  $max-width-map: (
+                    'base': 205px,
+                    'macBookAir': 345px,
+                  );
+
+                  &.enableBtn {
+                    @include s.pqfButton($max-width-map: $max-width-map);
+                  }
+
+                  &.disableBtn {
+                    @include s.pqfDisableButton($max-width-map: $max-width-map);
+                  }
+                }
+              }
+            }
+
+            & > .type-change {
+              @include s.flexColumn;
+
+              & > div {
+                display: grid;
+                grid-template-columns: auto 1fr;
+                align-items: end;
+                padding-top: 10px;
+
+                & > .text {
+                  @include s.flexRow;
+                  align-items: flex-end;
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormatImportant(s.$textSize14to16, regular, s.$pqBlack2);
+                    align-self: center;
+                  }
+                }
+
+                & > .date {
+                  pointer-events: none;
+                  border-bottom: 1px solid s.$pqGreen;
+                  &.enableEdit {
+                    pointer-events: auto;
+                  }
+                }
+              }
+            }
+
+            & > .how-billing {
+              @include s.flexColumn;
+
+              & > div {
+                padding-top: 8px;
+                min-width: max-content;
+              }
+            }
+
+            & > .send-email {
+              @include s.flexRow;
+              grid-column-end: span 2;
+
+              & > .check {
+                flex: 0 0 auto;
+                margin-right: 20px;
+              }
+
+              & > .input {
+                flex: 1 1 auto;
+              }
+            }
+          }
+
+          & > .validate-addenda {
+            @include s.flexColumn;
+            row-gap: 26px;
+            margin-bottom: 2.5rem;
+            margin-top: 2.5rem;
+
+            & > .title {
+              @include s.flexRow;
+
+              & > label {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormatImportant(s.$textSize16to18, bold, s.$pqBlack2);
+              }
+            }
+
+            & > .validate-addenda-option {
+              @include s.flexRow;
+              column-gap: 80px;
+            }
+          }
+
+          & > .validate-cdfi {
+            & > .title-cfdi {
+              @include s.flexRow;
+
+              & > label {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormatImportant(s.$textSize16to18, bold, s.$pqBlack2);
+              }
+            }
+
+            & > .validate-cfdi-option {
+              @include s.flexRow;
+              justify-content: space-between;
+              margin: 15px 0;
+
+              & > div {
+                @include s.flexColumn;
+              }
+            }
+
+            & > .validate-cfdi-option-container {
+              & > .portal {
+                @include s.flexRow;
+                gap: 15px;
+
+                & > div {
+                  display: flex;
+                  flex: 1 1 auto;
+                }
+              }
+
+              & > .sat {
+                & > .satDatos {
+                  align-items: center;
+                  background: rgba(0, 136, 148, 0.03);
+                  justify-content: center;
+                  padding: 15px 0;
+                  @include s.flexColumn;
+
+                  & > label {
+                    @include s.Roboto-Bold;
+                    @include s.escaledFontFormatImportant(s.$textSize16to18, bold, s.$pqBlack2);
+                    padding-bottom: 4px;
+                  }
+
+                  & > a {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormatImportant(s.$textSize16to18, regular, s.$pqGreen);
+                    text-decoration: none;
+                  }
+                }
+              }
+
+              & > .email {
+                @include s.flexColumn;
+
+                & > .email-form {
+                  @include s.flexRow;
+                  flex: 0 0 60px;
+                  width: 100%;
+
+                  & > .email {
+                    @include s.flexRow;
+                    align-items: center;
+                    flex: 1;
+                    padding-right: 15px;
+
+                    & > .text {
+                      min-width: 133px;
+
+                      & > label {
+                        @include s.Roboto-Regular;
+                        @include s.escaledFontFormat(s.$textSize14to16, regular, s.$pqBlack2);
+                      }
+                    }
+
+                    & > .content {
+                      display: flex;
+                      flex: 1;
+                    }
+                  }
+
+                  & > .buttton {
+                    @include s.flexRow;
+                    align-items: center;
+
+                    & .btn-enable {
+                      @include s.pqfButton();
+                      transition: none;
+                    }
+
+                    & .btn-disable {
+                      @include s.pqfDisableButton();
+                    }
+                  }
+                }
+
+                & > .email-list {
+                  @include s.flexRow;
+                  flex-wrap: wrap;
+                  flex: 1;
+                  height: 40px;
+                  overflow: auto;
+
+                  & > div {
+                    padding: 5px 5px 5px 0;
+
+                    & > div {
+                      background: rgba(s.$pqGreen, 0.05);
+                      @include s.flexRow;
+                      align-items: center;
+
+                      & > img {
+                        cursor: pointer;
+                        height: 13px;
+                        max-height: 20px;
+                        padding-right: 10px;
+                      }
+
+                      & > label {
+                        @include s.Roboto-Regular;
+                        @include s.escaledFontFormat(s.$textSize14to16, regular, s.$pqBlack2);
+                        padding: 5px 10px;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          & > .comments-with-theme {
+            @include s.flexColumn;
+            margin-top: 40px;
+            min-height: 135px;
+
+            & > .title {
+              @include s.flexRow;
+
+              & > label {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormatImportant(s.$textSize16to18, bold, s.$pqBlack2);
+              }
+            }
+
+            & > .comments-container {
+              margin-top: 5px;
+
+              & > .comments-form {
+                @include s.flexRow;
+                gap: 15px;
+                padding-bottom: 15px;
+
+                & > .theme {
+                  flex: 0 1 450px;
+                }
+
+                & > .comment {
+                  flex: 1;
+                }
+
+                & > .button {
+                  @include s.flexRow;
+                  align-items: flex-end;
+
+                  & .btn-enable {
+                    @include s.pqfButton();
+                    transition: none;
+                  }
+
+                  & .btn-disable {
+                    @include s.pqfDisableButton();
+                  }
+                }
+              }
+
+              & > .comments-list {
+                @include s.flexRowWrap;
+                overflow: auto;
+
+                & > div {
+                  @include s.flexRow;
+                  margin: 0 5px 0 0;
+
+                  & > div {
+                    @include s.flexRow;
+                    align-items: flex-start;
+                    background: rgba(s.$pqGreen, 0.05);
+                    gap: 15px;
+                    justify-content: space-between;
+                    padding: 5px 10px;
+
+                    & > .info {
+                      @include s.flexColumn;
+
+                      & > span {
+                        @include s.Roboto-Bold;
+                        @include s.escaledFontFormat(s.$textSize14to16, bold, s.$pqGreen);
+                        margin-bottom: 5px;
+                      }
+
+                      & > label {
+                        @include s.Roboto-Regular;
+                        @include s.escaledFontFormat(s.$textSize14to16, regular, s.$pqBlack2);
+                      }
+                    }
+
+                    & > div {
+                      display: flex;
+                      align-self: center;
+
+                      & > img {
+                        height: 13px;
+                        cursor: pointer;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      & > .delivery {
+        @include s.flexColumn;
+
+        & > .delivery-data {
+          display: grid;
+          grid-template-columns: repeat(2, auto) 1fr;
+          padding: 20px 60px 0 60px;
+
+          & > .month-restriction {
+            max-width: 250px;
+            min-width: 250px;
+
+            & > .row {
+              @include s.flexRow;
+              margin: 10px 0;
+
+              & > .input-number {
+                display: flex;
+                flex: 0 0 40px;
+              }
+
+              & > .info-colum {
+                @include s.flexColumn;
+                padding-left: 5px;
+
+                & > label {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormatImportant(s.$textSize14to16, regular, s.$pqBlack2);
+                }
+
+                & > span {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormatImportant(s.$textSize11to13, regular, s.$pqGreen);
+                }
+              }
+            }
+          }
+
+          & > .monthly-restriction {
+            max-width: 250px;
+            min-width: 250px;
+
+            & > .row {
+              @include s.flexRow;
+              margin: 10px 0;
+
+              & > .inputNumber {
+                display: flex;
+                flex: 0 0 40px;
+                padding-left: 6px;
+              }
+
+              & > .infoColum {
+                @include s.flexColumn;
+                padding-left: 5px;
+
+                & > label {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormatImportant(s.$textSize14to16, regular, s.$pqBlack2);
+                }
+
+                & > span {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormatImportant(s.$textSize11to13, regular, s.$pqGreen);
+                }
+              }
+            }
+          }
+
+          & > .temporal-restriction {
+            & > .row {
+              @include s.flexRow;
+              gap: 15px;
+              margin: 10px 0;
+
+              & > .title {
+                display: flex;
+                flex: 1;
+                min-width: 100px;
+              }
+
+              & > .button {
+                @include s.flexRow;
+                align-items: flex-end;
+
+                & > button {
+                  @include s.pqfButton();
+                }
+              }
+
+              & > .event-list-container {
+                height: 100px;
+                overflow: auto;
+
+                & > .event-list {
+                  @include s.flexRowWrap;
+                  gap: 10px;
+                  overflow: auto;
+
+                  & > div {
+                    @include s.flexRow;
+
+                    & > div {
+                      align-items: flex-start;
+                      background-color: rgb(s.$pqGray3, 0.1);
+                      display: flex;
+                      gap: 15px;
+                      justify-content: space-between;
+                      padding: 5px 10px;
+
+                      & > .info {
+                        @include s.flexRow;
+
+                        & > label {
+                          @include s.Roboto-Bold;
+                          @include s.escaledFontFormat(s.$textSize14to16, regular, s.$pqGreen);
+
+                          & > .dates {
+                            @include s.Roboto-Regular;
+                            color: s.$pqBlack2;
+                            vertical-align: initial;
+                          }
+                        }
+
+                        & > label:nth-of-type(2) {
+                          white-space: pre;
+                        }
+
+                        & > .title {
+                          max-width: 150px;
+                          overflow: hidden;
+                          text-overflow: ellipsis;
+                          white-space: nowrap;
+                        }
+                      }
+
+                      & > .disable-restriction {
+                        & > label {
+                          color: s.$pqGray3 !important;
+
+                          & > span {
+                            color: s.$pqGray3 !important;
+                          }
+                        }
+                      }
+
+                      & > div {
+                        align-self: center;
+                        display: flex;
+
+                        & > img {
+                          height: 13px;
+                          width: 13px;
+                        }
+
+                        & > .activeDelete {
+                          cursor: pointer;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    & > .footer {
+      display: flex;
+      justify-content: flex-end;
+      margin: 10px 15px;
+
+      & > label {
+        @include s.Roboto-Regular;
+        @include s.escaledFontFormatImportant(s.$textSize14to16, regular, s.$pqGreen);
+      }
+    }
+  }
+
+  @include s.responsive_layout('media-1800') {
+    .delivery-billing {
+      & > .container {
+        & > .billing {
+          & > .billing-container {
+            padding: 25px 80px;
+
+            & > .billing-data {
+              grid-template-columns: repeat(4, 1fr) 650px;
+
+              & > .fiscal-address {
+                grid-column-end: span 1;
+              }
+
+              & > .send-email {
+                grid-column-end: span 1;
+              }
+            }
+          }
+        }
+
+        & > .delivery {
+          & > .delivery-data {
+            padding: 25px 80px;
+          }
+        }
+      }
+    }
+  }
+  @include s.responsive_layout('macBookAir') {
+    .delivery-billing {
+      & > .container {
+        & > .billing {
+          & > .billing-container {
+            padding: 40px 60px;
+
+            & > .billing-data {
+              display: grid;
+              grid-template-columns: repeat(4, 1fr) 750px;
+              grid-template-rows: repeat(2, auto);
+              grid-column-gap: 20px;
+              grid-row-gap: 20px;
+              margin-bottom: 25px;
+
+              & > .company-name {
+                grid-area: 1 / 1 / 2 / 2;
+              }
+
+              & > .mercantile-society-name {
+                grid-area: 1 / 2 / 2 / 3;
+              }
+
+              & > .tax-regime {
+                grid-area: 1 / 3 / 2 / 4;
+              }
+
+              & > .rfc {
+                grid-area: 1 / 4 / 2 / 5;
+              }
+
+              & > .fiscal-address {
+                @include s.flexRow;
+                grid-area: 1 / 5 / 2 / 6;
+
+                & > .oneButton {
+                  @include s.flexRow;
+                  flex: 1;
+                  align-items: flex-end;
+                }
+              }
+
+              & > .offer-currency {
+                grid-area: 2 / 1 / 3 / 2;
+              }
+
+              & > .billing-currency {
+                grid-area: 2 / 2 / 3 / 3;
+              }
+
+              & > .type-change {
+                @include s.flexColumn;
+                grid-area: 2 / 3 / 3 / 4;
+
+                & > div {
+                  @include s.flexRow;
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormatImportant(s.$textSize14to16, regular, s.$pqBlack2);
+                    align-self: center;
+                  }
+
+                  & > .date {
+                    @include s.flexRow;
+                  }
+                }
+              }
+
+              & > .how-billing {
+                @include s.flexColumn;
+                grid-area: 2 / 4 / 3 / 5;
+
+                & > app-check-box {
+                  padding-bottom: 5px;
+                }
+              }
+
+              & > .send-email {
+                @include s.flexRow;
+                padding-bottom: 8px;
+
+                & > app-generic-input {
+                  align-self: center;
+                }
+              }
+            }
+
+            & > .validate-cdfi {
+              & > .title-cfdi {
+                @include s.flexRow;
+
+                & > label {
+                  @include s.Roboto-Bold;
+                  @include s.escaledFontFormatImportant(s.$textSize16to18, bold, s.$pqBlack2);
+                }
+              }
+
+              & > .validate-cfdi-option {
+                margin: 20px 0;
+              }
+
+              & > .validate-cfdi-option-container {
+                & > .portal {
+                  gap: 20px;
+                }
+
+                & > .sat {
+                  & > .satDatos {
+                    padding: 20px 0;
+
+                    & > label {
+                      padding-bottom: 6px;
+                    }
+                  }
+                }
+
+                & > .email {
+                  padding-bottom: 15px;
+
+                  & > .email-form {
+                    flex: 0 0 70px;
+
+                    & > .email {
+                      padding-right: 20px;
+                    }
+                  }
+
+                  & > .email-list {
+                    @include s.flexRow;
+
+                    & > div {
+                      padding: 7px 7px 7px 0;
+
+                      & > div {
+                        & > img {
+                          height: 15px;
+                          padding-right: 15px;
+                        }
+
+                        & > label {
+                          padding: 5px 10px;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+
+            & > .comments-with-theme {
+              margin-top: 50px;
+              min-height: 160px;
+
+              & > .title {
+                @include s.flexRow;
+
+                & > label {
+                  @include s.Roboto-Bold;
+                  @include s.escaledFontFormatImportant(s.$textSize16to18, bold, s.$pqBlack2);
+                }
+              }
+
+              & > .comments-container {
+                & > .comments-form {
+                  @include s.flexRow;
+                  gap: 20px;
+                  padding-bottom: 20px;
+                }
+
+                & > .comments-list {
+                  & > div {
+                    @include s.flexRow;
+                    margin: 0 6px 0 0;
+
+                    & > div {
+                      @include s.flexRow;
+                      padding: 10px 15px;
+                      gap: 20px;
+
+                      & > .info {
+                        & > span {
+                          margin-bottom: 6px;
+                        }
+                      }
+
+                      & > div {
+                        & > img {
+                          height: 15px;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        & > .delivery {
+          & > .delivery-data {
+            padding: 40px 60px;
+
+            & > .temporal-restriction {
+              & > .row {
+                margin: 15px 0;
+                gap: 20px;
+
+                & > .event-list-container {
+                  height: 100px;
+                  overflow: auto;
+
+                  & > .event-list {
+                    gap: 15px;
+
+                    & > div {
+                      & > div {
+                        gap: 20px;
+                        padding: 10px 15px;
+
+                        & > div {
+                          & > img {
+                            height: 15px;
+                            width: 15px;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    & > .footer {
+      margin: 15px 20px;
+    }
+  }
+}
+
+#code-pop-up {
+  & .container {
+    @include s.flexColumn;
+    width: 100%;
+    height: 100%;
+    justify-content: flex-start;
+
+    & * {
+      box-sizing: border-box;
+    }
+
+    & > .header {
+      @include s.flexRow;
+      height: 122px;
+
+      & > .image {
+        width: 190px;
+        @include s.flexColumn;
+        @include s.absoluteCenter;
+        padding: 15px;
+
+        & > img {
+          max-height: 100%;
+          max-width: 100%;
+        }
+      }
+
+      & > .client-data {
+        @include s.flexColumn;
+        align-items: flex-start;
+        justify-content: center;
+        flex: 1;
+
+        & > label {
+          margin-bottom: 3px;
+        }
+
+        & > label:nth-child(1) {
+          @include s.escaledFontFormat(s.$textSize20to24, bold, s.$pqGreen);
+          @include s.Novecento-Bold;
+        }
+
+        & > label:nth-child(2) {
+          @include s.escaledFontFormat(s.$textSize16to20, regular, s.$pqGreen);
+          @include s.Roboto-Regular;
+        }
+
+        & > label:nth-child(3) {
+          @include s.escaledFontFormat(s.$textSize16to19, regular, s.$pqBlack2);
+          @include s.Roboto-Regular;
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    & > .resume {
+      @include s.flexColumn;
+      @include s.absoluteCenter;
+      height: 135px;
+      background-color: s.$redAlertHover;
+
+      & > label {
+        @include s.escaledFontFormat(s.$textSize21to23, regular, s.$redAlert);
+        @include s.Roboto-Bold;
+        margin-bottom: 5px;
+      }
+
+      & > label:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    & > .code {
+      @include s.flexColumn;
+      @include s.absoluteCenter;
+      padding: 29px 0;
+
+      & > label {
+        @include s.escaledFontFormat(s.$textSize26to29, regular, s.$pqBlack2);
+        @include s.Roboto-Regular;
+
+        & > span {
+          color: s.$pqGreen;
+          @include s.Roboto-Bold;
+        }
+      }
+
+      & > .enter-digits {
+        @include s.escaledFontFormat(s.$textSize16to19, regular, s.$pqBlack2);
+        @include s.Roboto-Regular;
+      }
+
+      & > label:first-child {
+        margin-bottom: 35px;
+      }
+    }
+
+    & > .inputs {
+      @include s.flexRow;
+      @include s.absoluteCenter;
+      background-color: rgba(s.$pqGreen, 0.05);
+      height: 110px;
+
+      & > div {
+        @include s.flexRow;
+        @include s.absoluteCenter;
+
+        & > input {
+          width: 66px;
+          height: 51px;
+          border: 1px solid s.$pqGreen;
+          background-color: s.$pqWhite;
+          text-align: center;
+          margin-right: 31px;
+
+          @include s.escaledFontFormat(s.$textSize30to35, bold, s.$pqGreen);
+          @include s.Roboto-Bold;
+
+          &:last-child {
+            margin-right: 0;
+          }
+        }
+      }
+
+      &.shaked {
+        background-color: s.$redAlertHover;
+
+        & > div {
+          animation: shake 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+          transform: translate3d(0, 0, 0);
+          backface-visibility: hidden;
+          perspective: 1000px;
+
+          & > input {
+            border: 1px solid s.$redAlert;
+            background-color: s.$pqWhite;
+            color: s.$redAlert;
+          }
+        }
+      }
+    }
+  }
+}

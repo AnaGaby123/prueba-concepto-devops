@@ -1,0 +1,272 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  & > .container-padding {
+    @include s.flexRowNoWrap;
+    padding: 12px 0 22px 0;
+
+    & > .price-info {
+      @include s.flexColumn();
+      border-right: 1px solid s.$pqGray2;
+      max-width: 300px;
+      padding: 13px 20px 0 20px;
+
+      & > .subtitle-black {
+        @include s.responsive-font-format(
+          $font-family: s.$font-family_roboto_bold,
+          $font-size-map: s.$responsive-font-12-14-b,
+          $font-weight: s.$font-weight_bold
+        );
+        text-align: center;
+        margin-bottom: 15px;
+      }
+
+      & > .section {
+        @include s.flexRowWrap;
+        justify-content: center;
+        margin-bottom: 14px;
+
+        & > .gray {
+          @include s.responsive-font-format($font-size-map: s.$responsive-font-12-14-b, $color: s.$textGray);
+          text-align: center;
+          white-space: pre;
+        }
+
+        & > .green {
+          @include s.responsive-font-format(
+            $color: s.$pqGreen,
+            $font-family: s.$font-family_roboto_bold,
+            $font-size-map: s.$responsive-font-12-14-b,
+            $font-weight: s.$font-weight_bold
+          );
+          text-align: center;
+          white-space: pre;
+        }
+      }
+      & > .curatorship-date {
+        @include s.flexColumn();
+      }
+      & > .pieces {
+        align-items: center;
+        margin-top: 11px;
+      }
+
+      & > .total-price {
+        @include s.flexColumn();
+        padding-top: 11px;
+        & > div {
+          @include s.flexRow();
+          align-items: center;
+          justify-content: center;
+          white-space: pre;
+          & > label {
+            @include s.responsive-font-format(
+              $color: s.$main-proquifa,
+              $font-family: s.$font-family_roboto_bold,
+              $font-size-map: s.$responsive-font-14-14,
+              $font-weight: s.$font-weight_bold
+            );
+          }
+          & > p {
+            @include s.responsive-font-format(
+              $color: s.$dark-proquifa,
+              $font-family: s.$font-family_roboto_bold,
+              $font-size-map: s.$responsive-font-10-10,
+              $font-weight: s.$font-weight_bold
+            );
+          }
+          & > img,
+          & > p {
+            margin-bottom: 2px;
+          }
+        }
+      }
+
+      & > .container {
+        @include s.flexColumn();
+        overflow: hidden;
+
+        & > .section-1 {
+          @include s.flexRow();
+          justify-content: center;
+        }
+      }
+      & > .addToCar {
+        @include s.flexRow();
+        justify-content: center;
+        margin-top: 18px;
+        width: 100%;
+        & > button {
+          text-transform: uppercase;
+        }
+        & > .enable {
+          @include s.pqButton($min-width: auto, $max-width: auto);
+        }
+        & > .disabled {
+          @include s.pqButtonDisable($min-width: auto, $max-width: auto);
+        }
+      }
+    }
+    & > .details-info {
+      @include s.flexColumn();
+      height: 344px;
+      overflow-x: hidden;
+      padding: 0 20px 0 18px;
+      width: 100%;
+      & > .tabs {
+        height: 100%;
+        max-height: 30px;
+      }
+      & > .content {
+        @include s.flexRow();
+        padding-top: 10px;
+        overflow: hidden;
+        flex: 1 1 auto;
+        & > .without-results {
+          justify-content: center;
+        }
+        & > .data-sheet {
+          @include s.flexColumn();
+          flex: 1 1 auto;
+          height: auto;
+          overflow-y: auto;
+          row-gap: 15px;
+          & > .technical-information {
+            @include s.flexColumn();
+            border-bottom: 1px solid s.$pqGray2;
+            max-height: 99px;
+            padding-bottom: 10px;
+            & > label {
+              @include s.responsive-font-format(
+                $color: s.$dark-proquifa,
+                $font-family: s.$font-family_novecento_bold,
+                $font-size-map: s.$responsive-font-13-13,
+                $font-weight: s.$font-weight_bold
+              );
+            }
+            & > .information {
+              @include s.flexRow();
+              gap: 14px;
+              padding-top: 13px;
+              & > .logo {
+                padding: 0 7px 0 5px;
+                & > img {
+                  max-height: 65px;
+                  max-width: 52px;
+                }
+              }
+              & > .container-bottom {
+                @include s.flexColumn();
+                & > .container-brand-data {
+                  @include s.flexRow();
+                  align-items: center;
+                  gap: 6px;
+                  justify-content: flex-start;
+                  & > .brand-image {
+                    @include s.flexColumn();
+                    & > img {
+                      max-height: 11px;
+                      max-width: 21.41px;
+                    }
+                  }
+                  & > div {
+                    & > label {
+                      @include s.responsive-font-format(
+                        $color: s.$main-proquifa,
+                        $font-family: s.$font-family_roboto_bold,
+                        $font-size-map: s.$responsive-font-12-b-12-b,
+                        $font-weight: s.$font-weight_bold
+                      );
+                      white-space: pre;
+                    }
+                  }
+                }
+                & > .text-truncate {
+                  margin-top: 2px;
+                  & > label {
+                    @include s.responsive-font-format(
+                      $color: s.$dark-proquifa,
+                      $font-family: s.$font-family_roboto,
+                      $font-size-map: s.$responsive-font-12-b-12-b
+                    );
+                    @include s.multiLineTextTruncateSinHeight(2, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+                  }
+                }
+                & > .family {
+                  margin-top: 2px;
+                  & > label {
+                    @include s.responsive-font-format(
+                      $color: s.$main-proquifa,
+                      $font-family: s.$font-family_roboto_bold,
+                      $font-size-map: s.$responsive-font_11-b-11-b,
+                      $font-weight: s.$font-weight_bold
+                    );
+                    & > .controlled {
+                      color: s.$pqOrange2;
+                    }
+                  }
+                }
+              }
+            }
+          }
+          & > .technical-product {
+            column-gap: 5px;
+            display: grid;
+            flex: 0 0 auto;
+            grid-template-columns: 2fr 2fr 3fr;
+            max-height: 0;
+            & > div {
+              row-gap: 5px;
+            }
+            & > .section-first,
+            .section-second {
+              @include s.flexColumn();
+              flex: 0 0 auto;
+              & > .content {
+                display: grid;
+                grid-template-columns: 1fr;
+                & > div {
+                  @include s.flexRow();
+                  padding-bottom: 8px;
+                  & > img {
+                    height: 13px;
+                    margin-right: 3px;
+                    @include s.responsive_layout('macBookAir') {
+                      height: 17px;
+                    }
+                  }
+                }
+              }
+            }
+            & > .coment {
+              @include s.flexColumn();
+              padding-left: 5px;
+              width: 100%;
+              & > div:last-child {
+                flex: 1;
+              }
+            }
+          }
+        }
+        & > .alternatives,
+        & > .complements {
+          @include s.absolute100();
+          display: grid;
+          gap: 2px;
+          grid-template-columns: 3fr 3fr 3fr;
+          overflow: auto;
+          & > .without {
+            display: flex;
+            @include s.absoluteCenter();
+            @include s.absolute100();
+            grid-column-end: span 3;
+          }
+        }
+      }
+    }
+  }
+}

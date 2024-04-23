@@ -1,0 +1,31 @@
+<div class="item">
+  <div class="number">
+    <label>{{ '#' + preprocessItem.Index }}</label>
+  </div>
+  <div class="content">
+    <div class="name">
+      <label>{{ preprocessItem?.Nombre }}</label>
+    </div>
+    <div class="classification">
+      <div *ngIf="(tabSelected?.id === '1' || tabSelected?.id === '2') && preprocessItem?.ConOrdenDeCompratrue > 0">
+        <label>{{ preprocessItem?.ConOrdenDeCompratrue + ' OC' }}</label>
+      </div>
+      <div
+        *ngIf="
+          (tabSelected?.id === '1' || tabSelected?.id === '3') && preprocessItem?.SinOrdenDeCompraPretramitarPedidotrue > 0
+        "
+      >
+        <label class="text-danger"
+          >{{ tabSelected?.id === '1' && preprocessItem?.ConOrdenDeCompratrue ? ' · ' : ''
+          }}{{ preprocessItem?.SinOrdenDeCompraPretramitarPedidotrue + ' Sin OC' }}</label
+        >
+      </div>
+      <div>
+        <label> · {{ 'VT ' + (preprocessItem?.TotalUSD | currency: 'USD':'symbol':'1.2-2') }} USD</label>
+      </div>
+    </div>
+  </div>
+  <div class="arrow">
+    <img alt="arrow" src="assets/Images/arrows/arrow_right.svg" />
+  </div>
+</div>

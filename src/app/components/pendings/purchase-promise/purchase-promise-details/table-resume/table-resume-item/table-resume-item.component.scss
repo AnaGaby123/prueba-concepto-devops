@@ -1,0 +1,76 @@
+@use 'base' as s;
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.flexColumn;
+  min-width: 1750px;
+
+  .incidence {
+    @include s.flexRow;
+    background-color: s.$orangeLight;
+    justify-content: flex-start;
+    padding: 12px;
+    position: relative;
+
+    & > .tab {
+      background-color: s.$orangeLight;
+      height: 14px;
+      left: 15px;
+      position: absolute;
+      top: -7px;
+      transform: rotate(45deg);
+      width: 14px;
+    }
+
+    & > .content {
+      @include s.flexColumn;
+      align-items: flex-start;
+      flex: 1;
+
+      & > div:nth-child(1) {
+        margin-bottom: 8px;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize13to14, bold, s.$pqBlack2);
+          @include s.Roboto-Bold;
+        }
+      }
+
+      & > div:nth-child(2) {
+        @include s.flexRow;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        padding-right: 30px;
+        width: 100%;
+      }
+
+      & > div:nth-child(3) {
+        @include s.flexRow;
+        align-items: center;
+        justify-content: flex-start;
+        width: 100%;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize13to14, bold, s.$pqBlack2);
+          @include s.Roboto-Bold;
+          margin-right: 5px;
+        }
+      }
+    }
+
+    & > .image {
+      @include s.flexColumn;
+      @include s.absoluteCenter;
+      height: 100%;
+      width: 130px;
+
+      & > img {
+        height: 13px;
+        width: 65px;
+      }
+    }
+  }
+}

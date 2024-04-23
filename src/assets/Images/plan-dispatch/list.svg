@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width='95px' height='55px' viewBox='0 0 95 55' version='1.1' xmlns='http://www.w3.org/2000/svg'>
+  <title>Group 4</title>
+  <g id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'>
+    <g id='9' transform='translate(-1466.000000, -400.000000)'>
+      <g id='Group-4' transform='translate(1466.000000, 400.000000)'>
+        <rect id='Rectangle-Copy-16' stroke='#88868A' stroke-width='0.25' fill='#ECEEF0' x='0.125' y='0.125'
+              width='94.75' height='54.75'></rect>
+        <g id='Group' transform='translate(25.000000, 10.000000)'>
+          <circle id='Oval' fill='#424242' cx='7.5' cy='8.5' r='2.5'></circle>
+          <circle id='Oval-Copy' fill='#424242' cx='7.5' cy='17.5' r='2.5'></circle>
+          <circle id='Oval-Copy-2' fill='#424242' cx='7.5' cy='26.5' r='2.5'></circle>
+          <rect id='Rectangle' stroke='#424242' stroke-width='1.5' x='0.75' y='0.75' width='44.5' height='33.5'></rect>
+          <line x1='14.2954545' y1='8.5' x2='39.7045455' y2='8.5' id='Path-5' stroke='#424242' stroke-width='1.5'
+                stroke-linecap='round'></line>
+          <line x1='14.2954545' y1='17.5' x2='39.7045455' y2='17.5' id='Path-5-Copy' stroke='#424242' stroke-width='1.5'
+                stroke-linecap='round'></line>
+          <line x1='14.2954545' y1='26.5' x2='39.7045455' y2='26.5' id='Path-5-Copy-2' stroke='#424242'
+                stroke-width='1.5' stroke-linecap='round'></line>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

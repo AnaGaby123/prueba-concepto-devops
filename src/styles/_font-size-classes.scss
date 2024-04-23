@@ -1,0 +1,66 @@
+@use "fonts" as f;
+@use "colors" as c;
+.Roboto-Bold-Black-12-14 {
+  @include f.Roboto-Bold;
+  @include f.escaledFontFormat(f.$textSize12to14, bold, c.$pqBlack2);
+}
+.Roboto-Bold-Proquifa-12-14 {
+  @include f.Roboto-Bold;
+  @include f.escaledFontFormat(f.$textSize12to14, bold, c.$pqGreen);
+}
+.Roboto-Regular-Black-12-14 {
+  @include f.Roboto-Regular;
+  @include f.escaledFontFormat(f.$textSize12to14, regular,c.$pqBlack2);
+}
+.Roboto-Regular-Proquifa-12-14 {
+  @include f.Roboto-Regular;
+  @include f.escaledFontFormat(f.$textSize12to14, regular, c.$pqGreen);
+}
+.Roboto-Regular-Black-13-16 {
+  @include f.Roboto-Regular;
+  @include f.escaledFontFormat(f.$textSize13to16, regular, c.$pqBlack2);
+}
+.Roboto-Regular-Proquifa-13-16 {
+  @include f.Roboto-Regular;
+  @include f.escaledFontFormat(f.$textSize13to16, regular, c.$pqGreen);
+}
+.Roboto-Bold-Black-13-16{
+  @include f.Roboto-Bold;
+  @include f.escaledFontFormat(f.$textSize13to16, bold, c.$pqBlack2);
+}
+.Roboto-Bold-Proquifa-13-16 {
+  @include f.Roboto-Bold;
+  @include f.escaledFontFormat(f.$textSize13to16, bold, c.$pqGreen);
+}
+.Roboto-Regular-Black-15-17{
+  @include f.Roboto-Regular;
+  @include f.escaledFontFormat(f.$textSize15to17, regular, c.$pqBlack2);
+}
+.Roboto-Bold-Black-15-17{
+  @include f.Roboto-Bold;
+  @include f.escaledFontFormat(f.$textSize15to17, bold, c.$pqBlack2);
+}
+.Roboto-Regular-Proquifa-15-17{
+  @include f.Roboto-Regular;
+  @include f.escaledFontFormat(f.$textSize15to17, regular, c.$pqGreen);
+}
+.Roboto-Bold-Proquifa-15-17{
+  @include f.Roboto-Bold;
+  @include f.escaledFontFormat(f.$textSize15to17, bold, c.$pqGreen);
+}
+.Roboto-Regular-Black-17-22{
+  @include f.Roboto-Regular;
+  @include f.escaledFontFormat(f.$textSize17to22, regular, c.$pqBlack2);
+}
+.Roboto-Bold-Black-17-22{
+  @include f.Roboto-Bold;
+  @include f.escaledFontFormat(f.$textSize17to22, bold, c.$pqBlack2);
+}
+.Roboto-Regular-Proquifa-17-22{
+  @include f.Roboto-Regular;
+  @include f.escaledFontFormat(f.$textSize17to22, regular, c.$pqGreen);
+}
+.Roboto-Bold-Proquifa-17-22{
+  @include f.Roboto-Bold;
+  @include f.escaledFontFormat(f.$textSize17to22, bold, c.$pqGreen);
+}

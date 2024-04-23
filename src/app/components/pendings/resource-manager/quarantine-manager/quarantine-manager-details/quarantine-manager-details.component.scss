@@ -1,0 +1,755 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  #quarantine-manager-details {
+    @include s.absolute100;
+
+    & > .container {
+      @include s.absolute100;
+      @include s.flexColumn;
+      padding: 0 20px 20px 20px;
+
+      & > .header-container {
+        @include s.flexColumn;
+        border-bottom: 1px solid s.$pqBlack2;
+
+        & > .header {
+          @include s.flexRow;
+          flex: 0 0 auto;
+          padding: 15px 0;
+
+          & > div {
+            margin-right: 25px;
+          }
+
+          & > div:last-of-type {
+            margin-right: 0;
+          }
+
+          & > .client-container {
+            @include s.flexColumn;
+            flex: 0 1 300px;
+
+            & > .client-title {
+              @include s.flexRowNoWrap;
+              justify-content: flex-start;
+              margin-bottom: 10px;
+
+              & > label {
+                @include s.escaledFontFormat(s.$textSize15to21, bold, s.$pqBlack2);
+                @include s.Novecento-Bold;
+              }
+            }
+
+            & > .client {
+              @include s.flexRowNoWrap;
+
+              & > div:nth-of-type(1) {
+                @include s.flexColumn;
+                @include s.absoluteCenter;
+                flex: 0 0 122px;
+                height: 70px;
+                padding-right: 18px;
+
+                & > img {
+                  max-height: 100%;
+                  max-width: 100%;
+                }
+              }
+
+              & > .client-info {
+                @include s.flexColumn;
+                flex: 1;
+                justify-content: center;
+
+                & > div {
+                  @include s.multiLineTextTruncateSinHeight($lineHeight: 1.1em);
+                  margin-bottom: 4px;
+                  max-width: 240px;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize16to21, bold, s.$pqGreen);
+                    @include s.Roboto-Bold;
+                  }
+                }
+
+                & > label {
+                  @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                  @include s.Roboto-Regular;
+                }
+              }
+            }
+          }
+
+          & > .contact-data {
+            @include s.flexColumn;
+            flex: 1 1 auto;
+
+            & > .title {
+              @include s.flexColumn;
+              margin-bottom: 12px;
+
+              & > label {
+                @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqGreen);
+                @include s.Roboto-Bold;
+              }
+            }
+
+            & > .data {
+              @include s.flexRow;
+
+              & > div {
+                @include s.flexColumn;
+                margin-right: 50px;
+
+                &:last-of-type {
+                  margin-right: 0;
+                }
+
+                & > .row {
+                  @include s.flexRowNoWrap;
+                  align-items: center;
+                  height: 23px;
+                  margin-bottom: 5px;
+
+                  & > .image {
+                    @include s.absoluteCenter;
+                    @include s.flexColumn;
+                    height: 18px;
+                    margin-right: 5px;
+                    width: 18px;
+
+                    & > img {
+                      max-height: 100%;
+                      max-width: 100%;
+                    }
+                  }
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                    @include s.Roboto-Regular;
+                    white-space: pre-wrap;
+
+                    &.bold {
+                      @include s.Roboto-Bold;
+                    }
+
+                    &.green {
+                      @include s.escaledFontFormat(s.$textSize14to18, bold, s.$pqGreen2);
+                      @include s.Roboto-Bold;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      & > .body {
+        @include s.flexRow;
+        flex: 1 1 auto;
+        overflow: hidden;
+        padding: 15px 0 0 0;
+
+        & > .left {
+          @include s.flexColumn;
+          flex: 0 0 320px;
+
+          & > .list {
+            @include s.flexColumn;
+            border-right: 1px solid s.$pqGray;
+            flex: 1;
+            padding-right: 20px;
+
+            & > .header-list {
+              border-bottom: 1px solid s.$pqBlack2;
+
+              & > label {
+                @include s.Novecento-Bold;
+                @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+              }
+
+              & > .filters {
+                @include s.flexRow;
+                align-items: center;
+                padding: 15px 0;
+
+                & > .hamburger {
+                  @include s.flexRow;
+                  padding-right: 15px;
+                }
+
+                & > .search {
+                  @include s.flexRow;
+                  flex: 1;
+                }
+              }
+            }
+
+            & > .body-list {
+              @include s.flexColumn;
+              flex: 1;
+
+              & > .item {
+                @include s.flexRow;
+                border-bottom: 1px solid s.$pqGray2;
+
+                &.selected {
+                  background-color: s.$pqGray2;
+                }
+
+                &:hover {
+                  background-color: s.$pqGray2;
+                }
+
+                & * {
+                  cursor: pointer;
+                }
+
+                & > .indicator {
+                  flex: 0 0 5px;
+
+                  &.selected {
+                    background-color: s.$pqGreen;
+                  }
+
+                  @include s.responsive_layout('macBookAir') {
+                    flex: 0 0 7px;
+                  }
+                }
+
+                & > .item-content {
+                  @include s.flexColumn;
+                  flex: 1;
+                  padding: 10px 20px;
+
+                  & > .index {
+                    @include s.flexRow;
+
+                    & > label {
+                      @include s.Roboto-Bold;
+                      @include s.escaledFontFormat(s.$textSize16to20, bold, s.$pqBlack2);
+
+                      & > span {
+                        color: s.$pqGreen;
+                        vertical-align: baseline;
+                      }
+                    }
+                  }
+
+                  & > .pieces {
+                    @include s.flexRow;
+                    padding: 3px 0;
+                    @include s.responsive_layout('macBookAir') {
+                      padding: 5px 0;
+                    }
+
+                    & > label {
+                      @include s.Roboto-Regular;
+                      @include s.escaledFontFormat(s.$textSize16to20, regular, s.$pqGreen);
+                    }
+                  }
+
+                  & > .date {
+                    @include s.flexRow;
+
+                    & > label {
+                      @include s.Roboto-Regular;
+                      @include s.escaledFontFormat(s.$textSize16to18, regular, s.$pqBlack2);
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          & > .footer-list {
+            @include s.flexRow;
+            border-top: 1px solid s.$pqBlack2;
+            margin-right: 20px;
+            justify-content: center;
+
+            & > div {
+              @include s.flexRow;
+              flex: 1;
+              justify-content: space-around;
+              padding-top: 5px;
+
+              & > label {
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+              }
+            }
+          }
+        }
+
+        & > .center {
+          @include s.flexColumn;
+          flex: 0 0 460px;
+
+          & > .center-content {
+            @include s.flexColumn;
+            border-right: 1px solid s.$pqGray;
+            flex: 1;
+            padding: 0 15px;
+
+            & > .header {
+              @include s.flexRow;
+
+              & > label {
+                @include s.Novecento-Bold;
+                @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+
+                & > span {
+                  color: s.$pqGreen;
+                }
+              }
+            }
+
+            & > .filter {
+              padding: 15px 0;
+              border-bottom: 1px solid s.$pqBlack2;
+            }
+
+            & > .list {
+              @include s.flexColumn;
+              flex: 1;
+
+              & > .item {
+                @include s.flexRow;
+                border-bottom: 1px solid s.$pqGray2;
+
+                &.selected {
+                  background-color: s.$pqGray2;
+                }
+
+                &:hover {
+                  background-color: s.$pqGray2;
+                }
+
+                & * {
+                  cursor: pointer;
+                }
+
+                & > .indicator {
+                  flex: 0 0 5px;
+
+                  &.selected {
+                    background-color: s.$pqGreen;
+                  }
+
+                  @include s.responsive_layout('macBookAir') {
+                    flex: 0 0 7px;
+                  }
+                }
+
+                & > .item-content {
+                  @include s.flexColumn;
+                  flex: 1;
+                  padding: 10px 20px 10px 20px;
+
+                  & > .content1 {
+                    @include s.flexRow;
+                    align-items: center;
+
+                    & > label {
+                      @include s.Roboto-Bold;
+                      @include s.escaledFontFormat(s.$textSize16to20, bold, s.$pqBlack2);
+
+                      & > span {
+                        color: s.$pqGreen;
+                        vertical-align: baseline;
+                      }
+                    }
+                  }
+
+                  & > .content2 {
+                    @include s.flexRow;
+                    align-items: center;
+                    padding: 3px 0;
+                    @include s.responsive_layout('macBookAir') {
+                      padding: 5px 0;
+                    }
+
+                    & > label {
+                      @include s.Roboto-Regular;
+                      @include s.escaledFontFormat(s.$textSize15to18, regular, s.$pqBlack2);
+                    }
+                  }
+
+                  & > .content3 {
+                    @include s.flexRow;
+                    align-items: center;
+                    padding-bottom: 3px;
+                    @include s.responsive_layout('macBookAir') {
+                      padding-bottom: 5px;
+                    }
+
+                    & > label {
+                      @include s.Roboto-Regular;
+                      @include s.escaledFontFormat(s.$textSize15to18, regular, s.$pqTextGris);
+                    }
+                  }
+
+                  & > .content4 {
+                    @include s.flexRow;
+                    align-items: center;
+
+                    & > label {
+                      @include s.Roboto-Regular;
+                      @include s.escaledFontFormat(s.$textSize15to18, regular, s.$pqBlack2);
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          & > .center-footer {
+            @include s.flexRow;
+            border-top: 1px solid s.$pqBlack2;
+            justify-content: center;
+            margin: 0 20px;
+
+            & > label {
+              @include s.Roboto-Regular;
+              @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+              padding-top: 5px;
+            }
+          }
+        }
+
+        & > .right {
+          @include s.flexColumn;
+          flex: 1;
+          overflow: hidden;
+          padding-bottom: 15px;
+
+          & > .header {
+            padding: 0 20px;
+
+            & > div {
+              @include s.flexRow;
+              border-bottom: 1px solid s.$pqBlack2;
+              padding-bottom: 15px;
+
+              & > label {
+                @include s.Novecento-Bold;
+                @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+
+                & > span {
+                  color: s.$pqGreen;
+                }
+              }
+            }
+          }
+
+          & > .content {
+            @include s.flexColumn;
+            flex: 1;
+            overflow-y: auto;
+            padding-left: 20px;
+
+            & > .top {
+              @include s.flexColumn;
+
+              & > .content1 {
+                @include s.flexRow;
+                padding: 15px 0;
+
+                & > .left {
+                  @include s.flexColumn;
+                  flex: 1;
+
+                  & > label {
+                    @include s.Roboto-Bold;
+                    @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqGreen);
+                    padding-bottom: 5px;
+                  }
+
+                  & > div {
+                    @include s.flexRow;
+                    flex: 1;
+
+                    & > div {
+                      @include s.flexColumn;
+                      flex: 1;
+                      padding-right: 10px;
+
+                      & > label {
+                        @include s.Roboto-Bold;
+                        @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                        padding-bottom: 3px;
+                      }
+
+                      & > span {
+                        @include s.Roboto-Regular;
+                        @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                      }
+                    }
+                  }
+                }
+
+                & > .right {
+                  @include s.flexColumn;
+                  flex: 1;
+
+                  & > label {
+                    @include s.Roboto-Bold;
+                    @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqGreen);
+                    padding-bottom: 5px;
+                  }
+
+                  & > div {
+                    @include s.flexColumn;
+
+                    & > label {
+                      @include s.Roboto-Bold;
+                      @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+                      padding-bottom: 3px;
+                    }
+
+                    & > span {
+                      @include s.Roboto-Regular;
+                      @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                    }
+                  }
+                }
+              }
+
+              & > .content2 {
+                @include s.flexRow;
+                padding: 5px 0 20px 0;
+
+                & > .left {
+                  @include s.flexColumn;
+                  flex: 1;
+
+                  & > label {
+                    @include s.Roboto-Bold;
+                    @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+                    padding-bottom: 3px;
+                  }
+
+                  & > span {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                  }
+                }
+
+                & > .right {
+                  @include s.flexColumn;
+                  flex: 1;
+
+                  & > label {
+                    @include s.Roboto-Bold;
+                    @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqGreen);
+                    padding-bottom: 3px;
+                  }
+
+                  & > span {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                  }
+                }
+              }
+            }
+
+            & > .mid {
+              @include s.flexColumn;
+              flex: 1;
+
+              & > .pink {
+                @include s.flexRow;
+                align-items: center;
+                height: 50px;
+                background-color: s.$redBackground;
+                padding: 0 15px;
+                @include s.responsive_layout('macBookAir') {
+                  height: 60px;
+                  padding: 0 20px;
+                }
+
+                & > label {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                }
+              }
+
+              & > .gray {
+                @include s.flexColumn;
+                flex: 1;
+                padding-top: 10px;
+
+                & > .gray-content {
+                  @include s.flexColumn;
+                  background-color: s.$pqGray2;
+                  flex: 1;
+
+                  & > .text {
+                    @include s.flexRow;
+                    justify-content: space-around;
+                    padding-top: 10px;
+
+                    & > div {
+                      @include s.flexRow;
+                      justify-content: space-between;
+                      width: 400px;
+
+                      & > label {
+                        @include s.Roboto-Regular;
+                        @include s.escaledFontFormat(s.$textSize14to20, regular, s.$pqGreen);
+                        cursor: pointer;
+
+                        &:hover {
+                          text-decoration: underline;
+                        }
+
+                        &.bold {
+                          @include s.Roboto-Bold;
+                          text-decoration: underline;
+                        }
+                      }
+                    }
+                  }
+
+                  & > .image {
+                    @include s.flexColumn;
+                    @include s.absoluteCenter;
+                    flex: 1 0 275px;
+                    overflow: hidden;
+                    padding: 20px 0;
+
+                    & > img {
+                      flex: 1;
+                      overflow: hidden;
+                      min-height: 260px;
+                    }
+                  }
+                }
+              }
+
+              & > .rButtons {
+                @include s.flexRow;
+                padding-top: 15px;
+
+                & > div {
+                  padding-right: 150px;
+                }
+              }
+
+              & > .txtArea {
+                @include s.flexColumn;
+                align-items: flex-start;
+                padding-top: 20px;
+
+                & > label {
+                  @include s.Roboto-Bold;
+                  @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+                }
+              }
+            }
+          }
+        }
+      }
+
+      & > .footer {
+        @include s.flexRow;
+        justify-content: flex-end;
+
+        & > button {
+          @include s.pqButton();
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #quarantine-manager-details {
+      & > .container {
+        & > .header {
+          & > .content1 {
+            padding: 20px 0;
+
+            & > .contact {
+              & > img {
+                max-height: 20px;
+              }
+            }
+
+            & > .mail {
+              & > img {
+                height: 15px;
+              }
+            }
+
+            & > .phone {
+              & > img {
+                height: 20px;
+              }
+            }
+          }
+        }
+
+        & > .body {
+          padding: 20px 0 0 0;
+
+          & > .left {
+            flex: 0 0 360px;
+
+            & > .list {
+              & > .header-list {
+                & > .filters {
+                  padding: 20px 0;
+                }
+              }
+            }
+          }
+
+          & > .center {
+            flex: 0 0 562px;
+
+            & > .center-content {
+              padding: 0 15px;
+
+              & > .filter {
+                padding: 20px 0;
+              }
+            }
+          }
+
+          & > .right {
+            padding-bottom: 20px;
+
+            & > .header {
+              & > div {
+                padding-bottom: 20px;
+              }
+            }
+
+            & > .content {
+              & > .mid {
+                & > .gray {
+                  & > .gray-content {
+                    & > .image {
+                      & > img {
+                        min-height: 225px;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

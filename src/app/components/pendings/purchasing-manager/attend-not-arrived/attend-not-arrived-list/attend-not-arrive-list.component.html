@@ -1,0 +1,112 @@
+<div class="dashboard-container" id="attend-not-arrived-list">
+  <div class="left-container">
+    <label class="title">{{ 'common.providers' | translate }}</label>
+    <div class="filters">
+      <div class="hamburger">
+        <app-hamburger-menu></app-hamburger-menu>
+      </div>
+      <div class="search">
+        <app-search [placeholder]="'Proveedor, Número de Guía'"></app-search>
+      </div>
+    </div>
+    <div class="list-container">
+      <virtual-scroller *ngIf="true">
+        <div class="item" (click)="redirectToDetails()">
+          <div class="index">
+            <label>{{ '#' + 1 }}</label>
+          </div>
+          <div class="body">
+            <div class="name">
+              <label>{{ 'AOAC' }}</label>
+            </div>
+            <div class="classification">
+              <label>{{ 4 }} {{ 'registerArrival.guides' | translate }}</label>
+              <label> · </label>
+              <label>{{ 150 | currency: 'USD':'symbol-narrow':'0.2-4' }}</label>
+            </div>
+            <div class="cant">
+              <label>{{ 2 }} {{ 'common.pieces' | translate }}</label>
+              <label> · </label>
+              <label>{{ 5 }} {{ 'common.products' | translate }}</label>
+            </div>
+            <div class="last-file">
+              <div class="days">
+                <label class="day">3 + {{ 'common.days' | translate }}: </label>
+                <label class="result">{{ 1 }}</label>
+                <label class="day">3 {{ 'common.days' | translate }}: </label>
+                <label class="result">{{ 1 }}</label>
+                <label class="day">2 {{ 'common.days' | translate }}: </label>
+                <label class="result">{{ 1 }}</label>
+                <label class="day">1 {{ 'common.day' | translate }}: </label>
+                <label class="result">{{ 1 }}</label>
+              </div>
+              <div class="date">
+                <label class="fee" [ngClass]="'green'">FEA+: {{ '10/Feb/2021' }}</label>
+                <!--DOCS: CODIGO COMENTADO PARA FUTURAS REFERENCIAS EN LOS COLOES DEL TEXTO-->
+                <!--                <div class="date">
+    <label
+      class="fee"
+      [ngClass]="
+          provider.EnTiempo === true
+            ? 'green'
+            : provider.Urgente === true
+            ? 'yellow'
+            : provider.FueraDeTiempo === true
+            ? 'red'
+            : 'green'
+        "
+    >FEE+: {{ provider.FechaEstimadaDeEntrega | dateFormatSlashShort }}</label
+    >
+  </div>-->
+              </div>
+            </div>
+          </div>
+          <div class="arrow">
+            <img alt="arrow" src="assets/Images/arrows/arrow_right.svg" />
+          </div>
+        </div>
+      </virtual-scroller>
+      <div class="without-results" *ngIf="false">
+        <app-without-results [title]="'Sin resultados'"></app-without-results>
+      </div>
+      <div class="loader" *ngIf="false">
+        <app-loading></app-loading>
+      </div>
+    </div>
+    <div class="footer" *ngIf="true">
+      <label>{{ '#' + (20 | number: '1.0-0') }}</label>
+      <label>{{ 20 }}{{ ' OC' }}</label>
+      <label>{{
+        (50 | number: '1.0-0') + ' ' + (true ? ('common.products' | translate) : ('common.product' | translate))
+      }}</label>
+      <label>{{ (50 | number: '1.0-0') + ' ' + (true ? ('common.pieces' | translate) : ('common.piece' | translate)) }}</label>
+      <label
+        >{{ 'common.totalAmount' | translate }}
+        {{ 50 | currency: 'USD':'symbol-narrow':'2.2-4' }}
+      </label>
+    </div>
+  </div>
+  <div class="right-container">
+    <ng-container *ngIf="true">
+      <app-doughnut-chart
+        [fontSize]="'small'"
+        [titleDetails]="'Totales'"
+        [title]="'processPurchase.providers' | translate"
+        [typeChart]="1"
+      >
+      </app-doughnut-chart>
+      <app-bar-chart
+        [fontColorBottom]="'#008894'"
+        [textDataLabel]="'registerArrival.guides' | translate"
+        [title]="'monitoringDispatch.EstimatedArrivalDates' | translate"
+      >
+      </app-bar-chart>
+      <app-bar-chart
+        [textDataLabel]="'registerArrival.guides' | translate"
+        [title]="'registerConfirmation.deliveryTrafficLight' | translate"
+      >
+      </app-bar-chart>
+    </ng-container>
+    <app-loading class="loading" *ngIf="false"></app-loading>
+  </div>
+</div>

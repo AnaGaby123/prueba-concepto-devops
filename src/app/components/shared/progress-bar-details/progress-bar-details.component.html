@@ -1,0 +1,41 @@
+<div class="progress-bar">
+  <div>
+    <label>{{ 'progressBarDetails.vs' | translate }}</label>
+    <label> · {{ 'progressBarDetails.effectivenessRate' | translate }} {{ efficiency | currency: currency:'':'1.2-2' }}%</label>
+  </div>
+  <div
+    class="details"
+    [ngClass]="{
+      show: showCollapse && isCollapse,
+      hide: showCollapse && !isCollapse,
+      isCollapse: showCollapse
+    }"
+  >
+    <div>
+      <app-progress-bar [percentage]="percentage"></app-progress-bar>
+    </div>
+    <div>
+      <label
+        >{{ 'progressBarDetails.billedAmount' | translate }}
+        {{ totalQuotedUSD | currency: currency:'symbol-narrow':'1.2-2' }}
+        {{ currency }}
+      </label>
+      <label>{{ 'progressBarDetails.untilThe' | translate }} {{ currentDate | dateFormatSlash }}</label>
+    </div>
+    <div>
+      <label
+        >{{ fundamentalObjectiveUSD | currency: currency:'symbol-narrow':'1.2-2' }}
+        {{ currency }}
+      </label>
+      <label>{{ 'progressBarDetails.annualSaleTarget' | translate }} · {{ currentYear }}</label>
+    </div>
+  </div>
+</div>
+<div class="icon" *ngIf="showCollapse">
+  <div class="container">
+    <img src="assets/Images/arrows/flecha_mostrar_abajo.svg" alt="" (click)="collapse()" [ngClass]="{reverse: isCollapse}" />
+    <div class="tooltip-text">
+      <p>{{ !isCollapse ? ('common.expandButtonMessage' | translate) : ('common.collapseButtonMessage' | translate) }}</p>
+    </div>
+  </div>
+</div>

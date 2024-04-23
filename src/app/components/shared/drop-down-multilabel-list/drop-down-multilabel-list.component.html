@@ -1,0 +1,99 @@
+<div
+  class="drop-list-container"
+  [ngClass]="dropListClass"
+  [style.min-width]="activeMinWidth ? '230px' : 'initial'"
+  [style.opacity]="disable ? '0.3' : '1'"
+  [style.display]="controlInLine ? 'flex' : ''"
+  [style.text-align]="textAlign"
+>
+  <div class="label-container" *ngIf="label !== ''" [style.margin-bottom]="controlInLine ? '0' : '5px'">
+    <img *ngIf="required && showAsterisk && enableEdit && !errors" alt="" src="assets/Images/asterisco.svg" />
+    <img *ngIf="required && showAsterisk && enableEdit && errors" alt="" src="assets/Images/asterisco_red.svg" />
+    <div [style.padding-right]="controlInLine ? '7px' : ''">
+      <label [ngClass]="errors ? 'label-danger' : 'label-default'" [style.font-family]="!enableEdit ? 'Roboto-Bold' : ''">
+        {{ label }}
+      </label>
+    </div>
+  </div>
+  <div class="label-disable-edit-container" *ngIf="!enableEdit">
+    <div>
+      <label
+        *ngFor="let label of selectedItem?.labels"
+        [style.color]="label.color"
+        [style.font-size]="label.size"
+        [style.text-align]="textAlign"
+      >
+        {{ label.label }}
+      </label>
+    </div>
+  </div>
+  <div class="container-drop" *ngIf="enableEdit">
+    <div
+      class="title"
+      [ngClass]="errors ? 'title-danger' : ''"
+      [style.boder-color]="borderColor"
+      [style.height]="height"
+      (click)="openDropList()"
+    >
+      <div class="img-initial"></div>
+      <div class="content-info">
+        <label
+          *ngFor="let label of selectedItem?.labels"
+          [style.color]="label.color"
+          [style.font-size]="label.size"
+          [style.text-align]="textAlign"
+        >
+          {{ label.label }}
+        </label>
+      </div>
+      <div class="img-initial">
+        <img alt="" class="arrow" [src]="disable ? srcImagenDisable : srcImagen" />
+      </div>
+    </div>
+    <div
+      class="content"
+      [hidden]="!showDropList"
+      [style.width]="widthContent"
+      [style.top]="height"
+      [style.margin-left]="marginLeftContent"
+    >
+      <div>
+        <div>
+          <ul class="options" *ngIf="items != undefined && items.length > 0">
+            <div
+              class="options-container"
+              *ngFor="let item of items; let i = index; trackBy: handleTrackByFn"
+              [style.background]="item.value === selectedItem?.value ? colorSelected : null"
+              (click)="selectItem(item)"
+            >
+              <div class="border-separator" [style.display]="display" [style.justify-content]="justify">
+                <li class="option" [style.min-height]="heightLi" [style.align-items]="'left'">
+                  <label
+                    *ngFor="let label of item.labels"
+                    [ngClass]="item.value === selectedItem?.value ? 'selected' : null"
+                    [style.color]="label.color"
+                    [style.font-size]="label.size"
+                    [style.text-align]="textAlign"
+                  >
+                    {{ label.label }}
+                  </label>
+                </li>
+              </div>
+            </div>
+          </ul>
+          <ul class="options" *ngIf="items.length === 0">
+            <div class="options-container">
+              <div class="border-separator" [style.display]="display" [style.justify-content]="justify">
+                <li class="option" [style.min-height]="heightLi" [style.align-items]="'center'">
+                  <label [style.color]="secondaryColor" [style.font-size]="fontSize" [style.text-align]="textAlign">{{
+                    'common.withoutResults' | translate
+                  }}</label>
+                </li>
+              </div>
+            </div>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

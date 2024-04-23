@@ -1,0 +1,28 @@
+<div class="associated-trademark-item">
+  <div class="header">
+    <label class="title"
+      >#{{ index + 1 }} · <span>{{ item.Nombre }}</span> · {{ item.TotalProductos }}
+      {{ item.TotalProductos === 1 ? ('common.product' | translate) : ('common.products' | translate) }}</label
+    >
+    <img
+      *ngIf="enableEdit"
+      alt="cerrar"
+      class="image"
+      src="assets/Images/cerrar.svg"
+      (click)="!editMode || (enableEdit && handleDeleteTrademarkClickClick())"
+    />
+  </div>
+  <div class="families-list">
+    <app-family-item
+      class="item"
+      *ngFor="let family of item.vMarcaFamiliaDetalle; trackBy: handleTrackByTrademark"
+      [editMode]="editMode"
+      [enableEdit]="enableEdit"
+      [family]="family"
+      [selectedProviderId]="selectedProviderId"
+      [viewType]="viewType$ | async"
+      (changeMainProviderChange)="handleChangeMainProviderChange($event)"
+      (trademarkFamilyChange)="handleTrademarkFamilyChange($event)"
+    ></app-family-item>
+  </div>
+</div>

@@ -1,0 +1,111 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  & #edit-batch {
+    @include s.absolute100;
+    @include s.flexColumn;
+    justify-content: flex-start;
+
+    & > .content {
+      @include s.flexColumn;
+      flex: 1;
+      overflow: hidden;
+
+      & > .information {
+        @include s.flexColumn;
+        margin-bottom: 5%;
+
+        & > .title {
+          @include s.flexRow;
+          justify-content: flex-start;
+          border-bottom: 1px solid s.$pqBlack2;
+          padding-bottom: 7px;
+
+          & > label {
+            @include s.Roboto-Bold;
+            @include s.escaledFontFormat(s.$textSize15to21, bold, s.$pqBlack2);
+          }
+        }
+
+        & > .content {
+          align-items: flex-end;
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          grid-template-rows: 1fr;
+          grid-column-gap: 15px;
+          margin-top: 15px;
+
+          & > .batch {
+            grid-area: 1 / 1 / 2 / 2;
+          }
+
+          & > .expiation {
+            grid-area: 1 / 2 / 2 / 3;
+          }
+
+          & > .year {
+            grid-area: 1 / 3 / 2 / 4;
+          }
+        }
+      }
+
+      & > .documentation {
+        @include s.flexColumn;
+        flex: 1;
+
+        & > .title {
+          @include s.flexRow;
+          align-items: center;
+          justify-content: flex-start;
+          border-bottom: 1px solid s.$pqBlack2;
+          padding-bottom: 7px;
+
+          & > label {
+            @include s.Roboto-Bold;
+            @include s.escaledFontFormat(s.$textSize14to21, bold, s.$pqBlack2);
+            margin-left: 5px;
+          }
+        }
+
+        & > .content {
+          display: grid;
+          grid-template-columns: 2fr 1fr 2fr;
+          grid-template-rows: 1fr;
+          margin-top: 15px;
+
+          & > .certificate {
+            grid-area: 1 / 1 / 2 / 2;
+          }
+
+          & > .safetySheet {
+            grid-area: 1 / 3 / 2 / 4;
+          }
+        }
+      }
+
+      @include s.responsive_layout('macBookAir') {
+        & > .information {
+          & > .title {
+            padding-bottom: 10px;
+          }
+
+          & > .content {
+            grid-column-gap: 20px;
+            margin-top: 20px;
+          }
+        }
+        & > .documentation {
+          & > .title {
+            padding-bottom: 10px;
+          }
+        }
+      }
+    }
+  }
+}

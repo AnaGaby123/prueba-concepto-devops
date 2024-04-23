@@ -1,0 +1,247 @@
+@use 'base' as s;
+
+:host {
+  @include s.flexColumn;
+  flex: 1 1 100%;
+
+  * {
+    box-sizing: border-box;
+  }
+
+  overflow: hidden;
+}
+
+.container {
+  padding-bottom: 24px;
+
+  & > .title-routes {
+    align-items: center;
+    display: flex;
+    margin: 19px auto 8px auto;
+    width: 41.9rem;
+
+    & > img {
+      width: 100%;
+    }
+  }
+}
+
+.routes {
+  @include s.flexRow;
+  gap: 40px;
+  justify-content: center;
+  justify-items: center;
+  text-transform: uppercase;
+
+  & .not-selected {
+    background-color: s.$dark-proquifa-c;
+  }
+
+  & .selected-green {
+    background-color: s.$pqGreen;
+  }
+
+  & .selected-blue {
+    background-color: s.$main-proquifa-b;
+  }
+
+  & .selected-red {
+    background-color: s.$alert-b;
+  }
+
+  & > .column {
+    @include s.flexColumn;
+
+    & > .local {
+      @include s.flexColumn;
+      flex: 1;
+      padding: 22px 16.5px;
+
+      &:hover {
+        background-color: s.$pqGreen;
+        cursor: pointer;
+      }
+
+      & > .title {
+        padding-bottom: 16px;
+        text-align: center;
+        border-bottom: 1px solid s.$pqWhite;
+
+        & > label {
+          @include s.responsive-font-format(
+            $color: s.$pqWhite,
+            $font-size-map: s.$responsive-font-16-20,
+            $font-weight: s.$font-weight-bold,
+            $font-family: s.$font-family_roboto_bold
+          );
+
+          &:hover {
+            cursor: pointer;
+          }
+        }
+      }
+
+      & > .row {
+        @include s.flexRow;
+        gap: 24px;
+
+        & > .column {
+          @include s.flexColumn;
+          align-items: center;
+          gap: 24px;
+          padding: 16px 0 16px 0;
+
+          & > label {
+            @include s.responsive-font-format($font-size-map: s.$responsive-font-14-16, $color: s.$pqWhite);
+
+            &:hover {
+              cursor: pointer;
+            }
+          }
+        }
+      }
+
+      & > .internal-delivery {
+        border-top: 1px solid s.$pqWhite;
+        padding-top: 16px;
+        text-align: center;
+
+        & > label {
+          @include s.responsive-font-format($font-size-map: s.$responsive-font-14-16, $color: s.$pqWhite);
+
+          &:hover {
+            cursor: pointer;
+          }
+        }
+      }
+    }
+
+    & > .rows-2 {
+      @include s.flexColumn;
+      flex: 1;
+      gap: 6px;
+
+      & > div {
+        @include s.flexColumn;
+        flex: 1;
+        padding: 24.5px 20px 24.5px 20px;
+
+        &:hover {
+          background-color: s.$main-proquifa-b;
+          cursor: pointer;
+        }
+
+        & > .title {
+          text-align: center;
+          margin-bottom: 4px;
+
+          & > label {
+            @include s.responsive-font-format(
+              $color: s.$pqWhite,
+              $font-size-map: s.$responsive-font-16-20,
+              $font-weight: s.$font-weight-bold,
+              $font-family: s.$font-family_roboto_bold
+            );
+
+            &:hover {
+              cursor: pointer;
+            }
+          }
+        }
+
+        & > .internal-delivery {
+          border-top: 1px solid s.$pqWhite;
+          padding: 4px 6.5px 0 6.5px;
+
+          & > label {
+            @include s.responsive-font-format($font-size-map: s.$responsive-font-14-16, $color: s.$pqWhite);
+
+            &:hover {
+              cursor: pointer;
+            }
+          }
+        }
+      }
+    }
+
+    & > .rows-3 {
+      @include s.flexColumn;
+      flex: 1;
+      gap: 6px;
+
+      & > div {
+        @include s.flexColumn;
+        flex: 1;
+        padding: 8px 20px 8px 20px;
+
+        &:hover {
+          background-color: s.$alert-b;
+          cursor: pointer;
+        }
+
+        & > .title {
+          text-align: center;
+          margin-bottom: 4px;
+
+          & > label {
+            @include s.responsive-font-format(
+              $color: s.$pqWhite,
+              $font-size-map: s.$responsive-font-16-20,
+              $font-weight: s.$font-weight-bold,
+              $font-family: s.$font-family_roboto_bold
+            );
+
+            &:hover {
+              cursor: pointer;
+            }
+          }
+        }
+
+        & > .external-delivery {
+          border-top: 1px solid s.$pqWhite;
+          padding-top: 4px;
+          text-align: center;
+
+          & > label {
+            @include s.responsive-font-format($font-size-map: s.$responsive-font-14-16, $color: s.$pqWhite);
+
+            &:hover {
+              cursor: pointer;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@include s.media-query(s.$standard) {
+  .container {
+    padding-bottom: 32px;
+
+    & > .title-routes {
+      margin: 32px auto 8px auto;
+      width: 46.3rem;
+    }
+
+    & > .routes {
+      & > .route {
+        & > .footer {
+          padding-top: 25px;
+        }
+      }
+    }
+  }
+
+  .footer {
+    padding: 15px 0 8px 0;
+
+    & > .btn-cancel {
+      margin-left: 20px;
+    }
+
+    & > .btn-accept {
+      margin-right: 20px;
+    }
+  }
+}

@@ -1,0 +1,412 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  & > #inspector-details {
+    @include s.absolute100;
+    @include s.flexColumn;
+    justify-content: flex-start;
+
+    & > .info-header {
+      @include s.flexRow;
+      padding: 0 15px;
+
+      & > .content {
+        @include s.flexRow;
+        border-bottom: 1px solid #d8d8d8;
+        flex: 1;
+
+        & > .information {
+          @include s.flexColumn;
+          flex: 0 0 300px;
+          margin: 15px 20px 15px 0;
+
+          & > .text-information {
+            height: 65px;
+            padding: 7px 0;
+
+            & > label {
+              @include s.Roboto-Regular;
+              @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+              @include s.multiLineTextTruncateSinHeight(3, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+            }
+          }
+
+          & > .invoice {
+            @include s.flexRow;
+            margin: 10px 0;
+
+            & > .inspection-invoice {
+              @include s.flexRow;
+              align-items: center;
+
+              & > img {
+                height: 17px;
+                width: 17px;
+              }
+
+              & > label {
+                @include s.Novecento-Bold;
+                @include s.escaledFontFormat(s.$textSize20to25, bold, s.$pqBlack2);
+                padding-left: 5px;
+              }
+            }
+
+            & > .invoice-text {
+              @include s.Novecento-Bold;
+              @include s.escaledFontFormat(s.$textSize20to25, bold, s.$pqBlack2);
+            }
+          }
+
+          & > .pieces {
+            @include s.flexRow;
+            flex: 1;
+
+            & > .left {
+              @include s.flexRow;
+              align-items: center;
+
+              & > label {
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                white-space: pre;
+              }
+            }
+
+            & > .right {
+              @include s.flexRow;
+              align-items: center;
+              padding: 0 10px;
+
+              & > label {
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqTextAlert);
+                white-space: pre;
+              }
+            }
+          }
+        }
+
+        & > .progress {
+          @include s.flexColumn;
+          border-left: 1px solid #d8d8d8;
+          border-right: 1px solid #d8d8d8;
+          flex: 1.5 1 auto;
+          margin: 15px 0;
+          padding: 0 20px;
+
+          & > .first-section {
+            @include s.flexRow;
+
+            & > .title {
+              @include s.flexColumn;
+              flex: 1;
+              padding-right: 15px;
+
+              & > .subtitle {
+                margin-top: 3px;
+
+                & > label {
+                  @include s.Roboto-Medium-Italic;
+                  @include s.escaledFontFormat(s.$textSize13to16, italic, s.$pqBlack2);
+                }
+              }
+            }
+
+            & > .clock {
+              @include s.flexRow;
+              align-items: center;
+
+              & > img {
+                height: 30px;
+                width: 30px;
+              }
+
+              & > label {
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormat(s.$textSize30to35, regular, s.$pqBlack2);
+                padding-left: 5px;
+              }
+            }
+          }
+
+          & > .second-section {
+            @include s.flexRow;
+            flex: 1;
+            margin-top: 10px;
+            max-height: 101px;
+          }
+        }
+
+        & > .type {
+          @include s.flexColumn;
+          flex: 0 0 310px;
+          margin: 15px 0 15px 20px;
+
+          & > .priority {
+            @include s.flexColumn;
+            flex: 1;
+            margin-top: 5px;
+
+            & > label {
+              @include s.Roboto-Regular;
+              @include s.escaledFontFormat(s.$textSize20to25, regular, s.$pqBlack2);
+            }
+
+            & > .cards {
+              @include s.flexRow;
+              flex: 1;
+              margin-top: 5px;
+
+              & > div {
+                flex: 0 0 28%;
+                padding: 5px;
+
+                & > .title {
+                  & > label {
+                    @include s.Novecento-Bold;
+                    @include s.escaledFontFormat(s.$textSize15to18, bold, s.$pqWhite);
+                  }
+                }
+
+                & > .content {
+                  @include s.flexColumn;
+
+                  & > div {
+                    line-height: 0.8;
+                    margin: 5px 0 3px 0;
+
+                    & > label {
+                      @include s.Roboto-Regular;
+                      @include s.escaledFontFormat(s.$textSize11to12, regular, s.$pqWhite);
+                    }
+                  }
+                }
+              }
+
+              & > div:first-child {
+                flex: 1 1 auto;
+                background-color: s.$gnRojoSemaforo;
+                margin-right: 3px;
+              }
+
+              & > div:nth-child(2) {
+                background-color: s.$yellowText;
+                margin-right: 3px;
+              }
+
+              & > div:last-child {
+                background-color: s.$greenActive;
+              }
+            }
+          }
+
+          & > .purchase-order {
+            @include s.flexColumn;
+            @include s.absoluteCenter;
+            flex: 1;
+
+            & > .section-title {
+              @include s.flexRow;
+              margin-bottom: 5px;
+
+              & > label {
+                @include s.Roboto-Medium;
+                @include s.escaledFontFormat(s.$textSize25to30, medium, s.$pqBlack2);
+              }
+            }
+
+            & > .oc {
+              & > label {
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormat(s.$textSize25to30, regular, s.$pqBlack2);
+              }
+            }
+          }
+
+          & > .petition {
+            display: grid;
+            flex: 1;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            //grid-column-gap: 20px;
+            grid-row-gap: 20px;
+            padding: 30px 0;
+
+            & > .image-content {
+              grid-area: 1 / 1 / 3 / 2;
+              display: flex;
+            }
+
+            & > .section-title {
+              grid-area: 1 / 2 / 2 / 4;
+
+              & > label {
+                @include s.Roboto-Medium;
+                @include s.escaledFontFormat(s.$textSize25to30, medium, s.$pqBlack2);
+              }
+            }
+
+            & > .section-text {
+              grid-area: 2 / 2 / 3 / 4;
+
+              & > label {
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormat(s.$textSize25to30, regular, s.$pqBlack2);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    & > .content {
+      @include s.flexColumn;
+      flex: 1;
+      overflow: hidden;
+      padding: 15px;
+
+      & > .stepper {
+      }
+
+      & > .steps-content {
+        @include s.flexColumn;
+        flex: 1;
+        overflow: hidden;
+      }
+    }
+
+    & > footer {
+      @include s.generic-main-component-footer;
+
+      & > div {
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize15to18, regular, s.$pqBlack2);
+          white-space: pre;
+
+          & > .red {
+            @include s.Novecento-Bold;
+            color: s.$gnRojoSemaforo;
+            vertical-align: baseline;
+          }
+
+          & > .yellow {
+            @include s.Novecento-Bold;
+            color: s.$pqYellow;
+            vertical-align: baseline;
+          }
+
+          & > .green {
+            @include s.Novecento-Bold;
+            color: s.$pqGreen2;
+            vertical-align: baseline;
+          }
+        }
+
+        & > img {
+          width: 17px;
+          height: 17px;
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .info-header {
+        padding: 0 20px;
+
+        & > .content {
+          & > .information {
+            flex: 0 0 360px;
+            margin: 20px 25px 20px 0;
+
+            & > .invoice {
+              margin: 15px 0;
+
+              & > .inspection-invoice {
+                & > img {
+                  height: 20px;
+                  width: 20px;
+                }
+
+                & > label {
+                  padding-left: 7px;
+                }
+              }
+            }
+
+            & > .pieces {
+              & > .right {
+                padding: 0 15px;
+              }
+            }
+          }
+
+          & > .progress {
+            margin: 20px 0;
+            padding: 0 25px;
+
+            & > .first-section {
+              & > .title {
+                padding-right: 20px;
+
+                & > .subtitle {
+                  margin-top: 5px;
+                }
+              }
+
+              & > .clock {
+                & > img {
+                  height: 35px;
+                  width: 35px;
+                }
+
+                & > label {
+                  padding-left: 7px;
+                }
+              }
+            }
+
+            & > .second-section {
+              margin-top: 15px;
+              max-height: 130px;
+            }
+          }
+
+          & > .type {
+            flex: 0 0 360px;
+            margin: 20px 0 20px 25px;
+
+            & > .priority {
+              margin-top: 10px;
+
+              & > .cards {
+                margin-top: 10px;
+
+                & > div {
+                  & > .content {
+                    & > div {
+                      margin: 7px 0 5px 0;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.section-title {
+  & > label {
+    @include s.Novecento-Bold;
+    @include s.escaledFontFormat(s.$textSize17to22, bold, s.$pqGreen);
+  }
+}

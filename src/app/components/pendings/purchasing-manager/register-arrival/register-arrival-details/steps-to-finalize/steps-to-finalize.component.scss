@@ -1,0 +1,119 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  #steps-to-finalize {
+    @include s.flexColumn;
+    @include s.absolute100;
+    justify-content: flex-start;
+    overflow: hidden;
+
+    & > .container-component {
+      @include s.flexColumn;
+      @include s.absolute100;
+      padding: 20px;
+
+      & > .header {
+        @include s.flexRowNoWrap;
+        flex: 0 0 auto;
+        justify-content: space-between;
+        padding-bottom: 20px;
+
+        & > .column-one {
+          & > label {
+            @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+            @include s.Novecento-Bold;
+            white-space: pre;
+          }
+
+          & > label:nth-of-type(2) {
+            color: s.$pqGreen !important;
+            padding-left: 4px;
+          }
+        }
+
+        & > .column-two {
+          & > label {
+            @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqGreen);
+            @include s.Novecento-Bold;
+            padding-right: 4px;
+            white-space: pre;
+          }
+        }
+      }
+
+      & > .steps {
+        @include s.flexColumn;
+        flex: 1 1 auto;
+
+        & > .current-component {
+          @include s.flexColumn;
+          @include s.absolute100;
+        }
+      }
+
+      & > .footer {
+        @include s.flexRowNoWrap;
+        flex: 0 0 auto;
+        align-items: flex-end;
+        justify-content: space-between;
+        padding-top: 20px;
+
+        & .btn-reject {
+          @include s.pqButton(166px, 250px, 25px, 30px, s.$pqGreen);
+        }
+
+        & .btn-reject-disable {
+          @include s.pqButton(166px, 250px, 25px, 30px, s.$pqGray3);
+        }
+      }
+    }
+  }
+
+  #cancel-pop-up {
+    & .container {
+      @include s.flexColumn;
+      align-items: center;
+
+      & > img {
+        height: 70px;
+        width: 70px;
+        padding-bottom: 20px;
+      }
+
+      & > div {
+        padding-bottom: 5px;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize21to28, bold, s.$pqGreen);
+          @include s.Roboto-Bold;
+
+          & > span {
+            @include s.Roboto-Regular;
+            color: s.$pqBlack2 !important;
+          }
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #steps-to-finalize {
+    }
+    #cancel-pop-up {
+      & .container {
+        padding: 0 40px;
+
+        & > img {
+          height: 85px;
+          width: 85px;
+        }
+      }
+    }
+  }
+}

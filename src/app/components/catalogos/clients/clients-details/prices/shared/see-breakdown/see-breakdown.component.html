@@ -1,0 +1,496 @@
+<div class="see-breakdown">
+  <label
+    id="breakdown"
+    class="breakdown"
+    [ngClass]="{
+      disabled: !(hasConfigurationProvider | async) || (hasChanges | async)
+    }"
+    (click)="setTarget()"
+    >Ver desglose</label
+  >
+  <app-custom-position-pop-up
+    *ngIf="target && popBreakdownIsOpen$ | async"
+    [adjustForSmallTarget]="(viewType$ | async) === viewTypes.small ? 250 : 500"
+    [closeButtonSeparation]="(viewType$ | async) === viewTypes.small ? '18px' : '15px'"
+    [closeButtonSize]="(viewType$ | async) === 'macBookAir' ? '20px' : '18px'"
+    [maxHeight]="(viewType$ | async) === viewTypes.small ? '600px' : '800px'"
+    [maxWidth]="(viewType$ | async) === viewTypes.small ? '820px' : '920px'"
+    [minHeight]="(viewType$ | async) === viewTypes.small ? '600px' : '800px'"
+    [minWidth]="(viewType$ | async) === viewTypes.small ? '820px' : '920px'"
+    [padding]="'0'"
+    [popUpPosition]="'left-end'"
+    [target]="target"
+    (closeEmitter)="handleCloseBreakdownPopup()"
+  >
+    <div class="pop-container">
+      <div class="title-container">
+        <label
+          >{{ (selectedFamily | async).NombreMarca || 'N/D' }}
+          <span
+            >· {{ (selectedFamily | async)?.Productos ?? 0 }}
+            {{ (selectedFamily | async)?.Productos === 1 ? 'Producto' : 'Productos' }}</span
+          ></label
+        >
+      </div>
+      <div
+        class="search-bar-container"
+        *ngIf="
+          (selectedLevelConfigurationTab$ | async)?.level === levels.Family ||
+          (selectedLevelConfigurationTab$ | async)?.level === levels.CharacteristicGrouper
+        "
+      >
+        <app-search
+          class="search-bar"
+          [placeholder]="'Precio Lista'"
+          [searchTerm]="(asidePrices$ | async).searchTerm"
+          (textSearch)="handlePriceForPanelSearch($event)"
+        >
+        </app-search>
+      </div>
+      <div
+        class="price-list-utility-container"
+        *ngIf="!(asidePrices$ | async).isLoading && !lodashIsEmpty((asidePrices$ | async).pricesList?.Results)"
+        [ngClass]="{
+          'without-search-bar':
+            (selectedLevelConfigurationTab$ | async)?.level === levels.listPrice ||
+            (selectedLevelConfigurationTab$ | async)?.level === levels.Product
+        }"
+      >
+        <div class="list-price-container">
+          <label
+            ><span
+              >{{ 'formProvider.step8.titleListPrice' | translate }} {{ (selectedAsidePrice$ | async)?.PrecioLista }}
+              {{ (selectedAsidePrice$ | async)?.MonedaVentaProveedor }}</span
+            >
+            ·
+            {{ 'formProvider.step8.titlePriceProvider' | translate }}
+            {{
+              (selectedAsidePrice$ | async)?.PrecioListaMonedaProveedor
+                ? ((selectedAsidePrice$ | async)?.PrecioListaMonedaProveedor || 0
+                    | currency: (selectedAsidePrice$ | async)?.ClaveMonedaPagos:'symbol-narrow':'1.2-2') +
+                  ' ' +
+                  (selectedAsidePrice$ | async)?.ClaveMonedaPagos
+                : 'N/D'
+            }}
+            ·
+            <span>{{ (selectedAsidePrice$ | async)?.Sector }}</span></label
+          >
+          <div>
+            <div class="list-price-content">
+              <div class="utility-title">
+                <label>
+                  {{ (selectedClient$ | async)?.NivelIngreso }} ·
+                  {{ (selectedAsidePrice$ | async)?.PrecioProquifaNet | currency: 'USD':'symbol':'1.2-6' }} ·
+                  <span *ngIf="(selectedAsidePrice$ | async).isNegative">-</span>
+                  {{ (selectedAsidePrice$ | async)?.percentage | pqfPercentageTransform: 2 }}</label
+                ></div
+              >
+              <div class="resume-amount-container">
+                <div>
+                  <label class="content-text">
+                    {{ 'formProvider.step8.subtitles.minimumAmountOC' | translate }}
+                  </label>
+                  <label>
+                    {{
+                    actualConfiguration.ConfiguracionPrecioProveedorFamilia?.MontoMinimoOC ?? 0| currency: 'USD':'symbol':'1.2-6'
+                    }}
+                  </label>
+                </div>
+                <div>
+                  <label class="content-text">
+                    {{ 'formProvider.step8.subtitles.discounts' | translate }}
+                  </label>
+                  <label>
+                    {{ actualConfiguration.ConfiguracionPrecioProveedor?.PorcentajeDescuento | pqfPercentageTransform: 2 }}
+                  </label>
+                </div>
+                <div>
+                  <label> {{ 'formProvider.step8.subtitles.customsValue' | translate }} </label>
+                  <label>
+                    {{ (selectedAsidePrice$ | async)?.ValorEnAduana ?? 0 | currency: 'USD':'symbol':'1.2-6' }}
+                  </label>
+                </div>
+              </div>
+              <div class="items-container">
+                <app-custom-position-pop-up
+                  class="popup"
+                  *ngIf="popupIsOpen"
+                  [adjustForSmallTarget]="10"
+                  [backgroundColor]="'#33333c'"
+                  [borderColor]="'#33333c'"
+                  [borderRadius]="'8px'"
+                  [closeButton]="false"
+                  [maxHeight]="'auto'"
+                  [maxWidth]="(viewType$ | async) === viewTypes.small ? '280px' : '380px'"
+                  [minHeight]="'auto'"
+                  [minWidth]="'auto'"
+                  [padding]="'7px 12px'"
+                  [popUpPosition]="'bottom-center'"
+                  [target]="popupTarget"
+                  [triangleBackgroundColor]="'#33333c'"
+                >
+                  <p class="item-text">{{ popupText }}</p>
+                </app-custom-position-pop-up>
+                <div class="item">
+                  <label class="item-title"> {{ 'formProvider.step8.subtitles.numberOfPieces' | translate }}: </label>
+                  <label
+                    class="item-text"
+                    (mouseenter)="handleOpenPopup($event.target, formulasDescription.PiecesNumber)"
+                    (mouseleave)="handleClosePopup()"
+                  >
+                    {{
+                    actualConfiguration.ConfiguracionPrecioProveedorFamilia?.MontoMinimoOC ?? 0 | currency: 'USD':'symbol':'1.2-6'
+                    }}
+                    / (({{ (selectedAsidePrice$ | async).BasePrecioLista | currency: 'USD':'symbol':'1.2-6' }}) * (1 -
+                    {{ actualConfiguration.ConfiguracionPrecioProveedor?.PorcentajeDescuento | pqfPercentageTransform: 2 }}
+                    )) =
+                    {{ (selectedAsidePrice$ | async).NumPiezas | currency: 'USD':'symbol':'1.2-6' }}
+                  </label>
+                </div>
+                <div class="item">
+                  <label class="item-title"> {{ 'formProvider.step8.subtitles.customsValue' | translate }}: </label>
+                  <label
+                    class="item-text"
+                    (mouseenter)="handleOpenPopup($event.target, formulasDescription.CustomValue)"
+                    (mouseleave)="handleClosePopup()"
+                  >
+                    {{ (selectedAsidePrice$ | async).NumPiezas | currency: 'USD':'symbol':'1.2-6' }} * ({{
+                      (selectedAsidePrice$ | async).BasePrecioLista | currency: 'USD':'symbol':'1.2-6'
+                    }}
+                    * (1 -
+                    {{ actualConfiguration.ConfiguracionPrecioProveedor?.PorcentajeDescuento | pqfPercentageTransform: 2 }}
+                    )) +
+                    {{ actualConfiguration.ConfiguracionPrecioProveedor?.PrecioFletePC ?? 0 | currency: 'USD':'symbol':'1.2-6' }}
+                    + (({{ (selectedAsidePrice$ | async).NumPiezas | currency: 'USD':'symbol':'1.2-6' }} * ({{
+                      (selectedAsidePrice$ | async).BasePrecioLista | currency: 'USD':'symbol':'1.2-6'
+                    }}
+                    * (1 -
+                    {{ actualConfiguration.ConfiguracionPrecioProveedor?.PorcentajeDescuento | pqfPercentageTransform: 2 }}
+                    ))) *
+                    {{ actualConfiguration.configurationPriceProvider.ComisionPharma | pqfPercentageTransform: 2 }})=
+                    {{ (selectedAsidePrice$ | async).ValorEnAduana | currency: 'USD':'symbol':'1.2-6' }}
+                  </label>
+                </div>
+                <div class="item">
+                  <label class="item-title"> {{ 'formProvider.step8.subtitles.import' | translate }}: </label>
+                  <label
+                    class="item-text"
+                    (mouseenter)="handleOpenPopup($event.target, formulasDescription.Import)"
+                    (mouseleave)="handleClosePopup()"
+                  >
+                    ({{ (selectedAsidePrice$ | async).ValorEnAduana | currency: 'USD':'symbol':'1.2-6' }} *
+                    {{ actualConfiguration.ConfiguracionPrecioProveedor?.IGI | pqfPercentageTransform: 2 }}) + ({{
+                      (selectedAsidePrice$ | async).ValorEnAduana | currency: 'USD':'symbol':'1.2-6'
+                    }}
+                    * {{ actualConfiguration.ConfiguracionPrecioProveedor?.DTA | pqfPercentageTransform: 2 }}) +
+                    {{
+                      actualConfiguration.ConceptoAgenteAduanal
+                        ? (actualConfiguration.ConceptoAgenteAduanal?.Monto | currency: 'USD':'symbol':'1.2-6')
+                        : (0 | currency: 'USD':'symbol':'1.2-6')
+                    }}
+                    +
+                    {{
+                      actualConfiguration.ConfiguracionPrecioProveedor
+                        ? (actualConfiguration.ConfiguracionPrecioProveedor?.PRV | currency: 'USD':'symbol':'1.2-6')
+                        : (0 | currency: 'USD':'symbol':'1.2-6')
+                    }}
+                    +
+                    {{
+                      actualConfiguration.ConfiguracionPrecioProveedorFamilia
+                        ? (actualConfiguration.ConfiguracionPrecioProveedorFamilia.VUCEM | currency: 'USD':'symbol':'1.2-6')
+                        : (0 | currency: 'USD':'symbol':'1.2-6')
+                    }}
+                    +
+                    {{
+                      actualConfiguration.ConfiguracionPrecioProveedorFamilia
+                        ? (actualConfiguration.ConfiguracionPrecioProveedorFamilia.Desconsolidacion
+                          | currency: 'USD':'symbol':'1.2-6')
+                        : (0 | currency: 'USD':'symbol':'1.2-6')
+                    }}
+                    +
+                    {{
+                      actualConfiguration.ConfiguracionPrecioProveedorFamilia
+                        ? (actualConfiguration.ConfiguracionPrecioProveedorFamilia.ServicioLogistica
+                          | currency: 'USD':'symbol':'1.2-6')
+                        : (0 | currency: 'USD':'symbol':'1.2-6')
+                    }}
+                    +
+                    {{
+                      actualConfiguration.ConfiguracionPrecioProveedorFamilia
+                        ? (actualConfiguration.ConfiguracionPrecioProveedorFamilia.Maniobras | currency: 'USD':'symbol':'1.2-6')
+                        : (0 | currency: 'USD':'symbol':'1.2-6')
+                    }}
+                    +
+                    {{
+                      actualConfiguration.ConfiguracionPrecioProveedorFamilia
+                        ? (actualConfiguration.ConfiguracionPrecioProveedorFamilia.TM | currency: 'USD':'symbol':'1.2-6')
+                        : (0 | currency: 'USD':'symbol':'1.2-6')
+                    }}
+                    +
+                    {{
+                      actualConfiguration.ConfiguracionPrecioProveedorFamilia
+                        ? (actualConfiguration.ConfiguracionPrecioProveedorFamilia.Transito | currency: 'USD':'symbol':'1.2-6')
+                        : (0 | currency: 'USD':'symbol':'1.2-6')
+                    }}
+                    +
+                    {{
+                      actualConfiguration.ConfiguracionPrecioProveedorFamilia
+                        ? (actualConfiguration.ConfiguracionPrecioProveedorFamilia.Validacion
+                          | currency: 'USD':'symbol':'1.2-6')
+                        : (0 | currency: 'USD':'symbol':'1.2-6')
+                    }}
+                    +
+                    {{
+                      actualConfiguration.ConfiguracionPrecioProveedorFamilia
+                        ? (actualConfiguration.ConfiguracionPrecioProveedorFamilia.ClasificacionProceso
+                          | currency: 'USD':'symbol':'1.2-6')
+                        : (0 | currency: 'USD':'symbol':'1.2-6')
+                    }}
+                    +
+                    {{
+                      actualConfiguration.ConfiguracionPrecioProveedorFamilia
+                        ? (actualConfiguration.ConfiguracionPrecioProveedorFamilia.Previo | currency: 'USD':'symbol':'1.2-6')
+                        : (0 | currency: 'USD':'symbol':'1.2-6')
+                    }}
+                    +
+                    {{
+                      actualConfiguration.ConfiguracionPrecioProveedorFamilia
+                        ? (actualConfiguration.ConfiguracionPrecioProveedorFamilia.InBond | currency: 'USD':'symbol':'1.2-6')
+                        : (0 | currency: 'USD':'symbol':'1.2-6')
+                    }}
+                    =
+                    {{ (selectedAsidePrice$ | async).Importacion ?? 0 | currency: 'USD':'symbol':'1.2-6' }}
+                  </label>
+                </div>
+                <div class="item">
+                  <label class="item-title"> {{ 'formProvider.step8.subtitles.totalCostOfSales' | translate }}: </label>
+                  <label
+                    class="item-text"
+                    (mouseenter)="handleOpenPopup($event.target, formulasDescription.TotalCostOfSale)"
+                    (mouseleave)="handleClosePopup()"
+                  >
+                    {{ (selectedAsidePrice$ | async).ValorEnAduana | currency: 'USD':'symbol':'1.2-6' }} +
+                    {{ (selectedAsidePrice$ | async).Importacion | currency: 'USD':'symbol':'1.2-6' }} +
+                    {{
+                    actualConfiguration.ConfiguracionPrecioProveedor?.PrecioConsularizacion ?? 0| currency: 'USD':'symbol':'1.2-6'
+                    }}
+                    +
+                    {{
+                    actualConfiguration.ConfiguracionPrecioProveedor?.PrecioEnvioDeDocumentos ?? 0| currency: 'USD':'symbol':'1.2-6'
+                    }}
+                    +
+                    {{ actualConfiguration.ConfiguracionPrecioProveedor?.PrecioPermiso ?? 0 | currency: 'USD':'symbol':'1.2-6' }}
+                    +
+                    {{ actualConfiguration.ConfiguracionPrecioProveedor?.PrecioFleteAD ?? 0 | currency: 'USD':'symbol':'1.2-6' }}
+                    =
+                    {{ (selectedAsidePrice$ | async).CVT ?? 0 | currency: 'USD':'symbol':'1.2-6' }}
+                  </label>
+                </div>
+                <div class="item">
+                  <label class="item-title"> {{ 'formProvider.step8.subtitles.totalFixedCost' | translate }}: </label>
+                  <label
+                    class="item-text"
+                    (mouseenter)="handleOpenPopup($event.target, formulasDescription.TotalFixedCost)"
+                    (mouseleave)="handleClosePopup()"
+                  >
+                    {{ (selectedAsidePrice$ | async).CVT | currency: 'USD':'symbol':'1.2-6' }} *
+
+                    {{ actualConfiguration.ConfiguracionPrecioCliente.FactorDeCostoFijo | pqfPercentageTransform: 2 }}
+                    =
+                    {{ (selectedAsidePrice$ | async).CFT | currency: 'USD':'symbol':'1.2-6' }}
+                  </label>
+                </div>
+                <div class="item">
+                  <label class="item-title"> {{ 'formProvider.step8.subtitles.unitFixedCost' | translate }}: </label>
+                  <label
+                    class="item-text"
+                    (mouseenter)="handleOpenPopup($event.target, formulasDescription.UnitFixedCost)"
+                    (mouseleave)="handleClosePopup()"
+                  >
+                    {{ (selectedAsidePrice$ | async).CFT | currency: 'USD':'symbol':'1.2-6' }} /
+                    {{ (selectedAsidePrice$ | async).NumPiezas | currency: 'USD':'symbol':'1.2-6' }} =
+                    {{ (selectedAsidePrice$ | async).CostoFijoUnitario | currency: 'USD':'symbol':'1.2-6' }}
+                  </label>
+                </div>
+                <div class="item">
+                  <label class="item-title"> {{ 'formProvider.step8.subtitles.totalUtility' | translate }}: </label>
+                  <label
+                    class="item-text"
+                    (mouseenter)="handleOpenPopup($event.target, formulasDescription.TotalUtility)"
+                    (mouseleave)="handleClosePopup()"
+                  >
+                    {{ (selectedAsidePrice$ | async).CVT | currency: 'USD':'symbol':'1.2-6' }} *
+                    {{ actualConfiguration.ConfiguracionPrecioCliente.Utilidad | pqfPercentageTransform: 2 }}
+                    {{ (selectedAsidePrice$ | async).UtilidadTotal | currency: 'USD':'symbol':'1.2-6' }}
+                  </label>
+                </div>
+                <div class="item">
+                  <label class="item-title"> {{ 'formProvider.step8.subtitles.unitUtility' | translate }}: </label>
+                  <label
+                    class="item-text"
+                    (mouseenter)="handleOpenPopup($event.target, formulasDescription.UnitUtility)"
+                    (mouseleave)="handleClosePopup()"
+                  >
+                    {{ (selectedAsidePrice$ | async).UtilidadTotal | currency: 'USD':'symbol':'1.2-6' }}
+                    / {{ (selectedAsidePrice$ | async).NumPiezas }} =
+                    {{ (selectedAsidePrice$ | async).UtilidadUnitaria | currency: 'USD':'symbol':'1.2-6' }}
+                  </label>
+                </div>
+                <div class="item">
+                  <label class="item-title"> {{ 'formProvider.step8.subtitles.totalPrice' | translate }}: </label>
+                  <label
+                    class="item-text"
+                    (mouseenter)="handleOpenPopup($event.target, formulasDescription.TotalPrice)"
+                    (mouseleave)="handleClosePopup()"
+                  >
+                    {{ (selectedAsidePrice$ | async).CVT | currency: 'USD':'symbol':'1.2-6' }} +
+                    {{ (selectedAsidePrice$ | async).CFT | currency: 'USD':'symbol':'1.2-6' }} +
+                    {{ (selectedAsidePrice$ | async).UtilidadTotal | currency: 'USD':'symbol':'1.2-6' }} + (
+                    {{ (selectedAsidePrice$ | async).CVT | currency: 'USD':'symbol':'1.2-6' }} *
+                    {{ actualConfiguration.configurationPriceProvider.ComisionFrenteComercial | pqfPercentageTransform: 2 }}
+                    ) =
+                    {{ (selectedAsidePrice$ | async).PrecioTotal | currency: 'USD':'symbol':'1.2-6' }}
+                  </label>
+                </div>
+                <div class="item">
+                  <label class="item-title"> {{ 'formProvider.step8.subtitles.unitCostOfSales' | translate }}: </label>
+                  <label
+                    class="item-text"
+                    (mouseenter)="handleOpenPopup($event.target, formulasDescription.UnitCostOfSale)"
+                    (mouseleave)="handleClosePopup()"
+                  >
+                    {{ (selectedAsidePrice$ | async).CVT | currency: 'USD':'symbol':'1.2-6' }} /
+                    {{ (selectedAsidePrice$ | async).NumPiezas }} =
+                    {{ (selectedAsidePrice$ | async).CVU | currency: 'USD':'symbol':'1.2-6' }}
+                  </label>
+                </div>
+                <div class="item">
+                  <label class="item-title"> {{ 'formProvider.step8.subtitles.unitPrice' | translate }}: </label>
+                  <label
+                    class="item-text"
+                    (mouseenter)="handleOpenPopup($event.target, formulasDescription.UnitPrice)"
+                    (mouseleave)="handleClosePopup()"
+                  >
+                    {{ (selectedAsidePrice$ | async).CVU | currency: 'USD':'symbol':'1.2-6' }} +
+                    {{ (selectedAsidePrice$ | async).CostoFijoUnitario | currency: 'USD':'symbol':'1.2-6' }} +
+                    {{ (selectedAsidePrice$ | async).UtilidadUnitaria | currency: 'USD':'symbol':'1.2-6' }} +
+                    {{ (selectedAsidePrice$ | async).FrenteComercialUnitario | currency: 'USD':'symbol':'1.2-6' }} =
+                    {{ (selectedAsidePrice$ | async).PrecioUnitario | currency: 'USD':'symbol':'1.2-6' }}
+                  </label>
+                </div>
+                <div class="item">
+                  <label class="item-title sales"> {{ 'formProvider.step8.subtitles.salesPrice' | translate }}: </label>
+                  <label class="item-text sales">
+                    {{ (selectedAsidePrice$ | async).PrecioProquifaNet ?? 0 | currency: 'USD':'symbol':'1.2-6' }}
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="indicators">
+              <label>{{ 'formProvider.step8.subtitles.titleIndicators' | translate }}</label>
+              <div class="input-container">
+                <div class="item">
+                  <label class="indicator-title">{{ 'formProvider.step8.indicators.costTotals' | translate }}</label>
+                  <label class="result">
+                    {{ (selectedAsidePrice$ | async).CostoTotalIndicador ?? 0 | currency: 'USD':'symbol':'1.2-6' }}
+                  </label>
+                </div>
+                <div class="item">
+                  <label>{{ 'formProvider.step8.indicators.utilitiesCash' | translate }} </label>
+                  <label class="result">
+                    {{ (selectedAsidePrice$ | async).UtilidadIndicador ?? 0 | currency: 'USD':'symbol':'1.2-6' }}
+                  </label>
+                </div>
+                <div class="item">
+                  <label>{{ 'formProvider.step8.indicators.utilitiesPercentage' | translate }}</label>
+                  <label class="result">
+                    {{ (selectedAsidePrice$ | async)?.PorcentajeUtilidadIndicador | pqfPercentageTransform: 2 }}</label
+                  >
+                </div>
+                <div class="item">
+                  <label>{{ 'formProvider.step8.indicators.performanceCost' | translate }}</label>
+                  <label class="result">{{
+                    (selectedAsidePrice$ | async)?.PorcentajeRendimientoIndicador | pqfPercentageTransform: 2
+                  }}</label>
+                </div>
+                <div class="item">
+                  <label>{{ 'formProvider.step8.indicators.utilitiesPriceList' | translate }}</label>
+                  <label class="result">
+                    {{ (selectedAsidePrice$ | async).UtilidadPrecioListaIndicador ?? 0 | currency: 'USD':'symbol':'1.2-6' }}
+                  </label>
+                </div>
+                <div class="item">
+                  <label>{{ 'formProvider.step8.indicators.priceList' | translate }}</label>
+                  <label class="result">{{
+                    (selectedAsidePrice$ | async)?.PorcentajeUtilidadPrecioListaIndicador | pqfPercentageTransform: 2
+                  }}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="without-results"
+        *ngIf="
+          !(asidePrices$ | async).isLoading &&
+          (!(selectedAsidePrice$ | async) || lodashIsEmpty((asidePrices$ | async).pricesList?.Results))
+        "
+      >
+        <app-without-results></app-without-results>
+      </div>
+      <div class="loading" *ngIf="(asidePrices$ | async).isLoading">
+        <app-loading></app-loading>
+      </div>
+      <div
+        class="footer-quantity"
+        *ngIf="
+          (selectedLevelConfigurationTab$ | async)?.level === levels.Family ||
+          (selectedLevelConfigurationTab$ | async)?.level === levels.CharacteristicGrouper
+        "
+      >
+        <img
+          alt="anterior"
+          [ngClass]="(allowPreviousPanelPage$ | async) ? 'cursor-pointer' : 'cursor-default'"
+          [src]="
+            (allowPreviousPanelPage$ | async)
+              ? 'assets/Images/arrows/flecha_izq.svg'
+              : 'assets/Images/arrows/flecha_gris_Izq.svg'
+          "
+          (click)="getPricePageForPanel(-1)"
+        />
+        <label>
+          {{ (asidePrices$ | async).desiredPage ?? 0 }} /
+          {{ (asidePrices$ | async).pricesList?.TotalResults ?? 0}}
+        </label>
+        <img
+          alt="siguiente"
+          [ngClass]="(allowNextPanelPage$ | async) ? 'cursor-pointer' : 'cursor-default'"
+          [src]="
+            (allowNextPanelPage$ | async)
+              ? 'assets/Images/arrows/flecha_derecha.svg'
+              : 'assets/Images/arrows/flecha_gris_derecha.svg'
+          "
+          (click)="getPricePageForPanel(1)"
+        />
+      </div>
+    </div>
+  </app-custom-position-pop-up>
+  <app-pop-up-generic
+    class="question-pop-up"
+    *ngIf="alertPopUpdateBreakdown$ | async"
+    [activeBtn]="saveValidatorsBySteps$ | async"
+    [activeButtons]="true"
+    [height]="(viewType$ | async) === viewTypes.small ? '320px' : '360px'"
+    [rightButtonLabel]="'Guardar'"
+    [width]="(viewType$ | async) === viewTypes.small ? '500px' : '620px'"
+    (evento)="handleClosePop($event)"
+  >
+    <div class="container">
+      <img alt="alert" src="assets/Images/alerta.svg" />
+      <div>
+        <label>{{ 'formProvider.step8.continueWithSeeBreakdown' | translate }}</label>
+      </div>
+    </div>
+  </app-pop-up-generic>
+</div>

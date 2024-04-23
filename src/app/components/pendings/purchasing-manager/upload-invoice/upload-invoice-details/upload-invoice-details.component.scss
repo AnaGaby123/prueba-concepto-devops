@@ -1,0 +1,854 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  height: 100%;
+  width: 100%;
+
+  & > #upload-invoice-details {
+    @include s.flexColumn;
+    height: 100%;
+    overflow: hidden;
+    width: 100%;
+
+    & > .top-container {
+      @include s.flexRowNoWrap;
+      flex: 1 1 auto;
+      overflow: hidden;
+
+      & > .left-container {
+        @include s.flexColumn;
+        border-right: 1px solid s.$pqGray2;
+        flex: 0 0 345px;
+        padding: 20px;
+
+        & > .title {
+          @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+          @include s.Novecento-Bold;
+          margin-bottom: 10px;
+        }
+
+        & > .filters {
+          @include s.flexRowNoWrap;
+          border-bottom: 1px solid s.$pqBlack2;
+          padding-bottom: 17px;
+
+          & > app-hamburger-menu {
+            flex: 0 1 auto;
+            margin-right: 20px;
+            width: max-content;
+          }
+
+          & > app-search {
+            flex: 1 1 auto;
+          }
+        }
+
+        & > .list-container {
+          @include s.flexColumn;
+          flex: 1 1 auto;
+          overflow: hidden;
+
+          & > virtual-scroller {
+            height: 100%;
+            width: 100%;
+            @include s.fixVirtualScroller;
+
+            & .item-oc {
+              @include s.flexRowNoWrap;
+              @include s.default-transition($duration: 0.2s);
+              align-items: center;
+              border-bottom: 1px solid s.$pqGray2;
+              cursor: pointer;
+              height: 85px;
+              overflow: hidden;
+
+              & * {
+                cursor: pointer;
+              }
+
+              &:hover {
+                background-color: s.$pqGray2;
+              }
+
+              & > .indicator {
+                flex: 0 0 8px;
+                height: 100%;
+
+                &.selected {
+                  background-color: s.$pqGreen;
+                }
+              }
+
+              & > .info {
+                @include s.flexColumn;
+                flex: 1 1 auto;
+                padding: 20px;
+
+                & > label {
+                  @include s.escaledFontFormat(s.$textSize15to20, bold, s.$pqBlack2);
+                  @include s.Roboto-Bold;
+                  white-space: pre;
+
+                  &:first-of-type {
+                    margin-bottom: 5px;
+                  }
+
+                  & > span {
+                    color: s.$pqGreen;
+                    text-decoration: underline;
+                  }
+                }
+              }
+            }
+
+            & > ::ng-deep .scrollable-content > .without-results {
+              display: flex;
+              @include s.absoluteCenter;
+              height: 100%;
+            }
+          }
+        }
+
+        & > .totals {
+          @include s.flexRowNoWrap;
+          border-top: 1px solid s.$pqBlack2;
+          flex: 0 0 39px;
+          justify-content: space-between;
+          padding: 6px 12px 0 15px;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+            @include s.Roboto-Regular;
+          }
+        }
+      }
+
+      & > .center-container {
+        @include s.flexColumn;
+        flex: 1 1 auto;
+        overflow: hidden;
+        padding: 20px 20px 30px 20px;
+
+        & > .title {
+          @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+          @include s.Novecento-Bold;
+          flex: 0 0 auto;
+          border-bottom: 1px solid s.$pqBlack2;
+          padding-bottom: 10px;
+          white-space: pre-wrap;
+
+          & > span {
+            color: s.$pqGreen;
+          }
+
+          & > .underline {
+            text-decoration: underline;
+          }
+        }
+
+        & > .header-container {
+          @include s.flexColumn;
+
+          & > app-provider-contacts {
+            margin: 15px 0;
+          }
+        }
+
+        & > .tables {
+          @include s.flexColumn;
+          flex: 1 1 auto;
+          overflow: hidden;
+
+          & > div {
+            @include s.flexColumn;
+            border: 1px solid s.$pqBlack2;
+            flex: 1 1 50%;
+            overflow-x: auto;
+            overflow-y: hidden;
+
+            & > .table {
+              @include s.flexColumn;
+              flex: 1 1 100%;
+              min-width: 840px;
+              overflow: hidden;
+
+              & > .header {
+                @include s.flexRowNoWrap;
+                border-bottom: 1px solid s.$pqBlack2;
+                flex: 0 0 38px;
+                min-width: 840px;
+
+                & > div {
+                  @include s.flexRowNoWrap;
+                  @include s.absoluteCenter;
+                  padding: 0 5px;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize13to15, bold, s.$pqBlack2);
+                    @include s.Novecento-Bold;
+                  }
+
+                  & > img {
+                    height: 18px;
+                    width: 18px;
+                  }
+                }
+
+                & > .number {
+                  flex: 0 0 50px;
+                }
+
+                & > .name {
+                  flex: 2 1 auto;
+                  justify-content: flex-start;
+                }
+
+                & > .pieces {
+                  flex: 0 0 70px;
+                }
+
+                & > .price {
+                  flex: 0 0 100px;
+                }
+
+                & > .amount {
+                  flex: 0 0 100px;
+                }
+
+                & > .state {
+                  flex: 0 0 150px;
+                }
+
+                & > .button {
+                  flex: 0 0 50px;
+                }
+
+                & > .space {
+                  flex: 0 0 20px;
+                }
+              }
+
+              & > .body {
+                @include s.flexColumn;
+                flex: 1 1 auto;
+                min-width: 840px;
+                overflow: auto;
+
+                & > virtual-scroller {
+                  @include s.fixVirtualScroller;
+                  height: 100%;
+                  width: 100%;
+
+                  & > ::ng-deep .scrollable-content > .item-oc {
+                    @include s.flexRowNoWrap;
+                    @include s.default-transition($duration: 0.2s);
+                    border-bottom: 1px solid s.$pqGray2;
+
+                    &:hover {
+                      background-color: s.$pqGray2;
+                    }
+
+                    & > div {
+                      @include s.flexRowNoWrap;
+                      @include s.absoluteCenter;
+                      padding: 15px 5px;
+
+                      & label {
+                        @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                        @include s.Roboto-Regular;
+
+                        &.bold {
+                          @include s.Roboto-Bold;
+                        }
+
+                        &.ocean {
+                          color: s.$pqGreen;
+                        }
+
+                        &.underline {
+                          text-decoration: underline;
+                        }
+                      }
+
+                      & > img {
+                        cursor: pointer;
+                        height: 18px;
+                        width: 18px;
+                      }
+                    }
+
+                    & > .number {
+                      flex: 0 0 50px;
+                    }
+
+                    & > .name {
+                      flex: 2 1 auto;
+                      justify-content: flex-start;
+
+                      & > label {
+                        & > span {
+                          @include s.Roboto-Bold;
+                        }
+                      }
+                    }
+
+                    & > .pieces {
+                      flex: 0 0 70px;
+                    }
+
+                    & > .price {
+                      flex: 0 0 100px;
+
+                      & > .tooltip {
+                        @include s.tooltip($minWidthTooltip: auto);
+
+                        & > label {
+                          cursor: pointer;
+                        }
+
+                        & > .tooltip-text {
+                          align-items: center;
+                          white-space: pre;
+                        }
+                      }
+                    }
+
+                    & > .amount {
+                      flex: 0 0 100px;
+                    }
+
+                    & > .state {
+                      flex: 0 0 150px;
+
+                      & > label {
+                        text-align: center;
+                      }
+                    }
+
+                    & > .button {
+                      flex: 0 0 50px;
+                    }
+
+                    & > .space {
+                      flex: 0 0 20px;
+                    }
+                  }
+
+                  & > ::ng-deep .scrollable-content > .without-results {
+                    @include s.flexColumn;
+                    @include s.absoluteCenter;
+                    flex: 1 1 auto;
+                    overflow: hidden;
+                    padding: 50px;
+                  }
+                }
+              }
+
+              & > .footer {
+                @include s.flexRowNoWrap;
+                border-top: 1px solid s.$pqBlack2;
+                flex: 0 0 38px;
+                min-width: 840px;
+
+                & > div {
+                  @include s.flexRowNoWrap;
+                  @include s.absoluteCenter;
+                  padding: 0 5px;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+                    @include s.Novecento-Bold;
+
+                    &.ocean {
+                      color: s.$pqGreen;
+                    }
+                  }
+                }
+
+                & > .number {
+                  flex: 0 0 50px;
+                }
+
+                & > .name {
+                  flex: 2 1 auto;
+                  justify-content: flex-start;
+                }
+
+                & > .pieces {
+                  flex: 0 0 70px;
+                }
+
+                & > .price {
+                  flex: 0 0 100px;
+                }
+
+                & > .amount {
+                  flex: 0 0 100px;
+                }
+
+                & > .state {
+                  flex: 0 0 150px;
+                }
+
+                & > .button {
+                  flex: 0 0 50px;
+                }
+
+                & > .space {
+                  flex: 0 0 20px;
+                }
+              }
+            }
+          }
+
+          & > .top {
+            margin-bottom: 5px;
+          }
+        }
+      }
+
+      & > .right-container {
+        @include s.flexColumn;
+        align-items: center;
+        background-color: s.$pqGray2;
+        flex: 0 0 280px;
+        overflow-x: auto;
+        padding: 20px;
+
+        & > .title {
+          @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqGreen);
+          @include s.Novecento-Bold;
+          margin-bottom: 20px;
+        }
+
+        & > app-generic-input {
+          margin-bottom: 20px;
+          width: 100%;
+        }
+
+        & > .date {
+          @include s.flexColumn;
+          align-items: flex-start;
+          height: 43px;
+          margin-bottom: 20px;
+          width: 100%;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+            @include s.Roboto-Regular;
+            margin-bottom: 4px;
+          }
+        }
+
+        & > .file {
+          @include s.flexColumn;
+          align-items: flex-start;
+          margin-bottom: 20px;
+          width: 100%;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+            @include s.Roboto-Regular;
+            margin-bottom: 4px;
+          }
+        }
+
+        & > .subtitle {
+          @include s.escaledFontFormat(s.$textSize15to20, bold, s.$pqBlack2);
+          @include s.Novecento-Bold;
+          margin: 10px 0;
+        }
+
+        & > .tuple {
+          @include s.flexColumn;
+          align-items: center;
+          margin-bottom: 8px;
+
+          & > label:first-of-type {
+            @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+            @include s.Roboto-Bold;
+            margin-bottom: 3px;
+          }
+
+          & > label:last-of-type {
+            @include s.escaledFontFormat(s.$textSize15to21, regular, s.$pqGreen);
+            @include s.Roboto-Regular;
+            margin-bottom: 3px;
+          }
+        }
+
+        & > .mb {
+          margin-bottom: 18px;
+        }
+
+        & > .table {
+          @include s.flexRowNoWrap;
+          justify-content: space-between;
+          margin-bottom: 20px;
+          width: 100%;
+
+          & > .left {
+            @include s.flexColumn;
+            flex: 1 1 auto;
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+              @include s.Roboto-Regular;
+              margin-bottom: 6px;
+              white-space: pre-wrap;
+            }
+          }
+
+          & > .right {
+            @include s.flexColumn;
+            flex: 1 1 auto;
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen);
+              @include s.Roboto-Regular;
+              margin-bottom: 6px;
+              padding-left: 10px;
+              text-align: end;
+              white-space: pre;
+            }
+          }
+        }
+
+        & > app-generic-text-area {
+          margin-bottom: 20px;
+        }
+
+        & > button {
+          flex: 0 0 auto;
+
+          &.active {
+            @include s.pqButton;
+          }
+
+          &.disabled {
+            @include s.pqButtonDisable;
+          }
+        }
+      }
+    }
+
+    & > .bottom-container {
+      @include s.flexRowNoWrap;
+      @include s.absoluteCenter;
+      border-top: 2px solid s.$pqBlack2;
+      flex: 0 0 48px;
+
+      & > div {
+        @include s.flexRowNoWrap;
+        align-items: center;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+          @include s.Roboto-Regular;
+          white-space: pre;
+
+          &:first-of-type {
+            @include s.Roboto-Bold;
+          }
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .top-container {
+        & > .left-container {
+          flex: 0 0 460px;
+
+          & > .title {
+            margin-bottom: 14px;
+          }
+
+          & > .filters {
+            padding-bottom: 20px;
+          }
+
+          & > .list-container {
+            & > virtual-scroller {
+              & .item {
+                height: 95px;
+              }
+            }
+          }
+
+          & > .totals {
+            @include s.flexRowNoWrap;
+            flex: 0 0 49px;
+            padding: 10px 20px 0 30px;
+          }
+        }
+
+        & > .center-container {
+          & > .title {
+            padding-bottom: 14px;
+          }
+
+          & > .header {
+            & > .client-container {
+              & > .client {
+                & > .client-info {
+                  & > div {
+                    max-width: 220px;
+                  }
+                }
+              }
+            }
+          }
+
+          & > .tables {
+            & > div {
+              & > .table {
+                & > .header {
+                  flex: 0 0 43px;
+
+                  & > div {
+                    & > img {
+                      height: 21px;
+                      width: 21px;
+                    }
+                  }
+                }
+
+                & > .footer {
+                  flex: 0 0 43px;
+                }
+              }
+            }
+          }
+        }
+
+        & > .right-container {
+          flex: 0 0 331px;
+
+          & > .title {
+            margin-bottom: 25px;
+          }
+
+          & > app-generic-input {
+            margin-bottom: 25px;
+          }
+
+          & > .date {
+            height: 48px;
+            margin-bottom: 25px;
+          }
+
+          & > .file {
+            margin-bottom: 25px;
+          }
+        }
+      }
+      & > .bottom-container {
+        flex: 0 0 56px;
+      }
+    }
+  }
+
+  & > app-pop-up-generic {
+    & .pop-modify-cost {
+      @include s.flexColumn;
+      flex: 1 0 100%;
+      overflow: hidden;
+
+      & > img {
+        height: 60px;
+        margin: 30px auto;
+        width: 60px;
+      }
+
+      & > .ocean {
+        @include s.escaledFontFormat(s.$textSize21to28, bold, s.$pqGreen);
+        @include s.Roboto-Bold;
+        padding: 0 40px;
+        white-space: pre-wrap;
+
+        & > span {
+          vertical-align: baseline;
+        }
+      }
+
+      & > .black {
+        @include s.escaledFontFormat(s.$textSize21to28, regular, s.$pqBlack2);
+        @include s.Roboto-Regular;
+        padding: 0 40px;
+        white-space: pre-wrap;
+
+        & > span {
+          vertical-align: baseline;
+        }
+      }
+
+      & > label:last-of-type {
+        margin-bottom: 30px;
+      }
+
+      & > .ocean-bg {
+        @include s.absoluteCenter;
+        @include s.flexRowNoWrap;
+        background-color: rgba(s.$pqGreen, 0.05);
+        padding: 20px 80px;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize17to21, regular, s.$pqBlack2);
+          @include s.Roboto-Regular;
+          margin-right: 15px;
+          white-space: pre-wrap;
+        }
+
+        & > .pqf {
+          color: s.$pqGreen !important;
+        }
+      }
+
+      & > .cost {
+        @include s.flexRowNoWrap;
+        justify-content: space-between;
+        margin-top: 25px;
+        padding: 0 30px;
+
+        & > div {
+          @include s.flexRowNoWrap;
+          align-items: center;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize17to22, regular, s.$pqBlack2);
+            @include s.Roboto-Regular;
+            white-space: pre;
+
+            & > span {
+              color: s.$pqGreen;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.item {
+  @include s.flexRowNoWrap;
+  border-bottom: 1px solid s.$pqGray2;
+
+  &:hover {
+    background-color: s.$pqGray2;
+  }
+
+  & > div {
+    @include s.flexRowNoWrap;
+    @include s.absoluteCenter;
+    padding: 15px 5px;
+
+    & label {
+      @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+      @include s.Roboto-Regular;
+
+      &.bold {
+        @include s.Roboto-Bold;
+      }
+
+      &.ocean {
+        color: s.$pqGreen;
+      }
+
+      &.underline {
+        text-decoration: underline;
+      }
+    }
+
+    & > img {
+      cursor: pointer;
+      height: 18px;
+      width: 18px;
+    }
+  }
+
+  & > .number {
+    flex: 0 0 50px;
+  }
+
+  & > .name {
+    flex: 2 1 auto;
+    justify-content: flex-start;
+
+    & > label {
+      & > span {
+        @include s.Roboto-Bold;
+      }
+    }
+  }
+
+  & > .pieces {
+    flex: 0 0 70px;
+  }
+
+  & > .price {
+    flex: 0 0 100px;
+
+    & > .tooltip {
+      @include s.tooltip($minWidthTooltip: auto);
+
+      & > label {
+        cursor: pointer;
+      }
+
+      & > .tooltip-text {
+        align-items: center;
+        white-space: pre;
+      }
+    }
+  }
+
+  & > .amount {
+    flex: 0 0 100px;
+  }
+
+  & > .state {
+    flex: 0 0 150px;
+
+    & > label {
+      text-align: center;
+    }
+  }
+
+  & > .button {
+    flex: 0 0 50px;
+  }
+
+  & > .space {
+    flex: 0 0 20px;
+  }
+
+  &.cdk-drag-preview {
+    background-color: s.$pqWhite;
+  }
+
+  &.cdk-drag-dragging {
+    cursor: grabbing;
+
+    & * {
+      cursor: grabbing;
+    }
+  }
+}
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}

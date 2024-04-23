@@ -1,0 +1,24 @@
+{
+  "$schema": "../node_modules/ng-swagger-gen/ng-swagger-gen-schema.json",
+  "swagger": "<swagger file>",
+  "output": "./projects/api-logistica/src/lib",
+  "prefix": "ApiLogistica",
+  "ignoreUnusedModels": false,
+  "minParamsForContainer": 2,
+  "sortParams": "desc",
+  "defaultTag": "ApiLogistica",
+  "removeStaleFiles": true,
+  "modelIndex": true,
+  "serviceIndex": true,
+  "apiModule": true,
+  "enumModule": true,
+  "generateExamples": false,
+  "camelCase": false,
+  "customFileSuffix": {
+    "model": "",
+    "example": ".example",
+    "service": ".service"
+  },
+  "timeout": 20000,
+  "skipProxySetup": false
+}

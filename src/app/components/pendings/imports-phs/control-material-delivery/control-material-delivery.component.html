@@ -1,0 +1,16 @@
+<div class="component-container" id="control-material-delivery-container">
+  <div class="header">
+    <app-header-bar
+      [activeBack]="isDetails$ | async"
+      [name]="nameAgent$ | async"
+      [title]="title$ | async"
+      (goBack)="goBack()"
+    ></app-header-bar>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="footer" *ngIf="!(isDetails$ | async)">
+    <ng-container></ng-container>
+  </div>
+</div>

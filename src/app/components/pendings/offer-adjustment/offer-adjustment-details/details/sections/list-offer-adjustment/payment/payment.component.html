@@ -1,0 +1,101 @@
+<div id="payment" *ngIf="!lodashIsEmpty(priceConfig$ | async)">
+  <div class="table-container">
+    <virtual-scroller [bufferAmount]="24" [items]="selectInternalSalesItemPrice$ | async" (vsUpdate)="itemsQuotation = $event">
+      <app-header-internal-sales-item
+        class="header"
+        [internalSalesItem]="selectHeaderInternalSalesItemPrice$ | async"
+      ></app-header-internal-sales-item>
+      <div class="header-separator"></div>
+      <app-internal-sales-item
+        *ngFor="let item of itemsQuotation; let i = index; trackBy: handleTrackByItem"
+        [internalSalesItem]="item"
+        (valueEmitter)="globalItemEventsHandler($event)"
+      ></app-internal-sales-item>
+    </virtual-scroller>
+  </div>
+</div>
+<div class="without-results" *ngIf="lodashIsEmpty(priceConfig$ | async)">
+  <app-without-results [title]="'No tienes ajustes por validar'"></app-without-results>
+</div>
+<app-custom-position-pop-up
+  id="pop-up-price-cat"
+  *ngIf="pricePopOpen"
+  [target]="pricePopTarget"
+  [popUpPosition]="handlePositionCustomPop()"
+  [borderColor]="'#d8d9dd'"
+  [borderRadius]="'0px'"
+  [minWidth]="'310px'"
+  [maxWidth]="'310px'"
+  [minHeight]="'auto'"
+  [maxHeight]="'390px'"
+  [closeButton]="false"
+  [padding]="'0px'"
+  [zIndexInvert]="true"
+  (closeEmitter)="handlePopUp(false)"
+>
+  <div class="container-price-cat">
+    <div class="container-blue">
+      <div class="amount">
+        <label
+          ><span>Precio Unit.:</span
+          ><span>{{ priceItem.price | currency: (quotationCurrency$ | async) }} {{ quotationCurrency$ | async }}</span></label
+        >
+      </div>
+    </div>
+    <div class="container-second-section">
+      <div class="amount-controls">
+        <div>
+          <input
+            placeholder="%"
+            [(ngModel)]="priceAdjustmentForm.percentage"
+            [ngModelOptions]="{debounce: {input: 3000}}"
+            (ngModelChange)="setInput($event, typePercentage)"
+            (keypress)="handleValidateNumber($event, typePercentage)"
+          />
+          <label>%</label>
+        </div>
+        <div>
+          <input
+            placeholder="$"
+            [(ngModel)]="priceAdjustmentForm.ammount"
+            [ngModelOptions]="{debounce: {input: 3000}}"
+            (ngModelChange)="setInput($event, typeAmount)"
+            (keypress)="handleValidateNumber($event, typeAmount)"
+          />
+          <label>Monto</label>
+        </div>
+      </div>
+      <div class="container-comments">
+        <app-generic-text-area
+          [title]="'Comentarios de ajustes'"
+          [placeholder]="'Escribe aquí'"
+          [height]="'80px'"
+          [required]="true"
+          [value]="priceAdjustmentForm.comments"
+          (emitData)="priceAdjustmentForm.comments = $event"
+        ></app-generic-text-area>
+      </div>
+    </div>
+  </div>
+  <div class="button">
+    <button
+      [ngClass]="
+        priceAdjustmentForm.ammount &&
+        priceAdjustmentForm.percentage !== null &&
+        !lodashIsEmpty(priceAdjustmentForm.comments) &&
+        readyToSave
+          ? 'btn-active-accept'
+          : 'btn-disable-accept'
+      "
+      [disabled]="
+        priceAdjustmentForm.ammount &&
+        priceAdjustmentForm.percentage &&
+        lodashIsEmpty(priceAdjustmentForm.comments) &&
+        !readyToSave
+      "
+      (click)="updatePriceAdjustment()"
+    >
+      {{ 'offerAdjustment.details.accept' | translate }}
+    </button>
+  </div>
+</app-custom-position-pop-up>

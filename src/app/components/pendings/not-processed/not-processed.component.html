@@ -1,0 +1,98 @@
+<div class="component-container" id="not-processed-container">
+  <div class="header">
+    <app-header-bar
+      [activeBack]="isInDetailsView$ | async"
+      [name]="(client$ | async)?.Nombre"
+      [title]="title$ | async"
+      (goBack)="goBack()"
+    >
+    </app-header-bar>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="footer">
+    <ng-container *ngIf="!(isInDetailsView$ | async); else alternative">
+      <div>
+        <label class="title">OC: </label>
+        <label>{{ 'manageUnaffordableOrder.purchaseOder' | translate }}</label>
+      </div>
+      <div>
+        <label class="title">VT: </label>
+        <label>{{ 'manageUnaffordableOrder.totalValue' | translate }}</label>
+      </div>
+      <div>
+        <label class="fea-green title">FEA: </label>
+        <label>{{ 'manageUnaffordableOrder.estimatedDateTimeAdjustment' | translate }}</label>
+      </div>
+      <div>
+        <label class="fea-yellow title">FEA: </label>
+        <label>{{ 'manageUnaffordableOrder.estimatedDateExpireAdjustment' | translate }}</label>
+      </div>
+      <div>
+        <label class="fea-red title">FEA: </label>
+        <label>{{ 'manageUnaffordableOrder.estimatedDateOutOfTimeAdjustment' | translate }}</label>
+      </div>
+      <div>
+        <label class="fea-purple title">SIN FEA: </label>
+        <label>{{ 'manageUnaffordableOrder.withoutEstimatedDateAdjustment' | translate }}</label>
+      </div>
+    </ng-container>
+    <ng-template #alternative>
+      <div>
+        <label class="title">OC: </label>
+        <label>{{ 'manageUnaffordableOrder.purchaseOder' | translate }}</label>
+      </div>
+      <div>
+        <img alt="originals" src="assets/Images/pre-processing/originales.svg" />
+        <label class="text">{{ 'manageUnaffordableOrder.originals' | translate }}</label>
+      </div>
+      <div>
+        <img alt="alternatives" src="assets/Images/pre-processing/alternativas.svg" />
+
+        <label class="text">{{ 'manageUnaffordableOrder.alternatives' | translate }}</label>
+      </div>
+      <div>
+        <img alt="complementary" src="assets/Images/pre-processing/complementarias.svg" />
+
+        <label class="text">{{ 'manageUnaffordableOrder.complementary' | translate }}</label>
+      </div>
+      <div>
+        <img alt="promotion" src="assets/Images/pre-processing/promocion.svg" />
+        <label class="text">{{ 'manageUnaffordableOrder.promotion' | translate }}</label>
+      </div>
+      <div>
+        <img alt="saving" src="assets/Images/pre-processing/ahorro.svg" />
+        <label class="text">{{ 'manageUnaffordableOrder.saving' | translate }}</label>
+      </div>
+      <!--      <div>-->
+      <!--        <img alt="delete" src="assets/Images/eliminar.svg" />-->
+      <!--        <label class="text">{{ 'manageUnaffordableOrder.deleteItem' | translate }}</label>-->
+      <!--      </div>-->
+      <div class="tooltip">
+        <label class="fea-green">FEA</label>
+        <div class="tooltip-text">
+          <p>{{ 'manageUnaffordableOrder.estimatedDateTimeAdjustment' | translate }}</p>
+        </div>
+      </div>
+      <div class="tooltip">
+        <label class="fea-yellow">FEA</label>
+        <div class="tooltip-text">
+          <p>{{ 'manageUnaffordableOrder.estimatedDateExpireAdjustment' | translate }}</p>
+        </div>
+      </div>
+      <div class="tooltip">
+        <label class="fea-red">FEA</label>
+        <div class="tooltip-text">
+          <p>{{ 'manageUnaffordableOrder.estimatedDateOutOfTimeAdjustment' | translate }}</p>
+        </div>
+      </div>
+      <div class="tooltip">
+        <label class="fea-purple">SIN FEA</label>
+        <div class="tooltip-text">
+          <p>{{ 'manageUnaffordableOrder.withoutEstimatedDateAdjustment' | translate }}</p>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>

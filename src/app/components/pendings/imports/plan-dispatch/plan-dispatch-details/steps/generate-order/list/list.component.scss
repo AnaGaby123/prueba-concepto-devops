@@ -1,0 +1,326 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  #generate-order-list {
+    @include s.absolute100;
+    @include s.flexColumn;
+    overflow: hidden;
+    padding-top: 25px;
+
+    & > .header {
+      @include s.flexRow;
+      flex: 0 0 auto;
+      justify-content: space-between;
+      margin-bottom: 10px;
+
+      & > label {
+        @include s.escaledFontFormat(s.$textSize19to23, bold, s.$pqBlack2);
+        @include s.Novecento-Bold;
+      }
+
+      & > .icons {
+        @include s.flexRow;
+
+        & > img {
+          cursor: pointer;
+          height: 40px;
+        }
+      }
+    }
+
+    & > .body {
+      @include s.flexColumn;
+      flex: 1 1 auto;
+
+      & > .table-container {
+        @include s.table-container();
+        border: 1px solid s.$pqBlack2;
+
+        & > .table {
+          @include s.table($min-width: 1370px);
+
+          & > .headerTable {
+            @include s.table-header($min-width: 1370px);
+            padding: 10px 20px;
+
+            & > div {
+              @include s.flexRow;
+              justify-content: center;
+              padding: 0 6px;
+
+              & > label {
+                @include s.Novecento-Bold;
+                @include s.escaledFontFormat(s.$textSize13to15, bold, s.$pqBlack2);
+              }
+            }
+
+            & > .name {
+              flex: 2 1 330px;
+            }
+
+            & > .number {
+              flex: 1 0 110px;
+            }
+
+            & > .total {
+              flex: 1 0 260px;
+            }
+          }
+
+          & > .bodyTable {
+            @include s.table-body($min-width: 1370px);
+
+            & > virtual-scroller {
+              @include s.absolute100;
+              flex: 0 0 100%;
+
+              & .item {
+                @include s.flexColumn;
+                border-bottom: 1px solid s.$pqBlack2;
+
+                & > .top {
+                  @include s.flexRow;
+                  border-bottom: 1px solid s.$pqGray2;
+                  padding: 12px 20px;
+
+                  & > div {
+                    @include s.flexRow;
+                    @include s.absoluteCenter;
+                    padding: 0 6px;
+
+                    & > label {
+                      @include s.escaledFontFormat(s.$textSize15to20, bold, s.$pqBlack2);
+                      @include s.Roboto-Bold;
+                    }
+                  }
+
+                  & > .name {
+                    flex: 2 1 330px;
+                    justify-content: flex-start;
+
+                    & > label {
+                      color: s.$pqGreen;
+                    }
+                  }
+
+                  & > .number {
+                    flex: 1 0 110px;
+                  }
+
+                  & > .total {
+                    flex: 1 0 260px;
+                  }
+                }
+
+                & > .bottom {
+                  @include s.flexColumn;
+
+                  & > .sub-item {
+                    @include s.flexRow;
+                    border-bottom: 1px solid s.$pqGray2;
+                    padding: 12px 20px;
+
+                    & > div {
+                      @include s.flexRow;
+                      @include s.absoluteCenter;
+                      padding: 0 6px;
+
+                      & > label {
+                        @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                        @include s.Roboto-Regular;
+                      }
+                    }
+
+                    & > .name {
+                      @include s.flexColumn;
+                      align-items: flex-start;
+                      flex: 2 1 330px;
+
+                      & > div {
+                        @include s.multiLineTextTruncateSinHeight($lineHeight: 1.1em);
+                        margin-bottom: 4px;
+
+                        & > label {
+                          @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                          @include s.Roboto-Regular;
+
+                          & > span {
+                            @include s.Roboto-Bold;
+                            vertical-align: baseline;
+                          }
+                        }
+                      }
+
+                      & > label {
+                        color: s.$pqGreen;
+                      }
+                    }
+
+                    & > .number {
+                      flex: 1 0 110px;
+                    }
+
+                    & > .total {
+                      flex: 1 0 260px;
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          & > .footerTable {
+            @include s.table-header($min-width: 1370px);
+            border-bottom: none;
+            border-top: 1px solid s.$pqBlack2;
+            padding: 10px 20px;
+
+            & > div {
+              @include s.flexRow;
+              justify-content: center;
+
+              & > label {
+                @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+                @include s.Novecento-Bold;
+              }
+            }
+
+            & > .name {
+              flex: 2 1 330px;
+              justify-content: flex-start;
+
+              & > label {
+                margin-right: 75px;
+              }
+            }
+
+            & > .number {
+              flex: 1 0 110px;
+            }
+
+            & > .total {
+              flex: 1 0 260px;
+            }
+          }
+        }
+      }
+    }
+
+    & > .footer {
+      @include s.flexRow;
+      justify-content: flex-end;
+      padding: 10px 0 12px 0;
+
+      & > .active {
+        @include s.pqButton();
+      }
+
+      & > .active-green {
+        @include s.pqButton($min-width: 143px, $max-width: 170px, $baseColor: s.$pqGreen2);
+        margin-left: 20px;
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > #generate-order-list {
+      padding-top: 35px;
+
+      & > .header {
+        margin-bottom: 13px;
+
+        & > .icons {
+          & > img {
+            height: 50px;
+          }
+        }
+      }
+
+      & > .body {
+        & > .table-container {
+          & > .table {
+            @include s.table($min-width: 1640px);
+
+            & > .headerTable {
+              @include s.table-header($min-width: 1640px);
+              padding: 13px 20px;
+
+              & > .name {
+                flex: 2 1 380px;
+              }
+
+              & .number {
+                flex: 1 0 135px;
+              }
+
+              & > .total {
+                flex: 1 0 300px;
+              }
+            }
+
+            & > .bodyTable {
+              @include s.table-body($min-width: 1640px);
+
+              & > virtual-scroller {
+                & .item {
+                  & > .top {
+                    padding: 14px 20px;
+                  }
+
+                  & > .bottom {
+                    & > .sub-item {
+                      padding: 14px 20px;
+                    }
+                  }
+
+                  & .name {
+                    flex: 2 1 380px !important;
+
+                    & > div {
+                      margin-bottom: 7px;
+                    }
+                  }
+
+                  & .number {
+                    flex: 1 0 135px !important;
+                  }
+
+                  & .total {
+                    flex: 1 0 300px !important;
+                  }
+                }
+              }
+            }
+
+            & > .footerTable {
+              @include s.table-header($min-width: 1640px);
+              padding: 13px 20px;
+
+              & > .name {
+                flex: 2 1 380px;
+              }
+
+              & .number {
+                flex: 1 0 135px;
+              }
+
+              & .total {
+                flex: 1 0 300px;
+              }
+            }
+          }
+        }
+      }
+
+      & > .footer {
+        padding: 12px 0 15px 0;
+      }
+    }
+  }
+}

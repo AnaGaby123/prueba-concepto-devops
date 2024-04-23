@@ -1,0 +1,33 @@
+<div id="pop-up-container" [ngClass]="{full: isFull, enableBackground: enableBackground}">
+  <div class="content" [style.height]="height" [style.width]="width">
+    <div class="header-pop-up">
+      <label>{{ titleHeader }}</label>
+      <img
+        *ngIf="isShowClose"
+        (click)="emitSelected('close', false)"
+        alt="close"
+        class="close"
+        src="assets/Images/icono_cerrar.svg"
+      />
+    </div>
+    <div class="body-pop-up" [style.padding-top]="paddingTopContent" [style.padding-bottom]="paddingBottomContent">
+      <div class="dynamic-content">
+        <ng-content></ng-content>
+      </div>
+      <div *ngIf="isActiveButtons" class="buttons-container">
+        <button
+          class="secondary-button-{{ widthButton }}"
+          *ngIf="!onlyPrimaryButton"
+          (click)="emitSelected('secondary', false)"
+          >{{ textSecondaryButton }}</button
+        >
+        <button
+          *ngIf="!onlySecondaryButton"
+          [ngClass]="isActivePrimaryButton ? 'primary-button-' + widthButton : 'disabled-button-' + widthButton"
+          (click)="emitSelected('primary', true)"
+          >{{ textPrimaryButton }}</button
+        >
+      </div>
+    </div>
+  </div>
+</div>

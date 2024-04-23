@@ -1,0 +1,218 @@
+<app-pop-up-generic [width]="width" [height]="height" [titleHeader]="'eventConsole.addEvent' | translate">
+  <div class="container">
+    <div class="tabs">
+      <app-tabs [options]="optionsTab" [tapSelected]="selectedTab" (onSelectOption)="setOptionTab($event)"></app-tabs>
+    </div>
+    <div class="data-general" *ngIf="selectedTab.id === '1'">
+      <div class="type-event">
+        <div class="title">
+          <label>{{ '* ' + ('eventConsole.typeOfEvent' | translate) }}</label>
+        </div>
+        <div class="classification">
+          <div>
+            <div *ngFor="let button of typesEvent">
+              <app-radio-button
+                [value]="button.value"
+                [label]="button.label"
+                (emitSelected)="setTypeEvent($event)"
+              ></app-radio-button>
+            </div>
+          </div>
+          <div>
+            <div>
+              <label>{{ '* ' + ('eventConsole.destiny' | translate) }}</label>
+            </div>
+            <div *ngFor="let button of typesDestiny">
+              <app-radio-button
+                [value]="button.value"
+                [label]="button.label"
+                (emitSelected)="setTypeEvent($event)"
+              ></app-radio-button>
+            </div>
+            <div class="name">
+              <app-drop-down-list></app-drop-down-list>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="delivery">
+        <div>
+          <div class="title">
+            <label>{{ 'checkout.deliveryData' | translate }}</label>
+          </div>
+          <div class="dataDelivery">
+            <div>
+              <label>{{ '* ' + ('eventConsole.contact' | translate) }}</label>
+              <app-drop-down-list></app-drop-down-list>
+            </div>
+            <div>
+              <label>{{ 'eventConsole.title' | translate }}</label>
+              <label class="text">N/D</label>
+            </div>
+            <div>
+              <label>{{ 'eventConsole.position' | translate }}</label>
+              <label class="text">N/D</label>
+            </div>
+          </div>
+          <div class="dataDelivery">
+            <div>
+              <label>{{ 'eventConsole.department' | translate }}</label>
+              <label class="text">N/D</label>
+            </div>
+            <div>
+              <label>{{ ('productToClaim.phone' | translate) + '1' }}</label>
+              <label class="text">N/D</label>
+            </div>
+            <div>
+              <label>{{ 'eventConsole.extension' | translate }}</label>
+              <label class="text">N/D</label>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="title">
+            <label>{{ 'eventConsole.deliveryPlace' | translate }}</label>
+          </div>
+          <div class="dataDelivery">
+            <div class="address">
+              <label>{{ '* ' + ('eventConsole.address' | translate) }}</label>
+              <app-drop-down-list></app-drop-down-list>
+            </div>
+            <div>
+              <label>{{ 'eventConsole.country' | translate }}</label>
+              <label class="text">N/D</label>
+            </div>
+            <div>
+              <label>{{ 'orderModification.state' | translate }}</label>
+              <label class="text">N/D</label>
+            </div>
+            <div>
+              <label>{{ 'eventConsole.route' | translate }}</label>
+              <label class="text">N/D</label>
+            </div>
+            <div>
+              <label>{{ 'checkout.zone' | translate }}</label>
+              <label class="text">N/D</label>
+            </div>
+          </div>
+          <div class="dataDelivery">
+            <div class="address">
+              <label>{{ 'eventConsole.address' | translate }}</label>
+              <label class="text">N/D</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="required">
+        <label>{{ '*' + ('common.requiredField' | translate) }}</label>
+      </div>
+    </div>
+    <div class="judgment" *ngIf="selectedTab.id === '2'">
+      <div class="delivery-time">
+        <div class="title">
+          <label>{{ 'eventConsole.deliveryTime' | translate }}</label>
+        </div>
+        <div class="schedules">
+          <div *ngIf="false" class="schedule-info">
+            <div class="schedule-section">
+              <div class="schedule-day">
+                <label class="title">Lunes</label>
+                <label>De 10:00 am A 14:00 Hrs.</label>
+                <label>De 17:00 A 18:00 Hrs.</label>
+              </div>
+              <div class="schedule-day">
+                <label class="title">Martes</label>
+                <label>De 10:00 am A 14:00 Hrs.</label>
+                <label>De 17:00 A 18:00 Hrs.</label>
+              </div>
+              <div class="schedule-day">
+                <label class="title">Miércoles</label>
+                <label>De 10:00 am A 14:00 Hrs.</label>
+                <label>De 17:00 A 18:00 Hrs.</label>
+              </div>
+            </div>
+            <div class="schedule-section">
+              <div class="schedule-day">
+                <label class="title">Jueves</label>
+                <label>De 10:00 am A 14:00 Hrs.</label>
+                <label>De 17:00 A 18:00 Hrs.</label>
+              </div>
+              <div class="schedule-day">
+                <label class="title">Viernes</label>
+                <label>De 10:00 am A 14:00 Hrs.</label>
+                <label>De 17:00 A 18:00 Hrs.</label>
+              </div>
+              <div class="schedule-day"></div>
+            </div>
+          </div>
+          <div *ngIf="false">
+            <app-without-results [title]="'eventConsole.messageDestiny' | translate"></app-without-results>
+          </div>
+          <div class="schedules-options" *ngIf="true">
+            <div class="container-schedule" *ngFor="let item of scheduleList; let i = index">
+              <div class="day">
+                <app-check-box [label]="item.Dia" [fontBold]="true" [fontSize]="'16px'"></app-check-box>
+              </div>
+              <div class="selected-schedule">
+                <label>De</label>
+                <app-drop-down-list
+                  [activeMinWidth]="false"
+                  [items]="morningHoursI"
+                  [itemSelected]="item.HoraInicioPrimerHorario"
+                  [placeholder]="'H:mm'"
+                ></app-drop-down-list>
+                <label>a</label>
+                <app-drop-down-list
+                  [activeMinWidth]="false"
+                  [items]="morningHoursF"
+                  [itemSelected]="item.HoraFinPrimerHorario"
+                  [placeholder]="'H:mm'"
+                ></app-drop-down-list>
+              </div>
+              <div class="selected-schedule">
+                <label>De</label>
+                <app-drop-down-list
+                  [activeMinWidth]="false"
+                  [placeholder]="'H:mm'"
+                  [items]="nightTimeI"
+                  [itemSelected]="item.HoraInicioSegundoHorario"
+                ></app-drop-down-list>
+                <label>a</label>
+                <app-drop-down-list
+                  [activeMinWidth]="false"
+                  [placeholder]="'H:mm'"
+                  [items]="nightTimeF"
+                  [itemSelected]="item.HoraFinSegundoHorario"
+                ></app-drop-down-list>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="data">
+        <div>
+          <label>*FRR</label>
+          <app-date-picker dateFormat="YYYYMMDD" [color]="false"></app-date-picker>
+        </div>
+        <div>
+          <label>{{ '*' + ('priorityConsole.priority' | translate) }}</label>
+          <app-drop-down-list class="priority" [items]="optionsPriority"></app-drop-down-list>
+        </div>
+      </div>
+      <div class="comments">
+        <app-generic-text-area
+          [title]="'eventConsole.additionalComment' | translate"
+          [height]="'113px'"
+        ></app-generic-text-area>
+      </div>
+    </div>
+    <div class="buttons">
+      <div class="btn" (click)="actionPop(false)">
+        <label>{{ 'common.cancel' | translate }}</label>
+      </div>
+      <div class="btnDisable" (click)="actionPop(true)">
+        <label>{{ 'common.accept' | translate }}</label>
+      </div>
+    </div>
+  </div>
+</app-pop-up-generic>

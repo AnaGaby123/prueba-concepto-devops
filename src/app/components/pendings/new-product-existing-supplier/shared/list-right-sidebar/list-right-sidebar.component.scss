@@ -1,0 +1,303 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  display: flex;
+}
+
+#right-sidebar {
+  @include s.flexRowNoWrap();
+  background-color: s.$main-proquifa-f;
+  height: 100%;
+  overflow: hidden;
+  width: 443px;
+
+  & > .content {
+    @include s.flexColumn();
+    min-width: 443px;
+    overflow: hidden;
+    position: relative;
+    width: auto;
+
+    & > .header-container {
+      background-color: s.$main-proquifa-c;
+      padding: 12px 0;
+
+      & > .header {
+        @include s.flexRow;
+        gap: 21px;
+        justify-content: center;
+
+        & > img {
+          height: 24px;
+        }
+
+        & > label {
+          @include s.responsive-font-format(
+            $color: s.$pqWhite,
+            $font-family: s.$font_family_roboto_bold,
+            $font-size-map: s.$responsive-font-20-20,
+            $font-weight: s.$font-weight-bold
+          );
+        }
+      }
+    }
+
+    & > .content {
+      @include s.flexColumn;
+      height: 100%;
+      margin: 24px 20px;
+      overflow-y: auto;
+
+      & > .history-chat {
+        flex: 0 0 200px;
+      }
+
+      & > .radios {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        padding: 24px 22px 0 22px;
+      }
+
+      & > .details,
+      & > .comments {
+        @include s.flexColumn;
+        gap: 12px;
+        padding: 16px 22px 0 22px;
+
+        & > .title {
+          background-color: s.$main-proquifa;
+          padding: 6.5px 8px;
+
+          & > label {
+            @include s.responsive-font-format(
+              $color: s.$pqWhite,
+              $font-family: s.$font_family_roboto_bold,
+              $font-size-map: s.$responsive-font-16-16,
+              $font-weight: s.$font-weight-bold
+            );
+          }
+        }
+      }
+
+      & > .details {
+        position: relative;
+
+        & > .container {
+          @include s.flexColumn;
+          background-color: s.$pqWhite;
+          border-radius: 8px;
+          border: 1px solid s.$main-proquifa;
+
+          & > .info-full {
+            padding: 12px 8px;
+
+            & > .details {
+              & > .product-logo-type {
+                @include s.flexRow;
+                column-gap: 3px;
+
+                & > .logo {
+                  height: 20px;
+                }
+
+                & > label {
+                  @include s.responsive-font-format(
+                    $color: s.$pqGreen,
+                    $font-family: s.$font-family_roboto_bold,
+                    $font-size-map: s.$responsive-font-16-16,
+                    $font-weight: s.$font-weight_bold
+                  );
+                  display: flex;
+                  align-items: center;
+                  flex: 1;
+                }
+
+                & > .trash {
+                  cursor: pointer;
+                  width: 15px;
+                  height: 20px;
+                }
+              }
+
+              & > .type-subtype {
+                margin-top: 4px;
+                @include s.responsive-font-format(
+                  $color: s.$pqBlack2,
+                  $font-family: s.$font-family_roboto_bold,
+                  $font-size-map: s.$responsive-font-14-14,
+                  $font-weight: s.$font-weight_bold
+                );
+              }
+
+              & > .description {
+                @include s.flexColumn;
+                border-bottom: 1px solid s.$dark-proquifa-d;
+                padding: 12px 0 16px 0;
+                row-gap: 12px;
+
+                & > label {
+                  @include s.responsive-font-format($font-size-map: s.$responsive-font-14-14);
+                  -webkit-box-orient: vertical;
+                  -webkit-line-clamp: 3;
+                  display: -webkit-box;
+                  overflow: hidden;
+                  text-align: start;
+                  text-overflow: ellipsis;
+                }
+
+                & > .totals {
+                  @include s.flexRowNoWrap;
+                  column-gap: 16px;
+
+                  & > .alternative,
+                  & > .complementary {
+                    & > label {
+                      @include s.responsive-font-format(
+                        $font-family: s.$font-family_roboto_bold,
+                        $font-size-map: s.$responsive-font-14-14,
+                        $font-weight: s.$font-weight_bold
+                      );
+                    }
+                  }
+
+                  & > .complementary {
+                    & > label {
+                      color: s.$main-proquifa;
+                    }
+                  }
+                }
+              }
+
+              & > .footer {
+                @include s.flexRow;
+                margin-top: 12px;
+
+                & > .presentation-details {
+                  @include s.flexColumn;
+                  flex: 1;
+                  gap: 5px;
+
+                  & > .presentation {
+                    @include s.responsive-font-format(
+                      $color: s.$dark-proquifa,
+                      $font-family: s.$font-family_roboto_bold,
+                      $font-size-map: s.$responsive-font-14-14,
+                      $font-weight: s.$font-weight_bold
+                    );
+                  }
+
+                  & > .use {
+                    @include s.responsive-font-format(
+                      $color: s.$dark-proquifa,
+                      $font-family: s.$font-family_roboto,
+                      $font-size-map: s.$responsive-font-14-14
+                    );
+                  }
+                }
+
+                & > .price {
+                  @include s.flexColumn;
+                  align-items: center;
+                  justify-content: center;
+
+                  & > label {
+                    @include s.responsive-font-format(
+                      $color: s.$main-proquifa,
+                      $font-family: s.$font-family_roboto_bold,
+                      $font-size-map: s.$responsive-font-17-17,
+                      $font-weight: s.$font-weight_bold
+                    );
+                  }
+                }
+              }
+            }
+          }
+
+          & > .info-empty {
+            align-items: center;
+            background: linear-gradient(to right, s.$dark-proquifa-e 3px, transparent 3px) 0 0,
+              linear-gradient(to right, s.$dark-proquifa-e 3px, transparent 3px) 0 100%,
+              linear-gradient(to left, s.$dark-proquifa-e 3px, transparent 3px) 100% 0,
+              linear-gradient(to left, s.$dark-proquifa-e 3px, transparent 3px) 100% 100%,
+              linear-gradient(to bottom, s.$dark-proquifa-e 3px, transparent 3px) 0 0,
+              linear-gradient(to bottom, s.$dark-proquifa-e 3px, transparent 3px) 100% 0,
+              linear-gradient(to top, s.$dark-proquifa-e 3px, transparent 3px) 0 100%,
+              linear-gradient(to top, s.$dark-proquifa-e 3px, transparent 3px) 100% 100%;
+            background-repeat: no-repeat;
+            background-size: 30px 30px;
+            display: flex;
+            height: 100%;
+            justify-content: center;
+            margin: 21px 25px;
+            text-align: center;
+
+            & > label {
+              @include s.responsive-font-format($font-size-map: s.$responsive-font-18-18, $color: s.$dark-proquifa-c);
+            }
+          }
+        }
+      }
+
+      & > .comments {
+        & > textarea {
+          border: 1px solid s.$dark-proquifa;
+          height: 121px;
+          width: 100%;
+        }
+      }
+
+      & > .buttons {
+        $max-width-map: (
+          'base': 205px,
+          'macBookAir': 345px,
+        );
+        @include s.flexColumn;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        padding: 40px 0 48px 0;
+
+        & > .accept {
+          @include s.pqfButton($max-width-map: $max-width-map);
+
+          &.disable {
+            @include s.pqfDisableButton($max-width-map: $max-width-map);
+          }
+        }
+
+        & > .cancel {
+          @include s.pqfButton($background-color: inherit, $font-color: s.$dark-proquifa, $max-width-map: $max-width-map);
+        }
+      }
+    }
+
+    & > .buttons {
+      $max-width-map: (
+        'base': 250px,
+        'macBookAir': 345px,
+      );
+      @include s.flexColumn;
+      align-items: center;
+      row-gap: 16px;
+      justify-content: center;
+      margin-bottom: 20px;
+
+      & > .accept {
+        @include s.pqfButton($max-width-map: $max-width-map);
+
+        &.disable {
+          @include s.pqfDisableButton($max-width-map: $max-width-map);
+        }
+      }
+
+      & > .cancel {
+        @include s.pqfButton($background-color: inherit, $font-color: s.$dark-proquifa, $max-width-map: $max-width-map);
+      }
+    }
+  }
+}

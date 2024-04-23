@@ -1,0 +1,322 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  height: 100%;
+  width: 100%;
+
+  & > #review {
+    @include s.flexRow;
+    @include s.absolute100;
+
+    & > .left,
+    & .scroll {
+      & > .title {
+        @include s.escaledFontFormat(s.$textSize15to21, bold, s.$pqBlack2);
+        @include s.Novecento-Bold;
+        margin-bottom: 8px;
+
+        &.ocean {
+          color: s.$pqGreen;
+        }
+      }
+
+      & > .subtitle {
+        @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+        @include s.Roboto-Bold;
+        margin-bottom: 7px;
+
+        & > .tooltip {
+          @include s.tooltip(auto, auto, auto, 100px);
+        }
+
+        & > span {
+          @include s.Roboto-Regular;
+          color: s.$pqGreen;
+          text-decoration: underline;
+          vertical-align: baseline;
+        }
+
+        & > label {
+        }
+      }
+    }
+
+    & > .left {
+      @include s.flexColumn;
+      background-color: s.$pqGray2;
+      flex: 0 0 50%;
+      overflow-y: auto;
+      padding: 30px 20px;
+
+      & > .loading {
+        @include s.flexRow;
+        @include s.absoluteCenter;
+        height: 100%;
+      }
+    }
+
+    & > .right {
+      @include s.flexColumn;
+      flex: 0 0 50%;
+
+      & > .scroll {
+        @include s.flexColumn;
+        flex: 1 1 auto;
+        overflow-y: auto;
+        padding: 30px 20px;
+
+        & > .warning {
+          background-color: rgba(s.$yellowWarning, 0.17);
+          margin-bottom: 7px;
+          padding: 15px;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+            @include s.Roboto-Regular;
+
+            & > span {
+              @include s.Roboto-Bold;
+              vertical-align: baseline;
+            }
+          }
+        }
+
+        & > .opacity {
+          @include s.flexRowNoWrap;
+          @include s.absoluteCenter;
+          background-color: rgba(s.$pqGreen, 0.05);
+          margin-bottom: 5px;
+          padding: 13px;
+
+          & > .title {
+            @include s.escaledFontFormat(s.$textSize15to21, bold, s.$pqBlack2);
+            @include s.Novecento-Bold;
+
+            & > span {
+              color: s.$pqGreen;
+              vertical-align: baseline;
+            }
+          }
+
+          & > .text {
+            @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+            @include s.Roboto-Bold;
+          }
+
+          & > .picker {
+            height: 25px;
+            margin-left: 10px;
+            width: 150px;
+          }
+        }
+
+        & > .inputs {
+          @include s.flexRowWrap;
+
+          & > * {
+            margin-bottom: 15px;
+          }
+
+          & > app-drop-down-list {
+            height: auto;
+          }
+
+          & > .w-60 {
+            flex: 0 1 55%;
+            padding-right: 20px;
+          }
+
+          & > .w-40 {
+            flex: 01 1 45%;
+          }
+
+          & > .w-100 {
+            flex: 0 1 100%;
+          }
+
+          & > .w-50 {
+            flex: 0 1 50%;
+            padding-right: 20px;
+
+            &:last-child {
+              padding-right: 0;
+            }
+          }
+
+          & > .w-25 {
+            flex: 0 1 25%;
+            padding-right: 20px;
+
+            &:last-child {
+              padding-right: 0;
+            }
+          }
+
+          & > .w-33 {
+            flex: 0 1 33.3%;
+            padding-right: 20px;
+
+            &:last-child {
+              padding-right: 0;
+            }
+          }
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize14to16, bold, s.$pqGreen);
+            @include s.Roboto-Regular;
+            cursor: pointer;
+            text-decoration: underline;
+          }
+
+          & > .schedules-pop {
+            & > app-custom-position-pop-up {
+              transition: all 0.4s ease-in-out;
+            }
+
+            & > ::ng-deep {
+              & .schedules {
+                padding: 5px 3px;
+
+                & > ul {
+                  & > li {
+                    @include s.escaledFontFormat(s.$textSize12to13, regular, s.$pqBlack2);
+                    @include s.Roboto-Regular;
+                    margin-bottom: 3px;
+                    white-space: pre-wrap;
+
+                    &:last-child {
+                      margin-bottom: 0;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        & > .schedules {
+          margin-bottom: 20px;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen);
+            @include s.Roboto-Regular;
+            text-decoration: underline;
+          }
+
+          & > .schedules-pop {
+            & > app-custom-position-pop-up {
+              transition: all 0.4s ease-in-out;
+            }
+
+            & ::ng-deep {
+              & .schedules {
+                padding: 5px 3px;
+
+                & > ul {
+                  & > li {
+                    @include s.escaledFontFormat(s.$textSize12to13, regular, s.$pqBlack2);
+                    @include s.Roboto-Regular;
+                    margin-bottom: 3px;
+                    white-space: pre-wrap;
+
+                    &:last-child {
+                      margin-bottom: 0;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        & > .files {
+          @include s.flexColumn;
+          padding: 15px 0 25px 0;
+
+          & > .input-container {
+            @include s.flexRowNoWrap;
+            align-items: center;
+            padding: 5px 0;
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize15to21, bold, s.$pqGreen);
+              @include s.Novecento-Bold;
+              margin-right: 10px;
+              white-space: pre;
+            }
+
+            & > app-generic-input-file {
+              max-width: 260px;
+            }
+          }
+
+          & > .files-container {
+            @include s.flexRowWrap;
+            padding: 5px;
+
+            & > .file {
+              @include s.flexRowNoWrap;
+              align-items: center;
+              border-radius: 15px;
+              margin-right: 13px;
+              padding: 5px 11px;
+
+              & > label {
+                @include s.escaledFontFormat(s.$textSize13to15, regular, s.$pqGreen);
+                @include s.Roboto-Regular;
+                margin-right: 5px;
+                max-width: 120px;
+                overflow: hidden;
+                text-decoration: underline;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+              }
+
+              & > img {
+                cursor: pointer;
+                height: 12px;
+                margin-left: 8px;
+              }
+            }
+          }
+        }
+      }
+
+      & > .fixed {
+        @include s.flexRowNoWrap;
+        border-top: 1px solid s.$pqBlack2;
+        flex: 0 0 auto;
+        justify-content: space-between;
+        margin: 0 20px;
+        padding: 18px 0;
+
+        & > .active-yellow {
+          @include s.pqButton($baseColor: s.$orange2);
+        }
+
+        & > .active-green {
+          @include s.pqButton($baseColor: s.$pqGreen2, $min-width: 195px, $max-width: 275px);
+        }
+
+        & > .active-green-small {
+          @include s.pqButton($baseColor: s.$pqGreen2);
+        }
+
+        & > .active-ocean {
+          @include s.pqButton();
+        }
+
+        & > .disabled-ocean {
+          @include s.pqButtonDisable();
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+    }
+  }
+}

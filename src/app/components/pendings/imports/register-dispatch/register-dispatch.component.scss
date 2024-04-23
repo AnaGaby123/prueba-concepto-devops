@@ -1,0 +1,22 @@
+@use 'base' as s;
+
+:host {
+  @include s.generic-main-component-structure;
+
+  & > #register-dispatch-container {
+    & > .footer {
+      & > div {
+        & > .label-dark {
+          @include s.Roboto-Bold;
+          @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+          padding-right: 4px;
+        }
+
+        & > .label-normal {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+        }
+      }
+    }
+  }
+}

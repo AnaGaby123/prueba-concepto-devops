@@ -1,0 +1,224 @@
+<div id="general-data-customs-agents">
+  <div class="general-data">
+    <div class="top-content">
+      <div class="image">
+        <img
+          [src]="(customAgent$ | async)?.Activo ? 'assets/Images/cargar_foto.svg' : 'assets/Images/cargar_foto_disabled.svg'"
+        />
+      </div>
+      <div class="image-content">
+        <label *ngIf="!(editMode$ | async); else check">{{ 'customsAgents.agentEnabled' | translate }}</label>
+        <ng-template #check>
+          <app-check-box
+            [label]="
+              !(enableEdit$ | async)
+                ? (customAgent$ | async)?.Activo
+                  ? ('customsAgents.agentEnabled' | translate)
+                  : ('customsAgents.agentDisable' | translate)
+                : ('customsAgents.agentEnable' | translate)
+            "
+            [fontBold]="true"
+            [fontSize]="(viewType$ | async) === viewTypes.small ? '13px' : '16px'"
+            [fontColor]="(enableEdit$ | async) ? '#008894' : (customAgent$ | async)?.Activo ? '#39b54a' : '#A0A0A0'"
+            [enabledIconSelected]="false"
+            [check]="(customAgent$ | async)?.Activo"
+            [enableEdit]="(editMode$ | async) && (enableEdit$ | async)"
+            [readOnlyCheckImage]="
+              !(enableEdit$ | async) ? 'assets/Images/check-empty-green-light.svg' : 'assets/Images/check.svg'
+            "
+            (event)="setNewCustomerData('Activo', $event)"
+          >
+          </app-check-box>
+        </ng-template>
+      </div>
+      <div class="date-content">
+        <app-generic-input
+          [label]="'formBrand.general.registerDate' | translate"
+          [value]="(customAgent$ | async)?.FechaRegistro | dateFormatSlash"
+          [enableEdit]="false"
+          [font]="'Roboto-Bold '"
+          [labelFont]="'Roboto-Regular !important'"
+          [fontColor]="'#008894'"
+        >
+        </app-generic-input>
+      </div>
+      <div>
+        <app-generic-input
+          [label]="
+            (enableEdit$ | async) || (editMode$ | async)
+              ? ('customsAgents.tradeName' | translate)
+              : ('customsAgents.tradeName' | translate)
+          "
+          [enableEdit]="enableEdit$ | async"
+          [value]="(customAgent$ | async)?.NombreComercial"
+          [required]="true"
+          [maxlength]="50"
+          [minlength]="3"
+          [typeValidation]="validators.AlphaAndSpacesAndNumbers"
+          (textData)="setNewCustomerData('NombreComercial', $event)"
+        ></app-generic-input>
+      </div>
+      <div>
+        <app-generic-input
+          [label]="
+            (enableEdit$ | async) || (editMode$ | async)
+              ? ('customsAgents.longOrLegalName' | translate)
+              : ('customsAgents.longOrLegalName' | translate)
+          "
+          [enableEdit]="enableEdit$ | async"
+          [value]="(customAgent$ | async)?.NombreLegal"
+          [required]="true"
+          [maxlength]="50"
+          [minlength]="3"
+          [typeValidation]="validators.AlphaAndSpacesAndNumbers"
+          (textData)="setNewCustomerData('NombreLegal', $event)"
+        ></app-generic-input>
+      </div>
+      <div>
+        <app-generic-input
+          [label]="
+            (enableEdit$ | async) || (editMode$ | async)
+              ? ('customsAgents.patentNumber' | translate)
+              : ('customsAgents.patentNumber' | translate)
+          "
+          [enableEdit]="enableEdit$ | async"
+          [value]="(customAgent$ | async)?.NumeroPatente"
+          [maxlength]="4"
+          [minlength]="4"
+          [required]="true"
+          [typeValidation]="validators.Number"
+          (textData)="setNewCustomerData('NumeroPatente', $event)"
+        ></app-generic-input>
+      </div>
+      <div class="description">
+        <app-generic-input
+          [label]="
+            (enableEdit$ | async) || (editMode$ | async)
+              ? ('customsAgents.extendedDescription' | translate)
+              : ('customsAgents.extendedDescription' | translate)
+          "
+          [enableEdit]="enableEdit$ | async"
+          [typeValidation]="validators.AlphaAndSpaces"
+          [value]="(customAgent$ | async)?.DescripcionAmpliada"
+          [maxlength]="280"
+          [minlength]="3"
+          (textData)="setNewCustomerData('DescripcionAmpliada', $event)"
+        ></app-generic-input>
+      </div>
+    </div>
+    <div class="aqua-content">
+      <div class="content">
+        <div class="subtitle">
+          <label>{{ 'common.address' | translate }}</label>
+        </div>
+        <div class="text">
+          <div>
+            <app-drop-down-list
+              [itemSelected]="countrySelected$ | async"
+              [items]="catCountry$ | async"
+              [enableEdit]="enableEdit$ | async"
+              [label]="'attendReview.country' | translate"
+              [required]="true"
+              [isSearchable]="true"
+              (valueDropList)="setNewCustomerData('IdCatPais', $event)"
+            >
+            </app-drop-down-list>
+          </div>
+          <div>
+            <app-generic-input
+              [enableEdit]="enableEdit$ | async"
+              [label]="
+                (editMode$ | async) || (enableEdit$ | async)
+                  ? ('customsAgents.city' | translate)
+                  : ('customsAgents.city' | translate)
+              "
+              [value]="(customAgent$ | async)?.Ciudad"
+              [required]="true"
+              [typeValidation]="validators.AlphaAndSpaces"
+              [maxlength]="50"
+              [minlength]="3"
+              (textData)="setNewCustomerData('Ciudad', $event)"
+            ></app-generic-input>
+          </div>
+          <div>
+            <app-generic-input
+              [enableEdit]="enableEdit$ | async"
+              [label]="
+                (editMode$ | async) || (enableEdit$ | async) ? ('common.state' | translate) : ('common.state' | translate)
+              "
+              [value]="(customAgent$ | async)?.Estado"
+              [required]="true"
+              [typeValidation]="validators.AlphaAndSpaces"
+              [maxlength]="50"
+              [minlength]="3"
+              (textData)="setNewCustomerData('Estado', $event)"
+            ></app-generic-input>
+          </div>
+          <div>
+            <app-generic-input
+              [enableEdit]="enableEdit$ | async"
+              [label]="
+                (editMode$ | async) || (enableEdit$ | async)
+                  ? ('customsAgents.postalCode' | translate)
+                  : ('customsAgents.postalCode' | translate)
+              "
+              [value]="(customAgent$ | async)?.CodigoPostal"
+              [required]="true"
+              [forceActiveErrors]="!(zipValidation$ | async)"
+              [activeErrors]="!(zipValidation$ | async)"
+              [typeValidation]="validators.Number"
+              [isDisable]="enableZipCodeInput$ | async"
+              [maxlength]="5"
+              [minlength]="5"
+              (textData)="setNewCustomerData('CodigoPostal', $event)"
+            ></app-generic-input>
+          </div>
+          <div>
+            <app-generic-input
+              [enableEdit]="enableEdit$ | async"
+              [label]="
+                (editMode$ | async) || (enableEdit$ | async)
+                  ? ('customsAgents.addressLine' | translate)
+                  : ('customsAgents.addressLine' | translate)
+              "
+              [value]="(customAgent$ | async)?.DireccionTextoUno"
+              [typeValidation]="validators.AlphaAndSpacesAndNumbers"
+              [truncateText]="true"
+              [maxlength]="140"
+              [minlength]="3"
+              (textData)="setNewCustomerData('DireccionTextoUno', $event)"
+            ></app-generic-input>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="required-data">
+      <label *ngIf="enableEdit$ | async">* {{ 'common.requiredField' | translate }}</label>
+    </div>
+  </div>
+  <div class="contacts">
+    <div class="title">
+      <label>{{ 'formClient.step1.contacts' | translate }}</label>
+    </div>
+    <div class="contacts-container">
+      <virtual-scroller [items]="contacts$ | async" (vsUpdate)="contactsScroll = $event">
+        <app-contact-item
+          *ngFor="let contact of contactsScroll; let i = index; trackBy: handleTrackByContact"
+          [contact]="buildContact(contact)"
+          [enableEdit]="enableEdit$ | async"
+          (clickOnContact)="handleClickOnContact(contact)"
+          (disableContact)="handleDisableContact(contact)"
+        ></app-contact-item>
+        <app-contact-item
+          *ngIf="enableEdit$ | async"
+          [enableEdit]="enableEdit$ | async"
+          [contact]="null"
+          (clickOnPlus)="handleClickOnPlus()"
+        ></app-contact-item>
+      </virtual-scroller>
+    </div>
+    <div class="required-contacts">
+      <label>{{ 'customsAgents.requiredContactsMessage' | translate }}</label>
+    </div>
+  </div>
+</div>

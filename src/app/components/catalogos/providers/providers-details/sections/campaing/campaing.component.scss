@@ -1,0 +1,364 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  /*& > .container {
+    height: 100%;
+    width: calc(100% - 20px);
+    @include flexRow;
+
+    & > .container-campaing {
+      height: 100%;
+      width: 55%;
+      padding: 0 20px 0 20px;
+
+      & > .title {
+        padding: 0 0 10px 0;
+        & > label {
+          @include Novecento-Bold;
+          @include escaledFontFormatImportant($textSize18to24, bold, $pqBlack2);
+        }
+      }
+
+      & > .campaing-list {
+        height: calc(100% - 250px);
+      }
+
+      & > .header-botonera {
+        height: 40px;
+      }
+
+      & > .search-bar {
+        padding: 20px 0 20px 0;
+      }
+
+      & > .campaing-list-footer {
+        height: 70px;
+        border-top: solid 1px #1a1a1a;
+        @include flexColumn;
+        align-items: center;
+        justify-content: space-around;
+        padding: 10px 0 10px 0;
+
+        & > .campaing-number {
+          & > label {
+            @include Roboto-Regular;
+            @include escaledFontFormatImportant($textSize12to14, regular, $pqBlack2);
+          }
+        }
+
+        & > .btn {
+          & > button {
+            &.enable {
+              @include pqButton($min-width: 150px, $max-width: 170px);
+            }
+            &.disable {
+              @include pqButtonDisable($min-width: 150px, $max-width: 170px);
+            }
+          }
+        }
+      }
+    }
+
+    & > .container-campaing-detalle {
+      height: calc(100% - 10px);
+      padding: 10px 20px 0 20px;
+      width: 45%;
+      background: #eceef0;
+      @include flexColumn();
+      padding: 10px 20px 0 20px;
+      & .campaign-details-title {
+        height: 21px;
+        padding: 0 0 20px 0;
+        & > label {
+          @include Novecento-Bold;
+          @include escaledFontFormatImportant($textSize18to24, bold, $pqBlack2);
+        }
+      }
+      & .campaign-details-middle {
+        height: calc(100% - 460px);
+        padding: 0 0 10px 0;
+        & > :nth-child(1) {
+          height: 8%;
+          border-bottom: solid 1px #1a1a1b;
+          padding: 0 0 15px;
+          & > :nth-child(1) {
+            @include Roboto-Bold;
+            @include escaledFontFormatImportant($textSize18to21, bold, $pqGreen);
+          }
+          & > :nth-child(2) {
+            @include Roboto-Bold;
+            @include escaledFontFormatImportant($textSize18to21, bold, $pqBlack2);
+          }
+        }
+        & > .campaigns-details-middle-data {
+          height: 87%;
+          @include flexColumn();
+          justify-content: space-around;
+          & > div {
+            @include flexColumn();
+            & > :nth-child(1) {
+              @include Roboto-Bold;
+              @include escaledFontFormatImportant($textSize14to17, bold, $pqBlack2);
+            }
+            & > :nth-child(2) {
+              @include Roboto-Regular;
+              @include escaledFontFormatImportant($textSize14to17, regular, $pqBlack2);
+            }
+          }
+        }
+      }
+      & .campaign-details-items {
+        height: calc(100% - 338px);
+        & > :nth-child(1) {
+          border-bottom: solid 1px #1a1a1b;
+          padding: 0 0 15px;
+          & label {
+            @include Roboto-Bold;
+            @include escaledFontFormatImportant($textSize18to21, bold, $pqGreen);
+          }
+        }
+        & > :nth-child(2) {
+          border-top: solid 0px #1a1a1a;
+        }
+        .loadingContainer-custom {
+          align-items: center;
+          height: 100%;
+        }
+      }
+      & > .campaing-list-footer {
+        height: calc(100% - 812px);
+        border-top: solid 1px #1a1a1a;
+        @include flexColumn;
+        align-items: center;
+        justify-content: space-around;
+        padding: 10px 0 10px 0;
+
+        & > .campaing-number {
+          & > label {
+            @include Roboto-Regular;
+            @include escaledFontFormatImportant($textSize12to14, regular, $pqBlack2);
+          }
+        }
+      }
+    }
+    .campaing-list {
+      overflow: auto;
+      border-top: solid 1px #1a1a1a;
+      height: calc(100% - 60px);
+
+      .listContainer {
+        @include flexColumn;
+        flex: 1 1 auto;
+
+        .items-background {
+          background: #eceef0;
+        }
+
+        .indicator {
+          width: 7px;
+          height: 100%;
+
+          &.selected {
+            background-color: $pqGreen;
+          }
+        }
+
+        & > .items {
+          @include flexRow;
+          height: 100px;
+          align-items: center;
+          border-bottom: 1px solid $pqGray2;
+          &:hover {
+            background-color: $pqGray2;
+          }
+          & > .item-content {
+            @include flexRow;
+            justify-content: space-between;
+            flex: 1;
+            padding-left: 20px;
+            & > .text {
+              & > :nth-child(1) {
+                & > :nth-child(1) {
+                  @include Roboto-Bold;
+                  @include escaledFontFormatImportant($textSize14to17, bold, $pqGreen);
+                }
+
+                & > :nth-child(2) {
+                  @include Roboto-Bold;
+                  @include escaledFontFormatImportant($textSize14to17, bold, $pqBlack2);
+                }
+              }
+
+              & > :nth-child(2) {
+                padding: 2px 0;
+
+                & > :nth-child(1) {
+                  @include Roboto-Regular;
+                  @include escaledFontFormatImportant($textSize14to17, regular, $pqBlack2);
+                }
+              }
+
+              & > :nth-child(3) {
+                & > :nth-child(1) {
+                  @include Roboto-Bold;
+                  @include escaledFontFormatImportant($textSize14to17, bold, $pqGreen);
+                }
+              }
+            }
+
+            & > .active {
+              align-items: center;
+              display: flex;
+
+              label {
+                @include Roboto-Bold;
+                @include escaledFontFormatImportant($textSize14to17, bold, $pqGreen2);
+              }
+            }
+
+            & > .inactive {
+              @include flexRow;
+              align-items: center;
+
+              label {
+                @include Roboto-Bold;
+                @include escaledFontFormatImportant($textSize14to17, bold, $gnRojoSemaforo);
+              }
+            }
+
+            & > .actions {
+              @include flexRow;
+              align-items: center;
+
+              & > div {
+                padding: 0 15px 0 0;
+
+                & > img {
+                  cursor: pointer;
+                }
+              }
+
+              & > :nth-child(1) {
+                padding: 0 30px 0 0;
+              }
+            }
+          }
+        }
+      }
+    }
+    .campaing-list-trademark {
+      overflow: auto;
+      border-top: solid 1px #eceef0;
+      height: calc(100% - 60px);
+      & > virtual-scroller::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 0 !important;
+      }
+      & > virtual-scroller {
+        height: 100%;
+      }
+      .items-background {
+        background: #eceef0;
+      }
+      .items {
+        @include flexRow;
+        justify-content: space-between;
+        height: 100px;
+        padding: 0 10px 0 10px;
+        align-items: center;
+        & > .text {
+          padding: 0 20px 0 0;
+          & > :nth-child(1) {
+            & > :nth-child(1) {
+              @include Roboto-Bold;
+              @include escaledFontFormatImportant($textSize14to17, bold, $pqGreen);
+            }
+            & > :nth-child(2) {
+              @include Roboto-Bold;
+              @include escaledFontFormatImportant($textSize14to17, bold, $pqBlack2);
+            }
+          }
+          & > :nth-child(2) {
+            & > :nth-child(even) {
+              @include Roboto-Regular;
+              @include escaledFontFormatImportant($textSize14to17, regular, $pqBlack2);
+            }
+          }
+          & > :nth-child(2) {
+            & > :nth-child(odd) {
+              @include Roboto-Regular;
+              @include escaledFontFormatImportant($textSize14to17, regular, $pqGreen);
+            }
+          }
+          & > :nth-child(3) {
+            & > :nth-child(1) {
+              @include Roboto-Regular;
+              @include escaledFontFormatImportant($textSize14to17, regular, $pqGreen);
+            }
+          }
+        }
+      }
+    }
+
+    .disable {
+      pointer-events: none;
+    }
+  }
+  & > .without-results {
+    @include flexRow;
+    height: 100%;
+    & > app-without-results {
+      @include flexRow;
+    }
+  }
+
+  & > .items-product {
+    @include flexRow;
+    justify-content: space-between;
+    height: 100px;
+    align-items: center;
+    & > .text {
+      & > :nth-child(1) {
+        & > :nth-child(1) {
+          @include Roboto-Bold;
+          @include escaledFontFormatImportant($textSize14to17, bold, $pqGreen);
+        }
+        & > :nth-child(2) {
+          @include Roboto-Bold;
+          @include escaledFontFormatImportant($textSize14to17, bold, $pqBlack2);
+        }
+      }
+      & > :nth-child(2) {
+        & > :nth-child(even) {
+          @include Roboto-Regular;
+          @include escaledFontFormatImportant($textSize14to17, regular, $pqBlack2);
+        }
+      }
+      & > :nth-child(2) {
+        & > :nth-child(odd) {
+          @include Roboto-Regular;
+          @include escaledFontFormatImportant($textSize14to17, regular, $pqGreen);
+        }
+      }
+      & > :nth-child(3) {
+        & > :nth-child(1) {
+          @include Roboto-Regular;
+          @include escaledFontFormatImportant($textSize14to17, regular, $pqGreen);
+        }
+      }
+    }
+  }
+
+  & > .loader {
+    @include flexRow;
+    height: 100%;
+    & > app-loading {
+      @include flexRow;
+    }
+  }*/
+}

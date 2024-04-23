@@ -1,0 +1,227 @@
+<div class="container">
+  <div class="container-times">
+    <ng-container *ngIf="!isEmpty(route$ | async); else withoutResults">
+      <div class="left-container">
+        <label class="green-title">
+          {{ (route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.RutaEntrega }}: Tiempos en días hábiles
+        </label>
+
+        <label>* Pedido a compra</label>
+        <app-generic-input
+          class="input"
+          [maxlength]="10"
+          [placeholder]="'0'"
+          [textAlign]="'center'"
+          [typeValidation]="inputValidators.Int"
+          [value]="(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasPedidoACompra"
+          (textData)="handleLogisticTimesChange($event, fields.DiasPedidoACompra)"
+        ></app-generic-input>
+
+        <label
+          [ngClass]="
+            !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega?.DiasPedidoACompra &&
+            !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasCompraAEmbarque
+              ? 'text-gray'
+              : ''
+          "
+          >* Compra a Embarque
+        </label>
+        <app-generic-input
+          class="input"
+          [isDisable]="
+            !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasPedidoACompra &&
+            !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasCompraAEmbarque
+          "
+          [maxlength]="10"
+          [placeholder]="'0'"
+          [textAlign]="'center'"
+          [typeValidation]="inputValidators.Int"
+          [value]="(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasCompraAEmbarque"
+          (textData)="handleLogisticTimesChange($event, fields.DiasCompraAEmbarque)"
+        ></app-generic-input>
+
+        <label
+          [ngClass]="
+            !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasCompraAEmbarque &&
+            !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasEmbarqueAArribo
+              ? 'text-gray'
+              : ''
+          "
+          >* Embarque a Arribo</label
+        >
+        <app-generic-input
+          class="input"
+          [isDisable]="
+            !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasCompraAEmbarque &&
+            !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasEmbarqueAArribo
+          "
+          [maxlength]="10"
+          [placeholder]="'0'"
+          [textAlign]="'center'"
+          [typeValidation]="inputValidators.Int"
+          [value]="(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasEmbarqueAArribo"
+          (textData)="handleLogisticTimesChange($event, fields.DiasEmbarqueAArribo)"
+        ></app-generic-input>
+
+        <ng-container *ngIf="!isMexican">
+          <label
+            [ngClass]="
+              !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasEmbarqueAArribo &&
+              !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasConsolidacionPharma
+                ? 'text-gray'
+                : ''
+            "
+            >* Consolidación Pharma</label
+          >
+          <app-generic-input
+            class="input"
+            [isDisable]="
+              !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasConsolidacionPharma &&
+              !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasEmbarqueAArribo
+            "
+            [maxlength]="10"
+            [placeholder]="'0'"
+            [textAlign]="'center'"
+            [typeValidation]="inputValidators.Int"
+            [value]="(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasConsolidacionPharma"
+            (textData)="handleLogisticTimesChange($event, fields.DiasConsolidacionPharma)"
+          ></app-generic-input>
+        </ng-container>
+
+        <label
+          [ngClass]="
+            (isMexican &&
+              !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasArriboAImportacion &&
+              !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasEmbarqueAArribo) ||
+            (!isMexican &&
+              !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasConsolidacionPharma &&
+              !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasArriboAImportacion)
+              ? 'text-gray'
+              : ''
+          "
+          >{{ isMexican ? '* Arribo a Almacén' : '* Arribo a Importación' }}</label
+        >
+        <app-generic-input
+          class="input"
+          [isDisable]="
+            isMexican
+              ? !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasArriboAImportacion &&
+                !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasEmbarqueAArribo
+              : !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasConsolidacionPharma &&
+                !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasArriboAImportacion
+          "
+          [maxlength]="10"
+          [placeholder]="'0'"
+          [textAlign]="'center'"
+          [typeValidation]="inputValidators.Int"
+          [value]="(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasArriboAImportacion"
+          (textData)="handleLogisticTimesChange($event, fields.DiasArriboAImportacion)"
+        ></app-generic-input>
+
+        <ng-container *ngIf="!isMexican">
+          <label
+            [ngClass]="
+              !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasImportacionAAlmacen &&
+              !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasArriboAImportacion
+                ? 'text-gray'
+                : ''
+            "
+            >* Importación a Almacén</label
+          >
+          <app-generic-input
+            class="input"
+            [isDisable]="
+              !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasImportacionAAlmacen &&
+              !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasArriboAImportacion
+            "
+            [maxlength]="10"
+            [placeholder]="'0'"
+            [textAlign]="'center'"
+            [typeValidation]="inputValidators.Int"
+            [value]="(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasImportacionAAlmacen"
+            (textData)="handleLogisticTimesChange($event, fields.DiasImportacionAAlmacen)"
+          ></app-generic-input>
+        </ng-container>
+
+        <label
+          [ngClass]="
+            !isMexican
+              ? !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasImportacionAAlmacen &&
+                !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasAlmacenAInspeccion
+                ? 'text-gray'
+                : ''
+              : !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasAlmacenAInspeccion &&
+                !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasArriboAImportacion
+              ? 'text-gray'
+              : ''
+          "
+          >* Almacén a Inspección</label
+        >
+        <app-generic-input
+          class="input"
+          [isDisable]="
+            isMexican
+              ? !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasAlmacenAInspeccion &&
+                !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasArriboAImportacion
+              : !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasAlmacenAInspeccion &&
+                !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasImportacionAAlmacen
+          "
+          [maxlength]="10"
+          [placeholder]="'0'"
+          [textAlign]="'center'"
+          [typeValidation]="inputValidators.Int"
+          [value]="(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasAlmacenAInspeccion"
+          (textData)="handleLogisticTimesChange($event, fields.DiasAlmacenAInspeccion)"
+        ></app-generic-input>
+        <label
+          [ngClass]="
+            !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasAlmacenAInspeccion &&
+            !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasInspeccionAEmbalaje
+              ? 'text-gray'
+              : ''
+          "
+          >* Inspección a Embalaje</label
+        >
+        <app-generic-input
+          class="input"
+          [isDisable]="
+            !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasAlmacenAInspeccion &&
+            !(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasInspeccionAEmbalaje
+          "
+          [maxlength]="10"
+          [placeholder]="'0'"
+          [style.font-family]="'Roboto-regular-bold'"
+          [textAlign]="'center'"
+          [typeValidation]="inputValidators.Int"
+          [value]="(route$ | async)?.configuracionTiempoEntregaProveedorFamiliaRutaEntrega.DiasInspeccionAEmbalaje"
+          (textData)="handleLogisticTimesChange($event, fields.DiasInspeccionAEmbalaje)"
+        ></app-generic-input>
+      </div>
+      <div class="right-container">
+        <div class="rectangle">
+          <label>tiempo logístico:</label>
+          <label
+            >{{ (sumLogisticTimes$ | async)?.timeLogistics }}
+            {{ (sumLogisticTimes$ | async)?.timeLogistics === 1 ? 'día' : 'días' }}</label
+          >
+        </div>
+        <div class="rectangle green">
+          <label>tiempo comercial:</label>
+          <label
+            >{{ (sumLogisticTimes$ | async)?.timeCommerce }}
+            {{ (sumLogisticTimes$ | async)?.timeCommerce === 1 ? 'día' : 'días' }}</label
+          >
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #withoutResults>
+      <app-without-results
+        class="message"
+        [title]="'formProvider.step8.notSelectedDeliveryRouteMessage' | translate"
+      ></app-without-results>
+    </ng-template>
+  </div>
+  <div class="container-text">
+    <label class="LabelDates">* Datos obligatorios</label>
+  </div>
+</div>

@@ -1,0 +1,99 @@
+<div id="register-dispatch-details-container">
+  <div class="top-container">
+    <div class="left-container">
+      <label class="title">{{ 'registerDispatch.dispatchOrders' | translate }}</label>
+      <div class="filters">
+        <app-search [placeholder]="'registerDispatch.dispatchOrders' | translate" [searchTerm]=""></app-search>
+      </div>
+      <div class="list-container">
+        <virtual-scroller
+          *ngIf="(detailsNode$ | async)?.dispatchOrdersStatus === 3 && !lodashIsEmpty(dispatchOrders$ | async)"
+          [items]="dispatchOrders$ | async"
+          (vsUpdate)="dispatchOrders = $event"
+        >
+          <div
+            class="item-oc"
+            *ngFor="let order of dispatchOrders; trackBy: handleTrackBy"
+            (click)="selectOrder(order.IdImpOrdenDespacho)"
+          >
+            <div class="indicator" [ngClass]="order.isSelected && 'selected'"></div>
+            <div class="info">
+              <label
+                >#{{ order.Index + 1 }} · <span>{{ order.Folio || 'N/D' }}</span> · {{ order.Proveedores }}
+                {{ order.Proveedores === 1 ? ('common.provider' | translate) : ('common.providers' | translate) }}
+              </label>
+              <label
+                >{{ order.Piezas }} {{ order.Piezas === 1 ? ('common.pza' | translate) : ('common.pzas' | translate) }} ·
+                {{ order.MontoTotalUSD | currency: 'USD':'symbol-narrow':'1.2-2' }}</label
+              >
+              <label class="fee">FEE+: {{ order.FechaEstimadaDeEntrega | dateFormatSlashShort }}</label>
+            </div>
+            <div class="image">
+              <img
+                [src]="
+                  order.ATiempo
+                    ? 'assets/Images/labels/en-tiempo.svg'
+                    : order.UrgenteTiempo
+                    ? 'assets/Images/labels/urgente.svg'
+                    : 'assets/Images/labels/fuera-de-tiempo.svg'
+                "
+                alt=""
+              />
+            </div>
+          </div>
+        </virtual-scroller>
+        <div class="loading" *ngIf="(detailsNode$ | async)?.dispatchOrdersStatus === 1">
+          <app-loading></app-loading>
+        </div>
+        <div
+          class="loading"
+          *ngIf="(detailsNode$ | async)?.dispatchOrdersStatus !== 1 && lodashIsEmpty(dispatchOrders$ | async)"
+        >
+          <app-without-results></app-without-results>
+        </div>
+      </div>
+      <div class="totals">
+        <label>#{{ (totalsList$ | async)?.number }}</label>
+        <label
+          >{{ (totalsList$ | async)?.pieces | currency: 'USD':'':'1.0-0' }}
+          {{ (totalsList$ | async)?.pieces === 1 ? ('common.piece' | translate) : ('common.pieces' | translate) }}</label
+        >
+        <label
+          >{{ 'common.totalAmount' | translate }}:
+          {{ (totalsList$ | async)?.amount | currency: 'USD':'symbol-narrow':'1.2-2' }} USD</label
+        >
+      </div>
+    </div>
+    <div class="right-container" [ngSwitch]="actualStep$ | async">
+      <app-table *ngSwitchCase="1"></app-table>
+      <app-barcode *ngSwitchCase="2"></app-barcode>
+      <app-configuration *ngSwitchCase="3"></app-configuration>
+    </div>
+  </div>
+  <footer class="bottom-container">
+    <div>
+      <label class="bold">OC: </label>
+      <label>{{ 'registerDispatch.dispatchOrder' | translate }}</label>
+    </div>
+    <div>
+      <label class="bold">LA: </label>
+      <label>{{ 'registerDispatch.arrivalList' | translate }}</label>
+    </div>
+    <div>
+      <label class="bold">VAC: </label>
+      <label>{{ 'registerDispatch.commercialValue' | translate }}</label>
+    </div>
+    <div>
+      <label class="bold">FTE: </label>
+      <label>{{ 'registerDispatch.freight' | translate }}</label>
+    </div>
+    <div>
+      <label class="bold">VAD: </label>
+      <label>{{ 'registerDispatch.customsValue' | translate }}</label>
+    </div>
+    <div>
+      <label class="bold">IMP: </label>
+      <label>{{ 'registerDispatch.tax' | translate }}</label>
+    </div>
+  </footer>
+</div>

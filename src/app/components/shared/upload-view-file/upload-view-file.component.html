@@ -1,0 +1,36 @@
+<div class="principal">
+  <div class="cargaDoc" [ngClass]="!activePadding ? 'disablePadding' : ''" *ngIf="datasFile.path === ''">
+    <input
+      type="file"
+      class="carga"
+      (change)="fileChange($event)"
+      id="cargarDocumento"
+      accept="application/pdf"
+      [disabled]="isDisable"
+    />
+    <label for="cargarDocumento" style="display: flex;" *ngIf="firstUpload" class="cargarDocumento">
+      <img alt="" src="assets/Images/cargar_archivo.svg" class="imgeArchivo" />
+      <p class="extension">.pdf</p>
+      <p class="textoImagen">{{ datasFile.titulo }}</p>
+      <p class="textoImagen">{{ text }}</p>
+    </label>
+  </div>
+  <div class="cargaDoc" [ngClass]="!activePadding ? 'disablePadding' : ''" *ngIf="datasFile.path !== ''">
+    <div class="vistDoc" [style.padding]="internalPadding">
+      <div class="contenidoDoc">
+        <iframe
+          id="visor"
+          #visor
+          type="application/pdf"
+          width="100%"
+          height="100%"
+          importance="high"
+          pluginspage="http://www.adobe.com/products/acrobat/readstep2.html"
+        ></iframe>
+        <div class="reloadFile" *ngIf="showReplaceFile">
+          <img alt="" src="assets/Images/cargar.svg" (click)="deleteFile()" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

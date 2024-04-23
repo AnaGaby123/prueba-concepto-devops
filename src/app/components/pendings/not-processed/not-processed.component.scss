@@ -1,0 +1,69 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.generic-main-component-structure;
+
+  & > #not-processed-container {
+    & > .footer {
+      & > .tooltip {
+        @include s.tooltip(auto, auto, auto, 150px, $trianglePosition: 'top');
+
+        & > label {
+          @include s.Roboto-Bold;
+          @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+        }
+
+        & > .tooltip-text {
+          min-width: max-content !important;
+
+          & > p {
+            width: 100% !important;
+          }
+        }
+      }
+
+      & > div {
+        & > label {
+          line-height: normal;
+        }
+
+        & > .title {
+          @include s.Roboto-Bold;
+          @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+          white-space: pre;
+        }
+
+        & > label:nth-of-type(2),
+        .text {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize12to14, normal, s.$pqBlack2);
+        }
+
+        & > img {
+          @include s.imageIconResponsiveSize;
+          margin-right: 5px;
+        }
+
+        & > .fea-green {
+          color: s.$pqGreen2;
+        }
+
+        & > .fea-yellow {
+          color: s.$yellowMustard;
+        }
+
+        & > .fea-red {
+          color: s.$pqTextAlert;
+        }
+
+        & > .fea-purple {
+          color: s.$purple;
+        }
+      }
+    }
+  }
+}

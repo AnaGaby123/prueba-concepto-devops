@@ -1,0 +1,40 @@
+<div class="menu">
+  <div
+    *ngFor="let filtro of filters; let i = index"
+    [ngClass]="filtro.isSelected ? 'filter-item selected' : 'filter-item not-selected'"
+    (click)="filtro.hasOptions ? showDrop(i, $event, filtro) : sendEvent(filtro.label, 2, i, filtro, '', $event)"
+    id="{{ 'img' + filtro.label }}"
+    [style.width]="100 / filters.length + '%'"
+  >
+    <img *ngIf="!filtro.isSelected" class="dropbtn" src="{{ filtro.imgUrl }}" alt="1" />
+    <img *ngIf="!filtro.isSelected" class="dropbtnHover" src="{{ filtro.imgUrlSelected }}" alt="2" />
+    <img
+      *ngIf="filtro.isSelected"
+      class="dropbtn"
+      [src]="filtro.imgUrlSelected ? filtro.imgUrlSelected : filtro.imgUrl"
+      alt="3"
+    />
+    <p class="filter-label"
+      >{{ filtro.label }}
+      <span class="filter-label" *ngIf="filtro.selected">
+        · {{ filtro.selected }}
+        <img
+          *ngIf="filtro.hasOptions"
+          alt=""
+          src="assets/Images/arrows/flecha.svg"
+          style="padding-bottom: 2px;"
+          (click)="showDrop(i, $event, filtro)"
+          id="{{ 'img' + filtro.label }}"
+        />
+      </span>
+    </p>
+    <div *ngIf="filtro.hasOptions" id="{{ 'myDropdown' + filtro.label }}" class="dropdown-content aniamtionTop">
+      <a
+        *ngFor="let option of filtro.options"
+        (click)="sendEvent(option.name, 1, i, filtro, option.id, $event)"
+        class="aniamtionTopitems"
+        >{{ option.name }}</a
+      >
+    </div>
+  </div>
+</div>

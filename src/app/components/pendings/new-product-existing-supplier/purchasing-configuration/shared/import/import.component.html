@@ -1,0 +1,44 @@
+<div class="import-container">
+  <label>{{ 'newProductExistingSupplier.purchasingConfiguration.import' | translate }}</label>
+  <div class="import">
+    <div>
+      <label>{{ 'formProvider.step8.inputs.igi' | translate }}:</label>
+      <div class="generic-input-container">
+        <pqf-generic-input
+          [placeholder]="'000'"
+          [typeValidation]="inputTypes.Percentage"
+          [value]="actualConfiguration?.ConfiguracionPrecioProveedor?.IGI"
+          [width]="'100px'"
+          (valueChangeEmitter)="handleInputChange(fields.IGI, $event)"
+        ></pqf-generic-input>
+        <span>%</span>
+      </div>
+    </div>
+    <div>
+      <label>{{ 'formProvider.step8.inputs.dta' | translate }}:</label>
+      <div class="generic-input-container">
+        <pqf-generic-input
+          [placeholder]="'000'"
+          [typeValidation]="inputTypes.Percentage"
+          [value]="actualConfiguration?.ConfiguracionPrecioProveedor?.DTA"
+          [width]="'100px'"
+          (valueChangeEmitter)="handleInputChange(fields.DTA, $event)"
+        ></pqf-generic-input>
+        <span>%</span>
+      </div>
+    </div>
+    <div>
+      <label>{{ 'formProvider.step8.inputs.prv' | translate }}:</label>
+      <div class="generic-input-container">
+        <pqf-generic-input
+          [placeholder]="'000'"
+          [typeValidation]="inputTypes.Percentage"
+          [value]="actualConfiguration?.ConfiguracionPrecioProveedor?.PRV"
+          [width]="'100px'"
+          (valueChangeEmitter)="handleInputChange(fields.PRV, $event)"
+        ></pqf-generic-input>
+        <span>{{ 'newProductExistingSupplier.purchasingConfiguration.dollars' | translate }}</span>
+      </div>
+    </div>
+  </div>
+</div>

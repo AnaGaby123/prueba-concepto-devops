@@ -1,0 +1,147 @@
+@use 'base' as s;
+
+:host {
+  & > .newContact {
+    ::ng-deep .modal {
+      background: none;
+
+      & > .modal-content {
+        transition: none;
+      }
+    }
+    & .pop-up-container {
+      @include s.flexColumn;
+      flex: 1;
+      & > .form-container {
+        @include s.flexColumn;
+        padding: 30px 20px;
+        & > .header {
+          @include s.flexColumn;
+          & > .info-content {
+            display: grid;
+            grid-template-columns: 110px 1fr;
+            grid-column-gap: 20px;
+            margin-bottom: 20px;
+
+            & > .image {
+              @include s.gridCenter;
+
+              & > img {
+                max-height: 70px;
+                max-width: 100%;
+              }
+            }
+            & > .text {
+              @include s.flexColumn;
+              align-items: flex-start;
+              flex: 1;
+              justify-content: center;
+              & > .aqua {
+                padding-bottom: 3px;
+                & > label {
+                  @include s.Roboto-Bold;
+                  @include s.escaledFontFormat(s.$textSize17to22, bold, s.$pqGreen);
+                }
+              }
+              & > .black {
+                & > label {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                }
+              }
+            }
+          }
+          & > .subtitle {
+            @include s.flexRow;
+            justify-content: flex-start;
+            padding-bottom: 20px;
+            & > label {
+              @include s.Novecento-Bold;
+              @include s.escaledFontFormat(s.$textSize15to18, bold, s.$pqGreen);
+            }
+          }
+        }
+        & > .inputs {
+          display: grid;
+          grid-template-columns: repeat(6, 1fr);
+          grid-column-gap: 20px;
+          grid-template-rows: repeat(4, auto);
+          grid-row-gap: 18px;
+
+          & > div {
+            @include s.flexRow;
+            grid-column-end: span 2;
+
+            &.small {
+              display: grid;
+              grid-template-columns: repeat(2, 1fr);
+              grid-column-gap: 10px;
+            }
+          }
+        }
+        & > .required-data {
+          @include s.flexRow;
+          align-items: flex-end;
+          flex: 1;
+          justify-content: flex-end;
+          & > label {
+            @include s.Roboto-Regular;
+            @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen);
+          }
+        }
+      }
+      & > .alert-content {
+        height: 40px;
+        & > .alert-message {
+          @include s.flexRow;
+          background-color: #fdf7f8;
+          justify-content: center;
+          & > label {
+            @include s.Roboto-Bold;
+            @include s.escaledFontFormat(s.$textSize15to17, bold, s.$pqTextAlert);
+            padding: 10px 0;
+          }
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > .newContact {
+      & .pop-up-container {
+        & > .form-container {
+          padding: 35px 25px;
+          & > .header {
+            & > .info-content {
+              grid-template-columns: 130px 1fr;
+              margin-bottom: 30px;
+
+              & > .image {
+                & > img {
+                  max-height: 90px;
+                }
+              }
+              & > .text {
+                & > .aqua {
+                  padding-bottom: 5px;
+                }
+              }
+            }
+          }
+
+          & > .inputs {
+            row-gap: 25px;
+          }
+        }
+        & > .alert-content {
+          height: 50px;
+          & > .alert-message {
+            & > label {
+              padding: 15px 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}

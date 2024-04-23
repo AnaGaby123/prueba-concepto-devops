@@ -1,0 +1,17 @@
+<div id="message-history-container">
+  <div
+    class="message-container"
+    *ngFor="let message of messages; trackBy: handleTrackById"
+    [ngClass]="{'message-right': message.messagePositionRight, 'message-left': message.messagePositionLeft}"
+  >
+    <label class="header-message">{{ message.headerText }}</label>
+    <label class="content-message">
+      {{ message.contentMessage }}
+    </label>
+    <label class="date-message">
+      {{ message.date | dateFormatSlashShortWithHour }}
+    </label>
+    <img *ngIf="message.messagePositionRight" alt="" src="assets/Images/right_message.svg" />
+    <img *ngIf="message.messagePositionLeft" alt="" src="assets/Images/left_message.svg" />
+  </div>
+</div>

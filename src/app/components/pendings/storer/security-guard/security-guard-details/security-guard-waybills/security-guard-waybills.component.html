@@ -1,0 +1,67 @@
+<div class="arrivedPartsContainer">
+  <div class="listArrivedPartsContainer">
+    <label class="tagBoardingGuides">Guías de embarque</label>
+    <div class="left-container">
+      <div class="orders-list-container">
+        <virtual-scroller class="virtual-list" *ngIf="(selectGuidesNational$ | async).length > 0">
+          <div
+            class="item"
+            *ngFor="let guide of selectGuidesNational$ | async; let i = index"
+            [ngClass]="guide.isSelected ? 'active' : ''"
+            (click)="setGuide(guide)"
+          >
+            <div class="indicator"></div>
+            <div class="content">
+              <div class="title">
+                <label
+                  >#{{ i + 1 }} · <span>{{ guide.Folio }}</span>
+                </label>
+              </div>
+              <label class="subtitle"
+                >FEA:
+                {{ guide.FEA ? (guide.FEA | dateFormatSlashShortWithHour) : 'N/D' }}
+              </label>
+              <label class="black-info">Por Arribar</label>
+            </div>
+          </div>
+        </virtual-scroller>
+        <virtual-scroller class="virtual-list" *ngIf="(selectGuidesInternational$ | async).length > 0">
+          <div
+            class="item"
+            *ngFor="let guide of selectGuidesInternational$ | async; let i = index"
+            [ngClass]="guide.isSelected ? 'active' : ''"
+            (click)="setGuide(guide)"
+          >
+            <div class="indicator"></div>
+            <div class="content">
+              <div class="title">
+                <label
+                  >#{{ i + 1 }} · <span>{{ guide.Folio }}</span>
+                </label>
+              </div>
+              <label class="subtitle"
+                >FEA:
+                {{ guide.FechaHoraEstimadaArribo ? (guide.FechaHoraEstimadaArribo | dateFormatSlashShortWithHour) : 'N/D' }}
+              </label>
+
+              <label class="black-info">Por Arribar</label>
+            </div>
+          </div>
+        </virtual-scroller>
+      </div>
+    </div>
+  </div>
+
+  <div class="detailsArrivedParts">
+    <div class="detailsArrivedPartsContainer">
+      <app-load-and-carousel-images
+        class="carousel-images"
+        [imageContainerWidth]="'100%'"
+        [imageContainerHeight]="'650px'"
+        [text]="'Cargar Fotografía de paquete sellado'"
+        (arrayEmit)="saveArrayImages($event)"
+        [images]="imagesLoaded$ | async"
+      ></app-load-and-carousel-images>
+    </div>
+  </div>
+</div>

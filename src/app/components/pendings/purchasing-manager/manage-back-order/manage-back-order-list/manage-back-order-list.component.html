@@ -1,0 +1,135 @@
+<div class="dashboard-container" id="manage-back-order-list">
+  <div class="left-container">
+    <label class="title">{{ 'processPurchase.providers' | translate }}</label>
+    <div class="filters">
+      <div class="filter-by-type">
+        <app-hamburger-menu [options]="sortList$ | async" [value]="(sort$ | async).value" (valueEmit)="setTypeSort($event)">
+        </app-hamburger-menu>
+      </div>
+      <div class="filter-by-date">
+        <app-search
+          [placeholder]="'Buscar'"
+          [searchTerm]="searchTerm$ | async"
+          [typesOfSearch]="typeOptionsSearch$ | async"
+          [typeSelected]="typeOfSearch$ | async"
+          [isSearchByType]="true"
+          [imageFill]="'#008894'"
+          (textSearch)="handleKeySearch($event)"
+          (handleTypeSelected)="setTypeOfSearch($event)"
+        >
+        </app-search>
+      </div>
+    </div>
+    <div class="list-container">
+      <virtual-scroller [items]="providers$ | async" (vsUpdate)="providersScroll = $event" (vsEnd)="fetchMore($event)">
+        <div class="client" *ngFor="let provider of providersScroll" (click)="selectedProvider(provider)">
+          <div class="index">
+            <label>{{ '#' + provider.Index }}</label>
+          </div>
+          <div>
+            <div class="name">
+              <label>{{ provider.Nombre }}</label>
+            </div>
+            <div class="classification">
+              <label>{{ provider.TotalOC }} OC</label>
+              <label>·</label>
+              <label>{{ provider.MontoTotal | currency }} </label>
+            </div>
+            <div class="total-item">
+              <label>{{ provider.TotalPiezas + ' ' + (provider.TotalPiezas === 0 ? 'pza' : 'pzas') }}</label>
+              <label>·</label>
+              <label>{{
+                provider.TotalProductos +
+                  ' ' +
+                  (provider.TotalProductos === 0
+                    ? ('registerConfirmation.product' | translate)
+                    : ('registerConfirmation.products' | translate))
+              }}</label>
+            </div>
+            <div class="types">
+              <div class="labels">
+                <img alt="cancelar" src="assets/Images/labels/cancelar.svg" *ngIf="provider.TotalBackOrderPorCancelar > 0" />
+                <label class="cancel" *ngIf="provider.TotalBackOrderPorCancelar > 0">{{
+                  provider.TotalBackOrderPorCancelar
+                }}</label>
+                <label class="cancel" *ngIf="provider.TotalBackOrderPorGestionar > 0 && provider.TotalBackOrderPorCancelar > 0"
+                  >·</label
+                >
+                <img
+                  alt="por_gestionar"
+                  src="assets/Images/labels/por_gestionar.svg"
+                  *ngIf="provider.TotalBackOrderPorGestionar > 0"
+                />
+                <label *ngIf="provider.TotalBackOrderPorGestionar > 0">{{ provider.TotalBackOrderPorGestionar }}</label>
+              </div>
+              <div class="fdm">
+                <label>FDM+: {{ provider.FechaOCMasAntigua | dateFormatSlashShort }}</label>
+              </div>
+            </div>
+          </div>
+          <div class="arrow">
+            <img alt="arrow" src="assets/Images/quotation/arrow_default.svg" />
+          </div>
+        </div>
+      </virtual-scroller>
+      <div class="without-results" *ngIf="(providers$ | async).length === 0 && !(isLoadingProviders$ | async)">
+        <app-without-results></app-without-results>
+      </div>
+      <div class="loader" *ngIf="isLoadingProviders$ | async">
+        <app-loading></app-loading>
+      </div>
+    </div>
+    <div class="footer">
+      <label>{{ '#' + ((providers$ | async).length | number: '1.0-0') }}</label>
+      <label>{{ (totals$ | async)?.TotalOc + ' OC' }}</label>
+      <label>{{
+        ((totals$ | async)?.TotalProducto | number: '1.0-0') +
+          ((totals$ | async)?.TotalProducto === 1 ? ' Producto' : ' Productos')
+      }}</label>
+      <label>{{
+        ((totals$ | async)?.TotalPieza | number: '1.0-0') + ((totals$ | async)?.TotalPieza === 1 ? ' Pieza' : ' Piezas')
+      }}</label>
+      <label>{{
+        'Monto Total ' +
+          (((totals$ | async)?.ValorTotal ? (totals$ | async)?.ValorTotal : 0) | currency: 'USD':'symbol-narrow':'2.2-4') +
+          ' USD'
+      }}</label>
+    </div>
+  </div>
+  <div class="right-container">
+    <ng-container *ngIf="true">
+      <app-doughnut-chart
+        *ngIf="(donutStatus$ | async) === 3"
+        [data]="dataProvider$ | async"
+        [optionDetailsHover]="dataDetailsHoverProvider$ | async"
+        [optionDetails]="dataDetailsProvider$ | async"
+        [titleDetails]="'donutChart.titleTotals' | translate"
+        [title]="'processPurchase.providers' | translate"
+        [typeChart]="1"
+      >
+      </app-doughnut-chart>
+      <app-doughnut-chart
+        *ngIf="(donutStatus$ | async) === 3"
+        [titleDetails]="'donutChart.titleTotals' | translate"
+        [title]="'processPurchase.productLine' | translate"
+        [typeChart]="1"
+      >
+      </app-doughnut-chart>
+      <app-doughnut-chart
+        *ngIf="(donutStatus$ | async) === 3"
+        [data]="dataMonitoring$ | async"
+        [optionDetailsHover]="dataMonitoringDetailsHover$ | async"
+        [optionDetails]="dataMonitoringDetails$ | async"
+        [titleDetails]="'donutChart.titleTotals' | translate"
+        [title]="'manageBackOrder.monitoring' | translate"
+        [typeChart]="1"
+      >
+      </app-doughnut-chart>
+      <app-bar-chart *ngIf="(donutStatus$ | async) === 3" [title]="'manageBackOrder.monitoringDate' | translate">
+      </app-bar-chart>
+      <app-bar-chart *ngIf="(donutStatus$ | async) === 3" [title]="'manageBackOrder.deliveryTrafficLight' | translate">
+      </app-bar-chart>
+    </ng-container>
+    <app-loading class="loading" *ngIf="(donutStatus$ | async) === 1"></app-loading>
+  </div>
+</div>

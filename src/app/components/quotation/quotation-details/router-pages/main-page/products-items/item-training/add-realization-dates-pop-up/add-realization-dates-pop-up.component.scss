@@ -1,0 +1,76 @@
+@use 'base' as s;
+
+app-pop-up-generic {
+  ::ng-deep .modal {
+    background: none;
+
+    & > .modal-content {
+      transition: none;
+    }
+  }
+}
+#pop-up-add-new-client-success {
+  @include s.flexColumn;
+  padding: 0 40px;
+
+  & > img {
+    height: 57.5px;
+    margin-top: 37px;
+  }
+
+  & > .content {
+    @include s.flexColumn;
+    align-items: center;
+    margin-top: 30px;
+    padding-bottom: 10px;
+
+    & > label {
+      @include s.responsive-font-format($font-size-map: s.$responsive-font-26-26, $font-family: s.$font-family_roboto);
+    }
+
+    & > div {
+      & > .add-date {
+        @include s.flexRow;
+        gap: 16px;
+        margin-top: 23px;
+        width: 357px;
+
+        & > img {
+          cursor: pointer;
+          width: 24px;
+
+          &.disable {
+            cursor: default;
+          }
+        }
+      }
+
+      & > .date {
+        align-items: center;
+        background-color: s.$main-proquifa-f;
+        border-radius: 100px;
+        border: 1px solid s.$main-proquifa;
+        display: flex;
+        height: 24px;
+        margin-top: 16px;
+        padding: 2px 0 2px 8px;
+        width: 280px;
+        justify-content: space-between;
+
+        & > label {
+          @include s.responsive-font-format(
+            $color: s.$main-proquifa,
+            $font-family: s.$font-family_roboto_regular,
+            $font-size-map: s.$responsive-font-16-16,
+            $font-weight: s.$font-weight_regular
+          );
+        }
+
+        & > img {
+          @include s.cursor-pointer;
+          margin-right: 12px;
+        }
+      }
+    }
+  }
+}

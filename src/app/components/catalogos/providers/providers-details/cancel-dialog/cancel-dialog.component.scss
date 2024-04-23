@@ -1,0 +1,31 @@
+@import 'base.scss';
+
+.cancel-pop-up {
+  ::ng-deep .modal {
+    background: none;
+
+    & > .modal-content {
+      transition: none;
+    }
+  }
+
+  & .container {
+    @include flexColumn;
+    align-items: center;
+
+    & > img {
+      @include default-transition();
+      @include height-scaled-image($warning-pop-image-map);
+      margin-bottom: 20px;
+    }
+
+    & > div {
+      padding: 0 40px;
+
+      & > label {
+        @include Roboto-Regular;
+        @include escaledFontFormat($textSize26to29, normal, $pqBlack2);
+      }
+    }
+  }
+}

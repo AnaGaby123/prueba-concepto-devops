@@ -1,0 +1,116 @@
+@use 'base' as s;
+
+:host {
+  @include s.absolute100;
+  @include s.flexRow;
+  @include s.reset-line-height;
+  align-items: center;
+  background-color: rgb(s.$pqBlack2, 0.7);
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 7;
+
+  #pop-up-container {
+    @include s.flexColumn;
+    width: 725px;
+
+    & > .header-pop-up {
+      @include s.flexRow;
+      align-items: center;
+      background-color: s.$pqGreen;
+      border-radius: 16px 16px 0 0;
+      height: 56px;
+      justify-content: center;
+
+      & > label {
+        @include s.responsive_font-format(
+          $font-family: s.$font_family_roboto_bold,
+          $font-size-map: s.$responsive-font-24-24,
+          $color: s.$dark-proquifa-f
+        );
+      }
+    }
+
+    & > .body-pop-up {
+      @include s.flexColumn;
+      align-items: center;
+      background-color: s.$dark-proquifa-f;
+      padding: 28px 0 40px 0;
+      border-radius: 0 0 16px 16px;
+
+      & > img {
+        height: 72px;
+        margin-bottom: 28px;
+        width: 72px;
+      }
+
+      & > .content {
+        @include s.flexColumn;
+        align-items: center;
+        padding: 0 24px;
+        width: 100%;
+
+        & > label {
+          @include s.responsive_font-format($font-family: s.$font_family_roboto_bold, $font-size-map: s.$responsive-font-20-20);
+          text-align: center;
+        }
+
+        & > .secondary-text {
+          margin-top: 24px;
+        }
+
+        & > .buttons-container {
+          @include s.flexRow;
+          gap: 126px;
+          margin-top: 44px;
+
+          & > .secondary-button-sm {
+            @include s.pqf-button($version: s.$empty, $type: s.$secondary, $height: s.$short, $width: s.$sm);
+          }
+
+          & > .secondary-button-md {
+            @include s.pqf-button($version: s.$empty, $type: s.$secondary, $height: s.$short, $width: s.$md);
+          }
+
+          & > .secondary-button-lg {
+            @include s.pqf-button($version: s.$empty, $type: s.$secondary, $height: s.$short, $width: s.$lg);
+          }
+
+          & > .secondary-button-xl {
+            @include s.pqf-button($version: s.$empty, $type: s.$secondary, $height: s.$short, $width: s.$xl);
+          }
+
+          & > .primary-button-sm {
+            @include s.pqf-button($version: s.$full, $type: s.$primary, $height: s.$short, $width: s.$sm);
+          }
+
+          & > .primary-button-md {
+            @include s.pqf-button($version: s.$full, $type: s.$primary, $height: s.$short, $width: s.$md);
+          }
+
+          & > .primary-button-lg {
+            @include s.pqf-button($version: s.$full, $type: s.$primary, $height: s.$short, $width: s.$lg);
+          }
+
+          & > .primary-button-xl {
+            @include s.pqf-button($version: s.$full, $type: s.$primary, $height: s.$short, $width: s.$xl);
+          }
+        }
+
+        &.warning {
+          & > label {
+            color: s.$pqBlack2;
+          }
+        }
+
+        &.success {
+          & > label {
+            color: s.$pqGreen2;
+          }
+        }
+      }
+    }
+  }
+}

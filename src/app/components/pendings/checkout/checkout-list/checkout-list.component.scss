@@ -1,0 +1,141 @@
+@use 'base' as s;
+
+:host {
+  $left-container-flex: (
+    'base': 580px,
+    'macBookAir': 720px,
+  );
+  $graphics-padding: (
+    'base': 25px 30px,
+    'macBookAir': 30px 40px,
+  );
+  $graphics-structure: (
+    'top': 1,
+    'bottom': 1,
+  );
+  $graphics-gap: (
+    'base': 40px 0,
+    'macBookAir': 80px 0,
+  );
+  @include s.pending-dashboard-structure($left-container-flex, $graphics-padding, $graphics-structure, $graphics-gap);
+
+  #checkout-list-container {
+    & > .left-container {
+      & > .filters {
+        & > div:nth-of-type(1) {
+          width: 40%;
+        }
+
+        & > div:nth-of-type(2) {
+          width: 60%;
+          justify-content: flex-end;
+        }
+
+        & > div {
+          @include s.flexRow;
+          align-items: center;
+          justify-content: center;
+          width: 50%;
+        }
+      }
+
+      & > .list-container {
+        & > .virtual-list {
+          & .item {
+            & > .content {
+              @include s.flexRowWrap;
+              @include s.absoluteTop;
+              overflow: hidden;
+              & > .name {
+                @include s.flexRowNoWrap;
+                width: 100%;
+                margin-bottom: 5px;
+
+                & > label:nth-of-type(1) {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font-family-roboto_bold,
+                    $font-weight: s.$font-weight-bold,
+                    $font-size-map: s.$responsive-font-17-21,
+                    $color: s.$pqGreen
+                  );
+                  @include s.multiLineTextTruncateSinHeight(1, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+                }
+              }
+
+              & > .classification {
+                @include s.flexRow;
+                margin-bottom: 5px;
+                flex-wrap: wrap;
+
+                & > label {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font-family-roboto_bold,
+                    $font-weight: s.$font-weight-bold,
+                    $font-size-map: s.$responsive-font-16-20
+                  );
+                  @include s.multiLineTextTruncateSinHeight(1, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+                  white-space: pre;
+
+                  &.yellow {
+                    color: s.$pqYellow;
+                  }
+
+                  &.red {
+                    color: s.$alert;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      & > .footer {
+        @include s.flexRow;
+        border-top: 1px solid s.$pqBlack2;
+        justify-content: space-between;
+
+        & > label {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-roboto_regular,
+            $font-weight: s.$font-weight-regular,
+            $font-size-map: s.$responsive-font-10-12-b
+          );
+          @include s.flexRow;
+        }
+      }
+    }
+
+    & > .right-container {
+      & > app-doughnut-chart {
+        grid-column-end: span 2;
+        overflow: hidden;
+      }
+
+      & > app-bar-chart {
+        overflow: hidden;
+      }
+
+      & > .loading {
+        grid-area: 2/1/2/2;
+      }
+    }
+  }
+
+  @include s.media-query(s.$standard) {
+    #checkout-list-container {
+      & > .left-container {
+        & > .list-container {
+          & > .virtual-list {
+            & .item {
+              & > .content {
+                @include s.flexRowWrap;
+                @include s.absoluteTop;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+<div id="cat-clients">
+  <div class="container">
+    <div class="header-bar">
+      <app-header-bar
+        *ngIf="!(isInDetails$ | async)"
+        [title]="title$ | async"
+        [imageSource]="'XLS.svg'"
+        [activeBack]="false"
+        (imageActionClick)="downloadClients()"
+        [tooltipText]="'Exportar CSV'"
+      ></app-header-bar>
+      <app-header-bar
+        *ngIf="isInDetails$ | async"
+        [title]="title$ | async"
+        [activeBack]="(editMode$ | async) && !(enableEdit$ | async)"
+        (goBack)="goBack()"
+        [name]="(selectedClient$ | async)?.Nombre"
+      ></app-header-bar>
+    </div>
+    <div class="container-outlet">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

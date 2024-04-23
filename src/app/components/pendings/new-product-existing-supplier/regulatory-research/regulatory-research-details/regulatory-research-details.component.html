@@ -1,0 +1,103 @@
+<div id="regulatory-research-details">
+  <div class="list">
+    <div class="filters">
+      <div class="title">
+        <label>{{ 'common.providers' | translate }}</label>
+      </div>
+      <div class="search">
+        <pqf-search (textSearch)="handleKeySearch($event)" [searchTerm]="searchTerm$ | async"></pqf-search>
+      </div>
+      <div class="options">
+        <pqf-filter-options
+          [filterText]="'filters.orderBy' | translate"
+          [flexDirection]="'column'"
+          [onlyOneOption]="true"
+          [options]="filterOptions$ | async"
+          [rowGap]="'8px'"
+          (selectedOptionEmitter)="setFilters($event)"
+        ></pqf-filter-options>
+      </div>
+    </div>
+    <div class="list-items">
+      <virtual-scroller>
+        <div
+          class="item"
+          *ngFor="let item of productList$ | async; index as i"
+          [ngClass]="{selected: item.isSelected}"
+          (click)="selectItem(item, i)"
+        >
+          <div class="indicator"></div>
+          <div class="item-content">
+            <div class="index">
+              <label class="number">#{{ i + 1 }}</label>
+              <label class="cat"> · CAT #{{ item.Catalogo }}</label>
+            </div>
+            <div class="product">
+              <label>{{ item.Descripcion }}</label>
+            </div>
+            <div class="pieces">
+              <label class="black">
+                {{ item.Piezas }} {{ item.Piezas === 1 ? ('common.piece' | translate) : ('common.pieces' | translate) }}
+              </label>
+            </div>
+            <div class="date">
+              <label>
+                {{ 'newProductExistingSupplier.regulatoryResearch.details.receptionDate' | translate }}+:
+                {{ item.FechaRecepcion | dateFormatSlash }}
+              </label>
+            </div>
+          </div>
+        </div>
+      </virtual-scroller>
+    </div>
+  </div>
+  <div class="content">
+    <div class="tabs">
+      <pqf-tab-options [options]="tabOptions$ | async" (onSelectOption)="setTabOptions($event)"></pqf-tab-options>
+    </div>
+    <app-product-info></app-product-info>
+    <div class="router">
+      <router-outlet>
+        <pqf-generic-pop-up-files *ngIf="false"></pqf-generic-pop-up-files>
+      </router-outlet>
+    </div>
+    <div class="footer">
+      <label (click)="handleDownloadFile()">{{ 'Ver Evidencia · Respuesta del Proveedor' }}</label>
+      <div class="buttons">
+        <button
+          class="edit"
+          *ngIf="!(enableEdit$ | async) && (selectedTabOption$ | async)?.id === '1'"
+          (click)="handleEnableEdit(true)"
+        >
+          {{ 'common.edit' | translate }}
+        </button>
+        <button
+          class="cancel"
+          *ngIf="(enableEdit$ | async) && (selectedTabOption$ | async)?.id === '1'"
+          (click)="handleEnableEdit()"
+        >
+          {{ 'common.cancel' | translate }}
+        </button>
+        <button
+          *ngIf="(enableEdit$ | async) && (selectedTabOption$ | async)?.id === '1'"
+          [disabled]="!(hasChangesOnProduct$ | async) && (selectedTabOption$ | async)?.id === '1' && (validations$ | async)"
+          (click)="saveProduct()"
+          [ngClass]="(hasChangesOnProduct$ | async) && (validations$ | async) ? 'save' : 'btn-disable'"
+        >
+          {{ 'common.save' | translate }}
+        </button>
+        <button
+          *ngIf="
+            (selectedTabOption$ | async)?.id === '2' ||
+            (!(hasRestrictionsAndRegularizations$ | async) && !(enableEdit$ | async))
+          "
+          [ngClass]="(isValidFinish$ | async) && (validations$ | async) ? 'save' : 'btn-disable'"
+          [disabled]="!(isValidFinish$ | async) || !(validations$ | async)"
+          (click)="finishResearch()"
+        >
+          {{ 'finish' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

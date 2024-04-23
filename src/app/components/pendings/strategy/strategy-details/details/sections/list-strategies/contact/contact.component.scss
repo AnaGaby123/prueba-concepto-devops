@@ -1,0 +1,199 @@
+@use 'base' as s;
+
+:host {
+  width: 100%;
+  height: 100%;
+
+  #contact-container {
+    @include s.flexColumn;
+    width: 100%;
+    height: 100%;
+    flex: 1;
+    overflow: hidden;
+
+    & > .title {
+      @include s.flexRowNoWrap;
+      width: 100%;
+      border-bottom: 1px solid s.$pqBlack2;
+      padding-bottom: 11px;
+
+      & > label:nth-of-type(1) {
+        $textSize: (
+          'base': 15px,
+          'macBookAir': 21px,
+        );
+        @include s.escaledFontFormat($textSize, bold, s.$pqBlack2);
+        @include s.Novecento-Bold;
+        padding-right: 3px;
+      }
+
+      & > label:nth-of-type(2) {
+        $textSize: (
+          'base': 15px,
+          'macBookAir': 21px,
+        );
+        @include s.escaledFontFormat($textSize, bold, s.$pqGreen);
+        @include s.Novecento-Bold;
+      }
+    }
+
+    & > .container-info-user {
+      @include s.flexRowNoWrap;
+      justify-content: left;
+      padding-top: 26px;
+      padding-bottom: 30px;
+      align-items: flex-end;
+
+      & > img {
+        width: 67px;
+        height: 68px;
+        padding-right: 13px;
+      }
+
+      & > .info-user {
+        @include s.flexColumn;
+
+        & > label:nth-of-type(1) {
+          $textSize: (
+            'base': 16px,
+            'macBookAir': 23px,
+          );
+          @include s.escaledFontFormat($textSize, bold, s.$pqGreen);
+          @include s.Roboto-Bold;
+        }
+
+        & > .depto,
+        .cargo {
+          @include s.flexRowNoWrap;
+
+          & > label:nth-of-type(1) {
+            $textSize: (
+              'base': 13px,
+              'macBookAir': 16px,
+            );
+            @include s.escaledFontFormat($textSize, bold, s.$pqBlack2);
+            @include s.Roboto-Bold;
+            padding-top: 3px;
+            padding-right: 3px;
+          }
+
+          & > label:nth-of-type(2) {
+            $textSize: (
+              'base': 13px,
+              'macBookAir': 16px,
+            );
+            @include s.escaledFontFormat($textSize, regular, s.$pqBlack2);
+            @include s.Roboto-Regular;
+            padding-top: 3px;
+          }
+        }
+      }
+    }
+
+    & > label {
+      $textSize: (
+        'base': 16px,
+        'macBookAir': 24px,
+      );
+      @include s.escaledFontFormat($textSize, bold, s.$pqBlack2);
+      @include s.Roboto-Bold;
+    }
+
+    & > .groups {
+      @include s.flexRowNoWrap;
+      width: 100%;
+      height: 100%;
+      justify-content: space-between;
+      flex: 1;
+      overflow: hidden;
+
+      & > .group-one,
+      .group-two {
+        @include s.flexColumn;
+        height: 100%;
+        justify-content: space-around;
+
+        & > .principle-one,
+        .principle-two,
+        .principle-three {
+          @include s.flexColumn;
+          justify-content: space-between;
+          align-items: flex-start;
+
+          & > label {
+            $textSize: (
+              'base': 14px,
+              'macBookAir': 20px,
+            );
+            @include s.escaledFontFormat($textSize, regular, s.$pqGreen);
+            @include s.Roboto-Regular;
+            padding-bottom: 10px;
+          }
+
+          & > .rols {
+            @include s.flexRowNoWrap;
+            justify-content: space-between;
+            align-items: center;
+
+            & > .evi,
+            .eve,
+            .esac {
+              @include s.flexRowNoWrap;
+              justify-content: space-between;
+              align-items: center;
+              height: 100%;
+
+              & > label {
+                $textSize: (
+                  'base': 14px,
+                  'macBookAir': 17px,
+                );
+                @include s.escaledFontFormat($textSize, regular, s.$pqBlack2);
+                @include s.Roboto-Regular;
+                padding-right: 10px;
+              }
+
+              & > .reactions {
+                @include s.flexRowNoWrap;
+                align-content: space-between;
+
+                & > img {
+                  width: 29px;
+                  height: 31px;
+                  padding-right: 20px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #contact-container {
+      & > .groups {
+        & > .group-one,
+        .group-two {
+          & > .principle-one,
+          .principle-two,
+          .principle-three {
+            @include s.flexRowNoWrap;
+            align-items: center;
+
+            & > label {
+              $textSize: (
+                'base': 14px,
+                'macBookAir': 20px,
+              );
+              @include s.escaledFontFormat($textSize, bold, s.$pqGreen);
+              @include s.Roboto-Bold;
+              padding-bottom: 0;
+              padding-right: 5px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

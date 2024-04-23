@@ -1,0 +1,217 @@
+@use 'base' as s;
+
+:host {
+  width: 308px;
+
+  & > .container {
+    @include s.flexColumn;
+    height: 100%;
+    justify-content: space-between;
+    overflow: hidden;
+    padding: 20px 15px 10px 20px;
+    position: relative;
+
+    & > .search-container {
+      padding-bottom: 20px;
+      flex-grow: 0;
+    }
+
+    & > .right-side-content {
+      flex: 1;
+      overflow: auto;
+      position: relative;
+
+      & > .first-content {
+        position: sticky;
+        top: 0;
+      }
+
+      & > .first-content,
+      & > .second-content {
+        @include s.flexColumn;
+        margin-bottom: 17px;
+        text-align: center;
+
+        & > .content-title {
+          @include s.escaledFontFormat(s.$textSize15to18, bold, s.$pqGreen);
+          @include s.Roboto-Bold;
+          margin-bottom: 4px;
+        }
+
+        & > .item-text {
+          @include s.escaledFontFormat(s.$textSize9to11, regular, s.$pqBlack2);
+          @include s.Roboto-Regular;
+        }
+
+        & > .content-text {
+          @include s.escaledFontFormat(s.$textSize11to13, regular, s.$pqBlack2);
+          @include s.Roboto-Regular;
+          margin-bottom: 4px;
+
+          &.green-text {
+            color: s.$pqGreen;
+          }
+
+          & > span {
+            vertical-align: baseline;
+          }
+        }
+
+        & span {
+          font-weight: bold;
+        }
+      }
+
+      & > .utilities {
+        display: grid;
+        grid-template-columns: repeat(2, auto);
+        grid-template-rows: repeat(5, auto);
+        grid-column-gap: 8px;
+        margin-bottom: 17px;
+
+        & > .utility-item {
+          display: grid;
+          grid-template-columns: 28px 3px 1fr 3px 1fr;
+          grid-column-gap: 3px;
+          cursor: pointer;
+          padding: 1px 0;
+          margin-bottom: 3px;
+
+          &:nth-child(odd) {
+            grid-template-columns: 21px 3px 1fr 3px 1fr;
+          }
+
+          &:hover {
+            color: s.$pqGreen;
+          }
+
+          & * {
+            cursor: pointer;
+          }
+
+          &.selected {
+            & > p {
+              color: s.$pqGreen !important;
+
+              & > span {
+                color: s.$pqGreen !important;
+              }
+            }
+          }
+
+          & > p {
+            @include s.escaledFontFormat(s.$textSize10to12, regular, s.$pqBlack2);
+            @include s.Roboto-Regular;
+          }
+
+          & > .income-level {
+            @include s.Roboto-Bold;
+            text-align: end;
+          }
+
+          & > .separator,
+          & > .value {
+            text-align: center;
+          }
+
+          & > .percentage {
+            text-align: start;
+          }
+        }
+      }
+
+      & > .items-container {
+        & > .item {
+          @include s.flexColumn;
+          margin-bottom: 10px;
+
+          & > .item-title {
+            @include s.escaledFontFormat(s.$textSize9to11, bold, s.$pqBlack2);
+            @include s.Roboto-Bold;
+            margin-bottom: 2px;
+          }
+
+          & > .item-text {
+            @include s.escaledFontFormat(s.$textSize9to11, regular, s.$pqBlack2);
+            @include s.Roboto-Regular;
+          }
+        }
+
+        & > .popup {
+          @include s.flexColumn;
+          margin-bottom: 10px;
+
+          & .item-title {
+            @include s.escaledFontFormat(s.$textSize11to12, bold, s.$pqBlack2);
+            @include s.Roboto-Bold;
+            margin-bottom: 2px;
+          }
+
+          & .item-text {
+            @include s.escaledFontFormat(s.$textSize11to12, regular, s.$pqBlack2);
+            @include s.Roboto-Regular;
+          }
+        }
+      }
+    }
+
+    & > .right-side-footer {
+      @include s.flexRow;
+      @include s.absoluteCenter;
+      padding-top: 10px;
+      flex-grow: 0;
+      height: 24px;
+      box-sizing: border-box;
+
+      & > img {
+        cursor: pointer;
+        height: 100%;
+
+        &.cursor-pointer {
+          cursor: pointer !important;
+        }
+
+        &.cursor-default {
+          cursor: default !important;
+        }
+      }
+
+      & > label {
+        @include s.escaledFontFormat(s.$textSize11to12, regular, s.$pqBlack2);
+        @include s.Roboto-Regular;
+        margin: 0 12px;
+      }
+    }
+
+    & > .without-results,
+    .loading {
+      @include s.flexRow;
+      @include s.absoluteCenter;
+      height: 100%;
+    }
+  }
+
+  @include s.responsive_layout('media-1700') {
+    width: 325px;
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    width: 353px;
+
+    & > .container {
+      padding: 20px 15px 10px 25px;
+
+      & > .right-side-content {
+        & > .utilities {
+          & > .utility-item {
+            grid-template-columns: 32px 3px 1fr 3px 1fr;
+
+            &:nth-child(odd) {
+              grid-template-columns: 25px 3px 1fr 3px 1fr;
+            }
+          }
+        }
+      }
+    }
+  }
+}

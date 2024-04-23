@@ -1,0 +1,346 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+  box-sizing: border-box;
+  overflow: hidden;
+  padding: 0 20px;
+
+  #invoices {
+    @include s.absolute100;
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    & > .content {
+      @include s.flexColumn;
+      height: 100%;
+
+      & > .totals {
+        @include s.flexRowNoWrap;
+        background-color: rgba(s.$pqGreen, 0.05);
+        margin: 0 20px;
+        padding: 10px 12px 12px 12px;
+
+        & > div {
+          @include s.flexColumn;
+          flex: 0 0 40%;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+            @include s.Roboto-Bold;
+
+            & > span {
+              margin: 0 12px;
+              vertical-align: baseline;
+            }
+
+            &.ocean {
+              color: s.$pqGreen;
+              margin-bottom: 5px;
+            }
+          }
+        }
+      }
+
+      & > .bills-container {
+        @include s.flexColumn;
+        flex: 1 1 auto;
+        border-left: 1px solid s.$pqGray;
+        padding-left: 20px;
+
+        & > .title {
+          @include s.flexRowNoWrap;
+          border-bottom: 1px solid s.$pqBlack2;
+          padding: 12px 0;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize15to20, bold, s.$pqBlack2);
+            @include s.Novecento-Bold;
+          }
+        }
+
+        & > .bills-selected {
+          @include s.absolute100;
+          @include s.flexColumn;
+          border-bottom: 1px solid s.$pqBlack2;
+          overflow-y: auto;
+
+          & > virtual-scroller {
+            @include s.absolute100;
+            min-width: 1100px;
+
+            .bill {
+              @include s.flexRowNoWrap;
+              align-items: center;
+              box-sizing: border-box;
+              border-bottom: 1px solid s.$pqGray2;
+              padding: 15px 10px;
+
+              &:hover {
+                background-color: s.$pqGray2;
+              }
+
+              & > div {
+                @include s.flexColumn;
+                justify-content: center;
+                padding: 0 6px;
+
+                & > div {
+                  @include s.flexRowWrap;
+                }
+              }
+
+              & > .column-one {
+                flex: 2 0 410px;
+
+                & > .line-one {
+                  padding-bottom: 5px;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize15to20, bold, s.$pqBlack2);
+                    @include s.Roboto-Bold;
+                    white-space: pre;
+                  }
+
+                  & > .green {
+                    color: s.$pqGreen !important;
+                  }
+
+                  & > .underline {
+                    text-decoration: underline;
+                  }
+
+                  & > img {
+                    height: 15px;
+                    padding-right: 7px;
+                  }
+                }
+
+                & > .line-two {
+                  padding-bottom: 6px;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize13to17, regular, s.$pqBlack2);
+                    @include s.Roboto-Regular;
+                    white-space: pre;
+                  }
+                }
+
+                & > .line-three {
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize11to13, bold, s.$pqGreen);
+                    @include s.Roboto-Bold;
+                    cursor: pointer;
+                    text-decoration: underline;
+                    margin-right: 20px;
+                  }
+                }
+              }
+
+              & > .column-two {
+                align-items: center;
+                flex: 1 0 90px;
+
+                & > .line-one {
+                  @include s.escaledFontFormat(s.$textSize15to20, bold, s.$pqGreen);
+                  @include s.Roboto-Bold;
+                  padding-bottom: 4px;
+                }
+
+                & > .line-two {
+                  @include s.escaledFontFormat(s.$textSize12to15, regular, s.$pqBlack2);
+                  @include s.Roboto-Regular;
+                }
+              }
+
+              & > .column-three,
+              & > .column-five {
+                flex: 1 0 140px;
+                justify-content: flex-end;
+
+                & > label {
+                  text-align: end;
+                }
+
+                & > .line-one {
+                  @include s.escaledFontFormat(s.$textSize15to20, regular, s.$pqBlack2);
+                  @include s.Roboto-Regular;
+                  padding-bottom: 4px;
+                }
+
+                & > .line-two {
+                  @include s.escaledFontFormat(s.$textSize12to15, regular, s.$pqBlack2);
+                  @include s.Roboto-Regular;
+                }
+              }
+
+              & > .column-four {
+                flex: 1 0 210px;
+
+                & > div {
+                  justify-content: flex-end;
+                }
+
+                & > .line-one {
+                  padding-bottom: 4px;
+
+                  & > .floating-container {
+                    position: relative;
+
+                    & > .green {
+                      @include s.escaledFontFormat(s.$textSize15to20, bold, s.$pqGreen);
+                      @include s.Roboto-Bold;
+                      cursor: pointer;
+                      text-decoration: underline;
+                    }
+
+                    & > .floating-input {
+                      width: 204px;
+                      background-color: s.$pqWhite;
+                      border: 1px solid s.$boxShadow;
+                      box-shadow: 0 0 7px -1px rgba(s.$pqBlack2, 0.5);
+                      left: 50%;
+                      margin-left: -96px;
+                      padding-top: 19px;
+                      position: absolute;
+                      top: 28px;
+                      z-index: 1;
+
+                      & > div {
+                        @include s.flexRow;
+                        @include s.absoluteCenter;
+                        padding: 0 10px 15px 10px;
+
+                        & > input {
+                          max-width: 125px;
+                          border-color: s.$boxShadow;
+                          margin-right: 10px;
+                          text-align: center;
+                          transition: all 0.3s ease;
+                        }
+
+                        & > label {
+                          @include s.escaledFontFormat(s.$textSize14to20, bold, s.$pqGreen);
+                          @include s.Roboto-Bold;
+                          text-transform: uppercase;
+                        }
+                      }
+                    }
+
+                    & > .triangle {
+                      width: 14px;
+                      background-color: s.$pqWhite;
+                      border-left: solid 1px s.$boxShadow;
+                      border-top: solid 1px s.$boxShadow;
+                      box-shadow: -3px -3px 6px -4px rgba(s.$pqBlack2, 0.5);
+                      height: 14px;
+                      left: 50%;
+                      margin-left: -7px;
+                      position: absolute;
+                      top: 21px;
+                      transform: rotate(45deg);
+                      z-index: 3;
+                    }
+                  }
+                }
+
+                & > .line-two {
+                  @include s.flexRowNoWrap;
+                  align-items: center;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize12to15, regular, s.$pqBlack2);
+                    @include s.Roboto-Regular;
+                    white-space: pre;
+                  }
+
+                  & > .radio {
+                    margin-left: 8px;
+                  }
+                }
+              }
+
+              & > .cross {
+                @include s.absoluteCenter;
+                flex: 1 0 50px;
+
+                & > img {
+                  height: 17px;
+                  cursor: pointer;
+                }
+              }
+            }
+          }
+        }
+
+        & > .footer-bills {
+          @include s.flexRowNoWrap;
+          align-items: center;
+          padding-top: 5px;
+          padding-left: 50px;
+          justify-content: center;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+            @include s.Roboto-Regular;
+          }
+        }
+      }
+
+      & > .footer {
+        @include s.flexRowNoWrap;
+        flex: 0 0 auto;
+        align-items: flex-start;
+        border-left: 1px solid s.$pqGray;
+        justify-content: flex-end;
+        padding: 0 0 12px 20px;
+
+        & > div {
+          @include s.flexColumn;
+          align-items: flex-end;
+
+          & > label {
+            padding-bottom: 5px;
+          }
+
+          & > label:last-child {
+            padding-bottom: 0;
+          }
+
+          & > label:nth-of-type(4) {
+            @include s.escaledFontFormat(s.$textSize16to21, bold, s.$pqBlack2);
+            @include s.Roboto-Bold;
+          }
+
+          & > .green {
+            color: s.$pqGreen2 !important;
+          }
+        }
+
+        & > .column-one {
+          padding-right: 25px;
+
+          & > label:nth-of-type(1),
+          & > label:nth-of-type(2),
+          & > label:nth-of-type(3) {
+            @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+            @include s.Roboto-Regular;
+          }
+        }
+
+        & > .column-two {
+          & > label:nth-of-type(1),
+          label:nth-of-type(2),
+          label:nth-of-type(3) {
+            @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqGreen);
+            @include s.Roboto-Regular;
+          }
+        }
+      }
+    }
+  }
+}

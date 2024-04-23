@@ -1,0 +1,217 @@
+@use 'base' as s;
+* {
+  box-sizing: border-box;
+}
+:host {
+  @include s.absolute100;
+}
+.addSchedules {
+  ::ng-deep .modal {
+    background: none;
+
+    & > .modal-content {
+      transition: none;
+    }
+  }
+  & .content {
+    @include s.flexColumn;
+    flex: 1;
+    padding: 30px 20px;
+    & > .header {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      grid-column-gap: 20px;
+      margin-bottom: 20px;
+      & > .image {
+        @include s.gridCenter;
+        & > img {
+          max-height: 70px;
+          max-width: 100%;
+        }
+      }
+      & > .data {
+        @include s.flexColumn;
+        justify-content: center;
+
+        & > .title {
+          @include s.Novecento-Bold;
+          @include s.escaledFontFormatImportant(s.$textSize17to22, bold, s.$pqGreen);
+          text-align: initial;
+          padding-bottom: 3px;
+        }
+
+        & > .subtitle {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormatImportant(s.$textSize13to16, regular, s.$pqBlack2);
+          text-align: initial;
+        }
+      }
+    }
+    & > .addressContent {
+      @include s.flexColumn;
+      align-items: flex-start;
+      margin: 10px 0;
+      & > .title {
+        margin-bottom: 3px;
+        & > label {
+          @include s.Novecento-Bold;
+          @include s.escaledFontFormatImportant(s.$textSize16to18, bold, s.$pqGreen);
+        }
+      }
+      & > .address {
+        @include s.flexRow;
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormatImportant(s.$textSize16to18, regular, s.$pqBlack2);
+          & > span {
+            @include s.Roboto-Bold;
+            color: s.$pqGreen;
+            vertical-align: baseline;
+          }
+        }
+      }
+    }
+    & > .horarioAtencion {
+      @include s.flexColumn;
+      flex: 1;
+      & > .horarios {
+        @include s.flexColumn;
+        border: 1px solid #d8d9dd;
+        & > .title {
+          @include s.flexRow;
+          box-sizing: border-box;
+          padding: 10px;
+          border-bottom: 1px solid #d8d9dd;
+          justify-content: center;
+        }
+        & > .infoHorarios {
+          @include s.flexRow;
+          & > div {
+            @include s.flexColumn;
+            width: calc(100% / 5);
+            box-sizing: border-box;
+            padding: 10px;
+            border-left: 1px solid #d8d9dd;
+
+            &:first-of-type {
+              border-left: none;
+            }
+            & > .titleDay {
+              padding-bottom: 43px;
+              @include s.flexRow;
+              justify-content: center;
+              & > p {
+                padding-left: 5px;
+              }
+            }
+            & > .horariosDay {
+              @include s.flexColumn;
+              box-sizing: border-box;
+              padding-top: 20px;
+              align-items: center;
+              & > div {
+                padding-top: 15px;
+                box-sizing: border-box;
+                @include s.flexRow;
+                align-items: center;
+                height: 40px;
+                width: 190px;
+                & > div {
+                  flex: 1;
+                }
+                & > label {
+                  margin-left: 10px;
+                  margin-right: 10px;
+                }
+                & > p {
+                  padding-left: 5px;
+                }
+              }
+            }
+          }
+        }
+        & > .allDay {
+          @include s.flexRow;
+          height: 63px;
+          background: rgba(0, 136, 148, 0.05);
+          justify-content: center;
+          align-items: center;
+          & > label {
+            padding-left: 10px;
+            font-family: s.$font-family_roboto_bold !important;
+          }
+        }
+      }
+    }
+    span {
+      @include s.fontFormat('Novecento-Bold', 18px, '', #008894);
+    }
+    .dayActive {
+      @include s.fontFormat('Roboto-Bold', 16px, '', #008894);
+    }
+    .dayDisabled {
+      @include s.fontFormat('Roboto-Regular', 16px, '', #242424);
+    }
+    label {
+      @include s.fontFormat('Roboto-Regular', 16px, '', #424242);
+    }
+    .btnOk {
+      @include s.button(31px, 170px, #ffffff, #008894);
+    }
+    .spaceHorarios {
+      padding-top: 56px !important;
+    }
+    .tipoHorario {
+      @include s.flexColumn;
+      .datosTipo {
+        @include s.flexRow;
+        align-items: center;
+        & > img {
+          height: 20px;
+          padding-right: 5px;
+        }
+      }
+    }
+    .customer {
+      @include s.flexColumn;
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      padding: 35px 25px;
+
+      & > .header {
+        grid-template-columns: 130px 1fr;
+        margin-bottom: 30px;
+        & > .image {
+          & > img {
+            max-height: 90px;
+          }
+        }
+        & > .data {
+          & > .title {
+            padding-bottom: 5px;
+          }
+        }
+      }
+      & > .addressContent {
+        & > .title {
+          margin-bottom: 5px;
+        }
+      }
+      & > .horarioAtencion {
+        & > .horarios {
+          & > .infoHorarios {
+            & > div {
+              & > .horariosDay {
+                & > div {
+                  height: 45px;
+                  width: 215px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

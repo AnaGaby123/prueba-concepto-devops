@@ -1,0 +1,172 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+  @include s.flexColumn;
+
+  .container {
+    @include s.absolute100;
+    @include s.flexColumn;
+
+    & > .title {
+      @include s.flexRowNoWrap;
+      border-bottom: 1px solid #424242;
+      padding-bottom: 15px;
+
+      & > label:nth-of-type(1) {
+        @include s.Novecento-Bold;
+        @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+      }
+    }
+
+    & > .filters {
+      @include s.flexColumn;
+      margin: 13px 0 19px;
+      row-gap: 27px;
+      width: 100%;
+
+      & > .search-product-filters {
+        @include s.flexRow;
+        z-index: 5;
+
+        & > div {
+          cursor: pointer;
+
+          &.list-active {
+            pointer-events: none;
+          }
+
+          img {
+            align-self: center;
+            height: 25px;
+          }
+        }
+      }
+
+      & > .drops {
+        display: grid;
+        flex: 1 1 auto;
+        grid-column-gap: 10px;
+        grid-row-gap: 10px;
+        grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+        margin-right: 70px;
+      }
+    }
+
+    & > .product-list {
+      @include s.flexRow;
+      flex: 1;
+      overflow-x: auto;
+      overflow-y: hidden;
+
+      & > .table-product {
+        @include s.flexColumn;
+        flex: 1;
+
+        & > virtual-scroller {
+          @include s.absolute100;
+          @include s.absoluteCenter;
+          @include s.fixVirtualScroller;
+
+          &::ng-deep > .scrollable-content {
+            $ItemsSizeMap: (
+              'base': 311px,
+              'macBookAir': 351px,
+            );
+            @include s.itemsCardWithGrid(300px, $ItemsSizeMap);
+          }
+        }
+
+        & > .loading {
+          @include s.absolute100;
+          @include s.absoluteCenter;
+          @include s.flexColumn;
+        }
+      }
+
+      & > .table-product-list {
+        @include s.absoluteCenter;
+        flex: 1;
+        min-width: 1228px;
+
+        & > div {
+          @include s.absolute100;
+          @include s.flexRowWrap;
+        }
+
+        & > virtual-scroller {
+          @include s.absolute100;
+          @include s.absoluteCenter;
+          @include s.fixVirtualScroller;
+        }
+
+        & > .loading {
+          @include s.absolute100;
+          @include s.absoluteCenter;
+          @include s.flexColumn;
+        }
+      }
+    }
+
+    & > .footer {
+      border-top: 1px solid s.$pqBlack2;
+      display: flex;
+      flex: 0 0 41px;
+      padding-top: 15px;
+      justify-content: center;
+
+      & > label {
+        @include s.Roboto-Regular;
+        @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+        align-self: flex-start !important;
+        grid-area: 1 / 2 / 2 / 3;
+        place-self: center;
+      }
+    }
+  }
+
+  .without-results {
+    @include s.flexRow;
+    align-items: center;
+    flex: 1;
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > .container {
+      & > .title {
+        padding-bottom: 20px;
+      }
+
+      & > .filters {
+        margin-bottom: 15px;
+
+        & > .search-product-filters {
+          grid-column-gap: 15px;
+          grid-template-columns: 1fr repeat(2, 30px);
+          grid-template-rows: 55px;
+
+          & > div {
+            & > img {
+              height: 30px;
+            }
+          }
+        }
+
+        & > .drops {
+          grid-column-gap: 15px;
+          grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
+          margin-right: 90px;
+        }
+      }
+
+      & > .footer {
+        flex: 0 0 51px;
+        padding-top: 20px;
+      }
+    }
+  }
+}

@@ -1,0 +1,488 @@
+<div id="payment-information">
+  <div class="header">
+    <div class="client-container">
+      <div class="client-title">
+        <label>{{ 'common.client' | translate }}</label>
+      </div>
+      <div class="client">
+        <div>
+          <img src="assets/Images/clientes/logo_proquifa_hover.svg" alt="" />
+        </div>
+        <div class="client-info">
+          <div>
+            <label>{{ (selectedClient$ | async)?.NombreCliente }}</label>
+          </div>
+          <label>{{ 'closeOffer.client' | translate }} · {{ 'AA+' }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="contact-data">
+      <div class="data">
+        <div>
+          <div class="row title">
+            <div class="title">
+              <label>{{ 'purchasePromise.contactData' | translate }}</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="image">
+              <img src="assets/Images/contacto.svg" alt="" />
+            </div>
+            <label class="bold"
+              >{{ (contact$ | async)?.Nombres }} {{ (contact$ | async)?.ApellidoPaterno }}
+              {{ (contact$ | async)?.ApellidoMaterno }}</label
+            >
+          </div>
+          <div class="row">
+            <div class="image">
+              <img src="assets/Images/quotation/mail.svg" alt="" />
+            </div>
+            <label>{{
+              (contact$ | async)?.CorreoElectronico ? ((contact$ | async)?.CorreoElectronico)[0].Correo : 'ND'
+            }}</label>
+          </div>
+          <div class="row">
+            <div class="image">
+              <img src="assets/Images/quotation/phone.svg" alt="" />
+            </div>
+            <label
+              >{{
+                !lodashIsEmpty((contact$ | async)?.NumeroTelefonico) ? ((contact$ | async)?.NumeroTelefonico)[0].Numero : 'ND'
+              }}
+              · Ext.
+              {{
+                !lodashIsEmpty((contact$ | async)?.NumeroTelefonico) ? ((contact$ | async)?.NumeroTelefonico)[0].Extension : ''
+              }}</label
+            >
+          </div>
+        </div>
+        <div>
+          <div class="row">
+            <label class="bold">{{ 'purchasePromise.department' | translate }}: </label>
+            <label>{{ (contact$ | async)?.Departamento || 'NA' }}</label>
+          </div>
+          <div class="row">
+            <label class="bold">{{ 'purchasePromise.position' | translate }}: </label>
+            <label>{{ (contact$ | async)?.Puesto || 'NA' }}</label>
+          </div>
+          <div class="row">
+            <label class="bold">{{ 'purchasePromise.decisionLevel' | translate }}: </label>
+            <label>{{ (contact$ | async)?.NivelDecision || 'NA' }}</label>
+          </div>
+        </div>
+        <div>
+          <div class="row">
+            <label class="bold">{{ 'purchasePromise.assignedUser' | translate }}: </label>
+          </div>
+          <div class="row">
+            <label [ngClass]="(selectedClient$ | async)?.SinCredito ? 'red' : 'green'">{{
+              (selectedClient$ | async)?.SinCredito
+                ? ('purchasePromise.clientWithoutCredit' | translate)
+                : ('purchasePromise.clientWithCredit' | translate)
+            }}</label>
+          </div>
+          <div class="row">
+            <label class="bold"></label>
+            <label></label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-blue">
+    <label>{{ 'executeCollection.details.creditLine' | translate }}</label>
+    <app-progress-bar
+      [percentage]="
+        ((details$ | async)?.barsData?.TotalACobrar * 100) / (details$ | async)?.barsData?.ConfiguracionPagos.LimiteLineaCredito
+      "
+      [color]="'#008894'"
+    ></app-progress-bar>
+    <div class="line-one">
+      <label
+        >{{ 'executeCollection.details.amountUsed' | translate }}
+        {{ (details$ | async)?.barsData?.TotalACobrar | currency: 'USD':'symbol-narrow':'1.2-2' }} {{ 'USD' }}</label
+      >
+      <label
+        >{{ (details$ | async)?.barsData?.ConfiguracionPagos.LimiteLineaCredito | currency: 'USD':'symbol-narrow':'1.2-2' }}
+        {{ 'USD' }}</label
+      >
+    </div>
+    <div class="line-two">
+      <label class="green">{{ 'executeCollection.details.untilThe' | translate }} {{ currentDate | dateFormatDot }}</label>
+      <label>{{ 'executeCollection.details.creditLimit' | translate }}</label>
+    </div>
+  </div>
+  <div class="percentage-bar-container">
+    <label
+      >{{ 'executeCollection.totalToCharge' | translate }}
+      {{ (details$ | async)?.barsData?.TotalACobrar | currency: 'USD':'symbol-narrow':'1.2-2' }} {{ 'USD' }}</label
+    >
+    <app-percentage-bar [items]="percentageItemsDebts$ | async"></app-percentage-bar>
+  </div>
+  <div class="tabs-container">
+    <label>{{ 'executeCollection.details.searching' | translate }}</label>
+    <app-tabs [options]="tabs$ | async" [tapSelected]="tab$ | async" (onSelectOption)="handleOptionTab($event)"></app-tabs>
+  </div>
+  <div class="filters-container">
+    <div class="column-one">
+      <app-drop-down-list
+        [items]="mecOptions$ | async"
+        [itemSelected]="selectedMecOption$ | async"
+        [activeMinWidth]="false"
+        [label]="'executeCollection.details.mec' | translate"
+        (valueDropList)="changeValueDropList('selectedMecOption', $event)"
+      >
+      </app-drop-down-list>
+      <app-drop-down-list
+        [items]="paymentMethodsOptions$ | async"
+        [itemSelected]="selectedPaymentMethodOption$ | async"
+        [activeMinWidth]="false"
+        [label]="'executeCollection.details.paymentMethods' | translate"
+        (valueDropList)="changeValueDropList('selectedPaymentMethodsOption', $event)"
+      >
+      </app-drop-down-list>
+      <app-drop-down-list
+        [items]="chargeOptions$ | async"
+        [itemSelected]="selectedChargeOption$ | async"
+        [activeMinWidth]="true"
+        [label]="'executeCollection.details.debtStatus' | translate"
+        (valueDropList)="changeValueDropList('selectedChargesOption', $event)"
+      >
+      </app-drop-down-list>
+    </div>
+    <div class="column-two">
+      <app-search
+        [imageFill]="'#008894'"
+        [placeholder]="'Buscar'"
+        [searchTerm]="''"
+        [activeRefresh]="true"
+        [isSearchByType]="true"
+        [typesOfSearch]="searchTypesOptions$ | async"
+        [typeSelected]="selectedSearchType$ | async"
+        (textSearch)="handleSearchTerm($event)"
+        (handleTypeSelected)="changeValueDropList('selectedSearchType', $event)"
+      >
+      </app-search>
+    </div>
+  </div>
+  <div class="filters-dates-container">
+    <div class="column-one">
+      <label>{{ 'executeCollection.details.fBilling' | translate }}:</label>
+      <app-date-range (emitValues)="setRangeDate($event, 'billFilterDate')"></app-date-range>
+    </div>
+    <div class="column-two">
+      <label>{{ 'executeCollection.details.fep' | translate }}:</label>
+      <app-date-range [xPosition]="'right'" (emitValues)="setRangeDate($event, 'chargeFilterDate')"></app-date-range>
+    </div>
+  </div>
+  <div class="table-container">
+    <div class="table">
+      <div class="head">
+        <div class="index center">
+          <label>#</label>
+        </div>
+        <div class="company">
+          <label>{{ 'executeCollection.details.company' | translate }}</label>
+        </div>
+        <div class="uuid">
+          <label>{{ 'executeCollection.details.uuid' | translate }}</label>
+        </div>
+        <div class="bill">
+          <label>{{ 'executeCollection.details.bill' | translate }}</label>
+        </div>
+        <div class="internal-order">
+          <label>{{ 'executeCollection.details.internalOrder' | translate }}</label>
+        </div>
+        <div class="payment-condition">
+          <label>{{ 'executeCollection.details.paymentCondition' | translate }}</label>
+        </div>
+        <div class="p-billing">
+          <label>{{ 'executeCollection.details.fBilling' | translate }}</label>
+        </div>
+        <div class="p-revision">
+          <label>{{ 'executeCollection.details.fRevision' | translate }}</label>
+        </div>
+        <div class="against-receipt">
+          <label>{{ 'executeCollection.details.againstReceipt' | translate }}</label>
+        </div>
+        <div class="fep">
+          <label>{{ 'executeCollection.details.fep' | translate }}</label>
+        </div>
+        <div class="fpp">
+          <label>{{ 'executeCollection.details.fpp' | translate }}</label>
+        </div>
+        <div class="payment-method">
+          <label>{{ 'executeCollection.details.paymentMethod' | translate }}</label>
+        </div>
+        <div class="drc center">
+          <label>{{ 'executeCollection.details.drc' | translate }}</label>
+        </div>
+        <div class="mec end">
+          <label>{{ 'executeCollection.details.mec' | translate }}</label>
+        </div>
+        <div class="status center">
+          <label>{{ 'executeCollection.details.status' | translate }}</label>
+        </div>
+        <div class="monitoring"></div>
+        <div class="reschedule"></div>
+        <div class="check"></div>
+      </div>
+      <div class="body">
+        <virtual-scroller
+          *ngIf="(invoicesStatus$ | async) === 3 && !lodashIsEmpty(billList$ | async)"
+          [items]="billList$ | async"
+          (vsUpdate)="companiesScrollItems = $event"
+        >
+          <div *ngFor="let company of companiesScrollItems" class="item-company">
+            <div class="index center">
+              <label class="bold-black">{{ company.Index }}</label>
+            </div>
+            <div class="company">
+              <label class="bold-green">{{ company.Alias }}</label>
+            </div>
+            <div class="uuid">
+              <label class="normal-black">{{ company.UUID ? company.UUID : 'ND' }}</label>
+            </div>
+            <div class="bill">
+              <label class="normal-green underline">{{ company.FolioFactura ? company.FolioFactura : 'ND' }}</label>
+            </div>
+            <div class="internal-order">
+              <label class="normal-black underline">{{ company.PedidoInterno }}</label>
+            </div>
+            <div class="payment-condition">
+              <label class="normal-green">{{ company.CondicionesDePago }}</label>
+            </div>
+            <div class="p-billing">
+              <label class="normal-black">{{ company.FechaCertificacionSat | dateFormatSlashShort }}</label>
+            </div>
+            <div class="p-revision">
+              <label class="normal-green">{{ company.FechaRevision }}</label>
+            </div>
+            <div class="against-receipt">
+              <label class="normal-black">{{ company.Contrarecibo ? '' : 'Pendiente' }}</label>
+            </div>
+            <div class="fep">
+              <label class="normal-green">{{ company.FechaPromesaPagoMonitoreoCobros | dateFormatSlashShort }}</label>
+            </div>
+            <div class="fpp">
+              <label class="normal-black">{{ company.FechaCompromisoPago | dateFormatSlashShort }}</label>
+            </div>
+            <div class="payment-method">
+              <label class="normal-green">{{ company.MedioDePago }}</label>
+            </div>
+            <div class="drc center">
+              <label class="normal-black">{{ company.Dia }}</label>
+            </div>
+            <div class="mec end">
+              <label class="bold-green"
+                >{{ company.MontoPendiente | currency: 'USD':'symbol-narrow':'2.2-4' }} {{ 'USD' }}</label
+              >
+            </div>
+            <div class="status center">
+              <img *ngIf="company.EnTiempoVerde" src="assets/Images/labels/en-tiempo.svg" alt="in time" />
+              <img *ngIf="company.VencidaAmarillo" src="assets/Images/labels/overdue.svg" alt="overdue" />
+              <img *ngIf="company.VencidaNaranja" src="assets/Images/labels/overdue-orange.svg" alt="overdue" />
+              <img *ngIf="company.VencidaRojo" src="assets/Images/labels/overdue-red.svg" alt="overdue" />
+              <img *ngIf="company.Morosa" src="assets/Images/labels/defaulting.svg" alt="overdue" />
+            </div>
+            <div class="monitoring center">
+              <img
+                *ngIf="company.Monitoreo"
+                (click)="handlePopUps(MONITORING_POP, true)"
+                class="active"
+                src="assets/Images/execute-collection/monitoring.svg"
+                alt="monitoring"
+              />
+              <img *ngIf="!company.Monitoreo" src="assets/Images/monitoring-gray.svg" alt="monitoring disable" />
+            </div>
+            <div class="reschedule center">
+              <img
+                *ngIf="company.Programacion"
+                (click)="handlePopUps(RESCHEDULE_POP, true)"
+                class="active"
+                src="assets/Images/execute-collection/reschedule.svg"
+                alt="reschedule"
+              />
+              <img *ngIf="!company.Programacion" src="assets/Images/rescheduling-gray.svg" alt="reschedule disable" />
+            </div>
+            <div class="check center">
+              <app-check-box [check]="company.selected" (event)="handledSelectedBill(company)"></app-check-box>
+            </div>
+          </div>
+        </virtual-scroller>
+        <div class="is-loading" *ngIf="(invoicesStatus$ | async) === 1">
+          <div class="load-circle">
+            <app-loading></app-loading>
+          </div>
+        </div>
+        <div *ngIf="(invoicesStatus$ | async) !== 1 && lodashIsEmpty(billList$ | async)" class="without-results">
+          <app-without-results></app-without-results>
+        </div>
+      </div>
+      <div class="footer">
+        <div class="bills">
+          <label class="normal-black">{{ (billList$ | async).length + ' Facturas' }}</label>
+        </div>
+        <div class="total">
+          <label class="normal-black"
+            >{{ 'common.total' | translate }} {{ totalAmountBills$ | async | currency: 'USD':'symbol-narrow':'2.2-4' }}
+            {{ 'USD' }}</label
+          >
+        </div>
+        <div class="bills-selected">
+          <label class="bold-green"
+            >#{{ billingSelected$ | async }}
+            {{
+              (billingSelected$ | async) === 1
+                ? ('executeCollection.details.billSelected' | translate)
+                : ('executeCollection.details.billsSelected' | translate)
+            }}</label
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-container">
+    <label>{{ 'executeCollection.details.totalSelected' | translate }}:</label>
+    <label class="green">{{ billsAmount$ | async | currency: 'USD':'symbol-narrow':'1.2-2' }} {{ 'USD' }}</label>
+  </div>
+</div>
+<app-pop-up-generic
+  *ngIf="popUps.monitoring.isOpen"
+  id="pop-up-monitoring"
+  [activeButtons]="false"
+  [showClose]="true"
+  [width]="'800px'"
+  [height]="'700px'"
+  [titleHeader]="'Ver Monitoreos'"
+  (evento)="handlePopUps(MONITORING_POP, $event)"
+>
+  <div class="container-pop">
+    <div class="header">
+      <div class="column-one">
+        <img src="assets/Images/clientes/logo_proquifa_hover.svg" alt="proquifa" />
+        <div class="labels">
+          <div class="line-one">
+            <label>{{ (selectedClient$ | async)?.NombreCliente }}</label>
+          </div>
+          <div class="line-two">
+            <label>{{ 'executeCollection.details.bill' | translate }} {{ '02039284' }} ·</label>
+            <label class="green">P.I · {{ '928343-0928' }}</label>
+          </div>
+          <div class="line-three">
+            <label
+              >{{ 'executeCollection.details.fep' | translate }}:
+              {{ '2021-11-10T00:00:00.000Z' | dateFormatSlashShort }} ·</label
+            >
+            <label
+              >{{ 'executeCollection.details.fpp' | translate }}:
+              {{ '2021-11-10T00:00:00.000Z' | dateFormatSlashShort }} ·</label
+            >
+            <img src="assets/Images/labels/defaulting.svg" alt="defaulting" />
+          </div>
+        </div>
+      </div>
+      <div class="column-two">
+        <div class="line-one">
+          <label>{{ 70000 | currency: 'USD':'symbol-narrow':'2.2-4' }} {{ 'USD' }}</label>
+        </div>
+        <div class="line-two">
+          <label>{{ 'common.total' | translate }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="container-table">
+      <div>
+        <div class="body">
+          <virtual-scroller [items]="monitorings" (vsUpdate)="monitoringsScrollItems = $event">
+            <div class="row-item" *ngFor="let monitoring of monitoringsScrollItems; index as productIndex">
+              <div class="line-one">
+                <div class="column-one">
+                  <label>#{{ monitoring.Index }} ·</label>
+                  <label>{{ 'Monitoreo' }} {{ monitoring.date | dateFormatSlashShort }} ·</label>
+                  <label>{{ monitoring.hrs }} {{ 'executeCollection.details.hrs' | translate }}</label>
+                </div>
+              </div>
+              <div class="line-two">
+                <label>{{ 'executeCollection.details.justifications' | translate }}:</label>
+                <label>{{ monitoring.observaciones }}</label>
+              </div>
+            </div>
+          </virtual-scroller>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <label>#{{ 3 }} {{ 'executeCollection.details.monitoringConfirmations' | translate }}</label>
+    </div>
+  </div>
+</app-pop-up-generic>
+<app-pop-up-generic
+  *ngIf="popUps.reschedule.isOpen"
+  id="pop-up-reschedule"
+  [activeButtons]="false"
+  [showClose]="true"
+  [width]="'800px'"
+  [height]="'700px'"
+  [titleHeader]="'Ver Reprogramaciones'"
+  (evento)="handlePopUps(RESCHEDULE_POP, $event)"
+>
+  <div class="container-pop">
+    <div class="header">
+      <div class="column-one">
+        <img src="assets/Images/clientes/logo_proquifa_hover.svg" alt="proquifa" />
+        <div class="labels">
+          <div class="line-one">
+            <label>{{ (selectedClient$ | async)?.NombreCliente }}</label>
+          </div>
+          <div class="line-two">
+            <label>{{ 'executeCollection.details.bill' | translate }} {{ '02039284' }} ·</label>
+            <label class="green">P.I · {{ '928343-0928' }}</label>
+          </div>
+          <div class="line-three">
+            <label
+              >{{ 'executeCollection.details.fep' | translate }}:
+              {{ '2021-11-10T00:00:00.000Z' | dateFormatSlashShort }} ·</label
+            >
+            <label
+              >{{ 'executeCollection.details.fpp' | translate }}:
+              {{ '2021-11-10T00:00:00.000Z' | dateFormatSlashShort }} ·</label
+            >
+            <img src="assets/Images/labels/defaulting.svg" alt="defaulting" />
+          </div>
+        </div>
+      </div>
+      <div class="column-two">
+        <div class="line-one">
+          <label>{{ 80000 | currency: 'USD':'symbol-narrow':'2.2-4' }} {{ 'USD' }}</label>
+        </div>
+        <div class="line-two">
+          <label>{{ 'common.total' | translate }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="container-table">
+      <div>
+        <div class="body">
+          <virtual-scroller [items]="monitorings" (vsUpdate)="monitoringsScrollItems = $event">
+            <div class="row-item" *ngFor="let monitoring of monitoringsScrollItems; index as productIndex">
+              <div class="line-one">
+                <div class="column-one">
+                  <label>#{{ monitoring.Index }} ·</label>
+                  <label>{{ 'executeCollection.details.fpp' | translate }} {{ monitoring.date | dateFormatSlashShort }}</label>
+                </div>
+              </div>
+              <div class="line-two">
+                <label>{{ 'executeCollection.details.justifications' | translate }}:</label>
+                <label>{{ monitoring.observaciones }}</label>
+              </div>
+            </div>
+          </virtual-scroller>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <label>#{{ 3 }} {{ 'executeCollection.details.reschedule' | translate }}</label>
+    </div>
+  </div>
+</app-pop-up-generic>

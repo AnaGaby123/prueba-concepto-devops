@@ -1,0 +1,109 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+  @include s.flexColumn;
+  & > .collapse {
+    @include s.flexRow;
+    align-items: center;
+    background-color: s.$main-proquifa-f;
+    padding: 8px;
+
+    & > .info {
+      @include s.flexRow;
+      gap: 210px;
+      & > .client-title {
+        @include s.responsive-font-format(
+          $font-size-map: s.$responsive-font-17-21,
+          $font-family: s.$font_family_novecento_bold
+        );
+        text-transform: uppercase;
+      }
+
+      & > .data-contact {
+        @include s.responsive-font-format(
+          $font-size-map: s.$responsive-font-16-21,
+          $font-family: s.$font_family_novecento_bold,
+          $color: s.$main-proquifa
+        );
+        text-transform: lowercase;
+      }
+
+      @include s.media-query(s.$standard) {
+        gap: 255px;
+      }
+    }
+    & > .container {
+      @include s.tooltip(auto, auto, auto, 150px, 'right_0');
+      position: absolute;
+      z-index: 1;
+      right: 16px;
+      & > .tooltip-text {
+        min-width: max-content !important;
+
+        & > p {
+          white-space: pre;
+          width: 100% !important;
+        }
+      }
+      & > img {
+        cursor: pointer;
+        height: 19px;
+        transform: scaleX(1);
+        transition: transform 0.3s ease-in-out;
+        &.reverse {
+          transform: scaleY(-1);
+        }
+      }
+    }
+  }
+  & > .client-contact-bar-collapse-container {
+    @include s.flexRowNoWrap;
+    &.hide {
+      animation-duration: 0.3s;
+      animation-fill-mode: forwards;
+      animation-name: hideClientInfo;
+      transition: 0.3s ease-in-out;
+    }
+
+    &.show {
+      animation-duration: 0.3s;
+      animation-fill-mode: forwards;
+      animation-name: showClientInfo;
+    }
+
+    &.isCollapse {
+      overflow: hidden;
+      height: 100%;
+      flex: 1 1 auto;
+      column-gap: 30px;
+    }
+    & > .contact-container {
+      flex: 1 1 auto;
+    }
+    & > .progress-bar-container {
+      flex: 1 1 100%;
+    }
+  }
+  @keyframes showClientInfo {
+    from {
+      height: 0;
+    }
+    to {
+      height: 111px;
+    }
+  }
+
+  @keyframes hideClientInfo {
+    from {
+      height: 111px;
+    }
+    to {
+      height: 0;
+    }
+  }
+}

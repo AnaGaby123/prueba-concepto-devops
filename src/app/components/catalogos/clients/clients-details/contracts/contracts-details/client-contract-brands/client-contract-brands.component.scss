@@ -1,0 +1,453 @@
+@use 'base' as s;
+
+:host {
+  width: 100%;
+  height: 100%;
+
+  #client-contract-brands {
+    @include s.flexColumn;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    & > .principal {
+      @include s.flexColumn;
+      flex: 1;
+      overflow: hidden;
+
+      & > .data {
+        @include s.flexRow;
+        margin: 31px 0 35px 0;
+        justify-content: space-between;
+
+        & > .element-row {
+          @include s.flexRow;
+          align-items: center;
+          margin-right: 60px;
+
+          &:last-child {
+            margin-right: 0;
+          }
+
+          & > div:first-child {
+            padding-right: 5px;
+          }
+
+          & > .dop-down {
+            display: flex;
+            height: 25px;
+            @include s.responsive_layout('macBookAir') {
+              height: 30px;
+            }
+          }
+        }
+      }
+
+      & > .section-brands {
+        @include s.flexRow;
+        width: 100%;
+        flex: 1;
+        overflow: hidden;
+
+        & > .list-brands {
+          @include s.flexColumn;
+          width: 391px;
+          height: 100%;
+          box-sizing: border-box;
+          padding-right: 20px;
+          border-top: 1px solid s.$dark-proquifa-e;
+
+          & > div:nth-of-type(1) {
+            width: 100%;
+
+            & > div:nth-of-type(1) {
+              margin: 17px 0 23px 0;
+            }
+
+            & > .search {
+              display: flex;
+              box-sizing: border-box;
+              margin-bottom: 16px;
+
+              & > app-search {
+                width: 100%;
+                display: flex;
+                box-sizing: border-box;
+                padding-top: 5px;
+                padding-bottom: 5px;
+              }
+            }
+          }
+
+          & > div:nth-of-type(2) {
+            width: 100%;
+            height: calc(100% - 90px);
+          }
+
+          & > .lista {
+            @include s.flexColumn;
+            overflow-y: auto;
+            width: 100%;
+            position: relative;
+            flex: 1;
+
+            & > .without-results {
+              @include s.flexColumn;
+              @include s.absoluteCenter;
+              flex: 1;
+            }
+
+            & > .loading {
+              @include s.flexColumn;
+              @include s.absoluteCenter;
+              flex: 1;
+            }
+          }
+        }
+
+        & > .list-drop-down {
+          @include s.flexColumn;
+          /*          width: calc(100% - 391px);
+          height: 100%;*/
+          background: #eceef0;
+          flex: 1;
+          padding: 40px 30px 20px;
+          @include s.responsive_layout('macBookAir') {
+            padding: 60px 40px 20px;
+          }
+          @media screen and (min-width: 1650px) {
+            padding: 80px 60px 20px;
+          }
+          @media screen and (min-width: 2400px) {
+            padding: 100px 80px 20px;
+          }
+
+          & > header {
+            align-items: end;
+
+            & > .text-index {
+              margin-right: 25px;
+            }
+          }
+
+          .list-selected {
+            @include s.flexColumn;
+            /*            width: 100%;
+            height: calc(100% - 25px);*/
+            flex: 1;
+            overflow: hidden;
+
+            & > .titleList {
+              @include s.flexRow;
+              width: 100%;
+              height: 25px;
+              justify-content: flex-start;
+            }
+
+            & > .list-select {
+              /*              width: 100%;
+              height: calc(100% - 74px);*/
+              flex: 1;
+              overflow-y: auto;
+
+              & > .elementos {
+                @include s.flexRow;
+                @include s.absoluteCenter;
+                width: 100%;
+                border-bottom: 1px solid rgba(66, 66, 66, 0.4);
+                box-sizing: border-box;
+                //padding: 10px 0;
+                padding: 20px 48px 20px 46px;
+                height: 64px;
+
+                & > div {
+                  @include s.flexRow;
+                  width: calc(100% - 40px);
+                  box-sizing: border-box;
+
+                  & > div:nth-of-type(1) {
+                    @include s.flexRow;
+                    @include s.absoluteCenter;
+                    width: calc(100% - 30px);
+                    justify-content: flex-start;
+
+                    & > p:nth-of-type(1) {
+                      width: 100%;
+                      text-align: left;
+
+                      & > span:nth-of-type(1) {
+                        @include s.escaledFontFormat(s.$textSize14to16, normal, #008894);
+                        @include s.Roboto-Bold;
+                        margin-right: 2px;
+                      }
+
+                      & > span:nth-of-type(2) {
+                        @include s.escaledFontFormat(s.$textSize14to16, normal, #242424);
+                        @include s.Roboto-Bold;
+                        margin-left: 2px;
+                      }
+                    }
+                  }
+
+                  & > div:nth-of-type(2) {
+                    @include s.flexRow;
+                    @include s.absoluteCenter;
+                    width: 30px;
+                    justify-content: flex-end;
+
+                    & > img:nth-of-type(1) {
+                      width: 15px;
+
+                      &:hover {
+                        cursor: pointer;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          & > .totals {
+            @include s.flexRow;
+            /*              padding-top: 5px;*/
+            border-top: 1px solid #242424;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+.title {
+  @include s.escaledFontFormat(s.$textSize17to21, normal, #242424);
+  @include s.Novecento-Bold;
+}
+
+.element-list {
+  @include s.Roboto-Bold;
+  @include s.escaledFontFormat(s.$textSize15to17, bold, #242424);
+}
+
+.total {
+  font-family: s.$font-family_roboto_regular;
+  font-size: 14px;
+}
+
+.color {
+  color: #008894 !important;
+}
+
+.text {
+  font-family: s.$font-family_roboto_regular;
+  font-size: 13px;
+  @include s.responsive_layout('macBookAir') {
+    font-size: 16px !important;
+  }
+}
+
+header {
+  display: flex;
+  height: 25px;
+  box-sizing: border-box;
+  border-bottom: 1px solid #242424;
+  padding: 0 0 6px 72px;
+}
+
+.index {
+  display: flex;
+  //width: 31px;
+  margin-right: 25px;
+}
+
+.nombre {
+  @include s.flexRow;
+  box-sizing: border-box;
+  width: calc(100% - 62px);
+}
+
+virtual-scroller {
+  width: 100%;
+  height: 100%;
+}
+
+.root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.app-name {
+  font-size: 28px;
+  font-family: 'Lato', sans-serif;
+  font-weight: bold;
+}
+
+.has-gradient-text {
+  background: -webkit-linear-gradient(#13f7f4, #2af598);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.board {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+
+  // Override Automatic Minimum Size
+  // https://stackoverflow.com/questions/36247140/why-dont-flex-items-shrink-past-content-size
+  min-width: 0;
+  min-height: 0;
+
+  .board-bar {
+    background: rgba(gray, 0.5);
+    padding: 8px 15px;
+
+    .board-name {
+      font-size: 20px;
+      font-weight: bold;
+      color: white;
+    }
+  }
+
+  .board-wrapper {
+    display: flex;
+    flex-grow: 1;
+    overflow-x: auto;
+
+    .board-columns {
+      display: flex;
+      flex-grow: 1;
+
+      .board-column {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        flex-basis: 0; // to force the columns to all be the same size, regardless of content
+
+        min-width: 300px;
+        margin: 50px;
+        padding: 25px;
+
+        border-radius: 4px;
+
+        background: rgba(white, 0.5);
+
+        &:not(:first-child) {
+          margin-left: 0;
+        }
+
+        .column-title {
+          font-size: 20px;
+          font-weight: 800;
+          font-family: 'Lato', sans-serif;
+          text-transform: uppercase;
+          margin-bottom: 20px;
+        }
+      }
+    }
+  }
+}
+
+.tasks-container {
+  width: 100%;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.with-contract {
+  &:hover {
+    cursor: auto;
+  }
+}
+
+.without-contract {
+  &:hover {
+    background-color: s.$dark-proquifa-e;
+    cursor: move;
+  }
+}
+
+.brand-available {
+  @include s.flexRow;
+  width: 100%;
+  background: white;
+  border-bottom: solid 1px #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.05), 0 3px 14px 2px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1px;
+  //padding: 10px;
+  padding: 0 20px 0 24px;
+  height: 64px;
+  touch-action: none;
+  -webkit-user-drag: none;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+
+  & > .brand-name {
+    @include s.flexColumn;
+    /*    @include s.absoluteCenter;*/
+    align-items: flex-start;
+    align-content: center;
+    width: calc(100% - 25px);
+    //justify-content: flex-start;
+    justify-content: center;
+
+    & > .elementL {
+      @include s.escaledFontFormat(s.$textSize15to17, regular, #242424);
+      @include s.Roboto-Bold;
+    }
+
+    & > .onContract {
+      @include s.Roboto-Bold;
+      @include s.escaledFontFormat(s.$textSize13to15, regular, s.$pqGreen);
+    }
+  }
+
+  & > .plus-icon {
+    @include s.flexRow;
+    @include s.absoluteCenter;
+    width: 25px;
+    justify-content: flex-end;
+
+    & > img {
+      width: 20px;
+    }
+
+    & > .img-active {
+      cursor: pointer;
+    }
+
+    & > .img-inactive {
+      cursor: auto;
+    }
+  }
+}
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.tasks-container.cdk-drop-list-dragging .brand-available:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.loading-container {
+  @include s.flexRow;
+  flex: 1;
+  height: 100%;
+}

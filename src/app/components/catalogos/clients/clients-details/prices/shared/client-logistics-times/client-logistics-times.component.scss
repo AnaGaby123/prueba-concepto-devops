@@ -1,0 +1,99 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  & > .logistics-times-container {
+    @include s.absoluteCenter;
+    @include s.flexColumn;
+
+    & > .title {
+      @include s.Novecento-Bold;
+      @include s.escaledFontFormat(s.$textSize14to16, bold, s.$pqGreen);
+      text-align: center;
+    }
+
+    & > .logistics-times {
+      display: grid;
+      grid-column-gap: 10px;
+      grid-row-gap: 20px;
+      grid-template-columns: max-content 40px;
+      justify-content: center;
+      margin: 25px 0;
+
+      & > label {
+        @include s.Novecento-Bold;
+      }
+
+      & > .title {
+        @include s.escaledFontFormat(s.$textSize12to13, bold, s.$pqBlack2);
+        text-align: end;
+      }
+
+      & > .days {
+        @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+        text-align: start;
+      }
+    }
+
+    & > .total-logistic-times {
+      display: grid;
+      flex: 1;
+      grid-column-gap: 11px;
+      grid-template-columns: minmax(140px, 1fr) 50px;
+
+      &:nth-of-type(1) {
+        margin-bottom: 10px;
+      }
+
+      & > label {
+        @include s.Novecento-Bold;
+        @include s.escaledFontFormat(s.$textSize13to15, bold, s.$pqGreen);
+        text-align: end;
+
+        &:last-of-type {
+          text-align: start;
+        }
+      }
+
+      &.green {
+        background-color: rgba(s.$pqGreen3, 0.09);
+        margin-top: 10px;
+        padding: 8px 10px;
+
+        & > label {
+          color: s.$pqGreen2;
+
+          &:last-of-type {
+            text-align: start;
+          }
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > .logistics-times-container {
+      & > .logistics-times {
+        grid-row-gap: 23px;
+        grid-template-columns: max-content 50px;
+        margin: 30px 0;
+      }
+
+      & > .total-logistic-times {
+        grid-template-columns: minmax(160px, 1fr) 60px;
+
+        &:nth-of-type(1) {
+          margin-bottom: 12px;
+        }
+
+        &.green {
+          margin-top: 12px;
+          padding: 10px 15px;
+        }
+      }
+    }
+  }
+}

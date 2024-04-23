@@ -1,0 +1,67 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  & > .item {
+    @include s.pending-dashboard-list-item;
+
+    & > .content {
+      @include s.absoluteTop;
+      @include s.flexRowWrap;
+      gap: 5px;
+
+      & > .name {
+        @include s.flexRowNoWrap;
+        width: 100%;
+
+        & > label:nth-of-type(1) {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-roboto_bold,
+            $font-weight: s.$font-weight-bold,
+            $font-size-map: s.$responsive-font-17-21,
+            $color: s.$main-proquifa
+          );
+          @include s.multiLineTextTruncateSinHeight(1, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+        }
+      }
+
+      & > .classification {
+        @include s.flexRowNoWrap;
+        width: 100%;
+
+        & > div {
+          @include s.flexRowWrap;
+
+          & > label {
+            @include s.responsive-font-format(
+              $font-family: s.$font-family-roboto_bold,
+              $font-weight: s.$font-weight-bold,
+              $font-size-map: s.$responsive-font-16-20
+            );
+            white-space: pre;
+          }
+
+          & > .text-danger {
+            @include s.responsive-font-format(
+              $font-family: s.$font-family-roboto_bold,
+              $font-weight: s.$font-weight-bold,
+              $font-size-map: s.$responsive-font-16-20,
+              $color: s.$pqAlert
+            );
+          }
+        }
+      }
+    }
+  }
+
+  @include s.media-query(s.$standard) {
+    & > .item {
+      & > .content {
+        gap: 7px;
+      }
+    }
+  }
+}

@@ -1,0 +1,38 @@
+<app-pop-up-generic
+  [titleHeader]="'checkout.dataForAddenda' | translate"
+  [activeButtons]="true"
+  [activeBtn]="isValid$ | async"
+  (evento)="showEvent($event)"
+  width="460px"
+  height="448px"
+>
+  <div id="addenda-pop-up">
+    <div class="container">
+      <label>{{ 'checkout.deliveryTo' | translate }}:</label>
+      <div>
+        <div>
+          <app-drop-down-list
+            [label]="'common.email' | translate"
+            [required]="true"
+            [placeholder]="'process.selectEmail' | translate"
+            [itemSelected]="selectClientEmail$ | async"
+            [items]="contacts$ | async"
+            [enableEdit]="true"
+            (valueDropList)="updateTpPedido('AddendaCorreoElectronico', $event?.label)"
+          ></app-drop-down-list>
+          <app-generic-text-area
+            [title]="'process.observation' | translate"
+            [required]="true"
+            height="163px"
+            width="229px"
+            [value]="(selectTpPedido$ | async)?.AddendaObservaciones"
+            (emitData)="updateTpPedido('AddendaObservaciones', $event)"
+          ></app-generic-text-area>
+        </div>
+        <label class="required-text">
+          {{ '* ' + ('process.requiredField' | translate) }}
+        </label>
+      </div>
+    </div>
+  </div>
+</app-pop-up-generic>

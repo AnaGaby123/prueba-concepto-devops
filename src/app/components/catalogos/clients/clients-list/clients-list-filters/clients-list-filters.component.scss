@@ -1,0 +1,27 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+.drops {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.search {
+  @include s.flexRow;
+  @include s.absoluteCenter;
+  margin-top: 10px;
+
+  & > div {
+    width: 430px;
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    margin-top: 15px;
+    & > div {
+      width: 380px;
+    }
+  }
+}

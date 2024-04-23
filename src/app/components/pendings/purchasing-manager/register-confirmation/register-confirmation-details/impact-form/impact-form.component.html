@@ -1,0 +1,110 @@
+<div class="impact-container">
+  <img src="assets/Images/dark-orange-x.svg" alt="" class="absolute" (click)="cancelConfig()" />
+  <div class="form">
+    <div>
+      <label class="title">{{ 'registerConfirmation.changeFeeReason' | translate }}</label>
+      <app-radio-button
+        class="radio"
+        [allowDisable]="true"
+        [height]="viewType === 'iPad' ? '17px' : '20px'"
+        [label]="'registerConfirmation.unknownReasons' | translate"
+        [labelFontStyle]="item?.ocPartidaEdicionConImpactoFEE.MotivosDesconocidos ? 'robotoBold13' : 'defaultLabel'"
+        [value]="item?.ocPartidaEdicionConImpactoFEE.MotivosDesconocidos"
+        (emitValue)="saveInputValueRadio('MotivosDesconocidos', $event)"
+      ></app-radio-button>
+      <app-radio-button
+        class="radio"
+        [allowDisable]="true"
+        [height]="viewType === 'iPad' ? '17px' : '20px'"
+        [label]="'registerConfirmation.production' | translate"
+        [labelFontStyle]="item?.ocPartidaEdicionConImpactoFEE.Produccion ? 'robotoBold13' : 'defaultLabel'"
+        [value]="item?.ocPartidaEdicionConImpactoFEE.Produccion"
+        (emitValue)="saveInputValueRadio('Produccion', $event)"
+      ></app-radio-button>
+      <app-radio-button
+        class="radio"
+        [allowDisable]="true"
+        [height]="viewType === 'iPad' ? '17px' : '20px'"
+        [label]="'registerConfirmation.availability' | translate"
+        [labelFontStyle]="item?.ocPartidaEdicionConImpactoFEE.Disponibilidad ? 'robotoBold13' : 'defaultLabel'"
+        [value]="item?.ocPartidaEdicionConImpactoFEE.Disponibilidad"
+        (emitValue)="saveInputValueRadio('Disponibilidad', $event)"
+      ></app-radio-button>
+    </div>
+    <div>
+      <label>{{
+        ('registerConfirmation.fea' | translate) + ' ' + (item.EmpresaEmbarque ? item.EmpresaEmbarque.Prefijo : 'NA')
+      }}</label>
+      <app-date-picker
+        class="date-picker"
+        dateFormat="YYYYMMDD"
+        [color]="false"
+        [disabled]="false"
+        [disabledCalendarDays]="selectNonWorkingDays$ | async"
+        [date]="item?.ocPartidaEdicionConImpactoFEE.FechaEstimadaArriboDate"
+        [rangeStart]="rangeStart"
+        (fecha)="handleDate('FechaEstimadaArribo', $event)"
+      ></app-date-picker>
+      <label>{{ 'registerConfirmation.feeNew' | translate }}</label>
+      <app-date-picker
+        class="date-picker"
+        dateFormat="YYYYMMDD"
+        [color]="false"
+        [disabled]="!item?.ocPartidaEdicionConImpactoFEE.FechaEstimadaArriboDate"
+        [disabledCalendarDays]="selectNonWorkingDays$ | async"
+        [date]="item?.ocPartidaEdicionConImpactoFEE.FechaEstimadaEntregaDate"
+        [rangeStart]="feeRangeStart"
+        (fecha)="handleDate('FechaEstimadaEntrega', $event)"
+      ></app-date-picker>
+    </div>
+    <div>
+      <label>{{ 'common.pieces' | translate }}</label>
+      <div class="input">
+        <app-generic-input
+          class="input"
+          [fontSize]="viewType === 'iPad' ? '13px' : '16px'"
+          [isDisable]="
+            item.backOrderConfig ||
+            (nameComponent === registerConfirmation && arrayLength === 4) ||
+            (nameComponent !== registerConfirmation && arrayLength === 3)
+          "
+          [labelFontColor]="'#c87133'"
+          [placeholder]="'0'"
+          [textAlign]="'center'"
+          [typeValidation]="inputValidators.Number"
+          [value]="item?.ocPartidaEdicionConImpactoFEE.NumeroDePiezas"
+          (textData)="saveInputValue('NumeroDePiezas', $event)"
+        ></app-generic-input>
+        <label>{{ 'common.fromMinus' | translate }} {{ item?.tempNumeroDePiezas }}</label>
+      </div>
+      <label>{{ 'registerConfirmation.uploadDocument' | translate }}</label>
+      <app-generic-input-file
+        [acceptedExtensions]="'application/pdf,.pdf'"
+        [file]="item?.ocPartidaEdicionConImpactoFEE?.File"
+        (autoEmitFile)="saveInputValue('File', $event)"
+      ></app-generic-input-file>
+    </div>
+    <div class="text-area">
+      <app-generic-text-area
+        class="text-area"
+        [fontSize]="viewType === 'iPad' ? '13px' : '16px'"
+        [height]="viewType === 'iPad' ? '100px' : '120px'"
+        [title]="'registerConfirmation.changeJustification' | translate"
+        [titleFontColor]="'#c87133'"
+        [value]="item?.ocPartidaEdicionConImpactoFEE.Justificacion"
+        (emitData)="saveInputValue('Justificacion', $event)"
+      ></app-generic-text-area>
+    </div>
+  </div>
+  <div class="buttons">
+    <button *ngIf="!item.impactConfig || !isTheLastIndex" [ngClass]="'active'" (click)="cancelConfig()">{{
+      'common.cancel' | translate
+    }}</button>
+    <button *ngIf="item.impactConfig && isTheLastIndex" [ngClass]="'active'" (click)="deleteConfig()">{{
+      'common.uncheck' | translate
+    }}</button>
+    <button [disabled]="!saveValidator" [ngClass]="saveValidator ? 'active' : 'disabled'" (click)="saveConfig()">{{
+      'common.accept' | translate
+    }}</button>
+  </div>
+</div>

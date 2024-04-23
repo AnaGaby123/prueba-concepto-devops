@@ -1,0 +1,20 @@
+<div class="container">
+  <app-header-internal-sales-item
+    class="header"
+    [internalSalesItem]="itemForHeaderInternal$ | async"
+    (valueEmitter)="globalItemEventsHandler($event)"
+  ></app-header-internal-sales-item>
+  <div class="header-separator"></div>
+  <virtual-scroller
+    [items]="resumeItems$ | async"
+    [enableUnequalChildrenSizes]="true"
+    [bufferAmount]="24"
+    (vsUpdate)="listItemScroll = $event"
+  >
+    <app-table-resume-item
+      *ngFor="let item of listItemScroll; let i = index; trackBy: handleTrackBy"
+      [itemResume]="item"
+      (valueEmitter)="handleEventEmitter($event)"
+    ></app-table-resume-item>
+  </virtual-scroller>
+</div>

@@ -1,0 +1,69 @@
+<div class="content-container">
+  <div class="header">
+    <span>Resultados</span>
+  </div>
+  <div class="table-container">
+    <div class="table">
+      <div class="header-table">
+        <div class="number">
+          <span>#</span>
+        </div>
+        <div class="day-payment">
+          <span>Fecha Programada de Pago</span>
+        </div>
+        <div class="provider">
+          <span>Proveedor</span>
+        </div>
+        <div class="status-payment">
+          <span>Estados de pago</span>
+        </div>
+        <div class="to-pay">
+          <span>A Pagar</span>
+        </div>
+        <div class="delivery">
+          <span>Pagado</span>
+        </div>
+        <div class="status"></div>
+      </div>
+      <div class="body">
+        <virtual-scroller>
+          <div class="item" *ngFor="let item of itemsResults">
+            <div class="number">
+              <span>{{ item.Index }}</span>
+            </div>
+            <div class="day-payment">
+              <span>{{ item.fechaEntrega | dateFormatSlash }}</span>
+            </div>
+            <div class="provider">
+              <span>{{ item.proveedor }} </span>
+              <span class="bill"> {{ item.facturas }} {{ 'facturas' }}</span>
+            </div>
+            <div class="status-payment">
+              <div *ngIf="item.cobroTiempo">
+                <span class="green-circle"></span>
+                <label>{{ item.cobroTiempo }}</label>
+              </div>
+              <div *ngIf="item.cobroVencido">
+                <span class="yellow-circle"></span>
+                <label>{{ item.cobroVencido }}</label>
+              </div>
+            </div>
+            <div class="to-pay">
+              <span>{{ (item.pagar | currency: 'USD':'symbol-narrow':'0.2-4') + ' USD' }}</span>
+            </div>
+            <div class="delivery">
+              <span>{{ (item.pagado | currency: 'USD':'symbol-narrow':'0.2-4') + ' USD' }}</span>
+            </div>
+            <div class="status">
+              <img src="assets/Images/labels/directos.svg" alt="" *ngIf="item.recibido" />
+              <img src="assets/Images/labels/indirectos.svg" alt="" *ngIf="!item.recibido" />
+            </div>
+          </div>
+        </virtual-scroller>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <span>#14</span>
+  </div>
+</div>

@@ -1,0 +1,34 @@
+<div class="component-container" id="attend-review-container">
+  <div class="header">
+    <app-header-bar
+      [title]="(inRebill$ | async) ? 'Refacturar' : (title$ | async)"
+      [activeBack]="(isDetails$ | async) || (inRebill$ | async)"
+      (goBack)="goBack()"
+      [name]="(inRebill$ | async) ? (customer$ | async)?.NombreCliente : ''"
+    >
+    </app-header-bar>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="footer" *ngIf="!(isDetails$ | async)">
+    <ng-container>
+      <div>
+        <label class="label-dark">NR:</label>
+        <label class="label-normal">{{ 'attendReview.unrealized' | translate }}</label>
+      </div>
+      <div>
+        <label class="label-dark">FE+:</label>
+        <label class="label-normal">{{ 'attendReview.deliveryDate' | translate }}</label>
+      </div>
+      <div>
+        <label class="label-dark green">FR+:</label>
+        <label class="label-normal">{{ 'attendReview.revisionDate' | translate }}</label>
+      </div>
+      <div>
+        <label class="label-dark red">FR+:</label>
+        <label class="label-normal">{{ 'Fecha de Revisión más próxima fuera de tiempo' }}</label>
+      </div>
+    </ng-container>
+  </div>
+</div>

@@ -1,0 +1,179 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+  line-height: normal;
+}
+
+:host {
+  app-pop-up-generic {
+    ::ng-deep .modal {
+      background: none;
+
+      & > .modal-content {
+        transition: none;
+      }
+    }
+  }
+  @include s.absolute100();
+  @include s.flexColumn;
+  flex: 1;
+  .content {
+    @include s.flexColumn;
+    flex: 1;
+    overflow: hidden;
+    #freight-details-container {
+      @include s.flexColumn;
+      flex: 1;
+      padding: 30px 20px;
+      & > .freight-list-container {
+        @include s.flexColumn;
+        border-bottom: 1px solid s.$dark-proquifa;
+        & > .title {
+          @include s.flexRowNoWrap;
+          border-bottom: 1px solid s.$dark-proquifa;
+          padding: 8px 0;
+          & > label {
+            @include s.responsive-font-format($font-size-map: s.$responsive-font-15-15);
+          }
+        }
+        & > .list-freight-express-container,
+        & > .list-freight-container {
+          @include s.flexColumn;
+          max-height: 168px;
+          overflow-y: auto;
+          & > .item {
+            @include s.flexRowNoWrap;
+            border-bottom: 1px solid s.$dark-proquifa-e;
+            padding: 12px 16px;
+            justify-content: space-between;
+            & > .freight-data {
+              @include s.flexRowNoWrap;
+              gap: 56px;
+              & > label {
+                @include s.responsive-font-format(
+                  $font-family: s.$font-family-roboto_bold,
+                  $font-weight: s.$font-weight-bold,
+                  $font-size-map: s.$responsive-font-14-14
+                );
+                & > .freight-name {
+                  vertical-align: baseline;
+                  color: s.$main-proquifa;
+                }
+                & > .tee {
+                  @include s.responsive-font-format($font-size-map: s.$responsive-font-14-14);
+                  vertical-align: baseline;
+                }
+              }
+              & > .tee {
+                @include s.responsive-font-format(
+                  $font-family: s.$font-family-roboto_bold,
+                  $font-weight: s.$font-weight-bold,
+                  $font-size-map: s.$responsive-font-14-14,
+                  $color: s.$main-proquifa
+                );
+              }
+            }
+            & > .price {
+              & > label {
+                @include s.responsive-font-format(
+                  $font-family: s.$font-family-roboto_bold,
+                  $font-weight: s.$font-weight-bold,
+                  $font-size-map: s.$responsive-font-14-14,
+                  $color: s.$main-proquifa
+                );
+              }
+            }
+          }
+          & > .item-without-freight {
+            @include s.flexRowNoWrap;
+            justify-content: space-between;
+            border-bottom: 1px solid s.$dark-proquifa-e;
+            padding: 12px 16px;
+            & > label {
+              @include s.responsive-font-format(
+                $color: s.$main-proquifa,
+                $font-family: s.$font-family-roboto_bold,
+                $font-weight: s.$font-weight-bold,
+                $font-size-map: s.$responsive-font-14-14
+              );
+            }
+          }
+        }
+      }
+      & > .data {
+        @include s.flexRow;
+        justify-content: space-between;
+        margin: 12px 0;
+        & > .column-left-container {
+          @include s.flexColumn;
+          gap: 5px;
+          & > .total-concept {
+            & > label {
+              @include s.responsive-font-format($font-size-map: s.$responsive-font-12-14);
+            }
+          }
+          & > .freight-apportion {
+            @include s.flexRowNoWrap;
+            align-items: center;
+            gap: 9px;
+          }
+          & > .legend-freight {
+            & > label {
+              @include s.responsive-font-format($font-size-map: s.$responsive-font-11-13);
+            }
+          }
+        }
+        & > .totals-container {
+          @include s.flexRowNoWrap;
+          gap: 10px;
+          justify-content: flex-end;
+          & > .left {
+            @include s.flexColumn;
+            align-items: flex-end;
+            flex: 0 0 auto;
+            gap: 8px;
+            & > label {
+              @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+              @include s.Roboto-Regular;
+            }
+
+            & > label.titleBlack {
+              @include s.escaledFontFormat(s.$textSize15to16, bold, s.$pqBlack2);
+              @include s.Roboto-Bold;
+            }
+          }
+          & > .right {
+            @include s.flexColumn;
+            align-items: flex-end;
+            flex: 0 0 auto;
+            gap: 8px;
+            & > label {
+              @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqGreen);
+              @include s.Roboto-Regular;
+              min-width: 160px;
+              text-align: right;
+            }
+            & > label.total {
+              @include s.escaledFontFormat(s.$textSize15to16, regular, s.$pqGreen2);
+              @include s.Roboto-Bold;
+            }
+          }
+        }
+      }
+      & > .message-container {
+        @include s.flexColumn;
+        align-items: flex-start;
+        gap: 8px;
+        margin-top: 16px;
+        & > .title-message {
+          @include s.responsive-font-format($color: s.$main-proquifa, $font-size-map: s.$responsive-font-15-15);
+        }
+        & > .message {
+          @include s.responsive-font-format($font-size-map: s.$responsive-font-14-14);
+          text-align: start;
+        }
+      }
+    }
+  }
+}

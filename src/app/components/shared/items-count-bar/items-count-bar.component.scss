@@ -1,0 +1,83 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  width: 100%;
+
+  & > .items-count-bar {
+    @include s.flexColumn;
+    height: 100%;
+    width: 100%;
+
+    & > .bar-content {
+      @include s.flexRow;
+      width: 100%;
+      height: 100%;
+
+      & > div {
+        @include s.flexRow;
+        @include s.absoluteCenter;
+        height: 100%;
+        width: 100%;
+        background-color: s.$pqGray2;
+        padding: 0 5px;
+
+        &.bar-tooltip {
+          @include s.tooltip();
+
+          .tooltip-text {
+            @include s.Roboto-Regular;
+            @include s.escaledFontFormat(s.$textSize8to9, regular, s.$pqWhite);
+            align-items: center;
+            visibility: visible;
+          }
+
+          * {
+            cursor: pointer;
+          }
+        }
+
+        & > .text {
+          @include s.Roboto-Bold;
+          @include s.escaledFontFormat(s.$textSize20to25, bold, s.$grayText);
+          @include s.multiLineTextTruncateSinHeight($lines: 1);
+          word-break: break-all;
+        }
+      }
+
+      & > .progress {
+        background-color: s.$pqGreen3;
+
+        & > .text {
+          @include s.escaledFontFormat(s.$textSize20to25, bold, s.$pqWhite);
+          word-break: break-all;
+        }
+      }
+    }
+
+    & > .indicators {
+      @include s.flexRow;
+      flex: 1;
+      margin-top: 10px;
+      justify-content: space-between;
+      @include s.responsive_layout('macBookAir') {
+        margin-top: 15px;
+      }
+
+      & > label {
+        @include s.Roboto-Bold;
+        @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+      }
+    }
+  }
+}
+
+.tooltip-text {
+  visibility: hidden;
+  position: absolute;
+  top: 20px;
+  left: 0;
+}

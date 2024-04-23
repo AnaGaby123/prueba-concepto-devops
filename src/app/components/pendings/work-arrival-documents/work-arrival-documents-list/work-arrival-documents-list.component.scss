@@ -1,0 +1,173 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  $left-container-flex: (
+    'base': 580px,
+    'macBookAir': 680px,
+  );
+  $graphics-padding: (
+    'base': 10px 60px,
+    'macBookAir': 30px 40px,
+  );
+  $graphics-structure: (
+    'top': 1,
+    'bottom': 0,
+  );
+  $graphics-gap: (
+    'base': 25px 0,
+    'macBookAir': 40px 0,
+  );
+
+  @include s.pending-dashboard-structure($left-container-flex, $graphics-padding, $graphics-structure, $graphics-gap);
+
+  & > #work-arrival-documents-list-container {
+    & > .left-container {
+      & > .filters {
+        & > div:nth-of-type(1) {
+          width: 40%;
+        }
+
+        & > div:nth-of-type(2) {
+          width: 60%;
+        }
+
+        & > div {
+          @include s.flexRow;
+          align-items: center;
+          justify-content: center;
+          width: 50%;
+        }
+      }
+
+      & > .list-container {
+        & > .virtual-list {
+          @include s.flexColumn;
+          flex: 1;
+          height: 100%;
+          overflow: auto;
+          width: 100%;
+
+          & > ::ng-deep .scrollable-content > .item {
+            @include s.flexRow;
+            align-items: flex-start;
+            border-bottom: 1px solid s.$pqGray2;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+
+            & * {
+              cursor: pointer;
+            }
+
+            &:hover {
+              background-color: s.$pqGray2;
+            }
+
+            & > .number {
+              @include s.flexColumn;
+              align-items: center;
+              justify-content: flex-start;
+              padding: 10px 15px;
+
+              & > label {
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormat(s.$textSize20to28, regular, s.$pqBlack2);
+              }
+            }
+
+            & > .content {
+              @include s.flexColumn;
+              align-items: flex-start;
+              flex: 1;
+              height: 100%;
+              justify-content: space-between;
+              overflow: hidden;
+              padding: 10px 10px 10px 0;
+
+              & > .title {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormat(s.$textSize21to28, bold, s.$pqGreen);
+                margin-bottom: 4px;
+              }
+
+              & > .subtitle {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormat(s.$textSize16to24, bold, s.$pqBlack2);
+                margin-bottom: 4px;
+              }
+
+              & > .total-value {
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormat(s.$textSize14to19, regular, s.$pqBlack2);
+              }
+            }
+
+            & > .arrow {
+              @include s.absoluteCenter;
+              @include s.flexColumn;
+              padding: 10px 15px 10px 25px;
+              margin: auto 0;
+
+              & > img {
+                width: 13px;
+                height: 20px;
+              }
+            }
+          }
+        }
+      }
+
+      & > .footer {
+        @include s.flexRow;
+        border-top: 1px solid s.$pqBlack2;
+        justify-content: space-between;
+
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+          @include s.flexRow;
+        }
+      }
+    }
+
+    & > .right-container {
+      & > app-doughnut-chart {
+        overflow: hidden;
+      }
+
+      & > .loading {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .left-container {
+        & > .list-container {
+          & > .virtual-list {
+            & > ::ng-deep .scrollable-content > .item {
+              & > .content {
+                & > .title,
+                & > .subtitle {
+                  margin-bottom: 5px;
+                }
+              }
+
+              & > .arrow {
+                & > img {
+                  width: 18px;
+                  height: 27px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

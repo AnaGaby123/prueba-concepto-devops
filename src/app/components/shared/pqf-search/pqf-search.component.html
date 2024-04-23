@@ -1,0 +1,30 @@
+<div class="pqf-search" [ngClass]="{disable: disable}">
+  <div class="container">
+    <div class="image">
+      <img
+        alt=""
+        [src]="
+          disable
+            ? 'assets/Images/components-src/search/lupa_disable.svg'
+            : 'assets/Images/components-src/search/lupa_inactive.svg'
+        "
+      />
+    </div>
+    <div class="input">
+      <input
+        #inputElement
+        type="text"
+        [disabled]="disable"
+        [ngModel]="searchTerm"
+        [placeholder]="placeholder | translate"
+        [readOnly]="disable"
+        (blur)="onBlur()"
+        (focus)="onFocus()"
+        (keypress)="handleKeyPressEvent($event)"
+        (keyup.enter)="onSelectSearchTerm()"
+        (ngModelChange)="handleSearch($event)"
+        (paste)="handlePasteEvent($event)"
+      />
+    </div>
+  </div>
+</div>

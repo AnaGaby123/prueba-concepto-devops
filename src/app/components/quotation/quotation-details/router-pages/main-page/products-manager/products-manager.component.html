@@ -1,0 +1,193 @@
+<div id="products-manager-container">
+  <div class="filters" #filters>
+    <div class="search-bar">
+      <app-search
+        [activeRefresh]="true"
+        [borderColor]="'#008894'"
+        [imageFill]="'#008894'"
+        [isExpandable]="true"
+        [isLoading]="(optionsOfProductsStatus$ | async) === apiRequestStatusLoading"
+        [isSearchByType]="true"
+        [itemSelected]="optionOfProduct$ | async"
+        [placeholder]="'quotation.placeholderSearch' | translate"
+        [resultItems]="optionsOfProducts$ | async"
+        [searchTerm]="runSearchTerm$ | async"
+        [typeSelected]="searchTypeSelectedOption$ | async"
+        [typesOfSearch]="searchTypesOptions$ | async"
+        (textSearch)="handleKeySearch($event)"
+        (handleSearchTermSelected)="handleSearchTermEnter($event)"
+        (handleItemSelected)="handleItemSelected($event)"
+        (handleClearSearchTerm)="handleClearSearchTerm()"
+        (handleTypeSelected)="typeSearch($event)"
+        [isDisable]="isNewClient$ | async"
+      ></app-search>
+    </div>
+    <app-drop-down-list
+      class="drop"
+      [activeMinWidth]="false"
+      [isSearchable]="true"
+      [itemSelected]="brandListSelectedOption$ | async"
+      [items]="brandListOptions$ | async"
+      [subtitleActive]="false"
+      [title]="'quotation.details.section.listQuotes.allMarck' | translate"
+      (valueDropList)="setFilter($event, 'selectedBrandFilter')"
+      [disable]="isNewClient$ | async"
+    ></app-drop-down-list>
+    <app-drop-down-list
+      class="drop"
+      [activeMinWidth]="false"
+      [itemSelected]="productTypeListSelectedOption$ | async"
+      [items]="productTypeListOptions$ | async"
+      [isSearchable]="(productTypeListOptions$ | async)?.length > 5"
+      [subtitleActive]="false"
+      (valueDropList)="setFilter($event, 'selectedProductTypeFilter')"
+      [disable]="isNewClient$ | async"
+    ></app-drop-down-list>
+    <button
+      [ngClass]="{
+        active:
+          (searchTerm$ | async) !== '' &&
+          (brandListSelectedOption$ | async)?.value !== defaultuuid &&
+          (productsSearchResults$ | async)?.length === 0 &&
+          !(isNewClient$ | async),
+        disabled:
+          (searchTerm$ | async) === '' ||
+          (brandListSelectedOption$ | async)?.value === defaultuuid ||
+          (productsSearchResults$ | async)?.length > 0 ||
+          (isNewClient$ | async)
+      }"
+      [disabled]="
+        (searchTerm$ | async) === '' ||
+        (brandListSelectedOption$ | async)?.value === defaultuuid ||
+        (productsSearchResults$ | async)?.length > 0 ||
+        (isNewClient$ | async)
+      "
+      (click)="onClickOfflineProducts()"
+    >
+      <label>{{ 'quotation.details.offlineProducts' | translate }}</label>
+    </button>
+  </div>
+  <div class="list-product">
+    <div class="content-list">
+      <div class="search-term-content" @fadeAnimation *ngIf="(searchTerm$ | async) !== ''">
+        <div class="title-result">
+          <label>{{ 'quotation.details.searchResults' | translate }}</label>
+        </div>
+        <div class="run-search">
+          <label class="result">“{{ searchTerm$ | async }}”</label>
+        </div>
+        <div class="total">
+          <label> · </label>
+          <label>
+            {{
+              (total$ | async | number: '1.0-0') +
+                ' ' +
+                (((total$ | async) === 1 ? 'quotation.details.result' : 'quotation.details.results') | translate)
+            }}
+          </label>
+        </div>
+      </div>
+      <div class="list" *ngIf="(productsSearchResults$ | async)?.length > 0">
+        <virtual-scroller
+          #scroller
+          class="virtual-scroller"
+          [items]="selectInternalSalesItemProductSearchResults$ | async"
+          [enableUnequalChildrenSizes]="true"
+          (vsEnd)="fetchMore($event)"
+        >
+          <div
+            class="product-container"
+            *ngFor="let product of scroller.viewPortItems; let i = index; trackBy: handleTrackByFn"
+            [ngClass]="{selected: product.data.isSelected}"
+          >
+            <app-internal-sales-item
+              [internalSalesItem]="product"
+              (valueEmitter)="globalItemEventsHandler($event)"
+            ></app-internal-sales-item>
+            <div class="product-bottom-container" *ngIf="product.data.isSelected">
+              <app-product-information-details
+                [productData]="product.data"
+                (emitOpenDates)="addProductToCart($event)"
+              ></app-product-information-details>
+            </div>
+          </div>
+          <div class="loadingContainer" *ngIf="(listProductsStatus$ | async) === apiRequestStatusLoading">
+            <div class="load-circle">
+              <div class="line"></div>
+              <div class="line"></div>
+              <div class="line"></div>
+            </div>
+          </div>
+        </virtual-scroller>
+      </div>
+      <!-- DOCS: Se quita porque no no muestra datos correctos y por el paginado no hay forma de obtener los datos correctos-->
+      <!--<div class="total-content">
+        <label>
+          {{
+            (total$ | async | number: '1.0-0') +
+              ' ' +
+              (((total$ | async) === 1 ? 'quotation.details.titleProduct' : 'quotation.details.titleProducts') | translate)
+          }}
+        </label>
+        <label>
+          {{
+            (!(totalControlled$ | async) ? '0' : (totalControlled$ | async)) +
+              ('quotation.details.section.listQuotes.control' | translate)
+          }}
+        </label>
+        <label>
+          {{
+            (!(totalUncontrolled$ | async) ? '0' : (totalUncontrolled$ | async)) +
+              ('quotation.details.section.listQuotes.noControl' | translate)
+          }}
+        </label>
+        <label>
+          {{ 'Monto Total: ' }}
+          {{ (totalQuoted$ | async)?.totalPriceQuotation | currency: (valueCurrency$ | async)?.label:'symbol-narrow':'2.2-4' }}
+          {{ (valueCurrency$ | async)?.label }}
+        </label>
+      </div>-->
+    </div>
+    <div class="without-results" *ngIf="(productsSearchResults$ | async)?.length === 0">
+      <app-without-results
+        [title]="
+          ((productsSearchResults$ | async)?.length === 0 && (searchTerm$ | async) !== ''
+            ? 'quotation.details.section.listQuotes.noResult'
+            : ((listProductsStatus$ | async) !== apiRequestStatusLoading &&
+                (listProductsStatus$ | async) !== apiRequestStatusDefault) ||
+              (searchTerm$ | async) === ''
+            ? 'quotation.details.section.listQuotes.useSearch'
+            : ''
+          ) | translate
+        "
+      ></app-without-results>
+    </div>
+  </div>
+</div>
+<div class="linked-items-pop">
+  <app-custom-position-pop-up
+    *ngIf="toolTipPop"
+    [backgroundColor]="'#33333c'"
+    [borderColor]="'#33333c'"
+    [borderRadius]="'solid 0.5px #c8c8c9'"
+    [closeButton]="false"
+    [maxHeight]="(viewType$ | async) === 'macBookAir' ? '95px' : '85px'"
+    [maxWidth]="'160px'"
+    [minHeight]="'60px'"
+    [minWidth]="'160px'"
+    [popUpPosition]="'bottom-center'"
+    [target]="targetPop"
+    [triangleBackgroundColor]="'#33333c'"
+    (closeEmitter)="openLinkedQuoted('tooltip', false)"
+  >
+    <div class="linked-items">
+      <ul>
+        <li *ngFor="let quote of quotesLinked$ | async; let i = index"
+          ><label (click)="redirectViewPdfFile(quote)">
+            {{ i + 1 + '.- FO-' + quote.Folio }}
+          </label></li
+        >
+      </ul>
+    </div>
+  </app-custom-position-pop-up>
+</div>

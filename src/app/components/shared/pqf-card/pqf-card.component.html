@@ -1,0 +1,33 @@
+<div id="card-container">
+  <virtual-scroller
+    *ngIf="!isLoading && options?.length > 0"
+    [items]="options"
+    (vsUpdate)="optionsScrollItems = $event"
+    [horizontal]="true"
+  >
+    <div
+      class="option"
+      *ngFor="let option of optionsScrollItems; let i = index"
+      [ngClass]="{active: option.active, border: optionIndex - 1 === i}"
+      [style.width]="option.active ? '240px' : '226px'"
+      (click)="onSelected(option)"
+    >
+      <div class="label" *ngFor="let label of option.labels">
+        <label [ngClass]="label.className" [style.color]="label.className === classNames.status ? label.color : null">
+          {{ label.label }}
+          <!--          TODO: Puede que el sublabel se va a quitar-->
+          <span *ngIf="!!label.subLabel" [style.color]="label.subColor ? label.subColor : '#FFFFFF'">
+            · {{ label.subLabel }}</span
+          >
+        </label>
+      </div>
+      <img *ngIf="option.image" [src]="option.image" alt="" />
+    </div>
+  </virtual-scroller>
+  <div *ngIf="isLoading" class="scrollable-content loading">
+    <app-loading [color]="'white'"></app-loading>
+  </div>
+  <div *ngIf="!isLoading && options?.length === 0 && enableMessage" class="scrollable-content without-results-message">
+    <label>{{ withoutOptionsMessage }}</label>
+  </div>
+</div>

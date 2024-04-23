@@ -1,0 +1,20 @@
+<div class="price-item" [ngClass]="price.isSelected ? 'selected' : ''" (click)="handleSelectedPriceChange()">
+  <div class="select-indicator"></div>
+  <div class="item-content">
+    <label class="title"> {{ price?.PrecioLista }} {{ price?.MonedaVentaProveedor }} </label>
+    <div class="subtitle">
+      <label class="subtitle-1" *ngIf="price?.PrecioListaMonedaProveedor">
+        {{ price?.PrecioListaMonedaProveedor?.toFixed(2) }} {{ price?.ClaveMonedaPagos }}
+      </label>
+      <label class="subtitle-1" *ngIf="!price?.PrecioListaMonedaProveedor">N/D</label>
+      <label class="subtitle-2"> {{ price.TotalProducto }} {{ price.TotalProducto === 1 ? 'Producto' : 'Productos' }} </label>
+    </div>
+    <div class="has-config-indicator">
+      <img
+        alt=""
+        src="assets/Images/clientes/enfoque.svg"
+        *ngIf="price.NivelConfiguracionProductoProveedor === levels.listPrice"
+      />
+    </div>
+  </div>
+</div>

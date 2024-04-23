@@ -1,0 +1,51 @@
+<div class="optionsBar">
+  <div id="left-row-container" class="leftRow" *ngIf="showArrows">
+    <img
+      id="left-row-image"
+      alt=""
+      [src]="
+        enableLeftArrow && index > 0 ? 'assets/Images/FlechaIzqVerde.svg' : 'assets/Images/flechaIzquierdaCatProNormal.svg'
+      "
+      (click)="enableLeftArrow && index > 0 ? selectPreviousOption() : null"
+    />
+  </div>
+  <div class="content" [style.margin-bottom]="marginBottom">
+    <div
+      class="element"
+      *ngFor="let option of options; let i = index"
+      (click)="selectOption(option)"
+      [style.min-width]="optionMinWidth"
+    >
+      <div [style.justify-content]="justifyLabel">
+        <label
+          class="title"
+          [style.font-size]="fontSize ? fontSize : ''"
+          [style.color]="option.isSelected ? selectedLabelColor : !option.isEnable ? disableLabelColor : enableLabelColor"
+          ><span *ngIf="option.number && showNumber">{{ option.number + ' · ' }}</span
+          >{{ option.label }} <img *ngIf="option.showIcon" alt="" [src]="option.icon" />
+        </label>
+      </div>
+      <hr
+        [style.background-color]="option.isSelected ? selectedBarColor : !option.isEnable ? disableBarColor : enableBarColor"
+        [style.height]="heightBar"
+      />
+    </div>
+  </div>
+  <div
+    id="right-row-container"
+    class="rightRow"
+    *ngIf="showArrows"
+    [ngClass]="enableRightArrow && index < options.length - 1 ? '' : 'disableImg'"
+  >
+    <img
+      id="right-row-img"
+      alt=""
+      [src]="
+        enableRightArrow && index < options.length - 1
+          ? 'assets/Images/FlechaDerVerde.svg'
+          : 'assets/Images/flechaDerechaCatProNormal.svg'
+      "
+      (click)="enableRightArrow ? selectNextOption() : null"
+    />
+  </div>
+</div>

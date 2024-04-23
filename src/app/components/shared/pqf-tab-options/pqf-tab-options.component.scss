@@ -1,0 +1,68 @@
+@use 'base' as s;
+
+#pqf-tab-options {
+  @include s.flexRow;
+
+  & > .tab-option {
+    @include s.cursor-pointer;
+    @include s.flexRow;
+    flex: 1;
+    justify-content: center;
+    padding: 8px 24px;
+
+    & > label {
+      @include s.responsive-font-format(
+        $font-family: s.$font-family-roboto_bold,
+        $font-weight: s.$font-weight-bold,
+        $font-size-map: s.$responsive-font-16-20
+      );
+    }
+
+    &.primary {
+      background-color: s.$pqGreen;
+
+      & > label {
+        color: s.$pqWhite;
+      }
+
+      &:hover {
+        background-color: s.$main-proquifa-c;
+      }
+    }
+
+    &.secondary {
+      background-color: s.$pqBlack2;
+
+      & > label {
+        color: s.$pqWhite;
+      }
+
+      &:hover {
+        background-color: s.$dark-proquifa-d;
+
+        & > label {
+          color: s.$pqBlack2;
+        }
+      }
+    }
+
+    &.disable {
+      &,
+      & * {
+        cursor: default;
+      }
+
+      background-color: s.$dark-proquifa-e !important;
+
+      & > label {
+        color: s.$dark-proquifa-d !important;
+      }
+    }
+  }
+
+  @include s.media-query(s.$standard) {
+    & > .tab-option {
+      padding: 12px 24px;
+    }
+  }
+}

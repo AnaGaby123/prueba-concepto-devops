@@ -1,0 +1,359 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  width: 100%;
+  & > .container-concept {
+    @include s.flexColumn;
+    flex: 1;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+
+    & > .cat-product {
+      & > .img-label {
+        height: 17px;
+        margin-right: 4px;
+      }
+      & > .cat {
+        @include s.responsive-font-format(
+          $font-size-map: s.$responsive-font-12-12,
+          $font-family: s.$font_family_roboto_bold,
+          $font-weight: s.$font_weight_bold,
+          $color: s.$main-proquifa
+        );
+      }
+    }
+    & > .product-description {
+      @include s.multiLineTextTruncateSinHeight(3, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+      @include s.responsive-font-format(
+        $font-size-map: s.$responsive-font-12-12,
+        $font-family: s.$font_family_roboto,
+        $font-weight: s.$font_weight_regular
+      );
+    }
+    & > .details-family {
+      @include s.flexRow;
+      & > .product-family {
+        @include s.responsive-font-format(
+          $font-size-map: s.$responsive-font-11-b-11-b,
+          $font-family: s.$font_family_roboto_bold,
+          $font-weight: s.$font_weight_bold,
+          $color: s.$main-proquifa
+        );
+      }
+      & > .controlled {
+        @include s.responsive-font-format(
+          $font-size-map: s.$responsive-font-11-b-11-b,
+          $font-family: s.$font_family_roboto_bold,
+          $font-weight: s.$font_weight_bold,
+          $color: s.$pqOrange2
+        );
+        white-space: break-spaces;
+      }
+    }
+    & > .publications-author {
+      @include s.responsive-font-format(
+        $font-size-map: s.$responsive-font-11-b-11-b,
+        $font-family: s.$font_family_roboto_bold,
+        $font-weight: s.$font_weight_bold,
+        $color: s.$pqBlack2
+      );
+    }
+
+    & > .who-bill {
+      @include s.responsive-font-format(
+        $font-size-map: s.$responsive-font-11-b-11-b,
+        $font-family: s.$font_family_roboto_bold,
+        $font-weight: s.$font_weight_bold,
+        $color: s.$main-proquifa-c
+      );
+    }
+    & > .date-container {
+      @include s.flexRow;
+      & > .validation {
+        @include s.responsive-font-format(
+          $font-size-map: s.$responsive-font-11-b-11-b,
+          $font-family: s.$font_family_roboto_bold,
+          $font-weight: s.$font_weight_bold,
+          $color: s.$main-proquifa
+        );
+      }
+      & > .date {
+        @include s.responsive-font-format(
+          $font-size-map: s.$responsive-font-11-b-11-b,
+          $font-family: s.$font_family_roboto_bold,
+          $font-weight: s.$font_weight_bold,
+          $color: s.$success
+        );
+        white-space: pre-wrap;
+      }
+    }
+    & > .see-history {
+      @include s.responsive-font-format(
+        $font-size-map: s.$responsive-font-11-b-11-b,
+        $font-family: s.$font_family_roboto_bold,
+        $font-weight: s.$font_weight_bold,
+        $color: s.$main-proquifa
+      );
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    & > .dates-trainings {
+      @include s.flexRow;
+      & > label {
+        @include s.responsive-font-format(
+          $font-size-map: s.$responsive-font-10-10,
+          $font-family: s.$font_family_roboto_bold,
+          $font-weight: s.$font_weight_bold,
+          $color: s.$pqBlack2
+        );
+      }
+      & > label {
+        white-space: break-spaces;
+      }
+      & > label:nth-of-type(1) {
+        white-space: normal;
+      }
+    }
+    & > .rate-conversion-container {
+      @include s.flexRow;
+      align-items: center;
+      column-gap: 8px;
+      cursor: pointer;
+      & > .rate-conversion {
+        @include s.responsive-font-format(
+          $font-size-map: s.$responsive-font-12-12,
+          $font-family: s.$font_family_roboto_regular,
+          $font-weight: s.$font_weight_regular,
+          $color: s.$main-proquifa
+        );
+        text-decoration: underline;
+        cursor: pointer;
+      }
+      & img {
+        width: 24px;
+      }
+    }
+    & > .alternate-complementary-container {
+      & > label {
+        @include s.responsive-font-format(
+          $font-size-map: s.$responsive-font-11-b-11-b,
+          $font-family: s.$font_family_roboto_regular,
+          $font-weight: s.$font_weight_regular,
+          $color: s.$pqBlack2
+        );
+      }
+      & > .alternate {
+        color: s.$etiqueta-a;
+      }
+      & > .complementary {
+        color: s.$main-proquifa;
+      }
+
+      & > .supplements {
+        color: s.$pqOrange7;
+      }
+    }
+    & > .with-contract {
+      @include s.responsive-font-format(
+        $font-size-map: s.$responsive-font-11-b-11-b,
+        $font-family: s.$font_family_roboto_regular,
+        $font-weight: s.$font_weight_regular,
+        $color: s.$golden
+      );
+    }
+    & > .quotations-linked {
+      @include s.responsive-font-format(
+        $font-size-map: s.$responsive-font-11-b-11-b,
+        $font-family: s.$font_family_roboto_regular,
+        $font-weight: s.$font_weight_regular,
+        $color: s.$success
+      );
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    & > .without-quote {
+      @include s.responsive-font-format(
+        $font-size-map: s.$responsive-font-11-b-11-b,
+        $font-family: s.$font_family_roboto_regular,
+        $font-weight: s.$font_weight_regular,
+        $color: s.$etiqueta-a
+      );
+    }
+    & > .floating-container {
+      position: relative;
+      & > .add-item-saving {
+        @include s.responsive-font-format(
+          $font-size-map: s.$responsive-font-11-b-11-b,
+          $font-family: s.$font_family_roboto_regular,
+          $font-weight: s.$font_weight_regular,
+          $color: s.$success
+        );
+        cursor: pointer;
+        text-decoration: underline;
+      }
+      & > .pieces-floating-input {
+        width: 60px;
+        height: 28px;
+        background-color: s.$pqWhite;
+        border: 1px solid s.$boxShadow;
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1;
+        &::before {
+          content: '';
+          width: 0;
+          height: 0;
+          border-left: 10px solid transparent;
+          border-right: 10px solid transparent;
+          border-bottom: 10px solid s.$boxShadow;
+          position: absolute;
+          top: -10px;
+          left: calc(50% - 10px);
+        }
+        &::after {
+          content: '';
+          width: 0;
+          height: 0;
+          border-left: 8px solid transparent;
+          border-right: 8px solid transparent;
+          border-bottom: 9px solid s.$dark-proquifa-f;
+          position: absolute;
+          top: -9px;
+          left: calc(50% - 8px);
+        }
+        & > input {
+          @include s.responsive-font-format(
+            $color: s.$main-proquifa,
+            $font-family: s.$font_family_roboto_bold,
+            $font-size-map: s.$responsive-font-13-16,
+            $font-weight: s.$font_weight_bold
+          );
+          width: 100%;
+          height: 100%;
+          background-color: s.$dark-proquifa-f;
+          border-radius: 2px;
+          border: 0;
+          outline: none;
+          padding: 0 5px;
+          text-align: center;
+        }
+      }
+    }
+
+    & > .express {
+      @include s.responsive-font-format(
+        $font-size-map: s.$responsive-font-11-b-11-b,
+        $font-family: s.$font_family_roboto_regular,
+        $font-weight: s.$font_weight_regular,
+        $color: s.$alert-c
+      );
+    }
+    & > .more-info {
+      @include s.responsive-font-format(
+        $font-size-map: s.$responsive-font-11-b-11-b,
+        $font-family: s.$font_family_roboto_regular_italic,
+        $font-weight: s.$font_weight_regular,
+        $color: s.$main-proquifa
+      );
+    }
+    & > .disabled {
+      @include s.responsive-font-format(
+        $font-size-map: s.$responsive-font-11-b-11-b,
+        $font-family: s.$font_family_roboto_regular_italic,
+        $font-weight: s.$font_weight_regular,
+        $color: s.$alert-c
+      );
+    }
+    & > .name-freight {
+      @include s.responsive-font-format(
+        $font-size-map: s.$responsive-font-12-12,
+        $font-family: s.$font_family_roboto_bold,
+        $font-weight: s.$font_weight_bold,
+        $color: s.$alert-c
+      );
+    }
+
+    &.disabled-content {
+      & > .cat-product {
+        & > .cat {
+          color: s.$dark-proquifa-d;
+        }
+      }
+      & > .product-description {
+        color: s.$dark-proquifa-d;
+      }
+      & > .details-family {
+        & > .product-family {
+          color: s.$dark-proquifa-d;
+        }
+        & > .controlled {
+          color: s.$dark-proquifa-d;
+        }
+      }
+      & > .publications-author {
+        color: s.$dark-proquifa-d;
+      }
+      & > .who-bill {
+        color: s.$dark-proquifa-d;
+      }
+      & > .date-container {
+        & > .validation {
+          color: s.$dark-proquifa-d;
+        }
+        & > .date {
+          color: s.$dark-proquifa-d;
+        }
+      }
+      & > .dates-trainings {
+        & > label {
+          color: s.$dark-proquifa-d;
+        }
+      }
+      & > .rate-conversion-container {
+        & > .rate-conversion {
+          color: s.$dark-proquifa-d;
+        }
+      }
+      & > .alternate-complementary-container {
+        & > .alternate {
+          color: s.$dark-proquifa-d;
+        }
+        & > .complementary {
+          color: s.$dark-proquifa-d;
+        }
+      }
+      & > .with-contract {
+        color: s.$dark-proquifa-d;
+      }
+      & > .quotations-linked {
+        color: s.$dark-proquifa-d;
+      }
+      & > .without-quote {
+        color: s.$dark-proquifa-d;
+      }
+      & > .floating-container {
+        & > .add-item-saving {
+          color: s.$dark-proquifa-d;
+        }
+      }
+      & > .express {
+        color: s.$dark-proquifa-d;
+      }
+      & > .more-info {
+        color: s.$dark-proquifa-d;
+      }
+      //& > .disabled {
+      //  color: $alert-c;
+      //}
+      & > .name-freight {
+      }
+    }
+  }
+}

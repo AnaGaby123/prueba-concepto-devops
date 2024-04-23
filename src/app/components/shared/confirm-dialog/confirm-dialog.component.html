@@ -1,0 +1,18 @@
+<app-pop-up-generic
+  class="cancel-pop-up"
+  [activeBtn]="true"
+  [activeButtons]="true"
+  [onlyOneButton]="data.onlyOneButton"
+  [height]="(viewType$ | async) === viewTypes.small ? '300px' : '360px'"
+  [rightButtonLabel]="'common.accept' | translate"
+  [width]="(viewType$ | async) === viewTypes.small ? '500px' : '620px'"
+  (evento)="onClose($event)"
+>
+  <div class="container">
+    <img src="assets/Images/alerta.svg" alt="alert" />
+    <div>
+      <label>{{ data.message }}</label>
+      <label class="green-text" *ngIf="data.greenText">{{ data.greenText }}</label>
+    </div>
+  </div>
+</app-pop-up-generic>

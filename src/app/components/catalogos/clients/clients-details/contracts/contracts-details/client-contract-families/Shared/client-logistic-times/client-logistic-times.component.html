@@ -1,0 +1,35 @@
+<div class="logistics-times-container">
+  <label class="title">{{ 'formProvider.step8.subtitles.timeInDays' | translate }}</label>
+  <div class="logistics-times">
+    <label class="title">{{ 'formClient.step5.purchaseOrder' | translate }}:</label>
+    <label class="days">{{ actualConfiguration?.configuracionTiemposLogisticos?.DiasPedidoACompra || 'N/D' }}</label>
+    <label class="title">{{ 'formClient.step5.purchaseToShipment' | translate }}:</label>
+    <label class="days">{{ actualConfiguration?.configuracionTiemposLogisticos?.DiasCompraAEmbarque || 'N/D' }}</label>
+    <label class="title">{{ 'formClient.step5.boardingToArrival' | translate }}:</label>
+    <label class="days">{{ actualConfiguration?.configuracionTiemposLogisticos?.DiasEmbarqueAArribo || 'N/D' }}</label>
+    <ng-container *ngIf="!isMexican">
+      <label class="title">{{ 'formClient.step5.pharmaConsolidation' | translate }}:</label>
+      <label class="days">{{ actualConfiguration?.configuracionTiemposLogisticos?.DiasConsolidacionPharma || 'N/D' }}</label>
+      <label class="title">{{ 'formClient.step5.arrivedToImport' | translate }}:</label>
+      <label class="days">{{ actualConfiguration?.configuracionTiemposLogisticos?.DiasArriboAImportacion || 'N/D' }}</label>
+      <label class="title">{{ 'formClient.step5.importToWarehouse' | translate }}:</label>
+      <label class="days">{{ actualConfiguration?.configuracionTiemposLogisticos?.DiasImportacionAAlmacen || 'N/D' }}</label>
+    </ng-container>
+    <ng-container *ngIf="isMexican">
+      <label class="title">{{ 'formClient.step5.arrivalAtWarehouse' | translate }}:</label>
+      <label class="days">{{ actualConfiguration?.configuracionTiemposLogisticos?.DiasArriboAImportacion || 'N/D' }}</label>
+    </ng-container>
+    <label class="title">{{ 'formClient.step5.warehouseForInspection' | translate }}:</label>
+    <label class="days">{{ actualConfiguration?.configuracionTiemposLogisticos?.DiasAlmacenAInspeccion || 'N/D' }}</label>
+    <label class="title">{{ 'formClient.step5.packingInspection' | translate }}:</label>
+    <label class="days">{{ actualConfiguration?.configuracionTiemposLogisticos?.DiasInspeccionAEmbalaje || 'N/D' }}</label>
+  </div>
+  <div class="total-logistic-times">
+    <label> {{ 'formClient.step5.logisticTime' | translate }}: </label>
+    <label> {{ (selectLogisticTimeTotal$ | async) > 0 ? (selectLogisticTimeTotal$ | async) + ' días' : 'N/D' }}</label>
+  </div>
+  <div class="total-logistic-times green">
+    <label> {{ 'formClient.step5.commercialTime' | translate }}: </label>
+    <label> {{ (selectCommercialTimeTotal$ | async) > 0 ? (selectCommercialTimeTotal$ | async) + ' días' : 'N/D' }}</label>
+  </div>
+</div>

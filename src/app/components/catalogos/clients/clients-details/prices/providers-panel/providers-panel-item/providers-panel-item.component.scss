@@ -1,0 +1,56 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+:host {
+  & > .item {
+    @include s.flexRow;
+    border-bottom: 1px solid s.$pqGray3;
+
+    &.selected {
+      & > .indicator {
+        background-color: s.$pqGreen;
+      }
+    }
+
+    & > .indicator {
+      flex: 0 0 8px;
+    }
+
+    & > .data {
+      @include s.flexRow;
+      flex: 1 1 auto;
+      padding: 15px 10px;
+
+      & > .datoProv {
+        @include s.flexRow;
+        align-items: center;
+        flex: 1 1 auto;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize14to18, bold, s.$pqBlack2);
+          @include s.Roboto-Bold;
+        }
+      }
+
+      & > .tipo {
+        @include s.flexColumn;
+        align-items: flex-end;
+        padding-left: 8px;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+          @include s.Roboto-Regular;
+          text-align: end;
+
+          &:first-of-type {
+            margin-bottom: 6px;
+          }
+        }
+      }
+    }
+  }
+}

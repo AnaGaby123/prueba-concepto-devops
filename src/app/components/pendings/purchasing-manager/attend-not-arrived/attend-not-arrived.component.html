@@ -1,0 +1,32 @@
+<div class="component-container" id="attend-not-arrived">
+  <div class="header">
+    <app-header-bar [title]="'ATENDER NO ARRIBADAS'" [activeBack]="false"></app-header-bar>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="footer">
+    <ng-container *ngIf="true; else alternative">
+      <div>
+        <label><span>FEA:</span> {{ 'monitoringDispatch.estimatedDateOfarrival' | translate }}</label>
+      </div>
+      <div>
+        <label><span>OC:</span> {{ 'common.purchaseOrder' | translate }}</label>
+      </div>
+    </ng-container>
+    <ng-template #alternative>
+      <div>
+        <label><span>CU:</span> {{ 'monitoringDispatch.unitCost' | translate }}</label>
+      </div>
+      <div>
+        <label><span>CT:</span> {{ 'monitoringDispatch.totalCost' | translate }}</label>
+      </div>
+      <div>
+        <label><span [ngClass]="'red'">FEE:</span> {{ 'monitoringDispatch.feeOutTime' | translate }}</label>
+      </div>
+      <div>
+        <label><span [ngClass]="'green'">FEE:</span> {{ 'monitoringDispatch.feeOnTime' | translate }}</label>
+      </div>
+    </ng-template>
+  </div>
+</div>

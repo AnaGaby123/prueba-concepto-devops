@@ -1,0 +1,57 @@
+<app-modal
+  [backdrop]="false"
+  [inViewport]="true"
+  (closeModal)="onclose()"
+  #modalRoot
+  [ngClass]="{
+    'resizable-modal-default': isResizable && backGroundColor === '#FFFFFF',
+    'static-modal-default': !isResizable && backGroundColor === '#FFFFFF',
+    'resizable-modal-gray': isResizable && backGroundColor === '#ECEEF0',
+    'static-modal-gray': !isResizable && backGroundColor === '#ECEEF0'
+  }"
+  class="modal"
+>
+  <ng-container class="app-modal-header">
+    <label>{{ titleHeader }}</label>
+    <img alt="" class="close" src="assets/Images/cerrar_pop.svg" (click)="sendStatus(false)" />
+  </ng-container>
+  <ng-container class="app-modal-body">
+    <div *ngIf="!isLoading">
+      <ng-content></ng-content>
+    </div>
+    <div class="loader" *ngIf="isLoading">
+      <app-loading></app-loading>
+    </div>
+  </ng-container>
+</app-modal>
+<!--<ng-template>
+  <div class="dialog">
+    <div
+      class="modal"
+      [ngClass]="{
+        'resizable-modal-default': isResizable && backGroundColor === '#FFFFFF'
+      }"
+      cdkDrag
+      cdkDragBoundary=".dialog"
+    >
+      <div class="ui-modal">
+        <ng-container class="app-modal-header">
+          <div class="ui-modal-header">
+            <div class="ui-titlebar">
+              <label>{{ titleHeader }}</label>
+              <img alt="" class="close" src="assets/Images/cerrar_pop.svg" (click)="onclose()" />
+            </div>
+          </div>
+        </ng-container>
+        <ng-container class="app-modal-body">
+          <div class="ui-modal-body" *ngIf="!isLoading">
+            <ng-content></ng-content>
+          </div>
+          <div class="loader" *ngIf="isLoading">
+            <app-loading></app-loading>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</ng-template>-->

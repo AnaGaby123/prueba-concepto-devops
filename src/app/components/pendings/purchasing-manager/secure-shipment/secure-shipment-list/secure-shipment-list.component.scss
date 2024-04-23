@@ -1,0 +1,258 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  $left-container-flex: (
+    'base': 580px,
+    'macBookAir': 680px,
+  );
+  $graphics-padding: (
+    'base': 15px 25px,
+    'macBookAir': 20px 30px,
+  );
+  $graphics-structure: (
+    'top': 3,
+    'bottom': 2,
+  );
+  $graphics-gap: (
+    'base': 15px 15px,
+    'macBookAir': 20px 20px,
+  );
+
+  @include s.pending-dashboard-structure($left-container-flex, $graphics-padding, $graphics-structure, $graphics-gap);
+
+  & > .dashboard-container {
+    & > .left-container {
+      & > .filters {
+        & > div:nth-of-type(1) {
+          width: 40%;
+        }
+
+        & > div:nth-of-type(2) {
+          width: 60%;
+        }
+
+        & > div {
+          @include s.flexRow;
+          align-items: center;
+          justify-content: center;
+          width: 50%;
+        }
+      }
+
+      & > .list-container {
+        & > virtual-scroller {
+          @include s.absolute100;
+          @include s.fixVirtualScroller;
+
+          &::ng-deep > .scrollable-content {
+            & > .client {
+              @include s.flexRowNoWrap;
+              border-bottom: 1px solid s.$pqGray2;
+              padding: 15px 0 15px 0;
+              width: 100%;
+
+              & * {
+                cursor: pointer;
+              }
+
+              &:hover {
+                @include s.default-transition();
+                background-color: s.$pqGray2;
+              }
+
+              & > .index {
+                @include s.absoluteTop;
+                @include s.flexRowNoWrap;
+                justify-content: flex-start;
+                padding-left: 10px;
+                margin-right: 7px;
+
+                & > label {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize21to28, regular, s.$pqBlack2);
+                  @include s.multiLineTextTruncateSinHeight(1, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+                  flex: 1;
+                }
+              }
+
+              & > .provider-info {
+                @include s.absoluteTop;
+                @include s.flexRowWrap;
+                flex: 1;
+                gap: 5px;
+
+                & > .name {
+                  @include s.flexRowNoWrap;
+                  width: 100%;
+
+                  & > label:nth-of-type(1) {
+                    @include s.Roboto-Bold;
+                    @include s.escaledFontFormat(s.$textSize21to28, bold, s.$pqGreen);
+                    @include s.multiLineTextTruncateSinHeight(1, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+                  }
+                }
+
+                & > .classification {
+                  @include s.flexRowNoWrap;
+                  width: 100%;
+
+                  & > label {
+                    @include s.Roboto-Bold;
+                    @include s.escaledFontFormat(s.$textSize20to24, bold, s.$pqBlack2);
+                    @include s.multiLineTextTruncateSinHeight(1, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+                    white-space: pre;
+                  }
+                }
+
+                & > .cant {
+                  @include s.flexRowNoWrap;
+                  width: 100%;
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize15to19, normal, s.$pqBlack2);
+                    @include s.multiLineTextTruncateSinHeight(1, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+                    white-space: pre;
+                  }
+                }
+
+                & > .states {
+                  @include s.absoluteCenter;
+                  @include s.flexRowNoWrap;
+                  justify-content: flex-start;
+                  width: 100%;
+
+                  & > img {
+                    @include s.imageLabel;
+                  }
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize14to18, normal, s.$pqBlack2);
+                    line-height: initial;
+                    white-space: pre;
+                  }
+
+                  & > .programming {
+                    color: s.$pqGreen2 !important;
+                  }
+
+                  & > .only {
+                    color: s.$colorBlueNewMail !important;
+                  }
+
+                  & > .freight-express {
+                    color: s.$pqTextAlert !important;
+                  }
+
+                  & > .freight-normal {
+                    color: s.$pqGreen !important;
+                  }
+                }
+
+                & > .days {
+                  @include s.flexRowWrap;
+                  gap: 10px;
+                  width: 100%;
+
+                  & > label {
+                    @include s.Novecento-Bold;
+                    @include s.escaledFontFormat(s.$textSize14to17, bold, s.$pqGreen);
+                    text-transform: uppercase;
+
+                    & > span {
+                      @include s.Roboto-Regular;
+                      color: s.$pqBlack2;
+                      vertical-align: baseline;
+                    }
+                  }
+
+                  & > .date-feem {
+                    @include s.Roboto-Regular;
+                    color: s.$pqTextAlert;
+
+                    & > .green {
+                      color: s.$pqGreen2;
+                    }
+
+                    & > .red {
+                      color: s.$pqTextAlert;
+                    }
+
+                    & > .yellow {
+                      color: s.$orange;
+                    }
+                  }
+                }
+              }
+
+              & > .arrow {
+                @include s.right-arrow-in-item-list;
+              }
+            }
+          }
+        }
+      }
+
+      & > .footer {
+        @include s.flexRow;
+        border-top: 1px solid s.$pqBlack2;
+        justify-content: space-between;
+
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+          @include s.flexRow;
+        }
+      }
+    }
+
+    & > .right-container {
+      & > app-doughnut-chart {
+        grid-column-end: span 2;
+        overflow: hidden;
+      }
+
+      & > app-bar-chart {
+        grid-column-end: span 3;
+        overflow: hidden;
+      }
+
+      & > .loading {
+        grid-area: 2/7/2/1;
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > .dashboard-container {
+      & > .left-container {
+        & > .list-container {
+          & > virtual-scroller {
+            &::ng-deep > .scrollable-content {
+              & > .client {
+                padding: 20px 0 20px 0;
+
+                & > .index {
+                  flex: 0 0 60px;
+                }
+
+                & > .provider-info {
+                  gap: 10px;
+
+                  & > .days {
+                    gap: 12px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

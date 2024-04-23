@@ -1,0 +1,58 @@
+<div class="drop-list-container" [ngClass]="{disabled: !isActive, error: isActive && (error || forceError)}">
+  <label class="component-label" *ngIf="label" [ngClass]="{readonly: isReadonly}">
+    <span *ngIf="isRequired">*</span>{{ label }}
+  </label>
+  <div class="box-container" *ngIf="!isReadonly">
+    <div
+      class="box"
+      #boxContainer
+      [ngClass]="{
+        active: isActive && !optionsAreOpen
+      }"
+      (click)="handleOpenOptions($event, !optionsAreOpen)"
+    >
+      <div class="input-container">
+        <label class="placeholder" *ngIf="!selectedOption">{{ placeholder }}</label>
+        <label
+          class="selected-option-label"
+          *ngIf="selectedOption && !isEmpty(selectedOption)"
+          [title]="selectedOption.label"
+          >{{ selectedOption.label }}</label
+        >
+      </div>
+      <div class="drop-icon">
+        <img
+          alt=""
+          [src]="
+            isActive
+              ? './assets/Images/components-src/drop-down-list/active-arrow.svg'
+              : './assets/Images/components-src/drop-down-list/disabled-arrow.svg'
+          "
+          [ngClass]="optionsAreOpen ? 'open-options' : 'close-options'"
+        />
+      </div>
+      <div #optionsContainer class="options" *ngIf="optionsAreOpen" [@enter]>
+        <div
+          class="option"
+          *ngFor="let option of displayedOptions; trackBy: handleTrackById"
+          [ngClass]="{selected: option.id === selectedOption?.id && !activeCheckItem, disabled: option?.inActive}"
+          (click)="handleSelectOption($event, option)"
+        >
+          <div class="separator" [ngClass]="{'check-item': activeCheckItem}">
+            <pqf-check-box *ngIf="activeCheckItem" class="check" [check]="option.isSelected"></pqf-check-box>
+            <label class="option-name">{{ option.label }}</label>
+            <label class="option-sublabel">{{ option.subLabel }}</label>
+          </div>
+        </div>
+        <div class="option last" *ngIf="options?.length === 0">
+          <label>{{ noOptionsMessage }}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="box-container-readonly" *ngIf="isReadonly">
+    <div class="box">
+      <label>{{ selectedOption?.label ? selectedOption?.label : 'N/D' }} </label>
+    </div>
+  </div>
+</div>

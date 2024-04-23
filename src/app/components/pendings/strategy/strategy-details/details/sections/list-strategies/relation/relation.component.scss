@@ -1,0 +1,663 @@
+@use 'base' as s;
+
+:host {
+  width: 100%;
+  height: 100%;
+
+  #relation-container {
+    @include s.flexRowNoWrap;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    flex: 1;
+    overflow: hidden;
+
+    & > div {
+      width: 48%;
+      height: 100%;
+      @include s.flexColumn;
+
+      & > .title {
+        @include s.flexRowNoWrap;
+        align-items: flex-start;
+        border-bottom: 1px solid s.$pqBlack2;
+        margin-bottom: 14px;
+
+        & > label:nth-of-type(1) {
+          @include s.escaledFontFormat(s.$textSize15to21, bold, s.$pqBlack);
+          @include s.Roboto-Bold;
+          text-transform: uppercase;
+          padding-bottom: 7px;
+        }
+
+        & > label:nth-of-type(2) {
+          @include s.escaledFontFormat(s.$textSize15to21, bold, s.$pqGreen);
+          @include s.Roboto-Bold;
+          text-transform: uppercase;
+          padding-bottom: 7px;
+        }
+      }
+    }
+
+    & > .closing-sale {
+      & > .closing-sale-container {
+        width: 100%;
+        height: 100%;
+        @include s.flexColumn;
+
+        & > .dates {
+          @include s.flexRowNoWrap;
+          width: 100%;
+          height: auto;
+          justify-content: space-between;
+
+          & > .info {
+            @include s.flexRowNoWrap;
+            justify-content: space-between;
+            width: 60%;
+
+            & > div {
+              @include s.flexColumn;
+              padding-right: 3px;
+
+              & > label {
+                padding-bottom: 3px;
+              }
+
+              & > label:nth-of-type(1) {
+                @include s.escaledFontFormat(s.$textSize12to16, bold, s.$pqBlack2);
+                @include s.Roboto-Bold;
+              }
+
+              & > label:nth-of-type(2) {
+                @include s.escaledFontFormat(s.$textSize16to24, bold, s.$pqGreen);
+                @include s.Roboto-Bold;
+              }
+
+              & > label:nth-of-type(3) {
+                @include s.escaledFontFormat(s.$textSize11to16, light, s.$pqGreen2);
+                @include s.Roboto-Light;
+              }
+            }
+          }
+
+          & > .container-btn {
+            @include s.flexRowNoWrap;
+            justify-content: flex-end;
+            width: 40%;
+
+            & > .read-report {
+              @include s.flexRowNoWrap;
+              width: 70%;
+              height: 25px;
+              justify-content: flex-end;
+              //margin-top: 15px;
+              & > div {
+                @include s.flexRowNoWrap;
+                @include s.absoluteCenter;
+                width: 260px;
+                height: 25px;
+                background-color: s.$pqGreen;
+                box-sizing: border-box;
+                padding: 4px 5px;
+                @include s.escaledFontFormat(s.$textSize14to21, bold, s.$pqWhite);
+                @include s.Novecento-Bold;
+                text-align: center;
+
+                &:hover {
+                  cursor: pointer;
+                }
+              }
+            }
+          }
+        }
+
+        & > .last-closing {
+          @include s.flexColumn;
+          width: 100%;
+          height: 100%;
+
+          & > label:nth-of-type(1) {
+            @include s.escaledFontFormat(s.$textSize13to18, bold, s.$pqBlack);
+            @include s.Novecento-Bold;
+            border-bottom: 1px solid s.$pqBlack2;
+            border-top: 1px solid s.$pqGray2;
+            padding-top: 11px;
+            padding-bottom: 6px;
+            margin-top: 11px;
+          }
+
+          & > .table {
+            @include s.flexRowNoWrap;
+            width: 100%;
+            flex: 1;
+            box-sizing: border-box;
+            overflow: hidden;
+
+            & > div:nth-of-type(1) {
+              @include s.flexColumn;
+              width: 100%;
+              flex: 1;
+
+              & > .body {
+                @include s.flexRowWrap;
+                width: 100%;
+                height: 100%;
+                flex: 1;
+                overflow: hidden;
+                position: relative;
+
+                & > virtual-scroller {
+                  width: 100%;
+                  height: 99%;
+                  border-bottom: 1px solid #424242;
+
+                  ::ng-deep .scrollable-content {
+                    & > .row-items-quotation {
+                      @include s.flexRow;
+                      @include s.absoluteCenter;
+                      width: 100%;
+                      border-bottom: solid 1px s.$pqGray2;
+                      box-sizing: border-box;
+                      justify-content: space-between;
+                      padding-bottom: 15px;
+                      padding-top: 15px;
+
+                      &.saving {
+                        background-color: rgba(75, 169, 43, 0.06);
+
+                        &:hover * {
+                          cursor: default !important;
+                        }
+
+                        &:hover {
+                          background-color: rgba(75, 169, 43, 0.1);
+                          cursor: default !important;
+                        }
+                      }
+
+                      &:hover * {
+                        cursor: pointer;
+                      }
+
+                      &:hover {
+                        background-color: s.$pqGray2;
+                        cursor: pointer;
+                      }
+
+                      & > div {
+                        @include s.flexRowWrap;
+                        align-content: center;
+                        box-sizing: border-box;
+                        position: relative;
+                        width: 100%;
+
+                        & > p:nth-of-type(1) {
+                          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+                          @include s.Roboto-Regular;
+                          letter-spacing: 0;
+                          text-align: left;
+                        }
+                      }
+
+                      & > div:nth-of-type(1) {
+                        @include s.flexColumn;
+                        max-width: 220px;
+                        width: calc(100% - (30px + 110px + 110px));
+                        justify-content: flex-start;
+
+                        & > .line-one {
+                          @include s.flexRowNoWrap;
+                          padding-bottom: 3px;
+
+                          & > p:nth-of-type(1) {
+                            @include s.escaledFontFormat(s.$textSize13to17, bold, s.$pqBlack2);
+                            @include s.Roboto-Bold;
+                            letter-spacing: 0;
+                            text-align: left;
+                          }
+
+                          & > p:nth-of-type(2) {
+                            @include s.escaledFontFormat(s.$textSize13to17, bold, s.$pqGreen);
+                            @include s.Roboto-Bold;
+                            letter-spacing: 0;
+                            text-align: left;
+                            padding-left: 3px;
+                          }
+                        }
+
+                        & > .line-two {
+                          padding-bottom: 4px;
+
+                          & > p:nth-of-type(1) {
+                            @include s.escaledFontFormat(s.$textSize12to16, regular, s.$pqBlack2);
+                            @include s.Roboto-Regular;
+                            letter-spacing: 0;
+                            text-align: left;
+                          }
+                        }
+
+                        & > .line-three {
+                          & > p:nth-of-type(1) {
+                            @include s.escaledFontFormat(s.$textSize11to15, light, s.$pqBlack2);
+                            @include s.Roboto-Light;
+                            letter-spacing: 0;
+                            text-align: left;
+                          }
+                        }
+                      }
+
+                      & > div:nth-of-type(2) {
+                        @include s.flexRowNoWrap;
+                        @include s.absoluteCenter;
+                        max-width: 30px;
+
+                        & > .tooltip {
+                          @include s.tooltip(auto, auto, auto, 130px);
+
+                          & > img:nth-of-type(1) {
+                            width: 20px;
+                            height: 20px;
+                          }
+
+                          & > .tooltip-text {
+                            min-width: 83px !important;
+                          }
+                        }
+                      }
+
+                      & > div:nth-of-type(3) {
+                        @include s.flexColumn;
+                        max-width: 110px;
+                        align-items: flex-start;
+
+                        & > p:nth-of-type(1) {
+                          @include s.escaledFontFormat(s.$textSize12to16, light, s.$pqGreen2);
+                          @include s.Roboto-Light;
+                          letter-spacing: 0;
+                          text-align: left;
+                        }
+                      }
+
+                      & > div:nth-of-type(4) {
+                        max-width: 110px;
+                        align-items: flex-start;
+
+                        & > p:nth-of-type(1) {
+                          @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqGreen);
+                          @include s.Roboto-Bold;
+                          text-decoration: underline;
+                        }
+                      }
+                    }
+
+                    & > .cell-orange {
+                      background-color: #fef3e8;
+                    }
+
+                    & > .cell-blue {
+                      background-color: #ebf6f7;
+                    }
+
+                    & > .cell-green {
+                      background-color: #f1f9ee;
+                    }
+                  }
+                }
+              }
+            }
+
+            & > .without-results {
+              @include s.absoluteCenter;
+            }
+          }
+
+          & > label:nth-of-type(2) {
+            @include s.escaledFontFormat(s.$textSize11to16, regular, s.$pqBlack2);
+            @include s.Roboto-Regular;
+            text-align: center;
+            padding-top: 4px;
+          }
+
+          & > label:nth-of-type(3) {
+            @include s.escaledFontFormat(s.$textSize12to16, bold, s.$pqBlack2);
+            @include s.Roboto-Bold;
+            text-align: center;
+            padding-top: 12px;
+            padding-bottom: 4px;
+          }
+
+          & > label:nth-of-type(4) {
+            @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqGreen2);
+            @include s.Roboto-Bold;
+            text-align: center;
+            background-color: rgb(241, 249, 238);
+            padding-top: 7px;
+            padding-bottom: 7px;
+            margin-bottom: 19px;
+          }
+        }
+      }
+    }
+
+    & > .last-visit {
+      & > .closing-sale-container {
+        width: 100%;
+        height: 100%;
+        @include s.flexColumn;
+
+        & > .dates {
+          @include s.flexRowNoWrap;
+          width: 100%;
+          height: auto;
+          justify-content: space-between;
+          padding-bottom: 13px;
+
+          & > .info {
+            @include s.flexRowNoWrap;
+            justify-content: space-between;
+            width: 50%;
+
+            & > div {
+              @include s.flexColumn;
+
+              & > label {
+                padding-bottom: 3px;
+              }
+
+              & > label:nth-of-type(1) {
+                @include s.escaledFontFormat(s.$textSize12to16, bold, s.$pqBlack2);
+                @include s.Roboto-Bold;
+              }
+
+              & > label:nth-of-type(2) {
+                @include s.escaledFontFormat(s.$textSize16to24, bold, s.$pqGreen);
+                @include s.Roboto-Bold;
+                text-align: center;
+              }
+            }
+          }
+
+          & > .container-btn {
+            @include s.flexRowNoWrap;
+            justify-content: flex-end;
+            width: 50%;
+
+            & > .read-report {
+              @include s.flexRowNoWrap;
+              width: 70%;
+              height: 25px;
+              justify-content: flex-end;
+
+              & > div {
+                @include s.flexRowNoWrap;
+                @include s.absoluteCenter;
+                width: 260px;
+                height: 25px;
+                background-color: s.$pqGreen;
+                box-sizing: border-box;
+                padding: 4px 5px;
+                @include s.escaledFontFormat(s.$textSize14to21, bold, s.$pqWhite);
+                @include s.Novecento-Bold;
+                text-align: center;
+
+                &:hover {
+                  cursor: pointer;
+                }
+              }
+            }
+          }
+        }
+
+        & > .complaints {
+          width: 100%;
+          height: 100%;
+          @include s.flexRowNoWrap;
+          border-top: solid 1px s.$pqGray2;
+
+          & > .container-chart {
+            @include s.flexColumn;
+            width: 45%;
+            height: auto;
+            align-items: center;
+            padding-top: 10px;
+
+            & > label:nth-of-type(1) {
+              @include s.escaledFontFormat(s.$textSize13to18, bold, s.$pqBlack2);
+              @include s.Novecento-Bold;
+              padding: 5px;
+              text-align: center;
+            }
+
+            & > .chart-container {
+              @include s.flexColumn;
+              height: 100%;
+
+              & > .chart {
+                width: 100%;
+                height: 80%;
+              }
+
+              & > .labels {
+                @include s.flexRowNoWrap;
+                width: 100%;
+                justify-content: space-around;
+                height: 20%;
+
+                & > div {
+                  @include s.flexRowNoWrap;
+                  align-content: center;
+                  align-items: center;
+
+                  & > .circulo {
+                    width: 16px;
+                    height: 16px;
+                    -moz-border-radius: 50%;
+                    -webkit-border-radius: 50%;
+                    border-radius: 50%;
+                    margin-right: 5px;
+                  }
+                }
+              }
+            }
+          }
+
+          & > .container-table {
+            @include s.flexColumn;
+            width: 55%;
+            height: auto;
+            padding-top: 10px;
+            box-sizing: border-box;
+            overflow: hidden;
+            align-items: flex-start;
+
+            & > div:nth-of-type(1) {
+              @include s.flexRowNoWrap;
+              width: 100%;
+              align-content: space-between;
+              padding-bottom: 7px;
+              border-bottom: 1px solid s.$pqBlack2;
+
+              & > div:nth-of-type(1) {
+                @include s.flexRowNoWrap;
+                width: 50%;
+                align-items: center;
+
+                & > .circulo {
+                  width: 16px;
+                  height: 16px;
+                  -moz-border-radius: 50%;
+                  -webkit-border-radius: 50%;
+                  border-radius: 50%;
+                  margin-right: 5px;
+                }
+
+                & > label:nth-of-type(1) {
+                  @include s.escaledFontFormat(s.$textSize13to18, bold, s.$pqBlack2);
+                  @include s.Novecento-Bold;
+                }
+              }
+
+              & > div:nth-of-type(2) {
+                @include s.flexRowNoWrap;
+                width: 50%;
+              }
+            }
+
+            & > .table {
+              @include s.flexRowNoWrap;
+              width: 100%;
+              flex: 1;
+              box-sizing: border-box;
+              overflow: hidden;
+              height: 80%;
+              padding-bottom: 7px;
+              border-bottom: 1px solid s.$pqBlack2;
+
+              & > div:nth-of-type(1) {
+                @include s.flexColumn;
+                width: 100%;
+                box-sizing: border-box;
+                overflow: hidden;
+                flex: 1;
+
+                & > .body {
+                  @include s.flexRowWrap;
+                  width: 100%;
+                  height: 100%;
+                  flex: 1;
+                  box-sizing: border-box;
+                  overflow: hidden;
+
+                  & > virtual-scroller {
+                    width: 100%;
+                    height: 99%;
+
+                    ::ng-deep .scrollable-content {
+                      & > .row-items-quotation {
+                        @include s.flexRow;
+                        @include s.absoluteCenter;
+                        width: 100%;
+                        border-bottom: solid 1px s.$pqGray2;
+                        box-sizing: border-box;
+                        justify-content: space-between;
+                        padding: 15px;
+
+                        &.saving {
+                          background-color: rgba(75, 169, 43, 0.06);
+
+                          &:hover * {
+                            cursor: default !important;
+                          }
+
+                          &:hover {
+                            background-color: rgba(75, 169, 43, 0.1);
+                            cursor: default !important;
+                          }
+                        }
+
+                        &:hover * {
+                          cursor: pointer;
+                        }
+
+                        &:hover {
+                          background-color: s.$pqGray2;
+                          cursor: pointer;
+                        }
+
+                        & > div {
+                          @include s.flexRowWrap;
+                          box-sizing: border-box;
+                          position: relative;
+                          width: 100%;
+
+                          & > p:nth-of-type(1) {
+                            @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+                            @include s.Roboto-Regular;
+                            letter-spacing: 0;
+                            text-align: left;
+                          }
+                        }
+
+                        & > div:nth-of-type(1) {
+                          @include s.flexColumn;
+                          width: 100%;
+                          justify-content: flex-start;
+
+                          & > .line-one {
+                            @include s.flexRowNoWrap;
+                            padding-bottom: 2px;
+
+                            & > p:nth-of-type(1) {
+                              @include s.escaledFontFormat(s.$textSize13to17, bold, s.$pqBlack2);
+                              @include s.Roboto-Bold;
+                              letter-spacing: 0;
+                              text-align: left;
+                            }
+
+                            & > p:nth-of-type(2) {
+                              @include s.escaledFontFormat(s.$textSize13to17, bold, s.$pqGreen);
+                              @include s.Roboto-Bold;
+                              letter-spacing: 0;
+                              text-align: left;
+                              padding-left: 3px;
+                            }
+
+                            & > p:nth-of-type(3) {
+                              @include s.escaledFontFormat(s.$textSize13to17, bold, s.$pqBlack2);
+                              @include s.Roboto-Bold;
+                              letter-spacing: 0;
+                              text-align: left;
+                              padding-left: 3px;
+                            }
+                          }
+
+                          & > .line-two {
+                            padding-top: 3px;
+
+                            & > p:nth-of-type(1) {
+                              @include s.escaledFontFormat(s.$textSize12to16, light, s.$pqBlack2);
+                              @include s.Roboto-Light;
+                              letter-spacing: 0;
+                              text-align: left;
+                            }
+                          }
+                        }
+                      }
+
+                      & > .cell-orange {
+                        background-color: #fef3e8;
+                      }
+
+                      & > .cell-blue {
+                        background-color: #ebf6f7;
+                      }
+
+                      & > .cell-green {
+                        background-color: #f1f9ee;
+                      }
+                    }
+                  }
+                }
+              }
+
+              & > .without-results {
+                @include s.absoluteCenter;
+              }
+            }
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize11to16, regular, s.$pqBlack2);
+              @include s.Roboto-Regular;
+              width: 100%;
+              text-align: center;
+              display: block;
+              padding-top: 6px;
+              height: auto;
+            }
+          }
+        }
+      }
+    }
+  }
+}

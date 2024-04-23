@@ -1,0 +1,403 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  width: 100%;
+  height: 100%;
+
+  & > #close-offer-details-container {
+    @include s.flexColumn;
+    justify-content: flex-start;
+    width: 100%;
+    height: 100%;
+
+    & > .container {
+      @include s.flexRowNoWrap;
+      flex: 1;
+      justify-content: flex-start;
+      overflow: hidden;
+
+      & > .arrow {
+        position: absolute;
+        left: 298px;
+        top: 50%;
+        transition: all 1s ease-in-out;
+        z-index: 2;
+
+        & > img {
+          width: 16px;
+          height: 21px;
+          cursor: pointer;
+          transition: all 1s ease;
+          transform: scaleX(-1);
+        }
+
+        &.close {
+          left: 0;
+          transform: scaleX(-1);
+        }
+      }
+
+      & > .left-container {
+        @include s.flexColumn;
+        height: 100%;
+        width: 314px;
+        overflow: hidden;
+        border-right: 1px solid s.$pqGray2;
+        transition: all 1s ease-in-out;
+        flex-shrink: 0;
+
+        &.close {
+          width: 0;
+        }
+
+        & > .slide {
+          @include s.flexColumn;
+          height: 100%;
+          padding: 20px 19px;
+          width: 314px;
+
+          & > .client-title {
+            @include s.flexRowNoWrap;
+            justify-content: flex-start;
+            margin-bottom: 28px;
+
+            & > label {
+              $textSize: (
+                'base': 17px,
+                'macBookAir': 24px,
+              );
+              @include s.escaledFontFormat($textSize, bold, s.$pqBlack2);
+              @include s.Novecento-Bold;
+              white-space: pre;
+            }
+
+            & > label:first-of-type {
+              color: s.$pqGreen;
+            }
+          }
+
+          & > .client {
+            @include s.flexRowNoWrap;
+            margin-bottom: 28px;
+
+            & > div:nth-of-type(1) {
+              @include s.flexColumn;
+              @include s.absoluteCenter;
+              flex: 0 0 122px;
+              padding-right: 18px;
+
+              & > img {
+                max-height: 100%;
+                max-width: 100%;
+              }
+            }
+
+            & > .client-info {
+              @include s.flexColumn;
+              justify-content: center;
+              flex: 1;
+              overflow: hidden;
+
+              & > div {
+                @include s.multiLineTextTruncateSinHeight($lineHeight: 1.1em);
+
+                & > label {
+                  $textSize: (
+                    'base': 16px,
+                    'macBookAir': 21px,
+                  );
+                  @include s.escaledFontFormat($textSize, bold, s.$pqGreen);
+                  @include s.Roboto-Bold;
+                }
+              }
+
+              & > label {
+                $textSize: (
+                  'base': 13px,
+                  'macBookAir': 16px,
+                );
+                @include s.escaledFontFormat($textSize, regular, s.$pqBlack2);
+                @include s.Roboto-Regular;
+              }
+            }
+          }
+
+          & > .extra-data {
+            @include s.flexRowNoWrap;
+            padding-bottom: 20px;
+            border-bottom: 1px solid s.$pqBlack2;
+
+            & > div {
+              @include s.flexColumn;
+              flex-basis: 50%;
+
+              $textSize: (
+                'base': 13px,
+                'macBookAir': 16px,
+              );
+
+              & > label:nth-of-type(1) {
+                @include s.escaledFontFormat($textSize, bold, s.$pqBlack2);
+                @include s.Roboto-Bold;
+              }
+
+              & > label:nth-of-type(2) {
+                @include s.escaledFontFormat($textSize, regular, s.$pqGreen);
+                @include s.Roboto-Regular;
+              }
+            }
+
+            & > div:nth-of-type(1) {
+              align-items: flex-start;
+            }
+
+            & > div:nth-of-type(2) {
+              align-items: flex-end;
+            }
+          }
+
+          & > .contact-data {
+            @include s.flexColumn;
+            padding-top: 20px;
+
+            & > div:first-of-type {
+              margin-bottom: 8px;
+
+              & > label {
+                $textSize: (
+                  'base': 16px,
+                  'macBookAir': 21px,
+                );
+                @include s.escaledFontFormat($textSize, bold, s.$pqGreen);
+                @include s.Roboto-Bold;
+              }
+            }
+
+            & > div.image {
+              @include s.flexRow;
+              margin-bottom: 5px;
+              align-items: center;
+
+              & > img {
+                width: 15px;
+                margin-right: 4px;
+              }
+
+              & > label {
+                $textSize: (
+                  'base': 13px,
+                  'macBookAir': 16px,
+                );
+                @include s.escaledFontFormat($textSize, regular, s.$pqBlack2);
+                @include s.Roboto-Regular;
+
+                &.bold {
+                  @include s.Roboto-Bold;
+                }
+              }
+            }
+
+            & > div.data {
+              @include s.flexRow;
+              margin-bottom: 5px;
+
+              $textSize: (
+                'base': 13px,
+                'macBookAir': 16px,
+              );
+
+              & > label:nth-of-type(odd) {
+                @include s.escaledFontFormat($textSize, bold, s.$pqBlack2);
+                @include s.Roboto-Bold;
+              }
+
+              & > label:nth-of-type(even) {
+                @include s.escaledFontFormat($textSize, regular, s.$pqBlack2);
+                @include s.Roboto-Regular;
+              }
+            }
+          }
+        }
+      }
+
+      & > .right-container {
+        @include s.flexColumn;
+        position: relative;
+        flex: 1;
+        height: 100%;
+        overflow: hidden;
+
+        & > .content {
+          @include s.flexRowNoWrap;
+          flex: 1;
+          overflow: hidden;
+
+          & > .carousel {
+            flex: 1;
+            overflow: hidden;
+          }
+
+          & > .center-container {
+            & > .center {
+            }
+
+            & > aside {
+              @include s.flexColumn;
+              transition: all 0.3s ease;
+              flex: 0 0 270px;
+              background-color: s.$pqGray2;
+              padding: 20px;
+            }
+          }
+        }
+
+        & > footer {
+          @include s.flexRow;
+          height: 49px;
+          border-top: 1px solid s.$pqBlack2;
+          padding: 0 20px;
+          overflow-x: auto;
+
+          & > div {
+            @include s.flexRow;
+            @include s.absoluteCenter;
+            margin-right: 18px;
+
+            & > label {
+              $textSize: (
+                'base': 12px,
+                'macBookAir': 14px,
+              );
+              @include s.escaledFontFormat($textSize, regular, s.$pqBlack2);
+              @include s.Roboto-Regular;
+            }
+
+            & > label:first-child {
+              @include s.Roboto-Bold;
+              margin-right: 4px;
+            }
+
+            & > img {
+              width: 16px;
+              height: 16px;
+              margin-right: 4px;
+            }
+          }
+
+          & > div:last-child {
+            margin-right: 0;
+          }
+        }
+      }
+
+      @include s.responsive_layout('macBookAir') {
+        & > .arrow {
+          left: 371px;
+
+          & > img {
+            width: 22px;
+            height: 32px;
+          }
+        }
+
+        & > .left-container {
+          width: 393px;
+
+          & > .slide {
+            width: 393px;
+
+            & > .client {
+              & > div:nth-of-type(1) {
+                flex: 0 0 139px;
+              }
+            }
+
+            & > .contact-data {
+              & > div.image {
+                & > img {
+                  width: 18px;
+                  margin-right: 6px;
+                }
+              }
+            }
+          }
+        }
+
+        & > .right-container {
+          & > .content {
+            & > .center-container {
+              & > aside {
+                flex-basis: 361px;
+
+                & > .header {
+                  margin-bottom: 35px;
+
+                  & > .title {
+                    margin-bottom: 28px;
+                  }
+                }
+
+                & > .strategy {
+                  margin-bottom: 23px;
+                }
+
+                & > .strategy-details {
+                  margin-bottom: 21px;
+
+                  & > p {
+                    margin-bottom: 14px;
+                  }
+                }
+
+                & > .date {
+                  margin-bottom: 38px;
+                }
+
+                & > .tactics {
+                  margin-bottom: 16px;
+
+                  & > label {
+                    margin-bottom: 12px;
+                  }
+
+                  & > div {
+                    margin-bottom: 31px;
+
+                    & > label {
+                      margin-bottom: 4px;
+                    }
+
+                    & > label:nth-of-type(2),
+                    & > label:nth-of-type(3) {
+                      padding-left: 10px;
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          & > footer {
+            height: 55px;
+
+            & > div {
+              & > div {
+                margin-right: 27px;
+
+                & > img {
+                  width: 17px;
+                  height: 17px;
+                  margin-right: 6px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

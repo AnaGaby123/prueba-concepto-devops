@@ -1,0 +1,70 @@
+<section id="principal-container">
+  <div class="menu" id="container" tabindex="0" (blur)="closeCombo()">
+    <div (click)="openCombo()">
+      <div [ngClass]="isOpen ? 'icons close' : 'icons'">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <div class="text">
+        <label>{{ currentValue }}</label>
+      </div>
+    </div>
+    <section #submenuOptions [style.height.px]="isOpen ? submenuOptions.scrollHeight : 0">
+      <div>
+        <div class="column-one">
+          <div class="container-one" (click)="selectOption('yesterday')">
+            <label
+              >{{ 'dropDownButtonCustom.yesterday' | translate }}<sup>{{ values.yesterday }}</sup></label
+            >
+            <hr />
+            <label>{{ yesterday }}</label>
+          </div>
+          <div class="container-two" (click)="selectOption('dayBeforeYesterday')">
+            <label
+              >{{ 'dropDownButtonCustom.dayBeforeYesterday' | translate }} <sup>{{ values.dayBeforeYesterday }}</sup></label
+            >
+          </div>
+          <div class="container-three" (click)="selectOption('past')">
+            <label
+              >{{ 'dropDownButtonCustom.past' | translate }}<sup>{{ values.past }}</sup></label
+            >
+          </div>
+        </div>
+        <div class="column-two">
+          <div class="container-one" (click)="selectOption('today')">
+            <label
+              >{{ 'dropDownButtonCustom.today' | translate }}<sup>{{ values.today }}</sup></label
+            >
+            <hr />
+            <label>{{ today }}</label>
+          </div>
+          <div class="container-two" (click)="selectOption('all')">
+            <label
+              >{{ 'dropDownButtonCustom.all' | translate }}<sup>{{ values.all }}</sup></label
+            >
+          </div>
+        </div>
+        <div class="column-three">
+          <div class="container-one" (click)="selectOption('tomorrow')">
+            <label
+              >{{ 'dropDownButtonCustom.tomorrow' | translate }}<sup>{{ values.tomorrow }}</sup></label
+            >
+            <hr />
+            <label>{{ tomorrow }}</label>
+          </div>
+          <div class="container-two" (click)="selectOption('dayAfterTomorrow')">
+            <label
+              >{{ 'dropDownButtonCustom.dayAfterTomorrow' | translate }}<sup>{{ values.dayAfterTomorrow }}</sup></label
+            >
+          </div>
+          <div class="container-three" (click)="selectOption('future')">
+            <label
+              >{{ 'dropDownButtonCustom.future' | translate }}<sup>{{ values.future }}</sup></label
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>

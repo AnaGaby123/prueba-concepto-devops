@@ -1,0 +1,1116 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  .purchase-order-section-container {
+    @include s.absolute100;
+    @include s.flexRowNoWrap;
+
+    & > .purchase-order-list {
+      @include s.flexColumn;
+      flex: 0 0 600px;
+
+      & > .content {
+        @include s.flexColumn;
+        border-right: 1px solid s.$pqGray2;
+        flex: 1 1 auto;
+        padding: 15px 15px 0 15px;
+
+        & > .title {
+          align-items: center;
+          display: flex;
+          flex: 0 0 25px;
+          margin-bottom: 10px;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+            @include s.Novecento-Bold;
+          }
+        }
+
+        & > .container-filters {
+          @include s.flexColumn;
+          border-bottom: 1px solid s.$pqBlack2;
+          gap: 15px;
+          padding-bottom: 15px;
+
+          & > .tabs {
+            flex: 0 0 55px;
+          }
+        }
+
+        & > .container-purchase-order-data {
+          @include s.flexColumn;
+          height: 100%;
+
+          & > virtual-scroller {
+            @include s.absolute100;
+            @include s.fixVirtualScroller;
+
+            &::ng-deep > .scrollable-content {
+              & .card {
+                @include s.flexRow;
+                border-bottom: 1px solid s.$pqGray2;
+
+                * {
+                  cursor: pointer;
+                }
+
+                &:hover {
+                  @include s.default-transition();
+                  background-color: s.$pqGray2;
+                  cursor: pointer;
+                }
+
+                & > .indicator {
+                  width: 7px;
+                }
+
+                & > .active {
+                  background-color: s.$pqGreen;
+                }
+
+                & > .purchase-order-data {
+                  @include s.flexColumn;
+                  flex: 1;
+                  gap: 10px;
+                  margin: 15px;
+
+                  & > div:nth-of-type(1) {
+                    @include s.flexRowNoWrap;
+
+                    & > .order-number {
+                      flex: 1;
+
+                      & > label {
+                        @include s.escaledFontFormat(s.$textSize17to20, bold, s.$pqBlack2);
+                        @include s.Roboto-Bold;
+                        white-space: pre;
+
+                        & > span {
+                          color: s.$pqGreen;
+                          vertical-align: baseline;
+                        }
+                      }
+                    }
+
+                    & > .day {
+                      display: flex;
+                      flex: 0 0 160px;
+                      justify-content: flex-end;
+
+                      & > label {
+                        @include s.Novecento-Bold;
+                        @include s.escaledFontFormat(s.$textSize14to17, bold, s.$pqGreen);
+                      }
+                    }
+                  }
+
+                  & > div:nth-of-type(2) {
+                    @include s.flexRowNoWrap;
+                    align-items: center;
+                    gap: 30px;
+
+                    & > label:nth-of-type(1) {
+                      @include s.escaledFontFormat(s.$textSize17to20, bold, s.$pqBlack2);
+                      @include s.Roboto-Bold;
+                      white-space: pre;
+                    }
+
+                    & > .reshipped {
+                      @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqGreen);
+                      @include s.Roboto-Bold;
+                      text-decoration: underline;
+
+                      & > img {
+                        height: 20px;
+                        margin-right: 5px;
+                      }
+                    }
+                  }
+
+                  & > div:nth-of-type(3) {
+                    @include s.flexRow;
+
+                    & > .states {
+                      @include s.flexRowNoWrap;
+                      @include s.absoluteCenter;
+                      width: 100%;
+                      justify-content: flex-start;
+
+                      & > img {
+                        @include s.imageLabel;
+                      }
+
+                      & > label {
+                        @include s.escaledFontFormat(s.$textSize14to18, normal, s.$pqBlack2);
+                        @include s.Roboto-Regular;
+                        white-space: pre;
+                        line-height: initial;
+                      }
+
+                      & > .programming {
+                        color: s.$pqGreen2 !important;
+                      }
+
+                      & > .only {
+                        color: s.$colorBlueNewMail !important;
+                      }
+
+                      & > .freight-express {
+                        color: s.$pqTextAlert !important;
+                      }
+
+                      & > .freight-normal {
+                        color: s.$pqGreen !important;
+                      }
+                    }
+
+                    & > div:nth-of-type(2) {
+                      display: flex;
+                      flex: 0 0 160px;
+                      justify-content: flex-end;
+                      align-items: center;
+
+                      & > label {
+                        @include s.escaledFontFormat(s.$textSize14to18, normal, s.$pqBlack2);
+                        @include s.Roboto-Regular;
+                        white-space: pre;
+                      }
+
+                      & > .red {
+                        color: s.$pqRed !important;
+                      }
+
+                      & > .yellow {
+                        color: s.$pqYellow !important;
+                      }
+
+                      & > .green {
+                        color: s.$pqGreen2 !important;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          & > .is-loading {
+            @include s.flexColumn;
+            @include s.absoluteCenter;
+            height: 100%;
+          }
+
+          & > .without-results {
+            @include s.flexColumn;
+            @include s.absoluteCenter;
+            height: 100%;
+          }
+        }
+      }
+
+      & > .footer {
+        @include s.flexColumn;
+        border-top: 1px solid s.$pqBlack2;
+        margin: 0 15px;
+
+        & > div:nth-of-type(1) {
+          @include s.flexRowNoWrap;
+          justify-content: space-between;
+          padding: 10px 15px 31px 15px;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize12to14, normal, s.$pqBlack2);
+            @include s.Roboto-Regular;
+          }
+        }
+      }
+    }
+
+    & > .purchase-order-linked {
+      @include s.flexColumn;
+      flex: 1 1 auto;
+      overflow: hidden;
+
+      & > .content {
+        @include s.flexColumn;
+        flex: 1 1 auto;
+        padding: 15px 15px 0 15px;
+
+        & > .order-number-section {
+          @include s.flexRowNoWrap;
+          align-items: center;
+          justify-content: space-between;
+          border-bottom: 1px solid s.$pqBlack2;
+          padding-bottom: 10px;
+
+          & > .order-number {
+            & > label {
+              @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+              @include s.Novecento-Bold;
+
+              & > span {
+                color: s.$pqGreen;
+                vertical-align: baseline;
+              }
+            }
+          }
+
+          & > .btn-container {
+            $max-width-map: (
+              'base': 200px,
+              'macBookAir': 300px,
+            );
+
+            & > .btn {
+              @include s.pqfButton($background-color: s.$pqGreen2, $max-width-map: $max-width-map);
+            }
+
+            & .btn-disable {
+              @include s.pqfDisableButton($max-width-map: $max-width-map);
+            }
+          }
+        }
+
+        & > .provider-contacts {
+          @include s.flexRowNoWrap;
+          align-items: center;
+          justify-content: space-between;
+          margin: 10px 0 30px 0;
+        }
+
+        & > .container-content {
+          @include s.flexColumn;
+          flex: 1 1 auto;
+          overflow: hidden;
+
+          & > div {
+            overflow-x: auto;
+            overflow-y: hidden;
+          }
+
+          & > .container-table {
+            @include s.flexColumn;
+            border: 1px solid s.$pqBlack2;
+            flex: 1 1 auto;
+
+            & > .table-config {
+              @include s.flexColumn;
+              flex: 1 1 100%;
+              min-width: 1230px;
+              overflow: hidden;
+
+              & > .header {
+                @include s.flexRowNoWrap;
+                border-bottom: 1px solid s.$pqBlack2;
+                flex: 0 0 50px;
+                min-width: 1040px;
+                padding: 10px 0;
+                gap: 10px;
+
+                & > div {
+                  @include s.flexRowNoWrap;
+                  @include s.absoluteCenter;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize13to15, bold, s.$pqBlack2);
+                    @include s.Novecento-Bold;
+                  }
+
+                  & > .colors {
+                    @include s.escaledFontFormat(s.$textSize11to13, bold, s.$pqBlack2);
+                    @include s.Novecento-Bold;
+                  }
+
+                  & > .red {
+                    color: s.$pqRed !important;
+                  }
+
+                  & > .purple {
+                    color: s.$purple !important;
+                  }
+
+                  & > .green {
+                    color: s.$pqGreen2 !important;
+                  }
+
+                  & > img {
+                    @include s.imageIconResponsiveSize;
+                  }
+                }
+
+                & > .position {
+                  flex: 0 0 50px;
+                }
+
+                & > .description {
+                  flex: 1 1 auto;
+                  justify-content: flex-start;
+                  min-width: 600px;
+                }
+
+                & > .client {
+                  flex: 0 0 170px;
+                  justify-content: flex-start;
+                }
+
+                & > .cancel {
+                  align-items: flex-end !important;
+                  flex: 0 0 110px;
+                }
+
+                & > .back-order {
+                  align-items: flex-end !important;
+                  flex: 0 0 110px;
+                }
+
+                & > .impact {
+                  flex: 0 0 110px;
+                  flex-direction: column;
+                  justify-content: flex-end;
+                  align-items: center;
+
+                  & > .check {
+                    height: 20px;
+                    margin-bottom: 3px;
+                    width: 20px;
+                  }
+                }
+              }
+
+              & > .body {
+                @include s.flexColumn;
+                flex: 1 1 auto;
+                min-width: 1040px;
+                overflow: auto;
+
+                & > virtual-scroller {
+                  @include s.absolute100;
+                  @include s.fixVirtualScroller;
+
+                  &::ng-deep > .scrollable-content {
+                    & > .item-container {
+                      @include s.flexColumn;
+
+                      & > .item {
+                        @include s.flexRowNoWrap;
+                        border-bottom: 1px solid s.$pqGray2;
+                        flex: 0 0 81px;
+                        gap: 10px;
+
+                        &:hover {
+                          background-color: s.$pqGray2;
+                          cursor: pointer;
+                          @include s.default-transition();
+                        }
+
+                        & > div {
+                          @include s.flexRowNoWrap;
+                          padding: 10px 0;
+                        }
+
+                        & > .position {
+                          flex: 0 0 50px;
+                          align-items: flex-start;
+                          justify-content: center;
+
+                          & > label {
+                            @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+                            @include s.Roboto-Bold;
+                          }
+                        }
+
+                        & > .description-container {
+                          @include s.flexColumn;
+                          flex: 1 1 auto;
+                          justify-content: flex-start;
+                          min-width: 600px;
+                          gap: 5px;
+
+                          & > .description {
+                            & > label {
+                              @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                              @include s.Roboto-Regular;
+                              @include s.multiLineTextTruncateSinHeight($lineHeight: 'initial');
+                            }
+                          }
+
+                          & > .cost {
+                            @include s.flexRowNoWrap;
+                            align-items: center;
+
+                            & > img {
+                              @include s.imageLabel;
+                              padding-right: 5px;
+                            }
+
+                            & > label {
+                              white-space: pre;
+                              @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                              @include s.Roboto-Regular;
+
+                              & > span {
+                                color: s.$pqGreen;
+                                vertical-align: baseline;
+                              }
+                            }
+                          }
+                        }
+
+                        & > .client {
+                          flex: 0 0 170px;
+                          justify-content: flex-start;
+
+                          & > div {
+                            @include s.flexColumn;
+
+                            & > label {
+                              @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                              @include s.Roboto-Regular;
+                            }
+
+                            & > label:nth-of-type(1),
+                            label:nth-of-type(2) {
+                              padding-bottom: 3px;
+                            }
+
+                            & > .green-pq {
+                              color: s.$pqGreen !important;
+                            }
+
+                            & > .red {
+                              color: s.$pqRed !important;
+                            }
+
+                            & > .orange {
+                              color: s.$orange !important;
+                            }
+
+                            & > .green {
+                              color: s.$pqGreen2 !important;
+                            }
+                          }
+                        }
+
+                        & > .cancel {
+                          @include s.absoluteCenter;
+                          @include s.flexColumn;
+                          flex: 0 0 110px;
+
+                          & > .check {
+                            height: 20px;
+                            margin-bottom: 7px;
+                            width: 20px;
+                          }
+
+                          & > .image {
+                            height: 19px;
+                            margin-bottom: 8px;
+                          }
+
+                          & > label {
+                            @include s.Roboto-Bold;
+                            @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqTextAlert);
+                          }
+                        }
+
+                        & > .back-order {
+                          @include s.absoluteCenter;
+                          @include s.flexColumn;
+                          flex: 0 0 110px;
+
+                          & > .check {
+                            height: 20px;
+                            margin-bottom: 7px;
+                            width: 20px;
+                          }
+
+                          & > .image {
+                            height: 19px;
+                            margin-bottom: 8px;
+                          }
+
+                          & > label {
+                            @include s.Roboto-Bold;
+                            @include s.escaledFontFormat(s.$textSize13to16, bold, s.$purple);
+                          }
+                        }
+
+                        & > .embarked {
+                          @include s.absoluteCenter;
+                          @include s.flexColumn;
+                          flex: 0 0 110px;
+
+                          & > .check {
+                            height: 20px;
+                            margin-bottom: 7px;
+                            width: 20px;
+                          }
+
+                          & > .image {
+                            height: 19px;
+                            margin-bottom: 8px;
+                          }
+
+                          & > label {
+                            @include s.Roboto-Bold;
+                            @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqGreen2);
+                          }
+                        }
+
+                        & .red {
+                          &.active,
+                          &.confirmed {
+                            background-color: s.$pqTextAlert;
+
+                            & > label {
+                              color: s.$pqWhite !important;
+                            }
+                          }
+
+                          &.opacity {
+                            background-color: rgba(s.$pqTextAlert, 0.2);
+
+                            & > label {
+                              @include s.Roboto-Bold;
+                              color: s.$pqTextAlert;
+                              text-decoration: underline;
+                              cursor: pointer;
+                            }
+                          }
+
+                          &.disabled {
+                            background-color: rgba(s.$pqGray3, 0.14);
+
+                            & > label {
+                              color: s.$pqGray3 !important;
+                            }
+                          }
+
+                          &.disabled-default {
+                            & > label {
+                              color: s.$pqGray3 !important;
+                            }
+                          }
+
+                          &.default {
+                            & > label {
+                              @include s.Roboto-Bold;
+                              color: s.$pqTextAlert;
+                            }
+                          }
+                        }
+
+                        & .purple {
+                          &.active,
+                          &.confirmed {
+                            background-color: s.$purple;
+
+                            & > label {
+                              color: s.$pqWhite !important;
+                            }
+                          }
+
+                          &.opacity {
+                            background-color: rgba(s.$purple, 0.2);
+
+                            & > label {
+                              @include s.Roboto-Bold;
+                              color: s.$purple;
+                              text-decoration: underline;
+                              cursor: pointer;
+                            }
+                          }
+
+                          &.disabled {
+                            background-color: rgba(s.$pqGray3, 0.14);
+
+                            & > label {
+                              color: s.$pqGray3 !important;
+                            }
+                          }
+
+                          &.disabled-default {
+                            & > label {
+                              color: s.$pqGray3 !important;
+                            }
+                          }
+
+                          &.default {
+                            & > label {
+                              @include s.Roboto-Bold;
+                              color: s.$purple;
+                            }
+                          }
+                        }
+
+                        & .dark-orange {
+                          &.active,
+                          &.confirmed {
+                            background-color: s.$darkOrange;
+
+                            & > label {
+                              color: s.$pqWhite !important;
+                            }
+                          }
+
+                          &.opacity {
+                            background-color: rgba(s.$darkOrange, 0.2);
+
+                            & > label {
+                              @include s.Roboto-Bold;
+                              color: s.$darkOrange;
+                              text-decoration: underline;
+                              cursor: pointer;
+                            }
+                          }
+
+                          &.disabled {
+                            background-color: rgba(s.$pqGray3, 0.14);
+
+                            & > label {
+                              color: s.$pqGray3 !important;
+                            }
+                          }
+
+                          &.disabled-default {
+                            & > label {
+                              color: s.$pqGray3 !important;
+                            }
+                          }
+
+                          &.default {
+                            & > label {
+                              @include s.Roboto-Bold;
+                              color: s.$darkOrange;
+                            }
+                          }
+                        }
+
+                        & .dark-green {
+                          &.active,
+                          &.confirmed {
+                            background-color: s.$pqGreen2;
+
+                            & > label {
+                              color: s.$pqWhite !important;
+                            }
+                          }
+
+                          &.opacity {
+                            background-color: rgba(s.$darkGreen, 0.2);
+
+                            & > label {
+                              @include s.Roboto-Bold;
+                              color: s.$darkGreen;
+                              text-decoration: underline;
+                              cursor: pointer;
+                            }
+                          }
+
+                          &.disabled {
+                            background-color: rgba(s.$pqGray3, 0.14);
+
+                            & > label {
+                              color: s.$pqGray3 !important;
+                            }
+                          }
+
+                          &.disabled-default {
+                            & > label {
+                              color: s.$pqGray3 !important;
+                            }
+                          }
+
+                          &.default {
+                            & > label {
+                              @include s.Roboto-Bold;
+                              color: s.$pqGreen2;
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+
+                & > .is-loading {
+                  @include s.flexColumn;
+                  @include s.absoluteCenter;
+                  height: 100%;
+                }
+
+                & > .without-results {
+                  @include s.flexColumn;
+                  @include s.absoluteCenter;
+                  height: 100%;
+                }
+              }
+
+              & > .footer {
+                @include s.flexRowNoWrap;
+                border-top: 1px solid s.$pqBlack2;
+                flex: 0 0 30px;
+                min-width: 1040px;
+                gap: 10px;
+
+                & > div {
+                  @include s.flexRowNoWrap;
+                  @include s.absoluteCenter;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+                    @include s.Novecento-Bold;
+
+                    &.ocean {
+                      color: s.$pqGreen;
+                    }
+                  }
+
+                  & > .colors {
+                    @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+                    @include s.Novecento-Bold;
+                  }
+
+                  & > .red {
+                    color: s.$pqRed !important;
+                  }
+
+                  & > .purple {
+                    color: s.$purple !important;
+                  }
+
+                  & > .green {
+                    color: s.$pqGreen2 !important;
+                  }
+                }
+
+                & > .total-content {
+                  @include s.flexRowNoWrap;
+                  flex: 1 1 auto;
+                  justify-content: flex-start;
+                  gap: 40px;
+                  margin-left: 15px;
+                }
+
+                & > .cancel {
+                  flex: 0 0 110px;
+                }
+
+                & > .back-order {
+                  flex: 0 0 110px;
+                }
+
+                & > .impact {
+                  flex: 0 0 110px;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      & > .footer {
+        @include s.flexRowNoWrap;
+        align-items: center;
+        justify-content: flex-end;
+        margin: 15px;
+
+        & > div:nth-of-type(1) {
+          $max-width-map: (
+            'base': 210px,
+            'macBookAir': 300px,
+          );
+
+          & > .btn-register-to {
+            @include s.pqfButton($max-width-map: $max-width-map);
+          }
+
+          & .btn-register-to-disable {
+            @include s.pqfDisableButton($max-width-map: $max-width-map);
+          }
+        }
+      }
+    }
+  }
+
+  & > app-pop-up-generic {
+    &::ng-deep .contenido {
+      overflow: visible;
+    }
+
+    & .history-pop {
+      @include s.flexColumn;
+      flex: 1 0 100%;
+      padding: 20px;
+
+      & > .header {
+        border-bottom: 1px solid s.$pqBlack2;
+        display: grid;
+        grid-column-gap: 15px;
+        grid-template-columns: 110px 1fr;
+        padding-bottom: 10px;
+
+        & > .image {
+          @include s.gridCenter;
+
+          & > img {
+            max-height: 70px;
+            max-width: 100%;
+          }
+        }
+
+        & > .info {
+          @include s.flexColumn;
+
+          & > .title {
+            @include s.flexRow;
+
+            & > label {
+              @include s.Novecento-Bold;
+              @include s.escaledFontFormat(s.$textSize17to22, bold, s.$pqGreen);
+            }
+          }
+
+          & > .guide {
+            @include s.flexRow;
+            margin: 5px 0;
+
+            & > label {
+              @include s.Roboto-Regular;
+              @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+
+              & > span {
+                color: s.$pqGreen;
+                vertical-align: baseline;
+              }
+            }
+          }
+
+          & > .date {
+            @include s.flexRow;
+
+            & > label {
+              @include s.Roboto-Regular;
+              @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen2);
+            }
+          }
+        }
+      }
+
+      & > .body {
+        @include s.flexColumn;
+        flex: 1;
+
+        & > .item {
+          @include s.flexColumn;
+          border-bottom: 1px solid s.$pqGray2;
+          padding: 10px 5px;
+
+          &:hover {
+            @include s.default-transition();
+            background-color: s.$pqGray2;
+            cursor: pointer;
+          }
+
+          & > .index {
+            display: grid;
+            grid-column-gap: 20px;
+            grid-template-columns: 1fr auto;
+            margin-bottom: 5px;
+
+            & > .date {
+              @include s.flexRow;
+              justify-content: flex-start;
+
+              & > label {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormat(s.$textSize13to15, bold, s.$pqBlack2);
+
+                & > span {
+                  color: s.$pqGreen;
+                  vertical-align: baseline;
+                }
+              }
+            }
+
+            & > .link {
+              @include s.flexRow;
+
+              & > label {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormat(s.$textSize13to15, bold, s.$pqGreen);
+                text-decoration: underline;
+                cursor: pointer;
+              }
+            }
+          }
+
+          & > .comments {
+            @include s.flexRow;
+
+            & > label {
+              @include s.Roboto-Regular;
+              @include s.escaledFontFormat(s.$textSize13to15, regular, s.$pqBlack2);
+              text-align: initial;
+
+              & > span {
+                @include s.Roboto-Bold;
+                vertical-align: baseline;
+              }
+            }
+          }
+        }
+      }
+
+      & > .footer {
+        @include s.flexRow;
+        border-top: 1px solid s.$pqBlack2;
+        justify-content: center;
+        padding-top: 10px;
+
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+        }
+      }
+
+      @include s.responsive_layout('macBookAir') {
+        padding: 30px;
+        & > .header {
+          grid-column-gap: 20px;
+          padding-bottom: 15px;
+          height: 105px;
+
+          & > .info {
+            & > .guide {
+              margin: 7px 0;
+            }
+          }
+        }
+        & > .body {
+          & > .item {
+            padding: 15px 10px;
+
+            & > .index {
+              grid-column-gap: 25px;
+              margin-bottom: 7px;
+            }
+          }
+        }
+        & > .footer {
+          padding-top: 15px;
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    .purchase-order-section-container {
+      & > .purchase-order-list {
+        flex: 0 0 680px;
+
+        & > .content {
+          padding: 20px 20px 0 20px;
+
+          & > .title {
+            margin-bottom: 15px;
+            flex: 0 0 30px;
+          }
+
+          & > .container-filters {
+            gap: 20px;
+            padding-bottom: 20px;
+
+            & > .tabs {
+              flex: 0 0 65px;
+            }
+          }
+
+          & > .container-purchase-order-data {
+            & > virtual-scroller {
+              &::ng-deep > .scrollable-content {
+                & .card {
+                  & > .indicator {
+                    width: 9px;
+                  }
+
+                  & > .purchase-order-data {
+                    gap: 15px;
+                    margin: 20px;
+
+                    & > div:nth-of-type(1) {
+                      & > .day {
+                        flex: 0 0 200px;
+                      }
+                    }
+
+                    & > div:nth-of-type(2) {
+                      & > .reshipped {
+                        & > img {
+                          height: 25px;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        & > .footer {
+          margin: 0 20px;
+
+          & > div:nth-of-type(1) {
+            padding: 10px 20px 44px 20px;
+          }
+        }
+      }
+
+      & > .purchase-order-linked {
+        & > .content {
+          padding: 20px 20px 0 20px;
+
+          & > .order-number-section {
+            padding-bottom: 15px;
+          }
+
+          & > .provider-contacts {
+            margin: 15px 0 40px 0;
+          }
+
+          & > .container-content {
+            & > .container-table {
+              & > .table-config {
+                & > .header {
+                  padding: 15px 0;
+                }
+
+                & > .footer {
+                  flex: 0 0 40px;
+                  gap: 10px;
+
+                  & > .total-content {
+                    gap: 50px;
+                    margin-left: 20px;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        & > .footer {
+          margin: 20px;
+        }
+      }
+    }
+  }
+}

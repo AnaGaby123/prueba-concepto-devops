@@ -1,0 +1,655 @@
+<div id="offer-container" #offerContainer>
+  <div class="header">
+    <div class="title">
+      Partidas
+    </div>
+    <div class="search">
+      <app-search
+        [activeRefresh]="true"
+        [imageFill]="'#008894'"
+        [isSearchByType]="true"
+        [placeholder]="'Buscar'"
+        [searchTerm]="searchTerm$ | async"
+        [typeSelected]="typeOfSearch$ | async"
+        [typesOfSearch]="listTypesOfSearch$ | async"
+        (handleClearSearchTerm)="clearSearch()"
+        (handleTypeSelected)="setSearchType($event)"
+        (textSearch)="handleKeySearch($event)"
+      >
+      </app-search>
+    </div>
+  </div>
+  <div class="table-container">
+    <div class="container">
+      <app-header-internal-sales-item
+        class="header"
+        [internalSalesItem]="selectColumnsHeaderConfig$ | async"
+      ></app-header-internal-sales-item>
+
+      <virtual-scroller
+        *ngIf="(selectInternalSalesItem$ | async)?.length > 0"
+        [items]="selectInternalSalesItem$ | async"
+        [enableUnequalChildrenSizes]="true"
+        [bufferAmount]="24"
+        (vsUpdate)="itemsQuotationScroll = $event"
+        (vsEnd)="fetchMore($event)"
+      >
+        <app-internal-sales-item
+          *ngFor="let item of itemsQuotationScroll; let i = index; trackBy: handleTrackByItemBy"
+          [internalSalesItem]="item"
+          (valueEmitter)="handleAction($event)"
+        ></app-internal-sales-item>
+        <div
+          class="loading-items"
+          *ngIf="(isLoadingItemsQuoteSelected$ | async) === 1 && (selectInternalSalesItem$ | async)?.length > 0"
+        >
+          <app-loading></app-loading>
+        </div>
+      </virtual-scroller>
+      <div
+        class="loading"
+        *ngIf="(isLoadingItemsQuoteSelected$ | async) === 1 && (selectInternalSalesItem$ | async)?.length === 0"
+      >
+        <app-loading></app-loading>
+      </div>
+      <div
+        class="without-results"
+        *ngIf="(selectInternalSalesItem$ | async)?.length === 0 && (isLoadingItemsQuoteSelected$ | async) === 3"
+      >
+        <app-without-results></app-without-results>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="total-items-quotation" [ngClass]="{'small-mode': offerContainer.offsetWidth < 1300}">
+      <div>
+        <p>
+          {{ selectTotalItems$ | async }}
+          {{ ((selectTotalItems$ | async) === 1 ? 'common.item' : 'common.items') | translate }}</p
+        >
+      </div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div>
+        <p
+          >{{ (bandOptions$ | async)?.length }}
+          {{ ((bandOptions$ | async)?.length == 1 ? 'common.brand' : 'common.brand') | translate }}</p
+        ></div
+      >
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+  <div class="totals">
+    <div class="container-red">
+      <label>{{ 'strategy.details.paymentConditions' | translate }}</label>
+      <div class="red">
+        <label>{{ paymentConditions$ | async }}</label>
+        <img alt="" [src]="popUpIsOpenConditions ? 'assets/Images/strategy/bad-hover.svg' : 'assets/Images/strategy/bad.svg'" />
+        <!-- DOCS: Se quita funcionalidad de abrir modal ya que no hay datos para llenarlo-->
+        <!--(click)="popUpIsOpenConditions ? closePopUp('conditions') : sendInitialDataPopUpConditions($event.target)"-->
+      </div>
+    </div>
+    <div class="container-blue">
+      <label>{{ 'strategy.details.deliveries' | translate }}</label>
+      <div class="blue">
+        <label>{{ (percentageDeliveriesInForm$ | async) + ' ' + ('strategy.details.inTimeAndForm' | translate) }}</label>
+        <img
+          alt=""
+          [src]="popUpIsOpenDelivers ? 'assets/Images/strategy/see-more-hover.svg' : 'assets/Images/strategy/see-more.svg'"
+        />
+        <!-- DOCS: Se quita funcionalidad de abrir modal ya que no hay datos para llenarlo-->
+        <!--(click)="popUpIsOpenDelivers ? closePopUp('delivers') : sendInitialDataPopUpDelivers($event.target)"-->
+      </div>
+    </div>
+    <div class="container-green">
+      <label>{{ 'strategy.details.averageTicket' | translate }}</label>
+      <div class="green">
+        <label>$0 {{ currency$ | async }}</label>
+      </div>
+    </div>
+  </div>
+</div>
+<app-strategy-pop-up
+  class="pop-up-conversion"
+  *ngIf="popUpIsOpenConversion"
+  [positions]="positionsPopUpConversion"
+  [style.left]="dataPopUpConversion.left"
+  [style.top]="dataPopUpConversion.top"
+  [trianglePosition]="trianglePositionConversion"
+  (closeEmitter)="closePopUp('conversion')"
+>
+  <div id="container-pop-up-conversion">
+    <div class="title">
+      <label>{{ (clientData$ | async)?.Nombre + ' · ' + ' Tasa de conversión ·' }}</label>
+      <img
+        alt="type"
+        [src]="
+          'assets/Images/pre-processing/' +
+          (selectedItem.TipoPartidaCotizacion === typeOriginal
+            ? 'originales.svg'
+            : selectedItem.TipoPartidaCotizacion === typeAlternative
+            ? 'alternativas.svg'
+            : selectedItem.TipoPartidaCotizacion === typeComplementary
+            ? 'complementarias.svg'
+            : selectedItem.TipoPartidaCotizacion === typePromotion
+            ? 'promocion.svg'
+            : selectedItem.TipoPartidaCotizacion === typeSaving
+            ? 'ahorro.svg'
+            : 'originales.svg')
+        "
+      />
+      <label>{{
+        'Tipo ' + selectedItem.TipoPartidaCotizacion + (isTypeSelected ? '' : ' · ' + selectedItem.NombreMarca)
+      }}</label>
+      <br />
+      <label>{{ oneYear }}</label>
+    </div>
+    <div class="info">
+      <div class="chart-container">
+        <label>Razones</label>
+        <div class="chart">
+          <app-doughnut-chart
+            [title]=""
+            [typeChart]="10"
+            [titleDetails]="'Totales'"
+            [fontSize]="'small'"
+            [data]="selectedItem.doughnutChartDataConversion"
+            [optionDetails]="selectedItem.doughnutChartOptionConversionDetails"
+            [optionDetailsHover]="selectedItem.doughnutChartDataConversionHover"
+          >
+          </app-doughnut-chart>
+        </div>
+      </div>
+      <div class="table-container">
+        <label class="title">{{
+          'Cancelaciones · ' +
+            (selectedItem.PorcentajeTasasConversion | number: '1.2-2') +
+            '% de ' +
+            selectedItem.total +
+            ' partidas'
+        }}</label>
+        <div class="container-labels" *ngIf="selectedItem.details?.length > 0">
+          <div *ngFor="let item of selectedItem.details">
+            <div>
+              <span class="circle"></span>
+              <label class="label">{{ item.Descripcion }}</label>
+            </div>
+            <div>
+              <label class="percentage">{{ item.Porcentaje | number: '1.2-2' }}%</label>
+              <label class="total">{{ '· ' + item.Partidas + (item.Partidas > 0 ? ' Partidas' : ' Partidas') }}</label>
+            </div>
+          </div>
+        </div>
+        <div class="without-results" *ngIf="selectedItem?.details?.length === 0">
+          <app-without-results [title]="'No hay partidas canceladas'"></app-without-results>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-strategy-pop-up>
+<app-strategy-pop-up
+  class="pop-up-conditions"
+  *ngIf="popUpIsOpenConditions"
+  [style.top]="dataPopUpConditions.top"
+  [style.left]="dataPopUpConditions.left"
+  [positions]="positionsPopUpConditions"
+  (closeEmitter)="closePopUp('conditions')"
+>
+  <div id="container-pop-up-conditions">
+    <div class="header">
+      <img alt="" src="assets/Images/strategy/bad.svg" />
+      <label>{{ (clientData$ | async)?.Nombre }}</label>
+    </div>
+    <div class="content-info" *ngIf="!(isLoadingPendingInvoices$ | async)">
+      <div class="bar-line">
+        <div>
+          <label>{{ 'strategy.details.paymentConditions' | translate }}</label>
+          <label class="green">{{ (pendingInvoices$ | async)?.catCondicionesDePago.CondicionesDePago }}</label>
+        </div>
+        <div>
+          <label>{{ 'strategy.details.creditLine' | translate }}</label>
+          <label class="green">{{
+            ((pendingInvoices$ | async)?.ConfiguracionPagos.LineaCredito | currency: (selectCurrencyClient$ | async)) +
+              ' ' +
+              (selectCurrencyClient$ | async)
+          }}</label>
+        </div>
+        <div>
+          <label>{{ 'strategy.details.healthyDebt' | translate }}</label>
+          <label class="green">{{
+            ((doughnutChartDataConditions$ | async).values[1] | currency: (selectCurrencyClient$ | async)) +
+              ' ' +
+              (selectCurrencyClient$ | async)
+          }}</label>
+        </div>
+        <div>
+          <label>{{ 'strategy.details.expiredDebt' | translate }}</label>
+          <label class="red">{{
+            ((doughnutChartDataConditions$ | async).values[0] | currency: (selectCurrencyClient$ | async)) +
+              ' ' +
+              (selectCurrencyClient$ | async)
+          }}</label>
+        </div>
+        <div>
+          <label>{{ 'strategy.details.positiveBalance' | translate }}</label>
+          <label class="green">{{
+            ((doughnutChartDataConditions$ | async).values[2] | currency: (selectCurrencyClient$ | async)) +
+              ' ' +
+              (selectCurrencyClient$ | async)
+          }}</label>
+        </div>
+        <div>
+          <label>{{ 'strategy.details.remains' | translate }}</label>
+          <label class="yellow">{{
+            (selectRemains$ | async | currency: (selectCurrencyClient$ | async)) + ' ' + (selectCurrencyClient$ | async)
+          }}</label>
+        </div>
+      </div>
+      <div class="complaints">
+        <div class="container-chart">
+          <div class="chart-container">
+            <div class="chart">
+              <app-doughnut-chart
+                [adjustTotals]="true"
+                [data]="doughnutChartDataConditions$ | async"
+                [enableOnClick]="true"
+                [fontSize]="'small'"
+                [optionDetailsHover]="doughnutChartOptionDetailsConditionsHover$ | async"
+                [optionDetails]="doughnutChartOptionConditionsDetails$ | async"
+                [showPercentage]="false"
+                [titleDetails]="'Totales'"
+                [title]=""
+                [typeChart]="11"
+                (segmentActive)="setSegmentActive($event, 'conditions')"
+              >
+              </app-doughnut-chart>
+            </div>
+            <div class="labels">
+              <div>
+                <span class="circulo" [style.background]="'#dd4543'"></span>
+                <p>{{ 'strategy.details.delinquent' | translate }}</p>
+              </div>
+              <div>
+                <span class="circulo" [style.background]="'#4ba92b'"></span>
+                <p>{{ 'strategy.details.healthyDebt' | translate }}</p>
+              </div>
+              <div>
+                <span class="circulo" [style.background]="'#5793f3'"></span>
+                <p>{{ 'strategy.details.creditNotes' | translate }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container-table">
+          <div>
+            <div *ngIf="segmentActiveChartConditions !== null">
+              <span
+                class="circulo"
+                [style.background]="
+                  segmentActiveChartConditions.label === delinquent
+                    ? '#dd4543'
+                    : segmentActiveChartConditions.label === creditNotes
+                    ? '#5793f3'
+                    : segmentActiveChartConditions.label === healthyDebt
+                    ? '#4ba92b'
+                    : ''
+                "
+              ></span>
+              <label>{{ segmentActiveChartConditions.label }}</label>
+            </div>
+            <div *ngIf="segmentActiveChartConditions !== null">
+              <app-hamburger-menu
+                [options]="filters$ | async"
+                [value]="(filterSelected$ | async).value"
+                [position]="'right'"
+                (valueEmit)="setOrder($event)"
+              >
+              </app-hamburger-menu>
+            </div>
+          </div>
+          <div class="table">
+            <div>
+              <div class="body" *ngIf="segmentActiveChartConditions !== null">
+                <virtual-scroller
+                  [items]="
+                    segmentActiveChartConditions.label === delinquent
+                      ? (listDelinquentBills$ | async)
+                      : segmentActiveChartConditions.label === creditNotes
+                      ? (listCreditNotes$ | async)
+                      : segmentActiveChartConditions.label === healthyDebt
+                      ? (listHealthyDebtBills$ | async)
+                      : []
+                  "
+                  (vsUpdate)="scrollItemsPendingsInvoices = $event"
+                >
+                  <div class="row-items-quotation" *ngFor="let item of scrollItemsPendingsInvoices">
+                    <div>
+                      <div class="line-one">
+                        <p>{{ '#' + item.Index + ' · ' }}</p>
+                        <p>{{ item.m_Item1.Folio ? item.m_Item1.Folio : 'ND' }}</p>
+                      </div>
+                      <div class="line-two" *ngIf="segmentActiveChartConditions.label !== creditNotes">
+                        <p>{{
+                          ('strategy.details.collectDate' | translate) +
+                            ' ' +
+                            (item.m_Item1.FechaCompromisoPago | dateFormatSlashShort)
+                        }}</p>
+                      </div>
+                    </div>
+                    <div>
+                      <label class="text-red" *ngIf="segmentActiveChartConditions.label === delinquent">
+                        {{ (item.m_Item4 | currency: (selectCurrencyClient$ | async)) + ' ' + (selectCurrencyClient$ | async) }}
+                      </label>
+                      <label class="text-green" *ngIf="segmentActiveChartConditions.label === healthyDebt">
+                        {{ (item.m_Item4 | currency: (selectCurrencyClient$ | async)) + ' ' + (selectCurrencyClient$ | async) }}
+                      </label>
+                      <label
+                        class="text-blue"
+                        *ngIf="segmentActiveChartConditions.label === creditNotes && lodashIsFinite(item.m_Item3)"
+                      >
+                        {{ (item.m_Item3 | currency: (selectCurrencyClient$ | async)) + ' ' + (selectCurrencyClient$ | async) }}
+                      </label>
+                    </div>
+                  </div>
+                </virtual-scroller>
+              </div>
+              <div class="without-results" *ngIf="segmentActiveChartConditions === null">
+                <app-without-results [title]="'SELECCIONA LA GRÁFICA PARA HABILITAR ESTA SECCIÓN'"></app-without-results>
+              </div>
+              <div
+                class="without-results"
+                *ngIf="segmentActiveChartConditions !== null && scrollItemsPendingsInvoices.length === 0"
+              >
+                <app-without-results [title]="'Sin facturas'"></app-without-results>
+              </div>
+            </div>
+          </div>
+          <div class="footer-table">
+            <div *ngIf="segmentActiveChartConditions !== null">
+              <label class="label-1" *ngIf="segmentActiveChartConditions.label === creditNotes">
+                {{ (listCreditNotes$ | async).length + ' ' + ('strategy.details.notes' | translate) }}
+              </label>
+              <label class="label-1" *ngIf="segmentActiveChartConditions.label === healthyDebt">
+                {{ (listHealthyDebtBills$ | async).length + ' ' + ('strategy.details.invoices' | translate) }}
+              </label>
+              <label class="label-1" *ngIf="segmentActiveChartConditions.label === delinquent">
+                {{ (listDelinquentBills$ | async).length + ' ' + ('strategy.details.invoices' | translate) }}
+              </label>
+              <label class="label-2">
+                {{
+                  'Total ' +
+                    (segmentActiveChartConditions.label === creditNotes
+                      ? (totalCreditNotes$ | async | currency: (selectCurrencyClient$ | async))
+                      : segmentActiveChartConditions.label === delinquent
+                      ? (totalDelinquent$ | async | currency: (selectCurrencyClient$ | async))
+                      : segmentActiveChartConditions.label === healthyDebt
+                      ? (totalHealthy$ | async | currency: (selectCurrencyClient$ | async))
+                      : '') +
+                    ' ' +
+                    (selectCurrencyClient$ | async)
+                }}</label
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--    <div class="loading" *ngIf="isLoadingPendingInvoices$ | async">-->
+    <!--      <app-loading></app-loading>-->
+    <!--    </div>-->
+  </div>
+</app-strategy-pop-up>
+<app-strategy-pop-up
+  class="pop-up-delivers"
+  *ngIf="popUpIsOpenDelivers"
+  (closeEmitter)="closePopUp('delivers')"
+  [style.top]="dataPopUpDelivers.top"
+  [style.left]="dataPopUpDelivers.left"
+  [positions]="positionsPopUpDelivery"
+>
+  <div id="container-pop-up-delivers">
+    <div class="title" *ngIf="!(isLoadingDataDeliveries$ | async)">
+      <label>{{ 'entregas ·' }}</label>
+      <label>{{
+        'Fuera de tiempo · ' +
+          (percentageDeliveriesOutOfTime$ | async) +
+          ' ' +
+          (totalDeliveries$ | async) +
+          ((totalDeliveries$ | async) === 1 ? ' Partida' : ' Partidas')
+      }}</label>
+      <label> {{ '· ' + (clientData$ | async)?.Nombre }}</label>
+      <label>{{ '· ' + oneYear }}</label>
+    </div>
+    <div class="complaints" *ngIf="!(isLoadingDataDeliveries$ | async)">
+      <div class="container-chart">
+        <div class="chart-container">
+          <label>{{ 'Tiempos de Referencia' }}</label>
+          <div class="chart">
+            <app-bar-chart
+              [values]="valuesBarChart$ | async"
+              [enableOnClick]="true"
+              [textDataLabel]="'P.'"
+              [totalPercentage]="totalDeliveries$ | async"
+              [fontSize]="9"
+              (segmentActive)="setSegmentActive($event, 'deliveries')"
+            >
+            </app-bar-chart>
+          </div>
+        </div>
+      </div>
+      <div class="container-table">
+        <div>
+          <div *ngIf="segmentActiveChartDeliveries !== null">
+            <span
+              class="circulo"
+              [style.background]="
+                segmentActiveChartDeliveries.label === oneDay
+                  ? '#df798c'
+                  : segmentActiveChartDeliveries.label === twoDays
+                  ? '#d85971'
+                  : segmentActiveChartDeliveries.label === threeDays
+                  ? '#d74460'
+                  : segmentActiveChartDeliveries.label === moreThanThreeDays
+                  ? '#c32644'
+                  : segmentActiveChartDeliveries.label === changeNotice
+                  ? '#f5a523'
+                  : ''
+              "
+            ></span>
+            <label>{{ segmentActiveChartDeliveries.label }}</label>
+            <label
+              [ngClass]="
+                segmentActiveChartDeliveries.label === oneDay
+                  ? 'text-red4'
+                  : segmentActiveChartDeliveries.label === twoDays
+                  ? 'text-red3'
+                  : segmentActiveChartDeliveries.label === threeDays
+                  ? 'text-red2'
+                  : segmentActiveChartDeliveries.label === moreThanThreeDays
+                  ? 'text-red1'
+                  : segmentActiveChartDeliveries.label === changeNotice
+                  ? 'text-yellow'
+                  : ''
+              "
+            >
+              {{
+                '· ' +
+                  (segmentActiveChartDeliveries.label === oneDay
+                    ? (percentagesChart$ | async).oneDay.percentage +
+                      '% · ' +
+                      (percentagesChart$ | async).oneDay.total +
+                      ' ' +
+                      ((percentagesChart$ | async).oneDay.total === 1
+                        ? ('strategy.details.item' | translate)
+                        : ('strategy.details.items' | translate))
+                    : segmentActiveChartDeliveries.label === twoDays
+                    ? (percentagesChart$ | async).twoDays.percentage +
+                      '% · ' +
+                      (percentagesChart$ | async).twoDays.total +
+                      ' ' +
+                      ((percentagesChart$ | async).twoDays.total === 1
+                        ? ('strategy.details.item' | translate)
+                        : ('strategy.details.items' | translate))
+                    : segmentActiveChartDeliveries.label === threeDays
+                    ? (percentagesChart$ | async).threeDays.percentage +
+                      '% · ' +
+                      (percentagesChart$ | async).threeDays.total +
+                      ' ' +
+                      ((percentagesChart$ | async).threeDays.total === 1
+                        ? ('strategy.details.item' | translate)
+                        : ('strategy.details.items' | translate))
+                    : segmentActiveChartDeliveries.label === moreThanThreeDays
+                    ? (percentagesChart$ | async).moreThanThreeDays.percentage +
+                      '% · ' +
+                      (percentagesChart$ | async).moreThanThreeDays.total +
+                      ' ' +
+                      ((percentagesChart$ | async).moreThanThreeDays.total === 1
+                        ? ('strategy.details.item' | translate)
+                        : ('strategy.details.items' | translate))
+                    : segmentActiveChartDeliveries.label === changeNotice
+                    ? (percentagesChart$ | async).changeNotice.percentage +
+                      '% · ' +
+                      (percentagesChart$ | async).changeNotice.total +
+                      ' ' +
+                      ((percentagesChart$ | async).changeNotice.total === 1
+                        ? ('strategy.details.item' | translate)
+                        : ('strategy.details.items' | translate))
+                    : '')
+              }}
+            </label>
+          </div>
+        </div>
+        <div class="table">
+          <div>
+            <div class="body" *ngIf="segmentActiveChartDeliveries !== null">
+              <virtual-scroller
+                [items]="
+                  segmentActiveChartDeliveries.label === oneDay
+                    ? (listDeliveriesOneDay$ | async)
+                    : segmentActiveChartDeliveries.label === twoDays
+                    ? (listDeliveriesTwoDays$ | async)
+                    : segmentActiveChartDeliveries.label === threeDays
+                    ? (listDeliveriesThreeDays$ | async)
+                    : segmentActiveChartDeliveries.label === moreThanThreeDays
+                    ? (listDeliveriesMoreThanThreeDays$ | async)
+                    : segmentActiveChartDeliveries.label === changeNotice
+                    ? (listDeliveriesChangeNotice$ | async)
+                    : []
+                "
+                (vsUpdate)="scrollItemsDeliveries = $event"
+              >
+                <div class="row-items-quotation" *ngFor="let item of scrollItemsDeliveries; index as productIndex">
+                  <div>
+                    <div class="line-one">
+                      <p>{{ '#' + item.Index + ' · ' }}</p>
+                      <p>{{ ('strategy.details.invoice' | translate) + ' ' + item.Factura + ' · ' }}</p>
+                      <p>{{
+                        (viewType === viewIpad
+                          ? ('strategy.details.internalOrderShort' | translate)
+                          : ('strategy.details.internalOrder' | translate)) +
+                          ' ' +
+                          item.Pedido
+                      }}</p>
+                      <p>{{
+                        '· ' +
+                          item.NumeroPiezas +
+                          ' ' +
+                          (item.NumeroPiezas > 1
+                            ? ('strategy.details.pieces' | translate)
+                            : ('strategy.details.piece' | translate))
+                      }}</p>
+                    </div>
+                    <div class="line-two">
+                      <p>{{ 'FEE ' + (item.FechaEstimadaEntrega | dateFormatSlashShort) }}</p>
+                      <p>{{ ' · FRE ' + (item.FechaRealEntrega | dateFormatSlashShort) }}</p>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="text-red">{{ item.labelDays }}</label>
+                  </div>
+                </div>
+              </virtual-scroller>
+            </div>
+            <div class="without-results" *ngIf="segmentActiveChartDeliveries === null">
+              <app-without-results [title]="'SELECCIONA LA GRÁFICA PARA HABILITAR ESTA SECCIÓN'"></app-without-results>
+            </div>
+            <div class="without-results" *ngIf="segmentActiveChartDeliveries !== null && scrollItemsDeliveries.length === 0">
+              <app-without-results [title]="'Sin Entregas'"></app-without-results>
+            </div>
+          </div>
+        </div>
+        <div class="footer-table">
+          <div *ngIf="segmentActiveChartDeliveries !== null">
+            <label *ngIf="segmentActiveChartDeliveries.label === oneDay">
+              {{
+                (listDeliveriesOneDay$ | async).length +
+                  ' ' +
+                  ((listDeliveriesOneDay$ | async).length === 1
+                    ? ('strategy.details.delivery' | translate)
+                    : ('strategy.details.deliveries' | translate)) +
+                  ' · ' +
+                  (percentagesChart$ | async).oneDay.percentage +
+                  '%'
+              }}
+            </label>
+            <label *ngIf="segmentActiveChartDeliveries.label === twoDays">
+              {{
+                (listDeliveriesTwoDays$ | async).length +
+                  ' ' +
+                  ((listDeliveriesTwoDays$ | async).length === 1
+                    ? ('strategy.details.delivery' | translate)
+                    : ('strategy.details.deliveries' | translate)) +
+                  ' · ' +
+                  (percentagesChart$ | async).twoDays.percentage +
+                  '%'
+              }}
+            </label>
+            <label *ngIf="segmentActiveChartDeliveries.label === threeDays">
+              {{
+                (listDeliveriesThreeDays$ | async).length +
+                  ' ' +
+                  ((listDeliveriesThreeDays$ | async).length === 1
+                    ? ('strategy.details.delivery' | translate)
+                    : ('strategy.details.deliveries' | translate)) +
+                  ' · ' +
+                  (percentagesChart$ | async).threeDays.percentage +
+                  '%'
+              }}
+            </label>
+            <label *ngIf="segmentActiveChartDeliveries.label === moreThanThreeDays">
+              {{
+                (listDeliveriesMoreThanThreeDays$ | async).length +
+                  ' ' +
+                  ((listDeliveriesMoreThanThreeDays$ | async).length === 1
+                    ? ('strategy.details.delivery' | translate)
+                    : ('strategy.details.deliveries' | translate)) +
+                  ' · ' +
+                  (percentagesChart$ | async).moreThanThreeDays.percentage +
+                  '%'
+              }}
+            </label>
+            <label *ngIf="segmentActiveChartDeliveries.label === changeNotice">
+              {{
+                (listDeliveriesChangeNotice$ | async).length +
+                  ' ' +
+                  ((listDeliveriesChangeNotice$ | async).length === 1
+                    ? ('strategy.details.delivery' | translate)
+                    : ('strategy.details.deliveries' | translate)) +
+                  ' · ' +
+                  (percentagesChart$ | async).changeNotice.percentage +
+                  '%'
+              }}
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="loading" *ngIf="isLoadingDataDeliveries$ | async">
+      <app-loading></app-loading>
+    </div>
+  </div>
+</app-strategy-pop-up>

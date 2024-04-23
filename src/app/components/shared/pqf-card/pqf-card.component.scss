@@ -1,0 +1,262 @@
+@use 'base' as s;
+* {
+  box-sizing: border-box;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+:host {
+  width: 100%;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  #card-container {
+    @include s.flexRowNoWrap;
+    @include s.absoluteCenter;
+    width: 100%;
+
+    & > virtual-scroller {
+      @include s.flexRowNoWrap;
+      @include s.absoluteCenter;
+      @include s.fixVirtualScroller;
+      width: 100%;
+      height: 117px;
+      overflow-y: hidden;
+      overflow-x: auto;
+
+      ::ng-deep .scrollable-content {
+        @include s.flexRowNoWrap;
+        @include s.absoluteCenter;
+        width: 100%;
+        height: 80px;
+        background-color: s.$dark-proquifa-b;
+        justify-content: flex-start;
+        top: auto;
+
+        &::before,
+        &::after {
+          content: '';
+          width: 40px;
+          height: 100%;
+          min-width: 40px;
+          background-color: s.$dark-proquifa-b;
+        }
+
+        & > div:last-child {
+          border-right: 0.3px solid s.$boxShadow;
+        }
+
+        & > .option {
+          @include s.flexColumn;
+          @include s.absoluteCenter;
+          position: relative;
+
+          &:hover {
+            background-color: s.$pqBlack6;
+            cursor: pointer;
+          }
+
+          &:hover * {
+            cursor: pointer;
+          }
+
+          &.active {
+            min-height: 117px;
+            background-color: s.$pqBlack6;
+            border: none;
+            padding: 8px;
+            grid-gap: 4px;
+
+            & > div.label {
+              @include s.flexRowNoWrap;
+
+              & > label {
+                @include s.multiLineTextTruncateSinHeight(1, normal);
+                text-align: center;
+                word-break: break-word;
+
+                &.pqf-card-title {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font_family_novecento_bold,
+                    $font-weight: s.$font_weight_bold,
+                    $font-size-map: s.$responsive-font-14-14,
+                    $font-style: s.$font-style-normal,
+                    $color: s.$pqWhite
+                  );
+                  text-transform: uppercase;
+                }
+
+                &.pqf-card-type {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font_family_novecento,
+                    $font-weight: s.$font_weight_regular,
+                    $font-size-map: s.$responsive-font-12-12,
+                    $font-style: s.$font-style-normal,
+                    $color: s.$pqWhite
+                  );
+                }
+
+                &.pqf-card-total-amount {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font_family_roboto,
+                    $font-weight: s.$font_weight_regular,
+                    $font-size-map: s.$responsive-font-12-b-12-b,
+                    $font-style: s.$font-style-normal,
+                    $color: s.$pqWhite
+                  );
+                }
+
+                &.pqf-card-count-products {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font_family_novecento_bold,
+                    $font-weight: s.$font_weight_bold,
+                    $font-size-map: s.$responsive-font-12-b-12-b,
+                    $font-style: s.$font-style-normal,
+                    $color: s.$pqWhite
+                  );
+                  text-transform: capitalize;
+                }
+
+                // TODO Se va a borrar si no se usan los sublabels
+                & > span {
+                  vertical-align: baseline;
+                }
+              }
+            }
+          }
+
+          &.border {
+            //border-right: 1px solid $boxShadow;
+            //border-left: 1px solid $boxShadow;
+          }
+
+          animation-duration: 0.5s;
+          background-color: s.$dark-proquifa-b;
+          border-left: 1px solid s.$boxShadow;
+          border-right: 1px solid s.$boxShadow;
+          padding: 4px 8px;
+          transition: 0.5s ease-out;
+          min-height: 80px;
+
+          & > div.label {
+            @include s.flexRowNoWrap;
+
+            & > label {
+              @include s.multiLineTextTruncateSinHeight(1, normal);
+              text-align: center;
+              word-break: break-word;
+              grid-gap: 2px;
+
+              &.pqf-card-title {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_novecento_bold,
+                  $font-weight: s.$font_weight_bold,
+                  $font-size-map: s.$responsive-font-12-b-12-b,
+                  $font-style: s.$font-style-normal,
+                  $color: s.$pqWhite
+                );
+                text-transform: uppercase;
+              }
+
+              &.pqf-card-type {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_novecento,
+                  $font-weight: s.$font_weight_regular,
+                  $font-size-map: s.$responsive-font-10-10,
+                  $font-style: s.$font-style-normal,
+                  $color: s.$pqWhite
+                );
+              }
+
+              &.pqf-card-total-amount {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_roboto,
+                  $font-weight: s.$font_weight_regular,
+                  $font-size-map: s.$responsive-font-10-10,
+                  $font-style: s.$font-style-normal,
+                  $color: s.$pqWhite
+                );
+              }
+
+              &.pqf-card-count-products {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_novecento_bold,
+                  $font-weight: s.$font_weight_bold,
+                  $font-size-map: s.$responsive-font-10-10,
+                  $font-style: s.$font-style-normal,
+                  $color: s.$pqWhite
+                );
+                text-transform: capitalize;
+              }
+
+              &.pqf-card-date-last-update {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_roboto,
+                  $font-weight: s.$font_weight_medium,
+                  $font-size-map: s.$responsive-font-10-10,
+                  $font-style: s.$font-style-normal,
+                  $color: s.$pqWhite
+                );
+              }
+
+              &.pqf-card-status {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_roboto,
+                  $font-weight: s.$font_weight_regular,
+                  $font-size-map: s.$responsive-font-12-b-12-b,
+                  $font-style: s.$font-style-normal
+                );
+                text-transform: capitalize;
+              }
+
+              // TODO Se va a borrar si no se usan los sublabels
+              & > span {
+                vertical-align: baseline;
+              }
+            }
+          }
+
+          & > img {
+            bottom: 13px;
+            left: 20px;
+            max-height: 17px;
+            max-width: 19px;
+            position: absolute;
+          }
+        }
+      }
+    }
+
+    .scrollable-content {
+      @include s.flexRowNoWrap;
+      @include s.absoluteCenter;
+      width: 100%;
+      height: 80px;
+      background-color: s.$dark-proquifa-b;
+      justify-content: center;
+      top: 10px;
+      margin-top: 10px;
+
+      & > label:nth-of-type(1) {
+        @include s.escaledFontFormat(s.$textSize20to25, regular, s.$pqWhite);
+        @include s.Novecento-Bold;
+        text-transform: uppercase;
+      }
+    }
+  }
+
+  @include s.media-query(s.$standard) {
+    #card-container {
+      & > virtual-scroller {
+        ::ng-deep .scrollable-content {
+          &::before,
+          &::after {
+            width: 20px;
+            min-width: 20px;
+          }
+        }
+      }
+    }
+  }
+}

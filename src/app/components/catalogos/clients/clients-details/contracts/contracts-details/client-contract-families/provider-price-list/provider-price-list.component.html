@@ -1,0 +1,166 @@
+<div class="configuration-list-price-container">
+  <div class="title">
+    <label>{{ selectedTabConfiguration.label }}</label>
+  </div>
+  <div class="list-price">
+    <div class="search-bar">
+      <app-search [searchTerm]="pricesSearchTerm$ | async" [placeholder]="'Costo'" (textSearch)="handleSetSearchTerm($event)">
+      </app-search>
+    </div>
+    <div class="list-prices" *ngIf="!lodashIsEmpty(pricesResults$ | async)">
+      <virtual-scroller
+        *ngIf="!lodashIsEmpty(pricesResults$ | async)"
+        [items]="pricesResults$ | async"
+        (vsUpdate)="pricesResults = $event"
+        (vsEnd)="fetchMorePrices($event)"
+        id="all-prices"
+      >
+        <div *ngFor="let item of pricesResults; trackBy: handleTrackByPriceList" class="item-container">
+          <div class="indicator" [ngClass]="{active: item.isSelected}"></div>
+          <div class="item">
+            <div class="currency">
+              <label class="titleCant">{{ item?.PrecioLista }} {{ item?.MonedaVentaProveedor }}</label>
+              <label class="price-provider" *ngIf="item?.PrecioListaMonedaProveedor"
+                >{{ item?.PrecioListaMonedaProveedor.toFixed(2) }} {{ item?.ClaveMonedaPagos }}</label
+              >
+              <label class="price-provider" *ngIf="!item?.PrecioListaMonedaProveedor">N/D</label>
+            </div>
+            <div class="info">
+              <label class="total-product">
+                {{
+                  item.TotalProducto +
+                    ' ' +
+                    (item.TotalProducto === 1 ? ('common.product' | translate) : ('common.products' | translate))
+                }}
+                ·<img alt="" src="assets/Images/triangulo_naranja.svg" />
+                <span>{{ item.percentage.toFixed(2) }}%</span>
+              </label>
+              <div class="prices">
+                <label
+                  >{{ clientIncomeLevel }} · <span class="black">{{ item.PrecioProquifaNet | currency }} ·</span
+                  ><span [ngClass]="item.isNegative ? 'red' : 'green'"> {{ item.percentage.toFixed(2) }} %</span></label
+                >
+              </div>
+            </div>
+            <div class="image" (click)="openConfiguration(item)">
+              <img
+                alt="mas"
+                [ngClass]="{disabled: item.isSelected}"
+                [src]="!item.isConfigured ? 'assets/Images/mas.svg' : 'assets/Images/pencil-edit.svg'"
+              />
+            </div>
+          </div>
+        </div>
+      </virtual-scroller>
+      <div class="loading" *ngIf="!lodashIsEmpty(pricesResults$ | async) && (prices$ | async).isLoading">
+        <app-loading></app-loading>
+      </div>
+    </div>
+    <div class="loading" *ngIf="lodashIsEmpty(pricesResults$ | async) && (prices$ | async).isLoading">
+      <app-loading></app-loading>
+    </div>
+    <div class="without-results" *ngIf="lodashIsEmpty(pricesResults$ | async) && !(prices$ | async).isLoading">
+      <app-without-results></app-without-results>
+    </div>
+  </div>
+</div>
+<div class="cambioListaPrecios">
+  <div class="ajustePrecios" *ngIf="(showSubConfigSection$ | async) && actualConfiguration.ContratoClienteMarcaConfiguracion">
+    <div class="tabs">
+      <app-options-bar
+        [options]="subConfigurationTabs"
+        [showArrows]="false"
+        (handleOptionSelected)="emitOption($event)"
+      ></app-options-bar>
+    </div>
+    <div class="general-container-sections">
+      <div class="price-container" *ngIf="selectedSubConfigOption?.label === subTabs.Cost">
+        <div class="provider-list-price">
+          <app-provider-list-price
+            [actualConfiguration]="actualConfiguration"
+            [enableEdit]="false"
+            [isMexican]="isMexican"
+            [price]="priceSelected$ | async"
+            [showListPrice]="true"
+            [viewType]="viewType"
+          ></app-provider-list-price>
+        </div>
+        <div class="discount-freight">
+          <app-discount-freight
+            [actualConfiguration]="actualConfiguration"
+            [enableEdit]="false"
+            [isMexican]="isMexican"
+            [viewType]="viewType"
+          ></app-discount-freight>
+        </div>
+        <div class="import" *ngIf="!isMexican">
+          <app-import [actualConfiguration]="actualConfiguration" [enableEdit]="false" [viewType]="viewType"></app-import>
+        </div>
+        <div class="custom-agent-cost" *ngIf="!isMexican">
+          <app-custom-agent-cost
+            [actualConfiguration]="actualConfiguration"
+            [enableEdit]="false"
+            [viewType]="viewType"
+          ></app-custom-agent-cost>
+        </div>
+        <div class="expenses" *ngIf="!isMexican">
+          <app-expenses [actualConfiguration]="actualConfiguration" [enableEdit]="false"></app-expenses>
+        </div>
+        <div class="fixed">
+          <app-fixed
+            [actualConfiguration]="actualConfiguration"
+            [enableEdit]="true"
+            [isMexican]="isMexican"
+            (emitInputValue)="saveInputValue(FIELD_FIXED_FACTOR, $event)"
+          ></app-fixed>
+        </div>
+        <div class="utility" *ngIf="true">
+          <app-utility
+            [actualConfiguration]="actualConfiguration"
+            [enableEdit]="true"
+            (emitInputValue)="saveInputValue(FIELD_UTILITY, $event)"
+          ></app-utility>
+        </div>
+      </div>
+      <div class="send-time-container" *ngIf="selectedSubConfigOption?.label === subTabs.logisticsTimes">
+        <div class="routes-list">
+          <h4 class="green-title">{{ 'formProvider.step8.subtitles.route' | translate }}</h4>
+          <h5 class="route-name">{{ actualConfiguration?.routeName || 'N/D' }}</h5>
+        </div>
+        <div class="route-details">
+          <app-client-logistic-times
+            [actualConfiguration]="actualConfiguration"
+            [enableEdit]="false"
+            [isMexican]="isMexican"
+            [viewType]="viewType"
+          ></app-client-logistic-times>
+        </div>
+      </div>
+    </div>
+    <div class="botones">
+      <button
+        [className]="activateCancelConfigButton ? 'botonActive' : 'botonDisable'"
+        [disabled]="!activateCancelConfigButton"
+        (click)="discardChanges()"
+      >
+        {{ 'common.cancel' | translate }}
+      </button>
+      <button
+        [className]="activateSaveConfigButton ? 'botonActive' : 'botonDisable'"
+        [disabled]="!activateSaveConfigButton"
+        (click)="saveConfiguration()"
+      >
+        {{ 'common.accept' | translate }}
+      </button>
+    </div>
+  </div>
+  <div
+    class="withoutResults"
+    *ngIf="
+      (!(showSubConfigSection$ | async) && !actualConfiguration.ContratoClienteMarcaConfiguracion) ||
+      lodashIsEmpty(pricesResults$ | async)
+    "
+  >
+    <app-without-results [title]="'formBrand.details.emptyMessage' | translate"></app-without-results>
+  </div>
+</div>

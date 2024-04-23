@@ -1,0 +1,62 @@
+<section id="summary-filters" [ngClass]="isOpen ? 'show' : 'hide'">
+  <div class="data-filters">
+    <div>
+      <div class="title">
+        <div class="text">
+          <label>RESUMEN</label>
+          <label>GENERAL</label>
+        </div>
+      </div>
+      <div class="content">
+        <div>
+          <div class="title">
+            <label>Cliente</label>
+          </div>
+          <div>
+            <app-drop-down-list
+              [items]="customerFilters$ | async"
+              [itemSelected]="customerFilter$ | async"
+              [isSearchable]="true"
+              (valueDropList)="setCustomerFilter($event)"
+            >
+            </app-drop-down-list>
+          </div>
+        </div>
+        <div>
+          <div class="title">
+            <label>Contrato</label>
+          </div>
+          <div>
+            <app-drop-down-list
+              [items]="contractFilters$ | async"
+              [itemSelected]="contractFilter$ | async"
+              (valueDropList)="setContractFilter($event)"
+            >
+            </app-drop-down-list>
+          </div>
+        </div>
+        <div>
+          <div class="title">
+            <label>Estado</label>
+          </div>
+          <div>
+            <app-drop-down-list
+              [items]="statusFilters$ | async"
+              [itemSelected]="statusFilter$ | async"
+              (valueDropList)="setStatusFilter($event)"
+            >
+            </app-drop-down-list>
+          </div>
+        </div>
+        <div>
+          <div class="recharge" (click)="filterCustomer()">
+            <img src="assets/Images/recharge.svg" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--  <div class="arrow">
+    <img alt="arrow" src="assets/Images/arrows/flecha_cuadro.svg" [ngClass]="{reverse: !isOpen}" (click)="onClick()" />
+  </div>-->
+</section>

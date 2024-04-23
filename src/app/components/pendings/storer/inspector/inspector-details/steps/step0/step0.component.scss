@@ -1,0 +1,117 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  & #step0 {
+    @include s.absolute100;
+    @include s.flexColumn;
+    justify-content: flex-start;
+
+    & > .code-bar {
+      @include s.flexRow;
+      @include s.absoluteCenter;
+      flex: 1;
+
+      & > .content {
+        @include s.flexColumn;
+        @include s.absoluteCenter;
+        flex: 0 0 800px;
+
+        & > .code-content {
+          @include s.flexColumn;
+          @include s.absoluteCenter;
+          padding: 20px;
+          flex: 1;
+
+          & > img {
+          }
+
+          & > label {
+            @include s.Roboto-Regular;
+            @include s.escaledFontFormat(s.$textSize40to45, regular, s.$pqBlack2);
+            margin-top: 20px;
+          }
+        }
+
+        & > .text-content {
+          @include s.flexRow;
+          flex: 1;
+          margin-top: 25px;
+          @include s.responsive_layout('macBookAir') {
+            margin-top: 40px;
+          }
+
+          & > label {
+            @include s.Novecento-Bold;
+            @include s.escaledFontFormat(s.$textSize45to50, bold, s.$pqGreen);
+            text-align: center;
+          }
+        }
+      }
+    }
+
+    & > .start-inspect {
+      @include s.flexRow;
+      @include s.absoluteCenter;
+      flex: 1;
+
+      & > .content {
+        @include s.flexColumn;
+        align-items: center;
+        flex: 0 0 800px;
+        height: 140px;
+        justify-content: space-between;
+        @include s.responsive_layout('macBookAir') {
+          height: 200px;
+        }
+
+        & > label {
+          @include s.Novecento-Bold;
+          @include s.escaledFontFormat(s.$textSize40to50, bold, s.$pqGreen);
+          text-align: center;
+        }
+
+        & > button {
+          @include s.pqButton($baseColor: s.$recButton, $min-height: 35px, $max-height: 51px);
+
+          & > img {
+            height: 12px;
+            margin-left: 5px;
+            vertical-align: baseline;
+            @include s.responsive_layout('macBookAir') {
+              margin-left: 7px;
+              height: 15px;
+            }
+          }
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .code-bar {
+        & > .content {
+          & > .text-content {
+            margin-top: 40px;
+          }
+        }
+      }
+      & > .start-inspect {
+        & > .content {
+          height: 200px;
+
+          & > button {
+            & > img {
+              margin-left: 7px;
+              height: 15px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

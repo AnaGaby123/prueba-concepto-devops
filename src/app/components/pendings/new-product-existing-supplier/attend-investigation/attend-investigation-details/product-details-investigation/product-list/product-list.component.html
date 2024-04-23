@@ -1,0 +1,160 @@
+<div class="container" *ngIf="showProductsCat$ | async">
+  <div class="title">
+    <label>{{ 'attendInvestigation.attendInvestigationDetail.productsCatalog' | translate }}</label>
+  </div>
+  <div class="filters">
+    <div class="search-product-filters">
+      <app-search
+        [activeRefresh]="true"
+        [borderColor]="'#008894'"
+        [imageFill]="'#008894'"
+        [isExpandable]="true"
+        [isLoading]="(optionsOfProductsStatus$ | async) === apiRequestStatusLoading"
+        [isSearchByType]="true"
+        [itemSelected]="optionOfProduct$ | async"
+        [placeholder]="'Escribe Aquí'"
+        [resultItems]="optionsOfProduct$ | async"
+        [searchTerm]="searchTerm$ | async"
+        [typeSelected]="typeOfSearch$ | async"
+        [typesOfSearch]="listTypesOfSearch$ | async"
+        (handleClearSearchTerm)="handleClearSearchTerm()"
+        (handleItemSelected)="handleItemSelected($event)"
+        (handleSearchTermSelected)="handleSearchTermSelected($event)"
+        (handleTypeSelected)="handleTypeSelected($event)"
+        (textSearch)="handleKeySearch($event)"
+        [isDisable]="(selectedProductInvestigation$ | async)?.EstadoInvestigacion === 'En Espera De Respuesta'"
+      >
+      </app-search>
+    </div>
+    <div class="drops">
+      <app-drop-down-list
+        [activeMinWidth]="false"
+        [isSearchable]="true"
+        [itemSelected]="itemTrademark$ | async"
+        [items]="listTrademark$ | async"
+        [subtitleActive]="false"
+        [disable]="(searchTerm$ | async) === ''"
+        [capitalize]="false"
+        (valueDropList)="setFilter($event, 'TrademarkSelected')"
+      >
+      </app-drop-down-list>
+      <app-drop-down-list
+        [activeMinWidth]="false"
+        [itemSelected]="selectedLine$ | async"
+        [items]="itemLines$ | async"
+        [required]="true"
+        [isSearchable]="(itemLines$ | async)?.length > 5"
+        [showAsterisk]="false"
+        [subtitleActive]="false"
+        [title]="'Seleccionar'"
+        [disable]="(searchTerm$ | async) === ''"
+        [capitalize]="false"
+        (valueDropList)="setFilter($event, 'LineSelected')"
+      >
+      </app-drop-down-list>
+      <app-drop-down-list
+        [activeMinWidth]="false"
+        [itemSelected]="itemTypeProduct$ | async"
+        [items]="listTypeProducts$ | async"
+        [subtitleActive]="false"
+        [disable]="(searchTerm$ | async) === ''"
+        [capitalize]="false"
+        (valueDropList)="setFilter($event, 'ProductTypeSelected')"
+      >
+      </app-drop-down-list>
+      <app-drop-down-list
+        [activeMinWidth]="false"
+        [itemSelected]="itemStatus$ | async"
+        [items]="listProductState$ | async"
+        [subtitleActive]="false"
+        [disable]="(searchTerm$ | async) === ''"
+        [capitalize]="false"
+        (valueDropList)="setFilter($event, 'ProductStateSelected')"
+      >
+      </app-drop-down-list>
+      <app-drop-down-list
+        [activeMinWidth]="false"
+        [itemSelected]="itemPrice$ | async"
+        [items]="listPrice$ | async"
+        [subtitleActive]="false"
+        [disable]="(searchTerm$ | async) === ''"
+        [capitalize]="false"
+        (valueDropList)="setSortDirection($event)"
+      >
+      </app-drop-down-list>
+    </div>
+  </div>
+  <div class="product-list" cdkDropListGroup>
+    <div class="table-product" *ngIf="!(typeList$ | async)">
+      <virtual-scroller
+        *ngIf="!isEmpty(listProducts$ | async)"
+        (vsEnd)="fetchMoreProducts($event)"
+        (vsUpdate)="scrollItems = $event"
+        [bufferAmount]="1"
+        [cdkDropListData]="scrollItems"
+        [cdkDropListEnterPredicate]="noReturnPredicate"
+        [enableUnequalChildrenSizes]="true"
+        [items]="listProducts$ | async"
+        [cdkDropListDisabled]="(itemAttentionProduct$ | async) !== null"
+        cdkDropList
+        cdkDropListConnectedTo="productDetails"
+      >
+        <app-product-card-item
+          *ngFor="let product of scrollItems; let i = index"
+          [product]="buildItem(product)"
+          [showAvailability]="true"
+          cdkDrag
+          [cdkDragData]="product"
+        ></app-product-card-item>
+      </virtual-scroller>
+      <div class="loadingContainer" *ngIf="(apiStatus$ | async) === 1 && !isEmpty(listProducts$ | async)">
+        <app-loading></app-loading>
+      </div>
+      <div class="loading" *ngIf="(apiStatus$ | async) === 1 && isEmpty(listProducts$ | async)">
+        <app-loading></app-loading>
+      </div>
+      <div class="loading" *ngIf="(apiStatus$ | async) !== 1 && isEmpty(listProducts$ | async)">
+        <app-without-results></app-without-results>
+      </div>
+    </div>
+    <div class="table-product-list" *ngIf="typeList$ | async">
+      <virtual-scroller
+        *ngIf="!isEmpty(listProducts$ | async)"
+        cdkDropList
+        [enableUnequalChildrenSizes]="true"
+        [items]="listProducts$ | async"
+        (vsEnd)="fetchMoreProducts($event)"
+        (vsUpdate)="scrollItems = $event"
+        [cdkDropListData]="listProducts$"
+        [cdkDropListDisabled]="(itemAttentionProduct$ | async) !== null"
+      >
+        <app-product-list-item
+          *ngFor="let product of scrollItems; let i = index"
+          [product]="buildItem(product)"
+          cdkDrag
+          [cdkDragData]="product"
+        ></app-product-list-item>
+
+        <div class="loadingContainer" *ngIf="(apiStatus$ | async) === 1 && !isEmpty(listProducts$ | async)">
+          <app-loading></app-loading>
+        </div>
+      </virtual-scroller>
+
+      <div class="loading" *ngIf="(apiStatus$ | async) === 1 && isEmpty(listProducts$ | async)">
+        <app-loading></app-loading>
+      </div>
+      <div class="loading" *ngIf="(apiStatus$ | async) !== 1 && isEmpty(listProducts$ | async)">
+        <app-without-results></app-without-results>
+      </div>
+    </div>
+    <app-right-sidebar *ngIf="detailsProductIsOpen$ | async"></app-right-sidebar>
+  </div>
+  <footer class="footer">
+    <label>
+      #{{ totalProducts$ | async | number: '1.0-0' }}{{ (totalProducts$ | async) == 1 ? ' Producto' : ' Productos' }}
+    </label>
+  </footer>
+</div>
+<div class="without-results" *ngIf="!(showProductsCat$ | async)">
+  <app-without-results [title]="'formBrand.details.emptyMessage' | translate"></app-without-results>
+</div>

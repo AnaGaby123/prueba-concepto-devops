@@ -1,0 +1,20 @@
+<div class="filter-options-pqf" [ngClass]="flexDirection" [style.row-gap]="rowGap">
+  <div class="filter" (click)="showOptions = !showOptions">
+    <div class="image">
+      <img alt="" [src]="getFilterImage()" />
+    </div>
+    <div class="text">
+      <label [ngClass]="{active: showOptions}">{{ filterText }}</label>
+    </div>
+  </div>
+  <div *ngIf="showOptions" [@enterAnimation] class="options" [hidden]="!showOptions">
+    <button
+      *ngFor="let option of options"
+      (click)="handleOptionSelected(option.id)"
+      [disabled]="!option.enable"
+      [ngClass]="{disable: !option.enable, active: option.isActive}"
+    >
+      <label [ngClass]="{active: option.isActive}">{{ option.text | translate }}</label>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,71 @@
+<div id="steps-to-finalize">
+  <div class="container-component">
+    <div class="header">
+      <div class="column-one">
+        <label
+          >{{ 'registerArrival.details.petition' | translate }} {{ (dispatchOrderSelected$ | async).NumeroPedimento }}</label
+        >
+        <label>· {{ 'registerArrival.details.guide' | translate }} {{ (dispatchOrderSelected$ | async).GuiaDeEmbarque }}</label>
+      </div>
+      <div class="column-two">
+        <label>{{ 'registerArrival.details.od' | translate }} {{ (dispatchOrderSelected$ | async).Folio }}</label>
+        <label>· {{ (dispatchOrderSelected$ | async).MontoTotalUSD | currency: 'USD':'symbol':'1.2-2' }}</label>
+        <label
+          >· {{ (dispatchOrderSelected$ | async).Bultos }}
+          {{
+            (dispatchOrderSelected$ | async).Bultos === 1
+              ? ('registerArrival.details.package' | translate)
+              : ('registerArrival.details.packages' | translate)
+          }}</label
+        >
+      </div>
+    </div>
+    <div class="steps">
+      <app-bar-activities
+        [enableLeftArrow]="true"
+        [enableRightArrow]="advanceStep$ | async"
+        [options]="steps$ | async"
+        [selectedOption]="stepSelected$ | async"
+        (handleOptionSelected)="changeStep($event)"
+      >
+      </app-bar-activities>
+      <div class="current-component">
+        <app-open-package *ngIf="(stepSelectedName$ | async) === 'openPackage'"></app-open-package>
+        <app-pieces-arrived *ngIf="(stepSelectedName$ | async) === 'pieces-arrived'"></app-pieces-arrived>
+        <app-fingerprint-scan *ngIf="(stepSelectedName$ | async) === 'fingerprint-scan'"></app-fingerprint-scan>
+      </div>
+    </div>
+    <div class="footer">
+      <button class="btn-reject" [disabled]="false" (click)="handleCancelPop(CANCEL_POP, true)">
+        {{ 'common.cancel' | translate }}
+      </button>
+      <button
+        [ngClass]="(codesAreValid$ | async) ? 'btn-reject' : 'btn-reject-disable'"
+        [disabled]="!(codesAreValid$ | async)"
+        (click)="registerArrival()"
+      >
+        {{ 'common.finish' | translate }}
+      </button>
+    </div>
+  </div>
+</div>
+<app-pop-up-generic
+  id="cancel-pop-up"
+  *ngIf="popUps.cancel.isOpen"
+  [activeButtons]="true"
+  [rightButtonLabel]="'Aceptar'"
+  [activeBtn]="true"
+  [width]="viewType === 'iPad' ? '520px' : '620px'"
+  [height]="viewType === 'iPad' ? '340px' : '440px'"
+  (evento)="handleCancelPop(CANCEL_POP, false, $event)"
+>
+  <div class="container">
+    <img src="assets/Images/alerta.svg" alt="alert" />
+    <div>
+      <label
+        >{{ 'registerArrival.details.questionCancelRegister' | translate }}
+        <span> {{ 'registerArrival.details.messageConsequence' | translate }}</span>
+      </label>
+    </div>
+  </div>
+</app-pop-up-generic>

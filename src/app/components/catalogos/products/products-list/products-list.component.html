@@ -1,0 +1,156 @@
+<div class="container">
+  <div class="filters">
+    <div class="drops">
+      <div class="space">
+        <app-drop-down-list
+          [isSearchable]="(listTrademark$ | async)?.length > 5"
+          [itemSelected]="itemTrademark$ | async"
+          [items]="listTrademark$ | async"
+          [subtitleActive]="false"
+          (valueDropList)="setFilter($event, 'TrademarkSelected')"
+        >
+        </app-drop-down-list>
+      </div>
+      <div class="space">
+        <app-drop-down-list
+          [activeMinWidth]="true"
+          [itemSelected]="selectedLine$ | async"
+          [items]="itemLines$ | async"
+          [required]="true"
+          [showAsterisk]="false"
+          [subtitleActive]="false"
+          [isSearchable]="(itemLines$ | async)?.length > 5"
+          [title]="'Seleccionar'"
+          (valueDropList)="setFilter($event, 'LineSelected')"
+        >
+        </app-drop-down-list>
+      </div>
+      <div class="space">
+        <app-drop-down-list
+          [itemSelected]="itemTypeProduct$ | async"
+          [items]="listTypeProducts$ | async"
+          [subtitleActive]="false"
+          [isSearchable]="(listTypeProducts$ | async)?.length > 5"
+          (valueDropList)="setFilter($event, 'ProductTypeSelected')"
+        >
+        </app-drop-down-list>
+      </div>
+      <div class="space">
+        <app-drop-down-list
+          [itemSelected]="itemStatus$ | async"
+          [items]="listProductState$ | async"
+          [subtitleActive]="false"
+          [isSearchable]="(listProductState$ | async)?.length > 5"
+          (valueDropList)="setFilter($event, 'ProductStateSelected')"
+        >
+        </app-drop-down-list>
+      </div>
+      <div class="space">
+        <app-drop-down-list
+          [itemSelected]="itemPrice$ | async"
+          [items]="listPrice$ | async"
+          [subtitleActive]="false"
+          (valueDropList)="setSortDirection($event)"
+        >
+        </app-drop-down-list>
+      </div>
+    </div>
+    <div class="search">
+      <div>
+        <app-search
+          [activeRefresh]="true"
+          [borderColor]="'#008894'"
+          [imageFill]="'#008894'"
+          [isExpandable]="true"
+          [isLoading]="(optionsOfProductsStatus$ | async) === apiRequestStatusLoading"
+          [isSearchByType]="true"
+          [itemSelected]="optionOfProduct$ | async"
+          [placeholder]="'Buscar'"
+          [resultItems]="optionsOfProduct$ | async"
+          [searchTerm]="searchTerm$ | async"
+          [typeSelected]="typeOfSearch$ | async"
+          [typesOfSearch]="listTypesOfSearch$ | async"
+          (handleClearSearchTerm)="handleClearSearchTerm()"
+          (handleItemSelected)="handleItemSelected($event)"
+          (handleSearchTermSelected)="handleSearchTermSelected($event)"
+          (handleTypeSelected)="handleTypeSelected($event)"
+          (textSearch)="handleKeySearch($event)"
+        >
+        </app-search>
+      </div>
+      <div (click)="setTypeList(false)" [className]="(typeList$ | async) ? 'space' : 'space-disable'">
+        <img class="img" [src]="(typeList$ | async) ? 'assets/Images/cuadricula.svg' : 'assets/Images/cuadricula_verde.svg'" />
+      </div>
+      <div (click)="setTypeList(true)" [className]="(typeList$ | async) ? 'space-disable' : 'space'">
+        <img class="img" [src]="(typeList$ | async) ? 'assets/Images/listado_verde.svg' : 'assets/Images/listado.svg'" />
+      </div>
+    </div>
+  </div>
+  <div class="product-list">
+    <div class="table-product" *ngIf="!(typeList$ | async)">
+      <virtual-scroller
+        style="width: 100%; height: 100%;"
+        *ngIf="!isEmpty(listProducts$ | async)"
+        [bufferAmount]="1"
+        [enableUnequalChildrenSizes]="true"
+        [items]="listProducts$ | async"
+        (vsEnd)="fetchMoreProducts($event)"
+        (vsUpdate)="scrollItems = $event"
+      >
+        <app-product-card-item
+          *ngFor="let product of scrollItems; let i = index"
+          (click)="handleProductCardItemClick(product.IdProducto)"
+          [product]="buildItem(product)"
+          [showAvailability]="true"
+        ></app-product-card-item>
+      </virtual-scroller>
+
+      <div class="loading" *ngIf="(apiStatus$ | async) === 1 && isEmpty(listProducts$ | async)">
+        <app-loading></app-loading>
+      </div>
+      <div class="loading" *ngIf="(apiStatus$ | async) !== 1 && isEmpty(listProducts$ | async)">
+        <app-without-results></app-without-results>
+      </div>
+    </div>
+    <div
+      class="loading-container"
+      *ngIf="(apiStatus$ | async) === 1 && !isEmpty(listProducts$ | async) && !(typeList$ | async)"
+    >
+      <app-loading></app-loading>
+    </div>
+    <div class="table-product-list" *ngIf="typeList$ | async">
+      <virtual-scroller
+        *ngIf="!isEmpty(listProducts$ | async)"
+        [items]="listProducts$ | async"
+        style="width: 100%; height: 100%;"
+        (vsUpdate)="scrollItems = $event"
+        (vsEnd)="fetchMoreProducts($event)"
+        [enableUnequalChildrenSizes]="true"
+      >
+        <app-product-list-item
+          *ngFor="let product of scrollItems; let i = index"
+          [product]="buildItem(product)"
+          (click)="handleProductCardItemClick(product.IdProducto)"
+        ></app-product-list-item>
+        <div class="loading-container" *ngIf="(apiStatus$ | async) === 1 && !isEmpty(listProducts$ | async)">
+          <app-loading></app-loading>
+        </div>
+      </virtual-scroller>
+
+      <div class="loading" *ngIf="(apiStatus$ | async) === 1 && isEmpty(listProducts$ | async)">
+        <app-loading></app-loading>
+      </div>
+      <div class="loading" *ngIf="(apiStatus$ | async) !== 1 && isEmpty(listProducts$ | async)">
+        <app-without-results></app-without-results>
+      </div>
+    </div>
+  </div>
+  <div class="total">
+    <label>
+      #{{ totalProducts$ | async | number: '1.0-0' }}{{ (totalProducts$ | async) == 1 ? ' Producto' : ' Productos' }}</label
+    >
+  </div>
+  <footer class="footer">
+    <button class="btnAdd" (click)="handleAddButtonClick()">{{ 'common.add' | translate }}</button>
+  </footer>
+</div>

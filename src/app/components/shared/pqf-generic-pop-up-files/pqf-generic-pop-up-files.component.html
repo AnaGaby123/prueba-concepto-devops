@@ -1,0 +1,33 @@
+<pqf-generic-pop-up [isActiveButtons]="false" (event)="showEvent($event)">
+  <div id="pop-file-content">
+    <div class="message">
+      <label>{{ 'common.sharedComponents.popFileMessage' | translate }}</label>
+    </div>
+    <div class="content">
+      <div class="files" #filesContent>
+        <div class="item" *ngFor="let file of files; let i = index">
+          <label class="index">#{{ i + 1 }}</label>
+          <div class="file">
+            <img src="assets/Images/components-src/generic-input-file/file.svg" />
+            <label>{{ file.name }}</label>
+            <img src="assets/Images/pqf-close.svg" (click)="emitFileToDelete(file)" />
+          </div>
+          <div class="download">
+            <img [src]="getDownloadImage(file)" />
+            <label [ngClass]="{disable: !file?.FileKey}" (click)="emitFile(file)">{{
+              'common.sharedComponents.downloadFile' | translate
+            }}</label>
+          </div>
+        </div>
+      </div>
+      <div class="arrows">
+        <img src="assets/Images/components-src/generic-input-file/arrow-file-up-disable.svg" (click)="scrollUp()" #upArrow />
+        <img
+          src="assets/Images/components-src/generic-input-file/arrow-file-down-disable.svg"
+          (click)="scrollDown()"
+          #downArrow
+        />
+      </div>
+    </div>
+  </div>
+</pqf-generic-pop-up>

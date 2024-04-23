@@ -1,0 +1,21 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.flexRow;
+  justify-content: center;
+  width: 100%;
+  & > .delete-container {
+    @include s.gridCenter;
+    width: 100%;
+    & > img {
+      width: 16px;
+      height: 16px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+  }
+}

@@ -1,0 +1,375 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+app-pop-up-generic {
+  ::ng-deep .modal {
+    background: none;
+
+    & > .modal-content {
+      transition: none;
+    }
+  }
+}
+
+.container {
+  @include s.flexColumn;
+  gap: 16px;
+  height: 100%;
+  padding: 20px;
+  width: 100%;
+
+  & > .preprocess-order {
+    height: 40px;
+    @include s.flexRow;
+    border-bottom: 1px solid s.$pqBlack2;
+
+    & > div {
+      @include s.flexRow;
+
+      & > label {
+        @include s.escaledFontFormat(s.$textSize17to24, '', s.$pqBlack2);
+        @include s.Novecento-Bold;
+        margin-right: 5px;
+      }
+
+      & > .pqf {
+        color: s.$pqGreen !important;
+      }
+    }
+  }
+
+  & > .client-container {
+    text-align: start;
+    margin-top: 16px;
+  }
+
+  & > .table-container {
+    @include s.flexRow;
+    flex: 1;
+    height: 100%;
+    overflow: hidden;
+    & > .content {
+      @include s.flexColumn();
+      overflow-y: hidden;
+      & > .header {
+        flex: 0 0 auto;
+        min-width: 1612px;
+        position: sticky;
+        top: 0;
+        z-index: 6;
+      }
+
+      & > .header-separator {
+        border-bottom: 1px solid s.$dark-proquifa;
+        left: 0;
+        position: sticky;
+        top: 47px;
+      }
+      & > div {
+        min-width: 1612px;
+      }
+
+      & > .list {
+        overflow-x: hidden;
+
+        & > ::ng-deep .scrollable-content {
+          & > .list-for {
+            min-width: 1612px;
+          }
+        }
+      }
+
+      & div.incidence {
+        @include s.flexRow;
+        background-color: s.$orangeLight;
+        justify-content: flex-start;
+        min-width: 1612px;
+        padding: 12px;
+        position: relative;
+
+        & > .content {
+          @include s.flexColumn;
+          align-items: flex-start;
+          flex: 1;
+          width: 100%;
+
+          & > div:nth-child(1) {
+            margin-bottom: 8px;
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize13to14, bold, s.$pqBlack2);
+              @include s.Roboto-Bold;
+            }
+          }
+
+          & > div:nth-child(2) {
+            @include s.flexRow;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            width: 100%;
+          }
+
+          & > div:nth-child(3) {
+            @include s.flexRow;
+            align-items: center;
+            justify-content: flex-start;
+            width: 100%;
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize13to14, bold, s.$pqBlack2);
+              @include s.Roboto-Bold;
+              margin-right: 5px;
+            }
+          }
+        }
+
+        & > .image {
+          @include s.flexColumn;
+          @include s.absoluteCenter;
+          width: 130px;
+          height: 100%;
+
+          & > img {
+            width: 65px;
+            height: 13px;
+          }
+        }
+      }
+    }
+    /*    & > virtual-scroller {
+      overflow: hidden;
+      @include fixVirtualScroller();
+      ::ng-deep .scrollable-content {
+        overflow: auto;
+
+      }
+    }*/
+    & > .without-results {
+      @include s.flexRow;
+      align-items: center;
+      height: 100%;
+
+      & > app-without-results {
+        @include s.absoluteCenter;
+        @include s.flexRow;
+        flex: 1;
+      }
+    }
+    & > .loader {
+      @include s.flexRow;
+      height: 100%;
+
+      & > app-loading {
+        @include s.flexRow;
+      }
+    }
+  }
+
+  & > .totals {
+    @include s.flexRow;
+    align-content: space-between;
+    border-top: 1px solid s.$pqBlack2;
+    justify-content: flex-start;
+    padding: 6px 0 10px 186px;
+    width: 100%;
+
+    & > .date {
+      width: 300px;
+
+      & > div {
+        position: absolute;
+        text-align: left;
+      }
+    }
+
+    & > .total-purchases {
+      @include s.flexRow;
+      justify-content: center;
+      width: 100%;
+      & > .purchases {
+        & > label {
+          @include s.responsive-font-format(
+            s.$font_family_roboto_regular,
+            s.$font_weight_regular,
+            s.$responsive-font-12-14,
+            s.$font-style-normal
+          );
+        }
+      }
+    }
+
+    & > .total-section {
+      @include s.flexRow;
+      //DOCS: width -> 50px de labels (subtotal,iva,total) | 8px de padding | 145px de totals
+      width: 203px;
+      align-items: flex-end;
+      column-gap: 8px;
+
+      & > .labels {
+        @include s.flexColumn;
+        width: 50px;
+        align-items: flex-end;
+        row-gap: 5px;
+
+        label {
+          @include s.responsive-font-format(
+            s.$font_family_roboto,
+            s.$font_weight_regular,
+            s.$responsive-font-12-14,
+            s.$font-style-normal
+          );
+        }
+
+        & > .total {
+          @include s.responsive-font-format(
+            s.$font_family_roboto,
+            s.$font_weight_bold,
+            s.$responsive-font-16-16,
+            s.$font_weight_bold
+          );
+        }
+      }
+
+      & > .totals-container {
+        @include s.flexColumn;
+        width: 149px;
+        align-items: flex-end;
+        row-gap: 5px;
+
+        label {
+          @include s.responsive-font-format(
+            s.$font_family_roboto,
+            s.$font_weight_regular,
+            s.$responsive-font-12-14,
+            s.$font-style-normal,
+            s.$pqGreen
+          );
+        }
+
+        & > .total {
+          @include s.responsive-font-format(
+            s.$font_family_roboto,
+            s.$font_weight_bold,
+            s.$responsive-font-14-14,
+            s.$font_weight_bold,
+            s.$success
+          );
+        }
+      }
+    }
+  }
+
+  & > .configuration {
+    @include s.flexRow;
+    align-items: center;
+    background-color: s.$main-proquifa-f;
+    justify-content: space-between;
+    padding: 16px;
+
+    & > app-check-box {
+      text-align: start;
+    }
+
+    & > .delivery-type {
+      @include s.flexRow;
+      gap: 4px;
+
+      & > label {
+        @include s.responsive-font-format(
+          $color: s.$pqGreen,
+          $font-family: s.$font_family_novecento_bold,
+          $font-size-map: s.$responsive-font-12-14,
+          $font-weight: s.$font-weight-bold
+        );
+      }
+    }
+
+    & > div {
+      & > .btn-calculate-prices {
+        $font-size-map: (
+          'base': 14px,
+          'macBookAir': 14px,
+        );
+        $max-width-map: (
+          'base': 225px,
+          'macBookAir': 117px,
+        );
+        @include s.pqfButton($background-color: s.$pqGreen, $max-width-map: $max-width-map, $font-size-map: $font-size-map);
+        @include s.responsive_layout('macBookAir') {
+          min-width: 201px;
+        }
+      }
+    }
+  }
+
+  & > .footer {
+    @include s.flexRow;
+    gap: 16px;
+    padding: 8px 16px;
+
+    & > label {
+      @include s.responsive-font-format(
+        $color: s.$pqGreen,
+        $font-family: s.$font_family_roboto_medium,
+        $font-size-map: s.$responsive-font-14-14,
+        $font-style: s.$font-style-italic,
+        $font-weight: s.$font_weight_medium
+      );
+      text-align: start;
+    }
+
+    & > button {
+      $max-width-map: (
+        'base': 225px,
+        'macBookAir': 325px,
+      );
+      $font-size-map: (
+        'base': 14px,
+        'macBookAir': 14px,
+      );
+
+      &.cancel {
+        @include s.pqfButton(
+          $background-color: s.$pqWhite,
+          $font-color: s.$dark-proquifa,
+          $max-width-map: $max-width-map,
+          $font-size-map: $font-size-map
+        );
+        @include s.responsive_layout('macBookAir') {
+          min-width: 138px;
+        }
+        min-width: fit-content;
+        border: solid 1px s.$dark-proquifa;
+      }
+
+      &.accept {
+        @include s.pqfButton($background-color: s.$success, $max-width-map: $max-width-map, $font-size-map: $font-size-map);
+        @include s.responsive_layout('macBookAir') {
+          min-width: 222px;
+        }
+        min-width: fit-content;
+      }
+
+      &.accept-disabled {
+        @include s.pqfButton(
+          $background-color: s.$pqGray3,
+          $font-color: s.$pqWhite,
+          $max-width-map: $max-width-map,
+          $font-size-map: $font-size-map
+        );
+        @include s.responsive_layout('macBookAir') {
+          min-width: 222px;
+        }
+        min-width: fit-content;
+      }
+
+      &.disabled {
+        @include s.pqfDisableButton($max-width-map: $max-width-map, $font-size-map: $font-size-map);
+      }
+    }
+  }
+}

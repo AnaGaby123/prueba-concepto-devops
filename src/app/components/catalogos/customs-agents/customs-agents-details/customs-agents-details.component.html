@@ -1,0 +1,24 @@
+<div id="customs-agents-details">
+  <div class="container">
+    <div *ngIf="!(editMode$ | async)" class="bar-activities">
+      <app-bar-activities
+        [options]="activities$ | async"
+        [selectedOption]="(selectedActivity$ | async)?.id - 1"
+        [enableLeftArrow]="false"
+        [enableRightArrow]="nextStep$ | async"
+        (handleOptionSelected)="nextStep($event)"
+      >
+      </app-bar-activities>
+    </div>
+    <div *ngIf="editMode$ | async" class="tabs">
+      <app-tabs
+        [options]="tabOptions$ | async"
+        [tapSelected]="selectedTab$ | async"
+        (onSelectOption)="changeTab($event)"
+      ></app-tabs>
+    </div>
+    <app-general-data-customs-agents *ngIf="(selectedTab$ | async)?.id === '1'"></app-general-data-customs-agents>
+    <app-dispatch-point-customs-agent *ngIf="(selectedTab$ | async)?.id === '2'"></app-dispatch-point-customs-agent>
+    <div class="contacts"></div>
+  </div>
+</div>

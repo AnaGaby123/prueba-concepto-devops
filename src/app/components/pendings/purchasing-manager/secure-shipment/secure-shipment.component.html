@@ -1,0 +1,98 @@
+<div class="component-container" id="secure-shipment">
+  <div class="header">
+    <app-header-bar [activeBack]="false" [title]="'Asegurar embarque'"></app-header-bar>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="footer">
+    <ng-container *ngIf="false; else alternative">
+      <div>
+        <img alt="scheduledDelivery" src="assets/Images/labels/programada.svg" />
+        <label>{{ 'secureShipment.scheduledDelivery' | translate }}</label>
+      </div>
+      <div>
+        <img alt="singleDelivery" src="assets/Images/labels/unica.svg" />
+        <label>{{ 'secureShipment.singleDelivery' | translate }}</label>
+      </div>
+      <div>
+        <label class="label-dark">FEEM:</label>
+        <label>{{ 'secureShipment.deliveryDate' | translate }}</label>
+      </div>
+      <div>
+        <label class="label-dark">OC:</label>
+        <label>{{ 'secureShipment.purchaseOrder' | translate }}</label>
+      </div>
+    </ng-container>
+    <ng-template #alternative>
+      <div class="tooltip">
+        <img alt="scheduledDelivery" src="assets/Images/labels/programada.svg" />
+        <div class="tooltip-text">
+          <p>{{ 'secureShipment.scheduledDelivery' | translate }}</p>
+        </div>
+      </div>
+      <div class="tooltip">
+        <img alt="singleDelivery" src="assets/Images/labels/unica.svg" />
+        <div class="tooltip-text">
+          <p>{{ 'secureShipment.singleDelivery' | translate }}</p>
+        </div>
+      </div>
+      <div class="tooltip">
+        <label>CU</label>
+        <div class="tooltip-text">
+          <p>{{ 'secureShipment.unitCost' | translate }}</p>
+        </div>
+      </div>
+      <div class="tooltip">
+        <label>CT</label>
+        <div class="tooltip-text">
+          <p>{{ 'secureShipment.totalCost' | translate }}</p>
+        </div>
+      </div>
+      <div class="tooltip">
+        <label>FEA</label>
+        <div class="tooltip-text">
+          <p>{{ 'secureShipment.estimatedDateOfArrival' | translate }}</p>
+        </div>
+      </div>
+      <div class="tooltip">
+        <label>FEEM</label>
+        <div class="tooltip-text">
+          <p>{{ 'secureShipment.deliveryDate' | translate }}</p>
+        </div>
+      </div>
+      <div class="tooltip">
+        <label>REEM</label>
+        <div class="tooltip-text">
+          <p>{{ 'secureShipment.reshipmentData' | translate }}</p>
+        </div>
+      </div>
+      <div class="tooltip">
+        <label class="estimated-delivery-date-out-of-time">FEE</label>
+        <div class="tooltip-text">
+          <p>{{ 'secureShipment.estimatedDeliveryDateOutOfTime' | translate }}</p>
+        </div>
+      </div>
+      <div class="tooltip">
+        <label class="estimated-delivery-date-on-time">FEE</label>
+        <div class="tooltip-text">
+          <p>{{ 'secureShipment.estimatedDeliveryDateOnTime' | translate }}</p>
+        </div>
+      </div>
+      <div class="tooltip">
+        <label class="label-dark">OC</label>
+        <div class="tooltip-text">
+          <p>{{ 'secureShipment.purchaseOrder' | translate }}</p>
+        </div>
+      </div>
+      <div class="bath">
+        <div class="previous-bath"></div>
+        <label> {{ 'secureShipment.previousBath' | translate }}</label>
+      </div>
+      <div class="bath">
+        <div class="valid-bath"></div>
+        <label> {{ 'secureShipment.validBath' | translate }}</label>
+      </div>
+    </ng-template>
+  </div>
+</div>

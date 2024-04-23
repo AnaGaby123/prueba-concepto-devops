@@ -1,0 +1,210 @@
+<div class="custom-agent">
+  <div class="custom-agent-container">
+    <label>{{ 'newProductExistingSupplier.purchasingConfiguration.customAgentCost' | translate }}</label>
+    <div class="custom-agent-line-one">
+      <div class="drop-list-container">
+        <label> {{ 'newProductExistingSupplier.purchasingConfiguration.customAgent' | translate }}: </label>
+        <pqf-drop-down-list
+          class="drop-list"
+          [options]="customsAgentsList$ | async"
+          [placeholder]="'Seleccionar'"
+          [selectedOption]="actualConfiguration?.selectedCustomsAgent"
+          (selectedOptionChangeEmitter)="handleCustomsInputChange($event, fields.selectedCustomsAgent)"
+        ></pqf-drop-down-list>
+      </div>
+      <div class="drop-list-container">
+        <label> {{ 'newProductExistingSupplier.purchasingConfiguration.dispatchPoint' | translate }}: </label>
+        <pqf-drop-down-list
+          class="drop-list"
+          [options]="customsList$ | async"
+          [placeholder]="'Seleccionar'"
+          [selectedOption]="actualConfiguration?.selectedCustoms"
+          (selectedOptionChangeEmitter)="handleCustomsInputChange($event, fields.selectedCustoms)"
+        ></pqf-drop-down-list>
+      </div>
+      <div class="drop-list-container">
+        <label> {{ 'newProductExistingSupplier.purchasingConfiguration.AATariff' | translate }}: </label>
+        <pqf-drop-down-list
+          class="drop-list"
+          [options]="customsAgentConceptsList$ | async"
+          [placeholder]="'Seleccionar'"
+          [selectedOption]="actualConfiguration?.selectedCustomsAgentConcept"
+          (selectedOptionChangeEmitter)="handleCustomsInputChange($event, fields.selectedCustomsAgentConcept)"
+        ></pqf-drop-down-list>
+      </div>
+      <div *ngIf="!actualConfiguration?.ConceptoAgenteAduanal?.PorcentajeAPedimento">
+        <label>{{ 'newProductExistingSupplier.purchasingConfiguration.accountExportation' | translate }}:</label>
+        <div class="generic-input-container">
+          <pqf-generic-input
+            [isReadonly]="true"
+            [placeholder]="'000'"
+            [typeValidation]="inputTypes.DecimalNumber"
+            [value]="actualConfiguration?.ConceptoAgenteAduanal?.MontoExportacion"
+            [width]="'100px'"
+          ></pqf-generic-input>
+          <span>{{ 'newProductExistingSupplier.purchasingConfiguration.dollars' | translate }}</span>
+        </div>
+      </div>
+      <div *ngIf="!actualConfiguration?.ConceptoAgenteAduanal?.PorcentajeAPedimento">
+        <label>{{ 'newProductExistingSupplier.purchasingConfiguration.accountImportation' | translate }}:</label>
+        <div class="generic-input-container">
+          <pqf-generic-input
+            [isReadonly]="true"
+            [placeholder]="'000'"
+            [typeValidation]="inputTypes.DecimalNumber"
+            [value]="actualConfiguration?.ConceptoAgenteAduanal?.MontoImportacion"
+            [width]="'100px'"
+          ></pqf-generic-input>
+          <span>{{ 'newProductExistingSupplier.purchasingConfiguration.dollars' | translate }}</span>
+        </div>
+      </div>
+      <div class="percentage-petition" *ngIf="actualConfiguration?.ConceptoAgenteAduanal?.PorcentajeAPedimento">
+        <label>{{ 'newProductExistingSupplier.purchasingConfiguration.percentagePetition' | translate }}</label>
+        <div class="generic-input-container">
+          <pqf-generic-input
+            [isReadonly]="true"
+            [placeholder]="'000'"
+            [typeValidation]="inputTypes.Percentage"
+            [value]="actualConfiguration?.ConceptoAgenteAduanal?.Porcentaje"
+            [width]="'100px'"
+          ></pqf-generic-input>
+          <span>%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="custom-agent-container">
+    <div class="custom-agent-line-two">
+      <div>
+        <label>{{ 'newProductExistingSupplier.purchasingConfiguration.vucem' | translate }}:</label>
+        <div class="generic-input-container">
+          <pqf-generic-input
+            [placeholder]="'000'"
+            [typeValidation]="inputTypes.DecimalNumber"
+            [value]="actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.VUCEM"
+            [width]="'100px'"
+            (valueChangeEmitter)="handleInputChange($event, fields.VUCEM)"
+          ></pqf-generic-input>
+          <span>{{ 'newProductExistingSupplier.purchasingConfiguration.dollars' | translate }}</span>
+        </div>
+      </div>
+      <div>
+        <label>{{ 'newProductExistingSupplier.purchasingConfiguration.logisticService' | translate }}:</label>
+        <div class="generic-input-container">
+          <pqf-generic-input
+            [placeholder]="'000'"
+            [typeValidation]="inputTypes.DecimalNumber"
+            [value]="actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.ServicioLogistica"
+            [width]="'100px'"
+            (valueChangeEmitter)="handleInputChange($event, fields.ServicioLogistica)"
+          ></pqf-generic-input>
+          <span>{{ 'newProductExistingSupplier.purchasingConfiguration.dollars' | translate }}</span>
+        </div>
+      </div>
+      <div>
+        <label>{{ 'newProductExistingSupplier.purchasingConfiguration.tm' | translate }}:</label>
+        <div class="generic-input-container">
+          <pqf-generic-input
+            [placeholder]="'000'"
+            [typeValidation]="inputTypes.DecimalNumber"
+            [value]="actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.TM"
+            [width]="'100px'"
+            (valueChangeEmitter)="handleInputChange($event, fields.TM)"
+          ></pqf-generic-input>
+          <span>{{ 'newProductExistingSupplier.purchasingConfiguration.dollars' | translate }}</span>
+        </div>
+      </div>
+      <div>
+        <label>{{ 'newProductExistingSupplier.purchasingConfiguration.validation' | translate }}:</label>
+        <div class="generic-input-container">
+          <pqf-generic-input
+            [placeholder]="'000'"
+            [typeValidation]="inputTypes.DecimalNumber"
+            [value]="actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.Validacion"
+            [width]="'100px'"
+            (valueChangeEmitter)="handleInputChange($event, fields.Validacion)"
+          ></pqf-generic-input>
+          <span>{{ 'newProductExistingSupplier.purchasingConfiguration.dollars' | translate }}</span>
+        </div>
+      </div>
+      <div>
+        <label>{{ 'newProductExistingSupplier.purchasingConfiguration.previous' | translate }}:</label>
+        <div class="generic-input-container">
+          <pqf-generic-input
+            [placeholder]="'000'"
+            [typeValidation]="inputTypes.DecimalNumber"
+            [value]="actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.Previo"
+            [width]="'100px'"
+            (valueChangeEmitter)="handleInputChange($event, fields.Previo)"
+          ></pqf-generic-input>
+          <span>{{ 'newProductExistingSupplier.purchasingConfiguration.dollars' | translate }}</span>
+        </div>
+      </div>
+      <div>
+        <label>{{ 'newProductExistingSupplier.purchasingConfiguration.desconsolidation' | translate }}:</label>
+        <div class="generic-input-container">
+          <pqf-generic-input
+            [placeholder]="'000'"
+            [typeValidation]="inputTypes.DecimalNumber"
+            [value]="actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.Desconsolidacion"
+            [width]="'100px'"
+            (valueChangeEmitter)="handleInputChange($event, fields.Desconsolidacion)"
+          ></pqf-generic-input>
+          <span>{{ 'newProductExistingSupplier.purchasingConfiguration.dollars' | translate }}</span>
+        </div>
+      </div>
+      <div>
+        <label>{{ 'newProductExistingSupplier.purchasingConfiguration.maneuvers' | translate }}:</label>
+        <div class="generic-input-container">
+          <pqf-generic-input
+            [placeholder]="'000'"
+            [typeValidation]="inputTypes.DecimalNumber"
+            [value]="actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.Maniobras"
+            [width]="'100px'"
+            (valueChangeEmitter)="handleInputChange($event, fields.Maniobras)"
+          ></pqf-generic-input>
+          <span>{{ 'newProductExistingSupplier.purchasingConfiguration.dollars' | translate }}</span>
+        </div>
+      </div>
+      <div>
+        <label>{{ 'newProductExistingSupplier.purchasingConfiguration.transit' | translate }}:</label>
+        <div class="generic-input-container">
+          <pqf-generic-input
+            [placeholder]="'000'"
+            [typeValidation]="inputTypes.DecimalNumber"
+            [value]="actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.Transito"
+            [width]="'100px'"
+            (valueChangeEmitter)="handleInputChange($event, fields.Transito)"
+          ></pqf-generic-input>
+          <span>{{ 'newProductExistingSupplier.purchasingConfiguration.dollars' | translate }}</span>
+        </div>
+      </div>
+      <div>
+        <label>{{ 'newProductExistingSupplier.purchasingConfiguration.proccessDesconsolidation' | translate }}:</label>
+        <div class="generic-input-container">
+          <pqf-generic-input
+            [placeholder]="'000'"
+            [typeValidation]="inputTypes.DecimalNumber"
+            [value]="actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.ClasificacionProceso"
+            [width]="'100px'"
+            (valueChangeEmitter)="handleInputChange($event, fields.ClasificacionProceso)"
+          ></pqf-generic-input>
+          <span>{{ 'newProductExistingSupplier.purchasingConfiguration.dollars' | translate }}</span>
+        </div>
+      </div>
+      <div>
+        <label>{{ 'newProductExistingSupplier.purchasingConfiguration.inBond' | translate }}:</label>
+        <div class="generic-input-container">
+          <pqf-generic-input
+            [placeholder]="'000'"
+            [width]="'100px'"
+            [typeValidation]="inputTypes.DecimalNumber"
+            [value]="actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.InBond"
+            (valueChangeEmitter)="handleInputChange($event, fields.InBond)"
+          ></pqf-generic-input>
+          <span>{{ 'newProductExistingSupplier.purchasingConfiguration.dollars' | translate }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

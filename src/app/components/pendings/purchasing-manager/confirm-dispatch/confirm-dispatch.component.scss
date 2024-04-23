@@ -1,0 +1,47 @@
+@use 'base' as s;
+
+:host {
+  @include s.generic-main-component-structure;
+
+  #confirm-dispatch-container {
+    & > .footer {
+      & > div {
+        & > div {
+          border-radius: 50%;
+          height: 15px;
+          margin-right: 6px;
+          width: 15px;
+        }
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize12to14, normal, s.$pqBlack2);
+          @include s.Roboto-Regular;
+        }
+
+        & > .label {
+          @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack);
+          @include s.Roboto-Bold;
+          padding-right: 3px;
+        }
+
+        & > .red {
+          color: s.$pqDanger !important;
+        }
+
+        & > .green {
+          color: s.$pqGreen2 !important;
+        }
+
+        & > .yellow {
+          color: s.$pqYellow !important;
+        }
+
+        & > img:nth-of-type(1) {
+          height: 19px;
+          margin-right: 5px;
+          width: auto;
+        }
+      }
+    }
+  }
+}

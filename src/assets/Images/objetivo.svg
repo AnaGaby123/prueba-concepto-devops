@@ -1,0 +1,16 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='17.63889mm' height='31.04441mm' viewBox='0 0 50 87.99991'><title>
+  objetivo</title>
+  <g id='Capa_2' data-name='Capa 2'>
+    <g id='Capa_1-2' data-name='Capa 1'>
+      <g id='Capa_1-2-2' data-name='Capa 1-2'>
+        <polygon points='5 0 5 24 16 28.406 16 0 5 0' style='fill:#fab621' />
+        <polygon points='20 0 20 30.031 24.938 32 30 29.969 30 0 20 0' style='fill:#fab621' />
+        <path d='M24.938,31.99994a3.03141,3.03141,0,1,0,.0625,0c-.022,0-.041-.00043-.062,0Z' style='fill:#fab621' />
+        <path d='M0,62.99994a25,25,0,1,0,0-.00006Z' style='fill:#fab621' />
+        <polygon points='34 0 34 28.375 45 24 45 0 34 0' style='fill:#fab621' />
+        <circle cx='25' cy='63.00003' r='19.00002' style='fill:#fab621' />
+        <circle cx='25' cy='63.00003' r='17.00002' style='fill:none;stroke:#fff;stroke-miterlimit:10' />
+      </g>
+    </g>
+  </g>
+</svg>

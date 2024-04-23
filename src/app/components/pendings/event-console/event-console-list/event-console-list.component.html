@@ -1,0 +1,123 @@
+<div id="event-console-list">
+  <div class="top-content">
+    <div class="tabs">
+      <app-tabs [options]="tabs$ | async" [tapSelected]="selectedTab$ | async"></app-tabs>
+    </div>
+    <div class="filters">
+      <div class="orders">
+        <div>
+          <app-drop-down-list [label]="'FRR'" [items]="optionsFRR$ | async"></app-drop-down-list>
+        </div>
+        <div>
+          <app-drop-down-list [label]="'common.priority' | translate" [items]="optionsPriority$ | async"></app-drop-down-list>
+        </div>
+      </div>
+      <div class="search">
+        <app-search
+          [borderColor]="'#008894'"
+          [imageFill]="'#008894'"
+          [placeholder]="'Cliente, Proveedor, Contacto'"
+        ></app-search>
+      </div>
+      <div class="button" (click)="popUpAdd(true)">
+        <button class="btn">
+          {{ 'eventConsole.addEvent' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="table">
+    <div>
+      <div class="header">
+        <div class="index">
+          <label>#</label>
+        </div>
+        <div class="general">
+          <label>{{ 'eventConsole.destiny' | translate }}</label>
+        </div>
+        <div class="general">
+          <label>{{ 'eventConsole.contact' | translate }}</label>
+        </div>
+        <div class="address">
+          <label>{{ 'eventConsole.directionOfRealization' | translate }}</label>
+        </div>
+        <div class="tooltip"></div>
+        <div class="frr">
+          <label>{{ 'FRR' }}</label>
+        </div>
+        <div class="priority center">
+          <label>{{ 'common.priority' | translate }}</label>
+        </div>
+        <div class="label"></div>
+        <div class="comment"></div>
+        <div class="delete"></div>
+      </div>
+      <div class="body">
+        <virtual-scroller>
+          <div class="item">
+            <div class="principal">
+              <div class="index">
+                <label>{{ 1 }}</label>
+              </div>
+              <div class="general center">
+                <label
+                  ><span class="pqf">{{ 'Cliente' }}{{ ' · ' }}</span
+                  >{{ 'A. Menarini Farmaceutica Internazionale S.R.L.' }}</label
+                >
+              </div>
+              <div class="contact">
+                <label>{{ 'Lic. Leonel Nombre Palacios Apellido' }}</label>
+                <label class="phone">{{ 'Tel: 5020 8000 Ext. 123' }}</label>
+              </div>
+              <div class="address">
+                <label>{{
+                  'Av. Periférico sur 4118, Torre Zafiro 1, Piso 1 Oficina 100 \n' + 'Col. Jardines del pedregal, C.P 115600'
+                }}</label>
+              </div>
+              <div class="tooltip center">
+                <label class="tooltip">
+                  Ver Horarios
+                  <ul class="tooltip-text">
+                    <li class="more-text">· Lunes · 9:00-11:30 y 15:00-18:00 Hrs,</li>
+                  </ul>
+                </label>
+              </div>
+              <div class="frr center">
+                <label>{{ '01/Enero/2022' }}</label>
+              </div>
+              <div class="priority center">
+                <label [ngClass]="false ? 'urgent' : ''">{{ 'Normal' }}</label>
+              </div>
+              <div class="label">
+                <img src="assets/Images/labels/warehouse-delivery.svg" />
+              </div>
+              <div class="comment">
+                <div>
+                  <img src="assets/Images/quotation/comment.svg" />
+                  <div class="tooltip-text">
+                    <p class="bold">{{ 'Comentarios Adicionales de Entrega' }}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="delete">
+                <img src="assets/Images/gray_x.svg" *ngIf="false" />
+                <div>
+                  <img src="assets/Images/red_x.svg" *ngIf="true" />
+                  <div class="tooltip-text">
+                    <p>{{ 'delete' | translate }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </virtual-scroller>
+      </div>
+    </div>
+  </div>
+  <div class="total">
+    <div>
+      <label>{{ '#10' }}</label>
+    </div>
+  </div>
+</div>
+<app-pop-up-add-event *ngIf="activeAdd" (emitClose)="popUpAdd(false)"></app-pop-up-add-event>

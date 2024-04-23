@@ -1,0 +1,435 @@
+<div id="plan-dispatch-details-step2">
+  <div class="container">
+    <div class="body">
+      <div class="left">
+        <div class="header">
+          <div class="title">
+            <label>{{ 'common.provider' | translate }}</label>
+          </div>
+          <div class="search">
+            <app-search [searchTerm]="providersSearchTerm$ | async" (textSearch)="handleSearchTerm($event)"></app-search>
+          </div>
+        </div>
+        <div class="list">
+          <virtual-scroller
+            class="virtual-scroller"
+            *ngIf="(providersStatus$ | async) === 3 && !lodashIsEmpty(providersWithoutDispatchOrder$ | async)"
+            [items]="providersWithoutDispatchOrder$ | async"
+            [enableUnequalChildrenSizes]="true"
+            (vsUpdate)="providersWithoutDispatchOrder = $event"
+          >
+            <div
+              class="item"
+              *ngFor="let item of providersWithoutDispatchOrder; trackBy: handleTrackByItem"
+              [ngClass]="item.IsSelected && 'selected'"
+              (click)="selectProvider(item.IdProveedor)"
+            >
+              <div class="indicator"></div>
+              <div class="text">
+                <div class="first">
+                  <div class="normal-color">
+                    <label
+                      >#{{ item.Index }} · <span>{{ item.NombreProveedor }}</span></label
+                    >
+                  </div>
+                </div>
+                <div class="second">
+                  <label>
+                    {{ item.MontoTotal | currency: 'USD':'symbol-narrow':'1.2-2' }} USD · {{ item.TotalPiezas }}
+                    {{ item.TotalPiezas === 1 ? ('common.pza' | translate) : ('common.pzas' | translate) }}.</label
+                  >
+                </div>
+                <div class="third">
+                  <label
+                    >{{ item.TotalListaArribo }}
+                    {{
+                      item.TotalListaArribo === 1 ? ('common.arrivalList' | translate) : ('common.arrivalLists' | translate)
+                    }}</label
+                  >
+                </div>
+              </div>
+            </div>
+          </virtual-scroller>
+          <div class="loading" *ngIf="(providersStatus$ | async) === 1">
+            <app-loading></app-loading>
+          </div>
+          <div
+            class="loading"
+            *ngIf="(providersStatus$ | async) !== 1 && lodashIsEmpty(providersWithoutDispatchOrder$ | async)"
+          >
+            <app-without-results></app-without-results>
+          </div>
+        </div>
+        <div class="footer">
+          <label
+            >#{{ (providersWithoutDispatchOrder$ | async)?.length }}
+            {{
+              (providersWithoutDispatchOrder$ | async)?.length === 1
+                ? ('common.provider' | translate)
+                : ('common.providers' | translate)
+            }}
+          </label>
+        </div>
+      </div>
+      <div class="center">
+        <div class="header">
+          <label
+            >#{{ (selectedProvider$ | async)?.Index }} · <span>{{ (selectedProvider$ | async)?.NombreProveedor }}</span> ·
+            {{ (selectedProvider$ | async)?.MontoTotal | currency: 'USD':'symbol-narrow':'1.2-2' }} USD ·
+            {{ (selectedProvider$ | async)?.TotalPiezas }}
+            {{
+              (selectedProvider$ | async)?.TotalPiezas === 1 ? ('common.pza' | translate) : ('common.pzas' | translate)
+            }}.</label
+          >
+        </div>
+        <div class="tableContainer">
+          <div class="table">
+            <div class="table-header">
+              <div class="index">
+                <label>#</label>
+              </div>
+              <div class="invoice">
+                <label>{{ 'planDispatchDetails.invoice' | translate }}</label>
+              </div>
+              <div class="amount">
+                <label>{{ 'planDispatchDetails.amount' | translate }}</label>
+              </div>
+              <div class="pieces">
+                <label>{{ 'common.pieces' | translate }}</label>
+              </div>
+              <div class="fee">
+                <label>{{ 'planDispatchDetails.fee+' | translate }}</label>
+              </div>
+              <div class="plus">
+                <img src="assets/Images/mas.svg" />
+              </div>
+            </div>
+            <div class="table-body">
+              <virtual-scroller
+                *ngIf="(arrivalListStatus$ | async) === 3 && !lodashIsEmpty(arrivalList$ | async)"
+                [items]="arrivalList$ | async"
+                [enableUnequalChildrenSizes]="true"
+                (vsUpdate)="arrivalList = $event"
+                id="all-items"
+                cdkDropList
+                cdkDropListSortingDisabled
+                cdkDropListConnectedTo="selected-items"
+                [cdkDropListData]="arrivalList"
+                [cdkDropListEnterPredicate]="noReturnPredicate"
+              >
+                <div
+                  class="item-arrival"
+                  cdkDrag
+                  [cdkDragData]="item.ImpListaArribo"
+                  *ngFor="let item of arrivalList$ | async; trackBy: handleTrackByArrivalList"
+                  (click)="openItem(item.IdImpListaArribo)"
+                >
+                  <div class="item-top" [ngClass]="item.IsOpen && 'selected'">
+                    <div class="indicator"></div>
+                    <div class="index">
+                      <label>{{ item.Index }}</label>
+                    </div>
+                    <div class="invoice">
+                      <label>{{ item.Folio || 'N/D' }}</label>
+                    </div>
+                    <div class="amount">
+                      <label>{{ item.TotalUSD | currency: 'USD':'':'1.2-2' }}</label>
+                    </div>
+                    <div class="pieces">
+                      <label>{{ item.NumeroDePiezas }}</label>
+                    </div>
+                    <div class="fee">
+                      <label>{{ item.FEAMasAntigua | dateFormatSlashShort }}</label>
+                    </div>
+                    <div class="plus">
+                      <img
+                        src="assets/Images/mas.svg"
+                        alt="agregar"
+                        (click)="handleAddToDispatchOrder($event, item.ImpListaArribo)"
+                      />
+                    </div>
+                  </div>
+                  <div class="item-bottom" *ngIf="item.IsOpen">
+                    <div class="header">
+                      <div class="index">
+                        <label>#</label>
+                      </div>
+                      <div class="oc">
+                        <label>OC</label>
+                      </div>
+                      <div class="description">
+                        <label>{{ 'common.description' | translate }}</label>
+                      </div>
+                      <div class="pieces">
+                        <label>{{ 'common.pieces' | translate }}</label>
+                      </div>
+                      <div class="cu">
+                        <label>CU</label>
+                      </div>
+                      <div class="ct">
+                        <label>CT</label>
+                      </div>
+                    </div>
+                    <div class="body">
+                      <div class="item" *ngFor="let subItem of item.Partidas; let i = index">
+                        <div class="index">
+                          <label>{{ i + 1 }}</label>
+                        </div>
+                        <div class="oc">
+                          <!--TODO: Orden de compra-->
+                          <label>123</label>
+                        </div>
+                        <div class="description">
+                          <label>{{ subItem.Descripcion }}</label>
+                        </div>
+                        <div class="pieces">
+                          <label>{{ subItem.NumeroDePiezas }}</label>
+                        </div>
+                        <div class="cu">
+                          <label>{{ subItem.PrecioLista | currency: 'USD':'':'1.2-2' }}</label>
+                        </div>
+                        <div class="ct">
+                          <label>{{ subItem.TotalPartida | currency: 'USD':'':'1.2-2' }}</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </virtual-scroller>
+              <div class="loading" *ngIf="(arrivalListStatus$ | async) === 1">
+                <app-loading></app-loading>
+              </div>
+              <div class="loading" *ngIf="(arrivalListStatus$ | async) !== 1 && lodashIsEmpty(arrivalList$ | async)">
+                <app-without-results></app-without-results>
+              </div>
+            </div>
+            <div class="table-footer">
+              <div class="index">
+                <label>#{{ (arrivalList$ | async)?.length }}</label>
+              </div>
+              <div class="invoice"></div>
+              <div class="amount">
+                <label>{{ (arrivalListTotals$ | async)?.Amount | currency: 'USD':'symbol-narrow':'1.2-2' }}</label>
+              </div>
+              <div class="pieces">
+                <label>{{ (arrivalListTotals$ | async)?.TotalPieces }}</label>
+              </div>
+              <div class="fee"></div>
+              <div class="plus"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="right">
+        <div class="right-content" *ngIf="iconSelected == false">
+          <div class="list">
+            <div class="header-right">
+              <label>{{ 'planDispatchDetails.dispatchOrder' | translate }}</label>
+            </div>
+            <div class="body-right">
+              <virtual-scroller
+                [enableUnequalChildrenSizes]="true"
+                [items]="(arrivalListGroup$ | async)?.Groups"
+                (vsUpdate)="arrivalListGroups = $event"
+                id="selected-items"
+                cdkDropList
+                cdkDropListSortingDisabled
+                [cdkDropListData]="arrivalListGroups"
+                (cdkDropListDropped)="dropItem($event)"
+              >
+                <div class="item" *ngFor="let item of arrivalListGroups">
+                  <div
+                    class="top"
+                    [ngClass]="item.IsOpen && 'selected'"
+                    (click)="openProviderDispatchOrder(item.NombreProveedor)"
+                  >
+                    <div class="indicator"></div>
+                    <div class="container">
+                      <div class="first-text">
+                        <label
+                          >#{{ item.Index }} · <span>{{ item.NombreProveedor }}</span></label
+                        >
+                        <img src="assets/Images/quotation/arrow_collapsible.svg" alt="Abrir" />
+                      </div>
+                      <div class="second-text" *ngIf="!item.IsOpen">
+                        <label class="arrival-list"
+                          >{{ item.TotalResults }}
+                          {{
+                            item.TotalResults === 1 ? ('common.arrivalList' | translate) : ('common.arrivalLists' | translate)
+                          }}</label
+                        >
+                        <label class="totals"
+                          >{{ item.NumeroDePiezas }}
+                          {{ item.NumeroDePiezas === 1 ? ('common.pza' | translate) : ('common.pzas' | translate) }} ·
+                          {{ item.TotalUSD | currency: 'USD':'symbol-narrow':'1.2-2' }}</label
+                        >
+                        <label class="date" [ngClass]="'red'">{{ item.FechaEstimadaEntrega | dateFormatSlashShort }}</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="bottom" *ngIf="item.IsOpen">
+                    <div class="sub-items">
+                      <div class="sub-item" *ngFor="let subItem of item.Results; let i = index">
+                        <label class="arrival-list"
+                          >#{{ i + 1 }} · <span>LA-{{ subItem.Folio || 'N/D' }}</span></label
+                        >
+                        <label class="totals"
+                          >{{ subItem.NumeroDePiezas }}
+                          {{ subItem.NumeroDePiezas === 1 ? ('common.pza' | translate) : ('common.pzas' | translate) }}
+                          ·
+                          {{ subItem.TotalUSD | currency: 'USD':'symbol-narrow':'1.2-2' }}</label
+                        >
+                        <label class="date" [ngClass]="'red'">{{ subItem.FEAMasAntigua | dateFormatSlashShort }}</label>
+                      </div>
+                    </div>
+                    <div class="footer">
+                      <label
+                        >#{{ item.TotalResults }}
+                        {{
+                          item.TotalResults === 1 ? ('common.arrivalList' | translate) : ('common.arrivalLists' | translate)
+                        }}</label
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="loading" *ngIf="(arrivalListGroupStatus$ | async) === 1">
+                  <app-loading></app-loading>
+                </div>
+                <div
+                  class="loading"
+                  *ngIf="(arrivalListGroupStatus$ | async) !== 1 && lodashIsEmpty((arrivalListGroup$ | async)?.Groups)"
+                >
+                  <app-without-results
+                    [title]="'Agregue o arrastre Listas de arribo para habilitar esta sección'"
+                  ></app-without-results>
+                </div>
+              </virtual-scroller>
+            </div>
+            <div class="footer-right">
+              <label
+                ># {{ (arrivalListGroup$ | async)?.TotalArrivalList }}
+                {{
+                  (arrivalListGroup$ | async)?.TotalArrivalList === 1
+                    ? ('common.arrivalList' | translate)
+                    : ('common.arrivalLists' | translate)
+                }}</label
+              >
+            </div>
+            <div class="limits">
+              <div class="title">
+                <label>{{ 'planDispatchDetails.consolidationLimits' | translate }}</label>
+              </div>
+              <div class="body">
+                <div>
+                  <label>Max.</label>
+                  <label class="ocean">$ 2,000,000.00 USD</label>
+                </div>
+                <div>
+                  <label>Min.</label>
+                  <label class="ocean">$ 2,000,000.00 USD</label>
+                </div>
+                <div>
+                  <label class="bold">{{ 'planDispatchDetails.current' | translate }}:</label>
+                  <label class="green bold">$ 0.00 USD</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="hiddenList" [ngClass]="!sideBarIsOpen && 'close'">
+            <div class="amountBody">
+              <div class="header">
+                <label>{{ 'planDispatchDetails.importAmount' | translate }}</label>
+              </div>
+              <div class="body">
+                <div>
+                  <label>VAD</label>
+                  <div>
+                    <label>VAC</label>
+                    <label class="ocean"> $ 2,256.43</label>
+                  </div>
+                  <div>
+                    <label>FTE</label>
+                    <label class="ocean"> $ 2,256.43</label>
+                  </div>
+                  <div class="total">
+                    <label class="bold">{{ 'common.total' | translate }}</label>
+                    <label class="ocean bold"> $ 2,256.43</label>
+                  </div>
+                </div>
+                <div>
+                  <label>IMP</label>
+                  <div>
+                    <label>IGI</label>
+                    <label class="ocean"> $ 2,256.43</label>
+                  </div>
+                  <div>
+                    <label>DTA</label>
+                    <label class="ocean"> $ 2,256.43</label>
+                  </div>
+                  <div>
+                    <label>IVA</label>
+                    <label class="ocean"> $ 2,256.43</label>
+                  </div>
+                  <div class="total">
+                    <label class="bold">{{ 'common.total' | translate }}</label>
+                    <label class="ocean bold"> $ 2,256.43</label>
+                  </div>
+                </div>
+                <div>
+                  <label>VEI</label>
+                  <div>
+                    <label>VAD</label>
+                    <label class="ocean"> $ 2,256.43</label>
+                  </div>
+                  <div>
+                    <label>IMP</label>
+                    <label class="ocean"> $ 2,256.43</label>
+                  </div>
+                </div>
+              </div>
+              <div class="total">
+                <label>{{ 'common.total' | translate }}</label>
+                <label class="green"> $ 2,256.43</label>
+              </div>
+            </div>
+          </div>
+          <div class="arrow" (click)="handleOpenSideBar()" [ngClass]="!sideBarIsOpen && 'close'">
+            <img src="assets/Images/dollar-symbol.svg" alt="" />
+          </div>
+        </div>
+        <div class="bot">
+          <div class="button">
+            <button>{{ 'common.save' | translate }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <div class="al">
+        <label
+          >AL: <span>{{ 'common.arrivalLists' | translate }}</span></label
+        >
+      </div>
+      <div class="cv">
+        <label
+          >CV:<span> {{ 'planDispatchDetails.commercialValue' | translate }}</span>
+        </label>
+      </div>
+      <div class="fte">
+        <label
+          >FTE: <span>{{ 'common.freight' | translate }} </span></label
+        >
+      </div>
+      <div class="vad">
+        <label
+          >VAD: <span> {{ 'planDispatchDetails.customsValue' | translate }}</span></label
+        >
+      </div>
+      <div class="imp">
+        <label
+          >IMP: <span>{{ 'planDispatchDetails.taxes' | translate }} </span></label
+        >
+      </div>
+    </div>
+  </div>
+</div>

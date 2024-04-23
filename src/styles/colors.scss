@@ -1,0 +1,186 @@
+/*Mesa de Trabajo*/
+$gnAzulObscuro: #222e43;
+$gnAzulMedio: #3369b1;
+$gnAzulBajo: #3b8ede;
+$gnGrisRata: #818192;
+$gnDorado: #e2c913;
+$gnInactivo: #d5dee2;
+/* Background*/
+$gnAzulFondo: #ecf0f3;
+$gnAzulFondo: #ecf0f3;
+
+/*Semaforización de Urgencia de Pendientes*/
+$gnVerdeSemaforo: #06bc50;
+$pqOrange2Semaforo: #e05f1f;
+$gnRojoSemaforo: #c1272d;
+
+$verdeBoton: #37b34a;
+$gris: #88868a;
+$gnHeadreTable: #b7c3ce;
+
+/*Proquifa*/
+$pqAlert: #be2016;
+$pqGreen: #008894;
+$pqOrange: #ff5f24;
+$pqGreen2: #4ba92b;
+$pqGreen3: #94ba13;
+$pqGreen4: #e4f4f5;
+$pqGreen5: #1e8893;
+$pqGrayTrans: #0088940c;
+$pqGrayFooter: #e4e4e4;
+$pqGray: #e6e6e6;
+$pqGray2: #eceef0;
+$pqGray3: #c2c3c9;
+$pqGray4: #e6e6ec;
+$pqGray5: #f2f3f4;
+$pqGray6: #e3e4e6;
+$pqGray7: #d8d8d8;
+$pqPlaceholder: #acabb1;
+$pqBlack: #000000;
+$pqBlack2: #424242;
+$pqBlack3: #292929;
+$pqBlack4: #242424;
+$pqBlack5: #3e3e3d;
+$pqBlack6: #151515;
+$pqWhite: #ffffff;
+$pqSilver: #f5f5f9;
+$pqOrange: #f09600;
+$pqOrange2: #ee5a24;
+$pqOrange3: #e38f2f;
+$pqOrange4: #f2bc14;
+$pqOrange5: #e8a12d;
+$pqOrange6: #f5b750;
+$pqOrange7: #ec6d44;
+$pqBlue: #5d80e4;
+$pqSubtitle: #008693;
+$pqRed: #cc4757;
+$pqRed2: #d81414;
+$pqRed3: #cf5c5c;
+$pqDanger: #dc3545;
+$pqTextAlert: #cc435e;
+$pqTextGris: #848387;
+$pqYellow: #e4a43c;
+$pqYellow2: #fef4e8;
+$pqYellow3: #feb319;
+/*BotónPresionado*/
+$pqBotonPresionado: #437b8f;
+$disabled-color: darken($pqGray3, 18%);
+$disabled-color-light: darken($pqWhite, 5%);
+$semi-dark: #546375;
+// DOCS Colores Design System
+$main-proquifa: #008894;
+$main-proquifa-b: #003658;
+$main-proquifa-c: #005c77;
+$main-proquifa-d: #aad3c6;
+$main-proquifa-e: #b8eef3;
+$main-proquifa-f: #f2f9fa;
+
+$dark-proquifa: #424242;
+$dark-proquifa-b: #2c2c2c;
+$dark-proquifa-c: #707070;
+$dark-proquifa-d: #a0a0a0;
+$dark-proquifa-e: #e8e8e8;
+$dark-proquifa-f: #f7f7f7;
+
+$light-proquifa: #f9f9f9;
+$grey-proquifa-b: #d9d9d9;
+
+$success: #4ba92b;
+$success-b: #486213;
+$success-c: #6cb249;
+$success-d: #a3c582;
+$success-e: #cfdcb8;
+$success-f: #f3f5ec;
+
+$alert: #be2016;
+$alert-b: #6f052b;
+$alert-c: #c3373a;
+$alert-d: #d07786;
+$alert-e: #e1b2c2;
+$alert-f: #f6eaf0;
+
+/*General*/
+$pqFondoTarjeta: #363636;
+$pqPanelContenido: rgba(0, 137, 149, 0.02);
+$pqFondo: rgba(0, 136, 148, 0.03);
+$pqFondoContent: rgba(0, 136, 148, 0.05);
+$redAlert: #d56177;
+$redAlertHover: #fdf7f8;
+$darkRed: #7b1323;
+$darkRedHover: #590e19;
+$recButton: #c1292e;
+$pqGreenHover: #1b6e76;
+$redPopUpText: #d0021b;
+$textGray: #969696;
+$browser-context: 16px;
+$tooltip: #33333c;
+$greenActive: #39b54a;
+/*Resaltado de caja de texto*/
+$boxShadow: #d8d9dd;
+/*Colores- gráficas de barra*/
+$colorGreen: #5fba67;
+$colorPurple: #9135a4;
+$colorPurple2: #a45aeb;
+/*Colores - Buzon*/
+$colorBlueNewMail: #4a90e2;
+$redDeleteMail: #c72a3e;
+$redInactivateFile: #d32339;
+$yellowMustard: #e09c2c;
+/*Colores - Pretramitar*/
+$gold: #c49e60;
+$redExpired: #d54456;
+$redWarning: #dc788a;
+$redInconsistency: #cd5463;
+$oliveGreen: #d6cc55;
+$oliveGreenStrong: #9d9642;
+$orangeLight: #fcf3e6;
+/*Colores - Gestionar Intramitable*/
+$purple: #6a6aae;
+/*Colores - Resumen General*/
+$recharge: #2b2a2a;
+$grayQuotation: #8f8e91;
+$orange: #e29d2a;
+/*Colores - Cerrar Oferta*/
+$goldText: #d7a757;
+$alternativeColor: #fef3e8;
+$greenCards: #7cc663;
+/*Colores - Tramitar pedido*/
+$redBackground: #fadde1;
+$redExpiredFreight: #e83c51;
+$pinkedRed: #e67c91;
+/*Colores - Modificación a Pedido*/
+$oliveGreenDark: #417506;
+$redAlertPop: #cd5967;
+$redIncidence: #d84638;
+/*Colores - Registrar confirmación*/
+$darkOrange: #c87133;
+$darkGreen: #42882a;
+/*Colores - Declarar arribo */
+$orange2: #f5a623;
+$urgent: #d18c1b;
+/*Colores - Cobros*/
+$yellowWarning: #eca735;
+$redOutTime: #e56161;
+/*Colores - Migracion*/
+$grayText: #9b9b9b;
+$graySeparator: #979797;
+$redPriority: #af3634;
+$yellowPriority: #eeb253;
+$yellowText: #fbb03b;
+$grayBackground: #ddd;
+
+$orangeMessage: #c18f3d;
+
+//Nuevos
+$pqGreenProquifa: #e8f2ed;
+$complementario-b: #ff5f24;
+$complementario-c: #1868e5;
+$complementario-d: #9747ff;
+$etiqueta-a: #c79c71;
+$yellow-chat: #fff7e8;
+$green-chat: rgba(120, 181, 161, 0.2);
+$golden: #92673c;
+$pqSaving: #e8f0e5;
+$pqAlternativePromotion: #faf4ec;
+$pqComplementary: #e2edee;
+$complementario-a: #feb319;

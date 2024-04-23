@@ -1,0 +1,51 @@
+@use 'base' as s;
+
+:host {
+  @include s.reset-line-height;
+  width: 100%;
+}
+
+.pqf-search {
+  border: 1px solid s.$pqBlack2;
+  border-radius: 32px;
+  padding: 7px 19px;
+
+  & > .container {
+    @include s.flexRow;
+    column-gap: 20px;
+    flex-wrap: nowrap;
+    flex: 1 1 auto;
+
+    & > .image {
+      & > img {
+        height: 24px;
+        width: 24px;
+      }
+    }
+
+    & > .input {
+      @include s.flexRow;
+      flex: 1 1 auto;
+      overflow: hidden;
+
+      & > input {
+        @include s.responsive-font-format($font-weight: s.$font-weight-bold, $color: s.$pqBlack2);
+        background-color: transparent;
+        border: none;
+        height: auto;
+        overflow: hidden;
+        padding: 0;
+        width: 100%;
+      }
+
+      ::placeholder {
+        @include s.responsive-font-format($color: s.$dark-proquifa-d);
+      }
+    }
+  }
+
+  &.disable {
+    border: 1px solid s.$dark-proquifa-d;
+    background-color: s.$dark-proquifa-f;
+  }
+}

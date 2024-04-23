@@ -1,0 +1,162 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  & > .custom-agent-cost {
+    @include s.flexColumn;
+    align-items: center;
+
+    & > h4 {
+      @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqGreen);
+      @include s.Novecento-Bold;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+
+    & > .grid-drops {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(auto, auto));
+      grid-gap: 20px 30px;
+      margin-bottom: 40px;
+
+      & > .drop-container {
+        @include s.flexRow;
+        align-items: center;
+        flex-wrap: nowrap;
+        grid-column: span 2;
+
+        & > .drop-list {
+          margin-left: 7px;
+          width: 160px;
+        }
+
+        & label {
+          @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+          @include s.Roboto-Bold;
+          white-space: pre;
+
+          &.mt {
+            margin-top: 3px;
+          }
+        }
+      }
+
+      & > .input-container {
+        @include s.flexRow;
+        align-items: center;
+        flex-wrap: nowrap;
+        grid-column: span 2;
+
+        &.first {
+          grid-area: 2/2/3/4;
+        }
+
+        &.center {
+          grid-area: 2/3/3/5;
+        }
+
+        & > .input {
+          margin: 0 7px;
+          width: 90px;
+        }
+
+        & label {
+          @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+          @include s.Roboto-Bold;
+          white-space: pre;
+        }
+
+        & span {
+          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+          @include s.Roboto-Regular;
+        }
+      }
+    }
+
+    & > .grid-inputs {
+      display: grid;
+      grid-template-areas:
+        'area1 area2 area3 area4 area5'
+        'area6 area7 area8 area9 area10';
+      grid-gap: 20px 30px;
+      justify-items: end;
+
+      & > .input-container {
+        @include s.flexRow;
+        align-items: center;
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        width: 165px;
+
+        & > .input {
+          margin: 0 7px;
+          flex: 0 0 70px;
+        }
+
+        & label {
+          @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+          @include s.Roboto-Bold;
+          text-align: end;
+        }
+
+        & span {
+          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+          @include s.Roboto-Regular;
+        }
+
+        &.area9 {
+          grid-area: area9;
+        }
+
+        &.area10 {
+          grid-area: area10;
+        }
+
+        &.big {
+          width: 200px;
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .grid-drops {
+        & > div:nth-child(odd) {
+          justify-self: end;
+        }
+
+        & > .drop-container {
+          & > .drop-list {
+            margin-left: 9px;
+          }
+        }
+
+        & > .input-container {
+          & > .input {
+            margin: 0 9px;
+            width: 100px;
+          }
+        }
+      }
+      & > .grid-inputs {
+        grid-template-columns: 194px 182px 237px;
+        grid-template-areas:
+          'area1 area2 area3 '
+          'area4 area5 area6 '
+          'area7 area8 area9 '
+          '. area10 .';
+
+        & > .input-container {
+          width: 235px;
+
+          & > .input {
+            margin: 0 9px;
+            flex: 0 0 85px;
+          }
+        }
+      }
+    }
+  }
+}

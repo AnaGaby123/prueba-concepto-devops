@@ -1,0 +1,17 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  width: 100%;
+  & > .radio-button-container {
+    width: 100%;
+    & > img {
+      cursor: pointer;
+      height: 20px;
+      width: 20px;
+    }
+  }
+}

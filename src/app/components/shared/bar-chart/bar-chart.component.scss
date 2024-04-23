@@ -1,0 +1,21 @@
+@use 'base' as s;
+
+:host {
+  @include s.gridCenter;
+  height: 100%;
+  width: 100%;
+
+  & > #barChartContainer {
+    @include s.absoluteCenter;
+    @include s.flexRowWrap;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+
+    & > .canvas {
+      height: 100% !important;
+      width: 100% !important;
+    }
+  }
+}

@@ -1,0 +1,301 @@
+@use 'base' as s;
+
+:host {
+  width: 100%;
+  height: 100%;
+
+  &::ng-deep div > .modal > .modal-content {
+    transition: none;
+  }
+
+  #strategy {
+    ::ng-deep .modal {
+      background: none;
+
+      & > .modal-content {
+        transition: none;
+      }
+    }
+    & .container {
+      @include s.flexColumn;
+      width: 100%;
+      height: 100%;
+      justify-content: flex-start;
+
+      & * {
+        box-sizing: border-box;
+      }
+
+      & .customer {
+        @include s.flexRow;
+        height: 135px;
+        width: 100%;
+        background-color: s.$pqFondo;
+
+        & > .content {
+          @include s.flexRow;
+          align-items: center;
+          width: 100%;
+          height: 100%;
+          padding: 30px;
+
+          & > .logo {
+            margin-right: 31px;
+
+            & > img {
+              width: 100px;
+              max-height: 100px;
+            }
+          }
+
+          & > .data {
+            @include s.flexColumn;
+            align-items: flex-start;
+            margin-right: auto;
+
+            & > div {
+              padding-bottom: 5px;
+            }
+
+            & > .name {
+              @include s.responsive-font-format(
+                $color: s.$main-proquifa,
+                $font-family: s.$font-family-roboto_bold,
+                $font-size-map: s.$responsive-font-24-24,
+                $font-weight: s.$font-weight_bold
+              );
+            }
+
+            & > .strategy {
+              @include s.flexRow;
+              padding-top: 6px;
+
+              & > label {
+                @include s.responsive-font-format(
+                  $color: s.$main-proquifa,
+                  $font-family: s.$font-family-roboto,
+                  $font-size-map: s.$responsive-font-19-b-19-b
+                );
+                white-space: pre;
+              }
+
+              & > .quotation {
+                @include s.responsive-font-format(
+                  $color: s.$dark-proquifa,
+                  $font-family: s.$font-family-roboto,
+                  $font-size-map: s.$responsive-font-19-b-19-b
+                );
+              }
+            }
+
+            & > .evi {
+              @include s.flexRow;
+              padding-top: 6px;
+
+              & > .red {
+                color: s.$pqRed;
+              }
+
+              & > .orange {
+                color: s.$orange;
+              }
+
+              & > .green {
+                color: s.$success;
+              }
+
+              & > label {
+                @include s.responsive-font-format(
+                  $color: s.$dark-proquifa,
+                  $font-family: s.$font-family_roboto,
+                  $font-size-map: s.$responsive-font-19-b-19-b
+                );
+                white-space: pre;
+              }
+
+              & > .name {
+                @include s.responsive-font-format(
+                  $color: s.$dark-proquifa,
+                  $font-family: s.$font-family_roboto,
+                  $font-size-map: s.$responsive-font-19-b-19-b
+                );
+              }
+
+              & > .title {
+                @include s.responsive-font-format(
+                  $color: s.$dark-proquifa,
+                  $font-family: s.$font-family-roboto,
+                  $font-size-map: s.$responsive-font-19-b-19-b,
+                  $font-weight: s.$font-weight_bold
+                );
+              }
+            }
+          }
+
+          & > .amount {
+            @include s.flexColumn;
+            align-items: flex-end;
+
+            & * {
+              padding-bottom: 2px;
+            }
+
+            & > .total {
+              @include s.responsive-font-format(
+                $color: s.$pqGreen,
+                $font-family: s.$font-family-roboto_bold,
+                $font-size-map: s.$responsive-font-19-19,
+                $font-weight: s.$font-weight_bold
+              );
+            }
+
+            & > .price {
+              @include s.responsive-font-format(
+                $color: s.$pqBlack2,
+                $font-family: s.$font-family-roboto,
+                $font-size-map: s.$responsive-font-19-19
+              );
+            }
+          }
+        }
+      }
+
+      & > .tacticsData {
+        @include s.flexColumn;
+        height: calc(100% - 135px);
+        padding: 30px;
+
+        & > .title {
+          @include s.flexRow;
+          align-items: flex-start;
+          border-bottom: 1px solid s.$pqBlack2;
+          justify-content: flex-start;
+          padding-bottom: 10px;
+
+          & > label {
+            @include s.responsive-font-format(
+              $color: s.$pqBlack2,
+              $font-family: s.$font-family_novecento_bold,
+              $font-size-map: s.$responsive-font-20-20,
+              $font-weight: s.$font-weight_bold
+            );
+            text-transform: uppercase;
+          }
+        }
+
+        & > .list {
+          @include s.flexColumn;
+          height: auto;
+          flex: 1;
+          overflow: auto;
+
+          & > .item {
+            @include s.flexColumn;
+            max-height: 110px;
+            min-height: 79px;
+            width: 100%;
+            padding: 15px;
+            border-bottom: 1px solid s.$pqGray2;
+
+            & > .content-item {
+              @include s.flexColumn;
+              align-items: flex-start;
+              width: 100%;
+              height: 100%;
+
+              & > .tactic-title {
+                @include s.flexRow;
+                padding-bottom: 3px;
+
+                & > .tactic {
+                  @include s.responsive-font-format(
+                    $color: s.$pqGreen,
+                    $font-family: s.$font-family_roboto,
+                    $font-size-map: s.$responsive-font-16-16,
+                    $font-weight: s.$font-weight_bold
+                  );
+                }
+
+                & > label {
+                  @include s.responsive-font-format(
+                    $color: s.$pqBlack2,
+                    $font-family: s.$font-family_roboto,
+                    $font-size-map: s.$responsive-font-16-16,
+                    $font-weight: s.$font-weight_bold
+                  );
+                  white-space: pre;
+                }
+              }
+
+              & > .data {
+                @include s.flexColumn;
+
+                & > .justification {
+                  @include s.flexRow;
+                  box-sizing: border-box;
+                  padding-top: 5px;
+
+                  & > label {
+                    @include s.responsive-font-format(
+                      $color: s.$pqBlack2,
+                      $font-family: s.$font-family_roboto,
+                      $font-size-map: s.$responsive-font-14-14,
+                      $font-weight: s.$font-weight_bold
+                    );
+                    white-space: pre;
+                  }
+
+                  & > .info {
+                    @include s.responsive-font-format(
+                      $color: s.$pqBlack2,
+                      $font-family: s.$font-family_roboto,
+                      $font-size-map: s.$responsive-font-14-14,
+                      $font-weight: s.$font_weight_light
+                    );
+                  }
+                }
+
+                & > div:nth-child(1) {
+                  padding-bottom: 7px;
+                }
+              }
+            }
+          }
+
+          & > .item:hover {
+            background-color: s.$pqGray2;
+          }
+        }
+
+        & > .total {
+          @include s.flexRow;
+          padding-top: 8px;
+          justify-content: center;
+          border-top: 1px solid s.$pqBlack2;
+
+          & > label {
+            @include s.responsive-font-format(
+              $color: s.$pqBlack2,
+              $font-family: s.$font-family_roboto,
+              $font-size-map: s.$responsive-font-14-14
+            );
+          }
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #strategy {
+      & .container {
+        & .customer {
+          height: 152px;
+        }
+
+        & > .tacticsData {
+          height: calc(100% - 152px);
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,100 @@
+<div id="close-offer-list-container">
+  <div class="content">
+    <div class="list-container">
+      <div class="title">
+        <label class="textUpperCase">{{ 'notProcessed.clients' | translate }}</label>
+      </div>
+      <div class="tabs"></div>
+      <div class="filters"></div>
+      <div class="search"></div>
+      <div class="orders-list-container">
+        <virtual-scroller class="virtual-list">
+          <div>
+            <div class="number">
+              <label>#</label>
+            </div>
+            <div class="indicator">
+              <div class="red-circle"></div>
+              <div class="green-circle"></div>
+            </div>
+            <div class="content">
+              <label class="title"></label>
+              <label class="subtitle">Estrategia: Ofensiva</label>
+              <div class="totals">
+                <img src="assets/Images/close-offer/dolar-sign.svg" alt="dolar" />
+                <label> Cotizaciones · </label>
+                <div>
+                  <img class="new" src="assets/Images/close-offer/new-label.svg" alt="nueva" />
+                  <label class="new"> </label>
+                </div>
+                <div>
+                  <img class="in-progress" src="assets/Images/close-offer/in-progress-label.svg" alt="En progreso" />
+                  <label class="in-progress"> </label>
+                </div>
+                <div>
+                  <img class="ajuste-oferta" src="assets/Images/close-offer/ajuste-oferta-label.svg" alt="Ajuste oferta" />
+                  <label class="ajuste-oferta"> TE</label>
+                  <label>·</label>
+                  <label>CP</label>
+                  <label>·</label>
+                  <label>P</label>
+                </div>
+                <img class="warning" src="assets/Images/close-offer/warning.svg" alt="warning" />
+              </div>
+              <label class="total-value">Valor total en Cierre USD</label>
+            </div>
+            <div class="arrow">
+              <img src="assets/Images/arrows/arrow_right.svg" alt="Detalles" />
+            </div>
+          </div>
+        </virtual-scroller>
+        <div class="without-results">
+          <app-without-results [title]="'common.withoutResults' | translate"></app-without-results>
+        </div>
+      </div>
+      <div class="totals">
+        <label>#</label>
+        <label>
+          {{ 'closeOffer.quotes' | translate }}
+        </label>
+        <label>
+          {{ ('strategy.details.valueTotalClosing' | translate) + ': ' }}
+        </label>
+      </div>
+    </div>
+    <div class="charts-container">
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+  <div class="footer">
+    <div>
+      <label>OC: </label>
+      <label>{{ 'process.purchaseOrder' | translate }}</label>
+    </div>
+    <div>
+      <label>VT: </label>
+      <label>{{ 'process.totalValue' | translate }}</label>
+    </div>
+    <div>
+      <img src="assets/Images/pre-processing/originales.svg" alt="Originales" />
+      <label>{{ 'preProcessing.typeOfItem.originals' | translate }}</label>
+    </div>
+    <div>
+      <img src="assets/Images/pre-processing/alternativas.svg" alt="Alternativas" />
+      <label>{{ 'preProcessing.typeOfItem.alternatives' | translate }}</label>
+    </div>
+    <div>
+      <img src="assets/Images/pre-processing/complementarias.svg" alt="Complementarias" />
+      <label>{{ 'preProcessing.typeOfItem.complementary' | translate }}</label>
+    </div>
+    <div>
+      <img src="assets/Images/pre-processing/promocion.svg" alt="Promoción" />
+      <label>{{ 'preProcessing.typeOfItem.promotion' | translate }}</label>
+    </div>
+    <div>
+      <img src="assets/Images/pre-processing/ahorro.svg" alt="Ahorro" />
+      <label>{{ 'preProcessing.typeOfItem.saving' | translate }}</label>
+    </div>
+  </div>
+</div>

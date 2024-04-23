@@ -1,0 +1,82 @@
+<div id="brands-details">
+  <div class="head">
+    <div class="image-brand">
+      <div class="image">
+        <img #imageElement [src]="setImage(($brand | async)?.imageHover)" (error)="errorImage()" />
+      </div>
+      <div class="status">
+        <div class="indicator" [ngClass]="{'disable-brand': !($brand | async)?.Activo}"></div>
+        <label [ngClass]="{disable: !($brand | async)?.Activo}">{{
+          ($brand | async)?.Activo
+            ? ('formBrand.general.enableBrand' | translate)
+            : ('formBrand.general.disableBrand' | translate)
+        }}</label>
+      </div>
+    </div>
+    <div class="date-content">
+      <label>{{ 'formBrand.general.registerDate' | translate }}</label>
+      <div class="date">
+        <label>{{ ($brand | async)?.FechaRegistro | dateFormatSlash }}</label>
+      </div>
+    </div>
+    <div class="input">
+      <pqf-generic-input
+        [isRequired]="true"
+        [label]="'Nombre'"
+        [maxLength]="180"
+        [typeValidation]="validators.AlphaAndSpacesAndNumbers"
+        [value]="($brand | async)?.Nombre"
+        (valueChangeEmitter)="handleBrandData('Nombre', $event)"
+        [forceError]="($brand | async)?.Nombre === null && ($forceErrors | async)"
+      ></pqf-generic-input>
+    </div>
+    <div class="drop">
+      <pqf-drop-down-list
+        [label]="'formBrand.general.manufactureCountry' | translate"
+        [options]="$listCountry | async"
+        [selectedOption]="$selectedCountry | async"
+        (selectedOptionChangeEmitter)="handleBrandData('IdCatPaisManufactura', $event)"
+      ></pqf-drop-down-list>
+    </div>
+  </div>
+  <div class="body">
+    <div class="checks">
+      <app-checks-list></app-checks-list>
+    </div>
+    <div class="content">
+      <div class="cards">
+        <virtual-scroller *ngIf="!($showMessage | async)">
+          <div class="section" *ngFor="let section of $sections | async">
+            <div class="title" *ngIf="section.items.length > 0">
+              <label>{{ section.title }}</label>
+            </div>
+            <div class="section-list-items" *ngIf="section.items.length > 0">
+              <div class="grid-item" *ngFor="let item of section.items">
+                <app-card-with-toggle [item]="item"></app-card-with-toggle>
+              </div>
+            </div>
+          </div>
+        </virtual-scroller>
+        <div class="message" *ngIf="$showMessage | async">
+          <label>{{ 'formBrand.details.emptyMessage' | translate }}</label>
+        </div>
+      </div>
+      <div class="footer">
+        <button
+          class="cancel"
+          [ngClass]="{disable: $cancelValidation | async}"
+          [disabled]="$cancelValidation | async"
+          (click)="handleCancel()"
+          >{{ 'common.discard' | translate }}</button
+        >
+        <button
+          class="save"
+          [ngClass]="{disable: !($saveValidation | async)}"
+          [disabled]="!($saveValidation | async)"
+          (click)="handleSaveBrand()"
+          >{{ 'common.save' | translate }}</button
+        >
+      </div>
+    </div>
+  </div>
+</div>

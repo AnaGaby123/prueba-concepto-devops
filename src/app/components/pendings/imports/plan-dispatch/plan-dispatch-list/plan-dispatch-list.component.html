@@ -1,0 +1,96 @@
+<div class="dashboard-container" id="plan-dispatch-list-container">
+  <div class="left-container">
+    <div class="title-with-button">
+      <label>{{ 'common.providers' | translate }}</label>
+      <button (click)="initNewDispatchOrder()">{{ 'common.generate' | translate }}</button>
+    </div>
+    <div class="filters">
+      <div>
+        <app-hamburger-menu
+          [options]="burgerOptions$ | async"
+          [value]="(selectedBurgerOption$ | async)?.value"
+          (valueEmit)="setBurgerOption($event)"
+        >
+        </app-hamburger-menu>
+      </div>
+      <div>
+        <app-search [placeholder]="'Proveedor'" [searchTerm]="searchTerm$ | async" (textSearch)="handleSearchTerm($event)">
+        </app-search>
+      </div>
+    </div>
+    <div class="list-container">
+      <virtual-scroller
+        class="virtual-scroller"
+        *ngIf="(providersStatus$ | async) === 3 && !lodashIsEmpty(providersList$ | async)"
+        [items]="providersList$ | async"
+        [enableUnequalChildrenSizes]="true"
+        (vsUpdate)="providersScrollItems = $event"
+      >
+        <div class="item" *ngFor="let item of providersScrollItems; trackBy: handleTrackByItem" (click)="selectProvider(item)">
+          <div class="item-content">
+            <div class="index">
+              <label>#{{ item.Index }}</label>
+            </div>
+            <div class="provider">
+              <div class="provider-name">
+                <label>{{ item.NombreProveedor }}</label>
+              </div>
+              <div class="pieces">
+                <label
+                  >{{ item.TotalPiezas }}
+                  {{ item.TotalPiezas === 1 ? ('common.pza' | translate) : ('common.pzas' | translate) }} ·
+                  {{ item.MontoTotal || 0 | currency: 'USD':'symbol-narrow':'1.2-2' }} USD</label
+                >
+              </div>
+              <div class="lists">
+                <label
+                  >{{ item.TotalListaArribo }}
+                  {{
+                    item.TotalListaArribo === 1
+                      ? ('planDispatchDetails.arrivalList' | translate)
+                      : ('planDispatchDetails.arrivalLists' | translate)
+                  }}</label
+                >
+              </div>
+            </div>
+            <div class="row">
+              <img alt="" src="assets/Images/arrows/arrow_right.svg" />
+            </div>
+          </div>
+        </div>
+      </virtual-scroller>
+      <div class="without-results" *ngIf="(providersStatus$ | async) !== 1 && lodashIsEmpty(providersList$ | async)">
+        <app-without-results></app-without-results>
+      </div>
+      <div class="loader" *ngIf="(providersStatus$ | async) === 1">
+        <app-loading></app-loading>
+      </div>
+    </div>
+    <div class="footer">
+      <label>#</label>
+      <label>{{ 'common.arrivalLists' | translate }}</label>
+      <label>{{ 'common.pieces' | translate }}</label>
+      <label>{{ 'common.totalAmount' | translate }}</label>
+    </div>
+  </div>
+  <div class="right-container">
+    <app-doughnut-chart
+      *ngIf="(donutChartStatus$ | async) !== 1"
+      [title]="'common.providers' | translate"
+      [titleDetails]="'totals' | translate"
+      [typeChart]="1"
+      [data]="doughnutChartData$ | async"
+      [optionDetails]="doughnutChartOptionDetails$ | async"
+    >
+    </app-doughnut-chart>
+    <app-bar-chart
+      *ngIf="(barsChartStatus$ | async) !== 1"
+      [values]="dataBarChart$ | async"
+      [title]="'registerConfirmation.deliveryTrafficLight' | translate"
+    >
+    </app-bar-chart>
+    <div class="loading" *ngIf="(barsChartStatus$ | async) === 1 && (donutChartStatus$ | async) === 1">
+      <app-loading></app-loading>
+    </div>
+  </div>
+</div>

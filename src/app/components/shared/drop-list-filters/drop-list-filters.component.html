@@ -1,0 +1,25 @@
+<div class="drop-list-filters-container">
+  <div class="content">
+    <div tabindex="0" (blur)="handleFilterIsOpen('blur')">
+      <div (click)="handleFilterIsOpen()">
+        <div>
+          <p>{{ title + ' · ' + itemSelected?.label }}</p>
+        </div>
+        <div>
+          <img [ngClass]="isBrandOpen ? 'rotate' : ''" alt="" src="assets/Images/drop_list.svg" />
+        </div>
+      </div>
+      <div #options [style.height.px]="isBrandOpen ? options.scrollHeight : 0" *ngIf="items">
+        <div [style.border]="isBrandOpen ? '1px solid rgb(236, 238, 240)' : ''">
+          <div
+            *ngFor="let item of itemsList"
+            [ngClass]="itemSelected?.label === item?.label ? 'markSelected' : ''"
+            (click)="selectItem(item)"
+          >
+            <p [ngClass]="item.label === 'Todas' ? 'todas' : ''">{{ item?.label }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,97 @@
+<div
+  id="enabled-parent"
+  class="padre"
+  *ngIf="!disabled"
+  [style.pointer-events]="enableEdit ? 'auto' : 'none'"
+  (click)="selected()"
+>
+  <div
+    *ngIf="!isMulticolor"
+    class="checkbox"
+    [style.background-color]="backGroundCheckColor"
+    [style.height]="height"
+    [style.width]="height"
+  >
+    <img
+      *ngIf="enableEdit"
+      id="enabledImgCheck"
+      alt=""
+      class="imgCheck"
+      draggable="false"
+      [src]="
+        check && labelFontStyle === 'robotoRegular15Red'
+          ? 'assets/Images/check-red.svg'
+          : check
+          ? 'assets/Images/check2.svg'
+          : 'assets/Images/check1.svg'
+      "
+    />
+    <div></div>
+    <img
+      *ngIf="!enableEdit && check && !disabled && enabledIconSelected"
+      alt=""
+      [src]="readOnlyCheckImage"
+      draggable="false"
+      class="imgCheck"
+    />
+    <img
+      alt=""
+      src="assets/Images/close_red.svg"
+      draggable="false"
+      class="imgCheck-close"
+      *ngIf="!enableEdit && !check && enabledIconNoSelected"
+    />
+  </div>
+  <div class="checkbox-multicolor" *ngIf="isMulticolor" [style.height]="height" [style.width]="height">
+    <img class="default" *ngIf="!check" [src]="'assets/Images/check-empty-' + checkColor + '.svg'" alt="" />
+    <img
+      class="hover"
+      draggable="false"
+      [src]="check ? 'assets/Images/check-select-' + checkColor + '.svg' : 'assets/Images/check-hover-' + checkColor + '.svg'"
+      alt=""
+    />
+    <img class="selected" draggable="false" *ngIf="check" [src]="'assets/Images/check-select-' + checkColor + '.svg'" alt="" />
+  </div>
+  <div *ngIf="label || secondaryLabel" class="labels">
+    <label
+      [ngClass]="labelFontStyle"
+      [style.color]="fontColor"
+      [style.font-size]="fontSize"
+      [style.font-family]="fontBold ? 'Roboto-bold' : 'Roboto-regular'"
+      ><span>{{ spanText }}</span> {{ label }}
+    </label>
+    <label *ngIf="secondaryLabel !== ''" [ngClass]="secondaryLabelFontStyle">{{ secondaryLabel }} </label>
+  </div>
+</div>
+
+<div id="disabled-parent" class="padre" *ngIf="disabled">
+  <div class="checkbox" [style.height]="height">
+    <img *ngIf="check && enableEdit" alt="" src="assets/Images/check2.svg" class="imgCheck" draggable="false" />
+    <img
+      *ngIf="check && !enableEdit"
+      id="disabledCheckImg"
+      alt=""
+      src="assets/Images/check_disabled.svg"
+      draggable="false"
+      class="imgCheck-disable"
+    />
+    <img
+      *ngIf="!check && enableEdit"
+      id="rectangleDisabledCheck"
+      alt=""
+      src="assets/Images/check_rectangle_disabled.svg"
+      class="imgCheck"
+      draggable="false"
+    />
+  </div>
+  <div class="labels">
+    <label
+      [ngClass]="labelFontStyle"
+      [style.color]="fontColor"
+      [style.font-size]="fontSize"
+      [style.font-family]="fontBold ? 'Roboto-bold' : 'Roboto-regular'"
+      ><span>{{ spanText }}</span> {{ label }}
+    </label>
+    <label *ngIf="secondaryLabel !== ''" [ngClass]="secondaryLabelFontStyle">{{ secondaryLabel }} </label>
+  </div>
+</div>

@@ -1,0 +1,155 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  & > .container {
+    @include s.absolute100;
+    @include s.flexRow;
+
+    & > .left-container {
+      @include s.default-transition($duration: 0.3s);
+      background-color: #e6e6e6;
+      flex: 0 0 340px;
+      overflow: hidden;
+      width: 340px;
+
+      &.hide {
+        flex: 0 0 0;
+        width: 0;
+      }
+
+      & > .left-side-panel {
+        @include s.flexColumn;
+        height: 100%;
+        overflow: hidden;
+        width: 340px;
+      }
+    }
+
+    & > .arrow-button {
+      @include s.default-transition($duration: 0.3s);
+      cursor: pointer;
+      position: absolute;
+      top: 50%;
+      width: 16px;
+      z-index: 1;
+
+      &.arrow-show-panel {
+        left: 0;
+      }
+
+      &.arrow-hide-panel {
+        left: 324px;
+      }
+    }
+
+    & > .right-container {
+      @include s.flexColumn;
+      flex: 1 1 auto;
+      overflow: hidden;
+
+      & > .title {
+        @include s.Novecento-Bold;
+        @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+        flex: 0 0 auto;
+        margin: 15px;
+
+        & > span {
+          color: s.$pqGreen;
+          vertical-align: baseline;
+          white-space: pre;
+        }
+      }
+
+      & > .cards {
+        flex: 0 0 auto;
+        margin-bottom: 15px;
+      }
+
+      & > .tabs {
+        @include s.flexRowNoWrap;
+        gap: 24px;
+        flex: 0 0 30px;
+        & > .tab-container {
+          flex: 1;
+        }
+        & > img {
+          @include s.absoluteCenter;
+          cursor: pointer;
+          height: 30px;
+          padding-right: 4px;
+        }
+      }
+
+      & > .main-container {
+        flex: 1 1 auto;
+        overflow: hidden;
+      }
+
+      & > .without-results {
+        @include s.absoluteCenter;
+        @include s.flexRow;
+        height: 100%;
+        padding: 100px;
+      }
+    }
+  }
+
+  & > .pop-alert {
+    & .container {
+      @include s.absoluteCenter;
+      @include s.flexColumn;
+      align-items: center;
+
+      & > img {
+        @include s.default-transition();
+        height: 50px;
+        margin-bottom: 20px;
+        width: 50px;
+      }
+
+      & > div {
+        padding: 0 40px;
+
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize26to29, regular, s.$pqBlack2);
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > .container {
+      & > .right-container {
+        & > .title {
+          margin: 20px;
+        }
+
+        & > .cards {
+          margin-bottom: 20px;
+        }
+
+        & > .tabs {
+          flex: 0 0 40px;
+        }
+      }
+    }
+    & > .pop-alert {
+      & .container {
+        & > img {
+          height: 60px;
+          margin-bottom: 25px;
+          width: 60px;
+        }
+
+        & > div {
+          padding: 0 45px;
+        }
+      }
+    }
+  }
+}

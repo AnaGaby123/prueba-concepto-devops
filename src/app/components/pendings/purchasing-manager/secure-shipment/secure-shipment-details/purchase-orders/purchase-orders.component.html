@@ -1,0 +1,337 @@
+<div class="purchase-order-section-container">
+  <div class="purchase-order-list">
+    <div class="content">
+      <div class="title">
+        <label>{{ 'secureShipment.purchaseOrders' | translate }}</label>
+      </div>
+      <div class="container-filters">
+        <div class="tabs">
+          <app-tabs [options]="arrayAux"></app-tabs>
+        </div>
+        <div class="app-search">
+          <app-search [placeholder]="'secureShipment.purchaseOrder' | translate"></app-search>
+        </div>
+      </div>
+      <div class="container-purchase-order-data">
+        <virtual-scroller *ngIf="true">
+          <div class="card">
+            <div class="indicator" [ngClass]="'active'"></div>
+            <div class="purchase-order-data">
+              <div>
+                <div class="order-number">
+                  <label
+                    >#{{ 1 }} · <span>{{ 'OC-031021-7593' }} · </span>{{ 32 | currency: 'USD' }}</label
+                  >
+                </div>
+                <div class="day">
+                  <label class="time" *ngIf="true">{{ '3 + Días' }}</label>
+                </div>
+              </div>
+              <div>
+                <label
+                  >{{ '32' }} {{ 'secureShipment.pieces' | translate }} · {{ 35 }} {{ 'secureShipment.products' | translate }} ·
+                  FEA {{ date | dateFormatSlashShort }}
+                </label>
+                <label class="reshipped"><img alt="programmed" src="assets/Images/reshipped.svg" />Reembarcado </label>
+              </div>
+              <div>
+                <div class="states">
+                  <ng-container *ngIf="true">
+                    <img alt="programming" src="assets/Images/labels/programada.svg" />
+                    <label class="programming"> {{ 6 }} · </label>
+                  </ng-container>
+                  <ng-container *ngIf="true">
+                    <img alt="only" src="assets/Images/labels/unica.svg" />
+                    <label class="only"> {{ 6 }} · </label>
+                  </ng-container>
+                  <ng-container *ngIf="true">
+                    <img alt="freight-express" src="assets/Images/labels/flete_express.svg" />
+                    <label class="freight-express"> {{ 6 }} · </label>
+                  </ng-container>
+                  <ng-container *ngIf="true">
+                    <img alt="freight-normal" src="assets/Images/labels/flete_normal.svg" />
+                    <label class="freight-normal"> {{ 6 }}</label>
+                  </ng-container>
+                </div>
+                <div>
+                  <label [ngClass]="'green'"> FEEM+: {{ date | dateFormatSlashShort }} </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </virtual-scroller>
+        <div class="is-loading" *ngIf="false">
+          <app-loading></app-loading>
+        </div>
+        <div class="without-results" *ngIf="false">
+          <app-without-results [title]="'common.withoutResults' | translate"></app-without-results>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <div>
+        <label>#{{ 32 }}</label>
+        <label>{{ 32 }} {{ 'secureShipment.pieces' | translate }}</label>
+        <label>{{ 23 }} {{ 'secureShipment.products' | translate }}</label>
+        <label>{{ 'secureShipment.amountTotal' | translate }}: {{ 33 | currency: 'USD' }}</label>
+      </div>
+    </div>
+  </div>
+  <div class="purchase-order-linked">
+    <div class="content">
+      <div class="order-number-section">
+        <div class="order-number">
+          <label
+            >#{{ 2 }} · <span>{{ 'OC-000000-0002' }} · </span> <span>{{ '3 + Días' }}</span></label
+          >
+        </div>
+        <div class="btn-container">
+          <button class="btn" (click)="seeResume()"> {{ 'secureShipment.summarySee' | translate }} ({{ 5 }})</button>
+        </div>
+      </div>
+      <div class="provider-contacts">
+        <app-provider-contacts
+          [sizeGeneralData]="(viewType$ | async) === viewTypes.small ? '500px' : '400px'"
+        ></app-provider-contacts>
+      </div>
+      <div class="container-content">
+        <div class="container-table">
+          <div class="table-config">
+            <div class="header">
+              <div class="position">
+                <label>#</label>
+              </div>
+              <div class="description">
+                <label>{{ 'secureShipment.description' | translate }}</label>
+              </div>
+              <div class="client">
+                <label>{{ 'secureShipment.client' | translate }}</label>
+              </div>
+              <div class="cancel">
+                <label class="colors red">{{ 'common.cancel' | translate }}</label>
+              </div>
+              <div class="back-order">
+                <label class="colors purple">{{ 'secureShipment.backOrder' | translate }}</label>
+              </div>
+              <div class="impact">
+                <app-check-box class="check" [checkColor]="'dark-green'" [isMulticolor]="true"></app-check-box>
+                <label class="colors green">{{ 'secureShipment.embarked' | translate }}</label>
+              </div>
+            </div>
+            <div class="body">
+              <virtual-scroller *ngIf="true" [enableUnequalChildrenSizes]="true">
+                <div class="item-container">
+                  <div class="item">
+                    <div class="position">
+                      <label>{{ 1 }}</label>
+                    </div>
+                    <div class="description-container">
+                      <div class="description">
+                        <label>{{
+                          'MBL-0443P Polydimethylsiloxane (500mg) Polydime solo podrán ser dos renglones solo podrán ser dos renglones y habilitar tooltip …'
+                        }}</label>
+                      </div>
+                      <div class="cost">
+                        <img alt="programming" src="assets/Images/labels/programada.svg" *ngIf="true" />
+                        <img alt="only" src="assets/Images/labels/unica.svg" *ngIf="true" />
+                        <img alt="freight-normal" src="assets/Images/labels/flete_normal.svg" *ngIf="true" />
+                        <img alt="freight-express" src="assets/Images/labels/flete_express.svg" *ngIf="true" />
+                        <label
+                          >{{ 34 }}
+                          {{ 'secureShipment.pzas' | translate }}
+                          · <span>CU {{ 43 | currency: 'USD' }} · </span>CT {{ 43 | currency: 'USD' }}
+                        </label>
+                      </div>
+                    </div>
+                    <div class="client">
+                      <div>
+                        <label>{{ 'Laboratorios Aranda' }}</label>
+                        <label class="green-pq">{{ '020821-1107' }}</label>
+                        <label [ngClass]="'green'">FEE: {{ date | dateFormatSlashShort }}</label>
+                      </div>
+                    </div>
+                    <div class="cancel red" [ngClass]="'default'" [ngSwitch]="'default'">
+                      <ng-container *ngSwitchCase="'default'">
+                        <app-check-box class="check" [checkColor]="'dark-red'" [isMulticolor]="true"></app-check-box>
+                        <label>{{ 'common.cancel' | translate }}</label>
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'confirmed'">
+                        <img alt="fill" class="image" src="assets/Images/fill-white.svg" />
+                        <label>{{ 'common.edit' | translate }}</label>
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'active'">
+                        <app-check-box class="check" [check]="true" [checkColor]="'dark-red'" [isMulticolor]="true">
+                        </app-check-box>
+                        <label>{{ 'common.edit' | translate }}</label>
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'opacity'">
+                        <label>{{ 'secureShipment.restore' | translate }}</label>
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'disabled'">
+                        <label>{{ 'secureShipment.restore' | translate }}</label>
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'disabled-default'">
+                        <app-check-box class="check" [checkColor]="'dark-red'" [disabled]="true" [isMulticolor]="true">
+                        </app-check-box>
+                        <label>{{ 'common.cancel' | translate }}</label>
+                      </ng-container>
+                    </div>
+                    <div class="back-order purple" [ngClass]="'default'" [ngSwitch]="'default'">
+                      <ng-container *ngSwitchCase="'default'">
+                        <app-check-box class="check" [checkColor]="'purple'" [isMulticolor]="true"></app-check-box>
+                        <label>{{ 'secureShipment.backOrder' | translate }}</label>
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'confirmed'">
+                        <img alt="check" class="image" src="assets/Images/fill-white.svg" />
+                        <label>{{ 'common.edit' | translate }}</label>
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'active'">
+                        <app-check-box
+                          class="check"
+                          [checkColor]="'purple'"
+                          [check]="true"
+                          [isMulticolor]="true"
+                        ></app-check-box>
+                        <label>{{ 'common.edit' | translate }}</label>
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'opacity'">
+                        <label>{{ 'secureShipment.restore' | translate }}</label>
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'disabled'">
+                        <label>{{ 'secureShipment.restore' | translate }}</label>
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'disabled-default'">
+                        <app-check-box class="check" [checkColor]="'purple'" [disabled]="true" [isMulticolor]="true">
+                        </app-check-box>
+                        <label>{{ 'secureShipment.backOrder' | translate }}</label>
+                      </ng-container>
+                    </div>
+                    <div class="embarked dark-green" [ngClass]="'default'" [ngSwitch]="'default'">
+                      <ng-container *ngSwitchCase="'default'">
+                        <app-check-box class="check" [checkColor]="'green'" [isMulticolor]="true"></app-check-box>
+                        <label>{{ 'secureShipment.embarked' | translate }}</label>
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'embarked'">
+                        <app-check-box
+                          class="check"
+                          [checkColor]="'dark-green'"
+                          [check]="true"
+                          [isMulticolor]="true"
+                        ></app-check-box>
+                        <label>{{ 'Embarcado' }}</label>
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'disabled-default'">
+                        <app-check-box class="check" [checkColor]="'green'" [disabled]="true" [isMulticolor]="true">
+                        </app-check-box>
+                        <label>{{ 'secureShipment.embarked' | translate }}</label>
+                      </ng-container>
+                    </div>
+                  </div>
+                  <div class="bottom">
+                    <app-cancel-form
+                      [arrayLength]="1"
+                      [isTheLastIndex]="false"
+                      [nameComponent]="confirmDispatch"
+                      [saveValidator]="false"
+                      [viewType]="viewType$ | async"
+                    >
+                    </app-cancel-form>
+                    <app-back-order-form [arrayLength]="1" [nameComponent]="confirmDispatch" [viewType]="viewType$ | async">
+                    </app-back-order-form>
+                  </div>
+                </div>
+              </virtual-scroller>
+              <div class="is-loading" *ngIf="false">
+                <app-loading></app-loading>
+              </div>
+              <div class="without-results" *ngIf="false">
+                <app-without-results [title]="'Sin resultados'"></app-without-results>
+              </div>
+            </div>
+            <div class="footer">
+              <div class="total-content">
+                <label>#{{ 32343 }}</label>
+                <label>{{ 43 }} {{ 'secureShipment.pzas' | translate }}</label>
+                <label>Monto total: {{ 43 | currency: 'USD' }}</label>
+                <label>{{ 232 }} {{ 'secureShipment.clients' | translate }}</label>
+              </div>
+              <div class="cancel">
+                <label class="colors red">{{ '0' }}</label>
+              </div>
+              <div class="back-order">
+                <label class="colors purple">{{ '0' }}</label>
+              </div>
+              <div class="impact">
+                <label class="colors green">{{ '0' }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <div>
+        <button *ngIf="true" [ngClass]="'btn-register-to'">
+          {{ 'common.register' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-pop-up-generic
+  *ngIf="false"
+  [activeBtn]="false"
+  [activeButtons]="false"
+  [height]="(viewType$ | async) === appViewTypes.small ? '725px' : '825px'"
+  [showClose]="true"
+  [titleHeader]="'secureShipment.reshipmentHistory' | translate"
+  [width]="(viewType$ | async) === appViewTypes.small ? '700px' : '800px'"
+>
+  <div class="history-pop">
+    <div class="header">
+      <div class="image"><img alt="logo" class="imgFoto" src="assets/Images/clientes/logo_proquifa_hover.svg" /></div>
+      <div class="info">
+        <div class="title">
+          <label>{{ 'Chata Biosystems' }}</label>
+        </div>
+        <div class="guide">
+          <label>
+            <span>{{ 'OC-031021-7593 · ' }}</span> {{ '94' }} {{ 'secureShipment.pzas' | translate }} {{ '54' }} ·
+            {{ 'secureShipment.products' | translate }} · {{ 'secureShipment.fea' | translate }}
+            {{ date | dateFormatSlashShort }}
+          </label>
+        </div>
+        <div class="date">
+          <label>FEA: {{ '14/Junio/2022' }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="body">
+      <div class="item">
+        <div class="index">
+          <div class="date">
+            <label
+              >#{{ 1 }} · <span>{{ 'secureShipment.ShipmentDate' | translate }}: </span>
+              {{ '10/Junio/2022' }}
+            </label>
+          </div>
+          <div class="link">
+            <label>{{ 'secureShipment.seeFile' | translate }}</label>
+          </div>
+        </div>
+        <div class="comments">
+          <label
+            ><span>{{ 'common.comments' | translate }}: </span
+            >{{
+              'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has of the printing tyu'
+            }}</label
+          >
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <label># 1 {{ 'secureShipment.reshipments' | translate }}</label>
+    </div>
+  </div>
+</app-pop-up-generic>

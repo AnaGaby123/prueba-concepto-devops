@@ -1,0 +1,157 @@
+<section id="clients">
+  <div class="container">
+    <div class="content">
+      <div class="title">
+        <label>{{ 'dailyMeeting.customers' | translate }}</label>
+      </div>
+      <div class="container-tabs">
+        <app-tabs
+          *ngIf="viewType === viewMacBookAir"
+          [options]="tabsOptionsMacBook$ | async"
+          [tapSelected]="tabSelectedMacBook$ | async"
+          (onSelectOption)="onSelectOption($event, viewMacBookAir)"
+        ></app-tabs>
+        <app-dropdown-button
+          *ngIf="viewType === viewIpad"
+          [options]="filtersTabsIpad$ | async"
+          [value]="tabSelectedIpad$ | async"
+          (valueEmit)="onSelectOption($event, viewIpad)"
+        >
+        </app-dropdown-button>
+      </div>
+      <div class="search">
+        <app-search
+          [imageFill]="'#008894'"
+          [isSearchByType]="true"
+          [placeholder]="'Escribe aquí'"
+          [searchTerm]="''"
+          [typeSelected]="searchTypeSelected$ | async"
+          [typesOfSearch]="searchTypes$ | async"
+          (handleTypeSelected)="setSearchType($event)"
+          (textSearch)="handleKeySearch($event)"
+        >
+        </app-search>
+      </div>
+      <div class="filter-hamburger">
+        <app-hamburger-menu
+          [options]="valuesFilter$ | async"
+          [value]="(valueFilterSelected$ | async).value"
+          (valueEmit)="setOptionFilter($event)"
+        >
+        </app-hamburger-menu>
+      </div>
+      <div class="list-container">
+        <div class="dataList">
+          <virtual-scroller
+            class="list"
+            *ngIf="(isLoadingClients$ | async) === 3 && (listClientsQuotations$ | async).length > 0"
+            [items]="listClientsQuotations$ | async"
+            (vsUpdate)="scrollItems = $event"
+            (vsEnd)="fetchMore($event)"
+          >
+            <div
+              *ngFor="let client of scrollItems"
+              [ngClass]="
+                (clientSelected$ | async)?.IdCliente === client.IdCliente &&
+                (clientSelected$ | async)?.IdAjOfEstrategiaCotizacion === client.IdAjOfEstrategiaCotizacion
+                  ? 'divActive'
+                  : ''
+              "
+              (click)="handleSelectedClient(client)"
+            >
+              <div class="df-select"></div>
+              <div>
+                <div class="info">
+                  <div class="oc">
+                    <label>{{ '#' + client.Index + ' · ' + client.Nombre }}</label>
+                  </div>
+                  <div class="strategy">
+                    <label>{{
+                      ('dailyMeeting.details.strategy' | translate) +
+                        ': ' +
+                        (client.Estrategia === null ? 'NA' : client.Estrategia)
+                    }}</label>
+                  </div>
+                  <div class="total">
+                    <label>{{
+                      ('dailyMeeting.details.totalClosing' | translate) +
+                        ' ' +
+                        (client.TotalCotizadoUSD | currencyFormat: 'USD') +
+                        ' USD ' +
+                        ' · '
+                    }}</label>
+                    <img alt="precio" src="assets/Images/close-offer/dolar-sign.svg" />
+                    <label>{{ client.IdCotCotizacion }}</label>
+                  </div>
+                  <div class="time">
+                    <label
+                      [ngClass]="
+                        client.HorasCaducidadMasReciente <= 4
+                          ? 'red'
+                          : client.HorasCaducidadMasReciente >= 5 && client.HorasCaducidadMasReciente <= 8
+                          ? 'yellow'
+                          : client.HorasCaducidadMasReciente > 8
+                          ? 'green'
+                          : ''
+                      "
+                      >{{ 'dailyMeeting.details.expiresIn' | translate }}</label
+                    >
+                    <img
+                      alt=""
+                      [src]="
+                        client.HorasCaducidadMasReciente <= 4
+                          ? 'assets/Images/clock_red.svg'
+                          : client.HorasCaducidadMasReciente >= 5 && client.HorasCaducidadMasReciente <= 8
+                          ? 'assets/Images/clock_orange.svg'
+                          : client.HorasCaducidadMasReciente > 8
+                          ? 'assets/Images/clock_green.svg'
+                          : ''
+                      "
+                    />
+                    <label
+                      [ngClass]="
+                        client.HorasCaducidadMasReciente <= 4
+                          ? 'red'
+                          : client.HorasCaducidadMasReciente >= 5 && client.HorasCaducidadMasReciente <= 8
+                          ? 'yellow'
+                          : client.HorasCaducidadMasReciente > 8
+                          ? 'green'
+                          : ''
+                      "
+                    >
+                      {{
+                        (client.HorasCaducidadMasReciente === null ? 'NA' : client.HorasCaducidadMasReciente) +
+                          (client.HorasCaducidadMasReciente === 1 ? ' Hr.' : ' Hrs.')
+                      }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </virtual-scroller>
+          <div class="loading-center" *ngIf="(isLoadingClients$ | async) === 1">
+            <app-loading></app-loading>
+          </div>
+          <div
+            class="without-results"
+            *ngIf="(listClientsQuotations$ | async).length === 0 && (isLoadingClients$ | async) === 3"
+          >
+            <app-without-results [title]="'Sin resultados'"></app-without-results>
+          </div>
+        </div>
+        <div class="total">
+          <div class="values" *ngIf="(isLoadingClients$ | async) === 3">
+            <label>{{ '#' + (totalClients$ | async) }}</label>
+            <label>{{
+              (totalQuotations$ | async) +
+                ' ' +
+                ((totalQuotations$ | async) === 1
+                  ? ('dailyMeeting.details.quotation' | translate)
+                  : ('dailyMeeting.details.quotations' | translate))
+            }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

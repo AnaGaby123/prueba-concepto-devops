@@ -1,0 +1,48 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  width: 100%;
+  & > .delivery-time-container {
+    @include s.flexColumn;
+    row-gap: 4px;
+    align-items: center;
+    width: 100%;
+    & > .days {
+      @include s.responsive-font-format(
+        $font-family: s.$font_family_roboto,
+        $font-weight: s.$font_weight_regular,
+        $font-size-map: s.$responsive-font-14-14,
+        $color: s.$pqBlack2
+      );
+    }
+    & > .type {
+      @include s.responsive-font-format(
+        $font-family: s.$font_family_roboto,
+        $font-weight: s.$font_weight_regular,
+        $font-size-map: s.$responsive-font-12-12,
+        $color: s.$pqBlack2
+      );
+    }
+    & .regular {
+      color: s.$success;
+    }
+    & .programming {
+      color: s.$complementario-c;
+    }
+    & .freight {
+      color: s.$alert-c;
+    }
+    & > .label-freight {
+      @include s.responsive-font-format(
+        $font-family: s.$font_family_roboto,
+        $font-weight: s.$font_weight_regular,
+        $font-size-map: s.$responsive-font-10-10,
+        $color: s.$alert-c
+      );
+    }
+  }
+}

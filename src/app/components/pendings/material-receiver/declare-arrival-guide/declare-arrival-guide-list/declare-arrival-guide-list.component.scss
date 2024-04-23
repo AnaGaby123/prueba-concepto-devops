@@ -1,0 +1,65 @@
+@use 'base' as s;
+
+.padre {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.area {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+
+  & > .content {
+    @include s.flexColumn;
+    overflow: auto;
+    width: 100%;
+    height: 100%;
+
+    & > .vistaPrincipal {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      flex-direction: column;
+      background: s.$pqGray2;
+      /*******GRAFICAS*****/
+      .contenidoGrafica {
+        width: 100%;
+        height: 90%;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+        box-sizing: border-box;
+        padding-left: 20px;
+        padding-right: 20px;
+
+        & > .grafica {
+          height: 80%;
+          width: 70%;
+          display: flex;
+          flex-direction: column;
+          box-sizing: border-box;
+          padding-left: 10px;
+        }
+      }
+
+      & > #divBoton {
+        width: 100%;
+        height: 10%;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        padding-right: 10px;
+        box-sizing: border-box;
+        align-items: center;
+
+        & > .button {
+          @include s.button(31px, 170px, #ffffff, #008894);
+        }
+      }
+    }
+  }
+}

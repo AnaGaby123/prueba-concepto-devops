@@ -1,0 +1,13 @@
+<div class="component-container">
+  <div class="header">
+    <app-header-bar
+      [title]="title$ | async"
+      [name]="name$ | async"
+      (goBack)="returnMainPage()"
+      [activeBack]="linkMailActivate$ | async"
+    ></app-header-bar>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+</div>

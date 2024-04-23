@@ -1,0 +1,826 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  .list-investigation-container {
+    @include s.absolute100;
+    @include s.flexColumn;
+    position: relative;
+
+    &::before {
+      background-color: #eceef0;
+      content: '';
+      height: calc(100%);
+      position: absolute;
+      right: -15px;
+      top: 0;
+      width: 1px;
+    }
+
+    & > .title {
+      @include s.flexRowNoWrap;
+      margin-bottom: 15px;
+
+      & > label:nth-of-type(1) {
+        @include s.Novecento-Bold;
+        @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+      }
+    }
+
+    & > .tabs {
+      @include s.flexRowNoWrap;
+      height: 50px;
+      margin-bottom: 15px;
+      width: 100%;
+    }
+
+    & > .filters {
+      @include s.flexRow;
+      justify-content: space-between;
+      padding: 0 27px 20px 27px;
+    }
+
+    & > .list-clients {
+      @include s.flexRow;
+      border-bottom: 1px solid s.$pqBlack2;
+      border-top: 1px solid s.$pqBlack2;
+      flex: 1;
+      overflow: hidden;
+
+      & > virtual-scroller {
+        @include s.absolute100;
+        @include s.fixVirtualScroller;
+
+        ::ng-deep .scrollable-content {
+          & > .product {
+            @include s.flexRow;
+            border-bottom: 1px solid s.$pqGray2;
+            width: 100%;
+
+            * {
+              cursor: pointer;
+            }
+
+            &.selected {
+              background-color: s.$dark-proquifa-e;
+
+              & > .indicator {
+                background-color: s.$pqGreen;
+              }
+            }
+
+            & > .indicator {
+              @include s.flexRow;
+              flex: 0 0 12px;
+            }
+
+            & > .product-info-card {
+              @include s.flexRowNoWrap;
+              flex: 1;
+              padding: 15px 0;
+
+              &:hover {
+                background-color: s.$pqGray2;
+                cursor: pointer;
+              }
+
+              & > .check-product {
+                @include s.absoluteTop;
+                display: flex;
+                flex: 0 0 17px;
+                justify-content: flex-start;
+                margin: 0 15px;
+              }
+
+              & > .content-product-list {
+                @include s.absoluteTop;
+                @include s.flexColumn;
+                flex: 1;
+                gap: 3px;
+
+                & > .information-product {
+                  @include s.multiLineTextTruncateSinHeight($lines: 3, $lineHeight: 1.3);
+
+                  & > label {
+                    @include s.Roboto-Bold;
+                    @include s.escaledFontFormat(s.$textSize15to20, bold, s.$pqBlack2);
+
+                    & > span {
+                      color: s.$pqGreen;
+                      vertical-align: baseline;
+                    }
+
+                    & > img {
+                      @include s.imageLabel;
+                      margin-top: -2px;
+                    }
+                  }
+                }
+
+                & > .receptionEvi {
+                  @include s.multiLineTextTruncateSinHeight($lineHeight: 1.3);
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize14to18, regular, s.$pqBlack2);
+
+                    & > .sheet {
+                      color: s.$pqGreen;
+                      vertical-align: baseline;
+                    }
+                  }
+                }
+
+                & > .notes {
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to17, regular, s.$pqTextGris);
+                    @include s.multiLineTextTruncateSinHeight($lineHeight: 1.3);
+                  }
+                }
+              }
+
+              & > .select-product-icon {
+                display: block;
+                margin-bottom: 0;
+                margin-top: auto;
+                padding: 0 10px 0 8px;
+
+                & > img {
+                  padding-right: 10px;
+                }
+              }
+            }
+
+            & > .new-investigation {
+              @include s.flexColumn;
+              background-color: rgba(s.$pqGreen, 0.03);
+              border-top: 1px solid s.$pqGray2;
+              padding: 20px 47px 25px 47px;
+
+              & > .radios {
+                @include s.flexRowWrap;
+                column-gap: 40px;
+                margin-bottom: 25px;
+
+                & > app-radio-button {
+                  display: flex;
+                  flex: 0 0 auto;
+                }
+              }
+
+              & > app-generic-text-area {
+                margin-bottom: 25px;
+              }
+
+              & > .buttons-comments {
+                @include s.flexRow;
+                flex: 1;
+                justify-content: space-between;
+                $max-width-map: (
+                  'base': 155px,
+                  'macBookAir': 200px,
+                );
+
+                & > .enable {
+                  @include s.pqfButton($max-width-map: $max-width-map);
+                }
+
+                & > .disable {
+                  @include s.pqfDisableButton($max-width-map: $max-width-map);
+                }
+              }
+            }
+
+            & > .reattend-investigation {
+              @include s.flexColumn;
+              background-color: rgba(s.$orange, 0.06);
+              border-top: 1px solid s.$pqGray2;
+
+              & > .comments {
+                @include s.flexColumn;
+                gap: 15px;
+                padding: 15px 47px 0 47px;
+
+                & > .comments-added {
+                  @include s.flexRowNoWrap;
+
+                  & > div {
+                    @include s.flexRow;
+                    border-bottom: 1px solid s.$pqGray2;
+                    padding-bottom: 15px;
+
+                    & > .content-comment {
+                      flex: 1;
+
+                      & > .sender {
+                        display: flex;
+                        justify-content: space-between;
+
+                        & > label:nth-of-type(1) {
+                          @include s.Roboto-Bold;
+                          @include s.escaledFontFormat(s.$textSize14to16, bold, s.$pqBlack2);
+                          @include s.multiLineTextTruncateSinHeight($lineHeight: 1.3);
+
+                          & > span {
+                            color: s.$orange2;
+                            vertical-align: baseline;
+                          }
+
+                          & > .suggerency,
+                          & > .product-available {
+                            color: s.$pqGreen;
+                          }
+                        }
+
+                        & > label:nth-of-type(2) {
+                          @include s.Roboto-Regular-Italic;
+                          @include s.escaledFontFormat(s.$textSize14to16, italic, s.$pqGray3);
+                        }
+                      }
+
+                      & > .description {
+                        @include s.flexRowWrap;
+                        padding-top: 15px;
+
+                        & > label {
+                          @include s.Roboto-Regular;
+                          @include s.escaledFontFormat(s.$textSize14to16, normal, s.$pqBlack2);
+                          @include s.multiLineTextTruncateSinHeight($lineHeight: 1.3);
+                        }
+                      }
+                    }
+                  }
+                }
+
+                & > .comments-added:last-child {
+                  & > div {
+                    border-bottom: 1px solid s.$pqBlack2;
+                  }
+                }
+              }
+
+              & > .comment-section {
+                @include s.flexColumn;
+                padding: 15px 47px;
+
+                & > label:nth-of-type(1) {
+                  @include s.Roboto-Bold;
+                  @include s.escaledFontFormat(s.$textSize14to16, bold, s.$pqGreen);
+                  margin-bottom: 15px;
+                }
+
+                & > .radios {
+                  @include s.flexRowWrap;
+                  column-gap: 40px;
+                  margin-bottom: 20px;
+
+                  & > app-radio-button {
+                    display: flex;
+                    flex: 0 0 auto;
+                  }
+                }
+
+                & > app-generic-text-area {
+                  margin-bottom: 25px;
+                }
+
+                & > .buttons-comments {
+                  @include s.flexRow;
+                  flex: 1;
+                  justify-content: space-between;
+                  $max-width-map: (
+                    'base': 190px,
+                    'macBookAir': 300px,
+                  );
+
+                  & > .enable {
+                    @include s.pqfButton($max-width-map: $max-width-map, $background-color: s.$orange);
+                  }
+
+                  & > .disable {
+                    @include s.pqfDisableButton($max-width-map: $max-width-map, $background-color: s.$orange);
+                  }
+                }
+              }
+            }
+
+            & > .standby-investigation {
+              @include s.flexColumn;
+              background-color: rgb(s.$pqTextAlert, 0.06);
+              border-top: 1px solid s.$pqGray2;
+              padding: 15px 47px;
+
+              & > .comments {
+                @include s.flexColumn;
+                border-bottom: 1px solid s.$pqBlack2;
+                padding-bottom: 15px;
+
+                & > label {
+                  @include s.Roboto-Bold;
+                  @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqGreen);
+                }
+
+                & > div {
+                  @include s.flexColumn;
+                  margin-top: 10px;
+
+                  & > label:nth-of-type(1) {
+                    @include s.Roboto-Bold;
+                    @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+                  }
+
+                  & > label:nth-of-type(2) {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                  }
+                }
+              }
+
+              & > .product-info {
+                @include s.flexColumn;
+                border-bottom: 1px solid s.$pqBlack2;
+                padding: 15px 0;
+
+                & > .product-available {
+                  @include s.flexColumn;
+                  border-bottom: 1px solid s.$pqWhite;
+                  padding-bottom: 15px;
+
+                  & > label {
+                    @include s.Roboto-Bold;
+                    @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqGreen);
+                  }
+
+                  & > app-radio-button {
+                    margin: 15px 0;
+                  }
+
+                  & > .product-available-data {
+                    display: grid;
+                    grid-column-gap: 10px;
+                    grid-template-columns: repeat(2, 1fr);
+                    margin-left: 28px;
+
+                    & > div {
+                      display: grid;
+                      grid-column-gap: 4px;
+
+                      & > label {
+                        @include s.Roboto-Regular;
+                        @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                        align-self: center;
+                      }
+                    }
+
+                    & > .billing-restriction {
+                      grid-template-columns: 130px 1fr;
+                    }
+
+                    & > .pieces {
+                      grid-template-columns: max-content 100px max-content;
+
+                      & > label:nth-of-type(2) {
+                        @include s.Roboto-Bold;
+                      }
+                    }
+                  }
+                }
+
+                & > .product-not-available {
+                  @include s.flexColumn;
+                  border-bottom: 1px solid s.$pqWhite;
+                  padding-bottom: 15px;
+
+                  & > app-radio-button {
+                    margin: 10px 0;
+                  }
+
+                  & > .product-not-available-data {
+                    display: grid;
+                    grid-column-gap: 10px;
+                    grid-row-gap: 10px;
+                    grid-template-columns: repeat(2, 1fr);
+                    margin-left: 28px;
+
+                    & > div {
+                      display: grid;
+                      grid-column-gap: 4px;
+
+                      & > label {
+                        @include s.Roboto-Regular;
+                        @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                        align-self: center;
+                      }
+                    }
+
+                    & > .billing-restriction {
+                      grid-template-columns: 130px 1fr;
+                    }
+
+                    & > .who-distributes-it {
+                      grid-template-columns: max-content 1fr;
+                    }
+
+                    & > .curatorship-date {
+                      grid-template-columns: 130px 1fr;
+                    }
+
+                    & > .notes {
+                      grid-template-columns: max-content 1fr;
+
+                      & > label:nth-of-type(2) {
+                        @include s.Roboto-Bold;
+                      }
+                    }
+                  }
+                }
+
+                & > .discontinued-not-found {
+                  display: grid;
+                  grid-column-gap: 10px;
+                  grid-template-columns: 158px auto 1fr;
+                  justify-content: space-between;
+                  padding-top: 15px;
+
+                  & > .notes {
+                    display: grid;
+                    grid-column-gap: 10px;
+                    grid-template-columns: max-content 1fr;
+                    margin-left: 15px;
+
+                    & > label {
+                      @include s.Roboto-Regular;
+                      @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                      align-self: center;
+                    }
+                  }
+                }
+              }
+
+              & > .upload-evidence {
+                @include s.flexRow;
+                padding: 15px 0;
+
+                & > app-generic-input-file {
+                  flex: 0 0 65%;
+                }
+              }
+
+              & > label {
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen);
+                align-self: flex-end;
+                display: flex;
+                margin: 30px 0 15px 0;
+              }
+
+              & > .buttons-comments {
+                @include s.flexRow;
+                flex: 1;
+                justify-content: space-between;
+                $max-width-map: (
+                  'base': 220px,
+                  'macBookAir': 350px,
+                );
+
+                & > .enable {
+                  @include s.pqfButton($max-width-map: $max-width-map, $background-color: s.$pqTextAlert);
+                }
+
+                & > .disable {
+                  @include s.pqfDisableButton($max-width-map: $max-width-map);
+                }
+              }
+            }
+          }
+
+          & > .without-results {
+            @include s.absoluteCenter;
+            display: flex;
+            height: 100%;
+          }
+        }
+      }
+
+      & > .loader {
+        @include s.flexRow;
+        align-items: center;
+        flex: 1;
+      }
+    }
+
+    & > .totals {
+      @include s.flexRow;
+      column-gap: 15px;
+      justify-content: flex-end;
+      margin-top: 15px;
+      width: 100%;
+      $max-width-map: (
+        'base': 250px,
+        'macBookAir': 300px,
+      );
+      $background-color: s.$pqGreen2;
+
+      & > .enable {
+        @include s.pqfButton($max-width-map: $max-width-map, $background-color: $background-color);
+      }
+
+      & > .disable {
+        @include s.pqfDisableButton($max-width-map: $max-width-map);
+      }
+    }
+  }
+
+  .pop-container {
+    @include s.flexColumn;
+    flex: 1;
+
+    & > .message {
+      @include s.flexColumn;
+      align-items: flex-start;
+      background-color: rgb(s.$pqGreen, 0.05);
+      padding: 20px;
+
+      & > label {
+        text-align: start;
+      }
+
+      & > label:nth-of-type(1) {
+        @include s.Roboto-Bold;
+        @include s.escaledFontFormat(s.$textSize11to13, bold, s.$pqBlack2);
+        margin-bottom: 6px;
+      }
+
+      & > label:nth-of-type(2) {
+        @include s.Roboto-Regular;
+        @include s.escaledFontFormat(s.$textSize11to13, regular, s.$pqBlack2);
+      }
+    }
+
+    & > .email-content-data {
+      @include s.flexColumn;
+      flex: 1;
+      justify-content: space-between;
+      padding: 20px 20px 0 20px;
+
+      & > .product-information-container {
+        @include s.flexColumn;
+
+        & > .total {
+          display: flex;
+
+          & > label {
+            @include s.Roboto-Bold;
+            @include s.escaledFontFormat(s.$textSize11to13, bold, s.$pqBlack2);
+          }
+        }
+
+        & > .product-information {
+          @include s.flexColumn;
+          flex: 1;
+          gap: 10px;
+          max-height: 95px;
+          overflow-y: auto;
+          padding-top: 10px;
+
+          & div {
+            @include s.flexRowWrap;
+            flex: 1;
+
+            & > label {
+              @include s.Roboto-Regular;
+              @include s.escaledFontFormat(s.$textSize11to13, regular, s.$pqBlack2);
+              @include s.multiLineTextTruncateSinHeight($lineHeight: 1.3);
+              text-align: initial;
+
+              & > .regular-text {
+                @include s.Roboto-Regular;
+                color: s.$pqBlack2;
+              }
+
+              & > .bold-text {
+                @include s.Roboto-Bold;
+              }
+
+              & > .green-text {
+                color: s.$pqGreen;
+                vertical-align: baseline;
+              }
+            }
+          }
+        }
+      }
+
+      & > .notes {
+        margin-top: 15px;
+
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize11to13, regular, s.$pqBlack2);
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    .list-investigation-container {
+      &::before {
+        right: -20px;
+      }
+
+      & > .title {
+        margin-bottom: 20px;
+      }
+
+      & > .tabs {
+        height: 55px;
+        margin-bottom: 20px;
+      }
+
+      & > .filters {
+        @include s.flexRow;
+        justify-content: space-between;
+        padding: 0 32px 20px 32px;
+      }
+
+      & > .list-clients {
+        & > virtual-scroller {
+          ::ng-deep .scrollable-content {
+            & > .product {
+              & > .product-info-card {
+                padding: 20px 0;
+
+                & > .check-product {
+                  flex: 0 0 20px;
+                  margin: 0 20px;
+                }
+
+                & > .content-product-list {
+                  gap: 5px;
+                }
+
+                /*    & > .arrow {
+                  height: 20px;
+                  margin: 0 25px;
+                }*/
+              }
+
+              & > .new-investigation {
+                padding: 25px 60px 30px 60px;
+
+                & > .radios {
+                  column-gap: 50px;
+                  margin-bottom: 30px;
+                }
+
+                & > app-generic-text-area {
+                  margin-bottom: 35px;
+                }
+              }
+
+              & > .reattend-investigation {
+                & > .comments {
+                  gap: 20px;
+                  padding: 20px 60px 0 60px;
+
+                  & > .comments-added {
+                    & > div {
+                      padding-bottom: 20px;
+
+                      & > .content-comment {
+                        & > .description {
+                          padding-top: 20px;
+                        }
+                      }
+                    }
+                  }
+                }
+
+                & > .comment-section {
+                  padding: 20px 60px;
+
+                  & > label:nth-of-type(1) {
+                    margin-bottom: 20px;
+                  }
+
+                  & > .radios {
+                    column-gap: 50px;
+                    margin-bottom: 25px;
+                  }
+
+                  & > app-generic-text-area {
+                    margin-bottom: 35px;
+                  }
+                }
+              }
+
+              & > .standby-investigation {
+                padding: 20px 60px;
+
+                & > .comments {
+                  padding-bottom: 20px;
+                }
+
+                & > .product-info {
+                  padding: 20px 0;
+
+                  & > .product-available {
+                    padding-bottom: 20px;
+
+                    & > app-radio-button {
+                      margin: 20px 0;
+                    }
+
+                    & > .product-available-data {
+                      grid-column-gap: 15px;
+
+                      & > div {
+                        grid-column-gap: 6px;
+                      }
+
+                      & > .billing-restriction {
+                        grid-template-columns: 160px 1fr;
+                      }
+                    }
+                  }
+
+                  & > .product-not-available {
+                    padding-bottom: 20px;
+
+                    & > app-radio-button {
+                      margin: 20px 0;
+                    }
+
+                    & > .product-not-available-data {
+                      grid-column-gap: 15px;
+                      grid-row-gap: 15px;
+
+                      & > div {
+                        grid-column-gap: 6px;
+                      }
+
+                      & > .billing-restriction {
+                        grid-template-columns: 160px 1fr;
+                      }
+
+                      & > .curatorship-date {
+                        grid-template-columns: 160px 1fr;
+                      }
+                    }
+                  }
+
+                  & > .discontinued-not-found {
+                    grid-column-gap: 15px;
+                    grid-template-columns: 188px auto 1fr;
+                    padding-top: 20px;
+
+                    & > .notes {
+                      grid-column-gap: 15px;
+                    }
+                  }
+                }
+
+                & > .upload-evidence {
+                  padding: 20px 0;
+                }
+
+                & > label {
+                  margin: 40px 0 20px 0;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      & > .totals {
+        margin-top: 20px;
+      }
+    }
+    .pop-container {
+      & > .message {
+        padding: 20px 25px;
+      }
+
+      & > .email-content-data {
+        padding: 20px 25px 0 25px;
+
+        & > .product-information-container {
+          & > .product-information {
+            gap: 15px;
+          }
+        }
+
+        & > .notes {
+          margin-top: 20px;
+        }
+      }
+    }
+  }
+}

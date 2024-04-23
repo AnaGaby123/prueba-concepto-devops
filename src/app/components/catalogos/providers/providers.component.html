@@ -1,0 +1,14 @@
+<div class="container">
+  <div class="header-bar">
+    <app-header-bar
+      [activeBack]="(addEditComponent$ | async) && !(enableEdit$ | async)"
+      [name]="providerName$ | async"
+      [title]="title$ | async"
+      (goBack)="returnMainPage()"
+    >
+    </app-header-bar>
+  </div>
+  <div class="container-outlet">
+    <router-outlet></router-outlet>
+  </div>
+</div>

@@ -1,0 +1,92 @@
+<div class="dashboard-container" id="change-notices-list-container">
+  <div class="left-container">
+    <label class="title">{{ 'checkout.customers' | translate }}</label>
+    <div class="tabs">
+      <app-tabs [options]="tabs$ | async" [tapSelected]="tab$ | async" (onSelectOption)="setTab($event)"></app-tabs>
+    </div>
+    <div class="filters">
+      <div class="filter-by-type">
+        <app-hamburger-menu [options]="filters$ | async" [value]="(filter$ | async)?.value" (valueEmit)="setOption($event)">
+        </app-hamburger-menu>
+      </div>
+      <div class="filter-by-search">
+        <app-search [placeholder]="'common.clients' | translate" (textSearch)="handleKeySearch($event)"></app-search>
+      </div>
+    </div>
+    <div class="list-container">
+      <virtual-scroller>
+        <div class="client" (click)="setSelectedClient('')">
+          <div class="index">
+            <label>{{ '#' + 1 }}</label>
+          </div>
+          <div class="information">
+            <div class="name">
+              <label>{{ 'Nombre Ejemplo' }}</label>
+            </div>
+            <div class="pieces">
+              <label
+                >{{ '1' }} {{ 1 === 1 ? ('common.piece' | translate) : ('common.pieces' | translate) }} · {{ '1' }}
+                {{ 1 === 1 ? ('common.product' | translate) : ('common.products' | translate) }}</label
+              >
+            </div>
+            <div class="internal-orders">
+              <label>{{ 'changeNotices.internalOrders' | translate }}: {{ '3' }}</label>
+            </div>
+            <div class="status">
+              <div>
+                <img alt="canceladas" src="assets/Images/labels/canceladas.svg" />
+                <label class="red">{{ '3' }}</label>
+                <label class="red">{{ '·' }}</label>
+              </div>
+              <div>
+                <img alt="impacto-fee" src="assets/Images/labels/impacto-fee.svg" />
+                <label class="orange">{{ '3' }}</label>
+                <label class="orange">{{ '·' }}</label>
+              </div>
+              <div>
+                <img alt="back-order" src="assets/Images/labels/back-order.svg" />
+                <label class="purple">{{ '3' }}</label>
+                <label class="purple">{{ '·' }}</label>
+              </div>
+              <div>
+                <img alt="almacen" src="assets/Images/labels/almacen.svg" />
+                <label class="ocean">{{ '3' }}</label>
+              </div>
+            </div>
+            <div class="date">
+              <label>{{ 'changeNotices.cnDate' | translate }}: {{ '07/Enero/2021' }}</label>
+            </div>
+          </div>
+          <div class="arrow">
+            <img alt="arrow_default" src="assets/Images/quotation/arrow_default.svg" />
+          </div>
+        </div>
+      </virtual-scroller>
+      <div class="without-results" *ngIf="false">
+        <app-without-results></app-without-results>
+      </div>
+      <div class="loader" *ngIf="false">
+        <app-loading></app-loading>
+      </div>
+    </div>
+    <div class="footer">
+      <label>{{ '#' + 0 }}</label>
+      <label>{{
+        (1 | number: '1.0-0') + ' ' + (1 === 1 ? ('common.piece' | translate) : ('common.pieces' | translate))
+      }}</label>
+      <label>{{
+        (0 | number: '1.0-0') + ' ' + (1 === 1 ? ('common.product' | translate) : ('common.products' | translate))
+      }}</label>
+      <label>{{
+        ('changeNotices.internalOrder' | translate) + ': ' + ((0 ? 0 : 0) | currency: 'USD':'symbol-narrow':'1.2-2') + ' USD'
+      }}</label>
+    </div>
+  </div>
+  <div class="right-container">
+    <ng-container *ngIf="true">
+      <app-doughnut-chart [title]="'common.clients' | translate"></app-doughnut-chart>
+      <app-bar-chart [title]="'common.products' | translate"></app-bar-chart>
+    </ng-container>
+    <app-loading class="loading" *ngIf="false"></app-loading>
+  </div>
+</div>

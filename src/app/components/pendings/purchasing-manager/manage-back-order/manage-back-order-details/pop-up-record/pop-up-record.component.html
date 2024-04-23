@@ -1,0 +1,42 @@
+<app-pop-up-generic
+  [height]="'650px'"
+  [width]="'800px'"
+  [showClose]="true"
+  [titleHeader]="'manageBackOrder.managementHistory' | translate"
+  (evento)="closePop($event)"
+>
+  <div id="pop-up-container">
+    <div class="product">
+      <div class="title">
+        <label>{{ 'common.product' | translate }}</label>
+      </div>
+      <div class="name">
+        <label>{{ (product$ | async)?.Descripcion }}</label>
+      </div>
+    </div>
+    <div class="back-order">
+      <div class="list">
+        <div class="item" *ngFor="let item of (product$ | async).history; let i = index">
+          <div class="data">
+            <div class="index">
+              <label>{{ '#' + (i + 1) }}</label>
+              <label>·</label>
+              <label class="event">{{ ('manageBackOrder.event' | translate) + ': ' }}</label>
+              <label>{{ item.FechaRegistro | dateFormatSlash }}</label>
+            </div>
+            <div class="index">
+              <label class="event">{{ 'Hace ' + item.DiasHace + ('common.days' | translate) }}</label>
+            </div>
+          </div>
+          <div class="observations">
+            <label>{{ ('common.observations' | translate) + ': ' }}</label>
+            <label class="text">{{ item.Justificacion }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="totals">
+      <label>{{ '# ' + (product$ | async).history.length + ' Cambios' }}</label>
+    </div>
+  </div>
+</app-pop-up-generic>

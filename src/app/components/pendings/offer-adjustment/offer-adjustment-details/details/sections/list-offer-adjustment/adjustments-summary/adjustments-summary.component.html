@@ -1,0 +1,81 @@
+<div id="adjustments-summary">
+  <div class="container-blue">
+    <div class="column-one">
+      <label>{{ ('offerAdjustment.details.paymentConditions' | translate) + ':' }}</label>
+      <label>{{ (originalPaymentConditions$ | async).label }}</label>
+    </div>
+    <div class="column-two">
+      <label>{{ ('offerAdjustment.details.paymentConditionsRequest' | translate) + ':' }}</label>
+      <label class="green">
+        {{ (updatedPaymentConditions$ | async)?.label || 'N/A' }}
+      </label>
+      <label class="red" *ngIf="(updatedPaymentConditions$ | async)?.label">
+        {{ '+ ' + (paymentConditionsObj$ | async)?.DiasAdicionales }}
+      </label>
+    </div>
+  </div>
+  <div class="content">
+    <div class="provider-list" *ngIf="(expressFreightList$ | async)?.length > 0">
+      <label>{{ 'common.providers' | translate }}</label>
+      <div class="container-cards">
+        <div>
+          <div *ngFor="let provider of expressFreightList$ | async; let i = index" class="card-container">
+            <div class="expressFreight" [ngClass]="{selected: provider?.showItems}">
+              <div class="first-column">
+                <div class="column-mark">
+                  <img src="assets/Images/clientes/logo_proquifa_hover.svg" alt="logo_proquifa" />
+                  <label>{{ provider?.Proveedor?.Nombre }}</label>
+                </div>
+                <div class="column-items">
+                  <img src="assets/Images/pre-processing/originales.svg" alt="type" />
+                  <label>{{ provider?.TiposDePartidas?.NumeroOriginales }}</label>
+                  <img src="assets/Images/pre-processing/ahorro.svg" alt="type" />
+                  <label>{{ provider?.TiposDePartidas?.NumeroAhorro }}</label>
+                  <img src="assets/Images/pre-processing/promocion.svg" alt="type" />
+                  <label>{{ provider?.TiposDePartidas?.NumeroPromocion }}</label>
+                  <img src="assets/Images/pre-processing/alternativas.svg" alt="type" />
+                  <label>{{ provider?.TiposDePartidas?.NumeroAlternativas }}</label>
+                  <img src="assets/Images/pre-processing/complementarias.svg" alt="type" />
+                  <label>{{ provider?.TiposDePartidas?.NumeroComplementaria }}</label>
+                </div>
+              </div>
+              <div class="third-column">
+                <div class="column-info">
+                  <label class="normal">{{ ('offerAdjustment.details.freightExpress' | translate) + ': ' }}</label>
+                  <label class="freight" [ngClass]="{disable: provider?.ajOfFleteExpressCotizacion?.Rechazado}"
+                    >{{ provider?.Proveedor?.Nombre }}
+                    <span class="green">{{
+                      '· ' + (provider?.ajOfFleteExpressCotizacion.PrecioFleteExpress | currency: 'USD':'symbol-narrow':'0.2-4')
+                    }}</span>
+                    <span class="black">{{ '· ' + provider?.ajOfFleteExpressCotizacion?.PorcentajeProquifa + '% PQF' }}</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="items-list" *ngIf="(mergeItemsQuotation$ | async).length > 0">
+      <label>{{ 'common.items' | translate }}</label>
+      <div class="table-container">
+        <virtual-scroller
+          [items]="selectInternalSalesItemResumeAdjustment$ | async"
+          [bufferAmount]="24"
+          (vsUpdate)="itemsQuotation = $event"
+        >
+          <app-header-internal-sales-item
+            class="header"
+            [internalSalesItem]="selectHeaderInternalSalesItemResumeAdjustment$ | async"
+          ></app-header-internal-sales-item>
+          <div class="header-separator"></div>
+          <app-internal-sales-item
+            *ngFor="let item of selectInternalSalesItemResumeAdjustment$ | async; let i = index"
+            [internalSalesItem]="item"
+            (valueEmitter)="handleAction($event)"
+          ></app-internal-sales-item>
+        </virtual-scroller>
+      </div>
+    </div>
+  </div>
+</div>

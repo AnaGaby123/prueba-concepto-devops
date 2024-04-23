@@ -1,0 +1,437 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  #week {
+    @include s.absolute100;
+    @include s.flexColumn;
+
+    & > .content-container {
+      @include s.absolute100;
+      @include s.flexColumn;
+      overflow: auto;
+
+      & > .header {
+        @include s.flexRowNoWrap;
+        flex: 0 0 50px;
+        min-width: 2000px;
+        border-bottom: 1px solid s.$pqBlack;
+
+        & > div {
+          @include s.flexRowNoWrap;
+          @include s.absoluteCenter;
+          flex: 1 0 452px;
+
+          & > div {
+            @include s.flexColumn;
+            align-items: center;
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize16to18, bold, s.$pqBlack2);
+              @include s.Novecento-Bold;
+            }
+          }
+
+          & > .active {
+            background-color: s.$pqGreen;
+            border-radius: 25px;
+            padding: 3px 30px;
+
+            & > label {
+              color: white !important;
+            }
+          }
+        }
+      }
+
+      & > .content {
+        @include s.flexRowNoWrap;
+        flex: 1 0 auto;
+
+        & > div {
+          @include s.flexColumn;
+          flex: 1 0 452px;
+
+          & > .items {
+            @include s.flexColumn;
+            flex: 1 1 auto;
+            overflow: hidden;
+
+            & > virtual-scroller {
+              @include s.absolute100;
+
+              .card {
+                @include s.flexColumn;
+                padding: 18px 25px 0 25px;
+                margin-top: -1px;
+                cursor: grab;
+
+                & * {
+                  cursor: grab;
+                }
+
+                &:hover {
+                  background-color: s.$pqGray2;
+                }
+
+                & > .card-content {
+                  @include s.flexRowNoWrap;
+                  @include s.absolute100;
+                  border-bottom: 1px solid s.$pqGray2;
+                  overflow: hidden;
+                  padding-bottom: 18px;
+
+                  & > .index {
+                    @include s.flexRowNoWrap;
+                    @include s.absoluteTop;
+                    flex: 0 0 40px;
+                    height: 100%;
+
+                    & > label {
+                      @include s.escaledFontFormat(s.$textSize23to26, regular, s.$pqBlack2);
+                      @include s.Roboto-Regular;
+                    }
+
+                    & > img {
+                      width: 23px;
+                    }
+                  }
+
+                  & > .info {
+                    @include s.flexColumn;
+                    flex: 1 1 auto;
+
+                    & > .line-one {
+                      @include s.flexRowNoWrap;
+                      align-items: flex-start;
+                      justify-content: space-between;
+                      width: 100%;
+
+                      & > label {
+                        @include s.escaledFontFormat(s.$textSize23to26, bold, s.$pqGreen);
+                        @include s.Roboto-Bold;
+                      }
+                    }
+
+                    & > .line-two {
+                      padding-top: 3px;
+
+                      & > label {
+                        @include s.escaledFontFormat(s.$textSize20to23, bold, s.$pqBlack2);
+                        @include s.Roboto-Bold;
+                      }
+                    }
+
+                    & > .line-three {
+                      padding-top: 5px;
+
+                      & > label {
+                        @include s.escaledFontFormat(s.$textSize18to21, regular, s.$pqBlack2);
+                        @include s.Roboto-Regular;
+                      }
+                    }
+
+                    & > .line-four {
+                      @include s.flexRowNoWrap;
+                      padding-top: 7px;
+
+                      & label {
+                        @include s.escaledFontFormat(s.$textSize14to17, regular, s.$pqTextGris);
+                        @include s.Roboto-Regular;
+                      }
+
+                      & > div {
+                        @include s.flexRowNoWrap;
+                        align-items: center;
+                        padding-left: 5px;
+
+                        & > label {
+                          padding-left: 4px;
+                          padding-right: 12px;
+                        }
+
+                        & > span {
+                          display: inline-block;
+                        }
+
+                        & > .green {
+                          @include s.pqCircle(12px, s.$pqGreen2);
+                        }
+
+                        & > .yellow {
+                          @include s.pqCircle(12px, s.$pqOrange6);
+                        }
+                      }
+                    }
+
+                    & > .line-five {
+                      padding-top: 10px;
+                    }
+                  }
+                }
+              }
+
+              .back-purple {
+                background-color: #6a6aae15;
+              }
+
+              .back-orange {
+                background-color: #eca73515;
+              }
+            }
+          }
+
+          & > .footer {
+            @include s.flexColumn;
+            border-top: 1px solid s.$pqBlack;
+            flex: 0 0 50px;
+            margin: 0 15px;
+
+            & > .footerInfo {
+              @include s.flexRowNoWrap;
+              justify-content: space-between;
+              margin-top: 7px;
+
+              & > div {
+                @include s.flexColumn;
+
+                & label {
+                  @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+                  @include s.Roboto-Regular;
+                }
+
+                & > .line-one {
+                  @include s.flexRowNoWrap;
+                  align-items: flex-start;
+                  padding-bottom: 5px;
+
+                  & > label {
+                    padding-left: 3px;
+                  }
+
+                  & > span {
+                    display: inline-block;
+                  }
+
+                  & > .green {
+                    @include s.pqCircle(12px, s.$pqGreen2);
+                  }
+
+                  & > .yellow {
+                    @include s.pqCircle(12px, s.$pqOrange6);
+                  }
+                }
+              }
+
+              & > .column-one,
+              & > .column-two {
+                flex: 0 0 auto;
+                padding-right: 15px;
+              }
+
+              & > .column-five {
+                @include s.flexRowWrap;
+                justify-content: flex-end;
+                flex: 1 1 auto;
+                text-align: end;
+              }
+
+              & > .total-results {
+                flex: 0 0 auto;
+
+                & > label {
+                  padding-left: 4px;
+                  padding-right: 15px;
+                }
+              }
+            }
+
+            & > .footerBotton {
+              align-items: center;
+              margin: 32px 0 23px 0;
+
+              & > button {
+                @include s.escaledFontFormat(s.$textSize17to21, regular, s.$pqWhite);
+                @include s.Novecento-Bold;
+                background-color: s.$pqGreen;
+                opacity: 0.4;
+                width: 422px;
+                height: 30px;
+                white-space: pre;
+
+                &:hover {
+                  background-color: s.$pqGreen;
+                  opacity: 1;
+                }
+              }
+            }
+          }
+        }
+
+        & > .mon,
+        .tues,
+        .wed,
+        .thurs {
+          border-right: 1px solid s.$pqGray2;
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #week {
+      & > .content-container {
+        & > .header {
+          min-width: 2250px;
+
+          & > div {
+            flex: 1 0 450px;
+          }
+        }
+
+        & > .content {
+          & > div {
+            flex: 1 0 450px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.card {
+  @include s.flexColumn;
+  padding: 18px 25px 0 25px;
+  margin-top: -1px;
+
+  &:hover {
+    background-color: s.$pqGray2;
+  }
+
+  & > .card-content {
+    @include s.flexRowNoWrap;
+    @include s.absolute100;
+    border-bottom: 1px solid s.$pqGray2;
+    overflow: hidden;
+    padding-bottom: 18px;
+
+    & > .index {
+      @include s.flexRowNoWrap;
+      @include s.absoluteTop;
+      flex: 0 0 40px;
+      height: 100%;
+
+      & > label {
+        @include s.escaledFontFormat(s.$textSize23to26, regular, s.$pqBlack2);
+        @include s.Roboto-Regular;
+      }
+
+      & > img {
+        width: 23px;
+      }
+    }
+
+    & > .info {
+      @include s.flexColumn;
+      flex: 1 1 auto;
+
+      & > .line-one {
+        @include s.flexRowNoWrap;
+        align-items: flex-start;
+        justify-content: space-between;
+        width: 100%;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize23to26, bold, s.$pqGreen);
+          @include s.Roboto-Bold;
+        }
+      }
+
+      & > .line-two {
+        padding-top: 3px;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize20to23, bold, s.$pqBlack2);
+          @include s.Roboto-Bold;
+        }
+      }
+
+      & > .line-three {
+        padding-top: 5px;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize18to21, regular, s.$pqBlack2);
+          @include s.Roboto-Regular;
+        }
+      }
+
+      & > .line-four {
+        @include s.flexRowNoWrap;
+        padding-top: 7px;
+
+        & label {
+          @include s.escaledFontFormat(s.$textSize14to17, regular, s.$pqTextGris);
+          @include s.Roboto-Regular;
+        }
+
+        & > div {
+          @include s.flexRowNoWrap;
+          align-items: center;
+          padding-left: 5px;
+
+          & > label {
+            padding-left: 4px;
+            padding-right: 12px;
+          }
+
+          & > span {
+            display: inline-block;
+          }
+
+          & > .green {
+            @include s.pqCircle(12px, s.$pqGreen2);
+          }
+
+          & > .yellow {
+            @include s.pqCircle(12px, s.$pqOrange6);
+          }
+        }
+      }
+
+      & > .line-five {
+        padding-top: 10px;
+      }
+    }
+  }
+
+  &.cdk-drag-preview {
+    background-color: s.$pqGray2;
+  }
+
+  &.cdk-drag-dragging {
+    cursor: grabbing;
+
+    & * {
+      cursor: grabbing;
+    }
+  }
+}
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}

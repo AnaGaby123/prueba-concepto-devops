@@ -1,0 +1,220 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+#pop-contract-configuration {
+  ::ng-deep .modal {
+    background: none;
+
+    & > .modal-content {
+      transition: none;
+    }
+  }
+  & .container {
+    @include s.flexColumn;
+    align-content: center;
+    flex: 1;
+    padding-top: 20px;
+
+    & > .header {
+      @include s.flexRowNoWrap;
+      justify-content: space-between;
+      padding: 0 20px;
+      width: 100%;
+      margin-bottom: 20px;
+
+      & > .data-customer {
+        display: grid;
+        grid-template-columns: 110px 1fr;
+        grid-column-gap: 20px;
+
+        & > .image {
+          @include s.gridCenter;
+
+          & > img {
+            max-height: 70px;
+            max-width: 100%;
+          }
+        }
+
+        & > .text {
+          @include s.flexColumn;
+          align-items: flex-start;
+          flex: 1;
+          justify-content: center;
+          & > .client-name {
+            @include s.responsive-font-format(
+              $color: s.$main-proquifa,
+              $font-family: s.$font-family-roboto_bold,
+              $font-size-map: s.$responsive-font-20-20,
+              $font-weight: s.$font-weight-bold
+            );
+            padding-bottom: 3px;
+          }
+
+          & > .client-rfc {
+            @include s.responsive-font-format(
+              $color: s.$dark-proquifa,
+              $font-family: s.$font-family-roboto,
+              $font-size-map: s.$responsive-font-16-16
+            );
+          }
+        }
+      }
+
+      & > .validity-date {
+        @include s.flexColumn;
+        align-items: flex-end;
+        justify-content: center;
+
+        & > .info {
+          @include s.responsive-font-format(
+            $color: s.$main-proquifa,
+            $font-family: s.$font-family-roboto,
+            $font-size-map: s.$responsive-font-16-16
+          );
+        }
+
+        & > .text {
+          @include s.responsive-font-format(
+            $color: s.$dark-proquifa,
+            $font-family: s.$font-family-roboto,
+            $font-size-map: s.$responsive-font-16-16
+          );
+        }
+      }
+    }
+
+    & > .contract-types {
+      @include s.flexRow;
+      background-color: rgb(s.$pqGreen, 0.05);
+      justify-content: center;
+      align-items: center;
+      height: 63px;
+
+      & > app-radio-button {
+        padding: 0 20px;
+      }
+    }
+
+    & > .contract-upload {
+      @include s.flexRow;
+      background-color: rgb(s.$pqGray3, 0.1);
+      justify-content: center;
+      align-items: center;
+      height: 63px;
+      margin-bottom: 25px;
+
+      & > app-check-box {
+        padding-right: 20px;
+      }
+
+      & > div {
+        @include s.flexRow;
+        flex: 0 0 370px;
+        gap: 10px;
+
+        & > label {
+          @include s.responsive-font-format(
+            $color: s.$dark-proquifa-d,
+            $font-family: s.$font-family-roboto,
+            $font-size-map: s.$responsive-font-18-18
+          );
+          align-self: center;
+        }
+
+        & > div {
+          flex: 1;
+        }
+      }
+    }
+
+    & > .data-contract {
+      display: grid;
+      grid-column-gap: 20px;
+      grid-row-gap: 20px;
+      grid-template-columns: 160px repeat(3, 1fr);
+      padding: 20px;
+
+      & > .business-name {
+        grid-column-end: span 3;
+      }
+
+      & > div {
+        align-items: center;
+        display: flex;
+        text-align: left;
+
+        & > label {
+          @include s.responsive-font-format(
+            $color: s.$main-proquifa,
+            $font-family: s.$font_family_novecento_bold,
+            $font-size-map: s.$responsive-font-15-18,
+            $font-weight: s.$font_weight_bold
+          );
+        }
+      }
+    }
+
+    & > .observations {
+      width: 100%;
+      padding: 0 20px;
+    }
+
+    & > footer {
+      display: flex;
+      justify-content: flex-end;
+      padding: 20px 20px 0 20px;
+      width: 100%;
+
+      & > label {
+        @include s.Roboto-Regular;
+        @include s.escaledFontFormat(s.$textSize14to16, regular, s.$pqGreen);
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .header {
+        padding: 0 30px;
+
+        & > .data-customer {
+          grid-template-columns: 130px 1fr;
+
+          & > .image {
+            & > img {
+              max-height: 90px;
+            }
+          }
+          & > .text {
+            & > label:first-child {
+              padding-bottom: 5px;
+            }
+          }
+        }
+
+        & > .validity-date {
+          & > label:first-child {
+            margin-bottom: 15px;
+          }
+        }
+      }
+      & > .contract-types {
+        height: 73px;
+
+        & > app-radio-button {
+          padding: 0 20px;
+        }
+      }
+      & > .contract-upload {
+        height: 73px;
+        margin-bottom: 30px;
+      }
+      & > .data-contract {
+        grid-template-columns: 190px repeat(3, 1fr);
+        grid-row-gap: 25px;
+      }
+    }
+  }
+}

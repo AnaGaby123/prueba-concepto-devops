@@ -1,0 +1,87 @@
+<div class="unit-price-container">
+  <div class="floating-container">
+    <label *ngIf="columnUnitPrice?.pricePerson">{{ 'formProduct.general.personPrice' | translate }}</label>
+    <label *ngIf="columnUnitPrice?.priceGroup">{{ 'formProduct.general.groupPrice' | translate }}</label>
+    <label *ngIf="columnUnitPrice?.priceGroup && columnUnitPrice?.numberPeopleGroup">
+      {{ columnUnitPrice?.numberPeopleGroup }}
+      {{
+        columnUnitPrice?.numberPeopleGroup === 1
+          ? ('formProduct.step1.person' | translate)
+          : ('formProduct.step1.people' | translate)
+      }}</label
+    >
+    <label
+      #priceInputDispatch
+      *ngIf="columnUnitPrice?.value || columnUnitPrice?.currency"
+      [id]="columnUnitPrice?.idElementsUnitPrice ? columnUnitPrice?.idElementsUnitPrice : 'unit-price'"
+      [ngClass]="
+        columnUnitPrice?.color && columnUnitPrice?.textBold
+          ? columnUnitPrice?.color + '-bold'
+          : columnUnitPrice?.color
+          ? columnUnitPrice?.color
+          : columnUnitPrice?.textBold
+          ? 'bold'
+          : ''
+      "
+      [style.text-decoration]="columnUnitPrice?.textUnderline ? 'underline' : ''"
+      [style.cursor]="columnUnitPrice?.isEdit ? 'pointer' : 'default'"
+      (click)="
+        columnUnitPrice?.activeGenericEmitter
+          ? handleClickEmmit($event, priceInputDispatch, true, nameActionsInternalSalesItem.UnitPriceClickNumberAction)
+          : columnUnitPrice?.isEdit && isNumber(columnUnitPrice?.value) && columnUnitPrice?.showTooltip
+          ? handleClickLabel($event)
+          : null
+      "
+      >{{
+        (columnUnitPrice?.value | currency: columnUnitPrice.currency:'symbol-narrow':'1.2-2') + ' ' + columnUnitPrice?.currency
+      }}</label
+    >
+    <div
+      class="floating-input"
+      *ngIf="tooltipIsOpen && !columnUnitPrice?.activeGenericEmitter"
+      #priceInput
+      (click)="handleStopEvents($event)"
+    >
+      <div>
+        <label>{{ 'preProcessing.upAdjustment' | translate }}</label>
+      </div>
+      <div>
+        <input
+          placeholder="0"
+          [ngClass]="unitPrice < columnUnitPrice?.valuePriceOriginal ? 'warning' : ''"
+          (keypress)="
+            handleValidateDecimalNumber($event, priceInput, +unitPrice, nameActionsInternalSalesItem?.UnitPriceEditNumberAction)
+          "
+          [(ngModel)]="unitPrice"
+          (keyup.enter)="
+            changeUnitPrice($event, priceInput, +unitPrice, nameActionsInternalSalesItem?.UnitPriceEditNumberAction)
+          "
+        />
+        <label [style.color]="unitPrice < columnUnitPrice?.valuePriceOriginal ? '#dc788a' : '#4BA92B'">
+          {{  columnUnitPrice?.currency ?? 'N/D' }}
+        </label>
+      </div>
+      <div [ngClass]="unitPrice < columnUnitPrice?.valuePriceOriginal ? 'visible' : 'invisible'">
+        <label>{{ 'preProcessing.upAdjustmentMessage' | translate }}</label>
+      </div>
+    </div>
+    <div
+      class="triangle"
+      *ngIf="tooltipIsOpen && !columnUnitPrice?.activeGenericEmitter"
+      (click)="handleStopEvents($event)"
+    ></div>
+    <div class="img-container" *ngIf="columnUnitPrice?.showComments && columnUnitPrice?.color">
+      <img
+        #imageElement
+        alt=""
+        [id]="columnUnitPrice?.idElementComments ? columnUnitPrice?.idElementComments : 'comments'"
+        [src]="
+          columnUnitPrice?.color
+            ? 'assets/Images/close-offer/comments-' + columnUnitPrice?.color + '.svg'
+            : 'assets/Images/close-offer/comments-ocean.svg'
+        "
+        (click)="handleClickEmmit($event, imageElement, true, nameActionsInternalSalesItem?.UnitPriceCommentsAction)"
+      />
+    </div>
+  </div>
+</div>

@@ -1,0 +1,39 @@
+<div id="register-product">
+  <div class="content">
+    <div class="radio-buttons">
+      <app-radio-button
+        [label]="'Encontrado'"
+        [value]="(cotPartidaInvestigacionProducto$ | async)?.Encontrado"
+        (emitValue)="handleSetRadio('Encontrado', $event)"
+      ></app-radio-button>
+      <app-radio-button
+        [label]="'No Encontrado'"
+        [value]="(cotPartidaInvestigacionProducto$ | async)?.NoEncontrado"
+        (emitValue)="handleSetRadio('NoEncontrado', $event)"
+      ></app-radio-button>
+    </div>
+    <div class="notes">
+      <app-generic-text-area
+        [height]="'185px'"
+        [required]="true"
+        [title]="'Notas'"
+        [value]="(cotPartidaInvestigacionProducto$ | async)?.Notas"
+        [minlength]="3"
+        (emitData)="handleSetNotes($event)"
+      ></app-generic-text-area>
+    </div>
+    <div class="file">
+      <app-generic-input-file
+        [label]="'* Agregar evidencia'"
+        [acceptedExtensions]="'application/pdf,.pdf,.jpeg,.jpg,.png'"
+        [placeholder]="'.Pdf, png, jpg'"
+        [file]="evidenceFile$ | async"
+        (emitFileToDelete)="handleSetFile(null)"
+        (autoEmitFile)="handleSetFile($event)"
+      ></app-generic-input-file>
+    </div>
+    <div class="required-data">
+      <label>{{ 'common.requiredFields' | translate }}</label>
+    </div>
+  </div>
+</div>

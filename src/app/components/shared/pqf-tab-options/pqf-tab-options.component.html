@@ -1,0 +1,10 @@
+<div id="pqf-tab-options">
+  <div
+    class="tab-option"
+    *ngFor="let option of options"
+    [ngClass]="{primary: option.selected, secondary: !option.selected, disable: !option.enable}"
+    (click)="selectedOption(option)"
+  >
+    <label>{{ option.label | translate }}</label>
+  </div>
+</div>

@@ -1,0 +1,309 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  height: 100%;
+  width: 100%;
+
+  & > #control-material-delivery-details {
+    @include s.flexColumn;
+    height: 100%;
+    justify-content: flex-start;
+    overflow: hidden;
+    width: 100%;
+
+    & > .content {
+      @include s.flexRow;
+      flex: 1;
+
+      & > .list {
+        @include s.flexColumn;
+        border-right: 1px solid s.$pqGray2;
+        flex: 0 450px;
+        padding: 15px;
+
+        & > .content {
+          @include s.flexColumn;
+          flex: 1;
+
+          & > .header-list {
+            @include s.flexColumn;
+
+            & > .title {
+              @include s.flexRow;
+              padding-bottom: 15px;
+
+              & > label {
+                @include s.Novecento-Bold;
+                @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+              }
+            }
+
+            & > .filters {
+              @include s.flexRow;
+              justify-content: space-between;
+              padding: 0 20px 20px 0;
+
+              & > .hamburger {
+                @include s.flexRow;
+                padding-right: 52px;
+              }
+
+              & > .search {
+                @include s.flexRow;
+                flex: 1;
+              }
+            }
+          }
+
+          & > .body-list {
+            flex: 1;
+
+            & > .list-content {
+              @include s.flexColumn;
+              border-bottom: 1px solid s.$pqBlack2;
+              border-top: 1px solid s.$pqBlack2;
+              height: 100%;
+
+              & > virtual-scroller {
+                width: 100%;
+                height: 100%;
+              }
+
+              & > .without-results {
+                @include s.flexRowNoWrap;
+                @include s.absoluteCenter;
+                width: 100%;
+                height: 100%;
+              }
+
+              .item {
+                @include s.flexRow;
+                border-bottom: 1px solid s.$pqGray2;
+
+                & :hover {
+                  background-color: s.$pqGray2;
+                }
+
+                & * {
+                  cursor: pointer;
+                }
+
+                & > .indicator {
+                  flex: 0 0 7px;
+                }
+
+                & > .indicator-active {
+                  flex: 0 0 7px;
+                  background-color: s.$pqGreen;
+                }
+
+                & > .order {
+                  @include s.flexRow;
+                  flex: 1;
+
+                  & > .item-content {
+                    @include s.flexColumn;
+                    flex: 1;
+                    padding: 15px;
+
+                    & > .index {
+                      @include s.flexRow;
+
+                      & > label {
+                        @include s.Roboto-Bold;
+                        @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqGreen);
+
+                        & > span {
+                          color: s.$pqBlack2;
+                          vertical-align: baseline;
+                        }
+                      }
+                    }
+
+                    & > .pieces {
+                      @include s.flexRow;
+                      padding-top: 3px;
+
+                      & > label {
+                        @include s.Roboto-Bold;
+                        @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+                      }
+                    }
+
+                    & > .importer {
+                      @include s.flexRow;
+                      padding-top: 7px;
+
+                      & > label {
+                        @include s.Roboto-Regular;
+                        @include s.escaledFontFormat(s.$textSize13to18, regular, s.$pqTextGris);
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          & > .footer-list {
+            @include s.flexRow;
+
+            & > .footer-content {
+              @include s.flexRow;
+              flex: 1;
+              justify-content: space-between;
+              padding: 5px 40px 0 20px;
+
+              & > label {
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+                padding-top: 5px;
+              }
+            }
+          }
+        }
+      }
+
+      & > .right-content {
+        @include s.flexColumn;
+        flex: 1;
+        padding: 15px 15px 0 15px;
+
+        & > .header-content {
+          @include s.flexRow;
+          justify-content: space-between;
+          padding-bottom: 17px;
+
+          & > .left {
+            & > label {
+              @include s.Novecento-Bold;
+              @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqGreen);
+
+              & > span {
+                color: s.$pqBlack2;
+                vertical-align: baseline;
+              }
+            }
+          }
+
+          & > .right {
+            @include s.flexRow;
+
+            & > label {
+              @include s.flexRow;
+              @include s.Roboto-Bold;
+              @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+              align-items: center;
+              padding-right: 5px;
+            }
+
+            & > app-generic-input {
+              height: 30px;
+              width: 63px;
+            }
+          }
+        }
+
+        & > .body-content {
+          flex: 1;
+
+          & > .loading {
+            @include s.flexRow;
+            @include s.absoluteCenter;
+            height: 100%;
+          }
+        }
+
+        & > footer {
+          @include s.flexRow;
+          align-items: center;
+          justify-content: flex-end;
+          padding: 10px 0;
+
+          & > .disabled {
+            @include s.pqButtonDisable();
+          }
+
+          & > .active {
+            @include s.pqButton();
+          }
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .content {
+        & > .list {
+          @include s.flexColumn;
+          padding: 20px;
+          flex: 0 650px;
+
+          & > .content {
+            & > .body-list {
+              & > .list-content {
+                & > virtual-scroller {
+                  & .item {
+                    & > .indicator {
+                      flex: 0 0 8px;
+                    }
+
+                    & > .indicator-active {
+                      flex: 0 0 8px;
+                    }
+
+                    & > .order {
+                      & > .item-content {
+                        padding: 20px;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  & .container {
+    @include s.flexColumn;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+
+    & > .content {
+      @include s.flexColumn;
+      flex: 1;
+      overflow: hidden;
+
+      & > .text {
+        @include s.flexColumn;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize26to29, '', s.$pqBlack2);
+          @include s.Roboto-Bold;
+          padding-top: 5px;
+        }
+
+        & > .pqf {
+          color: s.$pqGreen !important;
+        }
+      }
+    }
+
+    & > .buttons {
+      @include s.flexRow;
+      justify-content: space-between;
+      flex: 0 0 auto;
+
+      & > button {
+        @include s.pqButton();
+      }
+    }
+  }
+}

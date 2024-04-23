@@ -1,0 +1,17 @@
+<div class="component-container" id="daily-meeting-container">
+  <div class="header">
+    <app-header-bar [activeBack]="detailsMode$ | async" [title]="title$ | async" [name]="''" (goBack)="returnMainPage()">
+    </app-header-bar>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="footer" *ngIf="!(detailsMode$ | async)">
+    <ng-container>
+      <div>
+        <img alt="pending" src="assets/Images/quotation/quotes.svg" />
+        <label>{{ 'dailyMeeting.quotation' | translate }}</label>
+      </div>
+    </ng-container>
+  </div>
+</div>

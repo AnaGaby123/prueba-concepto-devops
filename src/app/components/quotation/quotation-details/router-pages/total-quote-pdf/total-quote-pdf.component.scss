@@ -1,0 +1,119 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100();
+  @include s.flexColumn;
+  flex: 1;
+
+  #linked-quote-pdf {
+    @include s.flexColumn;
+    flex: 1;
+    padding: 18px 20px;
+    overflow: hidden;
+    & > .files-container {
+      @include s.absolute100();
+      @include s.flexColumn;
+      flex: 1;
+      gap: 20px;
+      overflow: auto;
+      & > .file-container {
+        display: flex;
+        flex-direction: column;
+        flex: 1 0 100%;
+        &.quotationSent {
+          & > .title {
+            & > label {
+              & > .quotation-status {
+                color: s.$pqBlue;
+              }
+            }
+          }
+        }
+
+        & > .title {
+          @include s.flexRow;
+          border-bottom: 1px solid s.$pqBlack;
+          padding-bottom: 13px;
+
+          & > label {
+            @include s.responsive-font-format(
+              $font-family: s.$font_family_novecento_bold,
+              $font-size-map: s.$responsive-font-17-21
+            );
+            vertical-align: baseline;
+            white-space: pre-wrap;
+          }
+
+          & > .title-main {
+            white-space: pre-wrap;
+          }
+
+          & > .ocean {
+            color: s.$pqGreen;
+          }
+
+          & > .sent {
+            color: s.$pqBlue !important;
+          }
+
+          & > .saved {
+            color: s.$pqOrange;
+          }
+          & > .investigation {
+            color: s.$complementario-b;
+          }
+          & > .investigation-finish {
+            color: s.$complementario-d;
+          }
+        }
+
+        & > .content-file {
+          @include s.flexRow;
+          align-items: center;
+          justify-content: center;
+          flex: 1;
+        }
+      }
+    }
+    & > .loading-container {
+      align-items: center;
+      display: flex;
+      flex: 1;
+    }
+
+    & > .content-buttons {
+      @include s.flexRow();
+      flex: 0;
+      justify-content: space-between;
+      margin-top: 20px;
+      width: 100%;
+
+      & > .active {
+        $max-width-map: (
+          'base': 180px,
+          'macBookAir': 200px,
+        );
+        @include s.pqfButton($max-width-map: $max-width-map);
+        cursor: pointer;
+      }
+
+      & > .disabled {
+        $max-width-map: (
+          'base': 180px,
+          'macBookAir': 200px,
+        );
+        @include s.pqfDisableButton($max-width-map: $max-width-map);
+        cursor: none;
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #linked-quote-pdf {
+    }
+  }
+}

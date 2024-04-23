@@ -1,0 +1,182 @@
+<div id="table-container">
+  <div class="title">
+    <label>#{{ (dispatchOrder$ | async)?.Index + 1 }} · OD-{{ (dispatchOrder$ | async)?.Folio || 'N/D' }}</label>
+  </div>
+  <div class="table-container">
+    <div class="table">
+      <div class="header">
+        <div class="name"></div>
+        <div class="small">
+          <label>{{ 'registerDispatch.igi' | translate }}</label>
+        </div>
+        <div class="small">
+          <label>{{ 'registerDispatch.dta' | translate }}</label>
+        </div>
+        <div class="small">
+          <label>{{ 'registerDispatch.iva' | translate }}</label>
+        </div>
+        <div class="small">
+          <label>{{ 'registerDispatch.imp' | translate }}</label>
+        </div>
+        <div class="small">
+          <label>{{ 'registerDispatch.vac' | translate }}</label>
+        </div>
+        <div class="small">
+          <label>{{ 'registerDispatch.fte' | translate }}</label>
+        </div>
+        <div class="small">
+          <label>{{ 'registerDispatch.vad' | translate }}</label>
+        </div>
+        <div class="big">
+          <label>{{ 'registerDispatch.importEstimatedValue' | translate }}</label>
+        </div>
+      </div>
+      <div class="body">
+        <virtual-scroller
+          *ngIf="(detailsNode$ | async)?.itemsStatus === 3 && !lodashIsEmpty(items$ | async)"
+          [items]="items$ | async"
+          (vsUpdate)="items = $event"
+        >
+          <div class="item" *ngFor="let item of items; trackBy: handleTrackByItem">
+            <div class="top">
+              <div class="name">
+                <label class="bold ocean">{{ item.NombreProveedor }}</label>
+              </div>
+              <div class="small">
+                <label class="bold">{{ item.CalcularMontosImportacion?.IGI | currency: 'USD':'symbol-narrow':'1.2-2' }}</label>
+              </div>
+              <div class="small">
+                <label class="bold">{{ item.CalcularMontosImportacion?.DTA | currency: 'USD':'symbol-narrow':'1.2-2' }}</label>
+              </div>
+              <div class="small">
+                <label class="bold">{{ item.CalcularMontosImportacion?.IVA | currency: 'USD':'symbol-narrow':'1.2-2' }}</label>
+              </div>
+              <div class="small">
+                <label class="bold">{{
+                  item.CalcularMontosImportacion?.IGI +
+                    item.CalcularMontosImportacion?.DTA +
+                    item.CalcularMontosImportacion?.IVA | currency: 'USD':'symbol-narrow':'1.2-2'
+                }}</label>
+              </div>
+              <div class="small">
+                <label class="bold ocean">{{
+                  item.CalcularMontosImportacion?.ValorComercial | currency: 'USD':'symbol-narrow':'1.2-2'
+                }}</label>
+              </div>
+              <div class="small">
+                <label class="bold">{{
+                  item.CalcularMontosImportacion?.MontoFlete | currency: 'USD':'symbol-narrow':'1.2-2'
+                }}</label>
+              </div>
+              <div class="small">
+                <label class="bold">{{ 0 | currency: 'USD':'symbol-narrow':'1.2-2' }}</label>
+              </div>
+              <div class="big">
+                <label class="bold">{{
+                  item.CalcularMontosImportacion?.Total | currency: 'USD':'symbol-narrow':'1.2-2'
+                }}</label>
+              </div>
+            </div>
+            <div class="bottom">
+              <div class="item-bottom" *ngFor="let subItem of item.ListaVOcPartidaDetalle">
+                <div class="name">
+                  <div>
+                    <label
+                      ><span
+                        >#{{ subItem.ocPartida.Indice
+                        }}{{ subItem.ocPartida.SubIndice ? '.' + subItem.ocPartida.SubIndice : '' }}</span
+                      >
+                      · {{ subItem.vProducto.Catalogo }} · {{ subItem.vProducto.Descripcion }}</label
+                    >
+                  </div>
+                  <label
+                    >{{ subItem.ocPartida.NumeroDePiezas }}
+                    {{ subItem.ocPartida.NumeroDePiezas === 1 ? ('common.piece' | translate) : ('common.pieces' | translate) }}
+                    · CU: {{ subItem.ocPartida.PrecioLista | currency: 'USD':'symbol-narrow':'1.2-2' }} · CT:
+                    {{
+                      subItem.ocPartida.PrecioLista * subItem.ocPartida.NumeroDePiezas | currency: 'USD':'symbol-narrow':'1.2-2'
+                    }}</label
+                  >
+                </div>
+                <div class="small">
+                  <label>{{ subItem.CalcularMontosImportacion?.IGI | currency: 'USD':'symbol-narrow':'1.2-2' }}</label>
+                </div>
+                <div class="small">
+                  <label>{{ subItem.CalcularMontosImportacion?.DTA | currency: 'USD':'symbol-narrow':'1.2-2' }}</label>
+                </div>
+                <div class="small">
+                  <label>{{ subItem.CalcularMontosImportacion?.IVA | currency: 'USD':'symbol-narrow':'1.2-2' }}</label>
+                </div>
+                <div class="small">
+                  <label>{{
+                    subItem.CalcularMontosImportacion?.IGI +
+                      subItem.CalcularMontosImportacion?.DTA +
+                      subItem.CalcularMontosImportacion?.IVA | currency: 'USD':'symbol-narrow':'1.2-2'
+                  }}</label>
+                </div>
+                <div class="small">
+                  <label>{{
+                    subItem.CalcularMontosImportacion?.ValorComercial | currency: 'USD':'symbol-narrow':'1.2-2'
+                  }}</label>
+                </div>
+                <div class="small">
+                  <label>{{ subItem.CalcularMontosImportacion?.MontoFlete | currency: 'USD':'symbol-narrow':'1.2-2' }}</label>
+                </div>
+                <div class="small">
+                  <label>{{ 0 | currency: 'USD':'symbol-narrow':'1.2-2' }}</label>
+                </div>
+                <div class="big">
+                  <label>{{ subItem.CalcularMontosImportacion?.Total | currency: 'USD':'symbol-narrow':'1.2-2' }}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </virtual-scroller>
+        <div class="loading" *ngIf="(detailsNode$ | async)?.itemsStatus === 1">
+          <app-loading></app-loading>
+        </div>
+        <div class="loading" *ngIf="(detailsNode$ | async)?.itemsStatus !== 1 && lodashIsEmpty(items$ | async)">
+          <app-without-results></app-without-results>
+        </div>
+      </div>
+      <div class="footer">
+        <div class="name">
+          <label>#{{ (providersTotalsList$ | async)?.Items }}</label>
+          <label
+            >{{ (providersTotalsList$ | async)?.Piezas }}
+            {{
+              (providersTotalsList$ | async)?.Piezas === 1 ? ('common.piece' | translate) : ('common.pieces' | translate)
+            }}</label
+          >
+        </div>
+        <div class="small">
+          <label>{{ (providersTotalsList$ | async)?.IGI | currency: 'USD':'symbol-narrow':'1.2-2' }}</label>
+        </div>
+        <div class="small">
+          <label>{{ (providersTotalsList$ | async)?.DTA | currency: 'USD':'symbol-narrow':'1.2-2' }}</label>
+        </div>
+        <div class="small">
+          <label>{{ (providersTotalsList$ | async)?.IVA | currency: 'USD':'symbol-narrow':'1.2-2' }}</label>
+        </div>
+        <div class="small">
+          <label>{{ (providersTotalsList$ | async)?.IMP | currency: 'USD':'symbol-narrow':'1.2-2' }}</label>
+        </div>
+        <div class="small">
+          <label>{{ (providersTotalsList$ | async)?.ValorComercial | currency: 'USD':'symbol-narrow':'1.2-2' }}</label>
+        </div>
+        <div class="small">
+          <label>{{ (providersTotalsList$ | async)?.MontoFlete | currency: 'USD':'symbol-narrow':'1.2-2' }}</label>
+        </div>
+        <div class="small">
+          <label>{{ (providersTotalsList$ | async)?.VAD | currency: 'USD':'symbol-narrow':'1.2-2' }}</label>
+        </div>
+        <div class="big">
+          <label>{{ (providersTotalsList$ | async)?.Total | currency: 'USD':'symbol-narrow':'1.2-2' }}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="button">
+    <button [ngClass]="'active'" (click)="register()">{{ 'common.register' | translate }}</button>
+  </div>
+</div>

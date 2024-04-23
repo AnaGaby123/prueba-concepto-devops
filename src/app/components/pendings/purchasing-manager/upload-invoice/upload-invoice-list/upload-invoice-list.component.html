@@ -1,0 +1,90 @@
+<div class="dashboard-container" id="upload-invoice-list">
+  <div class="left-container">
+    <label class="title">{{ 'processPurchase.providers' | translate }}</label>
+    <div class="filters">
+      <div class="filter-by-type">
+        <app-hamburger-menu [options]="sortList$ | async" [value]="(sort$ | async).value" (valueEmit)="setTypeSort($event)">
+        </app-hamburger-menu>
+      </div>
+      <div class="filter-by-search">
+        <app-search
+          [placeholder]="'processPurchase.provider' | translate"
+          [searchTerm]="searchTerm$ | async"
+          (textSearch)="handleKeySearch($event)"
+        >
+        </app-search>
+      </div>
+    </div>
+    <div class="list-container">
+      <virtual-scroller
+        *ngIf="!(isLoading$ | async) && (providers$ | async)?.length > 0"
+        [items]="providers$ | async"
+        (vsUpdate)="listProviderScrollItems = $event"
+        (vsEnd)="fetchMore($event)"
+      >
+        <div class="client" *ngFor="let provider of listProviderScrollItems" (click)="selectedProvider(provider)">
+          <div class="index">
+            <label>{{ '#' + provider.Index }}</label>
+          </div>
+          <div>
+            <div class="name">
+              <label>{{ provider.Nombre }}</label>
+            </div>
+            <div class="classification">
+              <label>{{
+                provider.NumPiezas +
+                  ' ' +
+                  (provider.NumPiezas === 1 ? ('strategy.details.piece' | translate) : ('strategy.details.pieces' | translate))
+              }}</label>
+              <label>·</label>
+              <label>{{
+                ((provider.TotalUSD ? provider.TotalUSD : 0) | currency: 'USD':'symbol-narrow':'0.2-4') + ' USD'
+              }}</label>
+            </div>
+            <div class="purchase-order">
+              <label>{{ provider.TotalOrdenesDeCompra }} Órdenes de compra</label>
+            </div>
+          </div>
+          <div class="arrow">
+            <img alt="arrow" src="assets/Images/quotation/arrow_default.svg" />
+          </div>
+        </div>
+      </virtual-scroller>
+      <div class="without-results" *ngIf="(providers$ | async)?.length === 0 && !(isLoading$ | async)">
+        <app-without-results></app-without-results>
+      </div>
+      <div class="loader" *ngIf="isLoading$ | async">
+        <app-loading></app-loading>
+      </div>
+    </div>
+    <div class="footer">
+      <label>{{ '#' + ((totals$ | async).TProveedores | number: '1.0-0') }}</label>
+      <label>{{ (totals$ | async).TIOrdenesCompra + ' Órdenes de Compra' }}</label>
+      <label>{{
+        ((totals$ | async).TPiezas | number: '1.0-0') + ((totals$ | async).TPiezas === 1 ? ' Pieza' : ' Piezas')
+      }}</label>
+      <label>{{
+        'Monto Total ' +
+          (((totals$ | async).TValorTotal ? (totals$ | async).TValorTotal : 0) | currency: 'USD':'symbol-narrow':'2.2-4') +
+          ' USD'
+      }}</label>
+    </div>
+  </div>
+  <div class="right-container">
+    <ng-container *ngIf="true">
+      <app-doughnut-chart
+        *ngIf="!(isLoading$ | async)"
+        [data]="doughnutData$ | async"
+        [optionDetailsHover]="doughnutDataDetailsHover$ | async"
+        [optionDetails]="doughnutDataDetails$ | async"
+        [titleDetails]="'Totales'"
+        [title]="'processPurchase.providers' | translate"
+        [typeChart]="1"
+      >
+      </app-doughnut-chart>
+    </ng-container>
+    <div class="loading" *ngIf="isLoading$ | async">
+      <app-loading></app-loading>
+    </div>
+  </div>
+</div>

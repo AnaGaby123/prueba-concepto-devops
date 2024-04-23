@@ -1,0 +1,531 @@
+<div class="header">
+  <div class="info">
+    <div class="user">
+      <div class="rol">
+        <label>{{ 'dailyMeeting.details.evi' | translate }}</label>
+        <img alt="user" src="assets/Images/strategy/user.svg" />
+      </div>
+      <div class="name">
+        <label>{{ (userData$ | async)?.NombreUsuario }}</label>
+      </div>
+    </div>
+    <div class="stars">
+      <div class="container-labels">
+        <label>{{ 'dailyMeeting.details.effectiveness' | translate }}:</label>
+        <label>0%</label>
+      </div>
+      <div class="container-star">
+        <app-percentage-stars [percentage]="0" [sizeImgStar]="viewType === viewIpad ? 18 : 26"></app-percentage-stars>
+      </div>
+    </div>
+    <div class="container-contract">
+      <label>{{ 'dailyMeeting.details.clientsWithContract' | translate }}:</label>
+      <label>REV $0 {{ currency$ | async }}</label>
+    </div>
+    <div class="container-contract">
+      <label>{{ 'dailyMeeting.details.withoutContractClients' | translate }}:</label>
+      <label>REV $0 {{ currency$ | async }}</label>
+    </div>
+  </div>
+  <div class="progress-bar-container">
+    <label>{{ 'dailyMeeting.details.vs' | translate }}</label>
+    <app-progress-bar [percentage]="totalPercentage$ | async" [color]="'#33b2bd'"></app-progress-bar>
+    <div class="columns">
+      <div class="column-one">
+        <label
+          >{{ 'Monto facturado ' + ((userData$ | async)?.TotalFacturadoUSD | currency: 'USD':'symbol-narrow':'1.2-2') }}
+          {{ currency$ | async }}</label
+        >
+        <label>{{ ('dailyMeeting.details.untilThe' | translate) + ' ' + (currentDate | dateFormatSlash) }}</label>
+      </div>
+      <div class="column-two">
+        <label class="align-right"
+          >{{ (userData$ | async)?.ObjetivoFundamentalUSD | currency: 'USD':'symbol-narrow':'1.2-2' }}
+          {{ currency$ | async }}</label
+        >
+        <label class="align-right">{{ '0bjetivo venta anual cartera · ' + currentYear }}</label>
+      </div>
+    </div>
+  </div>
+</div>
+<section id="daily-meeting-details">
+  <div class="list-clients">
+    <app-dashboard-clients></app-dashboard-clients>
+  </div>
+  <div class="order-items">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="quotation-strategy-content">
+    <section>
+      <div class="content">
+        <div class="info">
+          <div class="title">
+            <label>{{ 'dailyMeeting.strategy' | translate }}</label>
+          </div>
+          <div class="folio">
+            <label>{{ 'dailyMeeting.details.amountTotalInCloseGeneral' | translate }}</label>
+            <label>{{
+              ((userData$ | async)?.TotalCotizadoUSD | currency: 'USD':'symbol-narrow':'1.2-2') + ' ' + ' USD '
+            }}</label>
+          </div>
+          <div class="drop-list">
+            <label>{{ 'dailyMeeting.strategy' | translate }}</label>
+            <app-drop-down-list
+              [required]="true"
+              [activeMinWidth]="true"
+              [items]="optionsListQuotationStrategy$ | async"
+              [subtitleActive]="false"
+              [showAsterisk]="false"
+              [title]="'Seleccionar'"
+              [itemSelected]="itemSelected$ | async"
+              (valueDropList)="changeQuotationStrategy($event)"
+            >
+            </app-drop-down-list>
+          </div>
+          <div class="message" *ngIf="!!(itemSelected$ | async)?.label">
+            <label>
+              <span>{{ 'strategy.details.objective' | translate }}</span>
+              <span>·</span>
+              <span *ngIf="(itemSelected$ | async)?.label === quotationDailyMeetingOffensive">{{
+                'dailyMeeting.details.offensiveObjective' | translate
+              }}</span>
+              <span *ngIf="(itemSelected$ | async)?.label === quotationDailyMeetingBalanced">{{
+                'dailyMeeting.details.balancedObjective' | translate
+              }}</span>
+              <span *ngIf="(itemSelected$ | async)?.label === quotationDailyMeetingDefensive">{{
+                'dailyMeeting.details.defensiveObjective' | translate
+              }}</span>
+            </label>
+            <label>
+              <span>{{ 'strategy.details.tactics' | translate }}</span>
+              <span>·</span>
+              <span *ngIf="(itemSelected$ | async)?.label === quotationDailyMeetingOffensive">{{
+                'dailyMeeting.details.offensiveTactics' | translate
+              }}</span>
+              <span *ngIf="(itemSelected$ | async)?.label === quotationDailyMeetingBalanced">{{
+                'dailyMeeting.details.balancedTactics' | translate
+              }}</span>
+              <span *ngIf="(itemSelected$ | async)?.label === quotationDailyMeetingDefensive">{{
+                'dailyMeeting.details.defensiveTactics' | translate
+              }}</span>
+            </label>
+          </div>
+          <div class="section-check">
+            <div class="title">
+              <label>{{ 'dailyMeeting.details.tactics' | translate }}</label>
+            </div>
+            <div class="option" *ngFor="let tactic of listQuotationStrategyTactic$ | async; trackBy: handleTrackByTactic">
+              <div #addJustificationTactic>
+                <app-check-box
+                  [enableEdit]="true"
+                  [fontColor]="'#008894'"
+                  [backGroundCheckColor]="'#fff'"
+                  [label]="tactic.Tactica"
+                  [labelFontStyle]="tactic.isSelected ? 'robotoBoldProquifa13' : 'robotoRegular13'"
+                  [check]="tactic.isSelected"
+                  (event)="changeQuotationStrategyTactic($event, tactic, addJustificationTactic)"
+                ></app-check-box>
+                <div
+                  class="justification-content"
+                  *ngIf="tactic.Tactica === quotationStrategyTactic1 && tactic.listSubTactic.length > 0"
+                  (click)="handleStopEvents($event)"
+                >
+                  <!--                  DOCS:  CUANDO NO ESTÁ SELECCIONADA Y TIENE JUSITIFICACIÓN -->
+                  <p
+                    class="disable"
+                    *ngIf="
+                      tactic.listSubTactic[0].ajOfQuotationStrategyTactic.Justificacion !== '' &&
+                      tactic.listSubTactic[0].ajOfQuotationStrategyTactic.Observaciones === '' &&
+                      !tactic.listSubTactic[0].isSelected
+                    "
+                  >
+                    {{ 'dailyMeeting.details.justificationByEvi' | translate }}
+                    <span *ngIf="viewType === viewMacBookAir">{{ 'dailyMeeting.details.addObservation' | translate }}</span>
+                    <img
+                      *ngIf="viewType === viewIpad"
+                      alt="justification"
+                      src="assets/Images/dailyMeeting/justifications-grey.svg"
+                    />
+                  </p>
+                  <!--                  DOCS:  CUANDO NO ESTÁ SELECCIONADA Y TIENE OBSERVACIÓN -->
+                  <p
+                    class="disable"
+                    *ngIf="
+                      tactic.listSubTactic[0].ajOfQuotationStrategyTactic.Justificacion === '' &&
+                      tactic.listSubTactic[0].ajOfQuotationStrategyTactic.Observaciones !== '' &&
+                      !tactic.listSubTactic[0].isSelected
+                    "
+                  >
+                    {{ 'dailyMeeting.details.editJustification' | translate }}
+                  </p>
+                  <!--                  DOCS:  CUANDO NO ESTÁ SELECCIONADA Y TIENE OBSERVACIÓN Y JUSTIFICACIÓN-->
+                  <p
+                    class="disable"
+                    *ngIf="
+                      tactic.listSubTactic[0].ajOfQuotationStrategyTactic.Justificacion !== '' &&
+                      tactic.listSubTactic[0].ajOfQuotationStrategyTactic.Observaciones !== '' &&
+                      !tactic.listSubTactic[0].isSelected
+                    "
+                  >
+                    {{ 'dailyMeeting.details.justificationByEvi' | translate }}
+                    <span *ngIf="viewType === viewMacBookAir">{{ 'dailyMeeting.details.addObservation' | translate }} </span>
+                    <img
+                      *ngIf="viewType === viewIpad"
+                      alt="justification"
+                      src="assets/Images/dailyMeeting/justifications-grey.svg"
+                    />
+                  </p>
+
+                  <!--  DOCS: CUANDO  YA TIENE  JUSTIFICACIÓN PERO NO UNA OBSERVACIÓN-->
+                  <p
+                    #editJustification
+                    class="enable-and-add"
+                    *ngIf="
+                      (listQuotationStrategyBackupSaleForValue$ | async) !== '' &&
+                      tactic.listSubTactic[0].ajOfQuotationStrategyTactic.Observaciones === '' &&
+                      tactic.listSubTactic[0].isSelected
+                    "
+                  >
+                    {{ ('dailyMeeting.details.justificationByEvi' | translate) + ' ' }}
+                    <span
+                      *ngIf="viewType === viewMacBookAir"
+                      (click)="
+                        tactic.isSelected && tactic.listSubTactic[0].ajOfQuotationStrategyTactic.Observaciones === ''
+                          ? changeQuotationStrategyTactic(tactic.isSelected, tactic, editJustification)
+                          : null
+                      "
+                    >
+                      {{ 'dailyMeeting.details.addObservation' | translate }}
+                    </span>
+                    <img
+                      alt="justification"
+                      src="assets/Images/dailyMeeting/justifications.svg"
+                      *ngIf="viewType === viewIpad"
+                      (click)="
+                        tactic.isSelected && tactic.listSubTactic[0].ajOfQuotationStrategyTactic.Observaciones === ''
+                          ? changeQuotationStrategyTactic(tactic.isSelected, tactic, editJustification)
+                          : null
+                      "
+                    />
+                  </p>
+
+                  <!--  DOCS: CUANDO  YA TIENE  JUSTIFICACIÓN PERO NO UNA OBSERVACIÓN-->
+                  <p
+                    #editJustification
+                    *ngIf="
+                      tactic.listSubTactic[0].ajOfQuotationStrategyTactic.Justificacion === '' &&
+                      tactic.listSubTactic[0].ajOfQuotationStrategyTactic.Observaciones !== '' &&
+                      tactic.listSubTactic[0].isSelected
+                    "
+                    (click)="
+                      tactic.listSubTactic[0].isSelected &&
+                      tactic.listSubTactic[0].ajOfQuotationStrategyTactic.Observaciones !== ''
+                        ? changeQuotationStrategyTactic(tactic.isSelected, tactic, editJustification)
+                        : null
+                    "
+                  >
+                    {{ 'dailyMeeting.details.editObservation' | translate }}
+                  </p>
+
+                  <!--                  DOCS: CUANDO EL COODRINADOR AGREGA UNA OBSERVACIÓN X-->
+                  <div
+                    *ngIf="
+                      tactic.listSubTactic[0].ajOfQuotationStrategyTactic.Justificacion !== '' &&
+                      tactic.listSubTactic[0].ajOfQuotationStrategyTactic.Observaciones !== '' &&
+                      tactic.listSubTactic[0].isSelected
+                    "
+                  >
+                    <p
+                      #editJustification
+                      (click)="
+                        tactic.isSelected && tactic.listSubTactic[0].ajOfQuotationStrategyTactic.Observaciones !== ''
+                          ? changeQuotationStrategyTactic(tactic.isSelected, tactic, editJustification)
+                          : null
+                      "
+                    >
+                      {{ 'dailyMeeting.details.observationByCoordinator' | translate }}
+                    </p>
+                    <img alt="remove" src="assets/Images/close_red.svg" (click)="handleRemoveObservationOnTactic(tactic)" />
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="tactic.Tactica !== quotationStrategyTactic1" (click)="handleStopEvents($event)">
+                <div #addJustificationSubTactic *ngFor="let subTactic of tactic.listSubTactic; trackBy: handleTrackBySubTactic">
+                  <app-radio-button
+                    *ngIf="!tactic.PermiteMultiplesSubtacticas"
+                    [value]="subTactic.isSelected"
+                    [label]="subTactic.Subtactica"
+                    [isMulticolor]="true"
+                    [radioColor]="'white'"
+                    [labelFontStyle]="
+                      !tactic.isSelected
+                        ? 'labelRobotoRegularDisable13'
+                        : subTactic.isSelected
+                        ? 'labelRobotoBoldProquifa13'
+                        : 'default'
+                    "
+                    [height]="'20px'"
+                    [disabled]="!tactic.isSelected"
+                    [activeLocalState]="false"
+                    (emitValue)="
+                      changeQuotationStrategySubTactic(
+                        $event,
+                        subTactic,
+                        tactic.PermiteMultiplesSubtacticas,
+                        addJustificationSubTactic
+                      )
+                    "
+                  ></app-radio-button>
+                  <app-check-box
+                    *ngIf="tactic.PermiteMultiplesSubtacticas"
+                    [enableEdit]="true"
+                    [fontColor]="'#008894'"
+                    [label]="subTactic.Subtactica"
+                    [backGroundCheckColor]="'#fff'"
+                    [labelFontStyle]="
+                      !tactic.isSelected
+                        ? 'labelRobotoRegularDisable13'
+                        : subTactic.isSelected
+                        ? 'robotoBoldProquifa13'
+                        : 'robotoRegular13'
+                    "
+                    [check]="subTactic.isSelected"
+                    [disabled]="!tactic.isSelected"
+                    (event)="
+                      changeQuotationStrategySubTactic(
+                        $event,
+                        subTactic,
+                        tactic.PermiteMultiplesSubtacticas,
+                        addJustificationSubTactic
+                      )
+                    "
+                  ></app-check-box>
+                  <div class="justification-content" (click)="handleStopEvents($event)">
+                    <!--  DOCS: NO ESTÁ SELECCIONADA Y TIENE JUSTIFICACIÓN-->
+                    <p
+                      class="disable"
+                      *ngIf="
+                        subTactic.ajOfQuotationStrategyTactic.Justificacion !== '' &&
+                        subTactic.ajOfQuotationStrategyTactic.Observaciones === '' &&
+                        !subTactic.isSelected
+                      "
+                    >
+                      {{ 'dailyMeeting.details.justificationByEvi' | translate }}
+                      <span *ngIf="viewType === viewMacBookAir">{{ 'dailyMeeting.details.addObservation' | translate }}</span>
+                      <img
+                        *ngIf="viewType === viewIpad"
+                        alt="justification"
+                        src="assets/Images/dailyMeeting/justifications-grey.svg"
+                      />
+                    </p>
+                    <!--  DOCS: OPCIÓN PARA PODER AGREGAR OBSERVACIONES-->
+                    <p
+                      #editJustification
+                      class="enable-and-add"
+                      *ngIf="
+                        subTactic.ajOfQuotationStrategyTactic.Justificacion !== '' &&
+                        subTactic.ajOfQuotationStrategyTactic.Observaciones === '' &&
+                        subTactic.isSelected
+                      "
+                    >
+                      {{ ('dailyMeeting.details.justificationByEvi' | translate) + ' ' }}
+                      <span
+                        *ngIf="viewType === viewMacBookAir"
+                        (click)="
+                          tactic.isSelected && subTactic.ajOfQuotationStrategyTactic.Observaciones === ''
+                            ? changeQuotationStrategySubTactic(
+                                subTactic.isSelected,
+                                subTactic,
+                                tactic.PermiteMultiplesSubtacticas,
+                                editJustification
+                              )
+                            : null
+                        "
+                      >
+                        {{ 'dailyMeeting.details.addObservation' | translate }}
+                      </span>
+                      <img
+                        alt="justification"
+                        src="assets/Images/dailyMeeting/justifications.svg"
+                        *ngIf="viewType === viewIpad"
+                        (click)="
+                          tactic.isSelected && subTactic.ajOfQuotationStrategyTactic.Observaciones === ''
+                            ? changeQuotationStrategySubTactic(
+                                subTactic.isSelected,
+                                subTactic,
+                                tactic.PermiteMultiplesSubtacticas,
+                                editJustification
+                              )
+                            : null
+                        "
+                      />
+                    </p>
+                    <!--                    DOCS: SE AGREGA OBSERVACIÓN Y EL COORDINADOR PUEDE EDITARLA -->
+                    <p
+                      #editJustification
+                      *ngIf="
+                        subTactic.ajOfQuotationStrategyTactic.Justificacion === '' &&
+                        subTactic.ajOfQuotationStrategyTactic.Observaciones !== '' &&
+                        subTactic.isSelected
+                      "
+                      (click)="
+                        tactic.isSelected && subTactic.ajOfQuotationStrategyTactic.Observaciones !== ''
+                          ? changeQuotationStrategySubTactic(
+                              subTactic.isSelected,
+                              subTactic,
+                              tactic.PermiteMultiplesSubtacticas,
+                              editJustification
+                            )
+                          : null
+                      "
+                    >
+                      {{ 'dailyMeeting.details.editObservation' | translate }}
+                    </p>
+                    <!--                    DOCS: CUANDO AGREGAN OBSERVACIONES EL COORDINADOR Y PUEDE REMOVERLAS X-->
+                    <div
+                      *ngIf="
+                        subTactic.ajOfQuotationStrategyTactic.Justificacion !== '' &&
+                        subTactic.ajOfQuotationStrategyTactic.Observaciones !== '' &&
+                        subTactic.isSelected
+                      "
+                    >
+                      <p
+                        #editJustification
+                        (click)="
+                          tactic.isSelected && subTactic.ajOfQuotationStrategyTactic.Observaciones !== ''
+                            ? changeQuotationStrategySubTactic(
+                                subTactic.isSelected,
+                                subTactic,
+                                tactic.PermiteMultiplesSubtacticas,
+                                editJustification
+                              )
+                            : null
+                        "
+                      >
+                        {{ 'dailyMeeting.details.observationByCoordinator' | translate }}
+                      </p>
+                      <img
+                        alt="remove"
+                        src="assets/Images/close_red.svg"
+                        (click)="handleRemoveObservationOnSubTactic(subTactic, tactic.PermiteMultiplesSubtacticas)"
+                      />
+                    </div>
+                  </div>
+                  <div class="custom-pop-up"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="button-save">
+            <button
+              [ngClass]="(isValidStrategy$ | async) ? 'enable' : 'disable'"
+              [disabled]="!(isValidStrategy$ | async)"
+              (click)="saveStrategy()"
+            >
+              {{ 'dailyMeeting.details.public' | translate }}</button
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="is-loading" *ngIf="(isLoadingQuotationStrategy$ | async) === 1">
+      <app-loading></app-loading>
+    </div>
+    <div
+      class="is-loading"
+      *ngIf="(isLoadingQuotationStrategy$ | async) === 3 && (listQuotationStrategyTactic$ | async)?.length === 0"
+    >
+      <app-without-results></app-without-results>
+    </div>
+  </div>
+</section>
+<footer>
+  <div>
+    <div>
+      <img alt="originales" src="assets/Images/pre-processing/originales.svg" />
+      <p class="text">{{ 'dailyMeeting.typeOfItem.original' | translate }}</p>
+    </div>
+    <div>
+      <img alt="alternativas" src="assets/Images/pre-processing/alternativas.svg" />
+      <p class="text">{{ 'dailyMeeting.typeOfItem.alternatives' | translate }}</p>
+    </div>
+    <div>
+      <img alt="complementarias" src="assets/Images/pre-processing/complementarias.svg" />
+      <p class="text">{{ 'dailyMeeting.typeOfItem.complementary' | translate }}</p>
+    </div>
+    <div>
+      <img alt="promocion" src="assets/Images/pre-processing/promocion.svg" />
+      <p class="text">{{ 'dailyMeeting.typeOfItem.promotion' | translate }}</p>
+    </div>
+    <div>
+      <img alt="ahorro" src="assets/Images/pre-processing/ahorro.svg" />
+      <p class="text">{{ 'dailyMeeting.typeOfItem.saving' | translate }}</p>
+    </div>
+    <div>
+      <img alt="sent" src="assets/Images/eliminar.svg" />
+      <p class="text">{{ 'delete' | translate }}</p>
+    </div>
+    <div>
+      <label>{{ 'dailyMeeting.FEE' | translate }}</label>
+      <label>{{ 'dailyMeeting.deliveryDate' | translate }}</label>
+    </div>
+    <div>
+      <label>{{ 'dailyMeeting.FRE' | translate }}</label>
+      <label>{{ 'dailyMeeting.deliveryDateReal' | translate }}</label>
+    </div>
+    <div>
+      <img alt="justificacion" src="assets/Images/dailyMeeting/justifications.svg" />
+      <p class="text">{{ 'dailyMeeting.typeOfItem.observations' | translate }}</p>
+    </div>
+  </div>
+</footer>
+
+<div class="justification-and-observation-container">
+  <app-custom-position-pop-up
+    *ngIf="modalIsOpenJustification"
+    [minWidth]="viewType === 'macBookAir' ? '630px' : '470px'"
+    [minHeight]="viewType === 'macBookAir' ? '316px' : '300px'"
+    [maxWidth]="viewType === 'macBookAir' ? '630px' : '470px'"
+    [maxHeight]="viewType === 'macBookAir' ? '316px' : '300px'"
+    [floatingSize]="0"
+    [padding]="'0'"
+    [target]="popUpPercentageBarsTarget"
+    [popUpPosition]="'left-center'"
+    [closeButton]="false"
+  >
+    <div class="content">
+      <div class="body">
+        <section class="section1" *ngIf="textJustification !== ''">
+          <div class="title">
+            <h3>{{ 'dailyMeeting.details.justificationByEvi' | translate }}</h3>
+          </div>
+          <div class="justification">
+            <label>{{ textJustification }}</label>
+          </div>
+        </section>
+        <section class="section2">
+          <div class="title">
+            <h3>{{ 'dailyMeeting.details.observations' | translate }}</h3>
+          </div>
+          <div class="observation">
+            <app-generic-text-area
+              [height]="'100%'"
+              (emitData)="handleObservation($event)"
+              [value]="textObservation"
+            ></app-generic-text-area>
+            <!--            <textarea placeholder="Escribe Aquí" [(ngModel)]="textObservation"></textarea>-->
+          </div>
+        </section>
+      </div>
+      <div class="footer">
+        <button class="enable" (click)="handleCloseModal()">{{ 'common.cancel' | translate }}</button>
+        <button
+          [ngClass]="textObservation !== '' ? 'enable' : 'disable'"
+          [disabled]="textObservation === ''"
+          (click)="setObservationQuotationStrategy()"
+          >{{ 'common.accept' | translate }}</button
+        >
+      </div>
+    </div>
+  </app-custom-position-pop-up>
+</div>

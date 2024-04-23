@@ -1,0 +1,16 @@
+<div #emailsContainer class="multiple-emails-input-container" id="multiple-emails-input-container">
+  <div class="email-item" *ngFor="let email of emails; i as index">
+    <img (click)="onRemoveEmail(email)" alt="delete" src="assets/Images/quotation/delete.svg" />
+    <label>{{ email }}</label>
+  </div>
+  <input
+    #inputElement
+    type="text"
+    [ngClass]="{error: activeError}"
+    (keydown)="onKeydown($event)"
+    [(ngModel)]="currentEmail"
+    (ngModelChange)="validate($event)"
+    (blur)="onBlur()"
+    (keyup.enter)="onEnter()"
+  />
+</div>

@@ -1,0 +1,46 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  & .item {
+    @include s.pending-dashboard-list-item;
+    & > .content {
+      @include s.flexColumn;
+      justify-content: space-between;
+      overflow: hidden;
+
+      & > .title {
+        @include s.responsive-font-format(
+          $font-family: s.$font-family-roboto_bold,
+          $font-weight: s.$font-weight-bold,
+          $font-size-map: s.$responsive-font-17-21,
+          $color: s.$pqGreen
+        );
+        margin-bottom: 2px;
+      }
+
+      & > div {
+        @include s.flexRow;
+        justify-content: flex-start;
+      }
+
+      & > .totals {
+        & > label {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-roboto_bold,
+            $font-weight: s.$font-weight-bold,
+            $font-size-map: s.$responsive-font-16-20
+          );
+          margin-right: 5px;
+
+          &.sin-oc {
+            color: s.$pqTextAlert;
+          }
+        }
+      }
+    }
+  }
+}

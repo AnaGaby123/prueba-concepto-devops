@@ -1,0 +1,134 @@
+@use 'base' as s;
+
+:host {
+  .agents-list {
+    @include s.absolute100;
+    @include s.flexColumn;
+
+    & > .appSearchContainer {
+      margin: 20px 0;
+
+      .disable-list {
+        pointer-events: none;
+      }
+    }
+
+    & > .left-container {
+      @include s.flexColumn;
+      border-top: 1px solid;
+      flex: 1 1 auto;
+
+      & > .orders-list-container {
+        @include s.flexColumn;
+        flex: 1 1 auto;
+        overflow: hidden;
+
+        & > .virtual-list {
+          @include s.absolute100;
+          @include s.flexColumn;
+          @include s.fixVirtualScroller;
+          flex: 1;
+          overflow: auto;
+
+          & > ::ng-deep .scrollable-content > .item {
+            @include s.flexRow;
+            border-bottom: 1px solid s.$pqGray2;
+            transition: background-color 0.2s ease;
+            /* pointer-events: none;*/
+
+            & * {
+              cursor: pointer;
+            }
+
+            &:hover {
+              background-color: s.$pqGray2;
+            }
+
+            &.active {
+              & > .indicator {
+                background-color: s.$pqGreen;
+              }
+
+              background-color: s.$pqGray2;
+            }
+
+            & > .indicator {
+              flex: 0 0 8px;
+            }
+
+            & > .content {
+              @include s.flexColumn;
+              align-items: flex-start;
+              flex: 1;
+              height: 100%;
+              justify-content: space-between;
+              padding: 15px;
+              overflow: hidden;
+
+              & > .title {
+                @include s.multiLineTextTruncateSinHeight($lineHeight: 1.2em);
+                margin-bottom: 4px;
+
+                & > label {
+                  @include s.escaledFontFormat(s.$textSize16to20, bold, s.$pqBlack2);
+                  @include s.Roboto-Bold;
+
+                  & > span {
+                    color: s.$pqGreen;
+                    vertical-align: baseline;
+                  }
+                }
+              }
+
+              & > .subtitle {
+                @include s.escaledFontFormat(s.$textSize14to20, normal, s.$pqBlack2);
+                @include s.Roboto-Regular;
+                margin-bottom: 4px;
+              }
+
+              & > .black-info {
+                @include s.escaledFontFormat(s.$textSize13to18, regular, s.$pqGreen);
+                @include s.Roboto-Regular;
+              }
+            }
+          }
+        }
+
+        & > app-loading,
+        app-without-results {
+          @include s.flexRow;
+          @include s.absoluteCenter;
+          height: 100%;
+        }
+      }
+
+      & > .charger {
+        flex: 0 0 33px;
+      }
+    }
+
+    & > .visitsContainer {
+      border-top: 1px solid s.$pqBlack2;
+      flex: 0 0 50px;
+
+      & > .visits {
+        @include s.flexRow;
+        justify-content: center;
+        @include s.escaledFontFormat(s.$textSize12to14, normal, s.$pqBlack2);
+        padding-top: 10px;
+      }
+    }
+  }
+
+  .disable-list {
+    pointer-events: none;
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    .agents-list {
+      & > .visitsContainer {
+        flex: 0 0 55px;
+      }
+    }
+  }
+}

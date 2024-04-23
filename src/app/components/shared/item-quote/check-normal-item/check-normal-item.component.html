@@ -1,0 +1,17 @@
+<div class="checks-container">
+  <app-check-box
+    #checkBoxComponent
+    *ngIf="columnOptions?.value || columnOptions?.value === null || columnOptions?.value === false"
+    [check]="columnOptions?.value"
+    (click)="stopEvents($event)"
+    (event)="
+      handleCheck(
+        checkBoxComponent,
+        $event,
+        columnOptions.isCheckHeader
+          ? nameActionsInternalSalesItem.CheckBoxHeaderBoxNormalItem
+          : nameActionsInternalSalesItem.CheckBoxNormalAction
+      )
+    "
+  ></app-check-box>
+</div>

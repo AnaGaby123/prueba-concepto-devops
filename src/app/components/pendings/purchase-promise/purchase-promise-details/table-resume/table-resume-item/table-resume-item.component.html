@@ -1,0 +1,97 @@
+<app-internal-sales-item
+  [internalSalesItem]="itemResume"
+  (valueEmitter)="globalItemEventsHandler($event)"
+></app-internal-sales-item>
+<div
+  class="incidence"
+  *ngIf="
+    !itemResume?.data?.freightItem &&
+    itemResume?.data?.PcPartidaPromesaDeCompra?.Verificada !== null &&
+    !itemResume?.data?.PcPartidaPromesaDeCompra?.Verificada
+  "
+>
+  <div class="tab"></div>
+  <div class="content">
+    <div>
+      <label> {{ 'notProcessed.inconsistencies' | translate }}: </label>
+    </div>
+    <div>
+      <app-check-box
+        [backGroundCheckColor]="'#fff'"
+        [label]="'incidencesItem.catalog' | translate"
+        [check]="itemResume?.data?.PcIncidenciaPartidaPromesaDeCompra?.Catalogo"
+        (event)="setIncidenceValue(itemResume.data, FIELD_CATALOG, $event)"
+      >
+      </app-check-box>
+      <app-check-box
+        [backGroundCheckColor]="'#fff'"
+        [label]="'incidencesItem.description' | translate"
+        [check]="itemResume.data?.PcIncidenciaPartidaPromesaDeCompra?.Descripcion"
+        (event)="setIncidenceValue(itemResume.data, FIELD_DESCRIPTION, $event)"
+      >
+      </app-check-box>
+      <app-check-box
+        [backGroundCheckColor]="'#fff'"
+        [label]="'incidencesItem.presentation' | translate"
+        [check]="itemResume.data?.PcIncidenciaPartidaPromesaDeCompra?.Presentacion"
+        (event)="setIncidenceValue(itemResume.data, FIELD_PRESENTATION, $event)"
+      >
+      </app-check-box>
+      <app-check-box
+        [backGroundCheckColor]="'#fff'"
+        [label]="'incidencesItem.brand' | translate"
+        [check]="itemResume.data?.PcIncidenciaPartidaPromesaDeCompra?.Marca"
+        (event)="setIncidenceValue(itemResume.data, FIELD_TRADEMARK, $event)"
+      >
+      </app-check-box>
+      <app-check-box
+        [backGroundCheckColor]="'#fff'"
+        *ngIf="!isTraining(itemResume.data)"
+        [label]="'incidencesItem.tee' | translate"
+        [check]="itemResume.data?.PcIncidenciaPartidaPromesaDeCompra?.TEE"
+        (event)="setIncidenceValue(itemResume.data, FIELD_TEE, $event)"
+      >
+      </app-check-box>
+      <app-check-box
+        [backGroundCheckColor]="'#fff'"
+        *ngIf="isTraining(itemResume.data)"
+        [label]="'incidencesItem.dateTraining' | translate"
+        [check]="itemResume.data?.PcIncidenciaPartidaPromesaDeCompra?.FechaRealizacionEnCapacitacion"
+        (event)="setIncidenceValue(itemResume.data, FIELD_DATE_TRAINING, $event)"
+      >
+      </app-check-box>
+      <app-check-box
+        [backGroundCheckColor]="'#fff'"
+        [label]="'incidencesItem.price' | translate"
+        [check]="itemResume.data?.PcIncidenciaPartidaPromesaDeCompra?.Precio"
+        (event)="setIncidenceValue(itemResume.data, FIELD_UNIT_PRICE, $event)"
+      >
+      </app-check-box>
+      <app-check-box
+        [backGroundCheckColor]="'#fff'"
+        [label]="'incidencesItem.currency' | translate"
+        [check]="itemResume.data?.PcIncidenciaPartidaPromesaDeCompra?.Moneda"
+        (event)="setIncidenceValue(itemResume.data, FIELD_MONEDA, $event)"
+      >
+      </app-check-box>
+      <app-check-box
+        [backGroundCheckColor]="'#fff'"
+        [label]="'incidencesItem.iva' | translate"
+        [check]="itemResume.data?.PcIncidenciaPartidaPromesaDeCompra?.IVA"
+        (event)="setIncidenceValue(itemResume.data, FIELD_IVA, $event)"
+      >
+      </app-check-box>
+    </div>
+    <div>
+      <label>
+        {{ 'common.comments' | translate }}
+      </label>
+      <app-generic-input
+        [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+        [value]="itemResume.data?.PcIncidenciaPartidaPromesaDeCompra?.Comentarios"
+        (textData)="setIncidenceValue(itemResume.data, FIELD_COMMENTS, $event)"
+      >
+      </app-generic-input>
+    </div>
+  </div>
+</div>

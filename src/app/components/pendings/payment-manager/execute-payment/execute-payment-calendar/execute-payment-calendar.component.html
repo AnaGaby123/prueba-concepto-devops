@@ -1,0 +1,151 @@
+<div id="execute-collection">
+  <div class="content-container">
+    <div class="filters-payments" *ngIf="(tabSelected$ | async)?.id === 2">
+      <section class="payments-filters" [ngClass]="isOpen ? 'show' : 'hide'">
+        <div class="data-filters">
+          <div>
+            <div class="title">
+              <div class="text">
+                <label>CONSULTAR PAGOS</label>
+              </div>
+            </div>
+            <div class="dateFilter">
+              <div class="picker">
+                <app-date-picker
+                  class="date-picker"
+                  dateFormat="YYYYMMDD"
+                  [color]="false"
+                  (fecha)="handleDate('fromCalendar', $event)"
+                  [label]="'Del: '"
+                  [labelFont]="'Roboto-Bold'"
+                ></app-date-picker>
+              </div>
+              <div class="pickerFrom">
+                <app-date-picker
+                  class="date-picker"
+                  dateFormat="YYYYMMDD"
+                  [color]="false"
+                  (fecha)="handleDate('toCalendar', $event)"
+                  [label]="'Hasta:'"
+                  [labelFont]="'Roboto-Bold'"
+                ></app-date-picker>
+              </div>
+            </div>
+            <div class="content">
+              <div>
+                <div>
+                  <app-drop-down-list
+                    [items]="providerFilters$ | async"
+                    [itemSelected]="providerFilter$ | async"
+                    (valueDropList)="setProovedor($event)"
+                    [font]="'Roboto-Bold'"
+                    [label]="'Proveedor'"
+                  >
+                  </app-drop-down-list>
+                </div>
+              </div>
+              <div>
+                <div>
+                  <app-drop-down-list
+                    [items]="statusPaymentFilters$ | async"
+                    [itemSelected]="statusPaymentFilter$ | async"
+                    (valueDropList)="setStatusPayment($event)"
+                    [label]="'Estado de Pago'"
+                    [font]="'Roboto-Bold'"
+                  >
+                  </app-drop-down-list>
+                </div>
+              </div>
+              <div>
+                <div>
+                  <app-drop-down-list
+                    [items]="typePaymentFilters$ | async"
+                    [itemSelected]="typesPaymentFilter$ | async"
+                    (valueDropList)="setTypePayment($event)"
+                    [label]="'Tipo de Pago'"
+                    [font]="'Roboto-Bold'"
+                  >
+                  </app-drop-down-list>
+                </div>
+              </div>
+              <div>
+                <div class="recharge">
+                  <img src="assets/Images/recharge.svg" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="arrow">
+          <img alt="arrow" src="assets/Images/arrows/flecha_cuadro.svg" [ngClass]="{reverse: !isOpen}" (click)="onClick()" />
+        </div>
+      </section>
+    </div>
+    <div class="information-payments">
+      <div class="tabs">
+        <app-tabs
+          [options]="tabsOptions$ | async"
+          [tapSelected]="tabSelected$ | async"
+          (onSelectOption)="setOption($event)"
+        ></app-tabs>
+      </div>
+
+      <div class="date" *ngIf="!((tabSelected$ | async)?.id === 2)">
+        <label>Junio 2021</label>
+      </div>
+      <div class="filters" *ngIf="!((tabSelected$ | async)?.id === 2)">
+        <div class="column-one">
+          <div class="chips">
+            <app-chip
+              [dataChips]="chipOptions$ | async"
+              [fontColorDefault]="'#ffffff'"
+              [totalsIsAmount]="true"
+              [separator]="': '"
+              (activeChip)="activeChip($event)"
+            >
+            </app-chip>
+          </div>
+          <div class="search">
+            <app-search
+              [placeholder]="'common.provider' | translate"
+              [searchTerm]="searchTerm$ | async"
+              (textSearch)="handleKeySearch($event)"
+            >
+            </app-search>
+          </div>
+        </div>
+        <div class="column-two">
+          <div class="drop-list">
+            <label>{{ 'executePayment.payments' | translate }}</label>
+            <app-drop-down-list
+              [activeMinWidth]="false"
+              [items]="paymentOptions$ | async"
+              [itemSelected]="selectedPaymentOption$ | async"
+              (valueDropList)="saveInputValue($event)"
+            >
+            </app-drop-down-list>
+          </div>
+          <button class="btn-see-breakdown" (click)="seeBreakdown()">
+            {{ 'executeCollection.seeBreakdown' | translate }}
+          </button>
+        </div>
+      </div>
+      <div class="calendar">
+        <app-week *ngIf="(tabSelected$ | async)?.id === 1"></app-week>
+        <app-month *ngIf="(tabSelected$ | async)?.id === 2"></app-month>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div>
+      <div>
+        <span class="green"></span>
+        <label>{{ 'executePayment.paymentOnTime' | translate }}</label>
+      </div>
+      <div>
+        <span class="yellow"></span>
+        <label>{{ 'executePayment.expiredPayment' | translate }}</label>
+      </div>
+    </div>
+  </footer>
+</div>

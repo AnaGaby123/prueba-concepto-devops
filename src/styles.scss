@@ -1,0 +1,317 @@
+/* You can add global styles to this file, and also import other style files */
+@use 'base' as s;
+
+/* CSS RESET */
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  vertical-align: middle;
+  line-height: 1.1;
+}
+
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+menu,
+nav,
+section {
+  display: block;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/*GLOBALS*/
+a {
+  text-decoration: none;
+  padding: 0;
+}
+a:hover {
+  background: none;
+  border: none;
+}
+ul {
+  border: none;
+  padding-inline-start: 0;
+}
+html,
+body {
+  width: 100%;
+  min-width: 1366px;
+  height: 100%;
+  min-height: 820px;
+  background: white;
+  font-family: s.$font_family_roboto, sans-serif;
+}
+
+textarea {
+  resize: none;
+  border: 1px solid #d8d9dd;
+}
+textarea:focus,
+input:focus,
+input[type]:focus {
+  outline: 0 none;
+}
+button,
+input {
+  outline: none;
+}
+button {
+  border: none;
+  font: inherit;
+}
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #008894 #d8d9dd;
+}
+
+#app {
+  width: 100%;
+  min-width: 1366px;
+  height: 100%;
+  min-height: 820px;
+}
+
+input {
+  margin: initial;
+  border: 1px solid #d8d9dd;
+  height: 26px;
+}
+
+input:focus,
+input.form-control:focus {
+  outline: none !important;
+  outline-width: 0 !important;
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+}
+
+textarea:required,
+input:required {
+  box-shadow: none;
+}
+
+textarea:invalid,
+input:invalid {
+  box-shadow: none;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px #d8d9dd;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #008894;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #008894;
+}
+
+.textTitle {
+}
+
+.textSubTitle {
+}
+
+.textRegular {
+}
+
+.loadingContainer {
+  @include s.flexRow;
+  @include s.absoluteCenter;
+  width: 100%;
+  .load-circle {
+    width: auto;
+    margin-bottom: 15px;
+    .line {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 15px;
+      background-color: s.$pqGreen;
+    }
+    .line:nth-last-child(1) {
+      animation: loadingFrame 0.6s 0.1s linear infinite;
+    }
+    .line:nth-last-child(2) {
+      animation: loadingFrame 0.6s 0.2s linear infinite;
+      margin: 0 3px;
+    }
+    .line:nth-last-child(3) {
+      animation: loadingFrame 0.6s 0.3s linear infinite;
+    }
+  }
+}
+
+@keyframes loadingFrame {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(0, 15px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  color: #d8d9dd;
+}
+::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #d8d9dd;
+}
+:-ms-input-placeholder {
+  /* IE 10+ */
+  color: #d8d9dd;
+}
+:-moz-placeholder {
+  /* Firefox 18- */
+  color: #d8d9dd;
+}
+
+// DOCS: SE HICIERON DOS CLASES DIFERENTES YA QUE EL COMPONENTE DE DIALOG LOS RECIBE EN PROPIEDADES DIFERENTES
+.mat-dialog-style {
+  & > mat-dialog-container {
+    background: none;
+    box-shadow: none;
+    padding: 0;
+    min-width: initial;
+    min-height: initial;
+  }
+}
+
+.mat-dialog-background {
+  opacity: 80% !important;
+  background: s.$dark-proquifa;
+}
+
+// DOCS: ESILOS VISUALES DEL TEXTO
+.textUpperCase {
+  text-transform: uppercase;
+}
+.textLowerCase {
+  text-transform: lowercase;
+}

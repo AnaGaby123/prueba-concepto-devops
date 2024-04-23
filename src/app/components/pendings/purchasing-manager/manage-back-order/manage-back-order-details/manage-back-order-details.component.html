@@ -1,0 +1,306 @@
+<div id="back-order-details-container">
+  <div class="content">
+    <div class="left-container">
+      <div class="title">
+        <label>{{ 4 }} {{ 'common.families' | translate }}</label>
+      </div>
+      <div class="cards">
+        <app-pqf-card
+          [applySameMargin]="true"
+          [options]="cardFamilies$ | async"
+          (handleOptionSelected)="selectedFamily($event)"
+        >
+        </app-pqf-card>
+      </div>
+      <div class="tabs">
+        <app-tabs
+          [options]="optionsTabs$ | async"
+          [tapSelected]="selectedTab$ | async"
+          (onSelectOption)="setFilter($event)"
+        ></app-tabs>
+      </div>
+      <div class="search">
+        <app-search
+          class="search"
+          [placeholder]="
+            (selectedTab$ | async).id === '1' ? ('common.purchaseOrder' | translate) : ('common.product' | translate)
+          "
+        ></app-search>
+      </div>
+      <div class="list-container" *ngIf="(selectedTab$ | async) || {}; let tab">
+        <virtual-scroller class="virtual" [items]="list$ | async" (vsUpdate)="list = $event">
+          <div class="item" *ngFor="let item of list" (click)="tab.id === 1 ? selectedOrder(item) : selectedProduct(item)">
+            <div
+              class="select"
+              *ngIf="item.IdOcOrdenDeCompra == (selectedOrder$ | async).IdOcOrdenDeCompra && (selectedTab$ | async).id === '1'"
+            ></div>
+            <div
+              class="select"
+              *ngIf="item.IdProducto === (selectedProduct$ | async)?.IdProducto && (selectedTab$ | async).id === '2'"
+            ></div>
+            <div class="left">
+              <label *ngIf="(selectedTab$ | async).id === '1'"
+                ># {{ item.index }} · <span>{{ item.NumeroOrdenDeCompra }} · </span
+                >{{ item.TotalUSD | currency: item.ClaveMoneda:'symbol-narrow':'1.2-2' }}</label
+              >
+              <label *ngIf="(selectedTab$ | async).id === '2'"
+                ># {{ item.index }} · <span>{{ item.Catalogo }} · </span>{{ item.Descripcion }}</label
+              >
+              <label class="sub-title" *ngIf="(selectedTab$ | async).id === '1'">
+                {{
+                  item.NumeroDePiezas + (item.NumeroDePiezas === 1 ? ('common.pza' | translate) : ('common.pzas' | translate))
+                }}
+                ·
+                {{
+                  item.Productos +
+                    ' ' +
+                    (item.Productos === 1 ? ('common.product' | translate) : ('common.products' | translate))
+                }}
+              </label>
+              <label class="sub-title" *ngIf="(selectedTab$ | async).id === '2'">
+                {{
+                  item.PartidasBackOrder +
+                    ' ' +
+                    (item.PartidasBackOrder === 1 ? ('common.order' | translate) : ('common.orders' | translate))
+                }}
+                ·
+                {{
+                  item.PiezasTotales +
+                    ' ' +
+                    (item.PiezasTotales === 1 ? ('common.pza' | translate) : ('common.pzas' | translate))
+                }}
+                ·
+                {{ 'CU: ' + (item.CostoUnitarioTotal | currency: 'USD':'symbol-narrow':'1.2-2') }}
+                ·
+                {{ 'CT: ' + (item.CostoTotal | currency: 'USD':'symbol-narrow':'1.2-2') }}
+              </label>
+            </div>
+            <div class="right" *ngIf="(selectedTab$ | async).id === '2'">
+              <label [ngClass]="item.SemaforoFDM === 'Urgente' ? 'urgent' : item.SemaforoFDM === 'En tiempo' ? 'time' : ''"
+                >FDM+: {{ item.FechaMonitoreoMax | dateFormatSlashShort }}</label
+              >
+            </div>
+          </div>
+        </virtual-scroller>
+      </div>
+      <div class="totals">
+        <label>#{{ (list$ | async)?.length }}</label>
+        <label>{{ (totalsList$ | async)?.pieces }} {{ 'common.pieces' | translate }}</label>
+        <label
+          >{{ (selectedTab$ | async).id === '2' ? (list$ | async)?.length : (totalsList$ | async)?.products }}
+          {{ 'common.products' | translate }}</label
+        >
+        <label
+          >{{ 'common.totalAmount' | translate }}
+          {{ (totalsList$ | async)?.amount | currency: 'USD':'symbol-narrow':'1.2-2' }}</label
+        >
+      </div>
+    </div>
+    <div class="right-container">
+      <div class="title">
+        <!-- TODO: Revisar que datos van aquí-->
+        <label
+          >#{{ 2 }} · <span>OC {{ '000000-0002' }}</span> · {{ '$12,000.00' }}</label
+        >
+      </div>
+      <div class="data">
+        <app-provider-contacts
+          [selectedContact]="providerContactSelected$ | async"
+          (emitResponse)="setContactSelectedProvider($event)"
+          [contactList]="selectContactsProvidersDropList$ | async"
+          [sizeGeneralData]="'500px'"
+        ></app-provider-contacts>
+      </div>
+      <div class="details-product" *ngIf="(selectedTab$ | async).id === '2'">
+        <div>
+          <div class="modification">
+            <div>
+              <label class="title">{{ ('manageBackOrder.lastModification' | translate) + ': ' }}</label>
+              <label>{{ (selectedProduct$ | async)?.UltimaModificacion }}</label>
+            </div>
+            <div>
+              <label class="title">{{ 'manageBackOrder.events' | translate }}</label>
+              <label>{{ (selectedProduct$ | async)?.FechaEvento | dateFormatSlashShort }}</label>
+              <label class="title">·</label>
+              <label class="title">{{ ('manageBackOrder.continueManagement' | translate) + ':' }}</label>
+              <label>{{ (selectedProduct$ | async)?.ContinuarGestion | dateFormatSlashShort }}</label>
+            </div>
+          </div>
+          <div class="observations">
+            <label class="title">{{ ('common.observations' | translate) + ':' }}</label>
+            <label>{{ (selectedProduct$ | async)?.Justificacion }}</label>
+          </div>
+          <div (click)="showRecord(true)">
+            <label class="link">Ver Historial de Gestión</label>
+          </div>
+        </div>
+      </div>
+      <div class="table-container">
+        <div class="table">
+          <div class="header">
+            <div class="number">
+              <label>#</label>
+            </div>
+            <div class="oc" *ngIf="(selectedTab$ | async).id === '2'">
+              <label>OC</label>
+            </div>
+            <div class="description" *ngIf="(selectedTab$ | async).id === '1'">
+              <label>DESCRIPCIÓN</label>
+            </div>
+            <div class="client">
+              <label>{{ 'common.client' | translate }}</label>
+            </div>
+            <div class="fea" *ngIf="(selectedTab$ | async).id === '1'">
+              <label>1ER FEE</label>
+            </div>
+            <div class="order" *ngIf="(selectedTab$ | async).id === '2'">
+              <label>{{ 'manageBackOrder.order' | translate }}</label>
+            </div>
+            <div class="fea" *ngIf="(selectedTab$ | async).id === '2'">
+              <label>{{ 'registerConfirmation.fea' | translate }} </label>
+            </div>
+            <div class="description" *ngIf="(selectedTab$ | async).id === '1'">
+              <label>{{ 'manageBackOrder.reason' | translate }}</label>
+            </div>
+          </div>
+          <div class="body">
+            <virtual-scroller [items]="listItems$ | async" (vsUpdate)="listItem = $event">
+              <div class="item" *ngFor="let item of listItem">
+                <div class="top">
+                  <div class="number">
+                    <label class="bold">{{ item.index }}</label>
+                  </div>
+                  <div class="description" *ngIf="(selectedTab$ | async).id === '1'">
+                    <div>
+                      <label>{{ item.Descripcion }}</label>
+                    </div>
+                    <div>
+                      <label class="pqf">{{
+                        item.NumeroDePiezas +
+                          ' ' +
+                          (item.NumeroDePiezas === 1 ? ('common.pza' | translate) : ('common.pzas' | translate))
+                      }}</label>
+                      <label class="pqf">·</label>
+                      <label class="pqf">{{ 'CU: ' + (item.CostoUnitario | currency: 'USD':'symbol-narrow':'1.2-2') }}</label>
+                      <label class="pqf"> ·</label>
+                      <label class="pqf">{{ 'CT: ' + (item.CostoTotal | currency: 'USD':'symbol-narrow':'1.2-2') }}</label>
+                    </div>
+                  </div>
+                  <div class="oc" *ngIf="(selectedTab$ | async).id === '2'">
+                    <label>{{ item.NumeroOrdenDeCompra }}</label>
+                  </div>
+                  <div class="client">
+                    <div>
+                      <label>{{ item.Cliente }}</label>
+                    </div>
+                    <div *ngIf="(selectedTab$ | async).id === '1'">
+                      <label>{{ item.FolioPedidoInterno }}</label>
+                    </div>
+                    <div *ngIf="(selectedTab$ | async).id === '2'">
+                      <label class="pqf">{{
+                        item.NumeroDePiezas +
+                          ' ' +
+                          (item.NumeroDePiezas === 1 ? ('common.pza' | translate) : ('common.pzas' | translate))
+                      }}</label>
+                      <label class="pqf">·</label>
+                      <label class="pqf">{{ 'CU: ' + (item.CostoUnitario | currency: 'USD':'symbol-narrow':'1.2-2') }}</label>
+                      <label class="pqf"> ·</label>
+                      <label class="pqf">{{ 'CT: ' + (item.CostoTotal | currency: 'USD':'symbol-narrow':'1.2-2') }}</label>
+                    </div>
+                  </div>
+                  <div class="order" *ngIf="(selectedTab$ | async).id === '2'">
+                    <label>{{ item.FolioPedidoInterno }}</label>
+                  </div>
+                  <div class="fea" *ngIf="(selectedTab$ | async).id === '1'">
+                    <label>{{ item.PrimerFEE | dateFormatSlashShort }}</label>
+                  </div>
+                  <div class="fea" *ngIf="(selectedTab$ | async).id === '2'">
+                    <label>{{ item.FechaEstimadaEntrega | dateFormatSlashShort }}</label>
+                  </div>
+                  <div class="reason" *ngIf="(selectedTab$ | async).id === '1'">
+                    <div>
+                      <app-radio-button
+                        [label]="'common.cancel' | translate"
+                        [height]="'18px'"
+                        [value]="item.cancel"
+                        (emitValue)="sendStatus($event, 'cancel', item.IdOcPartidaEdicionBackOrder)"
+                      >
+                      </app-radio-button>
+                    </div>
+                    <div>
+                      <app-radio-button
+                        [label]="'manageBackOrder.sendToStock' | translate"
+                        [value]="item.sendStock"
+                        (emitValue)="sendStatus($event, 'sendStock', item.IdOcPartidaEdicionBackOrder)"
+                        [height]="'18px'"
+                      >
+                      </app-radio-button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </virtual-scroller>
+            <div class="loading" *ngIf="statusApiItems$ | async">
+              <app-loading></app-loading>
+            </div>
+          </div>
+          <div class="footer">
+            <div class="number">
+              <label>#{{ (listItems$ | async).length }}</label>
+            </div>
+            <div class="description">
+              <label>{{ (totalsItems$ | async)?.pieces }} {{ 'common.pzas' | translate }}</label>
+              <label
+                >{{ 'common.totalAmount' | translate }}
+                {{ (totalsItems$ | async)?.amount | currency: 'USD':'symbol-narrow':'1.2-2' }}</label
+              >
+            </div>
+            <div class="client">
+              <label class="ocean">{{ 36 }} {{ 'common.clients' | translate }}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="state" *ngIf="(selectedTab$ | async).id === '2'">
+        <div>
+          <label>{{ 'common.state' | translate }}</label>
+          <app-drop-down-list
+            [items]="statusList$ | async"
+            [optionsPosition]="'top'"
+            [itemSelected]="selectedStatus$ | async"
+            (valueDropList)="setStatus($event)"
+          >
+          </app-drop-down-list>
+        </div>
+      </div>
+      <div class="buttons" *ngIf="selectedTab$ | async; let tab">
+        <button
+          [ngClass]="(activeRegister$ | async) ? 'active' : 'disabled'"
+          (click)="tab.id === 1 ? saveCancel() : showPopUp(true)"
+          >{{ 'common.register' | translate }}</button
+        >
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div>
+      <label>FDM: </label>
+      <label>{{ 'manageBackOrder.monitoringDate' | translate }}</label>
+    </div>
+    <div>
+      <label class="red">FEE: </label>
+      <label>{{ 'registerConfirmation.estimatedDeliveryDateOutOfTime' | translate }}</label>
+    </div>
+    <div>
+      <label class="yellow">FEE: </label>
+      <label>{{ 'registerConfirmation.estimatedExpressDeliveryDate' | translate }}</label>
+    </div>
+    <div>
+      <label class="green">FEE: </label>
+      <label>{{ 'registerConfirmation.estimatedDeliveryDateOnTime' | translate }}</label>
+    </div>
+  </footer>
+</div>
+<app-pop-up-back-order *ngIf="showPopUp$ | async"></app-pop-up-back-order>
+<app-pop-up-record *ngIf="showPopRecord" (closePopR)="showRecord($event)"></app-pop-up-record>

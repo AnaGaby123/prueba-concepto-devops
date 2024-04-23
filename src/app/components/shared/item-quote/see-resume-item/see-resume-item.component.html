@@ -1,0 +1,16 @@
+<div class="see-resume-item-container" *ngIf="columnSeeResume?.text && columnSeeResume?.color">
+  <div class="resume-container">
+    <label [ngClass]="columnSeeResume?.color ?? ''">
+      {{ columnSeeResume?.text }}
+    </label>
+  </div>
+  <div #divElement class="img-container">
+    <img
+      #imageElement
+      alt=""
+      [src]="'assets/Images/close-offer/comments-' + columnSeeResume?.color + '.svg'"
+      [id]="columnSeeResume?.elementId ?? 'image'"
+      (click)="handleClick($event, imageElement, true, nameActionsInternalSalesItem.SeeCommentsResumeAction)"
+    />
+  </div>
+</div>

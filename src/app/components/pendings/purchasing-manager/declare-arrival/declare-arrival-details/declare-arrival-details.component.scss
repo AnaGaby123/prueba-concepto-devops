@@ -1,0 +1,883 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  height: 100%;
+  width: 100%;
+
+  & > #declare-arrival-details-container {
+    @include s.flexColumn;
+    height: 100%;
+    justify-content: flex-start;
+    overflow: hidden;
+    width: 100%;
+
+    & > .top-container {
+      @include s.flexRowNoWrap;
+      flex: 1 1 auto;
+      overflow: hidden;
+
+      & > .left-container {
+        @include s.flexColumn;
+        border-right: 1px solid s.$pqGray2;
+        flex: 0 0 510px;
+        padding: 20px;
+
+        & > .title {
+          @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+          @include s.Novecento-Bold;
+          margin-bottom: 10px;
+        }
+
+        & > app-tabs {
+          margin-bottom: 17px;
+        }
+
+        & > .filters {
+          @include s.flexRowNoWrap;
+          border-bottom: 1px solid s.$pqBlack2;
+          padding-bottom: 17px;
+
+          & > app-hamburger-menu {
+            flex: 0 0 135px;
+            margin-right: 20px;
+          }
+
+          & > app-search {
+            flex: 1 1 auto;
+          }
+        }
+
+        & > .list-container {
+          @include s.flexColumn;
+          flex: 1 1 auto;
+          overflow: hidden;
+
+          & > virtual-scroller {
+            height: 100%;
+            width: 100%;
+
+            & .item-oc {
+              @include s.flexRowNoWrap;
+              @include s.default-transition($duration: 0.2s);
+              align-items: center;
+              border-bottom: 1px solid s.$pqGray2;
+              cursor: pointer;
+              height: 85px;
+              overflow: hidden;
+
+              & * {
+                cursor: pointer;
+              }
+
+              &:hover {
+                background-color: s.$pqGray2;
+              }
+
+              & > .indicator {
+                flex: 0 0 8px;
+                height: 100%;
+
+                &.selected {
+                  background-color: s.$pqGreen;
+                }
+              }
+
+              & > .info {
+                @include s.flexColumn;
+                flex: 1 1 auto;
+                padding: 20px;
+
+                & > label {
+                  @include s.escaledFontFormat(s.$textSize15to20, bold, s.$pqBlack2);
+                  @include s.Roboto-Bold;
+                  white-space: pre;
+
+                  &:first-of-type {
+                    margin-bottom: 5px;
+                  }
+
+                  & > span {
+                    color: s.$pqGreen;
+                    text-decoration: underline;
+                    vertical-align: baseline;
+                  }
+                }
+              }
+
+              & > .image {
+                @include s.flexColumn;
+                @include s.absoluteCenter;
+                flex: 0 0 150px;
+
+                & > img {
+                  height: 18px;
+                }
+              }
+            }
+
+            & > ::ng-deep .scrollable-content > .without-results {
+              display: flex;
+              @include s.absoluteCenter;
+              height: 100%;
+            }
+          }
+
+          & > .loading {
+            @include s.flexColumn;
+            @include s.absoluteCenter;
+            height: 100%;
+            width: 100%;
+          }
+        }
+
+        & > .totals {
+          @include s.flexRowNoWrap;
+          border-top: 1px solid s.$pqBlack2;
+          flex: 0 0 39px;
+          justify-content: space-between;
+          padding: 6px 12px 0 15px;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+            @include s.Roboto-Regular;
+          }
+        }
+      }
+
+      & > .right-container {
+        @include s.flexColumn;
+        flex: 1 1 auto;
+        overflow: hidden;
+        padding: 20px 20px 0 20px;
+
+        & > .title {
+          @include s.flexRow;
+          border-bottom: 1px solid s.$pqBlack2;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+            @include s.Novecento-Bold;
+            flex: 0 0 auto;
+            padding-bottom: 10px;
+            white-space: pre;
+
+            & > span {
+              color: s.$pqGreen;
+            }
+
+            & > .underline {
+              text-decoration: underline;
+            }
+          }
+
+          & > img {
+            height: 18px;
+            margin-left: 8px;
+          }
+        }
+
+        & > .header-container {
+          @include s.flexColumn;
+
+          & > .header {
+            @include s.flexRow;
+            flex: 0 0 auto;
+            padding: 15px 0;
+
+            & > app-provider-contacts {
+              flex: 1;
+            }
+          }
+        }
+
+        & > .tables {
+          @include s.flexColumn;
+          flex: 1 1 auto;
+          overflow: hidden;
+
+          & > div {
+            @include s.flexColumn;
+            border: 1px solid s.$pqBlack2;
+            flex: 1 1 50%;
+            overflow-x: auto;
+            overflow-y: hidden;
+
+            & > .table {
+              @include s.flexColumn;
+              flex: 1 1 100%;
+              min-width: 1250px;
+              overflow: hidden;
+
+              & > .header {
+                @include s.flexRowNoWrap;
+                border-bottom: 1px solid s.$pqBlack2;
+                flex: 0 0 38px;
+                min-width: 1250px;
+
+                & > div {
+                  @include s.flexRowNoWrap;
+                  @include s.absoluteCenter;
+                  padding: 0 5px;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize13to15, bold, s.$pqBlack2);
+                    @include s.Novecento-Bold;
+                  }
+
+                  & > img {
+                    height: 18px;
+                    width: 18px;
+                  }
+                }
+
+                & > .number {
+                  flex: 0 0 50px;
+                }
+
+                & > .filter {
+                  flex: 0 0 60px;
+                }
+
+                & > .name {
+                  flex: 2 1 auto;
+                  justify-content: flex-start;
+                }
+
+                & > .price {
+                  flex: 0 0 100px;
+                  justify-content: flex-end;
+                }
+
+                & > .pieces {
+                  flex: 0 0 70px;
+                }
+
+                & > .amount {
+                  flex: 0 0 100px;
+                  justify-content: flex-end;
+                }
+
+                & > .origin {
+                  flex: 0 0 350px;
+                  justify-content: flex-start;
+                }
+
+                & > .certificate {
+                  flex: 0 0 150px;
+                  justify-content: flex-start;
+                }
+
+                & > .button {
+                  flex: 0 0 50px;
+                }
+              }
+
+              & > .body {
+                @include s.flexColumn;
+                flex: 1 1 auto;
+                min-width: 1250px;
+                overflow: auto;
+
+                & > virtual-scroller {
+                  height: 100%;
+                  width: 100%;
+
+                  & > ::ng-deep .scrollable-content > .item {
+                    @include s.flexRowNoWrap;
+                    @include s.default-transition($duration: 0.2s);
+                    border-bottom: 1px solid s.$pqGray2;
+
+                    &:hover {
+                      background-color: s.$pqGray2;
+                    }
+
+                    & > div {
+                      @include s.flexRowNoWrap;
+                      @include s.absoluteCenter;
+                      padding: 15px 5px;
+
+                      & label {
+                        @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                        @include s.Roboto-Regular;
+
+                        &.bold {
+                          @include s.Roboto-Bold;
+                        }
+
+                        &.ocean {
+                          color: s.$pqGreen;
+                        }
+
+                        &.underline {
+                          text-decoration: underline;
+                        }
+                      }
+
+                      & > img {
+                        cursor: pointer;
+                        height: 18px;
+                        width: 18px;
+                      }
+                    }
+
+                    & > .number {
+                      flex: 0 0 50px;
+                    }
+
+                    & > .filter {
+                      flex: 0 0 60px;
+                    }
+
+                    & > .name {
+                      flex: 2 1 auto;
+                      justify-content: flex-start;
+
+                      & > div {
+                        @include s.multiLineTextTruncateSinHeight($lineHeight: 1em);
+
+                        /*& > label {
+                          @include escaledFontFormat($textSize11to12, regular, $pqBlack2);
+                          @include Roboto-Regular;
+
+                          & > span {
+                            @include Roboto-Bold;
+                            white-space: pre;
+                          }
+                        }*/
+                      }
+                    }
+
+                    & > .price {
+                      flex: 0 0 100px;
+                      justify-content: flex-end;
+
+                      & > .tooltip {
+                        @include s.tooltip($minWidthTooltip: auto);
+
+                        & > label {
+                          cursor: pointer;
+                        }
+
+                        & > .tooltip-text {
+                          align-items: center;
+                          white-space: pre;
+                        }
+                      }
+                    }
+
+                    & > .pieces {
+                      flex: 0 0 70px;
+                    }
+
+                    & > .amount {
+                      flex: 0 0 100px;
+                      justify-content: flex-end;
+                    }
+
+                    & > .origin {
+                      flex: 0 0 350px;
+                      justify-content: flex-start;
+
+                      & > .big {
+                        margin: 5px 20px 0 0;
+                        width: 145px;
+                      }
+
+                      & > label {
+                        @include s.escaledFontFormat(s.$textSize13to15, bold, s.$pqBlack2);
+                        @include s.Novecento-Bold;
+                        margin-right: 6px;
+                      }
+
+                      & > .circle {
+                        border-radius: 50%;
+                        height: 10px;
+                        margin-right: 5px;
+                        width: 10px;
+
+                        &.green {
+                          background-color: s.$pqGreen2;
+                        }
+
+                        &.yellow {
+                          background-color: s.$orange2;
+                        }
+                      }
+
+                      & > .small {
+                        margin-top: 5px;
+                        width: 110px;
+                      }
+
+                      & > .input {
+                        width: 110px;
+                      }
+                    }
+
+                    & > .certificate {
+                      flex: 0 0 150px;
+                      justify-content: flex-start;
+
+                      & > .input-file {
+                        margin-right: 14px;
+                        width: max-content;
+                      }
+                    }
+
+                    & > .edition {
+                      flex: 0 0 500px;
+                      justify-content: flex-start;
+
+                      & > .big {
+                        margin: 5px 20px 0 0;
+                        width: 145px;
+                      }
+
+                      & > label {
+                        @include s.escaledFontFormat(s.$textSize13to15, bold, s.$pqBlack2);
+                        @include s.Novecento-Bold;
+                        margin-right: 6px;
+                      }
+
+                      & > .input {
+                        width: 240px;
+                      }
+                    }
+
+                    & > .button {
+                      flex: 0 0 50px;
+
+                      & > .disabled {
+                        cursor: default !important;
+                      }
+                    }
+                  }
+
+                  & > ::ng-deep .scrollable-content > .without-results {
+                    @include s.flexColumn;
+                    @include s.absoluteCenter;
+                    flex: 1 1 auto;
+                    overflow: hidden;
+                    padding: 50px;
+                  }
+
+                  & .loading {
+                    @include s.flexColumn;
+                    @include s.absoluteCenter;
+                    height: 100%;
+                    width: 100%;
+                  }
+                }
+
+                & > .loading {
+                  @include s.flexColumn;
+                  @include s.absoluteCenter;
+                  height: 100%;
+                  width: 100%;
+                }
+              }
+
+              & > .footer {
+                @include s.flexRowNoWrap;
+                border-top: 1px solid s.$pqBlack2;
+                flex: 0 0 38px;
+                min-width: 1250px;
+
+                & > div {
+                  @include s.flexRowNoWrap;
+                  @include s.absoluteCenter;
+                  padding: 0 5px;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+                    @include s.Novecento-Bold;
+
+                    &.ocean {
+                      color: s.$pqGreen;
+                    }
+                  }
+                }
+
+                & > .number {
+                  flex: 0 0 50px;
+                }
+
+                & > .filter {
+                  flex: 0 0 60px;
+                }
+
+                & > .name {
+                  flex: 2 1 auto;
+                }
+
+                & > .price {
+                  flex: 0 0 100px;
+                  justify-content: flex-end;
+                }
+
+                & > .pieces {
+                  flex: 0 0 70px;
+                }
+
+                & > .amount {
+                  flex: 0 0 100px;
+                  justify-content: flex-end;
+                }
+
+                & > .origin {
+                  flex: 0 0 350px;
+                }
+
+                & > .certificate {
+                  flex: 0 0 150px;
+                }
+
+                & > .button {
+                  flex: 0 0 50px;
+                }
+              }
+            }
+          }
+
+          & > .top {
+            margin-bottom: 5px;
+          }
+        }
+
+        & > .packing {
+          @include s.flexRow;
+          @include s.absoluteCenter;
+          background-color: s.$pqGray2;
+          height: 62px;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize13to15, bold, s.$pqBlack2);
+            @include s.Novecento-Bold;
+            margin-right: 6px;
+          }
+
+          & > .input-file {
+            width: 195px;
+          }
+        }
+
+        & > .button {
+          @include s.flexRow;
+          align-items: center;
+          justify-content: flex-end;
+          height: 59px;
+
+          & > .active {
+            @include s.pqButton;
+          }
+
+          & > .disabled {
+            @include s.pqButtonDisable;
+          }
+        }
+      }
+    }
+
+    & > .bottom-container {
+      @include s.flexRowNoWrap;
+      @include s.absoluteCenter;
+      border-top: 2px solid s.$pqBlack2;
+      flex: 0 0 48px;
+
+      & > div {
+        @include s.flexRowNoWrap;
+        align-items: center;
+        margin-right: 19px;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+          @include s.Roboto-Regular;
+          white-space: pre;
+
+          &.bold {
+            @include s.Roboto-Bold;
+          }
+        }
+
+        & > .circle {
+          border-radius: 50%;
+          height: 10px;
+          margin-right: 5px;
+          width: 10px;
+
+          &.green {
+            background-color: s.$pqGreen2;
+          }
+
+          &.yellow {
+            background-color: s.$orange2;
+          }
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .top-container {
+        & > .left-container {
+          flex: 0 0 600px;
+
+          & > .title {
+            margin-bottom: 14px;
+          }
+
+          & > app-tabs {
+            margin-bottom: 20px;
+          }
+
+          & > .filters {
+            padding-bottom: 20px;
+
+            & > app-hamburger-menu {
+              flex: 0 0 160px;
+              margin-right: 20px;
+            }
+          }
+
+          & > .list-container {
+            & > virtual-scroller {
+              & .item {
+              }
+
+              & .item-oc {
+                & > .image {
+                  & > img {
+                    height: 20px;
+                  }
+                }
+              }
+            }
+          }
+
+          & > .totals {
+            @include s.flexRowNoWrap;
+            flex: 0 0 49px;
+            padding: 10px 20px 0 30px;
+          }
+        }
+
+        & > .right-container {
+          & > .title {
+            & > .label {
+              padding-bottom: 14px;
+            }
+
+            & > img {
+              height: 20px;
+            }
+          }
+
+          & > .header {
+            & > .client-container {
+              & > .client {
+                & > .client-info {
+                  & > div {
+                    max-width: 220px;
+                  }
+                }
+              }
+            }
+          }
+
+          & > .tables {
+            & > div {
+              & > .table {
+                & > .header {
+                  flex: 0 0 43px;
+
+                  & > div {
+                    & > img {
+                      height: 21px;
+                      width: 21px;
+                    }
+                  }
+                }
+
+                & > .footer {
+                  flex: 0 0 43px;
+                }
+              }
+            }
+          }
+        }
+      }
+      & > .bottom-container {
+        flex: 0 0 56px;
+      }
+    }
+  }
+}
+
+.item {
+  @include s.flexRowNoWrap;
+  border-bottom: 1px solid s.$pqGray2;
+
+  &:hover {
+    background-color: s.$pqGray2;
+  }
+
+  & > div {
+    @include s.flexRowNoWrap;
+    @include s.absoluteCenter;
+    padding: 15px 5px;
+
+    & label {
+      @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+      @include s.Roboto-Regular;
+
+      &.bold {
+        @include s.Roboto-Bold;
+      }
+
+      &.ocean {
+        color: s.$pqGreen;
+      }
+
+      &.underline {
+        text-decoration: underline;
+      }
+    }
+
+    & > img {
+      cursor: pointer;
+      height: 18px;
+      width: 18px;
+    }
+  }
+
+  & > .number {
+    flex: 0 0 50px;
+  }
+
+  & > .filter {
+    flex: 0 0 60px;
+  }
+
+  & > .name {
+    flex: 2 1 auto;
+    justify-content: flex-start;
+
+    & > div {
+      @include s.multiLineTextTruncateSinHeight($lineHeight: 1em);
+
+      /*& > label {
+        @include escaledFontFormat($textSize11to12, regular, $pqBlack2);
+        @include Roboto-Regular;
+
+        & > span {
+          @include Roboto-Bold;
+          white-space: pre;
+        }
+      }*/
+    }
+  }
+
+  & > .price {
+    flex: 0 0 100px;
+
+    & > .tooltip {
+      @include s.tooltip($minWidthTooltip: auto);
+
+      & > label {
+        cursor: pointer;
+      }
+
+      & > .tooltip-text {
+        align-items: center;
+        white-space: pre;
+      }
+    }
+  }
+
+  & > .pieces {
+    flex: 0 0 70px;
+  }
+
+  & > .amount {
+    flex: 0 0 100px;
+  }
+
+  & > .origin {
+    flex: 0 0 350px;
+    justify-content: flex-start;
+
+    & > .big {
+      margin: 5px 20px 0 0;
+      width: 145px;
+    }
+
+    & > label {
+      @include s.escaledFontFormat(s.$textSize13to15, bold, s.$pqBlack2);
+      @include s.Novecento-Bold;
+      margin-right: 6px;
+    }
+
+    & > .circle {
+      border-radius: 50%;
+      height: 10px;
+      margin-right: 5px;
+      width: 10px;
+
+      &.green {
+        background-color: s.$pqGreen2;
+      }
+
+      &.yellow {
+        background-color: s.$orange2;
+      }
+    }
+
+    & > .small {
+      margin-top: 5px;
+      width: 110px;
+    }
+  }
+
+  & > .certificate {
+    flex: 0 0 150px;
+    justify-content: flex-start;
+
+    & > .input-file {
+      margin-right: 14px;
+      width: max-content;
+    }
+  }
+
+  & > .button {
+    flex: 0 0 50px;
+  }
+
+  &.cdk-drag-preview {
+    background-color: s.$pqWhite;
+  }
+
+  &.cdk-drag-dragging {
+    cursor: grabbing;
+
+    & * {
+      cursor: grabbing;
+    }
+  }
+}
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}

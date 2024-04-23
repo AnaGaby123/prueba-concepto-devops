@@ -1,0 +1,14 @@
+<div class="component-container" id="register-dispatch-container">
+  <div class="header">
+    <app-header-bar [title]="title$ | async" [activeBack]="isDetails$ | async" (goBack)="goBack()"></app-header-bar>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="footer" *ngIf="!(isDetails$ | async)">
+    <div>
+      <label class="label-dark">OD: </label>
+      <label class="label-normal">{{ 'registerDispatch.dispatchOrder' | translate }}</label>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,143 @@
+<div class="dashboard-container" id="offer-adjustment-list-container">
+  <div class="left-container">
+    <div class="header">
+      <label class="title">EVI</label>
+      <div class="tabs">
+        <app-tabs [options]="options$ | async" [tapSelected]="tapSelected$ | async" (onSelectOption)="onSelectOption($event)">
+        </app-tabs>
+      </div>
+      <div class="filters">
+        <div class="filter-by-type">
+          <app-hamburger-menu
+            [options]="valueFilter$ | async"
+            [value]="(filterType$ | async).value"
+            (valueEmit)="selectFilterByType($event)"
+          >
+          </app-hamburger-menu>
+        </div>
+      </div>
+      <div class="search-bar">
+        <app-search
+          [placeholder]="'Cliente'"
+          [searchTerm]="searchTerm$ | async"
+          (textSearch)="handleKeySearch($event)"
+        ></app-search>
+      </div>
+    </div>
+    <div class="list-container">
+      <virtual-scroller
+        class="virtual-list"
+        *ngIf="(evis$ | async)?.length && (dashboardApiStatus$ | async) === 3"
+        [items]="evis$ | async"
+        (vsUpdate)="evisScrollItems = $event"
+        (vsEnd)="fetchMore($event)"
+      >
+        <div class="client" *ngFor="let evi of evisScrollItems" (click)="redirectToDetails(evi)">
+          <div>
+            <label>{{ '#' + evi.Index }}</label>
+            <div class="circle" [ngClass]="evi.PorExpirar ? 'red' : 'green'"></div>
+          </div>
+          <div>
+            <div class="name">
+              <label>{{ evi.NombreEVI || 'N/D' }}</label>
+            </div>
+            <div class="classification">
+              <label>{{
+                ('offerAdjustment.totalAmountSetting' | translate) +
+                  ': ' +
+                  (evi.ValorTotalAjuste || 0 | currency: 'USD':'symbol-narrow':'0.2-4') +
+                  ' USD'
+              }}</label>
+            </div>
+            <div class="states">
+              <div>
+                <label class="green-pf">{{
+                  evi.IdCliente +
+                    ' ' +
+                    (evi.IdCliente === 1 ? ('offerAdjustment.client' | translate) : ('offerAdjustment.clients' | translate)) +
+                    ' ·'
+                }}</label>
+              </div>
+              <div>
+                <img alt="quotes" src="assets/Images/quotation/quotes.svg" />
+                <label class="black">{{
+                  (evi.IdCotCotizacion | number: '1.0-0') +
+                    ' ' +
+                    (evi.IdCotCotizacion === 1
+                      ? ('offerAdjustment.quotation' | translate)
+                      : ('offerAdjustment.quotations' | translate))
+                }}</label>
+              </div>
+              <!-- DOCS: REVISAR SI AÚN SE TENDRÁ ESTE DATO -->
+              <!--<div>
+                <label class="green-pf">{{
+                  '· ' +
+                  evi.TotalPartidasEnAjuste +
+                    ' ' +
+                    (evi.TotalPartidasEnAjuste === 1
+                      ? ('offerAdjustment.item' | translate)
+                      : ('offerAdjustment.items' | translate))
+                }}</label>
+              </div>-->
+            </div>
+            <!--<div class="amount-total">
+              <label>{{
+                ('offerAdjustment.totalAmountClosing' | translate) +
+                  ': ' +
+                  ((evi.TotalUSDPartidasEnCierre ? evi.TotalUSDPartidasEnCierre : 0)
+                    | currency: 'USD':'symbol-narrow':'0.2-4') +
+                  ' USD'
+              }}</label>
+            </div>-->
+          </div>
+          <div>
+            <img alt="arrow" src="assets/Images/arrows/arrow_right.svg" />
+          </div>
+        </div>
+      </virtual-scroller>
+      <div class="without-results" *ngIf="(evis$ | async)?.length === 0 && (dashboardApiStatus$ | async) === 3">
+        <app-without-results></app-without-results>
+      </div>
+      <div class="loader" *ngIf="(dashboardApiStatus$ | async) === 1">
+        <app-loading></app-loading>
+      </div>
+    </div>
+    <div class="footer">
+      <label>{{ '#' + ((evis$ | async)?.length | number: '1.0-0') }}</label>
+      <label>{{
+        ((offerTotals$ | async)?.quotations | number: '1.0-0') +
+          ((offerTotals$ | async)?.quotations === 1 ? ' Cotización' : ' Cotizaciones')
+      }}</label>
+      <label>{{
+        'Valor Total en Cierre: ' +
+          ((offerTotals$ | async)?.adjustments || 0 | currency: 'USD':'symbol-narrow':'2.2-4') +
+          ' USD'
+      }}</label>
+    </div>
+  </div>
+  <div class="right-container">
+    <app-loading class="loading" *ngIf="(dashboardApiStatus$ | async) === 1; else showGraphs"></app-loading>
+    <ng-template #showGraphs>
+      <app-doughnut-chart
+        [data]="doughnutChartDataMarks$ | async"
+        [optionDetailsHover]="doughnutChartOptionDetailsHoverMarks$ | async"
+        [optionDetails]="doughnutChartOptionDetailsMarks$ | async"
+        [titleDetails]="'Totales'"
+        [title]="'Marcas'"
+        [typeChart]="1"
+      >
+      </app-doughnut-chart>
+      <app-doughnut-chart
+        [data]="doughnutChartDataClients$ | async"
+        [optionDetailsHover]="doughnutChartOptionDetailsHoverClients$ | async"
+        [optionDetails]="doughnutChartOptionDetailsClients$ | async"
+        [titleDetails]="'Totales'"
+        [title]="'Clientes'"
+        [typeChart]="1"
+      >
+      </app-doughnut-chart>
+      <app-bar-chart [title]="titleBarChartSetting" [values]="valuesBarChartSettings$ | async"> </app-bar-chart>
+      <app-bar-chart [title]="titleBarChartItems" [values]="valuesBarChartItems$ | async"> </app-bar-chart>
+    </ng-template>
+  </div>
+</div>

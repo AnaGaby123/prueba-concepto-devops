@@ -1,0 +1,166 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+:host {
+  & > .progress-bar {
+    padding: 10px 0;
+    & > div:nth-of-type(1) {
+      @include s.flexRowWrap;
+      & > label:nth-of-type(1) {
+        @include s.responsive-font-format(
+          $font-family: s.$font_family_novecento_bold,
+          $font-size-map: s.$responsive-font-17-21,
+          $font-weight: s.$font_weight_bold
+        );
+      }
+      & > label:nth-of-type(2) {
+        @include s.responsive-font-format(
+          $font-family: s.$font_family_novecento_bold,
+          $font-size-map: s.$responsive-font-17-21,
+          $font-weight: s.$font_weight_bold,
+          $color: s.$main-proquifa
+        );
+        white-space: pre;
+      }
+    }
+    & > .details {
+      @include s.flexRowWrap;
+      width: 100%;
+      margin-top: 10px;
+      & > div:nth-of-type(1) {
+        width: 100%;
+        margin-bottom: 8px;
+      }
+      & > div:nth-of-type(2) {
+        @include s.flexColumn;
+        width: 50%;
+        align-items: flex-start;
+        & > label:nth-of-type(1) {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_novecento_bold,
+            $font-size-map: s.$responsive-font-14-16,
+            $font-weight: s.$font_weight_bold,
+            $color: s.$pqGreen2
+          );
+          margin-bottom: 2px;
+        }
+        & > label:nth-of-type(2) {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_novecento_bold,
+            $font-size-map: s.$responsive-font-10-12-b,
+            $font-weight: s.$font_weight_bold
+          );
+        }
+      }
+      & > div:nth-of-type(3) {
+        @include s.flexColumn;
+        width: 50%;
+        align-items: flex-end;
+        & > label:nth-of-type(1) {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_novecento_bold,
+            $font-size-map: s.$responsive-font-14-16,
+            $font-weight: s.$font_weight_bold
+          );
+          margin-bottom: 2px;
+        }
+        & > label:nth-of-type(2) {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_novecento_bold,
+            $font-size-map: s.$responsive-font-10-12-b,
+            $font-weight: s.$font_weight_bold
+          );
+          & > span:nth-of-type(2) {
+            margin: 0 4px;
+          }
+        }
+      }
+
+      &.hide {
+        animation-duration: 0.3s;
+        animation-fill-mode: forwards;
+        animation-name: hideInfo;
+        transition: 0.3s ease-in-out;
+      }
+
+      &.show {
+        animation-duration: 0.3s;
+        animation-fill-mode: forwards;
+        animation-name: showInfo;
+      }
+
+      &.isCollapse {
+        overflow: hidden;
+        height: 100%;
+        flex: 1 1 auto;
+      }
+    }
+  }
+
+  & > .icon {
+    cursor: pointer;
+    display: flex;
+    justify-content: flex-end;
+    & > .container {
+      @include s.tooltip(auto, auto, auto, 150px, $trianglePosition: 'default');
+      position: absolute;
+      z-index: 1;
+      & > .tooltip-text {
+        min-width: max-content !important;
+
+        & > p {
+          white-space: pre;
+          width: 100% !important;
+        }
+      }
+      & > img {
+        cursor: pointer;
+        height: 19px;
+        transform: scaleX(1);
+        transition: transform 0.3s ease-in-out;
+        &.reverse {
+          transform: scaleY(-1);
+        }
+      }
+    }
+  }
+}
+
+@keyframes showInfo {
+  from {
+    height: 0;
+  }
+  to {
+    height: 48px;
+  }
+}
+
+@keyframes hideInfo {
+  from {
+    height: 48px;
+  }
+  to {
+    height: 0;
+  }
+}
+@include s.media-query(s.$standard) {
+  @keyframes showInfo {
+    from {
+      height: 0;
+    }
+    to {
+      height: 56px;
+    }
+  }
+
+  @keyframes hideInfo {
+    from {
+      height: 56px;
+    }
+    to {
+      height: 0;
+    }
+  }
+}

@@ -1,0 +1,27 @@
+@use 'base' as s;
+
+:host {
+  @include s.generic-main-component-structure;
+
+  & > #checkout-container {
+    & > .footer {
+      @include s.generic-main-component-footer;
+
+      & > div {
+        & > label {
+          @include s.responsive-font-format($font-size-map: s.$responsive-font-12-12);
+        }
+
+        & > label:first-child {
+          @include s.Roboto-Bold;
+          margin-right: 4px;
+        }
+
+        & > img {
+          @include s.imageLabel;
+          margin-right: 6px;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,62 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  .modal-loading {
+    @include s.absolute100;
+    @include s.gridCenter;
+    background-color: rgba(66, 66, 66, 0.75);
+    left: 0;
+    margin: auto;
+    position: fixed;
+    top: 0;
+    z-index: 20;
+
+    & > .pop {
+      @include s.flexColumn;
+      width: 620px;
+      height: 250px;
+      background-color: rgba(255, 255, 255, 0);
+
+      & > .title {
+        @include s.flexRow;
+        justify-content: center;
+        align-items: center;
+        background: s.$main-proquifa;
+        border: 1px solid s.$main-proquifa;
+        border-radius: 21px 21px 0 0;
+        flex: 0 0 56px;
+
+        & > .title-h1 {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_roboto_bold,
+            $font-size-map: s.$responsive-font-24-24,
+            $color: s.$pqWhite
+          );
+        }
+      }
+
+      & > .body {
+        @include s.flexColumn;
+        align-items: center;
+        gap: 36px;
+        padding: 20px 0;
+        width: 620px;
+        background: s.$dark-proquifa-f;
+        border: 1px solid #008894;
+        border-radius: 0 0 21px 21px;
+
+        & > .footer {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_roboto,
+            $font-size-map: s.$responsive-font-14-14,
+            $color: s.$main-proquifa
+          );
+        }
+      }
+    }
+  }
+}

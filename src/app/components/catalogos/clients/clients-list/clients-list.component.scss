@@ -1,0 +1,126 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  #clients-list {
+    @include s.flexColumn;
+    @include s.absolute100;
+
+    & > .content {
+      @include s.flexColumn;
+      flex: 1 1 auto;
+
+      & > .filters {
+        @include s.flexColumn;
+        flex: 0 0 auto;
+        margin-top: 5px;
+      }
+
+      & > .list {
+        @include s.flexColumn;
+        flex: 1;
+        padding: 20px 0 15px 0;
+
+        & > .clients {
+          @include s.flexColumn;
+          flex: 1;
+
+          & > virtual-scroller {
+            @include s.absolute100;
+            @include s.fixVirtualScroller;
+
+            &::ng-deep > .scrollable-content {
+              @include s.itemsCardWithGrid(360px, s.$defaultGridItemHeightSize);
+            }
+          }
+
+          & > .loadingContainer {
+            margin: 5px 0;
+          }
+        }
+
+        & > .corporates {
+          @include s.flexColumn;
+          flex: 1;
+
+          & > virtual-scroller {
+            @include s.absolute100;
+            @include s.fixVirtualScroller;
+
+            &::ng-deep > .scrollable-content {
+              & > .corporationContainer {
+                & > .corporationName {
+                  border-bottom: 0.5px solid s.$pqGray2;
+
+                  & > label {
+                    @include s.Roboto-Bold;
+                    @include s.escaledFontFormatImportant(s.$textSize13to16, bold, s.$pqGreen);
+                  }
+                }
+
+                & > .clientsContainer {
+                  @include s.itemsCardWithGrid(360px, s.$defaultGridItemHeightSize);
+                  padding-bottom: 15px;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      & > .index {
+        @include s.flexRow;
+        justify-content: center;
+        padding-bottom: 15px;
+
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+        }
+      }
+    }
+
+    & > footer {
+      @include s.generic-main-component-footer;
+      justify-content: flex-end;
+      padding: 0 15px;
+      // DOCS: Se quita imagen hasta que se le dé funcionalidad
+      /*& > img {
+        height: 17px;
+      }*/
+      & > button {
+        @include s.pqfButton();
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .content {
+        & > .list {
+          padding: 20px 20px 15px 20px;
+
+          & > .loadingContainer {
+            margin: 20px 0;
+          }
+        }
+      }
+      & > footer {
+        padding: 0 20px;
+
+        & > img {
+          height: 20px;
+        }
+      }
+    }
+  }
+}
+
+.loading {
+  @include s.flexRow;
+  @include s.absoluteCenter;
+  flex: 1;
+}

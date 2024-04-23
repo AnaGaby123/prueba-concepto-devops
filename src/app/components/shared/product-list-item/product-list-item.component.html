@@ -1,0 +1,57 @@
+<div class="product-list-item-container">
+  <div class="indicator" [ngClass]="setIndicatorColor(product.DisponibilidadClave)"></div>
+  <div class="product-container">
+    <div class="product-image">
+      <img
+        #imagePresentationElement
+        alt="{{ 'logo ' + product?.Presentacion ?? 'image-presentation' }}"
+        [src]="product?.ImagePresentation"
+        (error)="errorImgHandler()"
+      />
+      <img
+        #imagePresentationElementHover
+        alt="{{ 'logo ' + product?.Presentacion ?? 'image-presentation'}}"
+        [src]="product?.ImagePresentationHover"
+        (error)="errorImgHandlerHover()"
+      />
+    </div>
+    <div class="information-container">
+      <div class="product-information">
+        <label>#{{ product?.Index }} · </label>
+        <div class="product-image">
+          <img
+            #imageItemBrand
+            alt="{{ 'logo ' + product?.NombreMarca }}"
+            [src]="product?.image"
+            (error)="errorImgBrandHandler()"
+          />
+          <img
+            #imageItemBrandHover
+            alt="{{ 'logo ' + product?.NombreMarca }}"
+            [src]="product?.imageHover"
+            (error)="errorImgBrandHandlerHover()"
+          />
+        </div>
+        <span>CAT #{{ product?.TipoProductoClave === productType.trainings ? 'N/D' : product?.Catalogo }}</span>
+        <label *ngIf="product?.Uso || product?.Presentacion || product?.Unidad"
+          >· {{ product?.Uso }} {{ product?.Presentacion }} {{ product?.Unidad }}
+        </label>
+        <span *ngIf="product?.AgrupadorCaracteristica">· {{ product?.AgrupadorCaracteristica }} </span>
+        <label *ngIf="product?.Tipo || product?.Subtipo">· {{ product?.Tipo }} {{ product?.Subtipo }}</label>
+      </div>
+      <div class="description">
+        <label class="product-description">{{ product?.Descripcion }}</label>
+      </div>
+      <div class="alternatives-complementary">
+        <label>Alternativos {{ product?.TotalAlternativo }} </label>
+        <span>· Complementarios {{ product?.TotalComplementario }}</span>
+      </div>
+    </div>
+    <label class="indicator" [ngClass]="setTextIndicatorColor(product?.DisponibilidadClave)">{{
+      product?.Disponibilidad
+    }}</label>
+    <label class="controlate">{{ product.Controlado ? 'Controlado' : '' }}</label>
+    <label class="price">{{ product?.PrecioLista | currency }} {{ product?.MonedaVentaProveedor }}</label>
+  </div>
+</div>
+<div class="downSeparatorList"></div>

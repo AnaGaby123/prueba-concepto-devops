@@ -1,0 +1,16 @@
+<div class="brand-filters">
+  <div class="filter1">
+    <pqf-filter-options
+      [filterText]="'Filtrar por:'"
+      [options]="filterOptions$ | async"
+      (selectedOptionEmitter)="setFilterOption($event)"
+    ></pqf-filter-options>
+  </div>
+  <div class="filter2">
+    <pqf-search
+      [placeholder]="'search' | translate"
+      [searchTerm]="searchTerm$ | async"
+      (textSearch)="handleKeySearch($event)"
+    ></pqf-search>
+  </div>
+</div>

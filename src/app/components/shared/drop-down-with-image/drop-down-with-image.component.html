@@ -1,0 +1,52 @@
+<div class="drop-list-container" [style.width]="width" [ngClass]="(isSelected || showOptions) && 'selected'">
+  <div class="selected-option" (click)="options?.length > 0 && handleOpenDropList()">
+    <div class="image">
+      <img [alt]="title" [src]="defaultImgSource" />
+      <img [alt]="title" [src]="mainImgSource" />
+    </div>
+    <div class="content-info">
+      <div>
+        <p class="label" [style.font-family]="font"> {{ title }}<span *ngIf="options"> · </span></p>
+      </div>
+      <div>
+        <p *ngIf="options" [style.font-family]="font">{{ selectedOption?.label || 'N/D' }}</p>
+        <img *ngIf="showTriangle" src="assets/Images/drop_list.svg" alt="" />
+      </div>
+    </div>
+  </div>
+
+  <div class="relative-container">
+    <div class="content" [hidden]="!showOptions">
+      <div>
+        <div>
+          <ul class="options" [style.max-height]="maxHeightOptions">
+            <div
+              class="options-container"
+              *ngFor="let option of options; let i = index; trackBy: handleTrackByFn"
+              (click)="selectItem(option)"
+            >
+              <div class="border-separator">
+                <li
+                  class="option"
+                  [style.align-items]="textAlign === 'left' ? 'flex-start' : textAlign === 'right' ? 'flex-end' : textAlign"
+                >
+                  <div
+                    class="main-labels"
+                    [style.align-items]="textAlign === 'left' ? 'flex-start' : textAlign === 'right' ? 'flex-end' : textAlign"
+                  >
+                    <label
+                      [ngClass]="option.value === selectedOption?.value ? 'selected' : null"
+                      [style.text-align]="textAlign"
+                    >
+                      {{ option.label }}
+                    </label>
+                  </div>
+                </li>
+              </div>
+            </div>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

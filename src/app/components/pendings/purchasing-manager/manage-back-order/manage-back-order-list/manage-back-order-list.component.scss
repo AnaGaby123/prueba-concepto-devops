@@ -1,0 +1,617 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  $left-container-flex: (
+    'base': 580px,
+    'macBookAir': 680px,
+  );
+  $graphics-padding: (
+    'base': 15px 25px,
+    'macBookAir': 20px 30px,
+  );
+  $graphics-structure: (
+    'top': 3,
+    'bottom': 2,
+  );
+  $graphics-gap: (
+    'base': 15px 15px,
+    'macBookAir': 20px 20px,
+  );
+
+  @include s.pending-dashboard-structure($left-container-flex, $graphics-padding, $graphics-structure, $graphics-gap);
+
+  #manage-back-order-list {
+    & > .left-container {
+      & > .filters {
+        & > div:nth-of-type(1) {
+          width: 40%;
+        }
+
+        & > div:nth-of-type(2) {
+          width: 60%;
+        }
+
+        & > div {
+          @include s.flexRow;
+          align-items: center;
+          justify-content: center;
+          width: 50%;
+        }
+      }
+
+      & > .list-container {
+        & > virtual-scroller {
+          height: 100%;
+          width: 100%;
+
+          .client {
+            @include s.flexRowNoWrap;
+            border-bottom: 1px solid s.$pqGray2;
+            box-sizing: border-box;
+            height: 120px;
+            padding: 10px 0;
+            width: 100%;
+
+            &:hover {
+              background-color: s.$pqGray2;
+              cursor: pointer;
+            }
+
+            & > .index {
+              @include s.absoluteTop;
+              @include s.flexRowNoWrap;
+              box-sizing: border-box;
+              height: 100%;
+              justify-content: flex-start;
+              padding-left: 10px;
+              width: 70px;
+
+              & > label:nth-of-type(1) {
+                @include s.escaledFontFormat(s.$textSize21to28, bold, s.$pqBlack2);
+                @include s.Roboto-Regular;
+                margin-top: 2px;
+              }
+            }
+
+            & > div:nth-of-type(2) {
+              @include s.flexRowWrap;
+              @include s.absoluteTop;
+              width: calc(100% - 95px);
+              padding-left: 5px;
+
+              & > .name {
+                @include s.flexRowNoWrap;
+                width: 100%;
+                margin-bottom: 5px;
+
+                & > label:nth-of-type(1) {
+                  @include s.Roboto-Bold;
+                  @include s.escaledFontFormat(s.$textSize21to28, bold, s.$pqGreen);
+                  @include s.multiLineTextTruncateSinHeight(1, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+                }
+              }
+
+              & > .classification {
+                @include s.flexRowNoWrap;
+                width: 100%;
+                margin-bottom: 8px;
+
+                & > label {
+                  @include s.Roboto-Bold;
+                  @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+                  @include s.multiLineTextTruncateSinHeight(1, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+                  margin-right: 5px;
+                }
+              }
+
+              & > .total-item {
+                @include s.flexRowNoWrap;
+                width: 100%;
+                margin-bottom: 8px;
+
+                & > label {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize15to19, '', s.$pqBlack2);
+                  margin-right: 5px;
+                }
+              }
+
+              & > .types {
+                @include s.flexRow;
+                justify-content: space-between;
+                width: 100%;
+
+                & > .fdm {
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize15to17, '', s.$pqGreen2);
+                    margin-left: 5px;
+                  }
+                }
+
+                & > .labels {
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize15to17, '', s.$pqGreen2);
+                    margin-left: 5px;
+                  }
+
+                  & > img {
+                    margin-left: 5px;
+                  }
+
+                  & > .cancel {
+                    color: s.$pqTextAlert !important;
+                  }
+                }
+              }
+
+              & .amount-total {
+                @include s.absoluteCenter;
+                @include s.flexRowNoWrap;
+                justify-content: flex-start;
+                width: 100%;
+
+                & > label:nth-of-type(1) {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize14to19, normal, s.$pqTextGris);
+                }
+              }
+            }
+
+            & > .arrow {
+              @include s.absoluteCenter;
+              @include s.flexRowNoWrap;
+              box-sizing: border-box;
+              height: 100%;
+              justify-content: flex-end;
+              padding-right: 10px;
+              width: 35px;
+
+              & > img:nth-of-type(1) {
+                transform: rotate(-90deg);
+              }
+            }
+          }
+        }
+      }
+
+      & > .footer {
+        @include s.flexRow;
+        border-top: 1px solid s.$pqBlack2;
+        justify-content: space-between;
+
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+          @include s.flexRow;
+        }
+      }
+    }
+
+    & > .right-container {
+      & > app-doughnut-chart {
+        grid-column-end: span 2;
+        overflow: hidden;
+      }
+
+      & > app-bar-chart {
+        grid-column-end: span 3;
+        overflow: hidden;
+      }
+
+      & > .loading {
+        grid-area: 2/7/2/1;
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #manage-back-order-list {
+      & > .left-container {
+        & > .list-container {
+          & > virtual-scroller {
+            .client {
+              height: 145px;
+
+              & > .index {
+                padding-left: 20px;
+                width: 95px;
+              }
+
+              & > div:nth-of-type(2) {
+                @include s.absoluteTop;
+                @include s.flexRowWrap;
+                width: calc(100% - 135px);
+
+                & > .states {
+                  & > div {
+                    margin-left: 10px;
+
+                    & > img:nth-of-type(1) {
+                      height: 18px;
+                      margin-right: 10px;
+                    }
+
+                    & > label {
+                      margin-left: 10px;
+                    }
+                  }
+                }
+              }
+
+              & > div:nth-of-type(3) {
+                padding-right: 18px;
+                width: 50px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+//@import 'base.scss';
+//* {
+//  box-sizing: border-box;
+//}
+//:host {
+//  width: 100%;
+//  height: 100%;
+//  #manage-back-order-list {
+//    width: 100%;
+//    height: 100%;
+//    & > section {
+//      @include s.flexRowNoWrap;
+//      width: 100%;
+//      height: calc(100% - 54px);
+//      & > .list-container {
+//        @include s.flexColumn;
+//        width: 548px;
+//        height: 100%;
+//        box-sizing: border-box;
+//        padding: 18px;
+//        flex: 1;
+//        background-color: s.$pqWhite;
+//        & > .title {
+//          @include s.flexRowNoWrap;
+//          width: 100%;
+//          margin-bottom: 10px;
+//          & > label {
+//            @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+//            @include s.Novecento-Bold;
+//          }
+//        }
+//        & > .tabs {
+//          @include s.flexRowNoWrap;
+//          width: 100%;
+//          height: 55px;
+//          margin-bottom: 15px;
+//        }
+//        & > .filters {
+//          @include s.flexRowNoWrap;
+//          width: 100%;
+//          height: 55px;
+//          justify-content: space-between;
+//          box-sizing: border-box;
+//          align-items: center;
+//          padding-bottom: 15px;
+//
+//          & > div:nth-of-type(1) {
+//            width: 30%;
+//          }
+//          & > div:nth-of-type(2) {
+//            width: 70%;
+//          }
+//          & > div {
+//            @include s.flexRow;
+//            align-items: center;
+//            justify-content: center;
+//            width: 50%;
+//          }
+//        }
+//        & > .search-bar {
+//          @include s.flexRowNoWrap;
+//          width: 100%;
+//          height: 30px;
+//          margin-bottom: 15px;
+//          & > app-search {
+//            width: 100%;
+//          }
+//        }
+//        & > .list-clients {
+//          width: 100%;
+//          flex: 1;
+//          border-top: 1px solid s.$pqBlack2;
+//          border-bottom: 1px solid s.$pqBlack2;
+//          overflow: hidden;
+//          & > virtual-scroller {
+//            width: 100%;
+//            height: 100%;
+//            .client {
+//              @include s.flexRowNoWrap;
+//              width: 100%;
+//              height: 120px;
+//              box-sizing: border-box;
+//              padding: 10px 0;
+//              border-bottom: 1px solid s.$pqGray2;
+//              &:hover {
+//                background-color: s.$pqGray2;
+//                cursor: pointer;
+//              }
+//              & > .index {
+//                @include s.flexRowNoWrap;
+//                @include s.absoluteTop;
+//                width: 70px;
+//                height: 100%;
+//                box-sizing: border-box;
+//                justify-content: flex-start;
+//                padding-left: 10px;
+//                & > label:nth-of-type(1) {
+//                  @include s.escaledFontFormat(s.$textSize21to28, bold, s.$pqBlack2);
+//                  @include s.Roboto-Regular;
+//                  margin-top: 2px;
+//                }
+//              }
+//              & > div:nth-of-type(2) {
+//                @include s.flexRowWrap;
+//                @include s.absoluteTop;
+//                width: calc(100% - 95px);
+//                padding-left: 5px;
+//                & > .name {
+//                  @include s.flexRowNoWrap;
+//                  width: 100%;
+//                  margin-bottom: 5px;
+//                  & > label:nth-of-type(1) {
+//                    s.$textSize: (
+//                      'base': 21px,
+//                      'macBookAir': 28px,
+//                    );
+//                    @include s.escaledFontFormat(s.$textSize, bold, s.$pqGreen);
+//                    @include s.Roboto-Bold;
+//                    @include s.multiLineTextTruncateSinHeight(1, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+//                  }
+//                }
+//                & > .classification {
+//                  @include s.flexRowNoWrap;
+//                  width: 100%;
+//                  margin-bottom: 8px;
+//                  & > label {
+//                    margin-right: 5px;
+//                    @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+//                    @include s.Roboto-Bold;
+//                    @include s.multiLineTextTruncateSinHeight(1, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+//                  }
+//                }
+//                & > .totalsItem {
+//                  @include s.flexRowNoWrap;
+//                  width: 100%;
+//                  margin-bottom: 8px;
+//                  & > label {
+//                    margin-right: 5px;
+//                    @include s.escaledFontFormat(s.$textSize15to19, '', s.$pqBlack2);
+//                    @include s.Roboto-Regular;
+//                  }
+//                }
+//                & > .types {
+//                  @include s.flexRow;
+//                  justify-content: space-between;
+//                  width: 100%;
+//                  & > .fdm {
+//                    & > label {
+//                      margin-left: 5px;
+//                      @include s.escaledFontFormat(s.$textSize15to17, '', s.$pqGreen2);
+//                      @include s.Roboto-Regular;
+//                    }
+//                  }
+//                  & > .labels {
+//                    & > label {
+//                      margin-left: 5px;
+//                      @include s.escaledFontFormat(s.$textSize15to17, '', s.$pqGreen2);
+//                      @include s.Roboto-Regular;
+//                    }
+//                    & > img {
+//                      margin-left: 5px;
+//                    }
+//                    & > .cancel {
+//                      color: s.$pqTextAlert !important;
+//                    }
+//                  }
+//                }
+//                & .amount-total {
+//                  @include s.flexRowNoWrap;
+//                  @include s.absoluteCenter;
+//                  width: 100%;
+//                  justify-content: flex-start;
+//                  & > label:nth-of-type(1) {
+//                    s.$textSize: (
+//                      'base': 14px,
+//                      'macBookAir': 19px,
+//                    );
+//                    @include s.escaledFontFormat(s.$textSize, normal, s.$pqTextGris);
+//                    @include s.Roboto-Regular;
+//                  }
+//                }
+//              }
+//              & > .arrow {
+//                @include s.flexRowNoWrap;
+//                @include s.absoluteCenter;
+//                width: 35px;
+//                height: 100%;
+//                box-sizing: border-box;
+//                justify-content: flex-end;
+//                padding-right: 10px;
+//                & > img:nth-of-type(1) {
+//                  transform: rotate(-90deg);
+//                }
+//              }
+//            }
+//            .without-results,
+//            .is-loading {
+//              display: flex;
+//              @include s.absoluteCenter;
+//              height: 100%;
+//            }
+//          }
+//        }
+//        & > .totals {
+//          @include s.flexRowNoWrap;
+//          @include s.absoluteCenter;
+//          width: 100%;
+//          height: 24px;
+//          justify-content: space-between;
+//          & > label {
+//            s.$textSize: (
+//              'base': 12px,
+//              'macBookAir': 14px,
+//            );
+//            @include s.escaledFontFormat(s.$textSize, normal, s.$pqBlack2);
+//            @include s.Roboto-Regular;
+//          }
+//        }
+//      }
+//      & > .charts-container {
+//        @include s.flexColumn;
+//        @include s.absoluteCenter;
+//        width: calc(100% - 548px);
+//        height: 100%;
+//        padding: 18px;
+//        background-color: s.$pqGray2;
+//        & > div {
+//          display: flex;
+//          justify-content: center;
+//          width: 100%;
+//          height: calc(50% - 20px);
+//          & > .loader {
+//            @include s.flexRow;
+//            height: 100%;
+//            & > app-loading {
+//              @include s.flexRow;
+//            }
+//          }
+//          & > div {
+//            @include s.flexRow;
+//            padding-right: 5px;
+//            padding-left: 5px;
+//            width: calc(100% / 2);
+//            height: 100%;
+//          }
+//        }
+//        & > div:nth-child(2) {
+//          & > div:nth-child(1) {
+//            padding-right: 30px !important;
+//          }
+//          & > div:nth-child(2) {
+//            padding-left: 30px !important;
+//          }
+//        }
+//      }
+//    }
+//    & > footer {
+//      @include s.flexRowNoWrap;
+//      @include s.absoluteCenter;
+//      width: 100%;
+//      height: 50px;
+//      border-top: 2px solid s.$pqBlack;
+//      box-sizing: border-box;
+//      & > div:nth-of-type(1) {
+//        @include s.flexRowNoWrap;
+//        @include s.absoluteCenter;
+//        width: 100%;
+//        height: 100%;
+//        max-width: 1500px;
+//        justify-content: center;
+//        & > div {
+//          @include s.flexRowNoWrap;
+//          @include s.absoluteCenter;
+//          padding-left: 30px;
+//          padding-right: 30px;
+//          width: auto;
+//          & > div {
+//            border-radius: 50%;
+//            width: 15px;
+//            height: 15px;
+//            margin-right: 6px;
+//          }
+//
+//          & > .label-dark {
+//            s.$textSize: (
+//              'base': 12px,
+//              'macBookAir': 14px,
+//            );
+//            @include s.escaledFontFormat(s.$textSize, bold, s.$pqBlack);
+//            @include s.Roboto-Bold;
+//            padding-right: 3px;
+//          }
+//          & > label {
+//            s.$textSize: (
+//              'base': 12px,
+//              'macBookAir': 14px,
+//            );
+//            @include s.escaledFontFormat(s.$textSize, normal, s.$pqBlack2);
+//            @include s.Roboto-Regular;
+//          }
+//          & > img {
+//            margin-right: 5px;
+//          }
+//        }
+//      }
+//    }
+//  }
+//  @include s.responsive_layout('macBookAir') {
+//    #manage-back-order-list {
+//      & > section {
+//        & > .list-container {
+//          width: 670px;
+//          & > .filters {
+//            height: 75px;
+//          }
+//          & > .list-clients {
+//            width: 100%;
+//            & > virtual-scroller {
+//              .client {
+//                height: 145px;
+//                & > .index {
+//                  width: 95px;
+//                  padding-left: 20px;
+//                }
+//                & > div:nth-of-type(2) {
+//                  @include s.flexRowWrap;
+//                  @include s.absoluteTop;
+//                  width: calc(100% - 135px);
+//                  & > .states {
+//                    & > div {
+//                      margin-left: 10px;
+//                      & > img:nth-of-type(1) {
+//                        height: 18px;
+//                        margin-right: 10px;
+//                      }
+//                      & > label {
+//                        margin-left: 10px;
+//                      }
+//                    }
+//                  }
+//                }
+//                & > div:nth-of-type(3) {
+//                  width: 50px;
+//                  padding-right: 18px;
+//                }
+//              }
+//            }
+//          }
+//        }
+//        & > .charts-container {
+//          width: calc(100% - 670px);
+//        }
+//      }
+//      & > footer {
+//        height: 55px;
+//      }
+//    }
+//  }
+//}

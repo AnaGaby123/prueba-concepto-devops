@@ -1,0 +1,72 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  & > .container {
+    @include s.absolute100;
+    @include s.flexColumn;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    & > .container-data {
+      @include s.flexColumn;
+
+      & > .general-data,
+      & > .address,
+      & > .commercial-info {
+        margin-bottom: 20px;
+      }
+
+      & > label {
+        @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqGreen);
+        @include s.Roboto-Regular;
+        justify-self: flex-end;
+        text-align: end;
+      }
+    }
+
+    & > .contact-container {
+      flex: 1 0 auto;
+      max-height: 500px;
+      min-height: 170px;
+    }
+
+    & > .message {
+      @include s.flexRowNoWrap;
+      justify-content: flex-end;
+      padding-bottom: 10px;
+
+      & > .required-data {
+        @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqGreen);
+        @include s.Roboto-Regular;
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .container-data {
+        &.padding-top {
+          padding-top: 20px;
+        }
+
+        & > .general-data,
+        & > .address,
+        & > .commercial-info {
+          margin-bottom: 25px;
+        }
+
+        & > label {
+          padding: 0 110px;
+        }
+      }
+      & > .contact-container {
+        max-height: 450px;
+        min-height: 190px;
+      }
+    }
+  }
+}

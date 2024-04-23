@@ -1,0 +1,31 @@
+<app-internal-sales-item [internalSalesItem]="item" (valueEmitter)="globalItemEventsHandler($event)"></app-internal-sales-item>
+
+<!--TODO: POP PARA VISUALZIAR LAS COTIZACIONES VINCULADAS-->
+<!-- FIXME: Se quita porque no se esta usando-->
+<!--<div class="linked-items-pop">
+  <app-custom-position-pop-up
+    *ngIf="toolTipPop2"
+    [minWidth]="'160px'"
+    [maxWidth]="'160px'"
+    [minHeight]="'60px'"
+    [maxHeight]="(viewType$ | async) === 'macBookAir' ? '90px' : '85px'"
+    [popUpPosition]="'bottom-center'"
+    [backgroundColor]="'#33333c'"
+    [target]="targetPop"
+    [borderColor]="'#33333c'"
+    [borderRadius]="'solid 0.5px #c8c8c9'"
+    [triangleBackgroundColor]="'#33333c'"
+    [closeButton]="false"
+    (closeEmitter)="openLinkedQuoted('tooltip', false)"
+  >
+    <div class="linked-items">
+      <ul>
+        <li *ngFor="let quote of (quotesLinked$ | async)?.quotesLinked; let i = index">
+          <label (click)="openLinkedFile(quote.IdArchivoPDF, quote.Folio)">
+            {{ i + 1 + '.- FO-' + quote.Folio }}
+          </label>
+        </li>
+      </ul>
+    </div>
+  </app-custom-position-pop-up>
+</div>-->

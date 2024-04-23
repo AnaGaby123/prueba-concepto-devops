@@ -1,0 +1,132 @@
+<div class="dashboard-container" id="follow-purchase-promise-list">
+  <div class="left-container">
+    <label class="title textUpperCase">{{ 'notProcessed.clients' | translate }}</label>
+    <div class="tabs">
+      <app-tabs [options]="tabs$ | async" [tapSelected]="tab$ | async" (onSelectOption)="setTab($event)"></app-tabs>
+    </div>
+    <div class="filters">
+      <div class="hamburger">
+        <app-hamburger-menu
+          [options]="filters$ | async"
+          [value]="(filter$ | async).value"
+          (valueEmit)="setFilterByOrder($event)"
+        >
+        </app-hamburger-menu>
+      </div>
+      <div class="date-range">
+        <app-date-range (emitValues)="setFilterByDate($event)"></app-date-range>
+      </div>
+    </div>
+    <div class="search-bar">
+      <app-search [placeholder]="'Cliente'" [searchTerm]="searchTerm$ | async" (textSearch)="handleKeySearch($event)">
+      </app-search>
+    </div>
+    <div class="list-container">
+      <virtual-scroller
+        class="virtual-list"
+        *ngIf="(customers$ | async).length > 0"
+        [items]="customers$ | async"
+        (vsUpdate)="customerScrollItems = $event"
+        (vsEnd)="fetchMore($event)"
+      >
+        <ng-container *ngIf="(requestStatus$ | async) === statusRequest.Success && !lodashIsEmpty(customers$ | async)">
+          <div class="item" *ngFor="let customer of customerScrollItems; let i = index" (click)="selectCustomer(customer)">
+            <div class="number">
+              <label>{{ '#' + customer.Index }}</label>
+            </div>
+            <div class="indicator">
+              <div class="circle" [ngClass]="customer.ATiempo === 'True' && 'green'"></div>
+            </div>
+            <div class="content">
+              <div class="name">
+                <label>{{ customer.Nombre }}</label>
+              </div>
+              <div class="datePC">
+                <label
+                  >{{ ('followPPurchase.datePurchasePromise' | translate) + ':  ' }}
+                  {{ customer.FechaPromesaDeCompra | dateFormatSlashShort }}</label
+                >
+              </div>
+              <div class="states">
+                <img alt="quotes" src="assets/Images/quotation/quotes.svg" />
+                <label>{{
+                  (customer.Cotizaciones | number: '1.0-0') +
+                    ' ' +
+                    (customer.Cotizaciones === 1
+                      ? ('offerAdjustment.quotation' | translate)
+                      : ('offerAdjustment.quotations' | translate))
+                }}</label>
+                <label>·</label>
+                <label class="pqf">{{ customer.Partidas }} {{ 'followPPurchase.entriesInPromise' | translate }}</label>
+              </div>
+              <div class="total-value">
+                <label>{{
+                  ('followPPurchase.totalValue' | translate) +
+                    ' ' +
+                    (': ' +
+                      ((customer.TotalPromesaUSD ? customer.TotalPromesaUSD : 0) | currency: 'USD':'symbol-narrow':'0.2-4') +
+                      ' USD')
+                }}</label>
+              </div>
+            </div>
+            <div class="arrow">
+              <img alt="Detalles" src="assets/Images/arrows/arrow_right.svg" />
+            </div>
+          </div>
+        </ng-container>
+      </virtual-scroller>
+      <div class="loader" *ngIf="(requestStatus$ | async) === statusRequest.Loading">
+        <app-loading class="loading"></app-loading>
+      </div>
+      <div
+        class="without-results"
+        *ngIf="(requestStatus$ | async) === statusRequest.Success && lodashIsEmpty(customers$ | async)"
+      >
+        <app-without-results></app-without-results>
+      </div>
+    </div>
+    <div class="footer">
+      <label># {{ totalResults$ | async }}</label>
+      <label>{{
+        (totalItems$ | async | number: '1.0-0') +
+          ' ' +
+          ((totalItems$ | async) === 1 ? ('followPPurchase.entry' | translate) : ('followPPurchase.entries' | translate))
+      }}</label>
+      <label>{{
+        ('followPPurchase.totalValue' | translate) +
+          ': ' +
+          (((totalPromisePurchaseUSD | async) ? (totalPromisePurchaseUSD | async) : 0)
+            | currency: 'USD':'symbol-narrow':'1.2-2') +
+          ' USD'
+      }}</label>
+    </div>
+  </div>
+  <div class="right-container">
+    <ng-container
+      *ngIf="(dataDonutRequestStatus$ | async) === statusRequest.Success && (requestStatus$ | async) === statusRequest.Success"
+    >
+      <app-doughnut-chart
+        [data]="donutChartData$ | async"
+        [maxWidth]="'550px'"
+        [optionDetailsHover]="donutChartDataDetailsHover$ | async"
+        [optionDetails]="donutChartDataDetails$ | async"
+        [titleDetails]="'donutChart.titleTotals' | translate"
+        [title]="'notProcessed.clients' | translate"
+      >
+      </app-doughnut-chart>
+      <app-bar-chart
+        [maxWidth]="'780px'"
+        [maxHeight]="'600px'"
+        [title]="'followPPurchase.datesPurchasePromise' | translate"
+        [values]="dataDatesBarChart$ | async"
+      >
+      </app-bar-chart>
+      <app-bar-chart [maxWidth]="'880px'" [maxHeight]="'550px'" [title]="'items' | translate" [values]="dataItems$ | async">
+      </app-bar-chart>
+    </ng-container>
+    <app-loading
+      class="loading"
+      *ngIf="(dataDonutRequestStatus$ | async) === statusRequest.Loading || (requestStatus$ | async) === statusRequest.Loading"
+    ></app-loading>
+  </div>
+</div>

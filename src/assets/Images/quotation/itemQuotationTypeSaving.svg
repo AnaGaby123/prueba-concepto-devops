@@ -1,0 +1,11 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='17' height='17' viewBox='0 0 17 17'>
+  <g fill='none' fill-rule='evenodd'>
+    <g>
+      <g transform='translate(-74 -426) translate(75 427)'>
+        <circle cx='7.5' cy='7.5' r='7.5' fill='#FFF' stroke='#4BA92B' stroke-width='1.5' />
+        <path fill='#4BA92B'
+              d='M8.57 9.166H6.076l-.474 1.422H4.09l2.568-6.9h1.318l2.583 6.9H9.048l-.479-1.422zM6.46 8.015h1.725l-.867-2.583-.858 2.583z' />
+      </g>
+    </g>
+  </g>
+</svg>

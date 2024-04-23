@@ -1,0 +1,255 @@
+<div class="productContainer">
+  <div class="imageProduct">
+    <img
+      #imagePresentationElement
+      alt="{{ 'logo ' + (productInfo$ | async)?.Presentacion ?? 'image-product' }}"
+      [src]="(productInfo$ | async)?.imagePresentation"
+      (error)="errorImgHandler()"
+    />
+  </div>
+  <div class="informationProduct">
+    <div class="CAT">
+      <div class="image">
+        <img
+          #imageItemBrand
+          alt="{{ 'logo ' + (productInfo$ | async)?.NombreMarca }}"
+          [src]="(productInfo$ | async)?.image"
+          (error)="errorImgBrandHandler()"
+        />
+      </div>
+      <span *ngIf="(productInfo$ | async)?.TipoProductoClave !== typeFamilyKeys.trainings"
+        >CAT #{{ (productInfo$ | async)?.Catalogo || 'N/D' }}
+      </span>
+      <span *ngIf="(productInfo$ | async)?.TipoProductoClave === typeFamilyKeys.standards">
+        {{ ' · ' + (productInfo$ | async)?.Presentacion + ' ' + ((productInfo$ | async)?.Unidad || 'N/D') }}
+        {{ ' · ' + ((productInfo$ | async)?.Uso || 'N/D') }} · </span
+      >|
+
+      <span *ngIf="(productInfo$ | async)?.TipoProductoClave === typeFamilyKeys.publications"
+        >· {{ (productInfo$ | async)?.FormatoPublicacion || 'N/D' }}
+      </span>
+      <img
+        class="img-label"
+        *ngIf="(productInfo$ | async)?.DisponibilidadClave === availabilityTypes.available"
+        src="assets/Images/labels/productos/disponible.svg"
+      />
+      <img
+        class="img-label"
+        *ngIf="(productInfo$ | async)?.DisponibilidadClave === availabilityTypes.discontinued"
+        src="assets/Images/labels/productos/descontinuado.svg"
+      />
+      <img
+        class="img-label"
+        *ngIf="(productInfo$ | async)?.DisponibilidadClave === availabilityTypes.backorder"
+        src="assets/Images/labels/productos/en_backOrder.svg"
+      />
+      <img
+        class="img-label"
+        *ngIf="(productInfo$ | async)?.DisponibilidadClave === availabilityTypes.notmarketable"
+        src="assets/Images/labels/productos/no_comercializable.svg"
+      />
+    </div>
+    <div class="information">
+      <span>{{ (productInfo$ | async)?.Descripcion ? (productInfo$ | async)?.Descripcion : 'N/D' }}</span>
+    </div>
+    <div class="standarReference">
+      <label>
+        {{ (productInfo$ | async)?.Tipo }}
+        {{
+          (productInfo$ | async)?.TipoProductoClave !== typeFamilyKeys.trainings &&
+          (productInfo$ | async)?.TipoProductoClave !== typeFamilyKeys.publications &&
+          (productInfo$ | async)?.TipoProductoClave !== typeFamilyKeys.labware &&
+          (productInfo$ | async)?.TipoProductoClave !== typeFamilyKeys.medicalDevice
+            ? ' · ' + (productInfo$ | async)?.Subtipo
+            : ''
+        }}
+        {{
+          (productInfo$ | async)?.TipoProductoClave !== typeFamilyKeys.trainings &&
+          (productInfo$ | async)?.TipoProductoClave !== typeFamilyKeys.publications &&
+          (productInfo$ | async)?.TipoProductoClave !== typeFamilyKeys.labware &&
+          (productInfo$ | async)?.TipoProductoClave !== typeFamilyKeys.medicalDevice
+            ? ' · ' + (productInfo$ | async)?.Control
+            : ''
+        }}
+        {{
+          (productInfo$ | async)?.TipoProductoClave !== typeFamilyKeys.trainings &&
+          (productInfo$ | async)?.TipoProductoClave !== typeFamilyKeys.publications &&
+          (productInfo$ | async)?.TipoProductoClave !== typeFamilyKeys.labware &&
+          (productInfo$ | async)?.TipoProductoClave !== typeFamilyKeys.medicalDevice
+            ? (productInfo$ | async)?.Controlado
+              ? ' · '
+              : ''
+            : ''
+        }}
+        <span class="author">
+          {{
+            (productInfo$ | async)?.TipoProductoClave === typeFamilyKeys.publications
+              ? ' · ' + (productInfo$ | async)?.Autor
+              : ''
+          }}</span
+        >
+        <span>{{ (productInfo$ | async)?.Controlado ? 'Controlado' : '' }}</span>
+      </label>
+    </div>
+    <div class="descriptions">
+      <div
+        class="logistica-publicaciones"
+        *ngIf="(selectValidationPublications$ | async) || (selectValidationMedicalDevices$ | async)"
+      >
+        <div>
+          <label>
+            {{ 'common.presentation' | translate }}:
+            <span class="green"> {{ (productInfo$ | async)?.Presentacion }} {{ (productInfo$ | async)?.Unidad }} </span>
+          </label>
+        </div>
+        <div>
+          <label>
+            {{ 'common.brand' | translate }}:
+            <span class="green">{{ (productInfo$ | async)?.NombreMarca || 'N/D' }} </span>
+          </label>
+        </div>
+      </div>
+      <div
+        class="logistica-estandar-biologico"
+        *ngIf="
+          (selectValidationStandarAndReactiveBiologic$ | async) ||
+          (selectValidationStandarAndReactiveChemist$ | async) ||
+          (selectValidationStandards$ | async) ||
+          (selectValidationReagents$ | async)
+        "
+      >
+        <div
+          ><label
+            >{{ 'formProduct.step2.presentation' | translate }}:
+            <span class="green">{{ (productInfo$ | async)?.Presentacion }} {{ (productInfo$ | async)?.Unidad }}</span></label
+          >
+        </div>
+        <div
+          ><label
+            >{{ 'common.provider' | translate }}:
+            <span class="green">{{
+              (productInfo$ | async)?.NombreProveedor ? (productInfo$ | async)?.NombreProveedor : 'N/D'
+            }}</span></label
+          >
+        </div>
+        <div
+          ><label
+            >{{ 'common.brand' | translate }}:
+            <span class="green">{{
+              (productInfo$ | async)?.NombreMarca ? (productInfo$ | async)?.NombreMarca : 'N/D'
+            }}</span></label
+          >
+        </div>
+        <div [style.grid-area]="'2/1'"
+          ><label
+            >{{ 'common.classification' | translate }}:
+            <span class="black">{{
+              (productInfo$ | async)?.Clasificacion ? (productInfo$ | async)?.Clasificacion : 'N/D'
+            }}</span></label
+          >
+        </div>
+        <div [style.grid-area]="'2/2'"
+          ><label
+            >{{ 'formProduct.step2.aplication' | translate }}:
+            <span class="black">{{
+              (productInfo$ | async)?.Aplicacion ? (productInfo$ | async)?.Aplicacion : 'N/D'
+            }}</span></label
+          >
+        </div>
+        <div [style.grid-area]="'2/3'"
+          ><label
+            >{{ 'formProduct.step2.physicalState' | translate }}:
+            <span class="black">{{
+              (productInfo$ | async)?.EstadoFisico ? (productInfo$ | async)?.EstadoFisico : 'N/D'
+            }}</span></label
+          >
+        </div>
+      </div>
+      <div class="logistica-labware" *ngIf="selectValidationLabware$ | async">
+        <div
+          ><label
+            >{{ 'formProduct.step2.presentation' | translate }}:
+            <span class="green">{{ (productInfo$ | async)?.Presentacion }} {{ (productInfo$ | async)?.Unidad }}</span></label
+          >
+        </div>
+        <div
+          ><label
+            >{{ 'common.provider' | translate }}
+            <span class="green">{{
+              (productInfo$ | async)?.NombreProveedor ? (productInfo$ | async)?.NombreProveedor : 'N/D'
+            }}</span></label
+          >
+        </div>
+        <div
+          ><label
+            >{{ 'common.brand' | translate }}:
+            <span class="green">{{
+              (productInfo$ | async)?.NombreMarca ? (productInfo$ | async)?.NombreMarca : 'N/D'
+            }}</span></label
+          >
+        </div>
+        <div [style.grid-area]="'2/1'" [style.grid-column-end]="'none'">
+          <label
+            >{{ 'Notas' }}:
+            <span class="black">{{ (productInfo$ | async)?.Nota ? (productInfo$ | async)?.Nota : 'N/D' }}</span>
+          </label>
+        </div>
+      </div>
+      <div class="logistica-capacitaciones" *ngIf="selectValidationTrainings$ | async">
+        <div>
+          <label>
+            {{ 'common.presentation' | translate }}:
+            <span class="green">
+              {{
+                (productInfo$ | async)?.Presentacion
+                  ? (productInfo$ | async)?.Presentacion + ' ' + (productInfo$ | async)?.Unidad
+                  : 'N/D'
+              }}
+            </span>
+          </label>
+        </div>
+        <div
+          ><label
+            >{{ 'common.brand' | translate }}:
+            <span class="green">{{
+              (productInfo$ | async)?.NombreMarca ? (productInfo$ | async)?.NombreMarca : 'N/D'
+            }}</span></label
+          >
+        </div>
+        <div [style.grid-area]="'2/1'" [style.grid-column-end]="'none'">
+          <label>
+            {{ 'quotation.details.section.detailsProducts.droad' | translate }}:
+            <span class="black">{{ selectBroadCastMediaSelected$ | async }}</span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="priceUnity">
+    <div>
+      <div class="mountTitle">
+        <label *ngIf="(productInfo$ | async)?.TipoProductoClave !== typeFamilyKeys.trainings">{{
+          'common.providerLitPrice' | translate
+        }}</label>
+        <label *ngIf="(productInfo$ | async)?.TipoProductoClave === typeFamilyKeys.trainings">{{
+          (productInfo$ | async)?.PrecioPorGrupo ? 'Precio por Grupo' : 'Precio por Persona'
+        }}</label>
+      </div>
+      <div class="mount">
+        <span *ngIf="(productInfo$ | async)?.PrecioPorGrupo"
+          >{{ (productInfo$ | async)?.NumeroDePersonasPorGrupo + ' Personas' }}{{ ' · ' }}
+        </span>
+        <span
+          >{{ (productInfo$ | async)?.PrecioLista | currency: (providerSalesCurrency$ | async):'symbol-narrow':'1.2-2' }}
+          {{ providerSalesCurrency$ | async }}</span
+        >
+      </div>
+      <div class="mountTitle">
+        <label>
+          {{ '* ' + ('formProduct.step1.validityOfCuratorshipUntil' | translate) }}
+          {{ (productInfo$ | async)?.FechaCaducidadVigenciaCuraduria | dateFormatSlashShort }}</label
+        >
+      </div>
+    </div>
+  </div>
+</div>

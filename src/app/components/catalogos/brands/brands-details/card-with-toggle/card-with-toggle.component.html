@@ -1,0 +1,25 @@
+<div id="card-with-toggle" [ngClass]="{enable: item.Activo, disable: !item.Activo}">
+  <div class="head">
+    <label>{{ item.Industria }}</label>
+  </div>
+  <div class="body">
+    <div class="labels">
+      <div class="responsive">
+        <label>{{ 'formBrand.details.type' | translate }}: </label>
+        <span>{{ item.Tipo }}</span>
+      </div>
+      <label class="normal" *ngIf="item.ClaveSubtipo !== 'n/a'"
+        >{{ 'formBrand.details.subType' | translate }}: <span>{{ item.Subtipo }}</span></label
+      >
+      <label class="normal" *ngIf="item.ClaveControl !== 'n/a'"
+        >{{ 'Control' }}: <span>{{ item.Control }}</span></label
+      >
+    </div>
+    <div class="toggle">
+      <pqf-toggle [active]="item.Activo" (emitOptionSelected)="handleCheckItem(item, $event)"></pqf-toggle>
+      <label [ngClass]="{enable: item.Activo}">{{
+        item.Activo ? ('formBrand.details.enabledFamily' | translate) : ('formBrand.details.disabledFamily' | translate)
+      }}</label>
+    </div>
+  </div>
+</div>

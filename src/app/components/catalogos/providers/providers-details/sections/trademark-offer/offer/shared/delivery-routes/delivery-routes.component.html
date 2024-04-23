@@ -1,0 +1,118 @@
+<div class="routes-container">
+  <div
+    class="routes-item item-1"
+    [ngClass]="getRouteIsSelected(routes.Local) ? 'selected-route' : ''"
+    [style.pointer-events]="enableEdit ? 'auto' : 'none'"
+    (click)="!lodashIsEmpty(deliveryRoutes) && selectRoute(routes.Local)"
+  >
+    <div>
+      <label class="item-title">
+        {{ getRouteName(routes.Local) }}
+      </label>
+    </div>
+    <div>
+      <label class="item-text">
+        {{ 'formProvider.step8.cities.puebla' | translate }}
+      </label>
+      <label class="item-text">
+        {{ 'formProvider.step8.cities.cuernavaca' | translate }}
+      </label>
+      <label class="item-text">
+        {{ 'formProvider.step8.cities.toluca' | translate }}
+      </label>
+      <label class="item-text">
+        {{ 'formProvider.step8.cities.df' | translate }}
+      </label>
+    </div>
+    <div>
+      <label class="item-text">
+        {{ 'formProvider.step8.internalDelivery' | translate }}
+      </label>
+    </div>
+  </div>
+  <div
+    class="routes-item item-2"
+    [ngClass]="getRouteIsSelected(routes.Foraneo) ? 'selected-route' : ''"
+    [style.pointer-events]="enableEdit ? 'auto' : 'none'"
+    (click)="!lodashIsEmpty(deliveryRoutes) && selectRoute(routes.Foraneo)"
+  >
+    <div>
+      <label class="item-title">
+        {{ getRouteName(routes.Foraneo) }}
+      </label>
+    </div>
+    <div>
+      <label class="item-text">
+        {{ 'formProvider.step8.externalDelivery' | translate }}
+      </label>
+    </div>
+  </div>
+  <div
+    class="routes-item item-3"
+    [ngClass]="getRouteIsSelected(routes.Guadalajara) ? 'selected-route' : ''"
+    [style.pointer-events]="enableEdit ? 'auto' : 'none'"
+    (click)="!lodashIsEmpty(deliveryRoutes) && selectRoute(routes.Guadalajara)"
+  >
+    <div>
+      <label class="item-title">
+        {{ getRouteName(routes.Guadalajara) }}
+      </label>
+    </div>
+    <div>
+      <label class="item-text">
+        {{ 'formProvider.step8.internalDelivery' | translate }}
+      </label>
+    </div>
+  </div>
+  <div
+    class="routes-item item-4"
+    [ngClass]="getRouteIsSelected(routes.Sudamerica) ? 'selected-route' : ''"
+    [style.pointer-events]="enableEdit ? 'auto' : 'none'"
+    (click)="!lodashIsEmpty(deliveryRoutes) && selectRoute(routes.Sudamerica)"
+  >
+    <div>
+      <label class="item-title">
+        {{ getRouteName(routes.Sudamerica) }}
+      </label>
+    </div>
+    <div>
+      <label class="item-text">
+        {{ 'formProvider.step8.externalDelivery' | translate }}
+      </label>
+    </div>
+  </div>
+  <div
+    class="routes-item item-5"
+    [ngClass]="getRouteIsSelected(routes.Centroamerica) ? 'selected-route' : ''"
+    [style.pointer-events]="enableEdit ? 'auto' : 'none'"
+    (click)="!lodashIsEmpty(deliveryRoutes) && selectRoute(routes.Centroamerica)"
+  >
+    <div>
+      <label class="item-title">
+        {{ getRouteName(routes.Centroamerica) }}
+      </label>
+    </div>
+    <div>
+      <label class="item-text">
+        {{ 'formProvider.step8.externalDelivery' | translate }}
+      </label>
+    </div>
+  </div>
+  <div
+    class="routes-item item-6"
+    [ngClass]="getRouteIsSelected(routes.RestoDelMundo) ? 'selected-route' : ''"
+    [style.pointer-events]="enableEdit ? 'auto' : 'none'"
+    (click)="!lodashIsEmpty(deliveryRoutes) && selectRoute(routes.RestoDelMundo)"
+  >
+    <div>
+      <label class="item-title">
+        {{ getRouteName(routes.RestoDelMundo) }}
+      </label>
+    </div>
+    <div>
+      <label class="item-text">
+        {{ 'formProvider.step8.externalDelivery' | translate }}
+      </label>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,158 @@
+<section id="general-data-strategy-container" [ngClass]="isOpen ? 'show' : 'hide'">
+  <div class="content">
+    <div class="info">
+      <div class="header">
+        <div class="title">
+          <label
+            >{{ 'strategy.details.content' | translate }} ·
+            <span [ngClass]="{'with-contract': (selecteClientData$ | async)?.TieneContrato}">
+              {{
+                (selecteClientData$ | async)?.TieneContrato
+                  ? ('strategy.details.contentContract' | translate)
+                  : ('strategy.details.contentWithoutContract' | translate)
+              }}</span
+            >
+          </label>
+        </div>
+        <div class="logo">
+          <div class="image">
+            <img #imageElement alt="" [src]="setImage((clientData$ | async)?.imageHover)" (error)="errorImage()" />
+          </div>
+          <div class="content-name-client">
+            <label class="name-client">{{ (clientData$ | async)?.clientName }}</label>
+            <label class="type">{{ 'strategy.details.client' | translate }}</label>
+          </div>
+        </div>
+        <div class="totals">
+          <div class="left">
+            <label class="title">{{ 'quotation.details.request' | translate }}</label>
+            <label class="totals"
+              >{{ totalQuoted$ | async }} {{ (totalQuoted$ | async) === 1 ? 'Cotización' : 'Cotizaciones' }}</label
+            >
+          </div>
+          <div class="right">
+            <label class="title">{{ 'quotation.details.segmentation' | translate }}</label>
+            <!--<label class="totals">{{ (selectedClient$ | async)?.NivelIngreso }}</label>-->
+            <div class="segmentation">
+              <img
+                [src]="
+                  (clientData$ | async)?.incomeLevel
+                    ? 'assets/Images/clientes/niveles-ingreso/' + incomeLevelHelper((clientData$ | async)?.incomeLevel) + '.svg'
+                    : 'assets/Images/clientes/niveles-ingreso/bajo.svg'
+                "
+                alt="bajo"
+              />
+              <img
+                [src]="
+                  (clientData$ | async)?.category
+                    ? 'assets/Images/clientes/categorias/' + lodashToLower((clientData$ | async)?.category) + '.svg'
+                    : 'assets/Images/clientes/categorias/rest.svg'
+                "
+                alt="bajo"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="body">
+        <div class="client-data-container">
+          <div class="title-data">
+            <label>{{ 'strategy.details.data' | translate }}</label>
+          </div>
+          <div class="details-data">
+            <label
+              >{{ 'strategy.details.assignedUser' | translate }}: <span>{{ (clientData$ | async)?.assignedUser }}</span></label
+            >
+            <label
+              >{{ 'strategy.details.whoBills' | translate }}: <span>{{ (clientData$ | async)?.whoBills }}</span></label
+            >
+            <label
+              >{{ 'strategy.details.billingCurrency' | translate }}:
+              <span>{{ (clientData$ | async)?.billingCurrency }}</span></label
+            >
+            <label
+              >{{ 'strategy.details.paymentConditions' | translate }}:
+              <span>{{ (clientData$ | async)?.paymentConditions }}</span></label
+            >
+            <label
+              >{{ 'strategy.details.route' | translate }}: <span>{{ (clientData$ | async)?.route }}</span></label
+            >
+            <label
+              >{{ 'strategy.details.address' | translate }}: <span>{{ (clientData$ | async)?.address }}</span></label
+            >
+          </div>
+        </div>
+        <div class="contact-data-container">
+          <div class="contact-data-title">
+            <label>{{ 'strategy.details.contactData' | translate }}</label>
+          </div>
+          <div class="contact-data-details">
+            <div>
+              <img alt="client" src="assets/Images/quotation/client.svg" />
+              <label class="contact"
+                >{{ (contactData$ | async)?.names }} {{ (contactData$ | async)?.lastName }}
+                {{ (contactData$ | async)?.surname }}</label
+              >
+            </div>
+            <div>
+              <img alt="email" src="assets/Images/quotation/mail.svg" />
+              <label>{{ (contactData$ | async)?.email ? (contactData$ | async)?.email : 'N/D' }}</label>
+            </div>
+            <div>
+              <img alt="phone" src="assets/Images/quotation/phone.svg" />
+              <label>{{ (contactData$ | async)?.phone1 }} </label>
+            </div>
+          </div>
+          <div class="contact-data-sub-details">
+            <label
+              >{{ 'quotation.details.department' | translate }}:<span>{{
+                (contactData$ | async)?.department || 'N/D'
+              }}</span></label
+            >
+            <label
+              >{{ 'quotation.details.position' | translate }}:<span>{{ (contactData$ | async)?.job || 'N/D' }}</span></label
+            >
+            <label
+              >{{ 'quotation.details.decisionLevel' | translate }}:<span>{{
+                (contactData$ | async)?.decisionLevel
+              }}</span></label
+            >
+          </div>
+        </div>
+        <div class="list-brands">
+          <div>
+            <label>Marcas con Contrato</label>
+          </div>
+          <div class="virtual-scroller" *ngIf="(listBrands$ | async).length > 0 && !(isLoadingBrands$ | async)">
+            <label *ngFor="let brand of listBrands$ | async">
+              {{ brand.Nombre }}
+            </label>
+          </div>
+          <div class="loading" *ngIf="isLoadingBrands$ | async">
+            <app-loading></app-loading>
+          </div>
+          <div class="without-results" *ngIf="(listBrands$ | async).length === 0 && !(isLoadingBrands$ | async)">
+            <app-without-results></app-without-results>
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        <div class="total-marks">
+          <label>{{ (listBrands$ | async).length + ((listBrands$ | async).length === 1 ? ' Marca' : ' Marcas') }}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div
+  class="arrow"
+  [style.right]="
+    !isOpen && (viewType$ | async) === viewTypes.small
+      ? '-16px'
+      : !isOpen && (viewType$ | async) !== viewTypes.small
+      ? '-23px'
+      : '0'
+  "
+>
+  <img alt="arrow" src="assets/Images/arrows/flecha_cuadro.svg" [ngClass]="{reverse: !isOpen}" (click)="onClick()" />
+</div>

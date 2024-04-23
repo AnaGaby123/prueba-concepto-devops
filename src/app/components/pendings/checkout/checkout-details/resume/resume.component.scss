@@ -1,0 +1,355 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.flexColumn;
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+
+  & > #checkout-resume-container {
+    @include s.flexRowNoWrap;
+    flex: 1;
+    overflow: hidden;
+
+    & > .left-container {
+      @include s.default-transition;
+      @include s.flexColumn;
+      background-color: s.$pqGray2;
+      flex: 0 0 270px;
+      overflow: hidden;
+      padding: 20px;
+
+      & > .title {
+        @include s.flexColumn;
+        align-items: center;
+        margin-bottom: 10px;
+
+        & > label {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-novecento_bold,
+            $font-weight: s.$font-weight-bold,
+            $font-size-map: s.$responsive-font-17-21,
+            $color: s.$pqGreen
+          );
+          text-align: center;
+        }
+
+        & > label:nth-of-type(1) {
+          color: s.$pqBlack2;
+          margin-bottom: 4px;
+        }
+      }
+
+      & > .credit {
+        @include s.flexColumn;
+        @include s.absoluteCenter;
+        flex-shrink: 0;
+        height: 30px;
+        margin-bottom: 16px;
+
+        & > label {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-roboto_bold,
+            $font-weight: s.$font-weight-bold,
+            $font-size-map: s.$responsive-font-12-14,
+            $color: s.$pqGreen2
+          );
+        }
+
+        &.red {
+          background-color: rgba(s.$redBackground, 0.78);
+
+          & > label {
+            color: s.$redAlert;
+          }
+        }
+
+        &.green {
+          background-color: rgba(s.$pqGreen2, 0.1);
+        }
+
+        &.ocean {
+          background-color: rgba(s.$pqGreen, 0.05);
+
+          & > label {
+            color: s.$pqGreen;
+          }
+        }
+      }
+
+      & > .data-container {
+        @include s.flexRowWrap;
+
+        & > .data {
+          @include s.flexColumn;
+          flex-basis: 100%;
+          margin-bottom: 20px;
+
+          &:nth-of-type(2) {
+            flex-basis: 70%;
+          }
+
+          &:nth-of-type(3) {
+            flex-basis: 30%;
+          }
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+            @include s.Roboto-Regular;
+          }
+
+          & > label:nth-of-type(1) {
+            @include s.Roboto-Bold;
+            margin-bottom: 2px;
+          }
+        }
+      }
+    }
+
+    & > .right-container {
+      @include s.flexColumn;
+      flex: 1 1 auto;
+      overflow: hidden;
+      padding: 20px 0 20px 20px;
+
+      & > .quote-info {
+        @include s.flexRow;
+
+        & > .number,
+        & > .total {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-novecento_bold,
+            $font-weight: s.$font-weight-bold,
+            $font-size-map: s.$responsive-font-17-21
+          );
+          white-space: pre;
+
+          &.orange {
+            color: s.$yellowMustard;
+          }
+        }
+
+        & > .folio,
+        & > .products {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-novecento_bold,
+            $font-weight: s.$font-weight-bold,
+            $font-size-map: s.$responsive-font-17-21,
+            $color: s.$pqGreen
+          );
+
+          &.orange {
+            color: s.$yellowMustard;
+          }
+        }
+      }
+
+      & > .table-container {
+        @include s.flexColumn;
+        overflow-x: auto;
+        flex: 1;
+        & > .container {
+          @include s.flexColumn;
+          min-width: 1750px;
+          height: 100%;
+          flex: 1;
+          & > .header {
+            border-bottom: 1px solid s.$pqBlack;
+          }
+          & > virtual-scroller {
+            @include s.fixVirtualScroller();
+            @include s.absolute100;
+            overflow-x: hidden;
+            ::ng-deep .scrollable-content {
+              @include s.flexColumn;
+            }
+          }
+        }
+      }
+
+      & > .totals-container {
+        @include s.flexRow;
+        border-top: 1px solid s.$pqBlack2;
+        justify-content: space-between;
+        padding: 5px 20px 0 0;
+
+        & > .entries {
+          margin-right: 50px;
+
+          & > label {
+            @include s.responsive-font-format(
+              $font-family: s.$font-family-roboto_regular,
+              $font-weight: s.$font-weight-regular,
+              $font-size-map: s.$responsive-font-10-12-b
+            );
+          }
+        }
+
+        & > .totals {
+          & > div {
+            @include s.flexRow;
+            justify-content: space-between;
+            margin-bottom: 4px;
+
+            & > label {
+              @include s.default-transition;
+            }
+
+            & > label:nth-of-type(1) {
+              @include s.responsive-font-format(
+                $font-family: s.$font-family-roboto_regular,
+                $font-weight: s.$font-weight-regular,
+                $font-size-map: s.$responsive-font-10-12-b
+              );
+            }
+
+            & > label:nth-of-type(2) {
+              @include s.responsive-font-format(
+                $font-family: s.$font-family-roboto_regular,
+                $font-weight: s.$font-weight-regular,
+                $font-size-map: s.$responsive-font-10-12-b,
+                $color: s.$pqGreen
+              );
+              text-align: end;
+              width: 120px;
+            }
+          }
+
+          & > .total {
+            & > label:nth-of-type(1) {
+              @include s.responsive-font-format(
+                $font-family: s.$font-family-roboto_bold,
+                $font-weight: s.$font-weight-bold,
+                $font-size-map: s.$responsive-font-12-14
+              );
+            }
+
+            & > label:nth-of-type(2) {
+              @include s.responsive-font-format(
+                $font-family: s.$font-family-roboto_bold,
+                $font-weight: s.$font-weight-bold,
+                $font-size-map: s.$responsive-font-12-14,
+                $color: s.$pqGreen2
+              );
+            }
+          }
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .left-container {
+        flex: 0 0 389px;
+
+        & > .title {
+          @include s.absoluteCenter;
+          @include s.flexRow;
+          margin-bottom: 20px;
+
+          & > .separator {
+            white-space: pre;
+          }
+
+          & > label:nth-of-type(1) {
+            margin-bottom: 0;
+          }
+        }
+
+        & > .credit {
+          height: 40px;
+          margin-bottom: 15px;
+        }
+
+        & > .data-container {
+          & > .data {
+            margin-bottom: 24px;
+
+            &:nth-of-type(3),
+            &:nth-of-type(2) {
+              flex-basis: 100%;
+            }
+          }
+        }
+      }
+
+      & > .right-container {
+        & > .totals-container {
+          padding: 7px 20px 0 0;
+
+          & > .pop-container {
+            & > label {
+              margin-bottom: 5px;
+            }
+
+            & > .ocean {
+              & > label {
+                margin-right: 18px;
+              }
+
+              & > div {
+                height: 22px;
+                width: 86px;
+
+                & > img {
+                  height: 22px;
+                  width: 86px;
+                }
+              }
+            }
+          }
+
+          & > .totals {
+            & > div {
+              margin-bottom: 8px;
+
+              & > label:nth-of-type(2) {
+                width: 190px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.folio {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.imageFile {
+  @include s.flexColumn;
+  width: 100%;
+  height: 100%;
+
+  & > div {
+    @include s.flexRow;
+
+    & > .img {
+      width: 100%;
+    }
+  }
+
+  & > .fill {
+    box-sizing: border-box;
+
+    & > div {
+      width: 100%;
+      height: 48px;
+      background-color: s.$pqBlack2;
+      @include s.flexRow;
+      justify-content: center;
+      box-sizing: border-box;
+      padding: 5px;
+
+      & > img {
+        cursor: pointer;
+      }
+    }
+  }
+}

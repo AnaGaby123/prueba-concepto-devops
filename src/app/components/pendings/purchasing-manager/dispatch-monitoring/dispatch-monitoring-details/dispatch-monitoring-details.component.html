@@ -1,0 +1,473 @@
+<div id="monitoring-dispatch-details-container">
+  <div class="content">
+    <div class="left-container">
+      <div class="title">
+        <label> {{ 'monitoringDispatch.guides' | translate }}</label>
+      </div>
+      <div class="tabs">
+        <app-tabs
+          [options]="tabOptions$ | async"
+          [tapSelected]="tabSelected$ | async"
+          (onSelectOption)="setTab($event)"
+        ></app-tabs>
+      </div>
+      <div class="search">
+        <app-search
+          class="search"
+          [placeholder]="'monitoringDispatch.placeholder' | translate"
+          [searchTerm]="searchTerm$ | async"
+          (textSearch)="handleKeySearch($event)"
+        ></app-search>
+      </div>
+      <div class="list-container">
+        <virtual-scroller
+          class="virtual"
+          [items]="guides$ | async"
+          (vsUpdate)="guidesScroll = $event"
+          *ngIf="(guideStatus$ | async) === 3 && !lodashIsEmpty(guides$ | async)"
+        >
+          <div
+            class="item"
+            [ngClass]="guide.isSelected && 'active'"
+            *ngFor="let guide of guidesScroll; trackBy: handleTrackBy"
+            (click)="selectGuide(guide.Index)"
+          >
+            <div class="select" *ngIf="guide.isSelected"></div>
+            <div class="left">
+              <label
+                ># {{ guide.Index }} · <span>{{ 'monitoringDispatch.guide' | translate }} {{ guide.NumeroGuia }} · </span
+                >{{ guide.Fletera }}</label
+              >
+              <label
+                >{{ guide.NumeroDePiezas }}
+                {{ guide.NumeroDePiezas === 1 ? ('common.pza' | translate) : ('common.pzas' | translate) }} ·
+                {{ guide.Productos }}
+                {{ guide.Productos === 1 ? ('common.product' | translate) : ('common.products' | translate) }}
+                {{ guide.TotalPartida | currency: 'USD':'symbol-narrow':'1.2-2' }}</label
+              >
+            </div>
+            <div class="right">
+              <label *ngIf="guide.AMasDe3Dias === true" class="ocean">{{
+                'registerConfirmation.threeMoreDays' | translate
+              }}</label>
+              <label class="ocean" *ngIf="guide.A3Dia">{{ 'registerConfirmation.threeDays' | translate }}</label>
+              <label class="ocean" *ngIf="guide.A2Dias">{{ 'registerConfirmation.twoDays' | translate }}</label>
+              <label class="ocean" *ngIf="guide.A1Dia">{{ 'registerConfirmation.oneDay' | translate }}</label>
+              <label
+                class="fee"
+                [ngClass]="
+                  guide.EnTiempo === true
+                    ? 'green'
+                    : guide.Urgente === true
+                    ? 'yellow'
+                    : guide.FueraDeTiempo === true
+                    ? 'red'
+                    : 'green'
+                "
+                >{{ 'FEE+: ' }}{{ guide.FechaEstimadaDeEntrega | dateFormatSlashShort }}</label
+              >
+            </div>
+          </div>
+          <!--          <div class="item" [ngClass]="'active'">-->
+          <!--            <div class="select" *ngIf="true"></div>-->
+          <!--            <div class="left">-->
+          <!--              <label-->
+          <!--                ># {{ 1 }} · <span>{{ 'monitoringDispatch.guide' | translate }} {{ '031021-7593' }} · </span-->
+          <!--                >{{ 'Nombre de fletera' }}</label-->
+          <!--              >-->
+          <!--              <label-->
+          <!--                >{{ 199 }} {{ 1 === 1 ? ('common.pza' | translate) : ('common.pzas' | translate) }} ·-->
+          <!--                {{ 94 }}-->
+          <!--                {{ 1 === 1 ? ('common.product' | translate) : ('common.products' | translate) }} ·-->
+          <!--                {{ 17468.62 | currency: 'USD':'symbol-narrow':'1.2-2' }}</label-->
+          <!--              >-->
+          <!--            </div>-->
+          <!--            <div class="right">-->
+          <!--              <label class="ocean">{{ 'registerConfirmation.threeMoreDays' | translate }}</label>-->
+          <!--              &lt;!&ndash;<label class="ocean" *ngIf="item.A3Dia">{{ 'registerConfirmation.threeDays' | translate }}</label>-->
+          <!--              <label class="ocean" *ngIf="item.A2Dias">{{ 'registerConfirmation.twoDays' | translate }}</label>-->
+          <!--              <label class="ocean" *ngIf="item.A1Dia">{{ 'registerConfirmation.oneDay' | translate }}</label>&ndash;&gt;-->
+          <!--              <label class="fee" [ngClass]="{green: true}">{{ 'FEE+: ' }}{{ '10//02/2021' | dateFormatSlashShort }}</label>-->
+          <!--            </div>-->
+          <!--          </div>-->
+        </virtual-scroller>
+        <div class="loading" *ngIf="(guideStatus$ | async) === 1">
+          <app-loading></app-loading>
+        </div>
+        <div class="loading" *ngIf="(guideStatus$ | async) !== 1 && lodashIsEmpty(guides$ | async)">
+          <app-without-results></app-without-results>
+        </div>
+      </div>
+      <div class="totals">
+        <label>#{{ (guides$ | async)?.length }}</label>
+        <label>{{ (provider$ | async)?.NumeroDePiezas }} {{ 'common.pieces' | translate }}</label>
+        <label>{{ (provider$ | async)?.Productos }} {{ 'common.products' | translate }}</label>
+        <label
+          >{{ 'common.totalAmount' | translate }}
+          {{ (provider$ | async)?.MontoTotal | currency: 'USD':'symbol-narrow':'1.2-2' }} USD</label
+        >
+      </div>
+    </div>
+    <div class="right-container">
+      <div class="title">
+        <label
+          >#{{ (guideSelected$ | async)?.Index }} ·
+          <span>{{ 'monitoringDispatch.guide' | translate }} {{ (guideSelected$ | async)?.NumeroGuia }} · </span>
+          {{ (guideSelected$ | async)?.Fletera }}
+        </label>
+      </div>
+      <div class="data">
+        <div class="client">
+          <app-provider-contacts
+            [showContactData]="false"
+            [showAdditionalData]="false"
+            [selectedContact]="providerContactSelected$ | async"
+            (emitResponse)="setContactSelectedProvider($event)"
+            [contactList]="selectContactsProvidersDropList$ | async"
+          ></app-provider-contacts>
+        </div>
+        <div class="guides">
+          <div class="left">
+            <div class="item">
+              <label class="bold">{{ 'monitoringDispatch.guide' | translate }}</label>
+              <label class="underline" *ngIf="selectGuideFile$ | async; let file" (click)="openFile(file)">{{
+                (guideSelected$ | async)?.ArchivoGuia
+              }}</label>
+            </div>
+            <div class="item">
+              <label class="bold">{{ 'monitoringDispatch.forwarder' | translate }}</label>
+              <label>{{ (guideSelected$ | async)?.Fletera }}</label>
+            </div>
+          </div>
+          <div class="right">
+            <div class="item">
+              <label class="bold">{{ 'monitoringDispatch.guideNumber' | translate }}</label>
+              <label>{{ (guideSelected$ | async)?.NumeroGuia }}</label>
+            </div>
+            <div class="item">
+              <label class="bold"></label>
+              <label class="underline ocean" *ngIf="selectPLFile$ | async; let file" (click)="openFile(file)">{{
+                'Ver Packing List'
+              }}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="table-container">
+        <div class="table">
+          <div class="header">
+            <div class="number">
+              <label>#</label>
+            </div>
+            <div class="description">
+              <label>{{ 'monitoringDispatch.description' | translate }}</label>
+            </div>
+            <div class="client">
+              <label>{{ 'common.client' | translate }}</label>
+            </div>
+            <div [ngClass]="(guideSelected$ | async)?.cancelConfig ? 'cancel confirmed' : 'cancel'">
+              <app-check-box
+                class="check"
+                [isMulticolor]="true"
+                [checkColor]="'dark-red'"
+                (event)="changeItemsStatus('cancel')"
+                [check]="(guideSelected$ | async)?.cancelConfig"
+                [disabled]="(guideSelected$ | async)?.cancelConfig"
+              ></app-check-box>
+              <label>{{ 'common.cancel' | translate }}</label>
+            </div>
+            <div [ngClass]="(guideSelected$ | async)?.withImpactFeeConfig ? 'impact confirmed' : 'impact'">
+              <app-check-box
+                class="check"
+                [isMulticolor]="true"
+                [checkColor]="'dark-orange'"
+                (event)="changeItemsStatus('withImpactFee')"
+                [check]="(guideSelected$ | async)?.withImpactFeeConfig"
+                [disabled]="(guideSelected$ | async)?.withImpactFeeConfig"
+              ></app-check-box>
+              <label>{{ 'registerConfirmation.withImpact' | translate }}</label>
+            </div>
+            <div [ngClass]="(guideSelected$ | async)?.confirmedConfig ? 'without-impact confirmed' : 'without-impact'">
+              <app-check-box
+                class="check"
+                [isMulticolor]="true"
+                [checkColor]="'dark-green'"
+                (event)="changeItemsStatus('confirm')"
+                [check]="(guideSelected$ | async)?.confirmedConfig"
+                [disabled]="(guideSelected$ | async)?.withImpactFeeConfig"
+              ></app-check-box>
+              <label>{{ 'monitoringDispatch.confirmed' | translate }}</label>
+            </div>
+          </div>
+          <div class="body">
+            <virtual-scroller
+              [enableUnequalChildrenSizes]="true"
+              [items]="items$ | async"
+              (vsUpdate)="items = $event"
+              *ngIf="(itemsStatus$ | async) === 3 && !lodashIsEmpty(items$ | async)"
+            >
+              <div class="item" *ngFor="let item of items; let k = index; trackBy: handleTrackByItem">
+                <div class="top">
+                  <div class="number">
+                    <label [ngClass]="k === 0 && 'bold'">{{ item.NumberToSave }}</label>
+                  </div>
+                  <div class="description">
+                    <div class="label">
+                      <label>{{ item.Descripcion }}</label>
+                      <div class="tooltip-text">
+                        <p>{{ item.Descripcion }}</p>
+                      </div>
+                    </div>
+                    <div class="images">
+                      <label
+                        >{{ item.tempNumeroDePiezas }}
+                        {{ item.tempNumeroDePiezas === 1 ? ('common.pza' | translate) : ('common.pzas' | translate) }} ·
+                      </label>
+                      <div class="price">
+                        <div class="tooltip">
+                          <div>
+                            <label>{{ item.tempPrecioLista | currency: 'USD' }} · </label>
+                          </div>
+                          <div class="tooltip-text">
+                            <p>{{ 'checkOcNotArrived.details.priceModified' | translate }}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <label>CT {{ item.tempTotalPartida | currency: 'USD':'symbol-narrow':'1.2-2' }}</label>
+                    </div>
+                  </div>
+                  <div class="client">
+                    <label>{{ item.NombreCliente }}</label>
+                    <label class="ocean">{{ item.FolioPedidoInterno }}</label>
+                    <label [ngClass]="{red: true}">FEE: {{ item.FechaEstimadaEntregaPedido | dateFormatSlashShort }}</label>
+                  </div>
+                  <div class="cancel red" [ngClass]="(guideSelected$ | async)?.cancelConfig ? 'checked' : 'default'">
+                    <label>{{ 'monitoringDispatch.cancelGuide' | translate }}</label>
+                  </div>
+                  <div
+                    class="impact dark-orange"
+                    [ngClass]="(guideSelected$ | async)?.withImpactFeeConfig ? 'checked' : 'default'"
+                  >
+                    <label>{{ 'monitoringDispatch.impact' | translate }}</label>
+                  </div>
+                  <div
+                    class="without-impact dark-green"
+                    [ngClass]="(guideSelected$ | async)?.confirmedConfig ? 'checked' : 'default'"
+                  >
+                    <label>{{ 'monitoringDispatch.confirmed' | translate }}</label>
+                  </div>
+                </div>
+              </div>
+              <!--              <div class="item">-->
+              <!--                <div class="top">-->
+              <!--                  <div class="number">-->
+              <!--                    <label [ngClass]="'bold'">{{ 1 }}</label>-->
+              <!--                  </div>-->
+              <!--                  <div class="description">-->
+              <!--                    <div class="label">-->
+              <!--                      <label>{{-->
+              <!--                        'MBL-0443P Polydimethylsiloxane (500mg) Polydime solo podrán ser dos renglones solo podrán ser dos renglones y habilitar tooltip …'-->
+              <!--                      }}</label>-->
+              <!--                      <div class="tooltip-text">-->
+              <!--                        <p>{{-->
+              <!--                          'MBL-0443P Polydimethylsiloxane (500mg) Polydime solo podrán ser dos renglones solo podrán ser dos renglones y habilitar tooltip …'-->
+              <!--                        }}</p>-->
+              <!--                      </div>-->
+              <!--                    </div>-->
+              <!--                    <div class="images">-->
+              <!--                      <label>{{ 1 }} {{ 1 === 1 ? ('common.pza' | translate) : ('common.pzas' | translate) }} · </label>-->
+              <!--                      <div class="price">-->
+              <!--                        <div class="tooltip">-->
+              <!--                          <div>-->
+              <!--                            <label>CU {{ 39.72 | currency: 'USD' }} · </label>-->
+              <!--                          </div>-->
+              <!--                          <div class="tooltip-text">-->
+              <!--                            <p>{{ 'checkOcNotArrived.details.priceModified' | translate }}</p>-->
+              <!--                          </div>-->
+              <!--                        </div>-->
+              <!--                      </div>-->
+              <!--                      <label>CT {{ 39.72 | currency: 'USD':'symbol-narrow':'1.2-2' }}</label>-->
+              <!--                    </div>-->
+              <!--                  </div>-->
+              <!--                  <div class="client">-->
+              <!--                    <label>{{ 'Laboratorios Aranda' }}</label>-->
+              <!--                    <label class="ocean">{{ '020821-1107' }}</label>-->
+              <!--                    <label [ngClass]="{red: true}">FEE: {{ '23/M03/2021' | dateFormatSlashShort }}</label>-->
+              <!--                  </div>-->
+              <!--                  <div class="cancel red" [ngClass]="'confirmed'">-->
+              <!--                    <label>{{ 'monitoringDispatch.cancelGuide' | translate }}</label>-->
+              <!--                  </div>-->
+              <!--                  <div class="impact dark-orange" [ngClass]="'confirmed'">-->
+              <!--                    <label>{{ 'monitoringDispatch.impact' | translate }}</label>-->
+              <!--                  </div>-->
+              <!--                  <div class="without-impact dark-green" [ngClass]="'confirmed'">-->
+              <!--                    <label>{{ 'monitoringDispatch.confirmed' | translate }}</label>-->
+              <!--                  </div>-->
+              <!--                </div>-->
+              <!--              </div>-->
+            </virtual-scroller>
+            <div class="loading" *ngIf="(itemsStatus$ | async) === 1">
+              <app-loading></app-loading>
+            </div>
+            <div class="loading" *ngIf="(itemsStatus$ | async) !== 1 && lodashIsEmpty(items$ | async)">
+              <app-without-results></app-without-results>
+            </div>
+          </div>
+          <div class="footer">
+            <div class="number">
+              <label>#{{ (totalsItem$ | async)?.totalResults }}</label>
+            </div>
+            <div class="description">
+              <label
+                >{{ (totalsItem$ | async)?.totalPieces }}
+                {{ 1 === 1 ? ('common.pzas' | translate) : ('common.pza' | translate) }}</label
+              >
+              <label
+                >{{ 'common.totalAmount' | translate }}
+                {{ (totalsItem$ | async)?.totalAmount | currency: 'USD':'symbol-narrow':'1.2-2' }}</label
+              >
+            </div>
+            <div class="client">
+              <label class="ocean"
+                >{{ (totalsItem$ | async)?.totalClients }}
+                {{ 1 === 1 ? ('common.client' | translate) : ('common.clients' | translate) }}</label
+              >
+            </div>
+            <div class="fea"></div>
+            <div class="cancel">
+              <label class="red">{{ (configTotals$ | async)?.cancel }}</label>
+            </div>
+            <div class="back-order">
+              <label class="orange">{{ (configTotals$ | async)?.withImpact }}</label>
+            </div>
+            <!--            <div class="impact">-->
+            <!--              &lt;!&ndash;<label class="orange">{{ (configTotals$ | async)?.impact }}</label>&ndash;&gt;-->
+            <!--            </div>-->
+            <div class="without-impact">
+              <label class="dark-green">{{ (configTotals$ | async)?.confirmed }}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="buttons">
+        <button [ngClass]="selectedConfig ? 'active' : 'disabled'" (click)="sendGuideConfig(configActive)">{{
+          'common.register' | translate
+        }}</button>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div>
+      <img src="assets/Images/labels/programada.svg" alt="" />
+      <label>{{ 'registerConfirmation.scheduledDelivery' | translate }}</label>
+    </div>
+    <div>
+      <img src="assets/Images/labels/unica.svg" alt="" />
+      <label>{{ 'registerConfirmation.singleDelivery' | translate }}</label>
+    </div>
+    <div>
+      <label>CU: </label>
+      <label>{{ 'registerConfirmation.unitCost' | translate }}</label>
+    </div>
+    <div>
+      <label>CT: </label>
+      <label>{{ 'registerConfirmation.totalCost' | translate }}</label>
+    </div>
+    <div>
+      <label class="red">FEE: </label>
+      <label>{{ 'registerConfirmation.estimatedDeliveryDateOutOfTime' | translate }}</label>
+    </div>
+    <div>
+      <label class="yellow">FEE: </label>
+      <label>{{ 'registerConfirmation.estimatedExpressDeliveryDate' | translate }}</label>
+    </div>
+    <div>
+      <label class="green">FEE: </label>
+      <label>{{ 'registerConfirmation.estimatedDeliveryDateOnTime' | translate }}</label>
+    </div>
+  </footer>
+</div>
+<app-pop-up-generic
+  *ngIf="popCancel"
+  [activeButtons]="true"
+  [width]="(viewType$ | async) === 'macBookAir' ? '800px' : '700px'"
+  [height]="(viewType$ | async) === 'macBookAir' ? '825px' : '725px'"
+  [titleHeader]="'CANCELAR GUÍA' | translate"
+  [activeBtn]="cancelButtonActive"
+  [color]="'#cc435e'"
+  (evento)="handelClousePop('cancel', $event)"
+>
+  <div class="pop-modify-cost">
+    <img src="assets/Images/alerta-rojo.svg" alt="" />
+    <label class="text"
+      >¿Desea registrar todas las partidas de la
+      <span [style.color]="'#cc435e'">de la Guía {{ (guideSelected$ | async)?.NumeroGuia }} </span>canceladas?</label
+    >
+    <div class="bg">
+      <label [style.color]="'#cc435e'">{{ 'MOTIVO DE CANCELACIÓN' }}:</label>
+      <div class="justification">
+        <app-generic-text-area
+          [height]="(viewType$ | async) === 'iPad' ? '285px' : '314px'"
+          [width]="(viewType$ | async) === 'iPad' ? '640px' : '740px'"
+          (emitData)="guideCancelConfiguration($event)"
+          [value]="(selectCancelJustificacion$ | async)?.Justificacion"
+        ></app-generic-text-area>
+      </div>
+    </div>
+  </div>
+</app-pop-up-generic>
+<app-pop-up-generic
+  *ngIf="popFee"
+  [activeButtons]="true"
+  [width]="(viewType$ | async) === 'macBookAir' ? '800px' : '700px'"
+  [height]="(viewType$ | async) === 'macBookAir' ? '825px' : '725px'"
+  [titleHeader]="'CON IMPACTO FEE'"
+  [activeBtn]="impactButtonActive"
+  [color]="'#c87133'"
+  (evento)="handelClousePop('impact', $event)"
+>
+  <div class="pop-config-all">
+    <img src="assets/Images/alerta-naranja.svg" alt="" />
+    <label class="text"
+      >¿Desea registrar todas las partidas <span>de la Guía {{ (guideSelected$ | async)?.NumeroGuia }} </span> con impacto
+      FEE?</label
+    >
+    <div class="bg">
+      <label>{{ 'Motivo de Cambio FEE' }}</label>
+      <div class="dates">
+        <div class="FEA">
+          <label>{{ 'FEA' }}</label>
+          <app-date-picker
+            class="date-picker"
+            dateFormat="YYYYMMDD"
+            [color]="false"
+            [disabled]="false"
+            [disabledCalendarDays]="selectNonWorkingDays$ | async"
+            [isMulticolor]="true"
+            [checkColor]="'dark-orange'"
+            [rangeStart]="feaInitialDate((guideSelected$ | async)?.FechaEstimadaDeEntrega)"
+            (fecha)="guideFEADate($event)"
+          ></app-date-picker>
+        </div>
+        <div class="document">
+          <label>{{ 'Cargar documento' }}</label>
+          <app-generic-input-file
+            [acceptedExtensions]="'application/pdf,.pdf,.jpg,.png'"
+            [placeholder]="'.pdf, jpg, png'"
+            [buttonsColor]="'dark-orange'"
+            (autoEmitFile)="setFile($event)"
+          ></app-generic-input-file>
+        </div>
+      </div>
+      <div class="justification">
+        <label>{{ 'Justificacion' }}</label>
+        <app-generic-text-area
+          [height]="(viewType$ | async) === 'iPad' ? '190px' : '248px'"
+          [width]="(viewType$ | async) === 'iPad' ? '640px' : '740px'"
+          (emitData)="guideImpactConfiguration($event)"
+          [value]="(selectImpacFeeConfig$ | async)?.justificacion"
+        ></app-generic-text-area>
+      </div>
+    </div>
+  </div>
+</app-pop-up-generic>

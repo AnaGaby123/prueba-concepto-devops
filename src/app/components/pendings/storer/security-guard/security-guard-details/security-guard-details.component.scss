@@ -1,0 +1,187 @@
+@use 'base' as s;
+
+:host {
+  & > .containerSecurity {
+    @include s.flexRow;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    & > .firstSection {
+      @include s.flexColumn;
+      flex: 0 0 430px;
+      padding: 20px 20px 0 20px;
+
+      & > app-agents-list {
+        @include s.absolute100;
+      }
+    }
+
+    & > .secondSection {
+      @include s.flexColumn;
+      flex: 1 1 auto;
+      overflow: hidden;
+
+      & > div:nth-of-type(1) {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        border-left: 1px solid s.$pqGray2;
+        padding: 15px 20px 0 20px;
+        overflow: hidden;
+
+        & > app-security-guard-register {
+          overflow: hidden;
+        }
+      }
+
+      & > .button-entry {
+        @include s.flexRow;
+        align-items: center;
+        flex: 0 0 50px;
+        justify-content: flex-end;
+        border-top: 1px solid s.$pqBlack2;
+        margin: 0 20px;
+
+        & > .btn-link-to {
+          @include s.pqButton(150px, 220px, 25px, 30px, s.$pqGreen);
+        }
+
+        & > .btn-link-to-disable {
+          @include s.pqButton(150px, 220px, 25px, 30px, s.$pqGray3);
+          cursor: default;
+        }
+      }
+
+      & > .footer-step-2 {
+        @include s.flexRow;
+        flex: 0 0 50px;
+
+        & > .waybillsContainer {
+          align-items: center;
+          justify-content: space-between;
+          border-top: 1px solid s.$pqBlack2;
+          margin: 0 20px;
+          flex: 0 0 350px;
+
+          & > .waybills {
+            @include s.flexRow;
+            justify-content: center;
+            @include s.Roboto-Regular;
+            @include s.escaledFontFormat(s.$textSize12to14, normal, s.$pqBlack2);
+            padding-top: 10px;
+          }
+        }
+
+        & > .buttonsContainer {
+          @include s.flexRow;
+          align-items: center;
+          justify-content: space-between;
+          margin-right: 20px;
+          flex: 1;
+
+          & > .btn-link-to {
+            @include s.pqButton(150px, 220px, 25px, 30px, s.$pqGreen);
+          }
+
+          & > .btn-link-to-incidence {
+            @include s.pqButton(150px, 220px, 25px, 30px, s.$pqTextAlert);
+          }
+
+          & > .btn-link-to-disable {
+            @include s.pqButton(150px, 220px, 25px, 30px, s.$pqGray3);
+            cursor: default;
+          }
+        }
+      }
+
+      & .pop-up-remove-product {
+        @include s.flexColumn;
+        flex: 1;
+
+        & .pop-modify-cost {
+          @include s.flexColumn;
+          flex: 1 0 100%;
+
+          & > img {
+            height: 60px;
+            margin: 30px auto;
+            width: 60px;
+          }
+
+          & > .text {
+            @include s.escaledFontFormat(s.$textSize26to29, regular, s.$pqBlack2);
+            @include s.Roboto-Regular;
+            padding: 0 40px;
+            white-space: pre-wrap;
+
+            & > span {
+              @include s.Roboto-Bold;
+              color: s.$pqTextAlert;
+              vertical-align: baseline;
+            }
+          }
+
+          & > .bg {
+            @include s.flexColumn;
+            flex: 1;
+            padding: 50px 30px 10px;
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqTextAlert);
+              @include s.Novecento-Bold;
+              text-align: initial;
+            }
+
+            & > .justification {
+              @include s.flexColumn;
+              padding-top: 17px;
+            }
+          }
+        }
+      }
+    }
+
+    & > .cancel-pop {
+      & .container {
+        @include s.flexColumn;
+        @include s.absoluteCenter;
+        flex: 1;
+        padding: 0 20px;
+
+        & > img {
+          height: 65px;
+          padding-bottom: 25px;
+        }
+
+        & > div {
+          & > label {
+            @include s.Roboto-Regular;
+            @include s.escaledFontFormat(s.$textSize20to28, regular, s.$pqBlack2);
+          }
+        }
+
+        @include s.responsive_layout('macBookAir') {
+          padding: 0 30px;
+          & > img {
+            height: 75px;
+          }
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > .containerSecurity {
+      & > .secondSection {
+        & > .button-entry {
+          flex: 0 0 55px;
+        }
+
+        & > .footer-step-2 {
+          flex: 0 0 55px;
+        }
+      }
+    }
+  }
+}

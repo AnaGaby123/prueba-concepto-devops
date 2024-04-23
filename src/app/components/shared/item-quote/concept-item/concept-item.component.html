@@ -1,0 +1,216 @@
+<div class="container-concept" [ngClass]="columnConcept?.isDisabled ? 'disabled-content' : ''">
+  <div class="cat-product">
+    <img
+      *ngIf="columnConcept?.availabilityKey"
+      alt=""
+      class="img-label"
+      [src]="
+        'assets/Images/labels/productos/' +
+        (columnConcept?.availabilityKey === availabilityTypes.discontinued
+          ? 'discontinued.svg'
+          : columnConcept?.availabilityKey === availabilityTypes.available
+          ? 'available.svg'
+          : columnConcept?.availabilityKey === availabilityTypes.backorder
+          ? 'back-order.svg'
+          : columnConcept?.availabilityKey === availabilityTypes.notmarketable
+          ? 'not-marketed.svg'
+          : 'available.svg')
+      "
+    />
+    <img
+      src="assets/Images/labels/in_investigation_label.svg"
+      alt=""
+      *ngIf="
+        columnConcept?.stateInvestigation !== statusItemInvestigation.ATTENDED &&
+        columnConcept?.stateInvestigation !== statusItemInvestigation.FINALIZED &&
+        columnConcept?.stateInvestigation
+      "
+    />
+    <img
+      src="assets/Images/labels/attended_label.svg"
+      alt=""
+      *ngIf="
+        columnConcept?.stateInvestigation === statusItemInvestigation.ATTENDED &&
+        columnConcept?.stateInvestigation !== statusItemInvestigation.FINALIZED &&
+        columnConcept?.stateInvestigation
+      "
+    />
+    <img
+      src="assets/Images/labels/finalized_label.svg"
+      alt=""
+      *ngIf="columnConcept?.stateInvestigation === statusItemInvestigation.FINALIZED && columnConcept?.stateInvestigation"
+    />
+    <!--        DOCS: SI ES PRODUCTO CAPACITACION-->
+    <label
+      class="cat"
+      *ngIf="
+        (family === productsTypes?.trainings || family === productsTypes.training) &&
+        columnConcept?.type &&
+        columnConcept?.subType &&
+        columnConcept?.control
+      "
+    >
+      N/D {{ columnConcept?.typeMode ? ' · ' + columnConcept?.typeMode : '' }}
+    </label>
+    <!--    DOCS: SI ES PRODUCTO DE PUBLICACIÓN -->
+    <label
+      class="cat"
+      *ngIf="family === productsTypes.publications && columnConcept?.type && columnConcept?.subType && columnConcept?.control"
+    >
+      CAT. {{ columnConcept?.cat }} {{ columnConcept?.formatPublication ? ' · ' + columnConcept?.formatPublication : '' }}
+    </label>
+    <!--    DOCS: SI EL PRODUCTO SE ENCUENTRA EN INVESTIGACIÓN-->
+    <label class="cat" *ngIf="columnConcept?.stateInvestigation">
+      {{ 'descriptionItemQuote.catalogNumber' | translate }} {{ columnConcept?.cat }}
+    </label>
+
+    <!--        DOCS: TODOS LOS PRODUCTOS, MENOS CAPACITACIÓN, PUBLICACIÓN Y EN INVESTIGACIÓN-->
+    <label
+      class="cat"
+      *ngIf="
+        family !== productsTypes.trainings &&
+        family !== productsTypes.training &&
+        family !== productsTypes.publications &&
+        columnConcept?.type &&
+        columnConcept?.subType &&
+        columnConcept?.control &&
+        !columnConcept?.stateInvestigation
+      "
+    >
+      {{ 'descriptionItemQuote.catalogNumber' | translate }} {{ columnConcept?.cat }} · {{ columnConcept?.typePresentation }}
+      {{ columnConcept?.presentation }} {{ columnConcept?.unity }}
+    </label>
+  </div>
+  <label class="product-description">{{ columnConcept?.description }}</label>
+  <div class="details-family">
+    <label class="product-family" *ngIf="columnConcept?.type && columnConcept?.subType && columnConcept?.control">{{
+      family
+    }}</label>
+    <label class="controlled" *ngIf="columnConcept?.controlled">
+      {{ '· ' + ('descriptionItemQuote.controlled' | translate) }}
+    </label>
+  </div>
+  <!--     DOCS: CUANDO EL PRODUCTO ES DE TIPO PUBLICACIÓN-->
+  <label class="publications-author" *ngIf="family === productsTypes.publications && columnConcept?.author">
+    {{ 'descriptionItemQuote.author' | translate }}: {{ columnConcept?.author }}
+  </label>
+  <!--     DOCS: QUIEN FACTURA-->
+  <label class="who-bill" *ngIf="columnConcept?.whoBill">
+    {{ 'descriptionItemQuote.bill' | translate }}: {{ columnConcept?.whoBill }}
+  </label>
+  <div class="date-container" *ngIf="columnConcept?.dateValidation">
+    <label class="validation"> {{ 'descriptionItemQuote.validation' | translate }}: </label>
+    <label class="date"> Hasta el {{ columnConcept?.dateValidation | dateFormatSlashShort }} </label>
+  </div>
+  <!--  DOCS: FECHA DISPONIBILIDAD CUANDO EL PRODUCTO ES BACK ORDER-->
+  <div
+    class="date-container"
+    *ngIf="columnConcept?.availabilityKey === availabilityTypes.backorder && columnConcept?.dateAvailability"
+  >
+    <label class="validation"> {{ 'descriptionItemQuote.availability' | translate }}: </label>
+    <label class="date">
+      {{ columnConcept?.dateAvailability ? (columnConcept?.dateAvailability | dateFormatNumber) : 'N/D' }}
+    </label>
+  </div>
+  <label
+    #labelElementHistory
+    class="see-history"
+    *ngIf="columnConcept?.seeHistory"
+    (click)="handleClick($event, labelElementHistory, true, nameActionsInternalSalesItem.ConceptSeeHistoryAction)"
+  >
+    {{ 'descriptionItemQuote.seeHistoryPurchasePromise' | translate }}</label
+  >
+  <!--      DOCS: FECHAS DE CAPACITACIÓN-->
+  <div
+    class="dates-trainings"
+    *ngIf="
+      (family === productsTypes.trainings || family === productsTypes.training) && columnConcept?.datesSuggested?.length > 0
+    "
+  >
+    <!-- TODO: COLOCAR LA PROPIEDAD CORRESPONDIENTE CUANDO SE TENGA RESPUESTA DE BACK (AUN NO SE DEFINE)  -->
+    <label> {{ columnConcept?.datesSuggested?.length }} {{ 'descriptionItemQuote.suggestedDates' | translate }}: </label>
+    <label *ngFor="let date of columnConcept?.datesSuggested"> {{ date.Fecha | dateFormatNumber }} </label>
+  </div>
+  <div class="rate-conversion-container" *ngIf="columnConcept?.conversionRate || columnConcept?.carFreight?.showCar">
+    <label
+      #labelElementConversionRate
+      *ngIf="columnConcept?.conversionRate"
+      class="rate-conversion"
+      (click)="handleClick($event, labelElementConversionRate, true, nameActionsInternalSalesItem?.ConceptConversionRateAction)"
+      >{{ 'descriptionItemQuote.conversionRate' | translate }} {{ columnConcept?.conversionRate }} %
+    </label>
+    <img
+      #imageElement
+      alt="car"
+      [id]="columnConcept?.carFreight?.idElementFreight"
+      *ngIf="columnConcept?.carFreight?.showCar && columnConcept?.carFreight?.color"
+      [src]="'assets/Images/close-offer/freight-' + columnConcept?.carFreight?.color + '.svg'"
+      (click)="handleClick($event, imageElement, true, nameActionsInternalSalesItem?.ConceptCarFreightAction)"
+    />
+  </div>
+  <div
+    class="alternate-complementary-container"
+    *ngIf="columnConcept?.alternate || columnConcept?.complementary || columnConcept?.supplements"
+  >
+    <label class="alternate" *ngIf="columnConcept?.alternate">
+      {{ 'descriptionItemQuote.alternate' | translate }} {{ columnConcept?.alternate }}
+      {{ columnConcept?.complementary ? ' · ' : '' }}</label
+    >
+    <label class="complementary" *ngIf="columnConcept?.complementary"
+      >{{ 'descriptionItemQuote.complementary' | translate }} {{ columnConcept?.complementary }}
+      {{ columnConcept?.supplements ? ' · ' : '' }}
+    </label>
+    <label class="supplements" *ngIf="columnConcept?.supplements">
+      {{ 'descriptionItemQuote.supplements' | translate }} {{ columnConcept?.supplements }}
+    </label>
+  </div>
+  <label class="with-contract" *ngIf="columnConcept?.inContract"> {{ 'descriptionItemQuote.inContract' | translate }} </label>
+  <!--  //TODO: CONFIMAR SU USO-->
+  <!--  <label class="quotations-linked" *ngIf="conceptItem?.linkedQuoted?.length > 0">-->
+  <!--    {{ conceptItem?.linkedQuoted?.length }}-->
+  <!--    {{-->
+  <!--      conceptItem?.linkedQuoted?.length === 1-->
+  <!--        ? ('descriptionItemQuote.linkedQuotation' | translate)-->
+  <!--        : ('descriptionItemQuote.linkedQuotations' | translate)-->
+  <!--    }}-->
+  <!--  </label>-->
+
+  <!--  //TODO: CONFIMAR SU USO-->
+  <!--  <label class="quotations-linked" >-->
+  <!--    1 Cotizacion Vinculada-->
+  <!--  </label>-->
+  <label class="without-quote" *ngIf="columnConcept?.withoutQuotes">
+    {{ 'descriptionItemQuote.withoutQuote' | translate }}
+  </label>
+  <div class="floating-container" *ngIf="columnConcept?.addItemSaving">
+    <label #piecesInputDispatch class="add-item-saving" (click)="handleClickAddSavingItem()">{{
+      'descriptionItemQuote.addItemSaving' | translate
+    }}</label>
+    <div class="pieces-floating-input" #piecesInput *ngIf="isOpenTooltipAddSavingItem" (click)="handleStopEvents($event)">
+      <input
+        placeholder="0"
+        (keypress)="
+          handleValidateDecimalNumber(
+            $event,
+            piecesInput,
+            +numberPieces,
+            nameActionsInternalSalesItem.ConceptAddItemSavingAction
+          )
+        "
+        [(ngModel)]="numberPieces"
+        (keyup.enter)="
+          changeQuantity($event, piecesInput, +numberPieces, nameActionsInternalSalesItem.ConceptAddItemSavingAction)
+        "
+      />
+    </div>
+  </div>
+
+  <label class="express" *ngIf="columnConcept?.proratedExpress">
+    {{ 'descriptionItemQuote.expressPro' | translate }}
+  </label>
+  <label class="more-info" *ngIf="columnConcept?.availabilityKey === availabilityTypes.notmarketable">
+    {{ 'descriptionItemQuote.moreInfo' | translate }}
+  </label>
+  <label class="disabled" *ngIf="columnConcept?.isDisabled"> {{ 'descriptionItemQuote.itemDisabled' | translate }} </label>
+  <label class="name-freight" *ngIf="columnConcept?.nameFreight"> {{ columnConcept?.nameFreight }}</label>
+</div>

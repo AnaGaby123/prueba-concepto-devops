@@ -1,0 +1,56 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  & > .main {
+    @include s.absolute100;
+    @include s.flexColumn;
+
+    & > .title {
+      @include s.Novecento-Bold;
+      @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+      flex: 0 0 auto;
+      padding: 0 15px 15px 20px;
+    }
+
+    & > .cards {
+      flex: 0 0 auto;
+      margin-bottom: 20px;
+    }
+
+    & > .tabs {
+      flex: 0 0 30px;
+      transition: 0.5s all ease-in-out;
+    }
+
+    & > .main-container {
+      flex: 1 1 auto;
+      overflow: hidden;
+    }
+
+    & > .without-results {
+      @include s.absoluteCenter;
+      @include s.flexRow;
+      height: 100%;
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > .main {
+      & > .title {
+        padding: 0 20px 20px 25px;
+      }
+
+      & > .cards {
+        margin-bottom: 25px;
+      }
+
+      & > .tabs {
+        flex: 0 0 40px;
+      }
+    }
+  }
+}

@@ -1,0 +1,162 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.flexColumn;
+  @include s.absolute100;
+  @include s.absoluteCenter;
+  display: flex;
+  overflow: hidden;
+
+  #load-and-carousel-images {
+    @include s.flexColumn;
+    flex: 1 1 auto;
+    overflow: hidden;
+    width: 100%;
+
+    & > div {
+      @include s.flexColumn;
+    }
+
+    & > .without-images {
+      @include s.flexColumn;
+      @include s.absoluteCenter;
+      flex: 1 1 auto;
+
+      & > label {
+        @include s.flexColumn;
+        @include s.absoluteCenter;
+
+        & > img {
+          width: 209px;
+          height: 176px;
+          padding-bottom: 20px;
+          cursor: pointer;
+        }
+
+        & > label:nth-of-type(1) {
+          @include s.escaledFontFormat(s.$textSize20to25, regular, s.$pqGray3);
+          @include s.Roboto-Regular;
+          padding-bottom: 35px;
+          text-align: center;
+        }
+
+        & > label:nth-of-type(2) {
+          @include s.escaledFontFormat(s.$textSize45to50, bold, s.$pqGray3);
+          @include s.Roboto-Bold;
+          text-align: center;
+        }
+      }
+
+      & > input {
+        display: none;
+      }
+    }
+
+    & > .carousel {
+      overflow: hidden;
+
+      & > div {
+        @include s.flexColumn;
+      }
+
+      & > .image-container {
+        flex: 1 1 auto;
+        overflow: auto;
+        cursor: grab;
+
+        & > img {
+          width: 100%;
+          height: auto;
+        }
+      }
+
+      & > .footer {
+        flex: 0 0 auto;
+
+        & > div {
+          @include s.flexRowNoWrap;
+
+          & img {
+            cursor: pointer;
+          }
+        }
+
+        & > .controls {
+          @include s.absoluteCenter;
+          flex: 1 1 auto;
+          padding: 20px 0;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize15to18, regular, s.$pqBlack2);
+            @include s.Roboto-Regular;
+            padding: 0 15px;
+          }
+        }
+
+        & > .buttons {
+          @include s.flexRowWrap;
+          flex: 1 1 auto;
+          justify-content: space-between;
+          align-items: center;
+
+          & > div:nth-of-type(2) {
+            & > img:nth-of-type(1) {
+              padding-right: 8px;
+            }
+
+            & > img:nth-of-type(2) {
+              padding-left: 8px;
+            }
+          }
+
+          & > div:nth-of-type(3) {
+            @include s.flexRowNoWrap;
+
+            & > .tooltip {
+              @include s.tooltip(auto, auto, auto, 180px, 'right_0');
+
+              & > .input-container {
+                & > input {
+                  display: none;
+                }
+              }
+
+              & > .tooltip-text {
+                min-width: 150px !important;
+
+                & > p {
+                  width: 100% !important;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      & > .tooltip {
+        flex: 0 0 30px;
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #load-and-carousel-images {
+      & > .without-images {
+        & > label {
+          & > img {
+            width: 229px;
+            height: 196px;
+          }
+
+          & > label:nth-of-type(1) {
+            padding-bottom: 45px;
+          }
+        }
+      }
+    }
+  }
+}

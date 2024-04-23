@@ -1,0 +1,485 @@
+<div id="week">
+  <div class="content-container">
+    <div class="header">
+      <div class="mon">
+        <div>
+          <label>{{ 'common.week1' | translate }}</label>
+          <label>{{ '(del 1 al 4)' }}</label>
+        </div>
+      </div>
+      <div class="tues">
+        <div [ngClass]="'active'">
+          <label>{{ 'common.week2' | translate }}</label>
+          <label>{{ '(del 7 al 11)' }}</label>
+        </div>
+      </div>
+      <div class="wed">
+        <div>
+          <label>{{ 'common.week3' | translate }}</label>
+          <label>{{ '(del 14 al 18)' }}</label>
+        </div>
+      </div>
+      <div class="thurs">
+        <div>
+          <label>{{ 'common.week4' | translate }}</label>
+          <label>{{ '(del 21 al 25)' }}</label>
+        </div>
+      </div>
+      <div class="fri">
+        <div>
+          <label>{{ 'common.week5' | translate }}</label>
+          <label>{{ '(del 28 al 30)' }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="content">
+      <div class="mon">
+        <div class="items">
+          <virtual-scroller
+            #column1="cdkDropList"
+            cdkDropList
+            cdkDropListSortingDisabled
+            [cdkDropListData]="itemsMondayScroll"
+            [cdkDropListConnectedTo]="[column2, column3, column4, column5]"
+            [items]="itemsMonday"
+            (vsUpdate)="itemsMondayScroll = $event"
+          >
+            <div class="card" *ngFor="let provider of itemsMondayScroll" cdkDrag [cdkDragData]="provider">
+              <div class="card-content">
+                <div class="index">
+                  <label>#{{ provider.Index }}</label>
+                </div>
+                <div class="info">
+                  <div class="line-one">
+                    <label>{{ provider.name }}</label>
+                    <img src="assets/Images/mas.svg" alt="" />
+                  </div>
+                  <div class="line-two">
+                    <label
+                      >{{ 'executePayment.toPay' | translate }}:
+                      {{ provider.aCobrar | currency: 'USD':'symbol-narrow':'1.2-2' }} {{ 'USD' }}</label
+                    >
+                  </div>
+                  <div class="line-three">
+                    <label
+                      >{{ 'executePayment.paid' | translate }}:
+                      {{ provider.cobrado | currency: 'USD':'symbol-narrow':'1.2-2' }} {{ 'USD' }}</label
+                    >
+                  </div>
+                  <div class="line-four">
+                    <label
+                      >{{ provider.cobros }}
+                      {{ provider.cobros === 1 ? ('common.invoice' | translate) : ('common.invoices' | translate) }}
+                      ·</label
+                    >
+                    <div class="on-time" *ngIf="provider.cobroATiempo > 0">
+                      <span class="green"></span>
+                      <label>{{ provider.cobroATiempo }}</label>
+                    </div>
+                    <div class="collection-1-8-days" *ngIf="provider.cobroVencido1y8 > 0">
+                      <span class="yellow"></span>
+                      <label>{{ provider.cobroVencido1y8 }}</label>
+                    </div>
+                  </div>
+                  <div class="line-five">
+                    <img src="assets/Images/labels/directos.svg" alt="" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </virtual-scroller>
+        </div>
+        <div class="footer">
+          <div class="footerInfo">
+            <div class="total-results">
+              <label>#{{ itemsMonday.length }}</label>
+            </div>
+            <div class="column-one">
+              <div class="line-one">
+                <span class="green"></span>
+                <label>{{ 131 }}</label>
+              </div>
+            </div>
+            <div class="column-two">
+              <div class="line-one">
+                <span class="yellow"></span>
+                <label>{{ 131 }}</label>
+              </div>
+            </div>
+            <div class="column-five">
+              <label
+                >{{ 'executePayment.totalToPay' | translate }}: {{ 2200100 | currency: 'USD':'symbol-narrow':'1.2-2' }}
+                {{ 'USD' }}</label
+              >
+            </div>
+          </div>
+          <div class="footerBotton">
+            <button>
+              generar orden de pago
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="tues">
+        <div class="items">
+          <virtual-scroller
+            #column2="cdkDropList"
+            cdkDropList
+            cdkDropListSortingDisabled
+            [cdkDropListData]="itemsTuesdayScroll"
+            [cdkDropListConnectedTo]="[column1, column3, column4, column5]"
+            [items]="itemsTuesday"
+            (vsUpdate)="itemsTuesdayScroll = $event"
+          >
+            <div class="card" *ngFor="let provider of itemsTuesdayScroll" cdkDrag [cdkDragData]="provider">
+              <div class="card-content">
+                <div class="index">
+                  <label>#{{ provider.Index }}</label>
+                </div>
+                <div class="info">
+                  <div class="line-one">
+                    <label>{{ provider.name }}</label>
+                    <img alt="" src="assets/Images/mas.svg" />
+                  </div>
+                  <div class="line-two">
+                    <label
+                      >{{ 'executePayment.toPay' | translate }}:
+                      {{ provider.aCobrar | currency: 'USD':'symbol-narrow':'1.2-2' }} {{ 'USD' }}</label
+                    >
+                  </div>
+                  <div class="line-three">
+                    <label
+                      >{{ 'executePayment.paid' | translate }}:
+                      {{ provider.cobrado | currency: 'USD':'symbol-narrow':'1.2-2' }} {{ 'USD' }}</label
+                    >
+                  </div>
+                  <div class="line-four">
+                    <label
+                      >{{ provider.cobros }}
+                      {{ provider.cobros === 1 ? ('common.invoice' | translate) : ('common.invoices' | translate) }}
+                      ·</label
+                    >
+                    <div class="on-time" *ngIf="provider.cobroATiempo > 0">
+                      <span class="green"></span>
+                      <label>{{ provider.cobroATiempo }}</label>
+                    </div>
+                    <div class="collection-1-8-days" *ngIf="provider.cobroVencido1y8 > 0">
+                      <span class="yellow"></span>
+                      <label>{{ provider.cobroVencido1y8 }}</label>
+                    </div>
+                  </div>
+                  <div class="line-five">
+                    <img src="assets/Images/labels/indirectos.svg" alt="" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </virtual-scroller>
+        </div>
+        <div class="footer">
+          <div class="footerInfo">
+            <div class="total-results">
+              <label>#{{ itemsMonday.length }}</label>
+            </div>
+            <div class="column-one">
+              <div class="line-one">
+                <span class="green"></span>
+                <label>{{ 131 }}</label>
+              </div>
+            </div>
+            <div class="column-two">
+              <div class="line-one">
+                <span class="yellow"></span>
+                <label>{{ 131 }}</label>
+              </div>
+            </div>
+            <div class="column-five">
+              <label
+                >{{ 'executePayment.totalToPay' | translate }}: {{ 2200100 | currency: 'USD':'symbol-narrow':'1.2-2' }}
+                {{ 'USD' }}</label
+              >
+            </div>
+          </div>
+          <div class="footerBotton">
+            <button>
+              generar orden de pago
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="wed">
+        <div class="items">
+          <virtual-scroller
+            #column3="cdkDropList"
+            cdkDropList
+            cdkDropListSortingDisabled
+            [cdkDropListData]="itemsWednesdayScroll"
+            [cdkDropListConnectedTo]="[column1, column2, column4, column5]"
+            [items]="itemsWednesday"
+            (vsUpdate)="itemsWednesdayScroll = $event"
+          >
+            <div class="card" *ngFor="let provider of itemsWednesdayScroll" cdkDrag [cdkDragData]="provider">
+              <div class="card-content">
+                <div class="index">
+                  <label>#{{ provider.Index }}</label>
+                </div>
+                <div class="info">
+                  <div class="line-one">
+                    <label>{{ provider.name }}</label>
+                    <img alt="" src="assets/Images/mas.svg" />
+                  </div>
+                  <div class="line-two">
+                    <label
+                      >{{ 'executePayment.toPay' | translate }}:
+                      {{ provider.aCobrar | currency: 'USD':'symbol-narrow':'1.2-2' }} {{ 'USD' }}</label
+                    >
+                  </div>
+                  <div class="line-three">
+                    <label
+                      >{{ 'executePayment.paid' | translate }}:
+                      {{ provider.cobrado | currency: 'USD':'symbol-narrow':'1.2-2' }} {{ 'USD' }}</label
+                    >
+                  </div>
+                  <div class="line-four">
+                    <label
+                      >{{ provider.cobros }}
+                      {{ provider.cobros === 1 ? ('common.invoice' | translate) : ('common.invoices' | translate) }}
+                      ·</label
+                    >
+                    <div class="on-time" *ngIf="provider.cobroATiempo > 0">
+                      <span class="green"></span>
+                      <label>{{ provider.cobroATiempo }}</label>
+                    </div>
+                    <div class="collection-1-8-days" *ngIf="provider.cobroVencido1y8 > 0">
+                      <span class="yellow"></span>
+                      <label>{{ provider.cobroVencido1y8 }}</label>
+                    </div>
+                  </div>
+                  <div class="line-five">
+                    <img src="assets/Images/labels/directos.svg" alt="" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </virtual-scroller>
+        </div>
+        <div class="footer">
+          <div class="footerInfo">
+            <div class="total-results">
+              <label>#{{ itemsMonday.length }}</label>
+            </div>
+            <div class="column-one">
+              <div class="line-one">
+                <span class="green"></span>
+                <label>{{ 131 }}</label>
+              </div>
+            </div>
+            <div class="column-two">
+              <div class="line-one">
+                <span class="yellow"></span>
+                <label>{{ 131 }}</label>
+              </div>
+            </div>
+            <div class="column-five">
+              <label
+                >{{ 'executePayment.totalToPay' | translate }}: {{ 2200100 | currency: 'USD':'symbol-narrow':'1.2-2' }}
+                {{ 'USD' }}</label
+              >
+            </div>
+          </div>
+          <div class="footerBotton">
+            <button>
+              generar orden de pago
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="thurs">
+        <div class="items">
+          <virtual-scroller
+            #column4="cdkDropList"
+            cdkDropList
+            cdkDropListSortingDisabled
+            [cdkDropListData]="itemsThursdayScroll"
+            [cdkDropListConnectedTo]="[column1, column2, column3, column5]"
+            [items]="itemsThursday"
+            (vsUpdate)="itemsThursdayScroll = $event"
+          >
+            <div
+              class="card"
+              [ngClass]="provider.purple ? 'back-purple' : ''"
+              *ngFor="let provider of itemsThursdayScroll"
+              cdkDrag
+              [cdkDragData]="provider"
+            >
+              <div class="card-content">
+                <div class="index">
+                  <label>#{{ provider.Index }}</label>
+                </div>
+                <div class="info">
+                  <div class="line-one">
+                    <label>{{ provider.name }}</label>
+                    <img alt="" src="assets/Images/mas.svg" />
+                  </div>
+                  <div class="line-two">
+                    <label
+                      >{{ 'executePayment.toPay' | translate }}:
+                      {{ provider.aCobrar | currency: 'USD':'symbol-narrow':'1.2-2' }} {{ 'USD' }}</label
+                    >
+                  </div>
+                  <div class="line-three">
+                    <label
+                      >{{ 'executePayment.paid' | translate }}:
+                      {{ provider.cobrado | currency: 'USD':'symbol-narrow':'1.2-2' }} {{ 'USD' }}</label
+                    >
+                  </div>
+                  <div class="line-four">
+                    <label
+                      >{{ provider.cobros }}
+                      {{ provider.cobros === 1 ? ('common.invoice' | translate) : ('common.invoices' | translate) }}
+                      ·</label
+                    >
+                    <div class="on-time" *ngIf="provider.cobroATiempo > 0">
+                      <span class="green"></span>
+                      <label>{{ provider.cobroATiempo }}</label>
+                    </div>
+                    <div class="collection-1-8-days" *ngIf="provider.cobroVencido1y8 > 0">
+                      <span class="yellow"></span>
+                      <label>{{ provider.cobroVencido1y8 }}</label>
+                    </div>
+                  </div>
+                  <div class="line-five">
+                    <img src="assets/Images/labels/directos.svg" alt="" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </virtual-scroller>
+        </div>
+        <div class="footer">
+          <div class="footerInfo">
+            <div class="total-results">
+              <label>#{{ itemsMonday.length }}</label>
+            </div>
+            <div class="column-one">
+              <div class="line-one">
+                <span class="green"></span>
+                <label>{{ 131 }}</label>
+              </div>
+            </div>
+            <div class="column-two">
+              <div class="line-one">
+                <span class="yellow"></span>
+                <label>{{ 131 }}</label>
+              </div>
+            </div>
+            <div class="column-five">
+              <label
+                >{{ 'executePayment.totalToPay' | translate }}: {{ 2200100 | currency: 'USD':'symbol-narrow':'1.2-2' }}
+                {{ 'USD' }}</label
+              >
+            </div>
+          </div>
+          <div class="footerBotton">
+            <button>
+              generar orden de pago
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="fri">
+        <div class="items">
+          <virtual-scroller
+            #column5="cdkDropList"
+            cdkDropList
+            cdkDropListSortingDisabled
+            [cdkDropListData]="itemsFridayScroll"
+            [cdkDropListConnectedTo]="[column1, column2, column3, column4]"
+            [items]="itemsFriday"
+            (vsUpdate)="itemsFridayScroll = $event"
+          >
+            <div
+              class="card"
+              [ngClass]="provider.orange ? 'back-orange' : ''"
+              *ngFor="let provider of itemsFridayScroll"
+              cdkDrag
+              [cdkDragData]="provider"
+            >
+              <div class="card-content">
+                <div class="index">
+                  <label>#{{ provider.Index }}</label>
+                </div>
+                <div class="info">
+                  <div class="line-one">
+                    <label>{{ provider.name }}</label>
+                    <img alt="" src="assets/Images/mas.svg" />
+                  </div>
+                  <div class="line-two">
+                    <label
+                      >{{ 'executePayment.toPay' | translate }}:
+                      {{ provider.aCobrar | currency: 'USD':'symbol-narrow':'1.2-2' }} {{ 'USD' }}</label
+                    >
+                  </div>
+                  <div class="line-three">
+                    <label
+                      >{{ 'executePayment.paid' | translate }}:
+                      {{ provider.cobrado | currency: 'USD':'symbol-narrow':'1.2-2' }} {{ 'USD' }}</label
+                    >
+                  </div>
+                  <div class="line-four">
+                    <label
+                      >{{ provider.cobros }}
+                      {{ provider.cobros === 1 ? ('common.invoice' | translate) : ('common.invoices' | translate) }}
+                      ·</label
+                    >
+                    <div class="on-time" *ngIf="provider.cobroATiempo > 0">
+                      <span class="green"></span>
+                      <label>{{ provider.cobroATiempo }}</label>
+                    </div>
+                    <div class="collection-1-8-days" *ngIf="provider.cobroVencido1y8 > 0">
+                      <span class="yellow"></span>
+                      <label>{{ provider.cobroVencido1y8 }}</label>
+                    </div>
+                  </div>
+                  <div class="line-five">
+                    <img src="assets/Images/labels/directos.svg" alt="" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </virtual-scroller>
+        </div>
+        <div class="footer">
+          <div class="footerInfo">
+            <div class="total-results">
+              <label>#{{ itemsMonday.length }}</label>
+            </div>
+            <div class="column-one">
+              <div class="line-one">
+                <span class="green"></span>
+                <label>{{ 131 }}</label>
+              </div>
+            </div>
+            <div class="column-two">
+              <div class="line-one">
+                <span class="yellow"></span>
+                <label>{{ 131 }}</label>
+              </div>
+            </div>
+            <div class="column-five">
+              <label
+                >{{ 'executePayment.totalToPay' | translate }}: {{ 2200100 | currency: 'USD':'symbol-narrow':'1.2-2' }}
+                {{ 'USD' }}</label
+              >
+            </div>
+          </div>
+          <div class="footerBotton">
+            <button>
+              generar orden de pago
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

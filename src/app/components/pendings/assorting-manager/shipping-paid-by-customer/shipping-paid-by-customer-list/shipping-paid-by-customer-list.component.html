@@ -1,0 +1,38 @@
+<div id="clients-shipping">
+  <div class="top">
+    <label>{{ 'common.clients' | translate }}</label>
+    <div>
+      <app-search
+        [placeholder]="'common.client' | translate"
+        [searchTerm]="searchTerm$ | async"
+        (textSearch)="handleSearchTerm($event)"
+      ></app-search>
+    </div>
+  </div>
+  <div class="cards">
+    <div>
+      <virtual-scroller [items]="clients">
+        <div *ngFor="let cliente of clients; let i = index" class="client" (click)="setSelectedClient(cliente)">
+          <div class="centerPagination">
+            <img [src]="'assets/Images/clientes/logo_proquifa_default.svg'" />
+            <img [src]="'assets/Images/clientes/logo_proquifa_hover.svg'" />
+          </div>
+          <div class="footContent">
+            <span>{{ cliente.client }}</span>
+            <label
+              >{{ '1' }} {{ 1 === 1 ? ('common.piece' | translate) : ('common.pieces' | translate) }} · {{ '6' }}
+              {{ 'changeNotices.affectedPi' | translate }}</label
+            >
+            <label class="colors">
+              <span class="red">P1 · {{ '17' }}</span>
+              <span class="yellow">P2 · {{ '17' }}</span>
+              <span class="green">P3 · {{ '17' }}</span>
+            </label>
+          </div>
+          <div class="rightSeparator" [ngStyle]="{display: (i + 1) % totalColumn === 0 ? 'none' : 'block'}"></div>
+          <div class="downSeparator"></div>
+        </div>
+      </virtual-scroller>
+    </div>
+  </div>
+</div>

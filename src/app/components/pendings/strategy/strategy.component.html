@@ -1,0 +1,30 @@
+<div class="component-container" id="strategy-container">
+  <div class="header">
+    <app-header-bar
+      [activeBack]="detailsMode$ | async"
+      [name]="nameClient$ | async"
+      [title]="title$ | async"
+      (goBack)="returnMainPage()"
+    >
+    </app-header-bar>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="footer" *ngIf="!(detailsMode$ | async)">
+    <ng-container>
+      <div>
+        <img alt="confirmed" src="assets/Images/strategy/tag_confirmed.svg" />
+        <label>{{ 'strategy.quotationByConfirms' | translate }}</label>
+      </div>
+      <div>
+        <img alt="pending" src="assets/Images/strategy/tag_pending.svg" />
+        <label>{{ 'strategy.quotationByPending' | translate }}</label>
+      </div>
+      <div>
+        <img alt="error" src="assets/Images/strategy/tag_error.svg" />
+        <label>{{ 'strategy.quotationByError' | translate }}</label>
+      </div>
+    </ng-container>
+  </div>
+</div>

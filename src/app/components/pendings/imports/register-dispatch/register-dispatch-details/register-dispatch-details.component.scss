@@ -1,0 +1,215 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  height: 100%;
+  width: 100%;
+
+  & > #register-dispatch-details-container {
+    @include s.flexColumn;
+    height: 100%;
+    justify-content: flex-start;
+    overflow: hidden;
+    width: 100%;
+
+    & > .top-container {
+      @include s.flexRowNoWrap;
+      flex: 1 1 auto;
+      overflow: hidden;
+
+      & > .left-container {
+        @include s.flexColumn;
+        border-right: 1px solid s.$pqGray2;
+        flex: 0 0 450px;
+        padding: 20px;
+
+        & > .title {
+          @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+          @include s.Novecento-Bold;
+          margin-bottom: 10px;
+        }
+
+        & > .filters {
+          @include s.flexRowNoWrap;
+          border-bottom: 1px solid s.$pqBlack2;
+          padding-bottom: 17px;
+
+          & > app-search {
+            flex: 1 1 auto;
+          }
+        }
+
+        & > .list-container {
+          @include s.flexColumn;
+          flex: 1 1 auto;
+          overflow: hidden;
+
+          & > virtual-scroller {
+            height: 100%;
+            width: 100%;
+
+            & .item-oc {
+              @include s.flexRowNoWrap;
+              @include s.default-transition($duration: 0.2s);
+              align-items: center;
+              border-bottom: 1px solid s.$pqGray2;
+              cursor: pointer;
+              height: 85px;
+              overflow: hidden;
+
+              & * {
+                cursor: pointer;
+              }
+
+              &:hover {
+                background-color: s.$pqGray2;
+              }
+
+              & > .indicator {
+                flex: 0 0 8px;
+                height: 100%;
+
+                &.selected {
+                  background-color: s.$pqGreen;
+                }
+              }
+
+              & > .info {
+                @include s.flexColumn;
+                flex: 1 1 auto;
+                padding: 20px;
+
+                & > label {
+                  @include s.escaledFontFormat(s.$textSize15to20, bold, s.$pqBlack2);
+                  @include s.Roboto-Bold;
+                  white-space: pre;
+
+                  &:first-of-type {
+                    margin-bottom: 5px;
+                  }
+
+                  & > span {
+                    color: s.$pqGreen;
+                    vertical-align: baseline;
+                  }
+                }
+
+                & > .fee {
+                  @include s.escaledFontFormat(s.$textSize14to18, bold, s.$pqBlack2);
+                  @include s.Roboto-Regular;
+                  margin-top: 4px;
+                  white-space: pre;
+                }
+              }
+
+              & > .image {
+                @include s.flexColumn;
+                @include s.absoluteCenter;
+                flex: 0 0 140px;
+
+                & > img {
+                  height: 18px;
+                }
+              }
+            }
+
+            & > ::ng-deep .scrollable-content > .without-results {
+              display: flex;
+              @include s.absoluteCenter;
+              height: 100%;
+            }
+          }
+
+          & > .loading {
+            @include s.flexColumn;
+            @include s.absoluteCenter;
+            height: 100%;
+            width: 100%;
+          }
+        }
+
+        & > .totals {
+          @include s.flexRowNoWrap;
+          border-top: 1px solid s.$pqBlack2;
+          flex: 0 0 39px;
+          justify-content: space-between;
+          padding: 6px 12px 0 15px;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+            @include s.Roboto-Regular;
+          }
+        }
+      }
+
+      & > .right-container {
+        @include s.flexColumn;
+        flex: 1 1 auto;
+        overflow: hidden;
+      }
+    }
+
+    & > .bottom-container {
+      @include s.flexRowNoWrap;
+      @include s.absoluteCenter;
+      border-top: 2px solid s.$pqBlack2;
+      flex: 0 0 48px;
+
+      & > div {
+        @include s.flexRowNoWrap;
+        align-items: center;
+        margin-right: 30px;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+          @include s.Roboto-Regular;
+          white-space: pre;
+
+          &:first-of-type {
+            @include s.Roboto-Bold;
+          }
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .top-container {
+        & > .left-container {
+          flex: 0 0 600px;
+
+          & > .title {
+            margin-bottom: 14px;
+          }
+
+          & > .filters {
+            padding-bottom: 20px;
+          }
+
+          & > .list-container {
+            & > virtual-scroller {
+              & .item-oc {
+                & > .image {
+                  & > img {
+                    height: 20px;
+                  }
+                }
+              }
+            }
+          }
+
+          & > .totals {
+            @include s.flexRowNoWrap;
+            flex: 0 0 49px;
+            padding: 10px 20px 0 30px;
+          }
+        }
+      }
+      & > .bottom-container {
+        flex: 0 0 56px;
+      }
+    }
+  }
+}

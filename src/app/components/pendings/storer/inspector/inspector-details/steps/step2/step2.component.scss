@@ -1,0 +1,681 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  & #inspector-step2 {
+    @include s.absolute100;
+    @include s.flexColumn;
+    justify-content: flex-start;
+
+    & > .content {
+      @include s.flexRow;
+      flex: 1;
+      margin-top: 10px;
+      overflow: hidden;
+
+      & > .left {
+        @include s.flexColumn;
+        flex: 1 1 auto;
+        border-right: 1px solid s.$pqGray2;
+
+        & > .title {
+          & > label {
+            @include s.Novecento-Demibold;
+            @include s.escaledFontFormat(s.$textSize17to21, demibold, s.$pqGreen);
+          }
+        }
+
+        & > .left-section {
+          display: grid;
+          flex: 1;
+          grid-template-columns: repeat(2, 1fr);
+          grid-template-rows: repeat(2, 1fr);
+          grid-column-gap: 30px;
+          grid-row-gap: 25px;
+          margin: 15px 15px 0 0;
+
+          & > .description {
+            grid-area: 1 / 1 / 2 / 2;
+            @include s.flexColumn;
+
+            & > .header {
+              @include s.flexRow;
+
+              & > div {
+                flex: 1;
+                padding-bottom: 3px;
+                border-bottom: 0.5px solid s.$pqBlack2;
+
+                & > label {
+                  @include s.Roboto-Bold;
+                  @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+                }
+              }
+            }
+
+            & > .content {
+              @include s.flexColumn;
+              flex: 1;
+              padding-top: 10px;
+
+              & > div {
+                flex: 1;
+              }
+            }
+          }
+
+          & > .handling {
+            grid-area: 1 / 2 / 2 / 3;
+            @include s.flexColumn;
+
+            & > .header {
+              @include s.flexRow;
+
+              & > div {
+                flex: 1;
+                padding-bottom: 3px;
+                border-bottom: 0.5px solid s.$pqBlack2;
+
+                & > label {
+                  @include s.Roboto-Bold;
+                  @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+                }
+              }
+            }
+
+            & > .content {
+              @include s.flexColumn;
+              flex: 1;
+              padding-top: 10px;
+
+              & > div {
+                flex: 1;
+              }
+            }
+          }
+
+          & > .documentation {
+            grid-area: 2 / 1 / 3 / 3;
+            @include s.flexColumn;
+
+            & > .header {
+              @include s.flexRow;
+              align-items: center;
+              padding-bottom: 3px;
+              border-bottom: 0.5px solid s.$pqBlack2;
+
+              & > .label-enable {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqGreen);
+                margin-left: 10px;
+              }
+
+              & > .label-disable {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+                margin-left: 10px;
+              }
+            }
+
+            & > .content {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              grid-template-rows: 1fr;
+              grid-column-gap: 30px;
+              grid-row-gap: 25px;
+              padding-top: 10px;
+
+              & > .input1 {
+                @include s.flexColumn;
+                grid-area: 1 / 1 / 2 / 2;
+                flex: 1;
+
+                & > .title {
+                  @include s.Roboto-Medium;
+                  @include s.escaledFontFormat(s.$textSize13to16, medium, s.$pqBlack2);
+                }
+
+                & > .document {
+                  @include s.flexRow;
+                  align-items: center;
+                  margin-top: 10px;
+
+                  & > img {
+                    height: 15px;
+                  }
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                    margin-left: 5px;
+                  }
+                }
+              }
+
+              & > .input2 {
+                @include s.flexColumn;
+                grid-area: 1 / 2 / 2 / 3;
+                flex: 1;
+
+                & > .title {
+                  @include s.Roboto-Medium;
+                  @include s.escaledFontFormat(s.$textSize13to16, medium, s.$pqBlack2);
+                }
+
+                & > .document {
+                  @include s.flexRow;
+                  align-items: center;
+                  margin-top: 10px;
+
+                  & > img {
+                    height: 15px;
+                  }
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                    margin-left: 5px;
+                  }
+
+                  @include s.responsive_layout('macBookAir') {
+                    margin-top: 15px;
+                    & > img {
+                      height: 20px;
+                    }
+                    & > label {
+                      margin-left: 10px;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        & > .left-section-alone {
+          @include s.flexRow;
+          flex: 1;
+          margin: 15px 15px 0 0;
+          @include s.responsive_layout('macBookAir') {
+            margin: 20px 20px 0 0;
+          }
+
+          & > .description-alone {
+            @include s.flexColumn;
+            flex: 1;
+
+            & > .header {
+              @include s.flexRow;
+              align-items: center;
+              padding-bottom: 3px;
+              border-bottom: 0.5px solid s.$pqBlack2;
+
+              & > label {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+              }
+
+              @include s.responsive_layout('macBookAir') {
+                padding-bottom: 5px;
+              }
+            }
+
+            & > .content {
+              display: grid;
+              grid-template-columns: repeat(2, 1fr);
+              grid-template-rows: 1fr;
+              grid-column-gap: 20px;
+              grid-row-gap: 25px;
+
+              padding-top: 10px;
+              @include s.responsive_layout('macBookAir') {
+                padding-top: 15px;
+              }
+
+              & > .input1 {
+                grid-area: 1 / 1 / 2 / 2;
+                flex: 1;
+              }
+
+              & > .input2 {
+                grid-area: 1 / 2 / 2 / 3;
+                flex: 1;
+              }
+            }
+          }
+        }
+      }
+
+      & > .right {
+        @include s.flexColumn;
+        flex: 1 1 auto;
+        overflow: hidden;
+
+        & > .header {
+          @include s.flexRow;
+          align-items: center;
+          justify-content: space-between;
+
+          & > label {
+            @include s.Novecento-Demibold;
+            @include s.escaledFontFormat(s.$textSize17to21, demibold, s.$pqGreen);
+            margin-left: 15px;
+          }
+
+          & > img {
+            height: 20px;
+          }
+
+          @include s.responsive_layout('macBookAir') {
+            & > label {
+              margin-left: 20px;
+            }
+            & > img {
+              height: 25px;
+            }
+          }
+        }
+
+        & > .video-container {
+          @include s.flexRow;
+          @include s.borderTypeCamera;
+          flex: 1;
+          overflow: hidden;
+          margin: 15px 0 15px 15px;
+
+          & > #videoElement {
+            @include s.flexRow;
+            flex: 1;
+            max-height: 100%;
+            max-width: 100%;
+            /*            height: 70%;
+            width: 70%;*/
+          }
+
+          @include s.responsive_layout('macBookAir') {
+            padding: 20px 0 20px 20px;
+            /*            & > #videoElement {
+              max-width: 100%;
+              max-height: 100%;
+            }*/
+          }
+        }
+
+        & > .footer {
+          @include s.flexColumn;
+          padding-left: 15px;
+          @include s.responsive_layout('macBookAir') {
+            padding-left: 20px;
+          }
+
+          & > label {
+            @include s.Roboto-Regular-Italic;
+            @include s.escaledFontFormat(s.$textSize15to18, regular, s.$pqBlack2);
+
+            & > .green {
+              color: s.$pqGreen2;
+            }
+
+            & > .red {
+              color: s.$gnRojoSemaforo;
+            }
+          }
+        }
+      }
+
+      @include s.responsive_layout('macBookAir') {
+        margin-top: 15px;
+        & > .left {
+          & > .left-section {
+            grid-column-gap: 40px;
+            grid-row-gap: 35px;
+            margin: 20px 20px 0 0;
+
+            & > .description {
+              & > .header {
+                & > div {
+                  padding-bottom: 5px;
+                }
+              }
+
+              & > .content {
+                padding-top: 15px;
+              }
+            }
+
+            & > .handling {
+              & > .header {
+                & > div {
+                  padding-bottom: 5px;
+                }
+              }
+
+              & > .content {
+                padding-top: 15px;
+              }
+            }
+
+            & > .documentation {
+              & > .header {
+                padding-bottom: 5px;
+
+                & > label {
+                  margin-left: 15px;
+                }
+              }
+
+              & > .content {
+                padding-top: 15px;
+
+                & > .input1 {
+                  & > .document {
+                    margin-top: 15px;
+
+                    & > img {
+                      height: 20px;
+                    }
+
+                    & > label {
+                      margin-left: 10px;
+                    }
+                  }
+                }
+
+                & > .input2 {
+                  & > .document {
+                    margin-top: 15px;
+
+                    & > img {
+                      height: 20px;
+                    }
+
+                    & > label {
+                      margin-left: 10px;
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          & > .left-section-alone {
+            margin: 20px 20px 0 0;
+
+            & > .description-alone {
+              & > .header {
+                padding-bottom: 5px;
+              }
+
+              & > .content {
+                padding-top: 15px;
+              }
+            }
+          }
+        }
+        & > .right {
+          & > .header {
+            & > label {
+              margin-left: 20px;
+            }
+
+            & > img {
+              height: 30px;
+            }
+          }
+
+          & > .video-container {
+            padding: 20px 0 20px 20px;
+          }
+
+          & > .footer {
+            padding-left: 20px;
+          }
+        }
+      }
+    }
+  }
+
+  & > .missing-pieces {
+    & .container {
+      @include s.flexColumn;
+      @include s.absoluteCenter;
+      flex: 1;
+      justify-content: space-evenly;
+
+      & > .message {
+        & > label {
+          @include s.Roboto-Bold;
+          @include s.escaledFontFormat(s.$textSize20to25, bold, s.$pqBlack2);
+        }
+      }
+
+      & > .colors {
+        @include s.flexColumn;
+
+        & > label {
+          @include s.Roboto-Bold;
+          @include s.escaledFontFormat(s.$textSize20to25, bold, s.$pqBlack2);
+        }
+
+        & > .green {
+          color: s.$pqGreen2;
+        }
+
+        & > .red {
+          color: s.$gnRojoSemaforo;
+        }
+      }
+    }
+  }
+
+  & > .pop-tabs {
+    & .container {
+      @include s.flexColumn;
+      flex: 1;
+      overflow: hidden;
+      padding: 20px;
+
+      & > .tabs {
+        @include s.flexRow;
+        height: 30px;
+        margin-bottom: 30px;
+      }
+
+      & > .content {
+        @include s.flexColumn;
+        flex: 1;
+        overflow: hidden;
+      }
+
+      @include s.responsive_layout('macBookAir') {
+        padding: 30px;
+        & > .tabs {
+          height: 40px;
+          margin-bottom: 35px;
+        }
+      }
+    }
+  }
+
+  & > .non-shippable-part {
+    & .container {
+      @include s.flexColumn;
+      flex: 1;
+      padding: 30px;
+
+      & > .checks {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: 1fr;
+        grid-column-gap: 30px;
+        flex: 1;
+        border-bottom: 1px solid s.$pqGray3;
+        padding-bottom: 30px;
+
+        & > .left {
+          grid-area: 1 / 1 / 2 / 2;
+          @include s.flexColumn;
+
+          & > div {
+            margin: 15px 0;
+          }
+        }
+
+        & > .right {
+          grid-area: 1 / 2 / 2 / 3;
+          @include s.flexColumn;
+
+          & > div {
+            margin: 15px 0;
+          }
+        }
+      }
+
+      & > .data {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: 1fr;
+        grid-column-gap: 30px;
+        flex: 2;
+        max-height: 60%;
+        padding-bottom: 50px;
+        padding-top: 30px;
+
+        & > .report {
+          @include s.flexColumn;
+          flex: 1;
+
+          & > .title {
+            @include s.flexRow;
+            justify-content: flex-start;
+            margin-bottom: 15px;
+
+            & > label {
+              @include s.Roboto-Bold;
+              @include s.escaledFontFormatImportant(s.$textSize15to18, bold, s.$pqBlack2);
+            }
+          }
+        }
+
+        & > .uploadphotos {
+          @include s.flexColumn;
+          flex: 1;
+
+          & > .title {
+            @include s.flexRow;
+            justify-content: flex-start;
+            margin-bottom: 15px;
+
+            & > label {
+              @include s.Roboto-Bold;
+              @include s.escaledFontFormatImportant(s.$textSize15to18, bold, s.$pqBlack2);
+
+              & > span {
+                color: s.$gnRojoSemaforo;
+                vertical-align: baseline;
+              }
+            }
+          }
+
+          & > .content {
+            @include s.flexColumn;
+            flex: 1;
+            justify-content: space-between;
+
+            & > div {
+              margin: 7px 0;
+            }
+
+            & div:first-child {
+              margin: 0 0 7px 0;
+            }
+          }
+        }
+      }
+
+      @include s.responsive_layout('macBookAir') {
+        padding: 40px;
+        & > .checks {
+          grid-column-gap: 40px;
+          padding-bottom: 40px;
+
+          & > .left {
+            & > div {
+              margin: 20px 0;
+            }
+          }
+
+          & > .right {
+            & > div {
+              margin: 20px 0;
+            }
+          }
+        }
+        & > .data {
+          grid-column-gap: 40px;
+          padding-bottom: 60px;
+          padding-top: 40px;
+
+          & > .report {
+            & > .title {
+              margin-bottom: 20px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  & > .inspectFinish {
+    & .container {
+      @include s.flexColumn;
+      @include s.absoluteCenter;
+      flex: 1;
+
+      & > .message {
+        @include s.absoluteCenter;
+        @include s.flexRow;
+        flex: 1;
+        padding: 20px;
+
+        & > label {
+          @include s.Roboto-Bold;
+          @include s.escaledFontFormatImportant(s.$textSize20to25, bold, s.$pqBlack2);
+
+          & > span {
+            color: s.$pqGreen;
+            vertical-align: baseline;
+          }
+        }
+      }
+
+      & > .btn-content {
+        @include s.flexRow;
+        @include s.absoluteCenter;
+        height: 50px;
+
+        & > button {
+          @include s.pqButton();
+        }
+      }
+
+      @include s.responsive_layout('macBookAir') {
+        & > .message {
+          padding: 25px;
+        }
+        & > .btn-content {
+          height: 60px;
+
+          & > button {
+            @include s.pqButton();
+          }
+        }
+      }
+    }
+  }
+}

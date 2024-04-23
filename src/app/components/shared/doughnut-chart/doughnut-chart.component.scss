@@ -1,0 +1,138 @@
+@use 'base' as s;
+
+:host {
+  @include s.gridCenter;
+  height: 100%;
+  width: 100%;
+
+  & > #donutChartContainer {
+    @include s.absoluteCenter;
+    @include s.flexRowWrap;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+
+    & > canvas {
+      height: 100% !important;
+      width: 100% !important;
+      z-index: 2;
+    }
+
+    & > .details {
+      @include s.absoluteCenter;
+      @include s.flexRow;
+      box-sizing: border-box;
+      height: 100%;
+      position: absolute;
+      width: 100%;
+      z-index: 1;
+
+      & > .details-container {
+        @include s.absoluteCenter;
+        @include s.flexColumn;
+        justify-content: space-between;
+        pointer-events: none;
+        width: calc((12vh + 12vw) / 2);
+        z-index: 2;
+
+        & > .adjust-totals {
+          width: 60% !important;
+        }
+
+        & > .without-margin {
+          margin: 0 !important;
+        }
+
+        & > div:nth-of-type(1) {
+          @include s.absoluteCenter;
+          @include s.flexRow;
+          margin-bottom: 10px;
+          width: 100%;
+
+          & > .small {
+            $textSize: (
+              'base': 10.4px,
+              'macBookAir': 20px,
+            );
+            @include s.Roboto-Bold;
+            @include s.escaledFontFormat($textSize, bold, s.$pqBlack2);
+            @include s.multiLineTextTruncateSinHeight(2, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+            text-align: center;
+            text-transform: uppercase;
+          }
+
+          & > .medium {
+            $textSize: (
+              'base': 12px,
+              'macBookAir': 20px,
+            );
+            @include s.Roboto-Bold;
+            @include s.escaledFontFormat($textSize, bold, s.$pqBlack2);
+            @include s.multiLineTextTruncateSinHeight(2, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+            text-align: center;
+            text-transform: uppercase;
+          }
+
+          & > .normal {
+            $textSize: (
+              'base': 14px,
+              'macBookAir': 20px,
+            );
+            @include s.Roboto-Bold;
+            @include s.escaledFontFormat($textSize, bold, s.$pqBlack2);
+            @include s.multiLineTextTruncateSinHeight(2, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+            text-align: center;
+            text-transform: uppercase;
+          }
+        }
+
+        & > div:nth-of-type(2) {
+          @include s.absoluteCenter;
+          @include s.flexRowWrap;
+          width: 100%;
+
+          & > div:last-child {
+            margin-bottom: 0;
+          }
+
+          & > div {
+            @include s.absoluteCenter;
+            @include s.flexRowWrap;
+            margin-bottom: 4px;
+            width: 100%;
+
+            & > div {
+              @include s.flexRow;
+              box-sizing: border-box;
+              padding-right: 5px;
+
+              & > .small {
+                $textSize: (
+                  'base': 10px,
+                  'macBookAir': 18px,
+                );
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormat($textSize, normal, s.$pqBlack2);
+              }
+
+              & > .medium {
+                $textSize: (
+                  'base': 12px,
+                  'macBookAir': 18px,
+                );
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormat($textSize, normal, s.$pqBlack2);
+              }
+
+              & > .normal {
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormat(s.$textSize14to18, normal, s.$pqBlack2);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,47 @@
+@use 'base' as s;
+
+:host {
+  @include s.generic-main-component-structure;
+
+  & > #offer-adjustment-container {
+    & > footer {
+      @include s.generic-main-component-footer;
+      & > div {
+        column-gap: 3px;
+        & > label {
+          @include s.responsive-font-format($font-size-map: s.$responsive-font-12-14);
+        }
+        & > span {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-roboto_bold,
+            $font-weight: s.$font-weight-bold,
+            $font-size-map: s.$responsive-font-12-14
+          );
+        }
+        & > .green-circle {
+          @include s.pqCircle(14px, s.$pqGreen2);
+        }
+        & > .red-circle {
+          @include s.pqCircle(14px, s.$pqRed);
+        }
+        & > img {
+          height: 14px;
+          width: 14px;
+        }
+        @include s.media-query(s.$standard) {
+          column-gap: 6px;
+          & > .green-circle {
+            @include s.pqCircle(16px, s.$pqGreen2);
+          }
+          & > .red-circle {
+            @include s.pqCircle(16px, s.$pqRed);
+          }
+          & > img {
+            height: 16px;
+            width: 16px;
+          }
+        }
+      }
+    }
+  }
+}

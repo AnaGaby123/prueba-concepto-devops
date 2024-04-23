@@ -1,0 +1,133 @@
+<app-pop-up-generic
+  [activeBtn]="true"
+  [activeButtons]="true"
+  [height]="(viewType$ | async) === viewTypes.small ? '650px' : '740px'"
+  [overflow]="'auto'"
+  [rightButtonLabel]="'Aceptar'"
+  [titleHeader]="'quotation.freightDetails' | translate"
+  [width]="(viewType$ | async) === viewTypes.small ? '740px' : '830px'"
+  (evento)="onClose($event)"
+>
+  <div class="content">
+    <div id="freight-details-container">
+      <div class="freight-list-container">
+        <div class="title">
+          <label>{{ 'quotation.details.section.freight.express' | translate | uppercase }}</label>
+        </div>
+        <div class="list-freight-express-container">
+          <ng-container *ngIf="(freightsExpress$ | async)?.length > 0">
+            <div class="item" *ngFor="let freightExpress of freightsExpress$ | async; let i = index">
+              <div class="freight-data">
+                <label
+                  >#{{ i + 1 }} · <span class="freight-name">{{ (freightsExpressSelected$ | async)?.Nombre }}</span>
+                </label>
+              </div>
+              <div class="price">
+                <label
+                  >{{
+                    freightExpress.Precio | currency: (selectedQuotationDetails$ | async)?.ClaveMoneda:'symbol-narrow':'1.2-2'
+                  }}
+                  {{ (selectedQuotationDetails$ | async)?.ClaveMoneda }}</label
+                >
+              </div>
+            </div>
+          </ng-container>
+          <div class="item-without-freight" *ngIf="(freightsExpress$ | async)?.length === 0">
+            <label>N/A</label>
+            <label>N/A</label>
+          </div>
+        </div>
+        <div class="title">
+          <label>{{ 'quotation.details.section.freight.conventional' | translate | uppercase }}</label>
+        </div>
+        <div class="list-freight-container">
+          <ng-container *ngIf="(freights$ | async)?.length > 0">
+            <div class="item" *ngFor="let freight of freights$ | async; let i = index">
+              <div class="freight-data">
+                <label
+                  >#{{ i + 1 }} · <span class="freight-name">{{ freight.Descripcion }}</span>
+                  <span class="tee">
+                    · TEE: {{ freight.TiempoEstimadoEntrega }}
+                    {{ 'quotation.details.section.listQuotes.dayAbility' | translate }}</span
+                  ></label
+                >
+              </div>
+              <div class="price">
+                <label
+                  >{{
+                    freight.PrecioVentaConvertido
+                      | currency: (selectedQuotationDetails$ | async)?.ClaveMoneda:'symbol-narrow':'1.2-2'
+                  }}
+                  {{ (selectedQuotationDetails$ | async)?.ClaveMoneda }}</label
+                >
+              </div>
+            </div>
+          </ng-container>
+          <div class="item-without-freight" *ngIf="(freights$ | async)?.length === 0">
+            <label>N/A</label>
+            <label>N/A</label>
+          </div>
+        </div>
+      </div>
+      <div class="data">
+        <div class="column-left-container">
+          <div class="freight-apportion">
+            <div>
+              <!--DOCS: Se quita hasta que se implemente completo-->
+              <!--(event)="setBrokenDown($event)"-->
+              <app-check-box
+                [check]="brokenDown"
+                [disabled]="true"
+                [label]="'quotation.details.section.freight.apportion' | translate"
+                [labelFontStyle]="brokenDown ? 'labelRobotoRegularProquifa13' : 'labelRobotoRegular13'"
+              >
+              </app-check-box>
+            </div>
+          </div>
+          <div class="legend-freight">
+            <label>( {{ 'quotation.details.section.freight.legendFreight' | translate }})</label>
+          </div>
+        </div>
+        <div class="totals-container">
+          <div class="left">
+            <label class="">{{ 'quotation.details.section.freight.express' | translate }}:</label>
+            <label> {{ 'quotation.details.section.freight.regular' | translate }}:</label>
+            <label class="titleBlack">{{ 'quotation.details.section.freight.subtotal' | translate }}:</label>
+          </div>
+          <div class="right">
+            <label *ngIf="(freightsExpress$ | async)?.length > 0"
+              >{{
+                totalSelectedFreightExpress$
+                  | async
+                  | currency: (selectedQuotationDetails$ | async)?.ClaveMoneda:'symbol-narrow':'1.2-2'
+              }}
+              {{ (selectedQuotationDetails$ | async)?.ClaveMoneda }}
+            </label>
+            <label *ngIf="(freightsExpress$ | async)?.length === 0">N/A</label>
+            <label *ngIf="(freights$ | async)?.length > 0"
+              >{{
+                totalFreightConventional
+                  | async
+                  | currency: (selectedQuotationDetails$ | async)?.ClaveMoneda:'symbol-narrow':'1.2-2'
+              }}
+              {{ (selectedQuotationDetails$ | async)?.ClaveMoneda }}</label
+            >
+            <label *ngIf="(freights$ | async)?.length === 0">N/A</label>
+
+            <label class="total"
+              >{{
+                (totalFreightConventional | async) + (totalSelectedFreightExpress$ | async) || 0
+                  | currency: (selectedQuotationDetails$ | async)?.ClaveMoneda:'symbol-narrow':'1.2-2'
+              }}
+              {{ (selectedQuotationDetails$ | async)?.ClaveMoneda }}</label
+            >
+          </div>
+        </div>
+      </div>
+      <div class="message-container">
+        <label class="title-message">{{ 'quotation.details.section.freight.important' | translate }}</label>
+        <label class="message">{{ 'quotation.details.section.freight.messageImportant' | translate }}</label>
+      </div>
+    </div>
+  </div>
+</app-pop-up-generic>

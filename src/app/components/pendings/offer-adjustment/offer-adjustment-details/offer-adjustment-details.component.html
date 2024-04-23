@@ -1,0 +1,34 @@
+<div id="offer-adjustment-details">
+  <!--    <div class="header">
+    <div class="evi-content">
+      <div class="title">
+        <label>EVI</label>
+      </div>
+      <div class="user">
+        <img src="assets/Images/strategy/user.svg" />
+        <label>{{ (userName$ | async) || 'N/D' }}</label>
+      </div>
+    </div>
+    <div class="progress-content">
+      <label class="title">{{ 'offerAdjustment.details.amountBilledVSAnnualSaleObjective' | translate }}</label>
+      <app-progress-bar
+        [percentage]="percentageBarAmountBilledVSAnnualSaleObjective$ | async"
+        [color]="'#33b2bd'"
+      ></app-progress-bar>
+      <div class="info">
+        <label class="green">{{
+          ('offerAdjustment.details.amountBilled' | translate) + ' ' + (totalFacturado$ | async | currency: 'USD') + ' ' + 'USD'
+        }}</label>
+        <label class="date">{{
+          ('offerAdjustment.details.untilThe' | translate) + ' ' + (currentDate | dateFormatSlash)
+        }}</label>
+      </div>
+    </div>
+  </div>-->
+  <div class="list-clients">
+    <app-list-clients></app-list-clients>
+  </div>
+  <div class="order-items" [ngClass]="{closeOptions: !requestIsOpen, openOptions: requestIsOpen}">
+    <router-outlet></router-outlet>
+  </div>
+</div>

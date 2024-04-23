@@ -1,0 +1,319 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  & > #work-arrival-documents-details {
+    @include s.flexColumn;
+    @include s.absolute100;
+    overflow: hidden;
+
+    & > .contact-container {
+      @include s.flexColumn;
+      border-bottom: 1px solid s.$pqBlack2;
+      flex: 0 0 auto;
+      margin: 0 20px;
+      padding: 15px 0;
+
+      & > .title {
+        @include s.flexColumn;
+        margin-bottom: 12px;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqGreen);
+          @include s.Roboto-Bold;
+        }
+      }
+
+      & > .data {
+        @include s.flexRow;
+
+        & > div {
+          @include s.flexColumn;
+          margin-right: 50px;
+
+          &:last-of-type {
+            margin-right: 0;
+          }
+
+          & > .row {
+            @include s.flexRowNoWrap;
+            align-items: center;
+            height: 18px;
+            margin-bottom: 5px;
+
+            & > .image {
+              @include s.absoluteCenter;
+              @include s.flexColumn;
+              height: 18px;
+              margin-right: 5px;
+              width: 18px;
+
+              & > img {
+                max-height: 100%;
+                max-width: 100%;
+              }
+            }
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+              @include s.Roboto-Regular;
+              white-space: pre-wrap;
+
+              &.bold {
+                @include s.Roboto-Bold;
+              }
+
+              &.green {
+                @include s.escaledFontFormat(s.$textSize14to18, bold, s.$pqGreen2);
+                @include s.Roboto-Bold;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    & > .products-container {
+      @include s.flexRowNoWrap;
+      flex: 1 1 auto;
+      overflow: hidden;
+
+      & > .left-container {
+        @include s.flexColumn;
+        border-right: 1px solid s.$pqGray2;
+        flex: 0 0 475px;
+        padding: 20px;
+
+        & > .title {
+          flex: 0 0 auto;
+          padding-bottom: 10px;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+            @include s.Novecento-Bold;
+          }
+        }
+
+        & > .filters {
+          @include s.flexRow;
+          border-bottom: 1px solid s.$pqBlack2;
+          flex: 0 0 auto;
+          padding-bottom: 20px;
+
+          & > app-search {
+            flex: 0 0 100%;
+          }
+        }
+
+        & > .orders-list-container {
+          @include s.flexColumn;
+          flex: 1 1 auto;
+          overflow: hidden;
+
+          & > .virtual-list {
+            @include s.flexColumn;
+            flex: 1;
+            overflow: auto;
+            width: 100%;
+            height: 100%;
+
+            & > ::ng-deep .scrollable-content > .item {
+              @include s.flexRow;
+              border-bottom: 1px solid s.$pqGray2;
+              cursor: pointer;
+              transition: background-color 0.2s ease;
+
+              & * {
+                cursor: pointer;
+              }
+
+              &:hover {
+                background-color: s.$pqGray2;
+              }
+
+              &.active {
+                & > .indicator {
+                  background-color: s.$pqGreen;
+                }
+              }
+
+              & > .indicator {
+                flex: 0 0 8px;
+              }
+
+              & > .content {
+                @include s.flexColumn;
+                flex: 1;
+                overflow: hidden;
+                justify-content: space-between;
+                align-items: flex-start;
+                padding: 10px 10px 10px 10px;
+                height: 100%;
+
+                & > .title {
+                  @include s.multiLineTextTruncateSinHeight($lineHeight: 1.2em);
+                  margin-bottom: 4px;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize16to21, bold, s.$pqBlack2);
+                    @include s.Roboto-Bold;
+
+                    & > span {
+                      color: s.$pqGreen;
+                      vertical-align: baseline;
+                    }
+                  }
+                }
+
+                & > .subtitle {
+                  @include s.escaledFontFormat(s.$textSize15to19, bold, s.$pqGreen);
+                  @include s.Roboto-Bold;
+                  margin-bottom: 4px;
+                }
+
+                & > .black-info {
+                  @include s.escaledFontFormat(s.$textSize14to17, regular, s.$pqBlack2);
+                  @include s.Roboto-Regular;
+                  margin-bottom: 4px;
+                }
+
+                & > .gray-info {
+                  @include s.escaledFontFormat(s.$textSize14to17, regular, s.$pqTextGris);
+                  @include s.Roboto-Regular;
+                }
+              }
+            }
+          }
+
+          & > .without-results {
+            @include s.flexRow;
+            @include s.absoluteCenter;
+            height: 100%;
+          }
+        }
+
+        & > .totals {
+          @include s.flexRow;
+          flex: 0 0 45px;
+          justify-content: space-between;
+          padding: 5px 14px;
+          border-top: 1px solid s.$pqBlack2;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+            @include s.Roboto-Regular;
+          }
+        }
+      }
+
+      & > .right-container {
+        @include s.flexColumn;
+        flex: 1 1 auto;
+        padding: 20px 20px 0 20px;
+
+        & > .title {
+          @include s.multiLineTextTruncateSinHeight($lineHeight: 1.2em);
+          flex: 0 0 auto;
+          margin-bottom: 15px;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize16to21, bold, s.$pqBlack2);
+            @include s.Roboto-Bold;
+
+            & > span {
+              color: s.$pqGreen;
+              vertical-align: baseline;
+            }
+          }
+        }
+
+        & > .file {
+          flex: 1 1 auto;
+          margin-bottom: 15px;
+        }
+
+        & > .security-sheet {
+          @include s.flexRow;
+          @include s.absoluteCenter;
+          background-color: s.$pqGray2;
+          flex: 0 0 70px;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize15to19, bold, s.$pqBlack2);
+            @include s.Roboto-Bold;
+            margin-right: 6px;
+          }
+
+          & > .input {
+            width: 300px;
+          }
+        }
+
+        & > .button {
+          @include s.flexRow;
+          align-items: center;
+          flex: 0 0 65px;
+          justify-content: flex-end;
+
+          & > button {
+            &.active {
+              @include s.pqButton($baseColor: s.$pqGreen2);
+            }
+
+            &.disabled {
+              @include s.pqButtonDisable;
+            }
+          }
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .contact-container {
+        & > .data {
+          & > div {
+            margin-right: 60px;
+          }
+        }
+      }
+
+      & > .products-container {
+        & > .left-container {
+          flex: 0 0 555px;
+
+          & > .orders-list-container {
+            & > .virtual-list {
+              & > ::ng-deep .scrollable-content > .item {
+                & > .content {
+                  & > .title,
+                  & > .subtitle {
+                    margin-bottom: 5px;
+                  }
+                }
+              }
+            }
+          }
+
+          & > .totals {
+            flex: 0 0 50px;
+          }
+        }
+
+        & > .right-container {
+          & > .security-sheet {
+            flex: 0 0 75px;
+          }
+
+          & > .button {
+            flex: 0 0 70px;
+          }
+        }
+      }
+    }
+  }
+}

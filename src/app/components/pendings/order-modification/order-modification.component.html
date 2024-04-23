@@ -1,0 +1,20 @@
+<div class="component-container" id="order-modification-container">
+  <div class="header">
+    <app-header-bar [activeBack]="isDetails$ | async" [title]="title$ | async" (goBack)="redirect()"></app-header-bar>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="footer" *ngIf="!(isDetails$ | async)">
+    <ng-container>
+      <div>
+        <img src="assets/Images/icono-sin-incidencia.svg" />
+        <label class="label-normal">{{ 'orderModification.orderWithoutIncidents' | translate }}</label>
+      </div>
+      <div>
+        <img src="assets/Images/icono-incidencia.svg" />
+        <label class="label-normal">{{ 'orderModification.orderWithIncidents' | translate }}</label>
+      </div>
+    </ng-container>
+  </div>
+</div>

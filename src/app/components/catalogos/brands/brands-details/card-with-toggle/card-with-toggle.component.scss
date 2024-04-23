@@ -1,0 +1,123 @@
+@use 'base' as s;
+
+:host {
+  @include s.absolute100;
+  @include s.flexColumn;
+  @include s.reset-line-height;
+  overflow: hidden;
+}
+
+#card-with-toggle {
+  @include s.default-transition();
+  @include s.flexColumn;
+  flex: 1 1 245px;
+
+  &.enable {
+    background-color: s.$main-proquifa-f;
+
+    & > .head {
+      background-color: s.$pqGreen;
+    }
+  }
+
+  &.disable {
+    background-color: s.$dark-proquifa-f;
+
+    & > .head {
+      @include s.flexRow;
+      background-color: s.$dark-proquifa-d;
+    }
+  }
+
+  & > .head {
+    @include s.flexRow;
+    justify-content: center;
+    padding: 6px 0;
+
+    & > label {
+      @include s.responsive-font-format(
+        $font-weight: s.$font-weight-bold,
+        $font-size-map: s.$responsive-font-16-16,
+        $color: s.$pqWhite
+      );
+    }
+  }
+
+  & > .body {
+    @include s.flexColumn;
+    align-items: center;
+    flex: 1;
+    padding: 24px 0;
+    row-gap: 24px;
+
+    & > .labels {
+      @include s.flexColumn;
+      align-items: center;
+      flex: 1;
+      row-gap: 4px;
+
+      & > .responsive {
+        @include s.flexRow;
+        flex-wrap: nowrap;
+
+        & > label {
+          @include s.responsive-font-format($font-size-map: s.$responsive-font-16-20);
+          white-space: pre;
+        }
+
+        & > span {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-roboto_bold,
+            $font-weight: s.$font-weight-bold,
+            $font-size-map: s.$responsive-font-16-20
+          );
+        }
+      }
+
+      & > .normal {
+        @include s.responsive-font-format($font-size-map: s.$responsive-font-16-16);
+
+        & > span {
+          font-weight: s.$font-weight_bold;
+        }
+      }
+    }
+
+    & > .toggle {
+      @include s.flexColumn;
+      align-items: center;
+      row-gap: 8px;
+      width: 64px;
+
+      & > label {
+        @include s.responsive-font-format($font-size-map: s.$responsive-font-14-14);
+        text-align: center;
+
+        &.enable {
+          color: s.$pqGreen2;
+        }
+      }
+    }
+  }
+
+  @include s.media-query(s.$standard) {
+    flex: 1 1 148px;
+    & > .head {
+      padding: 8px 0;
+    }
+    & > .body {
+      @include s.flexRow;
+      padding: 16px 24px 24px 24px;
+      justify-content: space-between;
+
+      & > .labels {
+        align-items: flex-start;
+      }
+
+      & > .toggle {
+        row-gap: 8px;
+        width: 74px;
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+<div class="main-container">
+  <div
+    class="delete-container"
+    *ngIf="!columnTrashReverseSetting?.isRemoved && columnTrashReverseSetting.hasOwnProperty('isRemoved')"
+  >
+    <img
+      #imageElement
+      alt="delete"
+      src="assets/Images/eliminar.svg"
+      (click)="handleClick($event, imageElement, true, nameActionsInternalSalesItem?.TrashReverseSettingAction)"
+    />
+  </div>
+  <div
+    #divElement
+    class="reverse-container"
+    *ngIf="columnTrashReverseSetting?.isRemoved"
+    (click)="handleClick($event, divElement, false, nameActionsInternalSalesItem?.TrashReverseSettingAction)"
+  >
+    <div class="img-container">
+      <img alt="reverse" src="assets/Images/pre-processing/revertir-ajuste.svg" />
+    </div>
+    <label>{{ 'descriptionItemQuote.revert' | translate }}</label>
+  </div>
+</div>

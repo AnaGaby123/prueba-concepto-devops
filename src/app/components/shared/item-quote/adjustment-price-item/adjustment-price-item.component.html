@@ -1,0 +1,25 @@
+<div class="unit-price-container">
+  <div class="floating-container">
+    <label
+      #priceInputDispatch
+      *ngIf="columnAdjustmentPrice?.value || columnAdjustmentPrice?.currency"
+      [id]="columnAdjustmentPrice?.idElementsUnitPrice ? columnAdjustmentPrice?.idElementsUnitPrice : 'unit-price'"
+      [ngClass]="
+        columnAdjustmentPrice?.color && columnAdjustmentPrice?.textBold
+          ? columnAdjustmentPrice?.color + '-bold'
+          : columnAdjustmentPrice?.color
+          ? columnAdjustmentPrice?.color
+          : columnAdjustmentPrice?.textBold
+          ? 'bold'
+          : ''
+      "
+      [style.text-decoration]="columnAdjustmentPrice?.textUnderline ? 'underline' : ''"
+      [style.cursor]="columnAdjustmentPrice?.isEdit ? 'pointer' : 'default'"
+      >{{
+        isNumber(columnAdjustmentPrice?.value)
+          ? (columnAdjustmentPrice?.value | currency: 'USD':'symbol-narrow':'1.2-2') + ' ' + columnAdjustmentPrice?.currency
+          : columnAdjustmentPrice?.value
+      }}</label
+    >
+  </div>
+</div>

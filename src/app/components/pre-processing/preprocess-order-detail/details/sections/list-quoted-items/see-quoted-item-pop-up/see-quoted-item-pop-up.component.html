@@ -1,0 +1,169 @@
+<app-pop-up-generic
+  id="tee-pop-up"
+  [titleHeader]="'checkout.seeItem' | translate"
+  [activeButtons]="true"
+  [rightButtonLabel]="'Aceptar'"
+  [activeBtn]="selectValidationBtnPopTEE$ | async"
+  [width]="'930px'"
+  [height]="'810px'"
+  [overflow]="''"
+  (evento)="onClose($event)"
+>
+  <div class="content">
+    <app-see-item-details-pop-top [seeItemDetailsPopTop]="selectInfoDetailsTop$ | async"></app-see-item-details-pop-top>
+    <div class="body">
+      <div class="item-info">
+        <div class="title">
+          <div class="purchase">
+            <label>{{ 'descriptionItemQuote.itemToBeProccessed' | translate }}</label>
+          </div>
+          <div class="addenda-title" *ngIf="selectRequieredAddendum$ | async">
+            <label class="addenda">{{ 'checkout.addenda' | translate }}</label>
+          </div>
+        </div>
+        <div class="content-purchase">
+          <div class="info">
+            <app-see-item-details-pop-bottom
+              [seeItemDetailsPopBottom]="selectDetailsItemPopBottom$ | async"
+            ></app-see-item-details-pop-bottom>
+          </div>
+          <div class="addenda" *ngIf="selectRequieredAddendum$ | async">
+            <app-generic-input
+              [label]="'descriptionItemQuote.orderLine' | translate"
+              [value]="(addendaOrderLine$ | async) || ''"
+              [required]="true"
+              [typeValidation]="inputValidators.Number"
+              (textData)="handleAddendaData('LineaDeOrden', $event)"
+            >
+            </app-generic-input>
+            <app-drop-down-list
+              [label]="'descriptionItemQuote.uniteOfMeasurement' | translate"
+              [items]="unitList$ | async"
+              [isSearchable]="(unitList$ | async)?.length > 5"
+              [itemSelected]="addendaUnitOfMeasurement$ | async"
+              [required]="true"
+              (valueDropList)="handleAddendaData('IdCatUnidad', $event)"
+            >
+            </app-drop-down-list>
+          </div>
+        </div>
+        <label class="dates-trainings" *ngIf="(selectInfoDetails$ | async)?.datesTraining?.length > 0"
+          >{{ 'descriptionItemQuote.datesTraining' | translate }}:
+          <span class="black" *ngFor="let date of (selectInfoDetails$ | async)?.datesTraining; let i = index">
+            {{ date?.Fecha | dateFormatSlashShort }}
+            {{ i !== (selectInfoDetails$ | async)?.datesTraining?.length - 1 ? ',' : '' }}
+          </span>
+        </label>
+        <app-products-supplements
+          *ngIf="(selectInfoDetails$ | async)?.supplement?.length > 0"
+          [vProductsSupplements]="(selectInfoDetails$ | async)?.supplement"
+        ></app-products-supplements>
+      </div>
+      <div class="config-info">
+        <div class="title">
+          <label>{{ 'descriptionItemQuote.processingOrder' | translate }}</label>
+        </div>
+        <div class="config-content">
+          <div class="delivery-restrictions">
+            <label *ngIf="(selectInfoDetails$ | async)?.monthlyRestriction.RestriccionFinDeMes"
+              ><span>{{ 'descriptionItemQuote.deliveryRestrictions' | translate }}: </span
+              ><label
+                >{{ 'common.restrictionNotAcceptEndMonth' | translate }} ({{
+                  (selectInfoDetails$ | async)?.monthlyRestriction.DiasAntesFinDeMes
+                }}
+                {{ 'common.beforeMonth' | translate }})</label
+              ></label
+            >
+            <label class="month" *ngIf="(selectInfoDetails$ | async)?.monthlyRestriction.RestriccionMensual"
+              ><span>{{ 'process.deliveryRestrictions' | translate }}: </span
+              ><label
+                >{{ 'common.endMonthRestriction' | translate }}
+                {{ (selectInfoDetails$ | async)?.monthlyRestriction.APartirDelDia }}
+                {{ 'process.everyMonth' | translate }}</label
+              ></label
+            >
+            <label class="month" *ngIf="(selectInfoDetails$ | async)?.monthlyRestriction.EntregaConRemision"
+              ><span>{{ 'process.deliveryRestrictions' | translate }}: </span
+              ><label>{{ 'common.referralRestriction' | translate }}</label></label
+            >
+            <div
+              class="temporal tooltip"
+              *ngIf="
+                (selectInfoDetails$ | async)?.temporaryRestriction?.length > 0 &&
+                (selectInfoDetails$ | async)?.isActiveTemporaryRestriction
+              "
+            >
+              <label
+                >{{ 'preProcessing.temporaryRestriction' | translate }}:
+                <span
+                  >{{ (selectFirstTemporalRestriction$ | async)?.Titulo }} {{ 'process.from' | translate }}
+                  {{ (selectFirstTemporalRestriction$ | async)?.FechaInicio | dateFormatSlashShort }}
+                  {{ 'process.until' | translate }}
+                  {{ (selectFirstTemporalRestriction$ | async)?.FechaFin | dateFormatSlashShort }}
+                  {{ (selectInfoDetails$ | async)?.temporaryRestriction.length > 1 ? '...' : '' }}</span
+                >
+              </label>
+              <div class="tooltip-text">
+                <p *ngFor="let restr of (selectInfoDetails$ | async)?.temporaryRestriction"
+                  >{{ restr.Titulo }} desde {{ restr.FechaInicio | dateFormatSlashShort }} hasta
+                  {{ restr.FechaFin | dateFormatSlashShort }}</p
+                >
+              </div>
+            </div>
+          </div>
+          <div class="freightData" *ngIf="(selectedItemOrder$ | async)?.AplicaFleteExpress">
+            <div class="aqua">
+              <label>
+                <span>{{ 'quotation.details.section.freight.express' | translate }}: </span>
+                <span class="green">FEE {{ selectFEE$ | async | dateFormatSlash }} </span>
+                <span class="proquifa"> · {{ (selectInfoDetails$ | async)?.freight?.NombreProveedor }} </span>
+                <span class="green">
+                  ·
+                  {{ (selectInfoDetails$ | async)?.freight?.PrecioFlete | currency: 'USD':'symbol-narrow':'1.2-2' }}
+                  {{ (selectInfoDetails$ | async)?.currency }}
+                </span>
+                <span class="black" *ngIf="(selectInfoDetails$ | async)?.freight?.PorcentajeProquifa">
+                  · {{ (selectInfoDetails$ | async)?.freight?.PorcentajeProquifa || 0 }} % PQF</span
+                >
+              </label>
+            </div>
+          </div>
+          <div class="regularData">
+            <div class="date">
+              <div class="check" *ngIf="!(selectedItemOrder$ | async)?.AplicaFleteExpress">
+                <app-check-box
+                  [label]="'descriptionItemQuote.scheduledDelivery' | translate"
+                  [check]="(selectedItemOrder$ | async)?.Programada"
+                  (event)="handleCheckBox($event)"
+                ></app-check-box>
+              </div>
+              <label *ngIf="!(selectedItemOrder$ | async)?.Programada && !(selectedItemOrder$ | async)?.AplicaFleteExpress"
+                >FEE: <span class="green mb">{{ selectFEE$ | async | dateFormatSlash }}</span></label
+              >
+              <div class="picker" *ngIf="(selectedItemOrder$ | async)?.Programada">
+                <app-date-picker
+                  dateFormat="YYYYMMDD"
+                  [color]="false"
+                  [position]="'top'"
+                  [disabledCalendarDays]="selectNonAvailableDays$ | async"
+                  [date]="selectFechaEstimadaEntregaItemSelected$ | async"
+                  [rangeStart]="rangeStart$ | async"
+                  [rangeEnd]="selectFEERangeEnd$ | async"
+                  (fecha)="handleDate($event)"
+                ></app-date-picker>
+              </div>
+            </div>
+            <div class="comments">
+              <app-generic-text-area
+                [height]="'110px'"
+                [value]="(selectedItemOrder$ | async)?.Notas"
+                [title]="'descriptionItemQuote.comments' | translate"
+                (emitData)="handleTextNotesTEE($event)"
+              ></app-generic-text-area>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-pop-up-generic>

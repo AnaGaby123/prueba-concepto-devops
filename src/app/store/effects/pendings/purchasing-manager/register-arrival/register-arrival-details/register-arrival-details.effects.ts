@@ -1,0 +1,689 @@
+/* Core Imports */
+import {Injectable} from '@angular/core';
+import {Store} from '@ngrx/store';
+import {Actions, createEffect, ofType} from '@ngrx/effects';
+import {NGXLogger} from 'ngx-logger';
+import * as servicesLogger from '@appUtil/logger';
+
+/* Router Imports */
+import {Router} from '@angular/router';
+
+/* Action Imports */
+import {registerArrivalDetailsActions} from '@appActions/pendings/purchasing-manager/register-arrival';
+
+/* Rxjs Imports */
+import {catchError, map, mergeMap, switchMap, withLatestFrom} from 'rxjs/operators';
+import {EMPTY, forkJoin, Observable, of} from 'rxjs';
+
+/* Common Imports */
+import {DEFAULT_UUID, MINIO_BUCKETS} from '@appUtil/common.protocols';
+
+/* Utils Imports */
+import {
+  RETURN_EMPTY,
+  SET_LOADING,
+  SET_LOADING_ERROR,
+  SET_LOADING_SUCCESS,
+} from '@appActions/utils/utils.action';
+
+/* Apis Imports */
+import * as apiLogistic from 'api-logistica';
+import {
+  ImpOrdenDespacho,
+  ImpOrdenDespachoArchivo,
+  OcPackingList,
+  QueryResultVRAImpOrdenDespacho,
+} from 'api-logistica';
+import * as apiCatalogs from 'api-catalogos';
+import {
+  ArchivoDetalle,
+  SistemaUsuariosAccessosService,
+  SolicitudAutorizacionCambio,
+} from 'api-catalogos';
+
+/* Models Imports */
+import {
+  IDispatchOder,
+  IProvidersPiecesArrived,
+} from '@appModels/store/pendings/purchasing-manager/register-arrival/register-arrival-details/register-arrival-details.models';
+import {IFile, IUploadFileCustom} from '@appModels/files/files.models';
+
+/* Selectors Imports */
+import {registerArrivalDetailsSelectors} from '@appSelectors/pendings/purchasing-manager/register-arrival';
+
+/* Tools Imports */
+import {concat, forEach, isEmpty, map as _map, orderBy} from 'lodash-es';
+
+/* Services Imports */
+import {MinioService} from '@appServices/minio/minio.service';
+import {appRoutes} from '@appHelpers/core/app-routes';
+import SolicitudAutorizacionCambioExtensionsValidarCodigoAccesoParams = SistemaUsuariosAccessosService.SolicitudAutorizacionCambioExtensionsValidarCodigoAccesoParams;
+
+const FILE_NAME = 'register-arrival-details.effects';
+
+@Injectable()
+export class RegisterArrivalDetailsEffects {
+  constructor(
+    private store: Store,
+    private actions$: Actions,
+    private logger: NGXLogger,
+    private router: Router,
+    private purchaseRegisterArrival: apiLogistic.ProcesosL06OrdenDeCompraRegistrarArriboService,
+    private minioService: MinioService,
+    private usuariosAccesosService: apiCatalogs.SistemaUsuariosAccessosService,
+    private declareArrivalService: apiLogistic.ProcesosL06OrdenDeCompraDeclararArribosService,
+    private importsProcessService: apiLogistic.ProcesosL07ImportacionesService,
+  ) {}
+
+  porterSelected$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(registerArrivalDetailsActions.SET_PORTER_SELECTED),
+      mergeMap((action) => {
+        let dispatchOrders: Array<IDispatchOder> = orderBy(
+          action.porterSelected.vRAImpOrdenDespacho,
+          'MontoTotalUSD',
+          'desc',
+        );
+
+        dispatchOrders = _map(
+          dispatchOrders,
+          (order: IDispatchOder, index): IDispatchOder => ({
+            ...order,
+            Index: index + 1,
+            GuiaDeEmbarque: order.GuiaDeEmbarque ? order.GuiaDeEmbarque : 'NA',
+            Folio: order.Folio ? order.Folio : 'NA',
+            // FIXME: Los tipados son incompatibles
+            // Bultos: order.Bultos ? order.Folio : 0,
+            Bultos: order.Bultos || 0,
+          }),
+        );
+
+        this.store.dispatch(
+          registerArrivalDetailsActions.FETCH_DISPATCH_ORDERS_SUCCESS({
+            dispatchOrders,
+          }),
+        );
+
+        this.store.dispatch(
+          registerArrivalDetailsActions.SET_DISPATCH_ORDER_SELECTED({
+            dispatchOrderSelected: dispatchOrders[0],
+          }),
+        );
+
+        this.router.navigate([
+          appRoutes.protected,
+          appRoutes.pendings.pendings,
+          appRoutes.registerArrival.registerArrival,
+          appRoutes.registerArrival.details,
+        ]);
+
+        return of(RETURN_EMPTY());
+      }),
+    ),
+  );
+
+  fetchDispatchOrders$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(
+        registerArrivalDetailsActions.SET_SEARCH_TERM,
+        registerArrivalDetailsActions.SET_ORDER_SELECTED,
+      ),
+      withLatestFrom(
+        this.store.select(registerArrivalDetailsSelectors.queryInfoDispatchOrders),
+        this.store.select(registerArrivalDetailsSelectors.selectNeedsToReloadDispatchOrders),
+      ),
+      mergeMap(([action, queryInfo, needsToReload]) => {
+        if (needsToReload) {
+          return this.purchaseRegisterArrival.vRAImpOrdenDespachoQueryResult(queryInfo).pipe(
+            map((response: QueryResultVRAImpOrdenDespacho) => {
+              this.logger.debug(
+                servicesLogger.generateMessage(
+                  FILE_NAME,
+                  servicesLogger.LOG_SUCCEEDED,
+                  'Al consultar las ordenes de despacho.',
+                ),
+                response,
+              );
+
+              const dispatchOrders: Array<IDispatchOder> = _map(
+                response.Results,
+                (order, index) => ({
+                  ...order,
+                  Index: index + 1,
+                  GuiaDeEmbarque: order.GuiaDeEmbarque ? order.GuiaDeEmbarque : 'NA',
+                  Folio: order.Folio ? order.Folio : 'NA',
+                  Bultos: order.Bultos || 0,
+                  // FIXME: Los tipados son incompatibles
+                  // Bultos: order.Bultos ? order.Folio : 0,
+                }),
+              );
+
+              this.store.dispatch(
+                registerArrivalDetailsActions.SET_DISPATCH_ORDER_SELECTED({
+                  dispatchOrderSelected: dispatchOrders[0],
+                }),
+              );
+
+              return registerArrivalDetailsActions.FETCH_DISPATCH_ORDERS_SUCCESS({
+                dispatchOrders,
+              });
+            }),
+            catchError((error) => {
+              this.logger.debug(
+                servicesLogger.generateMessage(
+                  FILE_NAME,
+                  servicesLogger.LOG_SUCCEEDED,
+                  'Al consultar las ordenes de despacho.',
+                ),
+                error,
+              );
+
+              this.store.dispatch(registerArrivalDetailsActions.FETCH_DISPATCH_ORDERS_FAILED());
+              return of(RETURN_EMPTY());
+            }),
+          );
+        }
+        return of(RETURN_EMPTY());
+      }),
+    ),
+  );
+
+  readBarcode$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(registerArrivalDetailsActions.READ_BARCODE_LOAD),
+      withLatestFrom(
+        this.store.select(registerArrivalDetailsSelectors.selectDispatchOrderSelected),
+      ),
+      mergeMap(([action, orderDispatch]) => {
+        const folio = orderDispatch.NumeroPedimento;
+        this.store.dispatch(registerArrivalDetailsActions.READ_BARCODE_SUCCESS());
+        this.store.dispatch(
+          SET_LOADING_SUCCESS({
+            active: true,
+            message: `Lectura del código de barras del pedimento`,
+            successText: `${folio} Correcta!`,
+          }),
+        );
+        this.router.navigate([
+          appRoutes.protected,
+          appRoutes.pendings.pendings,
+          appRoutes.registerArrival.registerArrival,
+          appRoutes.registerArrival.details,
+          appRoutes.registerArrival.stepsToFinalize,
+        ]);
+        return of(RETURN_EMPTY());
+      }),
+    ),
+  );
+
+  fetchProvidersWithItems$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(registerArrivalDetailsActions.FETCH_STEP_ARRIVED_PIECES_DATA_LOAD),
+      withLatestFrom(
+        this.store.select(registerArrivalDetailsSelectors.selectNeedsToReloadProvidersWithItems),
+        this.store.select(registerArrivalDetailsSelectors.selectQueryProvidersWithItems),
+        this.store.select(registerArrivalDetailsSelectors.selectProvidersWithItems),
+        this.store.select(registerArrivalDetailsSelectors.selectPackingListObjs),
+      ),
+      mergeMap(([action, needsToReloadProviders, queryInfo, providers, packingListArr]) => {
+        if (needsToReloadProviders) {
+          return this.purchaseRegisterArrival
+            .vRAImpOrdenDespachoProveedorOcPartidaPackingListObj(queryInfo)
+            .pipe(
+              map((response) => {
+                this.logger.debug(
+                  servicesLogger.generateMessage(
+                    FILE_NAME,
+                    servicesLogger.LOG_SUCCEEDED,
+                    'Al obtener los proveedores.',
+                  ),
+                  response,
+                );
+
+                return _map(response, (provider, index) => ({
+                  ...provider,
+                  Index: index + 1,
+                  isOpen: false,
+                  arrived: 0,
+                }));
+              }),
+              catchError((error) => {
+                this.logger.debug(
+                  servicesLogger.generateMessage(
+                    FILE_NAME,
+                    servicesLogger.LOG_SUCCEEDED,
+                    'Al obtener los proveedores.',
+                  ),
+                  error,
+                );
+                this.store.dispatch(
+                  SET_LOADING_ERROR({
+                    active: true,
+                    message: 'Ha ocurrido un error',
+                  }),
+                );
+                this.store.dispatch(
+                  registerArrivalDetailsActions.FETCH_STEP_ARRIVED_PIECES_DATA_FAILED(),
+                );
+                return [];
+              }),
+            );
+        }
+        this.store.dispatch(
+          registerArrivalDetailsActions.FETCH_STEP_ARRIVED_PIECES_DATA_SUCCESS({
+            providersWithItems: providers,
+            packingListObj: packingListArr,
+          }),
+        );
+        return of([]);
+      }),
+      switchMap((providersWithItems) => {
+        if (isEmpty(providersWithItems)) {
+          return EMPTY;
+        }
+        const requestPackingList: Array<Observable<OcPackingList>> = _map(
+          providersWithItems,
+          (provider: IProvidersPiecesArrived) =>
+            this.declareArrivalService.ocPackingListObtener(provider.IdOcPackingList),
+        );
+        return forkJoin(requestPackingList).pipe(
+          map((response) => {
+            this.logger.debug(
+              servicesLogger.generateMessage(
+                FILE_NAME,
+                servicesLogger.LOG_SUCCEEDED,
+                'Al obtener los packing list.',
+              ),
+              response,
+            );
+            return registerArrivalDetailsActions.FETCH_STEP_ARRIVED_PIECES_DATA_SUCCESS({
+              providersWithItems,
+              packingListObj: response,
+            });
+          }),
+          catchError((error) => {
+            this.logger.debug(
+              servicesLogger.generateMessage(
+                FILE_NAME,
+                servicesLogger.LOG_SUCCEEDED,
+                'Al obtener los packing list.',
+              ),
+              error,
+            );
+            this.store.dispatch(
+              SET_LOADING_ERROR({
+                active: true,
+                message: 'Ha ocurrido un error',
+              }),
+            );
+            return of(RETURN_EMPTY());
+          }),
+        );
+      }),
+    ),
+  );
+
+  validVerificationCodes$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(registerArrivalDetailsActions.FETCH_IS_EXIST_VERIFICATION_CODES_LOAD),
+      withLatestFrom(this.store.select(registerArrivalDetailsSelectors.selectObjCodes)),
+      mergeMap(([action, objRequest]) => {
+        const {IdImpOrdenDespacho} = objRequest;
+        return this.importsProcessService.impOrdenDespachoObtener(IdImpOrdenDespacho).pipe(
+          map((response: ImpOrdenDespacho) => {
+            this.logger.debug(
+              servicesLogger.generateMessage(
+                FILE_NAME,
+                servicesLogger.LOG_SUCCEEDED,
+                'Al consultar la orden para validar código existente.',
+              ),
+              response,
+            );
+            const {IdSolicitudAutorizacionCambioSeguridad} = response;
+            const {IdSolicitudAutorizacionCambioComprador} = response;
+            if (IdSolicitudAutorizacionCambioSeguridad && IdSolicitudAutorizacionCambioComprador) {
+              return registerArrivalDetailsActions.FETCH_VERIFICATION_CODES_SUCCESS({
+                authorizationRequestChangeBuyer: IdSolicitudAutorizacionCambioSeguridad,
+                authorizationRequestChangeSecurity: IdSolicitudAutorizacionCambioComprador,
+              });
+            } else {
+              return registerArrivalDetailsActions.FETCH_VERIFICATION_CODES_LOAD();
+            }
+          }),
+          catchError((error) => {
+            this.logger.debug(
+              servicesLogger.generateMessage(
+                FILE_NAME,
+                servicesLogger.LOG_FAILED,
+                'Al consultar la orden para validar código existente.',
+              ),
+              error,
+            );
+            this.store.dispatch(
+              SET_LOADING_ERROR({
+                active: true,
+                message: 'Ha ocurrido un error',
+              }),
+            );
+            this.store.dispatch(
+              registerArrivalDetailsActions.SET_STEP_SELECTED({
+                stepSelected: 1,
+              }),
+            );
+            return of(RETURN_EMPTY());
+          }),
+        );
+      }),
+    ),
+  );
+
+  fetchCodes$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(registerArrivalDetailsActions.FETCH_VERIFICATION_CODES_LOAD),
+      withLatestFrom(this.store.select(registerArrivalDetailsSelectors.selectObjCodes)),
+      mergeMap(([action, objRequest]) => {
+        return this.usuariosAccesosService
+          .SolicitudAutorizacionCambioExtensionsGenerarSolicitudAutorizacionImpOrdenDespacho(
+            objRequest,
+          )
+          .pipe(
+            map((response: SolicitudAutorizacionCambio) => {
+              this.logger.debug(
+                servicesLogger.generateMessage(
+                  FILE_NAME,
+                  servicesLogger.LOG_SUCCEEDED,
+                  'Al activar los códigos.',
+                ),
+                response,
+              );
+              return objRequest;
+            }),
+            catchError((error) => {
+              this.logger.debug(
+                servicesLogger.generateMessage(
+                  FILE_NAME,
+                  servicesLogger.LOG_FAILED,
+                  'Al activar los códigos.',
+                ),
+                error,
+              );
+              this.store.dispatch(
+                SET_LOADING_ERROR({
+                  active: true,
+                  message: 'Ha ocurrido un error',
+                }),
+              );
+              this.store.dispatch(
+                registerArrivalDetailsActions.SET_STEP_SELECTED({
+                  stepSelected: 1,
+                }),
+              );
+              return of(RETURN_EMPTY());
+            }),
+          );
+      }),
+      switchMap((objRequest) => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const {IdImpOrdenDespacho} = objRequest;
+        return this.importsProcessService.impOrdenDespachoObtener(IdImpOrdenDespacho).pipe(
+          map((response: ImpOrdenDespacho) => {
+            this.logger.debug(
+              servicesLogger.generateMessage(
+                FILE_NAME,
+                servicesLogger.LOG_SUCCEEDED,
+                'Al consultar los códigos activados.',
+              ),
+              response,
+            );
+            const {IdSolicitudAutorizacionCambioSeguridad} = response;
+            const {IdSolicitudAutorizacionCambioComprador} = response;
+
+            return registerArrivalDetailsActions.FETCH_VERIFICATION_CODES_SUCCESS({
+              authorizationRequestChangeBuyer: IdSolicitudAutorizacionCambioSeguridad,
+              authorizationRequestChangeSecurity: IdSolicitudAutorizacionCambioComprador,
+            });
+          }),
+          catchError((error) => {
+            this.logger.debug(
+              servicesLogger.generateMessage(
+                FILE_NAME,
+                servicesLogger.LOG_FAILED,
+                'Al consultar los códigos activados.',
+              ),
+              error,
+            );
+            this.store.dispatch(
+              SET_LOADING_ERROR({
+                active: true,
+                message: 'Ha ocurrido un error',
+              }),
+            );
+            this.store.dispatch(
+              registerArrivalDetailsActions.SET_STEP_SELECTED({
+                stepSelected: 1,
+              }),
+            );
+            return of(RETURN_EMPTY());
+          }),
+        );
+      }),
+    ),
+  );
+
+  compareVerificationCode$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(registerArrivalDetailsActions.COMPARE_VERIFICATION_CODE_LOAD),
+      withLatestFrom(
+        this.store.select(registerArrivalDetailsSelectors.selectCodeSecurityGuard),
+        this.store.select(registerArrivalDetailsSelectors.selectCodeBuyer),
+        this.store.select(registerArrivalDetailsSelectors.selectAuthorizationRequestChangeSecurity),
+        this.store.select(registerArrivalDetailsSelectors.selectAuthorizationRequestChangeBuyer),
+      ),
+      mergeMap(([action, codeSecurityGuard, codeBuyer, authRequestSecurity, authRequestBuyer]) => {
+        let params: SolicitudAutorizacionCambioExtensionsValidarCodigoAccesoParams;
+        const {name} = action;
+        if (name === 'securityGuard') {
+          params = {
+            idSolicitudAutorizacionCambio: authRequestSecurity,
+            codigoAcceso: `${codeSecurityGuard[0]}${codeSecurityGuard[1]}${codeSecurityGuard[2]}${codeSecurityGuard[3]}`,
+          };
+        } else if (name === 'buyer') {
+          params = {
+            idSolicitudAutorizacionCambio: authRequestBuyer,
+            codigoAcceso: `${codeBuyer[0]}${codeBuyer[1]}${codeBuyer[2]}${codeBuyer[3]}`,
+          };
+        }
+        return this.usuariosAccesosService
+          .SolicitudAutorizacionCambioExtensionsValidarCodigoAcceso(params)
+          .pipe(
+            map((response: boolean) => {
+              this.logger.debug(
+                servicesLogger.generateMessage(
+                  FILE_NAME,
+                  servicesLogger.LOG_SUCCEEDED,
+                  'Exito al validar el código de autorización.',
+                ),
+                response,
+              );
+              if (response) {
+                return registerArrivalDetailsActions.SET_AUTHORIZED_CODE_IS_VALID({
+                  name,
+                });
+              } else {
+                this.store.dispatch(
+                  registerArrivalDetailsActions.SET_SHAKED({
+                    value: true,
+                    name,
+                  }),
+                );
+                setTimeout(() => {
+                  this.store.dispatch(
+                    registerArrivalDetailsActions.SET_SHAKED({
+                      value: false,
+                      name,
+                    }),
+                  );
+                  this.store.dispatch(registerArrivalDetailsActions.RESTORE_CODE_VALUE({name}));
+                }, 1500);
+
+                return registerArrivalDetailsActions.COMPARE_VERIFICATION_CODE_FAILED();
+              }
+            }),
+            catchError((error) => {
+              this.logger.debug(
+                servicesLogger.generateMessage(
+                  FILE_NAME,
+                  servicesLogger.LOG_FAILED,
+                  'Error al validar el código de autorización.',
+                ),
+                error,
+              );
+              return of(registerArrivalDetailsActions.COMPARE_VERIFICATION_CODE_FAILED());
+            }),
+          );
+      }),
+    ),
+  );
+
+  registerArrived$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(registerArrivalDetailsActions.REGISTER_ARRIVAL_LOAD),
+      withLatestFrom(
+        this.store.select(registerArrivalDetailsSelectors.selectImagesLoaded),
+        this.store.select(registerArrivalDetailsSelectors.selectDispatchOrderSelected),
+        this.store.select(registerArrivalDetailsSelectors.selectPackingListObjs),
+      ),
+      mergeMap(async ([action, files, dispatchOrder, arrPackingList]) => {
+        this.store.dispatch(SET_LOADING({payload: true}));
+        let uploadFiles: Array<IUploadFileCustom> = [];
+        const date = new Date();
+        forEach(files, (file: IFile, index) => {
+          const fileName = `${date.getFullYear()}/${
+            dispatchOrder.IdImpOrdenDespacho
+          }/${date.getTime()}${index}/${file.file.name}`;
+          uploadFiles = [
+            ...uploadFiles,
+            {
+              file: file.file,
+              name: fileName,
+              destinyBucketName: MINIO_BUCKETS.Imports,
+            },
+          ];
+        });
+
+        const filesUploaded = await this.minioService.uploadFiles(uploadFiles).catch((error) => {
+          this.logger.debug(
+            servicesLogger.generateMessage(
+              FILE_NAME,
+              servicesLogger.LOG_FAILED,
+              'Al cargar las imágenes.',
+            ),
+            error,
+          );
+          this.store.dispatch(SET_LOADING({payload: false}));
+          this.store.dispatch(
+            SET_LOADING_ERROR({
+              active: true,
+              message: 'Ha ocurrido un error',
+            }),
+          );
+          return [];
+        });
+
+        return {
+          filesUploaded,
+          dispatchOrder,
+          arrPackingList,
+        };
+      }),
+      switchMap((data) => {
+        if (isEmpty(data.filesUploaded)) {
+          return EMPTY;
+        }
+        const {IdImpOrdenDespacho} = data.dispatchOrder;
+        const requestSaveFiles: Array<Observable<any>> = _map(
+          data.filesUploaded,
+          (fileUploaded: ArchivoDetalle) => {
+            const requestDispatchOrderFile: ImpOrdenDespachoArchivo = {
+              IdImpOrdenDespachoArchivo: DEFAULT_UUID,
+              IdImpOrdenDespacho,
+              IdArchivo: fileUploaded.IdArchivo,
+              Activo: true,
+            };
+            return this.purchaseRegisterArrival.impOrdenDespachoArchivoGuardarOActualizar(
+              requestDispatchOrderFile,
+            );
+          },
+        );
+        const requestSavePiecesArrived: Array<Observable<any>> = _map(
+          data.arrPackingList,
+          (packingList: OcPackingList) =>
+            this.declareArrivalService.ocPackingListGuardarOActualizar(packingList),
+        );
+
+        const arrRequestSave: Array<Observable<any>> = concat(
+          requestSaveFiles,
+          requestSavePiecesArrived,
+        );
+        return forkJoin(arrRequestSave).pipe(
+          map((response: Array<Observable<string> | Observable<OcPackingList>>) => {
+            this.logger.debug(
+              servicesLogger.generateMessage(
+                FILE_NAME,
+                servicesLogger.LOG_SUCCEEDED,
+                'Al guardar las imágenes y las piezas arribadas',
+              ),
+              response,
+            );
+            this.store.dispatch(SET_LOADING({payload: false}));
+            return registerArrivalDetailsActions.REGISTER_ARRIVAL_SUCCESS();
+          }),
+          catchError((error) => {
+            this.logger.debug(
+              servicesLogger.generateMessage(
+                FILE_NAME,
+                servicesLogger.LOG_FAILED,
+                'Al guardar las imágenes y las piezas arribadas',
+              ),
+              error,
+            );
+            this.store.dispatch(SET_LOADING({payload: false}));
+            this.store.dispatch(
+              SET_LOADING_ERROR({
+                active: true,
+                message: 'Ha ocurrido un error',
+              }),
+            );
+            return of(RETURN_EMPTY());
+          }),
+        );
+      }),
+    ),
+  );
+
+  arrivedSaved$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(registerArrivalDetailsActions.REGISTER_ARRIVAL_SUCCESS),
+      mergeMap((action) => {
+        this.store.dispatch(registerArrivalDetailsActions.RESET_DETAILS_VIEWS());
+        this.store.dispatch(SET_LOADING({payload: false}));
+        this.store.dispatch(
+          SET_LOADING_SUCCESS({
+            active: true,
+            message: 'Has Registrado Arribo',
+            successText: `Exitosamente!`,
+          }),
+        );
+        this.router.navigate([
+          appRoutes.protected,
+          appRoutes.pendings.pendings,
+          appRoutes.registerArrival.registerArrival,
+          appRoutes.registerArrival.list,
+        ]);
+
+        return of(RETURN_EMPTY());
+      }),
+    ),
+  );
+}

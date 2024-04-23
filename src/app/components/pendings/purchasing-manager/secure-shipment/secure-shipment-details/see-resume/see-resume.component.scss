@@ -1,0 +1,983 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  .see-resume-container {
+    @include s.absolute100;
+    @include s.flexColumn;
+    padding: 15px;
+
+    & > .header-container {
+      @include s.flexRowNoWrap;
+      align-items: center;
+      border-bottom: 1px solid s.$pqBlack2;
+      justify-content: space-between;
+      padding-bottom: 10px;
+
+      & > .order-number {
+        & > label {
+          @include s.Novecento-Bold;
+          @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+
+          & > span {
+            color: s.$pqGreen;
+            vertical-align: baseline;
+          }
+        }
+      }
+
+      & > .btn-container {
+        $max-width-map: (
+          'base': 200px,
+          'macBookAir': 300px,
+        );
+
+        & > .btn {
+          @include s.pqfButton($background-color: s.$pqGreen2, $max-width-map: $max-width-map);
+        }
+
+        & .btn-disable {
+          @include s.pqfDisableButton($max-width-map: $max-width-map);
+        }
+      }
+    }
+
+    & > .contact-line-information {
+      @include s.flexRowNoWrap;
+      gap: 15px;
+      padding: 15px 0;
+
+      & > .provider-contact {
+        flex: 1;
+      }
+
+      & > .progress {
+        @include s.flexColumn;
+        flex: 1;
+        justify-content: center;
+
+        & > .progress-title {
+          @include s.flexRow;
+
+          & > label {
+            @include s.Novecento-Bold;
+            @include s.escaledFontFormat(s.$textSize19to24, bold, s.$pqBlack2);
+          }
+        }
+
+        & > .bar {
+          margin: 10px 0;
+        }
+
+        & > .progress-footer,
+        & > .date {
+          @include s.flexRow;
+          justify-content: space-between;
+
+          & > div {
+            @include s.flexRow;
+
+            & > label {
+              @include s.Novecento-Bold;
+            }
+          }
+        }
+
+        & > .progress-footer {
+          & > div {
+            & > label {
+              @include s.escaledFontFormat(s.$textSize16to19, bold, s.$pqBlack2);
+            }
+          }
+
+          & > .left {
+            & > label {
+              color: s.$pqGreen;
+            }
+          }
+        }
+
+        & > .date {
+          padding-top: 2px;
+
+          & > div {
+            & > label {
+              @include s.escaledFontFormat(s.$textSize9to11, bold, s.$pqBlack2);
+            }
+          }
+        }
+      }
+    }
+
+    & > .general-data-shipment {
+      background-color: rgb(s.$pqGreen, 0.05);
+      display: grid;
+      grid-column-gap: 15px;
+      grid-template-columns: max-content repeat(4, minmax(150px, 300px));
+      padding: 15px 10px;
+
+      & > label {
+        @include s.Novecento-Bold;
+        @include s.escaledFontFormat(s.$textSize18to21, bold, s.$pqGreen);
+        line-height: initial;
+        min-width: max-content;
+      }
+
+      & > div {
+        @include s.flexRowNoWrap;
+        align-items: center;
+
+        & > label {
+          @include s.Novecento-Bold;
+          @include s.escaledFontFormat(s.$textSize13to15, bold, s.$pqBlack2);
+          min-width: max-content;
+          padding-right: 4px;
+        }
+      }
+    }
+
+    & > .item-embarked-container {
+      @include s.flexRowNoWrap;
+      flex: 1;
+      gap: 15px;
+      margin-top: 15px;
+
+      & > div {
+        @include s.flexColumn;
+        flex: 1;
+      }
+
+      & > .embarked-container {
+        @include s.flexColumn;
+        overflow: hidden;
+
+        & > div {
+          overflow-x: auto;
+          overflow-y: hidden;
+        }
+
+        & > .container-table {
+          @include s.flexColumn;
+          border: 1px solid s.$pqBlack2;
+          flex: 1 1 auto;
+
+          & > .table-config {
+            @include s.flexColumn;
+            flex: 1 1 100%;
+            min-width: 940px;
+            overflow: hidden;
+
+            & > .header {
+              border-bottom: 1px solid s.$pqBlack2;
+              display: grid;
+              grid-column-gap: 15px;
+              grid-template-columns: 50px 1fr 120px 100px repeat(2, 70px);
+              grid-template-rows: 50px;
+              justify-items: flex-start;
+              place-items: center;
+
+              & > div {
+                & > label {
+                  @include s.escaledFontFormat(s.$textSize13to15, bold, s.$pqBlack2);
+                  @include s.Novecento-Bold;
+                }
+              }
+
+              & > .position {
+                place-self: center;
+              }
+
+              & > .description,
+              & > .origin,
+              & > .lot {
+                justify-self: flex-start;
+              }
+
+              & > .add,
+              & > .cross {
+                display: flex;
+                align-items: center;
+
+                & > img {
+                  @include s.imageIconResponsiveSize;
+                }
+              }
+            }
+
+            & > .body {
+              @include s.flexColumn;
+              flex: 1 1 auto;
+              overflow: auto;
+
+              & > virtual-scroller {
+                @include s.absolute100;
+                @include s.fixVirtualScroller;
+
+                &::ng-deep > .scrollable-content {
+                  & > .item-container {
+                    @include s.flexColumn;
+
+                    & > .item {
+                      border-bottom: 1px solid s.$pqGray2;
+                      display: grid;
+                      grid-column-gap: 15px;
+                      grid-template-columns: 50px 1fr 120px 100px repeat(2, 70px);
+                      padding: 10px 0;
+                      place-items: center;
+
+                      &:hover {
+                        @include s.default-transition();
+                        background-color: s.$pqGray2;
+                        cursor: pointer;
+                      }
+
+                      & > .position {
+                        @include s.Roboto-Bold;
+                        @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+                        align-self: flex-start;
+                      }
+
+                      & > .description-container {
+                        @include s.flexColumn;
+                        flex: 1 1 auto;
+                        gap: 4px;
+                        justify-content: flex-start;
+
+                        & > .description {
+                          & > label {
+                            @include s.Roboto-Regular;
+                            @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                            @include s.multiLineTextTruncateSinHeight($lineHeight: 'initial');
+                          }
+                        }
+
+                        & > .cost {
+                          @include s.flexRowWrap;
+                          align-items: center;
+                          gap: 4px;
+
+                          & > img {
+                            @include s.imageLabel;
+                          }
+
+                          & > label {
+                            @include s.Roboto-Regular;
+                            @include s.escaledFontFormat(s.$textSize13to15, regular, s.$pqBlack2);
+
+                            & > span {
+                              color: s.$pqGreen;
+                              vertical-align: baseline;
+                            }
+                          }
+                        }
+
+                        & > .client {
+                          @include s.flexRowWrap;
+                          align-items: center;
+
+                          & > label {
+                            @include s.Roboto-Bold;
+                            @include s.escaledFontFormat(s.$textSize13to15, bold, s.$pqBlack2);
+
+                            & > span {
+                              @include s.Roboto-Regular;
+                              vertical-align: baseline;
+                            }
+
+                            & > .green-pq {
+                              color: s.$pqGreen !important;
+                            }
+
+                            & > .red {
+                              color: s.$pqRed !important;
+                            }
+
+                            & > .orange {
+                              color: s.$orange !important;
+                            }
+
+                            & > .green {
+                              color: s.$pqGreen2 !important;
+                            }
+                          }
+                        }
+
+                        & > .documents {
+                          background-color: rgba(s.$pqGreen, 0.05);
+                          display: grid;
+                          grid-column-gap: 10px;
+                          grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+                          padding: 0 15px;
+                        }
+                      }
+
+                      & > .origin,
+                      & > .lot {
+                        @include s.flexRow;
+                        align-items: center;
+                        gap: 4px;
+                        justify-self: flex-start;
+
+                        & > .lot-indicator-green {
+                          @include s.pqCircle(11px, s.$pqGreen2);
+                        }
+
+                        & > .lot-indicator-yellow {
+                          @include s.pqCircle(11px, s.$orange2);
+                        }
+
+                        & > .quantity {
+                          flex: 1;
+                        }
+                      }
+
+                      & > .add,
+                      & > .cross {
+                        display: flex;
+                        align-items: center;
+
+                        & > img {
+                          @include s.imageIconResponsiveSize;
+                        }
+                      }
+
+                      & > .bill-associeted {
+                        @include s.absoluteCenter;
+                        display: flex;
+                        grid-column-end: span 2;
+                        max-width: 140px;
+
+                        & > label {
+                          @include s.escaledFontFormat(s.$textSize14to16, bold, s.$pqGreen);
+                          @include s.Roboto-Bold;
+                          text-align: center;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+
+              & > .is-loading {
+                @include s.absoluteCenter;
+                @include s.flexColumn;
+                height: 100%;
+              }
+
+              & > .without-results {
+                @include s.absoluteCenter;
+                @include s.flexColumn;
+                height: 100%;
+              }
+            }
+
+            & > .footer {
+              @include s.flexRowNoWrap;
+              border-top: 1px solid s.$pqBlack2;
+              flex: 0 0 30px;
+              justify-content: space-between;
+              padding: 0 15px;
+
+              & > div {
+                @include s.absoluteCenter;
+                @include s.flexRowNoWrap;
+
+                & > label {
+                  @include s.Novecento-Bold;
+                  @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+
+                  &.ocean {
+                    color: s.$pqGreen;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      & > .associated-invoice-container {
+        @include s.flexColumn;
+        flex: 1;
+        overflow: hidden;
+
+        & > div {
+          @include s.flexColumn;
+          flex: 1;
+          overflow-x: auto;
+          overflow-y: hidden;
+
+          & > .container-table {
+            @include s.flexColumn;
+            border: 1px solid s.$pqBlack2;
+            flex: 1 1 auto;
+            min-width: 940px;
+
+            & > .table-config {
+              @include s.flexColumn;
+              flex: 1 1 100%;
+              overflow: hidden;
+
+              & > .header {
+                border-bottom: 1px solid s.$pqBlack2;
+                display: grid;
+                grid-column-gap: 15px;
+                grid-template-columns: 50px 1fr 130px repeat(2, 100px);
+                grid-template-rows: 50px;
+                justify-items: flex-start;
+                place-items: center;
+
+                & > div {
+                  & > label {
+                    @include s.Novecento-Bold;
+                    @include s.escaledFontFormat(s.$textSize13to15, bold, s.$pqBlack2);
+                  }
+                }
+
+                & > .position {
+                  place-self: center;
+                }
+
+                & > .description,
+                & > .origin,
+                & > .lot {
+                  justify-self: flex-start;
+                }
+
+                & > .cross {
+                  display: flex;
+                  align-items: center;
+
+                  & > img {
+                    @include s.imageIconResponsiveSize;
+                  }
+                }
+              }
+
+              & > .body {
+                @include s.flexColumn;
+                flex: 1 1 100%;
+                overflow: auto;
+
+                & > virtual-scroller {
+                  @include s.absolute100;
+                  @include s.fixVirtualScroller;
+
+                  &::ng-deep > .scrollable-content {
+                    & > .item-container {
+                      @include s.flexColumn;
+
+                      & > .item {
+                        border-bottom: 1px solid s.$pqGray2;
+                        display: grid;
+                        grid-column-gap: 15px;
+                        grid-template-columns: 50px 1fr 130px repeat(2, 100px);
+                        padding: 10px 0;
+                        place-items: center;
+
+                        &:hover {
+                          @include s.default-transition();
+                          background-color: s.$pqGray2;
+                          cursor: pointer;
+                        }
+
+                        & > .position {
+                          @include s.Roboto-Bold;
+                          @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+                          align-self: flex-start;
+                        }
+
+                        & > .description-container {
+                          @include s.flexColumn;
+                          flex: 1 1 auto;
+                          gap: 4px;
+                          justify-content: flex-start;
+
+                          & > .description {
+                            & > label {
+                              @include s.Roboto-Regular;
+                              @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                              @include s.multiLineTextTruncateSinHeight($lineHeight: 'initial');
+                            }
+                          }
+
+                          & > .cost {
+                            @include s.flexRowWrap;
+                            align-items: center;
+                            gap: 4px;
+
+                            & > img {
+                              @include s.imageLabel;
+                            }
+
+                            & > label {
+                              @include s.Roboto-Regular;
+                              @include s.escaledFontFormat(s.$textSize13to15, regular, s.$pqBlack2);
+
+                              & > span {
+                                color: s.$pqGreen;
+                                vertical-align: baseline;
+                              }
+                            }
+                          }
+
+                          & > .client {
+                            @include s.flexRowWrap;
+                            align-items: center;
+
+                            & > label {
+                              @include s.escaledFontFormat(s.$textSize13to15, bold, s.$pqBlack2);
+                              @include s.Roboto-Bold;
+
+                              & > span {
+                                @include s.Roboto-Regular;
+                                vertical-align: baseline;
+                              }
+
+                              & > .green-pq {
+                                color: s.$pqGreen !important;
+                              }
+
+                              & > .red {
+                                color: s.$pqRed !important;
+                              }
+
+                              & > .orange {
+                                color: s.$orange !important;
+                              }
+
+                              & > .green {
+                                color: s.$pqGreen2 !important;
+                              }
+                            }
+                          }
+
+                          & > .documents {
+                            background-color: rgba(s.$pqGreen, 0.05);
+                            display: grid;
+                            grid-column-gap: 10px;
+                            grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+                            padding: 0 15px;
+                          }
+                        }
+
+                        & > .origin,
+                        & > .lot {
+                          @include s.flexRow;
+                          align-items: center;
+                          gap: 4px;
+                          justify-self: flex-start;
+
+                          & > .lot-indicator-green {
+                            @include s.pqCircle(11px, s.$pqGreen2);
+                          }
+
+                          & > .lot-indicator-yellow {
+                            @include s.pqCircle(11px, s.$orange2);
+                          }
+
+                          & > .quantity {
+                            flex: 1;
+                          }
+                        }
+
+                        & > .cross {
+                          display: flex;
+                          align-items: center;
+
+                          & > img {
+                            @include s.imageIconResponsiveSize;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+
+                & > .is-loading {
+                  @include s.absoluteCenter;
+                  @include s.flexColumn;
+                  height: 100%;
+                }
+
+                & > .without-results {
+                  @include s.absoluteCenter;
+                  @include s.flexColumn;
+                  height: 100%;
+                }
+              }
+
+              & > .footer {
+                @include s.flexRowNoWrap;
+                border-top: 1px solid s.$pqBlack2;
+                flex: 0 0 30px;
+                justify-content: space-between;
+                padding: 0 15px;
+
+                & > div {
+                  @include s.absoluteCenter;
+                  @include s.flexRowNoWrap;
+
+                  & > label {
+                    @include s.Novecento-Bold;
+                    @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+
+                    &.ocean {
+                      color: s.$pqGreen;
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          & > .provider-bill-container {
+            @include s.flexRow;
+            background-color: s.$pqGray2;
+            gap: 70px;
+            min-width: 940px;
+            padding: 20px 15px;
+
+            & > div {
+              & > .title {
+                @include s.Novecento-Bold;
+                @include s.escaledFontFormat(s.$textSize18to21, bold, s.$pqGreen);
+              }
+            }
+
+            & > .provider-bill {
+              @include s.flexColumn;
+              flex: 1;
+              min-width: 500px;
+
+              & > .title {
+                margin-bottom: 10px;
+              }
+
+              & > .bill-data-container {
+                @include s.flexColumn;
+                flex: 1;
+                justify-content: space-between;
+
+                & > .bill-data {
+                  display: grid;
+                  grid-column-gap: 15px;
+                  grid-row-gap: 15px;
+                  grid-template-columns: repeat(3, 1fr);
+                }
+
+                & > .bill-documents {
+                  @include s.flexRowNoWrap;
+                  align-items: flex-end;
+                  gap: 15px;
+                  justify-content: space-between;
+
+                  & > div {
+                    @include s.flexRowNoWrap;
+                    align-items: center;
+                    flex: 1;
+                    gap: 4px;
+
+                    & > label {
+                      @include s.Roboto-Bold;
+                      @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+                      min-width: max-content;
+                    }
+                  }
+                }
+              }
+            }
+
+            & > .importation-amount {
+              @include s.flexColumn;
+              flex: 0 0 250px;
+
+              & > .title {
+                color: s.$pqBlack2;
+                margin-bottom: 15px;
+              }
+
+              & > .amount-resume-container {
+                @include s.flexColumn;
+                flex: 1;
+                gap: 15px;
+
+                & > .amount-resume {
+                  @include s.flexRowNoWrap;
+                  flex: 1;
+                  gap: 15px;
+
+                  & > .left {
+                    @include s.flexColumn;
+                    align-items: flex-start;
+                    gap: 4px;
+
+                    & > .normal-text {
+                      @include s.Roboto-Regular;
+                      @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                      min-width: max-content;
+                    }
+
+                    & > .bold-text {
+                      @include s.Roboto-Bold;
+                      @include s.escaledFontFormat(s.$textSize16to18, bold, s.$pqBlack2);
+                      min-width: max-content;
+                    }
+                  }
+
+                  & > .right {
+                    @include s.flexColumn;
+                    align-items: flex-end;
+                    gap: 4px;
+
+                    & > .bold-text-green {
+                      @include s.Roboto-Bold;
+                      @include s.escaledFontFormat(s.$textSize16to18, bold, s.$pqGreen2);
+                      min-width: max-content;
+                    }
+
+                    & > .normal-text-green {
+                      @include s.Roboto-Regular;
+                      @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen);
+                      min-width: max-content;
+                    }
+                  }
+                }
+
+                & > .btn-container {
+                  $max-width-map: (
+                    'base': 400px,
+                    'macBookAir': 400px,
+                  );
+
+                  & > .btn {
+                    @include s.pqfButton($max-width-map: $max-width-map, $width: 100%); //
+                  }
+
+                  & .btn-disable {
+                    @include s.pqfDisableButton($max-width-map: $max-width-map, $width: 100%);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    .see-resume-container {
+      padding: 20px;
+
+      & > .header-container {
+        padding-bottom: 15px;
+      }
+
+      & > .contact-line-information {
+        gap: 20px;
+        padding: 20px 0;
+
+        & > .progress {
+          & > .bar {
+            margin: 15px 0;
+          }
+
+          & > .date {
+            padding-top: 5px;
+          }
+        }
+      }
+
+      & > .general-data-shipment {
+        grid-template-columns: max-content repeat(4, minmax(170px, 350px));
+        padding: 20px 15px;
+
+        & > div {
+          & > label {
+            padding-right: 6px;
+          }
+        }
+      }
+
+      & > .item-embarked-container {
+        gap: 20px;
+        margin-top: 20px;
+
+        & > .embarked-container {
+          & > .container-table {
+            & > .table-config {
+              min-width: 1060px;
+
+              & > .header {
+                grid-column-gap: 20px;
+                grid-template-columns: 50px 1fr 127px 90px repeat(2, 75px);
+                grid-template-rows: 60px;
+              }
+
+              & > .body {
+                & > virtual-scroller {
+                  &::ng-deep > .scrollable-content {
+                    & > .item-container {
+                      & > .item {
+                        grid-column-gap: 20px;
+                        grid-template-columns: 50px 1fr 127px 90px repeat(2, 75px);
+                        padding: 15px 0;
+
+                        & > .description-container {
+                          gap: 6px;
+
+                          & > .cost {
+                            gap: 6px;
+                          }
+
+                          & > .documents {
+                            grid-column-gap: 15px;
+                            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+                            padding: 0 20px;
+                          }
+                        }
+
+                        & > .origin,
+                        & > .lot {
+                          gap: 6px;
+
+                          & > .lot-indicator-green {
+                            @include s.pqCircle(13px, s.$pqGreen2);
+                          }
+
+                          & > .lot-indicator-yellow {
+                            @include s.pqCircle(13px, s.$orange2);
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+
+              & > .footer {
+                flex: 0 0 40px;
+                padding: 0 20px;
+              }
+            }
+          }
+        }
+
+        & > .associated-invoice-container {
+          & > div {
+            & > .container-table {
+              min-width: 1060px;
+
+              & > .table-config {
+                & > .header {
+                  grid-column-gap: 20px;
+                  grid-template-columns: 50px 1fr 130px repeat(2, 100px);
+                  grid-template-rows: 60px;
+                }
+
+                & > .body {
+                  & > virtual-scroller {
+                    &::ng-deep > .scrollable-content {
+                      & > .item-container {
+                        & > .item {
+                          grid-column-gap: 20px;
+                          grid-template-columns: 50px 1fr 130px repeat(2, 100px);
+                          padding: 15px 0;
+
+                          & > .description-container {
+                            gap: 6px;
+
+                            & > .cost {
+                              gap: 6px;
+                            }
+
+                            & > .documents {
+                              grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                              grid-column-gap: 15px;
+                              padding: 0 20px;
+                            }
+                          }
+
+                          & > .origin,
+                          & > .lot {
+                            gap: 6px;
+
+                            & > .lot-indicator-green {
+                              @include s.pqCircle(13px, s.$pqGreen2);
+                            }
+
+                            & > .lot-indicator-yellow {
+                              @include s.pqCircle(13px, s.$orange2);
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+
+                & > .footer {
+                  flex: 0 0 40px;
+                  padding: 0 20px;
+                }
+              }
+            }
+
+            & > .provider-bill-container {
+              gap: 80px;
+              min-width: 1060px;
+              padding: 25px 20px;
+
+              & > .provider-bill {
+                min-width: 550px;
+
+                & > .title {
+                  margin-bottom: 15px;
+                }
+
+                & > .bill-data {
+                  grid-column-gap: 20px;
+                  grid-row-gap: 20px;
+                }
+
+                & > .bill-documents {
+                  gap: 20px;
+
+                  & > div {
+                    gap: 6px;
+                  }
+                }
+              }
+
+              & > .importation-amount {
+                flex: 0 0 300px;
+
+                & > .title {
+                  margin-bottom: 15px;
+                }
+
+                & > .amount-resume {
+                  gap: 20px;
+
+                  & > .left {
+                    gap: 6px;
+                  }
+
+                  & > .right {
+                    gap: 6px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

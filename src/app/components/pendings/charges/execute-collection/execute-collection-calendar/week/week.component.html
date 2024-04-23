@@ -1,0 +1,659 @@
+<div id="week">
+  <div class="content-container">
+    <div class="header">
+      <div class="mon">
+        <div [ngClass]="(actualWeek$ | async)[0] === currentDate() ? 'active' : ''">
+          <label>{{ 'common.monday' | translate }} {{ (actualWeek$ | async)[0] | onlyDayNumber }}</label>
+        </div>
+      </div>
+      <div class="tues">
+        <div [ngClass]="(actualWeek$ | async)[1] === currentDate() ? 'active' : ''">
+          <label>{{ 'common.tuesday' | translate }} {{ (actualWeek$ | async)[1] | onlyDayNumber }}</label>
+        </div>
+      </div>
+      <div class="wed">
+        <div [ngClass]="(actualWeek$ | async)[2] === currentDate() ? 'active' : ''">
+          <label>{{ 'common.wednesday' | translate }} {{ (actualWeek$ | async)[2] | onlyDayNumber }}</label>
+        </div>
+      </div>
+      <div class="thurs">
+        <div [ngClass]="(actualWeek$ | async)[3] === currentDate() ? 'active' : ''">
+          <label>{{ 'common.thursday' | translate }} {{ (actualWeek$ | async)[3] | onlyDayNumber }}</label>
+        </div>
+      </div>
+      <div class="fri">
+        <div [ngClass]="(actualWeek$ | async)[4] === currentDate() ? 'active' : ''">
+          <label>{{ 'common.friday' | translate }} {{ (actualWeek$ | async)[4] | onlyDayNumber }}</label>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="(dayStatus$ | async) === 3" class="content">
+      <div class="mon">
+        <div class="items">
+          <virtual-scroller
+            *ngIf="(dayStatus$ | async) === 3 && !lodashIsEmpty((itemsMonday$ | async)?.ListaClientes)"
+            [items]="(itemsMonday$ | async)?.ListaClientes"
+            (vsUpdate)="itemsMondayScroll = $event"
+          >
+            <div class="card" *ngFor="let client of itemsMondayScroll" (click)="selectedItem(client)">
+              <div class="card-content">
+                <div class="index">
+                  <label>#{{ client.Index }}</label>
+                </div>
+                <div class="info">
+                  <div class="line-one">
+                    <label>{{ client.NombreCliente }}</label>
+                    <img
+                      *ngIf="!client.CobroRecibido"
+                      alt="not received"
+                      src="assets/Images/execute-collection/collectionNotReceived.svg"
+                    />
+                    <img
+                      *ngIf="client.CobroRecibido"
+                      alt="received"
+                      src="assets/Images/execute-collection/collectionReceived.svg"
+                    />
+                  </div>
+                  <div class="line-two">
+                    <label
+                      >{{ 'executeCollection.toCharge' | translate }}:
+                      {{ client.ACobrar | currency: 'USD':'symbol-narrow':'2.2-4' }} {{ 'USD' }}</label
+                    >
+                  </div>
+                  <div class="line-three">
+                    <label
+                      >{{ 'executeCollection.charged' | translate }}:
+                      {{ client.Cobrado | currency: 'USD':'symbol-narrow':'2.2-4' }} {{ 'USD' }}</label
+                    >
+                  </div>
+                  <div class="line-four">
+                    <label
+                      >{{ client.Cobros }}
+                      {{
+                        client.Cobros === 1
+                          ? ('executeCollection.collection' | translate)
+                          : ('executeCollection.collections' | translate)
+                      }}
+                      ·</label
+                    >
+                    <div class="on-time" *ngIf="client.EnTiempoVerde > 0">
+                      <span class="green"></span>
+                      <label>{{ client.EnTiempoVerde }}</label>
+                    </div>
+                    <div class="collection-1-8-days" *ngIf="client.VencidaAmarillo > 0">
+                      <span class="yellow"></span>
+                      <label>{{ client.VencidaAmarillo }}</label>
+                    </div>
+                    <div class="collection-9-16-days" *ngIf="client.VencidaNaranja > 0">
+                      <span class="orange"></span>
+                      <label>{{ client.VencidaNaranja }}</label>
+                    </div>
+                    <div class="collection-17-179-days" *ngIf="client.VencidaRojo > 0">
+                      <span class="red"></span>
+                      <label>{{ client.VencidaRojo }}</label>
+                    </div>
+                    <div class="collection-180-days" *ngIf="client.Morosa > 0">
+                      <span class="purple"></span>
+                      <label>{{ client.Morosa }}</label>
+                    </div>
+                  </div>
+                  <div class="line-five">
+                    <img *ngIf="!client.SinCredito" src="assets/Images/labels/withCredit.svg" alt="with credit" />
+                    <img *ngIf="client.SinCredito" src="assets/Images/labels/sin_credito.svg" alt="with credit" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </virtual-scroller>
+          <div
+            *ngIf="(dayStatus$ | async) !== 1 && lodashIsEmpty((itemsMonday$ | async)?.ListaClientes)"
+            class="without-results"
+          >
+            <app-without-results [title]="'Sin resultados'"></app-without-results>
+          </div>
+        </div>
+        <div class="footer" *ngIf="!lodashIsEmpty((itemsMonday$ | async)?.ListaClientes)">
+          <div class="total-results">
+            <label>#{{ (itemsMonday$ | async).ListaClientes?.length }}</label>
+          </div>
+          <div class="column-one" *ngIf="(itemsMonday$ | async)?.EnTiempoVerde || (itemsMonday$ | async)?.VencidaRojo != 0">
+            <div class="line-one" *ngIf="(itemsMonday$ | async)?.EnTiempoVerde != 0">
+              <span class="green"></span>
+              <label>{{ (itemsMonday$ | async)?.EnTiempoVerde }}</label>
+            </div>
+            <div class="line-two" *ngIf="(itemsMonday$ | async)?.VencidaRojo != 0">
+              <span class="red"></span>
+              <label>{{ (itemsMonday$ | async)?.VencidaRojo }}</label>
+            </div>
+          </div>
+          <div class="column-two" *ngIf="(itemsMonday$ | async)?.VencidaAmarillo || (itemsMonday$ | async)?.Morosa != 0">
+            <div class="line-one" *ngIf="(itemsMonday$ | async)?.VencidaAmarillo != 0">
+              <span class="yellow"></span>
+              <label>{{ (itemsMonday$ | async)?.VencidaAmarillo }}</label>
+            </div>
+            <div class="line-two" *ngIf="(itemsMonday$ | async)?.Morosa != 0">
+              <span class="purple"></span>
+              <label>{{ (itemsMonday$ | async)?.Morosa }}</label>
+            </div>
+          </div>
+          <div class="column-three" *ngIf="(itemsMonday$ | async)?.VencidaNaranja != 0">
+            <div class="line-one">
+              <span class="orange"></span>
+              <label>{{ (itemsMonday$ | async)?.VencidaNaranja }}</label>
+            </div>
+          </div>
+          <div class="column-four">
+            <label>{{ 'executeCollection.totalCharged' | translate }}:</label>
+            <label>{{ (itemsMonday$ | async)?.Cobrado | currency: 'USD':'symbol-narrow':'2.2-4' }} {{ 'USD' }}</label>
+          </div>
+          <div class="column-five">
+            <label>{{ 'executeCollection.totalToCharge' | translate }}:</label>
+            <label>{{ (itemsMonday$ | async)?.ACobrar | currency: 'USD':'symbol-narrow':'2.2-4' }} {{ 'USD' }}</label>
+          </div>
+        </div>
+      </div>
+      <div class="tues">
+        <div class="items">
+          <virtual-scroller
+            *ngIf="(dayStatus$ | async) === 3 && !lodashIsEmpty((itemsTuesday$ | async)?.ListaClientes)"
+            [items]="(itemsTuesday$ | async)?.ListaClientes"
+            (vsUpdate)="itemsTuesdayScroll = $event"
+          >
+            <div class="card" *ngFor="let client of itemsTuesdayScroll" (click)="selectedItem(client)">
+              <div class="card-content">
+                <div class="index">
+                  <label>#{{ client.Index }}</label>
+                </div>
+                <div class="info">
+                  <div class="line-one">
+                    <label>{{ client.NombreCliente }}</label>
+                    <img
+                      *ngIf="!client.CobroRecibido"
+                      alt="not received"
+                      src="assets/Images/execute-collection/collectionNotReceived.svg"
+                    />
+                    <img
+                      *ngIf="client.CobroRecibido"
+                      alt="received"
+                      src="assets/Images/execute-collection/collectionReceived.svg"
+                    />
+                  </div>
+                  <div class="line-two">
+                    <label
+                      >{{ 'executeCollection.toCharge' | translate }}:
+                      {{ client.ACobrar | currency: 'USD':'symbol-narrow':'2.2-4' }} {{ 'USD' }}</label
+                    >
+                  </div>
+                  <div class="line-three">
+                    <label
+                      >{{ 'executeCollection.charged' | translate }}:
+                      {{ client.Cobrado | currency: 'USD':'symbol-narrow':'2.2-4' }} {{ 'USD' }}</label
+                    >
+                  </div>
+                  <div class="line-four">
+                    <label
+                      >{{ client.Cobros }}
+                      {{
+                        client.Cobros === 1
+                          ? ('executeCollection.collection' | translate)
+                          : ('executeCollection.collections' | translate)
+                      }}
+                      ·</label
+                    >
+                    <div class="on-time" *ngIf="client.EnTiempoVerde">
+                      <span class="green"></span>
+                      <label>{{ client.EnTiempoVerde }}</label>
+                    </div>
+                    <div class="collection-1-8-days" *ngIf="client.VencidaAmarillo">
+                      <span class="yellow"></span>
+                      <label>{{ client.VencidaAmarillo }}</label>
+                    </div>
+                    <div class="collection-9-16-days" *ngIf="client.VencidaNaranja">
+                      <span class="orange"></span>
+                      <label>{{ client.VencidaNaranja }}</label>
+                    </div>
+                    <div class="collection-17-179-days" *ngIf="client.VencidaRojo">
+                      <span class="red"></span>
+                      <label>{{ client.VencidaRojo }}</label>
+                    </div>
+                    <div class="collection-180-days" *ngIf="client.Morosa">
+                      <span class="purple"></span>
+                      <label>{{ client.Morosa }}</label>
+                    </div>
+                  </div>
+                  <div class="line-five">
+                    <img *ngIf="!client.SinCredito" src="assets/Images/labels/withCredit.svg" alt="with credit" />
+                    <img *ngIf="client.SinCredito" src="assets/Images/labels/sin_credito.svg" alt="with credit" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </virtual-scroller>
+          <div
+            *ngIf="(dayStatus$ | async) !== 1 && lodashIsEmpty((itemsTuesday$ | async)?.ListaClientes)"
+            class="without-results"
+          >
+            <app-without-results [title]="'Sin resultados'"></app-without-results>
+          </div>
+        </div>
+        <div class="footer" *ngIf="!lodashIsEmpty((itemsTuesday$ | async)?.ListaClientes)">
+          <div class="total-results">
+            <label>#{{ (itemsTuesday$ | async).ListaClientes?.length }}</label>
+          </div>
+          <div class="column-one" *ngIf="(itemsTuesday$ | async)?.EnTiempoVerde || (itemsTuesday$ | async)?.VencidaRojo != 0">
+            <div class="line-one" *ngIf="(itemsTuesday$ | async)?.EnTiempoVerde != 0">
+              <span class="green"></span>
+              <label>{{ (itemsTuesday$ | async)?.EnTiempoVerde }}</label>
+            </div>
+            <div class="line-two" *ngIf="(itemsTuesday$ | async)?.VencidaRojo != 0">
+              <span class="red"></span>
+              <label>{{ (itemsTuesday$ | async)?.VencidaRojo }}</label>
+            </div>
+          </div>
+          <div class="column-two" *ngIf="(itemsTuesday$ | async)?.VencidaAmarillo || (itemsMonday$ | async)?.Morosa != 0">
+            <div class="line-one" *ngIf="(itemsTuesday$ | async)?.VencidaAmarillo != 0">
+              <span class="yellow"></span>
+              <label>{{ (itemsTuesday$ | async)?.VencidaAmarillo }}</label>
+            </div>
+            <div class="line-two" *ngIf="(itemsTuesday$ | async)?.Morosa != 0">
+              <span class="purple"></span>
+              <label>{{ (itemsTuesday$ | async)?.Morosa }}</label>
+            </div>
+          </div>
+          <div class="column-three" *ngIf="(itemsTuesday$ | async)?.VencidaNaranja != 0">
+            <div class="line-one">
+              <span class="orange"></span>
+              <label>{{ (itemsTuesday$ | async)?.VencidaNaranja }}</label>
+            </div>
+          </div>
+          <div class="column-four">
+            <label>{{ 'executeCollection.totalCharged' | translate }}:</label>
+            <label>{{ (itemsTuesday$ | async)?.Cobrado | currency: 'USD':'symbol-narrow':'2.2-4' }} {{ 'USD' }}</label>
+          </div>
+          <div class="column-five">
+            <label>{{ 'executeCollection.totalToCharge' | translate }}:</label>
+            <label>{{ (itemsTuesday$ | async)?.ACobrar | currency: 'USD':'symbol-narrow':'2.2-4' }} {{ 'USD' }}</label>
+          </div>
+        </div>
+      </div>
+      <div class="wed">
+        <div class="items">
+          <virtual-scroller
+            *ngIf="(dayStatus$ | async) === 3 && !lodashIsEmpty((itemsWednesday$ | async)?.ListaClientes)"
+            [items]="(itemsWednesday$ | async)?.ListaClientes"
+            (vsUpdate)="itemsWednesdayScroll = $event"
+          >
+            <div class="card" *ngFor="let client of itemsWednesdayScroll" (click)="selectedItem(client)">
+              <div class="card-content">
+                <div class="index">
+                  <label>#{{ client.Index }}</label>
+                </div>
+                <div class="info">
+                  <div class="line-one">
+                    <label>{{ client.NombreCliente }}</label>
+                    <img
+                      *ngIf="!client.CobroRecibido"
+                      alt="not received"
+                      src="assets/Images/execute-collection/collectionNotReceived.svg"
+                    />
+                    <img
+                      *ngIf="client.CobroRecibido"
+                      alt="received"
+                      src="assets/Images/execute-collection/collectionReceived.svg"
+                    />
+                  </div>
+                  <div class="line-two">
+                    <label
+                      >{{ 'executeCollection.toCharge' | translate }}:
+                      {{ client.ACobrar | currency: 'USD':'symbol-narrow':'2.2-4' }} {{ 'USD' }}</label
+                    >
+                  </div>
+                  <div class="line-three">
+                    <label
+                      >{{ 'executeCollection.charged' | translate }}:
+                      {{ client.Cobrado | currency: 'USD':'symbol-narrow':'2.2-4' }} {{ 'USD' }}</label
+                    >
+                  </div>
+                  <div class="line-four">
+                    <label
+                      >{{ client.Cobros }}
+                      {{
+                        client.Cobros === 1
+                          ? ('executeCollection.collection' | translate)
+                          : ('executeCollection.collections' | translate)
+                      }}
+                      ·</label
+                    >
+                    <div class="on-time" *ngIf="client.EnTiempoVerde > 0">
+                      <span class="green"></span>
+                      <label>{{ client.EnTiempoVerde }}</label>
+                    </div>
+                    <div class="collection-1-8-days" *ngIf="client.VencidaAmarillo > 0">
+                      <span class="yellow"></span>
+                      <label>{{ client.VencidaAmarillo }}</label>
+                    </div>
+                    <div class="collection-9-16-days" *ngIf="client.VencidaNaranja > 0">
+                      <span class="orange"></span>
+                      <label>{{ client.VencidaNaranja }}</label>
+                    </div>
+                    <div class="collection-17-179-days" *ngIf="client.VencidaRojo > 0">
+                      <span class="red"></span>
+                      <label>{{ client.VencidaRojo }}</label>
+                    </div>
+                    <div class="collection-180-days" *ngIf="client.Morosa > 0">
+                      <span class="purple"></span>
+                      <label>{{ client.Morosa }}</label>
+                    </div>
+                  </div>
+                  <div class="line-five">
+                    <img *ngIf="!client.SinCredito" src="assets/Images/labels/withCredit.svg" alt="with credit" />
+                    <img *ngIf="client.SinCredito" src="assets/Images/labels/sin_credito.svg" alt="with credit" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </virtual-scroller>
+          <div
+            *ngIf="(dayStatus$ | async) !== 1 && lodashIsEmpty((itemsWednesday$ | async)?.ListaClientes)"
+            class="without-results"
+          >
+            <app-without-results [title]="'Sin resultados'"></app-without-results>
+          </div>
+        </div>
+        <div class="footer" *ngIf="!lodashIsEmpty((itemsWednesday$ | async)?.ListaClientes)">
+          <div class="total-results">
+            <label>#{{ (itemsWednesday$ | async).ListaClientes?.length }}</label>
+          </div>
+          <div
+            class="column-one"
+            *ngIf="(itemsWednesday$ | async)?.EnTiempoVerde || (itemsWednesday$ | async)?.VencidaRojo != 0"
+          >
+            <div class="line-one" *ngIf="(itemsWednesday$ | async)?.EnTiempoVerde != 0">
+              <span class="green"></span>
+              <label>{{ (itemsWednesday$ | async)?.EnTiempoVerde }}</label>
+            </div>
+            <div class="line-two" *ngIf="(itemsWednesday$ | async)?.VencidaRojo != 0">
+              <span class="red"></span>
+              <label>{{ (itemsWednesday$ | async)?.VencidaRojo }}</label>
+            </div>
+          </div>
+          <div class="column-two" *ngIf="(itemsWednesday$ | async)?.VencidaAmarillo || (itemsWednesday$ | async)?.Morosa != 0">
+            <div class="line-one" *ngIf="(itemsWednesday$ | async)?.VencidaAmarillo != 0">
+              <span class="yellow"></span>
+              <label>{{ (itemsWednesday$ | async)?.VencidaAmarillo }}</label>
+            </div>
+            <div class="line-two" *ngIf="(itemsWednesday$ | async)?.Morosa != 0">
+              <span class="purple"></span>
+              <label>{{ (itemsWednesday$ | async)?.Morosa }}</label>
+            </div>
+          </div>
+          <div class="column-three" *ngIf="(itemsWednesday$ | async)?.VencidaNaranja != 0">
+            <div class="line-one">
+              <span class="orange"></span>
+              <label>{{ (itemsWednesday$ | async)?.VencidaNaranja }}</label>
+            </div>
+          </div>
+          <div class="column-four">
+            <label>{{ 'executeCollection.totalCharged' | translate }}:</label>
+            <label>{{ (itemsWednesday$ | async)?.Cobros | currency: 'USD':'symbol-narrow':'2.2-4' }} {{ 'USD' }}</label>
+          </div>
+          <div class="column-five">
+            <label>{{ 'executeCollection.totalToCharge' | translate }}:</label>
+            <label>{{ (itemsWednesday$ | async)?.Cobrado | currency: 'USD':'symbol-narrow':'2.2-4' }} {{ 'USD' }}</label>
+          </div>
+        </div>
+      </div>
+      <div class="thurs">
+        <div class="items">
+          <virtual-scroller
+            *ngIf="(dayStatus$ | async) === 3 && !lodashIsEmpty((itemsThursday$ | async)?.ListaClientes)"
+            [items]="(itemsThursday$ | async)?.ListaClientes"
+            (vsUpdate)="itemsThursdayScroll = $event"
+          >
+            <div
+              class="card"
+              [ngClass]="client.purple ? 'back-purple' : ''"
+              *ngFor="let client of itemsThursdayScroll"
+              (click)="selectedItem(client)"
+            >
+              <div class="card-content">
+                <div class="index">
+                  <label>#{{ client.Index }}</label>
+                </div>
+                <div class="info">
+                  <div class="line-one">
+                    <label>{{ client.NombreCliente }}</label>
+                  </div>
+                  <div class="line-two">
+                    <label
+                      >{{ 'executeCollection.toCharge' | translate }}:
+                      {{ client.ACobrar | currency: 'USD':'symbol-narrow':'2.2-4' }} {{ 'USD' }}</label
+                    >
+                  </div>
+                  <div class="line-three">
+                    <label
+                      >{{ 'executeCollection.charged' | translate }}:
+                      {{ client.Cobrado | currency: 'USD':'symbol-narrow':'2.2-4' }} {{ 'USD' }}</label
+                    >
+                  </div>
+                  <div class="line-four">
+                    <label
+                      >{{ client.Cobros }}
+                      {{
+                        client.Cobros === 1
+                          ? ('executeCollection.collection' | translate)
+                          : ('executeCollection.collections' | translate)
+                      }}
+                      ·</label
+                    >
+                    <div class="on-time" *ngIf="client.EnTiempoVerde > 0">
+                      <span class="green"></span>
+                      <label>{{ client.EnTiempoVerde }}</label>
+                    </div>
+                    <div class="collection-1-8-days" *ngIf="client.VencidaAmarillo > 0">
+                      <span class="yellow"></span>
+                      <label>{{ client.VencidaAmarillo }}</label>
+                    </div>
+                    <div class="collection-9-16-days" *ngIf="client.VencidaNaranja > 0">
+                      <span class="orange"></span>
+                      <label>{{ client.VencidaNaranja }}</label>
+                    </div>
+                    <div class="collection-17-179-days" *ngIf="client.VencidaRojo > 0">
+                      <span class="red"></span>
+                      <label>{{ client.VencidaRojo }}</label>
+                    </div>
+                    <div class="collection-180-days" *ngIf="client.Morosa > 0">
+                      <span class="purple"></span>
+                      <label>{{ client.Morosa }}</label>
+                    </div>
+                  </div>
+                  <div class="line-five">
+                    <img *ngIf="!client.SinCredito" src="assets/Images/labels/withCredit.svg" alt="with credit" />
+                    <img *ngIf="client.SinCredito" src="assets/Images/labels/sin_credito.svg" alt="with credit" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </virtual-scroller>
+          <div
+            *ngIf="(dayStatus$ | async) !== 1 && lodashIsEmpty((itemsThursday$ | async)?.ListaClientes)"
+            class="without-results"
+          >
+            <app-without-results [title]="'Sin resultados'"></app-without-results>
+          </div>
+        </div>
+        <div class="footer" *ngIf="!lodashIsEmpty((itemsThursday$ | async)?.ListaClientes)">
+          <div class="total-results">
+            <label>#{{ (itemsThursday$ | async).ListaClientes?.length }}</label>
+          </div>
+          <div class="column-one" *ngIf="(itemsThursday$ | async)?.EnTiempoVerde || (itemsThursday$ | async)?.VencidaRojo != 0">
+            <div class="line-one" *ngIf="(itemsThursday$ | async)?.EnTiempoVerde != 0">
+              <span class="green"></span>
+              <label>{{ (itemsThursday$ | async)?.EnTiempoVerde }}</label>
+            </div>
+            <div class="line-two" *ngIf="(itemsThursday$ | async)?.VencidaRojo != 0">
+              <span class="red"></span>
+              <label>{{ (itemsThursday$ | async)?.VencidaRojo }}</label>
+            </div>
+          </div>
+          <div class="column-two" *ngIf="(itemsThursday$ | async)?.VencidaAmarillo || (itemsThursday$ | async)?.Morosa != 0">
+            <div class="line-one" *ngIf="(itemsThursday$ | async)?.VencidaAmarillo != 0">
+              <span class="yellow"></span>
+              <label>{{ (itemsThursday$ | async)?.VencidaAmarillo }}</label>
+            </div>
+            <div class="line-two" *ngIf="(itemsThursday$ | async)?.Morosa != 0">
+              <span class="purple"></span>
+              <label>{{ (itemsThursday$ | async)?.Morosa }}</label>
+            </div>
+          </div>
+          <div class="column-three" *ngIf="(itemsThursday$ | async)?.VencidaNaranja != 0">
+            <div class="line-one">
+              <span class="orange"></span>
+              <label>{{ (itemsThursday$ | async)?.VencidaNaranja }}</label>
+            </div>
+          </div>
+          <div class="column-four">
+            <label>{{ 'executeCollection.totalCharged' | translate }}:</label>
+            <label>{{ (itemsThursday$ | async)?.Cobrado | currency: 'USD':'symbol-narrow':'2.2-4' }} {{ 'USD' }}</label>
+          </div>
+          <div class="column-five">
+            <label>{{ 'executeCollection.totalToCharge' | translate }}:</label>
+            <label>{{ (itemsThursday$ | async)?.ACobrar | currency: 'USD':'symbol-narrow':'2.2-4' }} {{ 'USD' }}</label>
+          </div>
+        </div>
+      </div>
+      <div class="fri">
+        <div class="items">
+          <virtual-scroller
+            *ngIf="(dayStatus$ | async) === 3 && !lodashIsEmpty((itemsFriday$ | async)?.ListaClientes)"
+            [items]="(itemsFriday$ | async)?.ListaClientes"
+            (vsUpdate)="itemsFridayScroll = $event"
+          >
+            <div
+              class="card"
+              [ngClass]="client.orange ? 'back-orange' : ''"
+              *ngFor="let client of itemsFridayScroll"
+              (click)="selectedItem(client)"
+            >
+              <div class="card-content">
+                <div class="index">
+                  <label>#{{ client.Index }}</label>
+                </div>
+                <div class="info">
+                  <div class="line-one">
+                    <label>{{ client.NombreCliente }}</label>
+                    <img
+                      *ngIf="!client.CobroRecibido"
+                      alt="not received"
+                      src="assets/Images/execute-collection/collectionNotReceived.svg"
+                    />
+                    <img
+                      *ngIf="client.CobroRecibido"
+                      alt="received"
+                      src="assets/Images/execute-collection/collectionReceived.svg"
+                    />
+                  </div>
+                  <div class="line-two">
+                    <label
+                      >{{ 'executeCollection.toCharge' | translate }}:
+                      {{ client.ACobrar | currency: 'USD':'symbol-narrow':'2.2-4' }} {{ 'USD' }}</label
+                    >
+                  </div>
+                  <div class="line-three">
+                    <label
+                      >{{ 'executeCollection.charged' | translate }}:
+                      {{ client.Cobrado | currency: 'USD':'symbol-narrow':'2.2-4' }} {{ 'USD' }}</label
+                    >
+                  </div>
+                  <div class="line-four">
+                    <label
+                      >{{ client.Cobros }}
+                      {{
+                        client.Cobros === 1
+                          ? ('executeCollection.collection' | translate)
+                          : ('executeCollection.collections' | translate)
+                      }}
+                      ·</label
+                    >
+                    <div class="on-time" *ngIf="client.EnTiempoVerde > 0">
+                      <span class="green"></span>
+                      <label>{{ client.EnTiempoVerde }}</label>
+                    </div>
+                    <div class="collection-1-8-days" *ngIf="client.VencidaAmarillo > 0">
+                      <span class="yellow"></span>
+                      <label>{{ client.VencidaAmarillo }}</label>
+                    </div>
+                    <div class="collection-9-16-days" *ngIf="client.VencidaNaranja > 0">
+                      <span class="orange"></span>
+                      <label>{{ client.VencidaNaranja }}</label>
+                    </div>
+                    <div class="collection-17-179-days" *ngIf="client.VencidaRojo > 0">
+                      <span class="red"></span>
+                      <label>{{ client.VencidaRojo }}</label>
+                    </div>
+                    <div class="collection-180-days" *ngIf="client.Morosa > 0">
+                      <span class="purple"></span>
+                      <label>{{ client.Morosa }}</label>
+                    </div>
+                  </div>
+                  <div class="line-five">
+                    <img *ngIf="!client.SinCredito" src="assets/Images/labels/withCredit.svg" alt="with credit" />
+                    <img *ngIf="client.SinCredito" src="assets/Images/labels/sin_credito.svg" alt="with credit" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </virtual-scroller>
+          <div
+            *ngIf="(dayStatus$ | async) !== 1 && lodashIsEmpty((itemsFriday$ | async)?.ListaClientes)"
+            class="without-results"
+          >
+            <app-without-results [title]="'Sin resultados'"></app-without-results>
+          </div>
+        </div>
+        <div class="footer" *ngIf="!lodashIsEmpty((itemsFriday$ | async)?.ListaClientes)">
+          <div class="total-results">
+            <label>#{{ (itemsFriday$ | async).ListaClientes?.length }}</label>
+          </div>
+          <div class="column-one" *ngIf="(itemsFriday$ | async)?.EnTiempoVerde || (itemsFriday$ | async)?.VencidaRojo != 0">
+            <div class="line-one" *ngIf="(itemsFriday$ | async)?.EnTiempoVerde != 0">
+              <span class="green"></span>
+              <label>{{ (itemsFriday$ | async)?.EnTiempoVerde }}</label>
+            </div>
+            <div class="line-two" *ngIf="(itemsFriday$ | async)?.VencidaRojo != 0">
+              <span class="red"></span>
+              <label>{{ (itemsFriday$ | async)?.VencidaRojo }}</label>
+            </div>
+          </div>
+          <div class="column-two" *ngIf="(itemsFriday$ | async)?.VencidaAmarillo || (itemsFriday$ | async)?.Morosa != 0">
+            <div class="line-one" *ngIf="(itemsFriday$ | async)?.VencidaAmarillo != 0">
+              <span class="yellow"></span>
+              <label>{{ (itemsFriday$ | async)?.VencidaAmarillo }}</label>
+            </div>
+            <div class="line-two" *ngIf="(itemsFriday$ | async)?.Morosa != 0">
+              <span class="purple"></span>
+              <label>{{ (itemsFriday$ | async)?.Morosa }}</label>
+            </div>
+          </div>
+          <div class="column-three" *ngIf="(itemsFriday$ | async)?.VencidaNaranja != 0">
+            <div class="line-one">
+              <span class="orange"></span>
+              <label>{{ (itemsFriday$ | async)?.VencidaNaranja }}</label>
+            </div>
+          </div>
+          <div class="column-four">
+            <label>{{ 'executeCollection.totalCharged' | translate }}:</label>
+            <label>{{ (itemsFriday$ | async)?.Cobrado | currency: 'USD':'symbol-narrow':'2.2-4' }} {{ 'USD' }}</label>
+          </div>
+          <div class="column-five">
+            <label>{{ 'executeCollection.totalToCharge' | translate }}:</label>
+            <label>{{ (itemsFriday$ | async)?.ACobrar | currency: 'USD':'symbol-narrow':'2.2-4' }} {{ 'USD' }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="(dayStatus$ | async) === 1" class="loader">
+      <app-loading></app-loading>
+    </div>
+  </div>
+</div>

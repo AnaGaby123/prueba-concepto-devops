@@ -1,0 +1,36 @@
+import {CotPartidaCotizacionCapacitacionFecha} from 'api-logistica';
+
+export interface IConceptItemQuote {
+  number: number; //DOCS:EN CASO DE COLOCAR NÚMERO DE PARTIDA (INDEX +1)
+  imgLabel: string; //DOCS: IMAGEN DEL LABEL (DISPONIBLE, BACK ORDER ETC)
+  imgBrand: string; //DOCS: IMAGEN DE LA MARCA APARECERÁ AL LADO DE LA IMAGEL DEL LABEL
+  cat: string; //DOCS: NUMERO DE CATALOGO
+  presentation: string; // DOCS: TIPO DE PRESENTACIÓN
+  amountPresentation: string; //: DOCS; CANTIDAD DE PRESENTACIÓN
+  unity: string; //DOCS: UNIDAD DE MEDIDA DE LA PRESENTACIÓN
+  description?: string; // DOCS: DESCRIPCIÓN GENERAL DEL PRODUCTO
+  family: string; // DOCS: FAMILIA DEL PRODUCTO (YA CONSTRUIDO)
+  formatPublication?: string;
+  author: string; // DOCS: AUTOR EN CASO DE SER PRODUCTO DE TIPO PUBLICACIONES
+  typeMode: string; //DOCS: TIPO DE VISUALIZACIÓN DE LA CAPACITACIÓN, (EN LINEA, PRESENCIAL, PRESENCIAL EN LINEA)
+  controlled: boolean; //DOCS: CUANDO EL PRODUCTO ES CONTROLADO
+  dateValidation: string; //DOCS: FECHA DE VIGENCIA (FECHA DE CURADURIA)
+  dateAvailability: string; //DOCS: FECHA DE DISPONIBILIDAD (CUANDO EL PRODUCTO ES BACK ORDER)
+  availability: string; //DOCS: DISPONIBILIDAD DEL PRODUCTO (BACK ORDER, DISPONIBLE, NO COMERCIABLE ETC)
+  datesSuggested: CotPartidaCotizacionCapacitacionFecha[]; //DOCS: FECHAS DE SUGERIDAS (PRODUCTO DE TIPO CAPACITACIÓN)
+  conversionRate: string; //DOCS: TASA DE CONVERSIÓN //TODO: MODIFICARLO  DE ACUERDO AL SERVICIO
+  alternate: number; //DOCS: PRODUCTO ALTERNOS CON LA PARTIDA //TODO: AUN NO SE TIENE DEFINIDO, DEFINIRLO CUANDO SE TRABAJE EN EL
+  complementary: number; //DOCS: PRODUCTOS COMPLEMENTARIOS CON LA PARTIDA //TODO: AUN NO SE TIENE DEFINIDO, DEFINIRLO CUANDO SE TRABAJE EN EL
+  expressFreight: boolean; //DOCS: CUANDO ES FLETE PRORRATEADO /TODO: AUN NO SE TIENE DEFINIDO, DEFINIRLO CUANDO SE TRABAJE EN EL
+  withoutQuotes: boolean; //DOCS: CUANDO LA PARTIDA NO TIENE COTIZACION (APARECER LABEL "SIN COTIZACION") /TODO: AUN NO SE TIENE DEFINIDO, DEFINIRLO CUANDO SE TRABAJE EN EL
+  linkedQuoted?: ILinkedQuote[]; //DOCS: COTIZACIONES VINCULADAS //TODO: SE SIGUE DEFINIENDO EN ESTE COMPONENTE
+  type?: string;
+  subtype?: string;
+  control?: string;
+  listPrice?: number;
+}
+
+export interface ILinkedQuote {
+  folio: string;
+  idPdf: string;
+}

@@ -1,0 +1,28 @@
+<div class="radio-button-container">
+  <div class="radio-container" (click)="handleSelectRadioButton()">
+    <img
+      alt="button"
+      [src]="
+        isCheck && active && isNotError
+          ? 'assets/Images/components-src/radio-button/radio_select_' + colorButton + '.svg'
+          : !isCheck && active && isNotError
+          ? 'assets/Images/components-src/radio-button/radio_empty_main_proquifa.svg'
+          : !isNotError && active
+          ? 'assets/Images/components-src/radio-button/radio_error_main_proquifa.svg'
+          : !active
+          ? 'assets/Images/components-src/radio-button/radio_disabled_main_proquifa.svg'
+          : ''
+      "
+      draggable="false"
+    />
+  </div>
+  <div class="text-container">
+    <label
+      [ngClass]="
+        isCheck && active && isNotError ? 'active' : !isNotError && active ? 'hasError' : !active ? 'disabled' : 'normal'
+      "
+      [style.font-family]="fontFamily"
+      >{{ label }}
+    </label>
+  </div>
+</div>

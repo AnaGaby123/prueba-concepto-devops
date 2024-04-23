@@ -1,0 +1,156 @@
+<div class="provider-address-container">
+  <label class="title">Dirección</label>
+  <app-drop-down-list
+    class="input-type-of-region"
+    [activeMinWidth]="false"
+    [disable]="!(isMexican$ | async)"
+    [enableEdit]="enableEdit$ | async"
+    [itemSelected]="selectedRoutesDelivery$ | async"
+    [items]="itemsRutasEntrega$ | async"
+    [isSearchable]="(itemsRutasEntrega$ | async)?.length > 5"
+    [label]="'formProvider.step1.typeOfRegion' | translate"
+    [required]="isMexican$ | async"
+    [subtitleActive]="false"
+    [title]="'Seleccionar'"
+    (valueDropList)="generalDataHandler($event, FIELD_TYPE_OF_REGION, FIELD_DROP_LIST, DATA_MODEL_TYPE_ADDRESS)"
+  >
+  </app-drop-down-list>
+  <app-drop-down-list
+    class="input-region"
+    [activeMinWidth]="false"
+    [disable]="!(isMexican$ | async)"
+    [enableEdit]="enableEdit$ | async"
+    [itemSelected]="selectedZone$ | async"
+    [items]="itemsZonas$ | async"
+    [isSearchable]="(itemsZonas$ | async)?.length > 5"
+    [label]="'formProvider.step1.region' | translate"
+    [required]="isMexican$ | async"
+    [subtitleActive]="false"
+    [title]="'Seleccionar'"
+    (valueDropList)="generalDataHandler($event, FIELD_REGION, FIELD_DROP_LIST, DATA_MODEL_TYPE_ADDRESS)"
+  >
+  </app-drop-down-list>
+  <div class="search-bar">
+    <app-search
+      [activeRefresh]="true"
+      [isExpandable]="true"
+      [placeholder]="'google-maps.placeholder' | translate"
+      [resultItems]="predictionsList"
+      [searchTerm]="searchTermGoogleMaps"
+      (textSearch)="handleKeySearchDirection($event)"
+      (handleSearchTermSelected)="changeSearchTerm($event)"
+      [isDisable]="!(enableEdit$ | async)"
+      (handleItemSelected)="handleItemSelected($event)"
+      (handleClearSearchTerm)="handleClearSearchTerm()"
+    ></app-search>
+  </div>
+  <app-drop-down-list
+    class="input-country"
+    [activeMinWidth]="false"
+    [enableEdit]="enableEdit$ | async"
+    [items]="itemPais$ | async"
+    [label]="'formProvider.step1.country' | translate"
+    [required]="true"
+    [disable]="(enableEdit$ | async) && !(allowedFormAddress$ | async)"
+    [subtitleActive]="false"
+    [title]="'Seleccionar'"
+    [itemSelected]="selectedCatPais$ | async"
+    [isSearchable]="true"
+    (valueDropList)="generalDataHandler($event, FIELD_COUNTRY, FIELD_DROP_LIST, DATA_MODEL_TYPE_ADDRESS)"
+  >
+  </app-drop-down-list>
+  <app-generic-input
+    class="input-street"
+    [enableEdit]="enableEdit$ | async"
+    [label]="'formProvider.step1.street' | translate"
+    [maxlength]="150"
+    [isDisable]="(enableEdit$ | async) && !(allowedFormAddress$ | async)"
+    [required]="true"
+    [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+    [value]="(addressData$ | async)?.Calle"
+    (textData)="generalDataHandler($event, FIELD_STREET, FIELD_INPUT, DATA_MODEL_TYPE_ADDRESS)"
+  ></app-generic-input>
+  <app-generic-input
+    class="input-exterior-number"
+    [enableEdit]="enableEdit$ | async"
+    [isDisable]="(enableEdit$ | async) && !(allowedFormAddress$ | async)"
+    [label]="'formProvider.step1.externalNumber' | translate"
+    [maxlength]="10"
+    [typeValidation]="inputValidators.Int"
+    [value]="(addressData$ | async)?.NumeroExterior"
+    (textData)="generalDataHandler($event, FIELD_EXTERNAL_NUMBER, FIELD_INPUT, DATA_MODEL_TYPE_ADDRESS)"
+  ></app-generic-input>
+  <app-generic-input
+    class="input-interior-number"
+    [enableEdit]="enableEdit$ | async"
+    [label]="'formProvider.step1.apartmentNumber' | translate"
+    [maxlength]="10"
+    [isDisable]="(enableEdit$ | async) && !(allowedFormAddress$ | async)"
+    [typeValidation]="inputValidators.Alphanumeric"
+    [value]="(addressData$ | async)?.NumeroInterior"
+    (textData)="generalDataHandler($event, FIELD_APARTMENT_NUMBER, FIELD_INPUT, DATA_MODEL_TYPE_ADDRESS)"
+  ></app-generic-input>
+
+  <app-generic-input
+    class="input-cp"
+    [enableEdit]="enableEdit$ | async"
+    [isDisable]="(enableEdit$ | async) && !(allowedFormAddress$ | async)"
+    [label]="'formProvider.step1.zipCode' | translate"
+    [maxlength]="(isMexicanAddress$ | async) ? 5 : 10"
+    [required]="true"
+    [typeValidation]="(isMexicanAddress$ | async) ? inputValidators.Number : inputValidators.AlphaAndSpacesAndNumbers"
+    [value]="(addressData$ | async)?.CodigoPostal"
+    (textData)="generalDataHandler($event, FIELD_ZIP_CODE, FIELD_INPUT, DATA_MODEL_TYPE_ADDRESS)"
+  ></app-generic-input>
+  <app-generic-input
+    class="input-state"
+    [enableEdit]="enableEdit$ | async"
+    [label]="'formProvider.step1.state' | translate"
+    [maxlength]="50"
+    [isDisable]="(enableEdit$ | async) && !(allowedFormAddress$ | async)"
+    [required]="true"
+    [typeValidation]="inputValidators.AlphaAndSpaces"
+    [value]="(addressData$ | async)?.Estado"
+    (textData)="generalDataHandler($event, FIELD_STATE, FIELD_INPUT, DATA_MODEL_TYPE_ADDRESS)"
+  ></app-generic-input>
+  <app-generic-input
+    class="input-colony"
+    [enableEdit]="enableEdit$ | async"
+    [label]="'formProvider.step1.Suburb' | translate"
+    [maxlength]="50"
+    [isDisable]="(enableEdit$ | async) && !(allowedFormAddress$ | async)"
+    [required]="true"
+    [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+    [value]="(addressData$ | async)?.Colonia"
+    (textData)="generalDataHandler($event, FIELD_SUBURB, FIELD_INPUT, DATA_MODEL_TYPE_ADDRESS)"
+  ></app-generic-input>
+  <app-generic-input
+    class="input-municipality"
+    [enableEdit]="enableEdit$ | async"
+    [label]="'formProvider.step1.municipality' | translate"
+    [maxlength]="50"
+    [isDisable]="(enableEdit$ | async) && !(allowedFormAddress$ | async)"
+    [required]="true"
+    [typeValidation]="inputValidators.AlphaAndSpaces"
+    [value]="(addressData$ | async)?.Municipio"
+    (textData)="generalDataHandler($event, FIELD_MUNICIPALITY, FIELD_INPUT, DATA_MODEL_TYPE_ADDRESS)"
+  ></app-generic-input>
+  <app-generic-input
+    class="input-city"
+    [enableEdit]="enableEdit$ | async"
+    [label]="'formProvider.step1.city' | translate"
+    [maxlength]="50"
+    [isDisable]="(enableEdit$ | async) && !(allowedFormAddress$ | async)"
+    [required]="true"
+    [typeValidation]="inputValidators.AlphaAndSpaces"
+    [value]="(addressData$ | async)?.Ciudad"
+    (textData)="generalDataHandler($event, FIELD_CITY, FIELD_INPUT, DATA_MODEL_TYPE_ADDRESS)"
+  ></app-generic-input>
+  <div class="clean-form-button">
+    <button
+      [ngClass]="(enableEdit$ | async) && (allowedFormAddress$ | async) ? 'enable' : 'disabled'"
+      (click)="setResetForm()"
+      >{{ 'common.cleanForm' | translate }}</button
+    >
+  </div>
+</div>

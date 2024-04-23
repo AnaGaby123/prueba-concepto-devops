@@ -1,0 +1,307 @@
+@use 'base' as s;
+
+:host {
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+  #orders-sections {
+    @include s.flexRowWrap;
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    & > .container {
+      @include s.flexRowWrap;
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+
+      & > .content {
+        width: 100%;
+        height: 100%;
+        @include s.flexColumn;
+
+        & > .title {
+          width: 100%;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize20to24, regular, s.$pqBlack2);
+            @include s.Novecento-Bold;
+            @include s.responsive-font-format(
+              $font-family: s.$font-family-novecento_bold,
+              $font-weight: s.$font-weight-bold,
+              $font-size-map: s.$responsive-font-17-21
+            );
+          }
+        }
+
+        & > .filter {
+          @include s.flexRow;
+          @include s.absoluteCenter;
+          width: 100%;
+          box-sizing: border-box;
+          padding-top: 20px;
+          padding-bottom: 20px;
+          flex-wrap: wrap;
+          row-gap: 20px;
+
+          & > div {
+            @include s.flexRow;
+            width: 100%;
+          }
+        }
+
+        & > .list-container {
+          @include s.flexColumn;
+          flex: 1;
+          border-top: 1px solid s.$pqBlack;
+
+          & > .list {
+            @include s.flexColumn;
+            @include s.fixVirtualScroller;
+            flex: 1;
+
+            & > ::ng-deep .scrollable-content > .item {
+              @include s.flexRow;
+              width: 100%;
+              height: 150px;
+              min-height: 150px;
+              box-sizing: border-box;
+              border-bottom: 1px solid s.$pqGray2;
+
+              & > div:nth-child(2) {
+                @include s.flexRow;
+                width: 100%;
+                box-sizing: border-box;
+                padding: 17px 19px 17px 19px;
+
+                & > .info {
+                  @include s.flexColumn;
+                  width: calc(100% - 96px);
+                  justify-content: center;
+
+                  & > div {
+                    align-items: center;
+                    box-sizing: border-box;
+                    padding-bottom: 5px;
+                  }
+
+                  & > .oc {
+                    @include s.flexRow;
+
+                    & > label {
+                      @include s.responsive-font-format(
+                        $font-family: s.$font-family-roboto_bold,
+                        $font-weight: s.$font-weight-bold,
+                        $font-size-map: s.$responsive-font-16-20
+                      );
+
+                      & > .red {
+                        color: s.$pqRed;
+                      }
+                    }
+                  }
+
+                  & > .value {
+                    @include s.flexRow;
+
+                    & > label {
+                      @include s.responsive-font-format(
+                        $font-family: s.$font-family-roboto_bold,
+                        $font-weight: s.$font-weight-bold,
+                        $font-size-map: s.$responsive-font-16-20,
+                        $color: s.$pqGreen
+                      );
+                    }
+                  }
+
+                  & > .reception {
+                    @include s.flexRow;
+
+                    & > label {
+                      @include s.responsive-font-format(
+                        $font-family: s.$font-family-roboto_regular,
+                        $font-weight: s.$font-weight-regular,
+                        $font-size-map: s.$responsive-font-12-14,
+                        $color: s.$pqTextGris
+                      );
+                    }
+                  }
+
+                  & > .classification {
+                    @include s.flexRow;
+
+                    & > div {
+                      @include s.flexRow;
+                      box-sizing: border-box;
+                      padding-right: 10px;
+                      align-items: center;
+
+                      & > img {
+                        height: 16px;
+                        margin-right: 5px;
+                      }
+
+                      & > label {
+                        @include s.responsive-font-format(
+                          $font-family: s.$font-family-roboto_regular,
+                          $font-weight: s.$font-weight-regular,
+                          $font-size-map: s.$responsive-font-14-16,
+                          $color: s.$pqBlack4
+                        );
+                      }
+                    }
+                  }
+                }
+
+                & > .type {
+                  @include s.flexRow;
+                  @include s.absoluteCenter;
+                  width: 155px;
+                }
+              }
+
+              & > div:hover {
+                background-color: #eceef0;
+                cursor: pointer;
+              }
+
+              /*    & .active-indicator {
+                width: 8px !important;
+                background: $pqGreen !important;
+                color: $pqGreen;
+              }*/
+              & > .indicator {
+                width: 8px !important;
+                background: s.$pqWhite;
+              }
+              & > .active-indicator {
+                background: s.$pqGreen !important;
+              }
+            }
+            & > ::ng-deep .scrollable-content > .div-active {
+              background-color: s.$pqGray2;
+
+              & > div:nth-child(2) {
+                width: calc(100% - 5px);
+                padding-left: 12px;
+              }
+            }
+          }
+
+          & > .without-results {
+            @include s.flexRow;
+            align-items: center;
+            height: 100%;
+
+            & > app-without-results {
+              @include s.absoluteCenter;
+              @include s.flexRow;
+              flex: 1;
+            }
+          }
+
+          & > .loading {
+            @include s.flexRow;
+            height: 100%;
+
+            & > app-loading {
+              @include s.flexRow;
+            }
+          }
+
+          & > .total {
+            @include s.flexRow;
+            @include s.absoluteCenter;
+            border-top: 1px solid s.$pqBlack;
+            padding: 20px 0 4px 0;
+
+            & > label {
+              @include s.responsive-font-format(
+                $font-family: s.$font-family-roboto_regular,
+                $font-weight: s.$font-weight-regular,
+                $font-size-map: s.$responsive-font-10-12-b
+              );
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @include s.media-query(s.$standard) {
+    #orders-sections {
+      & > .content {
+        width: 100%;
+
+        & > .list-container {
+          & > .list {
+            & > .item {
+              height: 159px;
+              min-height: 159px;
+
+              & > .info {
+                width: calc(100% - 155px);
+              }
+
+              & > .type {
+                width: 155px;
+              }
+
+              & > div:nth-child(2) {
+                & > .info {
+                  & > .oc {
+                  }
+
+                  & > .value {
+                  }
+
+                  & > .reception {
+                  }
+
+                  & > .classification {
+                    @include s.flexRow;
+
+                    & > div {
+                      padding-right: 20px;
+
+                      & > img {
+                        height: 22px;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+
+            & > div:hover {
+              background-color: #eceef0;
+            }
+
+            & > .item {
+              & > .indicator {
+                width: 5px !important;
+              }
+
+              & > div:nth-child(2) {
+                padding-left: 12px;
+              }
+            }
+          }
+
+          & > .total {
+            height: 60px;
+          }
+        }
+
+        & > .filter {
+          & > div {
+            @include s.flexRow;
+            width: 50%;
+          }
+        }
+      }
+    }
+  }
+}

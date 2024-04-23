@@ -1,0 +1,301 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  & > #quotation-in-progress-container {
+    @include s.absolute100;
+    @include s.flexColumn;
+    overflow: hidden;
+
+    & > .tabs {
+      @include s.default-transition;
+      flex-shrink: 0;
+      height: 30px;
+      padding: 0 20px;
+
+      & > app-tabs {
+        height: 100%;
+      }
+    }
+
+    & > .header-options {
+      @include s.flexRowNoWrap;
+      justify-content: space-between;
+      align-items: center;
+      padding: 17px 20px 15px 20px;
+
+      & > label {
+        @include s.responsive-font-format(
+          $font-family: s.$font_family_novecento_bold,
+          $font-size-map: s.$responsive-font-17-21,
+          $font-weight: s.$font_weight_bold
+        );
+      }
+
+      & > app-search {
+        width: 350px;
+        margin: auto 25px;
+      }
+
+      & > button {
+        &.active {
+          @include s.pqButton($min-width: 180px, $max-width: 250px);
+        }
+
+        &.disabled {
+          @include s.pqButtonDisable($min-width: 180px, $max-width: 250px);
+        }
+      }
+    }
+
+    & > .table-container {
+      @include s.flexColumn;
+      flex: 1;
+      overflow: auto;
+      border-bottom: 1px solid;
+      & > .container {
+        @include s.flexColumn;
+        min-width: 2000px;
+        flex: 1;
+        & > .header {
+          border-bottom: 1px solid s.$pqBlack;
+        }
+        & > virtual-scroller {
+          @include s.fixVirtualScroller();
+          @include s.absolute100;
+          ::ng-deep .scrollable-content {
+            @include s.flexColumn;
+          }
+        }
+
+        & > .loading {
+          @include s.flexColumn;
+          @include s.absoluteCenter;
+          height: 100%;
+          width: 100%;
+        }
+      }
+    }
+
+    & > .table-footer {
+      @include s.flexRowNoWrap;
+      justify-content: space-between;
+      padding: 0 20px 15px 20px;
+
+      & > div {
+        & > label {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-roboto_regular,
+            $font-weight: s.$font-weight-regular,
+            $font-size-map: s.$responsive-font-12-14
+          );
+        }
+      }
+
+      & > .button {
+        @include s.flexRowNoWrap;
+        width: 400px;
+        justify-content: flex-end;
+        padding-top: 15px;
+        gap: 15px;
+        & > button {
+          @include s.default-transition;
+
+          &.active {
+            @include s.pqButton();
+          }
+
+          &.active-green {
+            @include s.pqButton($baseColor: s.$pqGreen2);
+          }
+
+          &.disabled {
+            @include s.pqButtonDisable();
+          }
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .tabs {
+        height: 40px;
+      }
+
+      & > .header-options {
+        padding: 27px 20px 18px 20px;
+
+        & > app-search {
+          width: 545px;
+        }
+      }
+      @include s.media-query(s.$standard) {
+        & > .header-options {
+          & > app-search {
+            width: 545px;
+          }
+        }
+        & .custom-pop-up {
+          & ::ng-deep {
+            & .pop-ng-content {
+              & > .title {
+                margin-bottom: 5px;
+              }
+
+              & > .subtitle {
+                margin-bottom: 3px;
+              }
+
+              & > .content {
+                line-height: 1.4;
+              }
+            }
+          }
+        }
+      }
+
+      & > .table-footer {
+        padding: 0 20px 20px 20px;
+
+        & > .button {
+          padding-top: 20px;
+        }
+      }
+
+      & .custom-pop-up {
+        & ::ng-deep {
+          & .pop-ng-content {
+            padding-bottom: 16px;
+
+            & > .title {
+              padding: 16px 20px 8px 20px;
+            }
+
+            & > div {
+              padding: 0 20px 14px 20px;
+
+              &.padding {
+                padding: 10px 20px 14px 20px;
+              }
+
+              &:last-of-type {
+                padding-bottom: 0;
+              }
+
+              & > .subtitle {
+                margin-bottom: 3px;
+              }
+
+              & > .content {
+                line-height: 1.4;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .custom-pop-up {
+    padding: 0 !important;
+
+    & > app-custom-position-pop-up {
+      transition: all 0.4s ease-in-out;
+    }
+
+    & ::ng-deep {
+      & .pop-ng-content {
+        @include s.flexColumn;
+        padding: 9px;
+        overflow-x: auto;
+        flex: 1;
+
+        & > .title {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_novecento_bold,
+            $font-size-map: s.$responsive-font-17-21,
+            $font-weight: s.$font_weight_bold
+          );
+          margin-bottom: 3px;
+
+          &.red {
+            color: s.$pqRed;
+          }
+
+          &.yellow {
+            color: s.$pqOrange;
+          }
+
+          &.ocean {
+            color: s.$pqGreen;
+          }
+
+          &.green {
+            color: s.$pqGreen2;
+          }
+        }
+
+        & > .subtitle {
+          @include s.flexRowWrap;
+          margin-bottom: 1px;
+
+          & > label {
+            @include s.responsive-font-format(
+              $font-family: s.$font_family_roboto_bold,
+              $font-size-map: s.$responsive-font-13-16,
+              $font-weight: s.$font_weight_bold,
+              $color: s.$main-proquifa
+            );
+            white-space: pre-wrap;
+            & > span {
+              vertical-align: baseline;
+            }
+            & .green {
+              color: s.$pqGreen2;
+            }
+            & .black {
+              color: s.$pqBlack2;
+            }
+          }
+        }
+
+        & > .content {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_roboto_regular,
+            $font-size-map: s.$responsive-font-13-16,
+            $font-weight: s.$font_weight_regular
+          );
+          line-height: 1.3;
+
+          & > span {
+            white-space: pre;
+            color: s.$pqGreen;
+          }
+        }
+      }
+    }
+  }
+  @include s.media-query(s.$standard) {
+    & .comments-pop-up {
+      & ::ng-deep {
+        & .pop-ng-content {
+          & > .title {
+            margin-bottom: 5px;
+          }
+
+          & > .subtitle {
+            margin-bottom: 3px;
+          }
+
+          & > .content {
+            line-height: 1.4;
+          }
+        }
+      }
+    }
+  }
+}

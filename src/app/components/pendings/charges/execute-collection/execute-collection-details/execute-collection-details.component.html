@@ -1,0 +1,201 @@
+<div id="execute-collection-details">
+  <div class="content-container">
+    <div class="arrow" [ngClass]="leftContainerIsOpen ? '' : 'close'">
+      <img src="assets/Images/arrows/flecha_mostrar.svg" alt="" (click)="handleLeftContainer()" />
+    </div>
+    <div *ngIf="!(rebillView$ | async)" class="payments-container">
+      <div class="content">
+        <label>{{ 'executeCollection.details.payments' | translate }}</label>
+        <div class="container-filters">
+          <div class="hamburger-menu">
+            <app-hamburger-menu
+              [options]="burgerOptions$ | async"
+              [value]="(burgerOptionSelected$ | async).value"
+              (valueEmit)="selectFilterByType($event)"
+            >
+            </app-hamburger-menu>
+          </div>
+          <div class="app-search">
+            <app-search
+              [placeholder]="'Buscar # de Pago'"
+              [searchTerm]="searchTerm$ | async"
+              (textSearch)="handleKeySearch($event)"
+            >
+            </app-search>
+          </div>
+        </div>
+        <div class="container-content">
+          <virtual-scroller
+            *ngIf="(paymentStatus$ | async) === 3 && !lodashIsEmpty(paymentList$ | async)"
+            [items]="paymentList$ | async"
+            (vsUpdate)="paymentsScrollResults = $event"
+            id="all-cards"
+          >
+            <div
+              *ngFor="let payment of paymentsScrollResults; let i = index; trackBy: handleTrackBy"
+              [ngClass]="payment.isSelected ? 'card active' : 'card'"
+              (click)="selectPayment(payment.IdFCCFolioPagoCliente)"
+            >
+              <div class="card-body">
+                <div class="column-one">
+                  <div class="line-one">
+                    <label>#{{ payment.Index + 1 }} · Pago -</label>
+                    <label>{{ payment.Folio }}</label>
+                  </div>
+                  <div class="line-two">
+                    <label
+                      >{{ 'executeCollection.details.reception' | translate }}:
+                      {{ payment.FechaRecepcion | dateFormatSlashShort }}</label
+                    >
+                  </div>
+                </div>
+                <div class="column-two">
+                  <img *ngIf="payment.Stp" src="assets/Images/labels/stp.svg" alt="stp" />
+                </div>
+              </div>
+            </div>
+          </virtual-scroller>
+          <div class="is-loading" *ngIf="(paymentStatus$ | async) === 1">
+            <div class="load-circle">
+              <app-loading></app-loading>
+            </div>
+          </div>
+          <div *ngIf="(paymentStatus$ | async) !== 1 && lodashIsEmpty(paymentList$ | async)" class="without-results">
+            <app-without-results [title]="'Sin Pagos'"></app-without-results>
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        <label
+          >#{{ (paymentList$ | async).length }}
+          {{
+            (paymentList$ | async).length === 1
+              ? ('executeCollection.details.payment' | translate)
+              : ('executeCollection.details.payments' | translate)
+          }}</label
+        >
+      </div>
+    </div>
+    <div *ngIf="!(rebillView$ | async)" class="requirement-container" [ngClass]="leftContainerIsOpen ? '' : 'close'">
+      <div class="slide">
+        <div class="title">
+          <label>{{ 'purchasePromise.request' | translate }}</label>
+        </div>
+        <div class="content">
+          <label *ngIf="!lodashIsEmpty((selectedPayment$ | async)?.clientEmail)">{{
+            'executeCollection.details.payment' | translate
+          }}</label>
+          <pre *ngIf="!lodashIsEmpty((selectedPayment$ | async)?.clientEmail)">
+            {{ (selectedPayment$ | async)?.clientEmail?.Asunto }}
+
+
+            {{ (selectedPayment$ | async)?.clientEmail?.Contenido }}
+          </pre>
+        </div>
+        <div class="files-container">
+          <ng-container *ngIf="!lodashIsEmpty((selectedPayment$ | async)?.filesEmail)">
+            <div class="files" *ngIf="(selectedPayment$ | async)?.filesEmail; let mail">
+              <div class="file" (click)="viewFile(mail)">
+                <label>{{ 1 }}</label>
+                <img alt="file" src="assets/Images/quotation/file.svg" />
+                <label>{{ mail.FileKey | onlyFileNamePdf }}</label>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <div class="current-component-container" [ngClass]="(rebillView$ | async) ? 'rebillPadding' : ''">
+      <div *ngIf="!(rebillView$ | async)" class="header">
+        <label *ngIf="!lodashIsEmpty(selectedPayment$ | async); else withOutPayment"
+          >{{ 'executeCollection.details.payment' | translate }} - {{ (selectedPayment$ | async)?.Folio }}</label
+        >
+        <ng-template #withOutPayment>
+          <label>{{ 'executeCollection.details.withOutPayment' | translate }}</label>
+        </ng-template>
+      </div>
+      <router-outlet class="component"></router-outlet>
+      <div class="footer" *ngIf="!(rebillView$ | async)">
+        <!--DOCS: Validar la ruta actual para saber que botones mostrar-->
+        <ng-container *ngIf="(actualRoute$ | async) === 'paymentInformation'">
+          <button
+            [ngClass]="(validatorForManagePaymentButton$ | async) ? 'active' : 'disabled'"
+            class="btn-manage-payment"
+            (click)="managePayment()"
+          >
+            {{ 'executeCollection.details.managePayment' | translate }}
+          </button>
+        </ng-container>
+        <ng-container *ngIf="(actualRoute$ | async) === 'executePayment' || (actualRoute$ | async) === 'invoices'">
+          <button class="btn-pay" (click)="pay()">
+            {{ 'executeCollection.details.pay' | translate }}
+          </button>
+          <button class="btn-cancel-payment" (click)="goBack()">
+            {{ 'common.cancel' | translate }}
+          </button>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div>
+      <div>
+        <label>C.Pago:</label>
+        <label>{{ 'executeCollection.details.paymentConditions' | translate }}</label>
+      </div>
+      <div>
+        <label>F.Facturación:</label>
+        <label>{{ 'executeCollection.details.billingDate' | translate }}</label>
+      </div>
+      <div>
+        <label>F.Revisión:</label>
+        <label>{{ 'executeCollection.details.revisionDate' | translate }}</label>
+      </div>
+      <div>
+        <label>FEP:</label>
+        <label>{{ 'executeCollection.details.estimatedPaymentDate' | translate }}</label>
+      </div>
+      <div>
+        <label>FPP:</label>
+        <label>{{ 'executeCollection.details.promisedPaymentDate' | translate }}</label>
+      </div>
+      <div>
+        <label>DRC:</label>
+        <label>{{ 'executeCollection.details.remainingCreditDays' | translate }}</label>
+      </div>
+      <div>
+        <label>MEC:</label>
+        <label>{{ 'executeCollection.details.estimatedAmountOCollection' | translate }}</label>
+      </div>
+      <div>
+        <img alt="" src="assets/Images/execute-collection/monitoring.svg" />
+        <p class="text">{{ 'executeCollection.details.monitoring' | translate }}</p>
+      </div>
+      <div>
+        <img alt="" src="assets/Images/execute-collection/reschedule.svg" />
+        <p class="text">{{ 'executeCollection.details.reschedule' | translate }}</p>
+      </div>
+    </div>
+  </footer>
+</div>
+<pqf-draggable-modal
+  *ngIf="(selectedPayment$ | async).openViewFile"
+  [titleHeader]="fileSelected.FileKey | onlyFileNamePdf"
+  (closeModal)="closePop(false)"
+  [isLoading]="loadingFile$ | async"
+>
+  <app-upload-view-file
+    [datasFile]="{path: (selectedPayment$ | async).fileBase64, titulo: ''}"
+    *ngIf="isPdf"
+  ></app-upload-view-file>
+  <div *ngIf="!isPdf" class="imageFile">
+    <div class="fill">
+      <div class="dowload" (click)="download(fileSelected)">
+        <img src="assets/Images/descargar.svg" />
+      </div>
+    </div>
+    <div>
+      <img alt="" [src]="(selectedPayment$ | async).fileBase64" class="img" />
+    </div>
+  </div>
+</pqf-draggable-modal>

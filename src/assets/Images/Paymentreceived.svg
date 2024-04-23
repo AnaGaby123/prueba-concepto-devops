@@ -1,0 +1,19 @@
+<svg width='25' height='25' viewBox='0 0 25 25' xmlns='http://www.w3.org/2000/svg'>
+  <g fill='none' fill-rule='evenodd'>
+    <g transform='translate(1 1)'>
+      <rect stroke='#D81414' fill='#FFF' y='2' width='21' height='19' rx='1' />
+      <rect stroke='#D81414' fill='#D81414' x='5' width='1' height='4' rx='.5' />
+      <rect stroke='#D81414' fill='#D81414' x='15' width='1' height='4' rx='.5' />
+      <text font-family='Roboto-Bold, Roboto' font-size='10' font-weight='bold' fill='#D81414'>
+        <tspan x='3' y='17'>$</tspan>
+      </text>
+      <path stroke='#D81414' d='M0 6.109h21' />
+    </g>
+    <g transform='translate(12 12)'>
+      <circle stroke='#FFF' stroke-width='2' fill='#D81414' cx='6' cy='6' r='6' />
+      <path
+        d='M6.966 6.008 8.87 4.105a.398.398 0 0 0 0-.58l-.398-.399a.398.398 0 0 0-.582 0L5.998 5.041 4.106 3.15a.398.398 0 0 0-.582 0l-.398.398a.398.398 0 0 0 0 .581L5.03 6.008 3.142 7.895a.398.398 0 0 0 0 .58l.398.399a.398.398 0 0 0 .582 0l1.876-1.899L7.894 8.87a.398.398 0 0 0 .582 0l.398-.398a.398.398 0 0 0 0-.581L6.966 6.008z'
+        fill='#FFF' />
+    </g>
+  </g>
+</svg>

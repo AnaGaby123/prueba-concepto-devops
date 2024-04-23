@@ -1,0 +1,41 @@
+@use 'base' as s;
+
+#intramitable-pop-up {
+  ::ng-deep .modal {
+    background: none;
+
+    & > .modal-content {
+      transition: none;
+    }
+  }
+  & .container {
+    height: 100%;
+    width: 100%;
+    padding: 10px 0;
+    @include s.flexColumn;
+
+    & > div {
+      flex: 1;
+      overflow: hidden;
+      @include s.flexColumn;
+      @include s.absoluteCenter;
+      padding: 0 30px;
+
+      & > img {
+        width: 60px;
+        height: 60px;
+      }
+
+      & > label {
+        @include s.escaledFontFormat(s.$textSize26to29, regular, s.$pqBlack2);
+        @include s.Roboto-Regular;
+        margin-bottom: 0;
+
+        & > span {
+          color: s.$pqGreen;
+          @include s.Roboto-Bold;
+        }
+      }
+    }
+  }
+}

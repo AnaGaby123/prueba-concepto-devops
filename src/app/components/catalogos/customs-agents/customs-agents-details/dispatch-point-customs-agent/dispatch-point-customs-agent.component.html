@@ -1,0 +1,508 @@
+<div id="dispatch-point-customs-agent">
+  <div class="title">
+    <label>{{ 'customsAgents.places' | translate }}</label>
+  </div>
+  <div class="add-dispatch-point">
+    <div>
+      <label>{{ 'customsAgents.dispatchPoint' | translate }}</label>
+    </div>
+    <div>
+      <app-generic-input
+        [value]="(selectInitialDispatchPoint$ | async).NombreLugar"
+        [maxlength]="50"
+        [minlength]="3"
+        [typeValidation]="validators.AlphaAndSpacesAndNumbers"
+        (textData)="setNameDispatchName($event)"
+      ></app-generic-input>
+    </div>
+    <div>
+      <button (click)="setNewDP()" [ngClass]="(canAddNewDispatchPoint | async) ? 'btn-enable' : 'btn-disable'">{{
+        'common.add' | translate
+      }}</button>
+    </div>
+    <div class="name-dispatch-point">
+      <label *ngIf="!(canAddNewDispatchPoint | async) && (selectInitialDispatchPoint$ | async).NombreLugar !== ''">{{
+        'customsAgents.alertMessage' | translate
+      }}</label>
+    </div>
+  </div>
+  <div class="message" *ngIf="(apiStatus$ | async) === 3 && lodashIsEmpty(dispatchPointOptions$ | async)">
+    <app-without-results [title]="'Agrega un punto de despacho para habilitar esta sección'"></app-without-results>
+  </div>
+  <div class="loader" *ngIf="(apiStatus$ | async) === 1">
+    <app-loading></app-loading>
+  </div>
+  <div class="content" *ngIf="(apiStatus$ | async) === 3 && !lodashIsEmpty(dispatchPointOptions$ | async)">
+    <div class="bar">
+      <app-options-bar
+        [heightBar]="(viewType$ | async) === viewTypes.small ? '8px' : '10px'"
+        [options]="dispatchPointOptions$ | async"
+        [showArrows]="false"
+        (handleOptionSelected)="selectOption($event)"
+      ></app-options-bar>
+    </div>
+    <div class="option-content">
+      <div class="dispatch-point-status">
+        <app-check-box
+          [label]="
+            !(enableEdit$ | async)
+              ? (selectedDispatchPoint$ | async)?.Activo
+                ? ('customsAgents.dispatchPointEnabled' | translate)
+                : ('customsAgents.dispatchPointDisable' | translate)
+              : ('customsAgents.dispatchPointEnable' | translate)
+          "
+          [fontBold]="true"
+          [fontSize]="(viewType$ | async) === viewTypes.small ? '13px' : '16px'"
+          [fontColor]="(enableEdit$ | async) ? '#008894' : (selectedDispatchPoint$ | async)?.Activo ? '#39b54a' : '#A0A0A0'"
+          [enabledIconSelected]="false"
+          [check]="(selectedDispatchPoint$ | async)?.Activo"
+          [enableEdit]="(enableEdit$ | async) && (selectedDispatchPoint$ | async)?.IdAduana !== defaultUid"
+          [readOnlyCheckImage]="
+            !(enableEdit$ | async) ? 'assets/Images/check-empty-green-light.svg' : 'assets/Images/check.svg'
+          "
+          (event)="setGeneralData('Activo', $event)"
+        ></app-check-box>
+      </div>
+      <div class="address" [ngClass]="(selectedDispatchPoint$ | async)?.Activo ? '' : 'address-disable '">
+        <div class="subtitle">
+          <label>{{ 'common.address' | translate }}</label>
+        </div>
+        <div class="address-content">
+          <div class="span2">
+            <div class="search-bar">
+              <app-search
+                [activeRefresh]="true"
+                [isExpandable]="(selectedDispatchPoint$ | async)?.Activo && (enableEdit$ | async)"
+                [placeholder]="'google-maps.placeholder' | translate"
+                [resultItems]="predictionsList"
+                [searchTerm]="searchTermGoogleMaps"
+                [isDisable]="!(selectedDispatchPoint$ | async)?.Activo || !(enableEdit$ | async)"
+                (textSearch)="handleKeySearch($event)"
+                (handleClearSearchTerm)="handleClearSearchTerm()"
+                (handleItemSelected)="handleItemSelected($event)"
+              ></app-search>
+            </div>
+          </div>
+          <div>
+            <app-drop-down-list
+              [itemSelected]="selectCatPais$ | async"
+              [items]="catCountry$ | async"
+              [required]="true"
+              [label]="'formProvider.step1.country' | translate"
+              [enableEdit]="enableEdit$ | async"
+              [subtitleActive]="false"
+              [isSearchable]="true"
+              [activeMinWidth]="false"
+              [disable]="!(selectedDispatchPoint$ | async)?.Activo || !(allowEditForm$ | async)"
+              (valueDropList)="setAddressData('IdCatPais', $event)"
+            >
+            </app-drop-down-list>
+          </div>
+          <div class="span2">
+            <app-generic-input
+              [required]="true"
+              [label]="'common.direction.street' | translate"
+              [enableEdit]="enableEdit$ | async"
+              [value]="(selectAddress$ | async)?.Calle"
+              [isDisable]="!(selectedDispatchPoint$ | async)?.Activo || !(allowEditForm$ | async)"
+              [fontColor]="(selectedDispatchPoint$ | async)?.Activo || !(allowEditForm$ | async) ? '' : '#c2c3c9'"
+              [typeValidation]="validators.AlphaAndSpaces"
+              [maxlength]="50"
+              [minlength]="3"
+              (textData)="setAddressData('Calle', $event)"
+            ></app-generic-input>
+          </div>
+          <div>
+            <app-generic-input
+              [label]="'common.direction.externalNumber' | translate"
+              [enableEdit]="enableEdit$ | async"
+              [value]="(selectAddress$ | async)?.NumeroExterior"
+              [isDisable]="!(selectedDispatchPoint$ | async)?.Activo || !(allowEditForm$ | async)"
+              [fontColor]="(selectedDispatchPoint$ | async)?.Activo || !(allowEditForm$ | async) ? '' : '#c2c3c9'"
+              [typeValidation]="validators.DecimalNumber"
+              [maxlength]="4"
+              [minlength]="1"
+              (textData)="setAddressData('NumeroExterior', $event)"
+            ></app-generic-input>
+          </div>
+          <div>
+            <app-generic-input
+              [label]="'common.direction.apartmentNumber' | translate"
+              [enableEdit]="enableEdit$ | async"
+              [value]="(selectAddress$ | async)?.NumeroInterior"
+              [isDisable]="!(selectedDispatchPoint$ | async)?.Activo || !(allowEditForm$ | async)"
+              [fontColor]="(selectedDispatchPoint$ | async)?.Activo || !(allowEditForm$ | async) ? '' : '#c2c3c9'"
+              [typeValidation]="validators.DecimalNumber"
+              (textData)="setAddressData('NumeroInterior', $event)"
+            ></app-generic-input>
+          </div>
+          <div>
+            <app-generic-input
+              [enableEdit]="enableEdit$ | async"
+              [label]="'customsAgents.postalCode' | translate"
+              [value]="(selectAddress$ | async)?.CodigoPostal"
+              [isDisable]="
+                !(selectedDispatchPoint$ | async)?.Activo || !(enableZipCodeInput$ | async) || !(allowEditForm$ | async)
+              "
+              [fontColor]="(selectedDispatchPoint$ | async)?.Activo || !(allowEditForm$ | async) ? '' : '#c2c3c9'"
+              [required]="true"
+              [maxlength]="(isMexicanAddress$ | async) ? 5 : 10"
+              [typeValidation]="(isMexicanAddress$ | async) ? inputValidators.Number : inputValidators.AlphaAndSpacesAndNumbers"
+              (textData)="setAddressData('CodigoPostal', $event)"
+            ></app-generic-input>
+          </div>
+          <div>
+            <app-generic-input
+              [required]="true"
+              [label]="'common.state' | translate"
+              [enableEdit]="enableEdit$ | async"
+              [value]="(selectAddress$ | async)?.Estado"
+              [isDisable]="!(selectedDispatchPoint$ | async)?.Activo || !(allowEditForm$ | async)"
+              [fontColor]="(selectedDispatchPoint$ | async)?.Activo || !(allowEditForm$ | async) ? '' : '#c2c3c9'"
+              [typeValidation]="validators.AlphaAndSpaces"
+              [maxlength]="50"
+              [minlength]="3"
+              (textData)="setAddressData('Estado', $event)"
+            ></app-generic-input>
+          </div>
+          <div>
+            <app-generic-input
+              [required]="true"
+              [label]="'customsAgents.city' | translate"
+              [enableEdit]="enableEdit$ | async"
+              [isDisable]="!(selectedDispatchPoint$ | async)?.Activo || !(allowEditForm$ | async)"
+              [fontColor]="(selectedDispatchPoint$ | async)?.Activo || !(allowEditForm$ | async) ? '' : '#c2c3c9'"
+              [value]="(selectAddress$ | async)?.Ciudad"
+              [typeValidation]="validators.AlphaAndSpaces"
+              [maxlength]="50"
+              [minlength]="3"
+              (textData)="setAddressData('Ciudad', $event)"
+            ></app-generic-input>
+          </div>
+          <div>
+            <app-generic-input
+              [required]="true"
+              [label]="'common.direction.municipality' | translate"
+              [enableEdit]="enableEdit$ | async"
+              [value]="(selectAddress$ | async)?.Municipio"
+              [isDisable]="!(selectedDispatchPoint$ | async)?.Activo || !(allowEditForm$ | async)"
+              [fontColor]="(selectedDispatchPoint$ | async)?.Activo || !(allowEditForm$ | async) ? '' : '#c2c3c9'"
+              [typeValidation]="validators.AlphaAndSpaces"
+              [maxlength]="50"
+              [minlength]="3"
+              (textData)="setAddressData('Municipio', $event)"
+            ></app-generic-input>
+          </div>
+          <div>
+            <app-generic-input
+              [required]="true"
+              [label]="'common.direction.Suburb' | translate"
+              [enableEdit]="enableEdit$ | async"
+              [value]="(selectAddress$ | async)?.Colonia"
+              [isDisable]="!(selectedDispatchPoint$ | async)?.Activo || !(allowEditForm$ | async)"
+              [fontColor]="(selectedDispatchPoint$ | async)?.Activo || !(allowEditForm$ | async) ? '' : '#c2c3c9'"
+              [typeValidation]="validators.AlphaAndSpaces"
+              [maxlength]="50"
+              [minlength]="3"
+              (textData)="setAddressData('Colonia', $event)"
+            ></app-generic-input>
+          </div>
+          <div>
+            <app-drop-down-list
+              [label]="'customsAgents.dispatchPlace' | translate"
+              [enableEdit]="enableEdit$ | async"
+              [subtitleActive]="false"
+              [activeMinWidth]="false"
+              [required]="true"
+              [capitalize]="false"
+              [isSearchable]="(dispatchPlaces$ | async)?.length > 5"
+              [disable]="!(selectedDispatchPoint$ | async)?.Activo"
+              [items]="dispatchPlaces$ | async"
+              [itemSelected]="selectedDispatchPlace$ | async"
+              (valueDropList)="setGeneralData('IdCatLugarDespacho', $event.value)"
+            ></app-drop-down-list>
+          </div>
+          <div>
+            <app-check-box
+              [label]="'Aplicar Fletera'"
+              [enableEdit]="(enableEdit$ | async) && (selectedDispatchPoint$ | async)?.Activo"
+              [disabled]="!(selectedDispatchPoint$ | async)?.Activo"
+              [enabledIconNoSelected]="!(selectedDispatchPoint$ | async)?.Fletera"
+              [check]="(selectedDispatchPoint$ | async)?.Fletera"
+              [fontSize]="(viewType$ | async) === viewTypes.small ? '13px' : '16px'"
+              [fontColor]="
+                (selectedDispatchPoint$ | async)?.Activo
+                  ? (selectedDispatchPoint$ | async).Fletera
+                    ? '#008894'
+                    : ''
+                  : '#c2c3c9'
+              "
+              (event)="setGeneralData('Fletera', $event)"
+            ></app-check-box>
+          </div>
+        </div>
+        <div class="clean-form-button">
+          <button
+            [ngClass]="
+              (enableEdit$ | async) && (allowEditForm$ | async) && (selectedDispatchPoint$ | async)?.Activo
+                ? 'enable'
+                : 'disabled'
+            "
+            (click)="setResetForm()"
+            >{{ 'common.cleanForm' | translate }}</button
+          >
+        </div>
+      </div>
+      <div class="add-fee-section" *ngIf="enableEdit$ | async">
+        <div class="fee-content">
+          <div class="add-fee">
+            <label>{{ 'customsAgents.addFee' | translate }}</label>
+            <div>
+              <app-generic-input
+                [fontSize]="(viewType$ | async) === viewTypes.small ? '13px' : '16px'"
+                [isDisable]="!(selectedDispatchPoint$ | async)?.Activo"
+                [value]="(addRate$ | async)?.Concepto"
+                [label]="'customsAgents.nameOfFee' | translate"
+                (textData)="setRateInfo('Concepto', $event)"
+                [maxlength]="200"
+                [minlength]="3"
+                [typeValidation]="validators.AlphaAndSpacesAndNumbers"
+              ></app-generic-input>
+            </div>
+          </div>
+          <div class="petition">
+            <div class="radio">
+              <app-radio-button
+                (emitSelected)="setRateInfo('IgualarAPedimento', $event)"
+                [disabled]="!(selectedDispatchPoint$ | async)?.Activo"
+                [label]="'customsAgents.equalizePetition' | translate"
+                [value]="(addRate$ | async)?.IgualarAPedimento"
+              ></app-radio-button>
+            </div>
+            <div>
+              <app-generic-input
+                [value]="(addRate$ | async)?.MontoImportacion"
+                [placeholder]="'$'"
+                [isDisable]="!(addRate$ | async)?.IgualarAPedimento || !(selectedDispatchPoint$ | async)?.Activo"
+                [textAlign]="'center'"
+                [label]="'formProvider.step8.subtitles.import' | translate"
+                [typeValidation]="validators.DecimalNumber"
+                (textData)="setRateInfo('MontoImportacion', $event)"
+              ></app-generic-input>
+              <div class="label">
+                <label [style.color]="(addRate$ | async)?.IgualarAPedimento ? '' : 'rgb(194, 195, 201)'">Dls</label>
+              </div>
+            </div>
+            <div>
+              <app-generic-input
+                [value]="(addRate$ | async)?.MontoExportacion"
+                [placeholder]="'$'"
+                [isDisable]="!(addRate$ | async)?.IgualarAPedimento || !(selectedDispatchPoint$ | async)?.Activo"
+                [label]="'customsAgents.export' | translate"
+                [typeValidation]="validators.DecimalNumber"
+                [textAlign]="'center'"
+                (textData)="setRateInfo('MontoExportacion', $event)"
+              ></app-generic-input>
+              <div class="label">
+                <label [style.color]="(addRate$ | async)?.IgualarAPedimento ? '' : 'rgb(194, 195, 201)'">Dls</label>
+              </div>
+            </div>
+          </div>
+          <div class="custom-value">
+            <div class="input">
+              <app-radio-button
+                [disabled]="!(selectedDispatchPoint$ | async)?.Activo"
+                [value]="(addRate$ | async)?.PorcentajeAPedimento"
+                (emitSelected)="setRateInfo('PorcentajeAPedimento', $event)"
+              ></app-radio-button>
+              <app-generic-input
+                [value]="(addRate$ | async)?.Porcentaje"
+                [placeholder]="'%'"
+                [label]="'customsAgents.petitionPorcentage' | translate"
+                [textAlign]="'center'"
+                [max]="100"
+                [typeValidation]="validators.Percentage"
+                [isDisable]="!(addRate$ | async)?.PorcentajeAPedimento || !(selectedDispatchPoint$ | async)?.Activo"
+                (textData)="setRateInfo('Porcentaje', $event)"
+              ></app-generic-input>
+              <div class="label">
+                <label [style.color]="(addRate$ | async)?.PorcentajeAPedimento ? '' : 'rgb(194, 195, 201)'">%</label>
+              </div>
+            </div>
+            <div class="input">
+              <app-generic-input
+                [value]="(addRate$ | async)?.LimiteMaximo"
+                [isDisable]="(addRate$ | async)?.SinLimite || !(selectedDispatchPoint$ | async)?.Activo"
+                [textAlign]="'center'"
+                [typeValidation]="validators.DecimalNumber"
+                [label]="'customsAgents.maximunLimitOfPetition' | translate"
+                [placeholder]="'$'"
+                (textData)="setRateInfo('LimiteMaximo', $event)"
+              ></app-generic-input>
+              <div class="label">
+                <label [style.color]="(addRate$ | async)?.SinLimite ? '' : 'rgb(194, 195, 201)'">Dls</label>
+              </div>
+            </div>
+            <div class="check">
+              <app-check-box
+                [fontColor]="(addRate$ | async)?.SinLimite ? '#008894' : ''"
+                [fontSize]="(viewType$ | async) === viewTypes.small ? '13px' : '16px'"
+                [label]="'customsAgents.noLimit' | translate"
+                [check]="(addRate$ | async)?.SinLimite"
+                [disabled]="!(selectedDispatchPoint$ | async)?.Activo"
+                (event)="setRateInfo('SinLimite', $event)"
+              ></app-check-box>
+            </div>
+          </div>
+          <div class="btn">
+            <button (click)="addNewRate()" [ngClass]="(addFeeButton$ | async) ? 'button' : 'button-disable'">{{
+              'common.add' | translate
+            }}</button>
+          </div>
+        </div>
+      </div>
+      <div class="fee-section" [ngClass]="(selectedDispatchPoint$ | async)?.Activo ? '' : 'disabled-fee-section'">
+        <div class="subtitle">
+          <label>{{ 'customsAgents.fees' | translate }}</label>
+        </div>
+        <div class="content">
+          <div class="withoutResults" *ngIf="lodashIsEmpty(selectFees$ | async)">
+            <app-without-results [minHeight]="'50px'" [title]="'customsAgents.noFeesMessage' | translate"></app-without-results>
+          </div>
+          <div class="fee-item" *ngFor="let fee of selectFees$ | async">
+            <label
+              ><span class="bold">{{ fee.Concepto }}</span
+              >{{
+                fee.IgualarAPedimento
+                  ? ' · Iguala a Pedimento · Importación ' +
+                    (fee.MontoImportacion | currency) +
+                    ' Dls Exportación ' +
+                    (fee.MontoExportacion | currency) +
+                    ' Dls'
+                  : ''
+              }}
+              {{ fee.PorcentajeAPedimento ? '· Porcentaje a valor de aduana ' + (fee.Porcentaje | percentageTransform) : '' }}
+              <span class="regular">
+                {{
+                  fee.SinLimite ? '· Sin Limite' : '· Limite máximo de pedimento ' + (fee.LimiteMaximo | currency) + ' Dls'
+                }}</span
+              >
+            </label>
+            <img
+              *ngIf="(enableEdit$ | async) && (selectedDispatchPoint$ | async)?.Activo"
+              [src]="(selectedDispatchPoint$ | async)?.Activo ? 'assets/Images/cerrar.svg' : 'assets/Images/cerrar_gris.svg'"
+              (click)="deleteRate(fee)"
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        class="required-documentation"
+        [ngClass]="(selectedDispatchPoint$ | async)?.Activo ? '' : 'disabled-required-documentation'"
+      >
+        <div class="left">
+          <div [style.padding-left]="'0'">
+            <label>{{ 'customsAgents.requiredDocumentation' | translate }}</label>
+          </div>
+          <div>
+            <app-check-box
+              [check]="(selectedDispatchPoint$ | async)?.RequiereFacturasComerciales"
+              [fontColor]="
+                (selectedDispatchPoint$ | async)?.Activo
+                  ? (selectedDispatchPoint$ | async)?.RequiereFacturasComerciales
+                    ? '#008894'
+                    : ''
+                  : '#c2c3c9'
+              "
+              [enableEdit]="false"
+              [disabled]="!(selectedDispatchPoint$ | async)?.Activo"
+              [label]="'common.invoices' | translate"
+              (event)="setGeneralData('RequiereFacturasComerciales', $event)"
+            ></app-check-box>
+          </div>
+          <div>
+            <app-check-box
+              [check]="(selectedDispatchPoint$ | async)?.Nafta"
+              [fontColor]="
+                (selectedDispatchPoint$ | async)?.Activo
+                  ? (selectedDispatchPoint$ | async)?.Nafta
+                    ? '#008894'
+                    : ''
+                  : '#c2c3c9'
+              "
+              [enableEdit]="(enableEdit$ | async) && (selectedDispatchPoint$ | async)?.Activo"
+              [disabled]="!(selectedDispatchPoint$ | async)?.Activo"
+              [label]="'Nafta'"
+              (event)="setGeneralData('Nafta', $event)"
+            ></app-check-box>
+          </div>
+          <div>
+            <app-check-box
+              [check]="(selectedDispatchPoint$ | async)?.RequierePackingList"
+              [fontColor]="
+                (selectedDispatchPoint$ | async)?.Activo
+                  ? (selectedDispatchPoint$ | async)?.RequierePackingList
+                    ? '#008894'
+                    : ''
+                  : '#c2c3c9'
+              "
+              [enableEdit]="(enableEdit$ | async) && (selectedDispatchPoint$ | async)?.Activo"
+              [disabled]="!(selectedDispatchPoint$ | async)?.Activo"
+              [label]="'Packing List'"
+              (event)="setGeneralData('RequierePackingList', $event)"
+            ></app-check-box>
+          </div>
+          <div>
+            <app-check-box
+              [check]="(selectedDispatchPoint$ | async)?.CartaUso"
+              [fontColor]="
+                (selectedDispatchPoint$ | async)?.Activo
+                  ? (selectedDispatchPoint$ | async)?.CartaUso
+                    ? '#008894'
+                    : ''
+                  : '#c2c3c9'
+              "
+              [enableEdit]="(enableEdit$ | async) && (selectedDispatchPoint$ | async)?.Activo"
+              [disabled]="!(selectedDispatchPoint$ | async)?.Activo"
+              [label]="'customsAgents.letterOfUse' | translate"
+              (event)="setGeneralData('CartaUso', $event)"
+            ></app-check-box>
+          </div>
+          <div>
+            <app-check-box
+              [check]="(selectedDispatchPoint$ | async)?.Certificados"
+              [fontColor]="
+                (selectedDispatchPoint$ | async)?.Activo
+                  ? (selectedDispatchPoint$ | async)?.Certificados
+                    ? '#008894'
+                    : ''
+                  : '#c2c3c9'
+              "
+              [enableEdit]="(enableEdit$ | async) && (selectedDispatchPoint$ | async)?.Activo"
+              [disabled]="!(selectedDispatchPoint$ | async)?.Activo"
+              [label]="'uploadInvoice.certificate' | translate"
+              (event)="setGeneralData('Certificados', $event)"
+            ></app-check-box>
+          </div>
+        </div>
+        <div class="right">
+          <label>{{ 'customsAgents.documentationEmail' | translate }}</label>
+          <app-generic-input
+            [value]="(selectedDispatchPoint$ | async)?.CorreoDeDocumentacion"
+            [typeValidation]="inputValidators.Email"
+            [isDisable]="!(selectedDispatchPoint$ | async)?.Activo"
+            [fontColor]="(selectedDispatchPoint$ | async)?.Activo ? '' : '#c2c3c9'"
+            [enableEdit]="enableEdit$ | async"
+            [maxlength]="80"
+            (textData)="setGeneralData('CorreoDeDocumentacion', $event)"
+          ></app-generic-input>
+        </div>
+      </div>
+    </div>
+    <div class="required-data">
+      <label *ngIf="enableEdit$ | async"
+        >*{{ 'common.requiredField' | translate }}, {{ 'customsAgents.requiredDataContinueMessage' | translate }}</label
+      >
+    </div>
+  </div>
+</div>

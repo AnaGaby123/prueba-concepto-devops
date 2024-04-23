@@ -1,0 +1,19 @@
+<div id="step0">
+  <div *ngIf="false" class="code-bar">
+    <div class="content">
+      <div class="code-content">
+        <img src="assets/Images/barras_inspeccionar.svg" alt="" />
+        <label>{{ '[ 3018 8000249 ] ' }}</label>
+      </div>
+      <div class="text-content">
+        <label>{{ 'Escanear Código de Pedimento' }}</label>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="true" class="start-inspect">
+    <div class="content">
+      <label>{{ 'iniciar inspección ' }}</label>
+      <button (click)="goToNextStep(1)">{{ 'GRABAR' }} <img src="assets/Images/triangulo_blanco_derecha.svg" alt="" /> </button>
+    </div>
+  </div>
+</div>

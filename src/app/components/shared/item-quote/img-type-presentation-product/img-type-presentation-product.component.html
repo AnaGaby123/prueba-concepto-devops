@@ -1,0 +1,5 @@
+<div class="img-product-container" *ngIf="columnImgTypePresentationProduct?.src">
+  <div class="img-product">
+    <img #imageElement alt="" [src]="setImage(columnImgTypePresentationProduct?.src)" (error)="errorImage()" />
+  </div>
+</div>

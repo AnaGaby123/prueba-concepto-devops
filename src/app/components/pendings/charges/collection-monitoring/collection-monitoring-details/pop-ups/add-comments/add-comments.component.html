@@ -1,0 +1,103 @@
+<app-pop-up-generic
+  [titleHeader]="'common.comments' | translate"
+  [width]="viewType === 'macBookAir' ? '864px' : '620px'"
+  [height]="viewType === 'macBookAir' ? '720px' : '561px'"
+>
+  <div class="pop-up-content">
+    <div class="top">
+      <div class="image">
+        <img src="assets/Images/clientes/logo_proquifa_hover.svg" alt="" />
+      </div>
+      <div class="details">
+        <div class="name">
+          <label>{{ selectedClient?.NombreCliente }}</label>
+        </div>
+      </div>
+      <div class="amount">
+        <div class="number">
+          <label>{{ selectedInvoicesAmount$ | async | currency: 'USD':'symbol-narrow':'1.2-2' }} {{ 'USD' }}</label>
+        </div>
+        <div class="text">
+          <label>{{ 'common.amount' | translate }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="invoice">
+      <div class="titleList">
+        <label
+          >{{ (selectedInvoices$ | async)?.length }}
+          {{
+            (selectedInvoices$ | async)?.length === 1
+              ? ('collectionMonitoring.selectedInvoice' | translate)
+              : ('collectionMonitoring.selectedInvoices' | translate)
+          }}</label
+        >
+      </div>
+      <div class="list">
+        <div class="header">
+          <div class="index">
+            <label>#</label>
+          </div>
+          <div class="invoice">
+            <label>{{ 'common.invoice' | translate }}</label>
+          </div>
+          <div class="f-invoice">
+            <label>F.Facturación</label>
+          </div>
+          <div class="f-invoice">
+            <label>FEP</label>
+          </div>
+          <div class="f-invoice">
+            <label>FPP</label>
+          </div>
+          <div class="mec">
+            <label>MEC</label>
+          </div>
+          <div class="state">
+            <label>Estado</label>
+          </div>
+        </div>
+        <div class="content-list">
+          <div>
+            <div class="item" *ngFor="let item of selectedInvoices$ | async">
+              <div class="index">
+                <label>{{ item.Index }}</label>
+              </div>
+              <div class="invoice">
+                <label class="pqf">{{ item.FolioFactura ? item.FolioFactura : 'ND' }}</label>
+              </div>
+              <div class="f-invoice">
+                <label>{{ item.FechaCertificacionSat | dateFormatSlashShort }}</label>
+              </div>
+              <div class="f-invoice">
+                <label class="pqf">{{ item.FechaPromesaPagoMonitoreoCobros | dateFormatSlashShort }}</label>
+              </div>
+              <div class="f-invoice">
+                <label>{{ item.FechaCompromisoPago | dateFormatSlashShort }}</label>
+              </div>
+              <div class="mec">
+                <label class="pqf">{{ item.MontoPendiente | currency: 'USD':'symbol-narrow':'1.2-2' }} {{ 'USD' }}</label>
+              </div>
+              <div class="state">
+                <img *ngIf="item.EnTiempoVerde" src="assets/Images/labels/en-tiempo.svg" alt="in time" />
+                <img *ngIf="item.VencidaAmarillo" src="assets/Images/labels/overdue.svg" alt="overdue" />
+                <img *ngIf="item.VencidaNaranja" src="assets/Images/labels/overdue-orange.svg" alt="overdue" />
+                <img *ngIf="item.VencidaRojo" src="assets/Images/labels/overdue-red.svg" alt="overdue" />
+                <img *ngIf="item.Morosa" src="assets/Images/labels/defaulting.svg" alt="overdue" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="center">
+      <label>{{ 'common.comments' | translate }}</label>
+      <app-generic-text-area [height]="viewType === 'macBookAir' ? '160px' : '100px'" (emitData)="setComment($event)">
+      </app-generic-text-area>
+    </div>
+    <div class="bottom">
+      <button (click)="save(false)">{{ 'common.cancel' | translate }}</button>
+      <button (click)="save(true)">{{ 'common.accept' | translate }}</button>
+    </div>
+  </div>
+</app-pop-up-generic>

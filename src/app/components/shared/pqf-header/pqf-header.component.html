@@ -1,0 +1,10 @@
+<div id="pqf-header">
+  <div class="left-content" [ngClass]="{'active-back': activeBack}" (click)="activeBack && handleGoBack()">
+    <div class="image" *ngIf="activeBack">
+      <img src="assets/Images/arrows/header-arrow.svg" />
+    </div>
+    <div class="title">
+      <label>{{ title | translate }}</label>
+    </div>
+  </div>
+</div>

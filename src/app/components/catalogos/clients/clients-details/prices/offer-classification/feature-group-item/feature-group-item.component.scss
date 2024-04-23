@@ -1,0 +1,73 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+:host {
+  & .product-item {
+    width: 100%;
+    @include s.flexRow;
+    border-bottom: 1px solid s.$pqGray2;
+
+    &.selected {
+      & > .select-indicator {
+        background-color: s.$pqGreen;
+      }
+    }
+
+    & > .select-indicator {
+      flex-basis: 8px;
+      flex-shrink: 0;
+      width: 8px;
+    }
+
+    & > .item-content {
+      @include s.flexColumn;
+      flex-basis: 100%;
+      padding: 7px;
+
+      & > label.title {
+        @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+        @include s.Roboto-Bold;
+        margin-bottom: 5px;
+
+        & > span {
+          color: s.$pqGreen;
+          vertical-align: baseline;
+        }
+      }
+
+      & > label.subtitle {
+        @include s.escaledFontFormat(s.$textSize11to13, regular, s.$pqBlack2);
+        @include s.Roboto-Regular;
+      }
+
+      & > .marker {
+        @include s.flexRowNoWrap;
+        align-items: center;
+        gap: 5px;
+        margin-top: 5px;
+
+        & > img {
+          height: 12px;
+        }
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize9to11, bold, s.$pqOrange4);
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .item-content {
+        & > .marker {
+          & > img {
+            height: 13px;
+          }
+        }
+      }
+    }
+  }
+}

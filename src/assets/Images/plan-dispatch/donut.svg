@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width='95px' height='55px' viewBox='0 0 95 55' version='1.1' xmlns='http://www.w3.org/2000/svg'>
+  <title>Group 11</title>
+  <g id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'>
+    <g id='10' transform='translate(-2426.000000, -389.000000)'>
+      <g id='Group-11' transform='translate(2426.000000, 389.000000)'>
+        <rect id='Rectangle-Copy-6' stroke='#88868A' stroke-width='0.25' fill='#ECEEF0' x='0.125' y='0.125'
+              width='94.75' height='54.75'></rect>
+        <path
+          d='M51.6962276,33.334664 C50.5462038,34.1192284 49.1526391,34.5783234 47.6514503,34.5783234 C43.7032018,34.5783234 40.5027738,31.4029168 40.5027738,27.485085 C40.5027738,23.9343073 43.1323506,20.9928839 46.5646695,20.4733525 L46.6229196,10.0001109 C37.3528293,10.5285136 30,18.1545905 30,27.485085 C30,37.1582373 37.9025995,45 47.6514503,45 C52.0002378,45 55.9817721,43.4391881 59.0584879,40.8515118 L51.6962276,33.334664 Z'
+          id='Stroke-1' stroke='#424242' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'></path>
+        <path
+          d='M54.5155334,26.0411538 L65,26.0411538 C65,26.0411538 63.1249009,10.6453943 48.7349025,10 L48.7349025,20.1716141 C48.7349025,20.1716141 53.9929466,21.1857259 54.5155334,26.0411538 Z'
+          id='Stroke-3' stroke='#424242' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'></path>
+        <path
+          d='M54.6999921,28.5474905 L64.846608,28.5474905 C64.846608,28.5474905 64.7317721,34.3155636 60.5727136,38.5039731 L53.4085037,31.4667354 C53.4085037,31.4667354 54.6999921,30.1454513 54.6999921,28.5474905 Z'
+          id='Stroke-5' stroke='#424242' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'></path>
+      </g>
+    </g>
+  </g>
+</svg>

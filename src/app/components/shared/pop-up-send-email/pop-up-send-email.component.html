@@ -1,0 +1,95 @@
+<app-pop-up-generic [width]="width" [height]="height" [titleHeader]="titleHeader">
+  <div class="container">
+    <div class="message-sender">
+      <div class="message-content-data">
+        <div class="email-info-emails">
+          <label>Contacto:</label>
+          <div class="contacts">
+            <div *ngIf="!isEditAddressEmail">
+              <div class="item-contact" *ngFor="let email of mailListAux; let i = index">
+                <label>{{
+                  lodashFind(email.labels, ['isShow', true])?.label + (email.labels.length - 1 > i ? ',' : '')
+                }}</label>
+              </div>
+            </div>
+            <div class="contact-edit" *ngIf="isEditAddressEmail">
+              <input
+                #inputElement
+                [ngClass]="{error: activeErrorEmail}"
+                type="text"
+                [(ngModel)]="currentEmail"
+                (keypress)="onKeyPress($event)"
+                (ngModelChange)="validate($event)"
+                (blur)="onBlur()"
+                (keyup.enter)="onEnter()"
+              />
+            </div>
+          </div>
+          <div *ngIf="activeContacts">
+            <app-drop-list-contact
+              [minHeight]="40"
+              [options]="contacts"
+              (emitValue)="pushEmail($event)"
+            ></app-drop-list-contact>
+          </div>
+        </div>
+        <div class="email-info-with-copy">
+          <label>CC:</label>
+          <app-multiple-emails-input (getEmails)="addCarbonCopy($event)"></app-multiple-emails-input>
+        </div>
+        <div class="email-info-subject">
+          <label>{{ 'quotation.details.subject' | translate }}:</label>
+          <div class="subject">
+            <label *ngIf="!activeSaveSubject">{{ subject }}</label>
+            <input *ngIf="activeSaveSubject" type="text" [(ngModel)]="subject" />
+          </div>
+        </div>
+      </div>
+      <ng-container *ngIf="!innerHTMLTemplate">
+        <div class="attached-file" *ngIf="!hasMultipleComments">
+          <div
+            ><label>{{ additionalText }}</label></div
+          >
+        </div>
+
+        <div class="filesContainer" *ngIf="hasMultipleComments">
+          <div class="file" *ngFor="let files of comments">
+            <label>{{ files }} </label>
+          </div>
+        </div>
+        <div class="comments">
+          <app-generic-text-area
+            [height]="'100%'"
+            [placeholder]="'email.additionalComments' | translate"
+            (emitData)="addComments($event)"
+          >
+          </app-generic-text-area>
+        </div>
+      </ng-container>
+      <div class="ngContainer" *ngIf="innerHTMLTemplate">
+        <ng-content></ng-content>
+      </div>
+    </div>
+    <div class="buttons-container">
+      <button class="btn-enable" (click)="emitBtn(false)">{{ 'common.cancel' | translate }}</button>
+      <button
+        [ngClass]="
+          validateOnlyContact
+            ? mailListAux.length > 0 && subject && comment && !activeErrorEmail
+              ? 'btn-enable'
+              : 'btn-disable'
+            : ((mailListAux.length > 0 && subject) || carbonCopy.length > 0) && comment && !activeErrorEmail
+            ? 'btn-enable'
+            : 'btn-disable'
+        "
+        [disabled]="
+          validateOnlyContact
+            ? mailListAux.length === 0 || !subject || !comment || activeErrorEmail
+            : (mailListAux.length === 0 && carbonCopy.length === 0) || !subject || !comment || activeErrorEmail
+        "
+        (click)="emitBtn(true)"
+        >{{ 'common.send' | translate }}</button
+      >
+    </div>
+  </div>
+</app-pop-up-generic>

@@ -1,0 +1,19 @@
+<div id="filter-customs-agents">
+  <div class="drop">
+    <app-drop-down-with-image
+      [isSelected]="true"
+      [mainImgSource]="'assets/Images/providers/agente.svg'"
+      [options]="filterOptions$ | async"
+      [selectedOption]="filterOptionSelected$ | async"
+      (selectOption)="setFilterOption($event)"
+      [title]="'Agentes Aduanales'"
+    ></app-drop-down-with-image>
+  </div>
+  <div class="search">
+    <app-search
+      [searchTerm]="searchTerm$ | async"
+      [placeholder]="'search' | translate"
+      (textSearch)="handleKeySearch($event)"
+    ></app-search>
+  </div>
+</div>

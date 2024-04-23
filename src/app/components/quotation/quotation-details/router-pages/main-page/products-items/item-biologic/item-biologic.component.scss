@@ -1,0 +1,28 @@
+@use 'base' as s;
+
+:host {
+  @include s.structure-item-products-quotation-complete();
+
+  #items-products {
+    & > .content-items {
+      & > .information {
+        & > .section-three {
+          & > .column {
+            flex: 1 1 auto;
+          }
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #technical-product {
+      & > .section-first,
+      .section-second {
+        & > .content {
+          grid-template-columns: 0.5fr 1fr;
+        }
+      }
+    }
+  }
+}

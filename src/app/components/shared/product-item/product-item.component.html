@@ -1,0 +1,47 @@
+<div class="product" [ngClass]="backGroundColor">
+  <div class="content-item">
+    <img class="img-logo" alt="logo-proquifa" [src]="'assets/Images/clientes/logo_proquifa_default.svg'" />
+    <img class="img-logo-hover" alt="logo-hover" [src]="'assets/Images/clientes/logo_proquifa_hover.svg'" />
+  </div>
+  <div class="footer-item">
+    <div class="titleFooter">
+      <label *ngIf="showIndex">#{{ product?.Index }} · </label>
+      <div class="centerPagination">
+        <img alt="" class="img-logo" [src]="'assets/Images/clientes/logo_proquifa_default.svg'" />
+        <img alt="" class="img-logo-hover" [src]="'assets/Images/clientes/logo_proquifa_hover.svg'" />
+      </div>
+      <span>CAT #{{ product?.TipoProductoClave === productsType.trainings ? 'N/D' : product?.Catalogo }}</span>
+    </div>
+    <div class="description">
+      <label>{{ product?.Descripcion }}</label>
+    </div>
+    <div class="totals">
+      <div>
+        <label
+          >Alternativos {{ product?.TipoProductoClave === productsType.trainings ? ' N/A ' : product?.TotalAlternativo }}</label
+        >
+      </div>
+      <div>
+        <span
+          >Complementarios
+          {{ product?.TipoProductoClave === productsType.trainings ? ' N/A ' : product?.TotalComplementario }}</span
+        >
+      </div>
+    </div>
+    <div class="prices">
+      <div class="content-left">
+        <div class="content-1">
+          <label *ngIf="product?.TipoProductoClave !== productsType.trainings"
+            >{{ product?.Presentacion }} {{ product?.Unidad }}</label
+          >
+        </div>
+        <div class="content-2">
+          <label *ngIf="product?.TipoProductoClave !== productsType.trainings">{{ product?.Uso }}</label>
+        </div>
+      </div>
+      <div class="content-right">
+        <label>{{ product?.PrecioLista | currency }} </label>
+      </div>
+    </div>
+  </div>
+</div>

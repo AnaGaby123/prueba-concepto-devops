@@ -1,0 +1,224 @@
+<app-pop-up-generic
+  class="add-address-pop"
+  [titleHeader]="data?.title"
+  [activeButtons]="true"
+  [activeBtn]="addNewAddress$ | async"
+  [height]="(viewType$ | async) === viewTypes.small ? '730px' : '805px'"
+  [width]="(viewType$ | async) === viewTypes.small ? '720px' : '827px'"
+  (evento)="onClose($event)"
+>
+  <div class="content">
+    <div class="header">
+      <div class="image">
+        <img
+          #imageElement
+          alt="logo"
+          [src]="setImage((selectedClient$ | async)?.imageHover)"
+          class="imgFoto"
+          (error)="errorImage()"
+        />
+      </div>
+      <div class="data">
+        <label class="title">{{ (selectedClient$ | async)?.Alias ?? 'N/D'}}</label>
+        <label class="subtitle"
+          >{{ (selectedClient$ | async)?.Sector || 'N/D' }} · {{ (selectedClient$ | async).Industria || 'N/D' }}</label
+        >
+      </div>
+    </div>
+    <div class="aqua-content">
+      <div class="title">
+        <label>{{ 'common.address' | translate }}</label>
+      </div>
+      <div class="aqua">
+        <div class="text">
+          <label>{{ '* Tipo de Dirección:' }}</label>
+        </div>
+        <div class="drop-container">
+          <app-drop-down-list
+            [required]="true"
+            [capitalize]="false"
+            [items]="addressType$ | async"
+            [isSearchable]="(addressType$ | async)?.length > 5"
+            [itemSelected]="selectedAddressType$ | async"
+            (valueDropList)="setDropDataAddress('IdCatTipoDireccion', $event)"
+          ></app-drop-down-list>
+        </div>
+      </div>
+    </div>
+    <div class="input-content">
+      <div class="delivery-route">
+        <app-drop-down-list
+          [activeMinWidth]="false"
+          [isSearchable]="(routesList$ | async)?.length > 5"
+          [itemSelected]="selectedRoute$ | async"
+          [items]="routesList$ | async"
+          [label]="'formProvider.step1.typeOfRegion' | translate"
+          [required]="true"
+          (valueDropList)="setDropDataAddress('IdCatRutaEntrega', $event)"
+        ></app-drop-down-list>
+      </div>
+      <div class="zone">
+        <app-drop-down-list
+          [activeMinWidth]="false"
+          [disable]="!!!(selectedRoute$ | async)"
+          [isSearchable]="(zoneList$ | async)?.length > 5"
+          [itemSelected]="zoneSelected$ | async"
+          [items]="zoneList$ | async"
+          [label]="'formProvider.step1.region' | translate"
+          [optionsPosition]="'top'"
+          [required]="true"
+          (valueDropList)="setDropDataAddress('IdCatZona', $event)"
+        ></app-drop-down-list>
+      </div>
+      <div class="search-bar">
+        <app-search
+          [activeRefresh]="true"
+          [isExpandable]="true"
+          [borderColor]="'#008894'"
+          [imageFill]="'#008894'"
+          [placeholder]="'google-maps.placeholder' | translate"
+          [resultItems]="predictionsList"
+          [searchTerm]="searchTermGoogleMaps"
+          (textSearch)="handleKeySearchDirection($event)"
+          (handleSearchTermSelected)="changeSearchTerm($event)"
+          (handleItemSelected)="handleItemSelected($event)"
+          (handleClearSearchTerm)="handleClearSearchTerm()"
+        ></app-search>
+      </div>
+      <div class="check-freight">
+        <app-check-box
+          [label]="'formProvider.step1.paysFreight' | translate"
+          (event)="setInputAddressForm('PagaGuiaEnvio', $event)"
+          [check]="(addressForm$ | async)?.PagaGuiaEnvio"
+          [disabled]="!(enableShippingGuide$ | async)"
+          [labelFontStyle]="(enableShippingGuide$ | async) ? 'robotoRegular16Proquifa' : 'labelRobotoRegularDisable13'"
+        ></app-check-box>
+      </div>
+      <div class="country">
+        <app-drop-down-list
+          [activeMinWidth]="false"
+          [capitalize]="false"
+          [isSearchable]="true"
+          [itemSelected]="selectedCountry$ | async"
+          [items]="listCountry$ | async"
+          [label]="'formProvider.step1.country' | translate"
+          [required]="true"
+          [disable]="!(addressForm$ | async)?.allowEditForm"
+          (valueDropList)="setDropDataAddress('IdCatPais', $event)"
+        ></app-drop-down-list>
+      </div>
+      <div class="street">
+        <app-generic-input
+          [isDisable]="!(addressForm$ | async)?.allowEditForm"
+          [label]="'formProvider.step1.street' | translate"
+          [maxlength]="150"
+          [required]="true"
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          [value]="(addressForm$ | async)?.Calle"
+          (textData)="setInputAddressForm('Calle', $event)"
+        ></app-generic-input>
+      </div>
+      <div class="external-number">
+        <app-generic-input
+          [isDisable]="!(addressForm$ | async)?.allowEditForm"
+          [label]="'formProvider.step1.externalNumber' | translate"
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          [value]="(addressForm$ | async)?.NumeroExterior"
+          (textData)="setInputAddressForm('NumeroExterior', $event)"
+        ></app-generic-input>
+      </div>
+      <div class="internal-number">
+        <app-generic-input
+          [isDisable]="!(addressForm$ | async)?.allowEditForm"
+          [label]="'formProvider.step1.apartmentNumber' | translate"
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          [value]="(addressForm$ | async)?.NumeroInterior"
+          (textData)="setInputAddressForm('NumeroInterior', $event)"
+        ></app-generic-input>
+      </div>
+      <div class="zip-code">
+        <app-generic-input
+          [activeErrors]="!(zipCodeValid$ | async)"
+          [isDisable]="!(addressForm$ | async)?.allowEditForm"
+          [label]="'formProvider.step1.zipCode' | translate"
+          [maxlength]="(isMexicanAddress$ | async) ? 5 : 10"
+          [required]="true"
+          [typeValidation]="(isMexicanAddress$ | async) ? inputValidators.Number : inputValidators.AlphaAndSpacesAndNumbers"
+          [value]="(addressForm$ | async)?.CodigoPostal"
+          (textData)="handleKeySearchCP($event)"
+        >
+        </app-generic-input>
+      </div>
+      <div class="state">
+        <app-generic-input
+          [isDisable]="!(addressForm$ | async)?.allowEditForm"
+          [label]="'formProvider.step1.state' | translate"
+          [maxlength]="50"
+          [required]="true"
+          [typeValidation]="inputValidators.AlphaAndSpaces"
+          [value]="(addressForm$ | async)?.Estado"
+          (textData)="setInputAddressForm('Estado', $event)"
+        ></app-generic-input>
+      </div>
+      <div class="city">
+        <app-generic-input
+          [isDisable]="!(addressForm$ | async)?.allowEditForm"
+          [label]="'formProvider.step1.city' | translate"
+          [maxlength]="50"
+          [required]="true"
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          [value]="(addressForm$ | async)?.Ciudad"
+          (textData)="setInputAddressForm('Ciudad', $event)"
+        ></app-generic-input>
+      </div>
+      <div class="municipally">
+        <app-generic-input
+          [isDisable]="!(addressForm$ | async)?.allowEditForm"
+          [label]="'formProvider.step1.municipality' | translate"
+          [required]="true"
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          [value]="(addressForm$ | async)?.Municipio"
+          (textData)="setInputAddressForm('Municipio', $event)"
+        >
+        </app-generic-input>
+      </div>
+      <div class="suburb">
+        <app-generic-input
+          [isDisable]="!(addressForm$ | async)?.allowEditForm"
+          [label]="'formProvider.step1.Suburb' | translate"
+          [maxlength]="50"
+          [required]="true"
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          [value]="(addressForm$ | async)?.Colonia"
+          (textData)="setInputAddressForm('Colonia', $event)"
+        ></app-generic-input>
+      </div>
+    </div>
+    <div class="distance-container">
+      <div>
+        <app-generic-input
+          *ngIf="showMapConfig$ | async"
+          [enableEdit]="false"
+          [label]="'Distancia aproximada al punto de entrega (km)'"
+          [fontColor]="(direccionliente$ | async)?.DistanciaCartaPorte ? '#008894' : '#424242'"
+          [placeholder]="'0'"
+          [typeValidation]="inputValidators.DecimalNumber"
+          [value]="
+            (direccionliente$ | async).DistanciaCartaPorte !== null
+              ? (direccionliente$ | async).DistanciaCartaPorte + ' Km'
+              : ('quotation.details.noticeCustomer.step1.km' | translate)
+          "
+          [required]="true"
+        ></app-generic-input>
+      </div>
+      <div class="saveBtn">
+        <button [ngClass]="(addressForm$ | async)?.allowEditForm ? 'enable' : 'disabled'" (click)="setResetForm()">{{
+          'quotation.details.noticeCustomer.step1.cleanForm' | translate
+        }}</button>
+      </div>
+    </div>
+    <div class="required-field">
+      <label>{{ '*' }} {{ 'formClient.step5.contractPopUp.requiredData' | translate }}</label>
+    </div>
+  </div>
+</app-pop-up-generic>

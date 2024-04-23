@@ -1,0 +1,99 @@
+<div class="dashboard-container" id="client-quotations-container">
+  <div class="left-container">
+    <label class="title">{{ 'quotation.requisitions' | translate }}</label>
+    <div class="tabs">
+      <app-tabs
+        [options]="options$ | async"
+        [tapSelected]="tapSelected$ | async"
+        (onSelectOption)="handleTabSelectedOptionChange($event)"
+      ></app-tabs>
+    </div>
+    <div class="filters">
+      <div class="filter-by-type">
+        <app-hamburger-menu
+          [options]="valueFilter$ | async"
+          [value]="(filterByTypes$ | async).value"
+          (valueEmit)="handleTypeFilterSelectedOptionChange($event)"
+        >
+        </app-hamburger-menu>
+      </div>
+      <div class="filter-by-date">
+        <app-date-range (emitValues)="handleDateFilterSelectedOptionChange($event)"></app-date-range>
+      </div>
+    </div>
+    <div class="search-bar">
+      <app-search
+        [imageFill]="'#008894'"
+        [isSearchByType]="true"
+        [placeholder]="'quotation.clientClas' | translate"
+        [searchTerm]="searchTerm$ | async"
+        [typeSelected]="typeSelected$ | async"
+        [typesOfSearch]="searchTypes$ | async"
+        (handleTypeSelected)="handleSearchTypeSelectedOptionChange($event)"
+        (textSearch)="handleSearchTermChange($event)"
+      ></app-search>
+    </div>
+    <div class="list-container">
+      <virtual-scroller
+        class="virtual-list"
+        *ngIf="!lodashIsEmpty(clientsList$ | async); let clientsListNotEmpty"
+        [items]="clientsList$ | async"
+        (vsUpdate)="clientsListScrollItems = $event"
+      >
+        <ng-container *ngIf="(clientsListRequestStatus$ | async) === statusRequest.Success && clientsListNotEmpty">
+          <app-quotation-dashboard-item
+            *ngFor="let client of clientsListScrollItems"
+            [item]="client"
+            (click)="handleItemListClick(client)"
+          ></app-quotation-dashboard-item>
+        </ng-container>
+      </virtual-scroller>
+      <div
+        class="loader"
+        *ngIf="(clientsListRequestStatus$ | async) === statusRequest.Loading && lodashIsEmpty(clientsList$ | async)"
+      >
+        <app-loading></app-loading>
+      </div>
+      <div
+        *ngIf="(clientsListRequestStatus$ | async) !== statusRequest.Loading && lodashIsEmpty(clientsList$ | async)"
+        class="without-results"
+      >
+        <app-without-results [title]="'quotation.details.section.offlineProduct.notClient' | translate"></app-without-results>
+      </div>
+    </div>
+    <div class="footer">
+      <label>#{{ (clientsList$ | async).length }}</label>
+      <label
+        >{{ totalQuotesOfClients$ | async }}
+        {{
+          (totalQuotesOfClients$ | async) === 1 ? ('quotation.quotation' | translate) : ('quotation.quotes' | translate)
+        }}</label
+      >
+    </div>
+  </div>
+  <div class="right-container">
+    <ng-container>
+      <app-doughnut-chart
+        *ngIf="(clientsListRequestStatus$ | async) === statusRequest.Success"
+        [data]="doughnutChartData$ | async"
+        [maxWidth]="(viewType$ | async) === viewTypes.small ? '450px' : '550px'"
+        [optionDetailsHover]="doughnutChartOptionDetailsHover$ | async"
+        [optionDetails]="doughnutChartOptionDetails$ | async"
+        [titleDetails]="'quotation.totals' | translate"
+        [title]="'quotation.client' | translate"
+        [typeChart]="1"
+      ></app-doughnut-chart>
+      <app-bar-chart
+        *ngIf="(clientsListRequestStatus$ | async) === statusRequest.Success"
+        [maxWidth]="(viewType$ | async) === viewTypes.small ? '700px' : '800px'"
+        [title]="titleBarChart"
+        [values]="valuesBarChart$ | async"
+      >
+      </app-bar-chart>
+    </ng-container>
+    <app-loading
+      class="loading"
+      *ngIf="(clientsListRequestStatus$ | async) === statusRequest.Loading && lodashIsEmpty(clientsList$ | async)"
+    ></app-loading>
+  </div>
+</div>

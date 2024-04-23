@@ -1,0 +1,55 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  width: 100%;
+  & > .see-resume-item-container {
+    @include s.flexRow;
+    align-items: center;
+    column-gap: 32px;
+    width: 100%;
+    & > .resume-container {
+      @include s.flexRow;
+      width: 150px;
+      justify-content: center;
+      & > label {
+        @include s.responsive-font-format(
+          $font-family: s.$font_family_roboto_bold,
+          $font-weight: s.$font_weight_bold,
+          $font-size-map: s.$responsive-font-12-12,
+          $color: s.$pqBlack2
+        );
+      }
+      & .red {
+        color: s.$pqRed;
+      }
+      & .yellow {
+        color: s.$pqOrange;
+      }
+      & .ocean {
+        color: s.$pqGreen;
+      }
+      & .green {
+        color: s.$pqGreen2;
+      }
+    }
+    & > .img-container {
+      @include s.flexRow;
+      @include s.absoluteCenter;
+      width: 24px;
+      height: 24px;
+      & > img {
+        width: 22px;
+        height: 19px;
+        transition: all 0.2s ease-in-out;
+        cursor: pointer;
+        &:hover {
+          opacity: 0.7;
+        }
+      }
+    }
+  }
+}

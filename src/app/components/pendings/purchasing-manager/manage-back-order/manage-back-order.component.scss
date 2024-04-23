@@ -1,0 +1,33 @@
+@use 'base' as s;
+
+:host {
+  @include s.generic-main-component-structure;
+
+  #back-order-container {
+    & > .footer {
+      & > div {
+        & > div {
+          border-radius: 50%;
+          height: 15px;
+          margin-right: 6px;
+          width: 15px;
+        }
+
+        & > .label-dark {
+          @include s.Roboto-Bold;
+          @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack);
+          padding-right: 3px;
+        }
+
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize12to14, normal, s.$pqBlack2);
+        }
+
+        & > img {
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,510 @@
+<div class="container">
+  <div class="container-add-campaing">
+    <div class="section">
+      <div class="title">
+        <label>{{ 'formProvider.step3.addCampaing' | translate }}</label>
+      </div>
+      <div class="add-campaing-body">
+        <div class="add-campaing-control row">
+          <div class="dropTitle">
+            <label>* {{ FIELD_CAMPAING_BY }}</label>
+          </div>
+          <div class="drop">
+            <app-drop-down-list
+              [activeMinWidth]="false"
+              [controlInLine]="true"
+              [disable]="editCampaign$ | async"
+              [itemSelected]="filterItemSelected$ | async"
+              [items]="itemsForCampaign$ | async"
+              [required]="true"
+              (valueDropList)="getDataHandler($event, 'dropList')"
+            >
+            </app-drop-down-list>
+          </div>
+        </div>
+        <div class="separator">
+          <div class="title">
+            <label>{{ 'formProvider.step3.addCampaingGeneralData' | translate }}</label>
+          </div>
+        </div>
+        <div class="add-campaing-control input-padding">
+          <app-generic-input
+            [label]="'Nombre de la Campaña'"
+            [maxlength]="100"
+            [required]="true"
+            [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+            [value]="(campaignGeneralData$ | async)?.Nombre"
+            (textData)="textFieldHandler($event, FIELD_CAMPAIGN_NAME, FIELD_INPUT)"
+          ></app-generic-input>
+        </div>
+        <div class="add-campaing-control input-padding input-date">
+          <label>* Fecha Inicio</label>
+          <div>
+            <app-date-picker
+              [color]="false"
+              [dateFormat]="'YYYYMMDD'"
+              [date]="(campaignDates$ | async)[0]"
+              [disabledCalendarDays]="selectNonWorkingDays$ | async"
+              [rangeStart]="rangeStart"
+              (fecha)="textFieldHandler($event, FIELD_CAMPAIGN_START, FIELD_DATE)"
+            ></app-date-picker>
+          </div>
+        </div>
+
+        <div class="add-campaing-control input-padding input-date">
+          <label>* Fecha Fin</label>
+          <div>
+            <app-date-picker
+              [color]="false"
+              [dateFormat]="'YYYYMMDD'"
+              [date]="(campaignDates$ | async)[1]"
+              [disabledCalendarDays]="selectNonWorkingDays$ | async"
+              [rangeStart]="(campaignDates$ | async)[0]"
+              (fecha)="textFieldHandler($event, FIELD_CAMPAIGN_END, FIELD_DATE)"
+            ></app-date-picker>
+          </div>
+        </div>
+        <div class="radios input-padding">
+          <label>* {{ 'providerCatalog.commission' | translate }}</label>
+          <div class="container-radios">
+            <div>
+              <app-radio-button
+                [value]="(campaignGeneralData$ | async)?.Porcentaje"
+                (emitValue)="setRadioOption('Porcentaje')"
+              ></app-radio-button>
+              <div>
+                <app-generic-input
+                  [placeholder]="'%'"
+                  [typeValidation]="inputValidators.Percentage"
+                  [value]="(campaignGeneralData$ | async)?.ValorComisionPorcentaje"
+                  [textAlign]="'center'"
+                  [isDisable]="!(campaignGeneralData$ | async)?.Porcentaje"
+                  (textData)="textFieldHandler($event, FIELD_CAMPAIGN_PERCENTAGE_VALUE, FIELD_GENERIC)"
+                >
+                </app-generic-input>
+                <label>%</label>
+              </div>
+            </div>
+            <div>
+              <app-radio-button
+                [value]="(campaignGeneralData$ | async)?.Dinero"
+                (emitValue)="setRadioOption('Dinero')"
+              ></app-radio-button>
+              <div>
+                <app-generic-input
+                  [value]="(campaignGeneralData$ | async)?.ValorComisionDinero"
+                  [placeholder]="'$'"
+                  [typeValidation]="inputValidators.Number"
+                  [textAlign]="'center'"
+                  [isDisable]="!(campaignGeneralData$ | async)?.Dinero"
+                  (textData)="textFieldHandler($event, FIELD_CAMPAIGN_MONEY_VALUE, FIELD_GENERIC)"
+                >
+                </app-generic-input>
+                <label>USD</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="input-padding objetivo">
+          <app-generic-text-area
+            [title]="'providerCatalog.targetMandatory' | translate"
+            [placeholder]="'Escribe Aquí'"
+            [value]="(campaignGeneralData$ | async)?.Objetivo"
+            [height]="'100%'"
+            (emitData)="textFieldHandler($event, FIELD_CAMPAIGN_OBJECTIVE, FIELD_GENERIC)"
+          ></app-generic-text-area>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="container-campaing"
+    [ngSwitch]="(viewConfigurations$ | async)?.id"
+    *ngIf="(viewConfigurations$ | async) && (viewConfigurations$ | async)?.id !== 'Proveedor'"
+  >
+    <div class="content" *ngIf="viewConfigurations$ | async as viewConfigurations">
+      <div class="title">
+        <label>{{ (viewConfigurations$ | async)?.titleListData }}</label>
+      </div>
+      <div class="search-bar">
+        <app-search
+          [placeholder]="viewConfigurations.searchConfiguration"
+          [searchTerm]="searchText"
+          (textSearch)="handleKeySearch($event, viewConfigurations)"
+        ></app-search>
+      </div>
+      <div class="container-items">
+        <div class="campaing-list" *ngSwitchCase="'Producto'">
+          <virtual-scroller
+            [enableUnequalChildrenSizes]="true"
+            [items]="(products$ | async)?.Results"
+            (vsUpdate)="productsVsUpdate = $event"
+            (vsEnd)="fetchMore($event, viewConfigurations)"
+            *ngIf="!lodashIsEmpty((products$ | async)?.Results)"
+          >
+            <div class="items" *ngFor="let item of productsVsUpdate">
+              <div class="text">
+                <div>
+                  <label>#{{ (products$ | async)?.Results?.indexOf(item) + 1 }}</label>
+                  <label>· {{ item?.Catalogo }} · {{ item?.Descripcion }} · {{ item?.NombreMarca }}</label>
+                </div>
+                <div>
+                  <label
+                    >{{ item?.Tipo === 'N/A' ? '' : item?.Tipo }} {{ item?.Subtipo === 'N/A' ? '' : ' · ' + item?.Subtipo }}
+                    {{ item?.Control === 'N/A' ? '' : ' · ' + item?.Control }}</label
+                  >
+                </div>
+              </div>
+              <div (click)="addCampaignItemHandler(item, 'IdProducto')">
+                <img
+                  [src]="
+                    lodashFindIndex(itemsRelated$ | async, ['IdProducto', item?.IdProducto]) !== -1
+                      ? 'assets/Images/mas_gris.svg'
+                      : 'assets/Images/mas.svg'
+                  "
+                />
+              </div>
+            </div>
+            <div class="fetchMore" *ngIf="(apiStatusProducts$ | async) === 1 && !(needsToReloadProducts$ | async)">
+              <app-loading></app-loading>
+            </div>
+          </virtual-scroller>
+          <div class="loadingContainer" *ngIf="(apiStatusProducts$ | async) === 1 && (needsToReloadProducts$ | async)">
+            <app-loading></app-loading>
+          </div>
+          <div
+            class="without-results"
+            *ngIf="lodashIsEmpty((products$ | async)?.Results) && (apiStatusProducts$ | async) === 3"
+          >
+            <app-without-results [title]="(viewConfigurations$ | async)?.withoutTextItems"></app-without-results>
+          </div>
+        </div>
+        <div class="campaing-list-trademark" *ngSwitchCase="'Agrupador por característica'">
+          <virtual-scroller
+            [enableUnequalChildrenSizes]="true"
+            [items]="(classifications$ | async)?.Results"
+            (vsUpdate)="classificationVsUpdate = $event"
+            (vsEnd)="fetchMore($event, viewConfigurations)"
+            *ngIf="(apiStatusClassifications$ | async) === 3 && !lodashIsEmpty((classifications$ | async)?.Results)"
+          >
+            <div class="items" *ngFor="let item of classificationVsUpdate">
+              <div class="text">
+                <div>
+                  <label>#{{ (classifications$ | async)?.Results?.indexOf(item) + 1 }}</label>
+                  <label>· {{ item?.AgrupadorCaracteristica }}</label>
+                </div>
+                <div>
+                  <label>{{ item?.Tipo }} · {{ item?.Subtipo }} · {{ item?.Control }}</label>
+                </div>
+                <div>
+                  <label
+                    >{{ item?.Productos }}
+                    {{ item?.Productos === 1 ? ('common.product' | translate) : ('common.products' | translate) }}
+                  </label>
+                </div>
+              </div>
+              <div (click)="addCampaignItemHandler(item, 'IdAgrupadorCaracteristica')">
+                <img
+                  [src]="
+                    lodashFindIndex(itemsRelated$ | async, ['IdAgrupadorCaracteristica', item?.IdAgrupadorCaracteristica]) !==
+                    -1
+                      ? 'assets/Images/mas_gris.svg'
+                      : 'assets/Images/mas.svg'
+                  "
+                />
+              </div>
+            </div>
+          </virtual-scroller>
+          <div class="loadingContainer" *ngIf="(apiStatusClassifications$ | async) === 1">
+            <app-loading></app-loading>
+          </div>
+          <div
+            class="without-results"
+            *ngIf="lodashIsEmpty((classifications$ | async)?.Results) && (apiStatusClassifications$ | async) === 3"
+          >
+            <app-without-results [title]="(viewConfigurations$ | async)?.withoutTextItems"></app-without-results>
+          </div>
+        </div>
+        <div class="campaing-list-trademark" *ngSwitchCase="'Marca'">
+          <virtual-scroller
+            [enableUnequalChildrenSizes]="true"
+            [items]="(trademark$ | async)?.Results"
+            (vsUpdate)="trademarkVsUpdate = $event"
+            (vsEnd)="fetchMore($event, viewConfigurations)"
+            *ngIf="(apiStatusTrademark$ | async) === 3 && !lodashIsEmpty((trademark$ | async)?.Results)"
+          >
+            <div class="items" *ngFor="let item of trademarkVsUpdate">
+              <div class="text">
+                <div>
+                  <label>#{{ (trademark$ | async)?.Results?.indexOf(item) + 1 }}</label>
+                  <label> {{ item?.Nombre }} </label>
+                </div>
+                <div>
+                  <label class="green">{{ item?.TotalProductos }} {{ 'common.products' | translate }} · </label>
+                  <label>{{ 'providerCatalog.standards' | translate }}: {{ item?.Estandares }} ·</label>
+                  <label> {{ 'providerCatalog.reagents' | translate }}: {{ item?.Reactivos }} ·</label>
+                  <label> {{ 'providerCatalog.trainings' | translate }}: {{ item?.Capacitaciones }} ·</label>
+                  <label> {{ 'providerCatalog.labware' | translate }}: {{ item?.Labware }} ·</label>
+                  <label> {{ 'providerCatalog.medicalDevices' | translate }}: {{ item?.DispositivoMedico }} ·</label>
+                  <label> {{ 'providerCatalog.publications' | translate }}: {{ item?.Publicaciones }}</label>
+                </div>
+                <!--                <div>
+                  <label>{{ item?.TotalProductos }} {{ 'common.products' | translate }}</label>
+                </div>-->
+              </div>
+              <div (click)="addCampaignItemHandler(item, 'IdMarca')">
+                <img
+                  [src]="
+                    lodashFindIndex(itemsRelated$ | async, ['IdMarca', item?.IdMarca]) !== -1
+                      ? 'assets/Images/mas_gris.svg'
+                      : 'assets/Images/mas.svg'
+                  "
+                />
+              </div>
+            </div>
+          </virtual-scroller>
+          <div class="loadingContainer" *ngIf="(apiStatusTrademark$ | async) === 1">
+            <app-loading></app-loading>
+          </div>
+          <div
+            class="without-results"
+            *ngIf="lodashIsEmpty((trademark$ | async)?.Results) && (apiStatusTrademark$ | async) === 3"
+          >
+            <app-without-results [title]="(viewConfigurations$ | async)?.withoutTextItems"></app-without-results>
+          </div>
+        </div>
+        <div class="campaing-list-trademark" *ngSwitchCase="'Familia'">
+          <virtual-scroller
+            [enableUnequalChildrenSizes]="true"
+            [items]="(familiesProvider$ | async)?.Results"
+            (vsUpdate)="familiesProviderVsUpdate = $event"
+            (vsEnd)="fetchMore($event, viewConfigurations)"
+            *ngIf="(apiStatusFamiliesProvider$ | async) === 3 && !lodashIsEmpty((familiesProvider$ | async)?.Results)"
+          >
+            <div class="items" *ngFor="let item of familiesProviderVsUpdate">
+              <div class="text">
+                <div>
+                  <label>#{{ (familiesProvider$ | async)?.Results?.indexOf(item) + 1 }} · </label>
+                  <label>{{
+                    item?.Tipo +
+                      (item?.Subtipo !== 'N/A' ? ' · ' + item?.Subtipo : '') +
+                      (item?.Control !== 'N/A' ? ' · ' + item?.Control : '')
+                  }}</label>
+                </div>
+                <div>
+                  <label>{{ item?.NombreMarca }}</label>
+                </div>
+                <div>
+                  <label
+                    >{{ item?.Productos }}
+                    {{ item?.Productos === 1 ? ('common.product' | translate) : ('common.products' | translate) }}</label
+                  >
+                </div>
+              </div>
+              <div (click)="addCampaignItemHandler(item, 'IdMarcaFamilia')">
+                <img
+                  [src]="
+                    lodashFindIndex(itemsRelated$ | async, ['IdMarcaFamilia', item?.IdMarcaFamilia]) !== -1
+                      ? 'assets/Images/mas_gris.svg'
+                      : 'assets/Images/mas.svg'
+                  "
+                />
+              </div>
+            </div>
+          </virtual-scroller>
+          <div class="loadingContainer" *ngIf="(apiStatusFamiliesProvider$ | async) === 1">
+            <app-loading></app-loading>
+          </div>
+          <div
+            class="without-results"
+            *ngIf="lodashIsEmpty((familiesProvider$ | async)?.Results) && (apiStatusFamiliesProvider$ | async) === 3"
+          >
+            <app-without-results [title]="(viewConfigurations$ | async)?.withoutTextItems"></app-without-results>
+          </div>
+        </div>
+        <div class="campaing-list-footer">
+          <div class="campaing-number" [ngSwitch]="(viewConfigurations$ | async)?.id">
+            <label *ngSwitchCase="'Producto'"
+              >#{{ (products$ | async).TotalResults }}
+              {{
+                (products$ | async)?.TotalResults === 1 ? ('common.product' | translate) : ('common.products' | translate)
+              }}</label
+            >
+            <label *ngSwitchCase="'Agrupador por característica'"
+              >#{{ (classifications$ | async).TotalResults }}
+              {{
+                (classifications$ | async)?.TotalResults === 1
+                  ? ('formProvider.classification.grouper' | translate)
+                  : ('formProvider.classification.groupers' | translate)
+              }}</label
+            >
+            <label *ngSwitchCase="'Marca'"
+              >#{{ (trademark$ | async).TotalResults }}
+              {{
+                (trademark$ | async)?.TotalResults === 1 ? ('common.brand' | translate) : ('common.brands' | translate)
+              }}</label
+            >
+            <label *ngSwitchCase="'Familia'"
+              >#{{ (familiesProvider$ | async).TotalResults }}
+              {{
+                (familiesProvider$ | async)?.TotalResults === 1
+                  ? ('common.family' | translate)
+                  : ('common.families' | translate)
+              }}</label
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="vertical-separator" *ngIf="(viewConfigurations$ | async) && (viewConfigurations$ | async)?.id !== 'Proveedor'">
+  </div>
+  <div class="container-campaing" *ngIf="viewConfigurations$ | async as viewConfigurations">
+    <div class="content">
+      <div class="title">
+        <label>{{ (viewConfigurations$ | async)?.titleListItemsRelated }}</label>
+      </div>
+      <div
+        class="items-relacionados"
+        *ngIf="(itemsRelated$ | async)?.length > 0 && (viewConfigurations$ | async)?.id !== 'Proveedor'"
+      >
+        <label># <span>Nombre</span></label>
+      </div>
+      <div class="container-items items-relacionados-body" *ngIf="(itemsRelated$ | async)?.length > 0">
+        <div [ngClass]="viewConfigurations.id === 'Producto' ? 'campaing-list' : 'campaing-list-trademark'">
+          <virtual-scroller [items]="itemsRelated$ | async" (vsUpdate)="itemsRelatedVsUpdate = $event">
+            <div class="items" *ngFor="let item of itemsRelatedVsUpdate" [ngSwitch]="(viewConfigurations$ | async)?.id">
+              <div class="text" *ngSwitchCase="'Producto'">
+                <div>
+                  <label>#{{ (itemsRelated$ | async)?.indexOf(item) + 1 }} · </label>
+                  <label>{{ item?.Catalogo }} · {{ item?.Descripcion }} · {{ item?.NombreMarca }}</label>
+                </div>
+                <div>
+                  <label
+                    >{{ item?.Tipo !== 'N/A' ? item?.Tipo : '' }}{{ item?.Subtipo !== 'N/A' ? ' · ' + item?.Subtipo : '' }}
+                    {{ item?.Control !== 'N/A' ? ' · ' + item?.Control : '' }}</label
+                  >
+                </div>
+              </div>
+              <div class="text" *ngSwitchCase="'Agrupador por característica'">
+                <div>
+                  <label>#{{ (itemsRelated$ | async)?.indexOf(item) + 1 }}</label>
+                  <label>· {{ item?.AgrupadorCaracteristica }}</label>
+                </div>
+                <div>
+                  <label>{{ item?.Tipo }} · {{ item?.Subtipo }} · {{ item?.Control }}</label>
+                </div>
+                <div>
+                  <label
+                    >{{ item?.Productos }}
+                    {{ item?.Productos === 1 ? ('common.product' | translate) : ('common.products' | translate) }}</label
+                  >
+                </div>
+              </div>
+              <div class="text" *ngSwitchCase="'Marca'">
+                <div>
+                  <label>#{{ (itemsRelated$ | async)?.indexOf(item) + 1 }}</label>
+                  <label> {{ item?.Nombre }} </label>
+                </div>
+                <div>
+                  <label>{{ 'providerCatalog.standards' | translate }}: {{ item?.Estandares }} ·</label>
+                  <label> {{ 'providerCatalog.reagents' | translate }}: {{ item?.Reactivos }} ·</label>
+                  <label> {{ 'providerCatalog.trainings' | translate }}: {{ item?.Capacitaciones }} ·</label>
+                  <label> {{ 'providerCatalog.labware' | translate }}: {{ item?.Labware }} ·</label>
+                  <label> {{ 'providerCatalog.medicalDevices' | translate }}: {{ item?.DispositivoMedico }} ·</label>
+                  <label> {{ 'providerCatalog.publications' | translate }}: {{ item?.Publicaciones }}</label>
+                </div>
+                <div>
+                  <label
+                    >{{ item?.TotalProductos }}
+                    {{ item?.Productos === 1 ? ('common.product' | translate) : ('common.products' | translate) }}</label
+                  >
+                </div>
+              </div>
+              <div class="text" *ngSwitchDefault>
+                <div>
+                  <label>
+                    #{{ (itemsRelated$ | async)?.indexOf(item) + 1 }}
+                    ·
+                    {{
+                      item?.Tipo +
+                        (item?.Subtipo !== 'N/A' ? ' · ' + item?.Subtipo : '') +
+                        (item?.Control !== 'N/A' ? ' · ' + item?.Control : '')
+                    }}</label
+                  >
+                </div>
+                <div>
+                  <label>{{ item?.NombreMarca }}</label>
+                </div>
+                <div>
+                  <label
+                    >{{ item?.Productos }}
+                    {{ item?.Productos === 1 ? ('common.product' | translate) : ('common.products' | translate) }}</label
+                  >
+                </div>
+              </div>
+              <div *ngIf="(viewConfigurations$ | async)?.id !== 'Proveedor'" (click)="removeCampaignItemHandler(item)">
+                <img src="assets/Images/cerrar.svg" />
+              </div>
+            </div>
+          </virtual-scroller>
+        </div>
+        <div class="campaing-list-footer">
+          <div class="campaing-number" [ngSwitch]="(viewConfigurations$ | async)?.id">
+            <label *ngSwitchCase="'Producto'"
+              ># {{ (itemsRelated$ | async)?.length }}
+              {{ (itemsRelated$ | async)?.length === 1 ? ('common.product' | translate) : ('common.products' | translate) }}
+              {{
+                (itemsRelated$ | async)?.length === 1 ? ('common.related3' | translate) : ('common.related' | translate)
+              }}</label
+            >
+            <label *ngSwitchDefault
+              >#{{ (itemsRelated$ | async)?.length }}
+              {{ (itemsRelated$ | async)?.length === 1 ? ('common.family' | translate) : ('common.families' | translate) }}
+              · {{ relatedProductsSum(itemsRelated$ | async) }}
+              {{ productsSum === 1 ? ('common.product' | translate) : ('common.products' | translate) }}</label
+            >
+            <label *ngSwitchCase="'Agrupador por característica'"
+              >#{{ (itemsRelated$ | async)?.length }}
+              {{
+                (itemsRelated$ | async)?.length === 1
+                  ? ('formProvider.classification.grouper' | translate)
+                  : ('formProvider.classification.groupers' | translate)
+              }}
+              · {{ relatedProductsSum(itemsRelated$ | async) }}
+              {{ productsSum === 1 ? ('common.product' | translate) : ('common.products' | translate) }}</label
+            >
+            <label *ngSwitchCase="'Marca'"
+              >#{{ (itemsRelated$ | async)?.length }}
+              {{ (itemsRelated$ | async)?.length === 1 ? ('common.brand' | translate) : ('common.brands' | translate) }}
+              · {{ relatedProductsSum(itemsRelated$ | async) }}
+              {{ productsSum === 1 ? ('common.product' | translate) : ('common.products' | translate) }}</label
+            >
+          </div>
+        </div>
+      </div>
+      <div
+        class="without-results"
+        *ngIf="(itemsRelated$ | async)?.length === 0 && (filterItemSelected$ | async)?.label !== 'Proveedor'"
+      >
+        <app-without-results [title]="(viewConfigurations$ | async)?.withoutTextRelated"></app-without-results>
+      </div>
+      <div
+        class="loadingContainer"
+        *ngIf="(apiStatusFamiliesProvider$ | async) === 1 && (filterItemSelected$ | async)?.label === 'Proveedor'"
+      >
+        <app-loading></app-loading>
+      </div>
+      <div
+        class="without-results"
+        *ngIf="
+          (itemsRelated$ | async)?.length === 0 &&
+          (filterItemSelected$ | async)?.label === 'Proveedor' &&
+          (apiStatusFamiliesProvider$ | async) === 3
+        "
+      >
+        <app-without-results [title]="(viewConfigurations$ | async)?.withoutTextRelated"></app-without-results>
+      </div>
+    </div>
+  </div>
+</div>

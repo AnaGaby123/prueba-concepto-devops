@@ -1,0 +1,14 @@
+<svg width='25' height='25' viewBox='0 0 25 25' xmlns='http://www.w3.org/2000/svg'>
+  <g transform='translate(1 1)' fill='none' fill-rule='evenodd'>
+    <rect stroke='#4BA92B' fill='#FFF' y='2' width='21' height='19' rx='1' />
+    <rect stroke='#4BA92B' fill='#4BA92B' x='5' width='1' height='4' rx='.5' />
+    <rect stroke='#4BA92B' fill='#4BA92B' x='15' width='1' height='4' rx='.5' />
+    <text font-family='Roboto-Bold, Roboto' font-size='10' font-weight='bold' fill='#4BA92B'>
+      <tspan x='3' y='17'>$</tspan>
+    </text>
+    <path stroke='#4BA92B' d='M0 6.109h21' />
+    <circle stroke='#FFF' stroke-width='2' fill='#4BA92B' cx='17' cy='17' r='6' />
+    <path stroke='#FFF' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'
+          d='m14.586 17.807 1.62 1.655 3.176-4.009' />
+  </g>
+</svg>

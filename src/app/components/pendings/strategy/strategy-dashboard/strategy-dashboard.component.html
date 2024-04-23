@@ -1,0 +1,92 @@
+<div class="dashboard-container" id="strategy-list-container">
+  <div class="left-container">
+    <label class="title">{{ 'strategy.quotations' | translate }}</label>
+    <div class="tabs">
+      <app-tabs
+        [options]="options$ | async"
+        [tapSelected]="tapSelected$ | async"
+        (onSelectOption)="handleTabSelectedOptionChange($event)"
+      ></app-tabs>
+    </div>
+    <div class="filters">
+      <div class="filter-by-type">
+        <app-hamburger-menu
+          [options]="valueFilter$ | async"
+          [value]="(filterType$ | async)?.value"
+          (valueEmit)="handleTypeFilterSelectedOptionChange($event)"
+        >
+        </app-hamburger-menu>
+      </div>
+      <div class="filter-by-date">
+        <app-date-range (emitValues)="handleDateFilterSelectedOptionChange($event)"></app-date-range>
+      </div>
+    </div>
+    <div class="search-bar">
+      <app-search
+        [imageFill]="'#008894'"
+        [isSearchByType]="true"
+        [placeholder]="(selectedSearchType$ | async)?.label"
+        [searchTerm]="searchTerm$ | async"
+        [typeSelected]="selectedSearchType$ | async"
+        [typesOfSearch]="searchTypes$ | async"
+        (handleTypeSelected)="setSearchType($event)"
+        (textSearch)="handleKeySearch($event)"
+      ></app-search>
+    </div>
+    <div class="list-container">
+      <virtual-scroller
+        class="virtual-list"
+        *ngIf="(listStrategies$ | async)?.length > 0 && (listApiStatus$ | async) === 3"
+        [items]="listStrategies$ | async"
+        (vsUpdate)="listStrategiesScrollItems = $event"
+      >
+        <app-strategy-dashboard-item
+          *ngFor="let strategy of listStrategiesScrollItems"
+          [strategy]="strategy"
+          (click)="handleItemListClick(strategy)"
+        >
+        </app-strategy-dashboard-item>
+      </virtual-scroller>
+      <div class="without-results" *ngIf="(listStrategies$ | async)?.length === 0 && (listApiStatus$ | async) === 3">
+        <app-without-results></app-without-results>
+      </div>
+      <div class="loader" *ngIf="(listApiStatus$ | async) === 1">
+        <app-loading></app-loading>
+      </div>
+    </div>
+    <div class="footer">
+      <label>{{ '#' + (listStrategies$ | async).length }}</label>
+      <label>{{
+        (totalQuotes$ | async | number: '1.0-0') + ((totalQuotes$ | async) === 1 ? ' Cotización' : ' Cotizaciones')
+      }}</label>
+      <label>{{
+        'Valor Total en Cierre: ' +
+          (((totalQuoteAmount$ | async) ? (totalQuoteAmount$ | async) : 0) | currency: 'USD':'symbol-narrow':'1.2-2') +
+          ' USD'
+      }}</label>
+    </div>
+  </div>
+  <div class="right-container">
+    <ng-container *ngIf="true">
+      <app-doughnut-chart
+        *ngIf="(activeChart$ | async) && (listApiStatus$ | async) === 3"
+        [data]="doughnutChartData$ | async"
+        [maxWidth]="(viewType$ | async) === viewTypes.small ? '450px' : '550px'"
+        [optionDetailsHover]="doughnutChartOptionDetailsHover$ | async"
+        [optionDetails]="doughnutChartOptionDetails$ | async"
+        [titleDetails]="'Totales'"
+        [title]="'CLIENTES'"
+        [typeChart]="1"
+      >
+      </app-doughnut-chart>
+      <app-bar-chart
+        *ngIf="(activeChart$ | async) && (listApiStatus$ | async) === 3"
+        [maxWidth]="(viewType$ | async) === viewTypes.small ? '700px' : '800px'"
+        [title]="titleBarChart"
+        [values]="valuesBarChart$ | async"
+      >
+      </app-bar-chart>
+    </ng-container>
+    <app-loading class="loading" *ngIf="(listApiStatus$ | async) === 1 && lodashIsEmpty(listStrategies$ | async)"></app-loading>
+  </div>
+</div>

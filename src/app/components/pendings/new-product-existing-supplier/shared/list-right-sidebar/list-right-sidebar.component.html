@@ -1,0 +1,177 @@
+<div id="right-sidebar">
+  <div class="content">
+    <div class="header-container">
+      <div class="header">
+        <img
+          src="assets/Images/new-product-existing-supplier/attend-investigation/mark_unread_chat_alt.svg"
+          alt="mark-unread-chat"
+        />
+        <label>{{ 'attendInvestigation.attendInvestigationDetail.detailsProduct' | translate }}</label>
+      </div>
+    </div>
+    <div class="content">
+      <ng-container
+        *ngIf="
+          ((selectedProduct$ | async).ClaveEstadoInvestigacion === productStatus.Nueva ||
+            (selectedProduct$ | async)?.ClaveEstadoInvestigacion === productStatus.PorReatender) &&
+            !(selectedProduct$ | async)?.isOnlineInvestigation;
+          else elseContent
+        "
+      >
+        <app-message-history
+          class="history-chat"
+          [messages]="cotPartidaCotizacionInvestigacionComentario$ | async"
+        ></app-message-history>
+        <div class="radios">
+          <app-radio-button
+            [labelFontStyle]="'labelRobotoBoldProquifa16'"
+            [label]="'attendInvestigation.attendInvestigationDetail.productAvailable' | translate"
+            [radioColor]="'green'"
+            [value]="(cotPartidaCotizacionInvestigacion$ | async)?.ProductoDisponible"
+            (emitValue)="setRadioOption('ProductoDisponible', $event)"
+          ></app-radio-button>
+          <app-radio-button
+            [labelFontStyle]="'labelRobotoBoldProquifa16'"
+            [label]="'attendInvestigation.attendInvestigationDetail.suggestion' | translate"
+            [value]="(cotPartidaCotizacionInvestigacion$ | async)?.Sugerencias"
+            (emitValue)="setRadioOption('Sugerencias', $event)"
+          ></app-radio-button>
+        </div>
+        <div class="details">
+          <div class="title">
+            <label>{{ 'attendInvestigation.attendInvestigationDetail.details' | translate }}:</label>
+          </div>
+          <div class="container" [ngStyle]="{height: lodashIsEmpty(itemAttentionProduct$ | async) ? '215px' : ''}">
+            <div
+              [ngClass]="!lodashIsEmpty(itemAttentionProduct$ | async) ? 'info-full' : 'info-empty'"
+              id="productDetails"
+              cdkDropList
+              [cdkDropListData]="itemAttentionProduct$ | async"
+              (cdkDropListDropped)="drop($event)"
+            >
+              <div class="details" *ngIf="itemAttentionProduct$ | async; else elseDetails">
+                <div class="product-logo-type">
+                  <img
+                    [src]="(itemAttentionProduct$ | async)?.imageHover"
+                    alt="{{ 'logo ' + (itemAttentionProduct$ | async)?.NombreMarca ?? 'image-product' }}"
+                    class="logo"
+                  />
+                  <label
+                    >CAT #{{
+                      (itemAttentionProduct$ | async)?.TipoProductoClave === productsType.trainings
+                        ? 'N/D'
+                        : (itemAttentionProduct$ | async)?.Catalogo
+                    }}</label
+                  >
+                  <img
+                    src="assets/Images/new-product-existing-supplier/attend-investigation/trash.svg"
+                    alt="trash-details"
+                    class="trash"
+                    (click)="deleteProductDetails()"
+                  />
+                </div>
+                <div class="type-subtype">
+                  <label>
+                    {{ (itemAttentionProduct$ | async)?.Tipo }}
+                    {{ (itemAttentionProduct$ | async)?.Subtipo === 'N/A' ? '' : (itemAttentionProduct$ | async)?.Subtipo }}
+                  </label>
+                </div>
+                <div class="description">
+                  <label>{{ (itemAttentionProduct$ | async)?.Descripcion }}</label>
+                  <div class="totals">
+                    <div class="alternative">
+                      <label>
+                        Alternativos
+                        {{
+                          (itemAttentionProduct$ | async)?.TipoProductoClave === productsType.trainings
+                            ? ' N/A '
+                            : (itemAttentionProduct$ | async)?.TotalAlternativo
+                        }}
+                      </label>
+                    </div>
+                    <div class="complementary">
+                      <label>
+                        Complementarios
+                        {{
+                          (itemAttentionProduct$ | async)?.TipoProductoClave === productsType.trainings
+                            ? ' N/A '
+                            : (itemAttentionProduct$ | async)?.TotalComplementario
+                        }}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="footer">
+                  <div class="presentation-details">
+                    <label class="presentation">
+                      {{ (itemAttentionProduct$ | async)?.Presentacion }} {{ (itemAttentionProduct$ | async)?.Unidad }}
+                    </label>
+                    <label class="use">{{ (itemAttentionProduct$ | async)?.Uso || 'Farmacopeico' }}</label>
+                  </div>
+                  <div class="price">
+                    <label
+                      >{{ (itemAttentionProduct$ | async)?.PrecioLista | currency }}
+                      {{ (itemAttentionProduct$ | async)?.MonedaVentaProveedor }}</label
+                    >
+                  </div>
+                </div>
+              </div>
+              <ng-template #elseDetails>
+                <label>{{ 'attendInvestigation.attendInvestigationDetail.dragItem' | translate }}</label>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+        <div class="comments">
+          <div class="title">
+            <label>{{ 'attendInvestigation.attendInvestigationDetail.comments' | translate }}:</label>
+          </div>
+          <app-generic-text-area
+            [borderColor]="'#424242'"
+            [height]="'198px'"
+            [placeholder]="'attendInvestigation.attendInvestigationDetail.writeComment' | translate"
+            [value]="selectedProductInvestigationNewComment$ | async"
+            (emitData)="setEviComment($event)"
+          ></app-generic-text-area>
+        </div>
+      </ng-container>
+
+      <ng-template #elseContent>
+        <app-register-product></app-register-product>
+      </ng-template>
+    </div>
+    <div
+      class="buttons"
+      *ngIf="
+        (selectedProduct$ | async).ClaveEstadoInvestigacion === productStatus.EnEsperaDeRespuesta ||
+        (selectedProduct$ | async)?.isOnlineInvestigation
+      "
+    >
+      <button
+        class="accept"
+        [ngClass]="{disable: !(sendProviderResponseValidator$ | async)}"
+        [disabled]="!(sendProviderResponseValidator$ | async)"
+        (click)="sendProviderResponse()"
+      >
+        {{ 'attendInvestigation.attendInvestigationDetail.registerProduct' | translate }}
+      </button>
+      <button class="cancel" (click)="handleCancel()">
+        {{ 'common.cancel' | translate }}
+      </button>
+    </div>
+    <div
+      class="buttons"
+      *ngIf="
+        (selectedProduct$ | async).ClaveEstadoInvestigacion !== productStatus.EnEsperaDeRespuesta &&
+        !(selectedProduct$ | async)?.isOnlineInvestigation
+      "
+    >
+      <button class="accept" [ngClass]="{disable: !(sendResponse$ | async)}" (click)="handleSendResponse()">
+        {{ 'attendInvestigation.attendInvestigationDetail.sendComment' | translate }}
+      </button>
+      <button class="cancel" (click)="handleCancel()">
+        {{ 'common.cancel' | translate }}
+      </button>
+    </div>
+  </div>
+</div>

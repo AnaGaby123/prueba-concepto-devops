@@ -1,0 +1,129 @@
+<div class="dashboard-container" class="dashboard-container">
+  <div class="left-container">
+    <label class="title">{{ 'secureShipment.providers' | translate }}</label>
+    <div class="filters">
+      <div class="filter-by-type">
+        <app-hamburger-menu></app-hamburger-menu>
+      </div>
+      <div>
+        <app-search [placeholder]="'Proveedor, Orden de Compra'"></app-search>
+      </div>
+    </div>
+    <div class="list-container">
+      <virtual-scroller *ngIf="true">
+        <div class="client" *ngFor="let provider of listProvidersScrollItems" (click)="setProviderShpiment()">
+          <div class="index">
+            <label>{{ '#' + provider.Index }}</label>
+          </div>
+          <div class="provider-info">
+            <div class="name">
+              <label>{{ provider.Nombre }}</label>
+            </div>
+            <div class="classification">
+              <label>{{ provider.TotalOC + ' OC' }}</label>
+              <label> · </label>
+              <label>{{ (provider.MontoTotal | currency: 'USD':'symbol-narrow':'0.2-4') + ' USD' }}</label>
+            </div>
+            <div class="cant">
+              <label>{{
+                provider.TotalPiezas +
+                  ' ' +
+                  (provider.TotalPiezas === 1 ? ('secureShipment.pza' | translate) : ('secureShipment.pzas' | translate))
+              }}</label>
+              <label> · </label>
+              <label>{{
+                provider.TotalProductos +
+                  ' ' +
+                  (provider.TotalProductos === 1
+                    ? ('secureShipment.product' | translate)
+                    : ('secureShipment.products' | translate))
+              }}</label>
+            </div>
+            <div class="states">
+              <ng-container *ngIf="true">
+                <img alt="programming" src="assets/Images/labels/programada.svg" />
+                <label class="programming"> {{ 6 }} · </label>
+              </ng-container>
+              <ng-container *ngIf="true">
+                <img alt="only" src="assets/Images/labels/unica.svg" />
+                <label class="only"> {{ 6 }} · </label>
+              </ng-container>
+              <ng-container *ngIf="true">
+                <img alt="freight-express" src="assets/Images/labels/flete_express.svg" />
+                <label class="freight-express"> {{ 6 }} · </label>
+              </ng-container>
+              <ng-container *ngIf="true">
+                <img alt="freight-normal" src="assets/Images/labels/flete_normal.svg" />
+                <label class="freight-normal"> {{ 6 }}</label>
+              </ng-container>
+            </div>
+            <div class="days">
+              <label
+                >3 + Días: <span> {{ provider.AMasDe3Dias }}</span></label
+              >
+              <label
+                >3 Días: <span> {{ provider.A3Dias }}</span></label
+              >
+              <label
+                >2 Días: <span> {{ provider.A2Dias }}</span></label
+              >
+              <label
+                >1 Día: <span> {{ provider.A1Dia }}</span></label
+              >
+              <label class="date-feem">FEEM+: {{ provider.FechaOCMasAntigua | dateFormatSlashShort }} </label>
+            </div>
+          </div>
+          <div class="arrow">
+            <img alt="arrow" src="assets/Images/arrows/arrow_right.svg" />
+          </div>
+        </div>
+      </virtual-scroller>
+      <div class="without-results" *ngIf="false">
+        <app-without-results></app-without-results>
+      </div>
+      <div class="loader" *ngIf="false">
+        <app-loading></app-loading>
+      </div>
+    </div>
+    <div class="footer">
+      <label>{{ '#' + (5 | number: '1.0-0') }}</label>
+      <label>{{ '6 OC' }}</label>
+      <label>{{ (6 | number: '1.0-0') + (true ? ' Producto' : ' Productos') }}</label>
+      <label>{{ (6 | number: '1.0-0') + (true ? ' Pieza' : ' Piezas') }}</label>
+      <label>{{ 'Monto Total ' + (4 | currency: 'USD':'symbol-narrow':'2.2-4') + ' USD' }}</label>
+    </div>
+  </div>
+  <div class="right-container">
+    <ng-container *ngIf="false">
+      <app-doughnut-chart
+        [fontSize]="'small'"
+        [titleDetails]="'Totales'"
+        [title]="'secureShipment.providers' | translate"
+        [typeChart]="1"
+      >
+      </app-doughnut-chart>
+      <app-doughnut-chart
+        [fontSize]="'small'"
+        [titleDetails]="'Totales'"
+        [title]="'secureShipment.freight' | translate"
+        [typeChart]="1"
+      >
+      </app-doughnut-chart>
+      <app-doughnut-chart
+        [fontSize]="'small'"
+        [titleDetails]="'Totales'"
+        [title]="'secureShipment.delivery' | translate"
+        [typeChart]="1"
+      >
+      </app-doughnut-chart>
+      <app-bar-chart
+        [fontColorBottom]="'#008894'"
+        [textDataLabel]="'Partidas'"
+        [title]="'secureShipment.referenceTime' | translate"
+      >
+      </app-bar-chart>
+      <app-bar-chart [textDataLabel]="'Partidas'" [title]="'secureShipment.shipmentTrafficLight' | translate"></app-bar-chart>
+    </ng-container>
+    <app-loading *ngIf="true" class="loading"></app-loading>
+  </div>
+</div>

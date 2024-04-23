@@ -1,0 +1,389 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.flexColumn;
+  @include s.absolute100;
+
+  & > .container-month {
+    @include s.flexColumn;
+    flex: 1;
+    overflow: hidden;
+    height: 100%;
+
+    & > .header {
+      @include s.Novecento-Bold;
+      border-bottom: 2px solid s.$pqBlack;
+      flex: 0 0 auto;
+      justify-content: space-between;
+      padding-bottom: 15px;
+
+      & > span {
+        @include s.escaledFontFormat(s.$textSize15to21, bold, s.$pqBlack2);
+        @include s.Novecento-Bold;
+      }
+    }
+
+    & > .table-container {
+      @include s.flexColumn;
+      flex: 1 1 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+
+      & > .table {
+        @include s.flexColumn;
+        flex: 1 1 100%;
+        min-width: 1400px;
+        width: 100%;
+
+        & > .header-table {
+          @include s.flexRowNoWrap;
+          border-bottom: 1px solid s.$pqBlack2;
+          flex-shrink: 0;
+          min-width: 1000px;
+          padding: 10px 5px 0 0;
+
+          & > div {
+            @include s.flexRow;
+            padding: 14px 4px 5px 0;
+            width: 100%;
+
+            & > span {
+              @include s.escaledFontFormat(s.$textSize11to13, '', s.$pqBlack2);
+              @include s.Roboto-Bold;
+
+              &:hover {
+                cursor: default;
+              }
+            }
+          }
+
+          & > .number {
+            flex: 0 0 80px;
+            justify-content: center;
+          }
+
+          & > .day-payment {
+            flex: 1 0 20px;
+          }
+
+          & > .credit {
+            flex: 0 0 40px;
+          }
+
+          & > .client {
+            flex: 1 0 300px;
+          }
+
+          & > .status-payment {
+            flex: 1 0 90px;
+          }
+
+          & > .to-pay {
+            flex: 1 0 50px;
+            justify-content: flex-end;
+          }
+
+          & > .payeed {
+            flex: 1 0 50px;
+            justify-content: flex-end;
+          }
+
+          & > .status {
+            flex: 0 0 140px;
+            padding-top: 10px;
+            justify-content: center;
+          }
+        }
+
+        & > .body {
+          @include s.flexColumn;
+          flex: 1 1 100%;
+          min-width: 1400px;
+          overflow-y: hidden;
+
+          & > virtual-scroller {
+            @include s.absolute100;
+            @include s.fixVirtualScroller;
+
+            ::ng-deep .scrollable-content {
+              & > .backgroundYellow {
+                background-color: rgb(s.$yellowWarning, 0.06);
+              }
+
+              & > .backgroundPurple {
+                background-color: rgb(s.$purple, 0.06);
+              }
+
+              & > .item {
+                @include s.flexRow;
+                border-bottom: solid 1px s.$pqGray2;
+                justify-content: space-between;
+
+                &:hover {
+                  background-color: s.$pqGray2;
+                }
+
+                & > div {
+                  @include s.flexRow;
+                  align-items: center;
+                  padding: 14px 4px 14px 0;
+                  width: 100%;
+
+                  & > span {
+                    @include s.escaledFontFormat(s.$textSize14to18, '', s.$pqBlack2);
+                    @include s.Roboto-Regular;
+                  }
+                }
+
+                & > .number {
+                  flex: 0 0 80px;
+                  justify-content: center;
+                }
+
+                & > .day-payment {
+                  flex: 1 0 20px;
+                }
+
+                & > .credit {
+                  flex: 0 0 40px;
+                  justify-content: center;
+
+                  & > img {
+                    height: 19px;
+                  }
+                }
+
+                & > .client {
+                  align-items: flex-start;
+                  flex: 1 0 300px;
+                  flex-direction: column;
+
+                  & > .payment {
+                    @include s.escaledFontFormat(s.$textSize13to17, regular, s.$pqTextGris);
+                    @include s.Roboto-Regular;
+                    margin-top: 4px;
+                  }
+                }
+
+                & > .status-payment {
+                  @include s.flexRowNoWrap;
+                  flex: 1 0 90px;
+
+                  & > div {
+                    @include s.flexRowNoWrap;
+                    align-items: center;
+                    padding-left: 5px;
+
+                    & > label {
+                      @include s.escaledFontFormat(s.$textSize14to17, regular, s.$pqTextGris);
+                      @include s.Roboto-Regular;
+                      padding-left: 4px;
+                      padding-right: 12px;
+                    }
+
+                    & > span {
+                      display: inline-block;
+                    }
+
+                    & > .green {
+                      @include s.pqCircle(11px, s.$pqGreen2);
+                    }
+
+                    & > .yellow {
+                      @include s.pqCircle(11px, s.$pqOrange6);
+                    }
+
+                    & > .orange {
+                      @include s.pqCircle(11px, s.$pqOrange7);
+                    }
+
+                    & > .red {
+                      @include s.pqCircle(11px, s.$pqRed2);
+                    }
+
+                    & > .purple {
+                      @include s.pqCircle(11px, s.$purple);
+                    }
+                  }
+                }
+
+                & > .to-pay {
+                  flex: 1 0 50px;
+                  justify-content: flex-end;
+                }
+
+                & > .payeed {
+                  flex: 1 0 50px;
+                  justify-content: flex-end;
+                }
+
+                & > .status {
+                  flex: 0 0 140px;
+                  justify-content: center;
+
+                  & > img {
+                    height: 15px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    & > .footer {
+      align-self: flex-end;
+      border-top: 1px solid s.$pqBlack;
+      flex: 0 0 auto;
+      justify-content: space-between;
+      padding: 7px 0 15px 0;
+      text-align: center;
+      width: 100%;
+
+      & > span {
+        @include s.Roboto-Regular;
+        @include s.escaledFontFormat(s.$textSize14to18, normal, s.$pqBlack2);
+        padding-top: 5px;
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    .container-month {
+      & > .table-container {
+        & > .table {
+          @include s.flexColumn;
+          min-width: 1600px;
+
+          & > .header-table {
+            min-width: 1600px;
+
+            & > .number {
+              flex: 0 0 80px;
+            }
+
+            & > .day-payment {
+              flex: 1 0 60px;
+            }
+
+            & > .credit {
+              flex: 0 0 50px;
+            }
+
+            & > .client {
+              flex: 1 0 320px;
+            }
+
+            & > .status-payment {
+              flex: 1 0 120px;
+            }
+
+            & > .to-pay {
+              flex: 1 0 60px;
+            }
+
+            & > .payeed {
+              flex: 1 0 60px;
+            }
+
+            & > .status {
+              flex: 0 0 150px;
+            }
+          }
+
+          & > .body {
+            min-width: 1600px;
+
+            & > virtual-scroller {
+              ::ng-deep .scrollable-content {
+                & > .item {
+                  & > .number {
+                    flex: 0 0 80px;
+                  }
+
+                  & > .day-payment {
+                    flex: 1 0 60px;
+                  }
+
+                  & > .credit {
+                    flex: 0 0 50px;
+
+                    & > img {
+                      height: 23px;
+                    }
+                  }
+
+                  & > .client {
+                    flex: 1 1 320px;
+                  }
+
+                  & > .status-payment {
+                    flex: 1 0 120px;
+
+                    & > div {
+                      @include s.flexRowNoWrap;
+                      align-items: center;
+                      padding-left: 5px;
+
+                      & > label {
+                        @include s.escaledFontFormat(s.$textSize14to17, regular, s.$pqTextGris);
+                        @include s.Roboto-Regular;
+                        padding-left: 4px;
+                        padding-right: 12px;
+                      }
+
+                      & > span {
+                        display: inline-block;
+                      }
+
+                      & > .green {
+                        @include s.pqCircle(12px, s.$pqGreen2);
+                      }
+
+                      & > .yellow {
+                        @include s.pqCircle(12px, s.$pqOrange6);
+                      }
+
+                      & > .orange {
+                        @include s.pqCircle(12px, s.$pqOrange7);
+                      }
+
+                      & > .red {
+                        @include s.pqCircle(12px, s.$pqRed2);
+                      }
+
+                      & > .purple {
+                        @include s.pqCircle(12px, s.$purple);
+                      }
+                    }
+                  }
+
+                  & > .to-pay {
+                    flex: 1 0 60px;
+                  }
+
+                  & > .payeed {
+                    flex: 1 0 60px;
+                  }
+
+                  & > .status {
+                    flex: 0 0 150px;
+
+                    & > img {
+                      height: 20px;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

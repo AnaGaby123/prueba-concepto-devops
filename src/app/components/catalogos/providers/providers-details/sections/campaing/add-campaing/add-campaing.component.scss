@@ -1,0 +1,555 @@
+@use 'base' as s;
+
+.container {
+  @include s.absolute100;
+  @include s.flexRow;
+  column-gap: 20px;
+
+  & > .container-campaing {
+    @include s.flexColumn;
+    flex: 1;
+
+    & > .content {
+      @include s.flexColumn;
+      flex: 1;
+
+      & > .title {
+        padding: 10px 0 10px 0;
+        border-bottom: solid 1px s.$pqBlack2;
+
+        & > label {
+          @include s.Novecento-Bold;
+          @include s.escaledFontFormatImportant(s.$textSize17to21, bold, s.$pqBlack2);
+        }
+      }
+
+      > .title-add-campaign {
+        padding: 10px 0 10px 0;
+        border-bottom: solid 1px #424242;
+
+        & > label {
+          @include s.Novecento-Bold;
+          @include s.escaledFontFormatImportant(s.$textSize17to21, bold, s.$pqBlack2);
+        }
+      }
+
+      & > .header-botonera {
+        height: 40px;
+      }
+
+      & > .search-bar {
+        padding: 20px 0 20px 0;
+      }
+
+      & > .items-relacionados {
+        padding: 25px 10px 4px 10px;
+
+        & label {
+          @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+          @include s.Roboto-Regular;
+
+          & > span {
+            margin-left: 10px;
+            vertical-align: baseline;
+          }
+        }
+      }
+
+      & > .campaing-list::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 0;
+      }
+
+      & > .campaing-list-trademark::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 0 !important;
+      }
+
+      & > .container-items {
+        @include s.flexColumn;
+        flex: 1;
+        /*      height: calc(100% - 181px);*/
+        & > .campaing-list {
+          overflow: auto;
+          border-top: solid 1px #eceef0;
+          height: 100%;
+
+          & > virtual-scroller::-webkit-scrollbar-track {
+            box-shadow: inset 0 0 0 !important;
+          }
+
+          & > virtual-scroller {
+            @include s.fixVirtualScroller;
+            height: 100%;
+
+            & > .fetchMore {
+              margin: 5px 0;
+            }
+          }
+
+          .items {
+            @include s.flexRow;
+            @include s.default-transition($duration: 0.2s);
+            border-bottom: 1px solid s.$pqGray2;
+            justify-content: space-between;
+            flex: 1 1 auto;
+            padding: 13px 20px 13px 15px;
+            align-items: center;
+
+            &:hover {
+              background-color: s.$pqGray2;
+            }
+
+            & > .text {
+              padding: 0 20px 0 0;
+
+              & > :nth-child(1) {
+                & > :nth-child(1) {
+                  @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen);
+                  @include s.Roboto-Bold;
+                }
+
+                & > :nth-child(2) {
+                  @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                  @include s.Roboto-Bold;
+                }
+              }
+
+              & > :nth-child(2) {
+                padding-top: 3px;
+                @include s.responsive_layout('macBookAir') {
+                  padding-top: 5px;
+                }
+
+                & > :nth-child(1) {
+                  @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                  @include s.Roboto-Regular;
+                }
+              }
+
+              & > :nth-child(3) {
+                & > :nth-child(1) {
+                  @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen5);
+                  @include s.Roboto-Regular;
+                }
+              }
+            }
+
+            & > div {
+              & > img {
+                cursor: pointer;
+              }
+            }
+          }
+        }
+
+        & > .campaing-list-trademark {
+          overflow: auto;
+          border-top: solid 1px #eceef0;
+          height: 100%;
+
+          & > virtual-scroller::-webkit-scrollbar-track {
+            box-shadow: inset 0 0 0 !important;
+          }
+
+          & > virtual-scroller {
+            @include s.fixVirtualScroller;
+            height: 100%;
+          }
+
+          .items-background {
+            background: #eceef0;
+          }
+
+          .items {
+            @include s.flexRow;
+            @include s.default-transition($duration: 0.2s);
+            border-bottom: 1px solid s.$pqGray2;
+            justify-content: space-between;
+            padding: 13px 20px 13px 15px;
+            align-items: center;
+            width: 100%;
+
+            &:hover {
+              background-color: s.$pqGray2;
+            }
+
+            & > .text {
+              padding: 0 20px 0 0;
+
+              & > :nth-child(1) {
+                & > :nth-child(1) {
+                  @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen5);
+                  @include s.Roboto-Bold;
+                }
+
+                & > :nth-child(2) {
+                  @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                  @include s.Roboto-Bold;
+                }
+              }
+
+              & > :nth-child(2) {
+                margin: 3px 0;
+
+                & > :nth-child(even) {
+                  @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                  @include s.Roboto-Regular;
+                }
+
+                @include s.responsive_layout('macBookAir') {
+                  margin: 5px 0;
+                }
+              }
+
+              & > :nth-child(2) {
+                & > :nth-child(odd) {
+                  @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                  @include s.Roboto-Regular;
+                }
+              }
+
+              & > :nth-child(3) {
+                & > :nth-child(1) {
+                  @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen5);
+                  @include s.Roboto-Regular;
+                }
+              }
+            }
+
+            & > div {
+              & > img {
+                cursor: pointer;
+              }
+            }
+          }
+        }
+
+        & > .campaing-list-footer {
+          @include s.flexColumn;
+          border-top: solid 1px #1a1a1a;
+          align-items: center;
+          height: 40px;
+          /*        justify-content: space-around;*/
+          padding-top: 5px;
+          /*        padding: 10px 0 10px 0;*/
+
+          & > .campaing-number {
+            & > label {
+              @include s.Roboto-Regular;
+              @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+            }
+          }
+
+          & > .btn {
+            @include s.button(31px, 170px, #ffffff, #008894);
+          }
+        }
+      }
+
+      & > .items-relacionados-body {
+        height: calc(100% - 160px);
+      }
+    }
+  }
+
+  & > .container-campaing-detalle {
+    height: 100%;
+    width: 45%;
+    background: #eceef0;
+  }
+
+  & > .container-add-campaing {
+    height: 100%;
+    flex: 0 0 370px;
+    background: #eceef0;
+
+    & > .section {
+      padding: 0 20px 0 20px;
+      height: 100%;
+
+      & > .title {
+        padding: 10px 0 0 0;
+
+        & > label {
+          @include s.Novecento-Bold;
+          @include s.escaledFontFormatImportant(s.$textSize17to21, bold, s.$pqBlack2);
+        }
+      }
+
+      & > .add-campaing-body {
+        height: calc(100% - 58px);
+        padding: 20px 0 0 0;
+
+        & > .add-campaing-control {
+          @include s.flexColumn;
+
+          &.row {
+            @include s.flexRow;
+          }
+
+          & > .dropTitle {
+            @include s.flexRow;
+            align-items: center;
+            flex-wrap: nowrap;
+            margin-right: 10px;
+
+            & > label {
+              @include s.Roboto-Regular;
+              @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+            }
+          }
+
+          & > .drop {
+            flex: 1;
+          }
+        }
+
+        & > .input-padding {
+          padding: 30px 0 0 0;
+        }
+
+        & > .input-date {
+          & > label {
+            $textSize: (
+              'base': 13px,
+              'macBookAir': 16px,
+            );
+            @include s.escaledFontFormat($textSize, regular, s.$pqBlack2);
+            @include s.Roboto-Regular;
+          }
+
+          & > div {
+            height: 23px;
+            padding: 5px 0 0 0;
+          }
+        }
+
+        & > .separator {
+          padding: 20px 0 0 0;
+          border-bottom: 1px solid;
+
+          & > .title {
+            padding: 0 0 7px 0;
+
+            & > label {
+              @include s.fontFormat(Roboto-bold, 16px, 'bold', s.$pqBlack2);
+            }
+          }
+        }
+
+        & > .radios {
+          @include s.flexColumn;
+
+          & > label {
+            $textSize: (
+              'base': 13px,
+              'macBookAir': 16px,
+            );
+            @include s.escaledFontFormat($textSize, regular, s.$pqBlack2);
+            @include s.Roboto-Regular;
+          }
+
+          & > .container-radios {
+            justify-content: space-between;
+            padding: 5px 0 0 0;
+            @include s.flexRow;
+
+            & > div {
+              @include s.flexRow;
+              align-items: center;
+
+              & > div {
+                @include s.flexRow;
+                align-items: center;
+                flex: 1 1 auto;
+
+                & > label {
+                  margin-left: 5px;
+                  @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen);
+                  @include s.Roboto-Bold;
+                }
+              }
+            }
+
+            & > div:nth-of-type(1) {
+              flex: 0 0 45%;
+            }
+
+            & > div:nth-of-type(2) {
+              flex: 0 1 55%;
+              margin-left: 12px;
+            }
+          }
+        }
+
+        & > .objetivo {
+          @include s.flexColumn;
+          height: 25%;
+
+          & > textarea {
+            width: 100%;
+            height: 100%;
+            resize: none;
+            border-color: #d8d9dd;
+            $textSize: (
+              'base': 13px,
+              'macBookAir': 16px,
+            );
+            @include s.escaledFontFormat($textSize, regular, s.$pqBlack2);
+            @include s.Roboto-Regular;
+            padding: 10px 5px 5px 5px;
+            box-sizing: border-box;
+          }
+
+          & > textarea:focus {
+            border-color: #d8d9dd;
+            outline: none;
+          }
+
+          & > textarea::-webkit-input-placeholder {
+            /* WebKit, Blink, Edge */
+            color: #424242;
+            opacity: 0.4;
+          }
+
+          & > textarea:-moz-placeholder {
+            /* Mozilla Firefox 4 to 18 */
+            color: #424242;
+            opacity: 0.4;
+          }
+
+          & > textarea::-moz-placeholder {
+            /* Mozilla Firefox 19+ */
+            color: #424242;
+            opacity: 0.4;
+          }
+
+          & > textarea:-ms-input-placeholder {
+            /* Internet Explorer 10-11 */
+            color: #424242;
+            opacity: 0.4;
+          }
+
+          & > textarea::-ms-input-placeholder {
+            /* Microsoft Edge */
+            color: #424242;
+            opacity: 0.4;
+          }
+
+          & > textarea::placeholder {
+            /* Most modern browsers support this now. */
+            color: #424242;
+            opacity: 0.4;
+          }
+
+          & > label {
+            $textSize: (
+              'base': 13px,
+              'macBookAir': 16px,
+            );
+            @include s.escaledFontFormat($textSize, regular, s.$pqBlack2);
+            @include s.Roboto-Regular;
+            padding: 0 0 5px 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+@include s.responsive_layout('macBookAir') {
+  .container {
+    @include s.absolute100;
+    @include s.flexRow;
+
+    & > .container-add-campaing {
+      height: 100%;
+      width: 30%;
+      background: #eceef0;
+
+      & > .section {
+        & > .add-campaing-body {
+          & > .input-date {
+            & > div {
+              height: 28px;
+              padding: 5px 0 0 0;
+            }
+          }
+
+          & > .radios {
+            & > .container-radios {
+              & > div {
+                & > input {
+                  width: 20px;
+                  height: 23px;
+                }
+
+                & > input[type='radio'] {
+                  width: 20px;
+                  height: 20px;
+                }
+
+                & > input[type='radio']:checked {
+                  padding: 3px;
+                  border: 1px solid s.$pqGreen5;
+                  background-color: s.$pqGreen5;
+                }
+
+                & > div {
+                  @include s.flexRow;
+                  padding: 0 0 0 5px;
+                  align-items: center;
+                  width: calc(100% - 30px);
+
+                  & > input {
+                    width: 100%;
+                    margin: 0 5px 0 0;
+                    height: 24px;
+                    $textSize: (
+                      'base': 13px,
+                      'macBookAir': 16px,
+                    );
+                    @include s.escaledFontFormat($textSize, regular, s.$pqBlack2);
+                    @include s.Roboto-Regular;
+                    text-align: center;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.vertical-separator {
+  width: 1px;
+  height: 100%;
+  background: s.$pqGreen5;
+  background: linear-gradient(to top, #ffffff 2%, #bcbcbc 72%, #ffffff 95%) 100%;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.without-results {
+  width: 100%;
+  @include s.flexRow;
+  height: calc(100% - 119px);
+  // border-top: solid 1px #1A1A1A;
+  overflow: auto;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.loadingContainer {
+  height: 100%;
+}
+
+.green {
+  color: s.$pqGreen !important;
+}

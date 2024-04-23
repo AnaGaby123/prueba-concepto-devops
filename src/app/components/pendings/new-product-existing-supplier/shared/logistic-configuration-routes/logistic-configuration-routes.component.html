@@ -1,0 +1,98 @@
+<div class="container">
+  <div class="title-routes">
+    <img src="assets/Images/new-product-existing-supplier/Rutas.svg" alt="routes" />
+  </div>
+  <div class="routes">
+    <div class="column">
+      <div
+        class="local"
+        [ngClass]="getRouteIsSelected(routes.Local) ? 'selected-green' : 'not-selected'"
+        (click)="!lodashIsEmpty(deliveryRoutes) && selectRoute(routes.Local)"
+      >
+        <div class="title">
+          <label>{{ getRouteName(routes.Local) }}</label>
+        </div>
+        <div class="row">
+          <div class="column">
+            <label class="puebla">{{ 'formProvider.step8.cities.puebla' | translate }}</label>
+            <label>{{ 'formProvider.step8.cities.cuernavaca' | translate }}</label>
+          </div>
+          <div class="column">
+            <label> {{ 'formProvider.step8.cities.toluca' | translate }}</label>
+            <label>{{ 'formProvider.step8.cities.cdmx' | translate }}</label>
+          </div>
+        </div>
+        <div class="internal-delivery">
+          <label>{{ 'formProvider.step8.internalDelivery' | translate }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="column">
+      <div class="rows-2">
+        <div
+          class="foraneo"
+          [ngClass]="getRouteIsSelected(routes.Foraneo) ? 'selected-blue' : 'not-selected'"
+          (click)="!lodashIsEmpty(deliveryRoutes) && selectRoute(routes.Foraneo)"
+        >
+          <div class="title">
+            <label>{{ getRouteName(routes.Foraneo) }}</label>
+          </div>
+          <div class="internal-delivery">
+            <label>{{ 'formProvider.step8.externalDelivery' | translate }}</label>
+          </div>
+        </div>
+        <div
+          class="guadalajara"
+          [ngClass]="getRouteIsSelected(routes.Guadalajara) ? 'selected-blue' : 'not-selected'"
+          (click)="!lodashIsEmpty(deliveryRoutes) && selectRoute(routes.Guadalajara)"
+        >
+          <div class="title">
+            <label>{{ getRouteName(routes.Guadalajara) }}</label>
+          </div>
+          <div class="internal-delivery">
+            <label>{{ 'formProvider.step8.internalDelivery' | translate }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="column">
+      <div class="rows-3">
+        <div
+          [ngClass]="getRouteIsSelected(routes.Sudamerica) ? 'selected-red' : 'not-selected'"
+          (click)="!lodashIsEmpty(deliveryRoutes) && selectRoute(routes.Sudamerica)"
+        >
+          <div class="title">
+            <label>{{ getRouteName(routes.Sudamerica) }}</label>
+          </div>
+          <div class="external-delivery">
+            <label>{{ 'formProvider.step8.externalDelivery' | translate }}</label>
+          </div>
+        </div>
+        <div
+          [ngClass]="getRouteIsSelected(routes.Centroamerica) ? 'selected-red' : 'not-selected'"
+          (click)="!lodashIsEmpty(deliveryRoutes) && selectRoute(routes.Centroamerica)"
+        >
+          <div class="title">
+            <label>{{ getRouteName(routes.Centroamerica) }}</label>
+          </div>
+          <div class="external-delivery">
+            <label>{{ 'formProvider.step8.externalDelivery' | translate }}</label>
+          </div>
+        </div>
+        <div
+          [ngClass]="getRouteIsSelected(routes.RestoDelMundo) ? 'selected-red' : 'not-selected'"
+          (click)="!lodashIsEmpty(deliveryRoutes) && selectRoute(routes.RestoDelMundo)"
+        >
+          <div class="title">
+            <label>{{ getRouteName(routes.RestoDelMundo) }}</label>
+          </div>
+          <div class="external-delivery">
+            <label>{{ 'formProvider.step8.externalDelivery' | translate }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-logistic-configuration-routes-details [isMexican]="isMexican$ | async"></app-logistic-configuration-routes-details>

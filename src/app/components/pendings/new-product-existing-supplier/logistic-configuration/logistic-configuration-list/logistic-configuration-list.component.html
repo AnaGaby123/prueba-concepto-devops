@@ -1,0 +1,89 @@
+<div class="details-container">
+  <div class="left-container">
+    <div class="filters">
+      <label class="title-providers">{{ 'common.families' | translate }}</label>
+      <pqf-search
+        [placeholder]="'Ingresar texto'"
+        [searchTerm]="searchTerm$ | async"
+        (textSearch)="handleKeySearch($event)"
+      ></pqf-search>
+      <pqf-filter-options
+        [filterText]="('filters.orderBy' | translate) + ': '"
+        [flexDirection]="'column'"
+        [onlyOneOption]="true"
+        [options]="filterOptions$ | async"
+        [rowGap]="'8px'"
+        (selectedOptionEmitter)="setFilterSelected($event)"
+      ></pqf-filter-options>
+    </div>
+    <div class="list-container">
+      <virtual-scroller *ngIf="(configurationLogisticList$ | async)?.length > 0 && (apiStatusDashboard$ | async) !== 1">
+        <app-logistic-configuration-list-item
+          *ngFor="let item of configurationLogisticList$ | async"
+          [item]="item"
+        ></app-logistic-configuration-list-item>
+      </virtual-scroller>
+      <div
+        class="without-results"
+        *ngIf="(configurationLogisticList$ | async)?.length === 0 && (apiStatusDashboard$ | async) === 3"
+      >
+        <label>{{ 'common.withoutResults' | translate }}</label>
+      </div>
+      <div class="loader" *ngIf="(apiStatusDashboard$ | async) === 1">
+        <app-loading></app-loading>
+      </div>
+    </div>
+    <div class="footer">
+      <label
+        >{{ (configurationLogisticList$ | async)?.length }}
+        {{ (configurationLogisticList$ | async)?.length === 1 ? 'Pendiente' : 'Pendientes' }} en lista</label
+      >
+    </div>
+  </div>
+  <div class="right-container">
+    <app-logistic-configuration-details
+      *ngIf="(apiStatusDetails$ | async) !== 1 && !lodashIsEmpty(configurationLogisticList$ | async)"
+    ></app-logistic-configuration-details>
+
+    <div class="without-results" *ngIf="lodashIsEmpty(configurationLogisticList$ | async) && (apiStatusDetails$ | async) !== 1">
+      <label>{{ 'newProductExistingSupplier.logisticConfiguration.selectPending' | translate }}</label>
+    </div>
+
+    <div class="loader" *ngIf="(apiStatusDetails$ | async) === 1">
+      <app-loading></app-loading>
+    </div>
+
+    <div class="footer-btn">
+      <button
+        [ngClass]="(hasChangesFamilySelected$ | async) ? 'btn-cancel' : 'btn-disable'"
+        [disabled]="!(hasChangesFamilySelected$ | async)"
+        (click)="cancelConfigurationLogistic()"
+      >
+        {{ 'common.cancel' | translate }}
+      </button>
+      <button
+        [ngClass]="(saveChangesValidation$ | async) ? 'btn-save' : 'btn-disable'"
+        [disabled]="!(saveChangesValidation$ | async)"
+        (click)="saveConfigurationLogistic()"
+      >
+        {{ 'newProductExistingSupplier.logisticConfiguration.buttons.saveChanges' | translate }}
+      </button>
+      <button
+        [ngClass]="(selectFinishValidation$ | async) ? 'btn-accept' : 'btn-disable'"
+        [disabled]="!(selectFinishValidation$ | async)"
+        (click)="finishConfigurationLogistic()"
+      >
+        {{ 'newProductExistingSupplier.logisticConfiguration.buttons.finishPending' | translate }}
+      </button>
+    </div>
+
+    <pqf-pop-up
+      *ngIf="isActivePopUp$ | async"
+      [textPrimaryButton]="'common.discard' | translate"
+      [textSecondaryButton]="'common.exit' | translate"
+      [text]="'common.discardMessage' | translate"
+      (event)="eventPopUp($event)"
+    >
+    </pqf-pop-up>
+  </div>
+</div>

@@ -1,0 +1,109 @@
+@use 'base' as s;
+
+:host {
+  height: 100%;
+  width: 100%;
+
+  #shipping-paid-by-customer-container {
+    @include s.flexColumn;
+    height: 100%;
+    overflow: hidden;
+    width: 100%;
+
+    & > .header-bar {
+      flex: 0 0 50px;
+      width: 100%;
+    }
+
+    & .datosC {
+      @include s.flexColumn;
+      box-sizing: border-box;
+      border-bottom: 1px solid s.$pqGray2;
+      flex: 0 0 auto;
+
+      & .subPadre {
+        margin: 15px 0;
+        flex-direction: row;
+        display: flex;
+        box-sizing: border-box;
+        width: 100%;
+
+        & > .item {
+          @include s.flexRowNoWrap;
+          align-items: center;
+          border-right: 2px solid s.$graySeparator;
+          padding: 0 20px;
+
+          &:last-of-type {
+            border-right: none;
+          }
+
+          & > .title {
+            @include s.flexColumn;
+            margin-right: 15px;
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize12to16, bold, s.$grayText);
+              @include s.Roboto-Bold;
+            }
+          }
+
+          & > .number {
+            @include s.flexRowNoWrap;
+            align-items: flex-start;
+
+            & > .total {
+              @include s.escaledFontFormat(s.$textSize30to46, bold, s.$greenActive);
+              @include s.Roboto-Bold;
+
+              &.ocean {
+                color: s.$pqGreen;
+              }
+            }
+
+            & > .super-index {
+              @include s.escaledFontFormat(s.$textSize15to19, bold, s.$redPopUpText);
+              @include s.Roboto-Bold;
+              margin-left: 5px;
+            }
+
+            &.tooltip {
+              @include s.tooltip();
+            }
+          }
+
+          & > .image {
+            margin-left: 15px;
+
+            & > img {
+              width: 16px;
+            }
+          }
+
+          & > .big-image {
+            cursor: pointer;
+            margin-left: 15px;
+
+            & > img {
+              width: 25px;
+            }
+          }
+        }
+      }
+    }
+
+    & > .outlet {
+      flex: 1 1 auto;
+      width: 100%;
+      overflow: hidden;
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > #shipping-paid-by-customer-container {
+      & > .header-bar {
+        flex: 0 0 50px;
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+@use 'base' as s;
+
+:host {
+  @include s.generic-main-component-structure;
+
+  #dispatch-monitoring-container {
+    & > .footer {
+      & > div {
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+
+          & > span {
+            @include s.Roboto-Bold;
+            color: s.$pqBlack2;
+            vertical-align: baseline;
+          }
+        }
+      }
+    }
+  }
+}

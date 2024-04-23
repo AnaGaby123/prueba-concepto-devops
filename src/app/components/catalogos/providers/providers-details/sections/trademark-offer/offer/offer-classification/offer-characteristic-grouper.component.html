@@ -1,0 +1,129 @@
+<div class="offer-characteristic-grouper-container">
+  <div class="left-container">
+    <label class="subtitle">{{ 'formProvider.step8.titleClassification' | translate }}</label>
+    <div class="class-search">
+      <app-search
+        (textSearch)="handleSearch($event)"
+        [isDisable]="!(hasCharacteristicGrouper$ | async)"
+        [ngClass]="{disabled: !(hasCharacteristicGrouper$ | async)}"
+        [placeholder]="'Buscar'"
+        [searchTerm]="searchTerm$ | async"
+      >
+      </app-search>
+      <img
+        alt="Filtrar"
+        [src]="
+          (hasConfiguration$ | async) ? 'assets/Images/clientes/enfoque.svg' : 'assets/Images/clientes/enfoque_default.svg'
+        "
+        [ngClass]="{disabled: !(hasCharacteristicGrouper$ | async)}"
+        (click)="filterConfiguredClassifications()"
+      />
+    </div>
+    <div class="product-list-container" *ngIf="!lodashIsEmpty(classificationResults$ | async)">
+      <virtual-scroller
+        class="product-list"
+        [items]="classificationResults$ | async"
+        (vsEnd)="fetchMoreClassifications($event)"
+        (vsUpdate)="classificationResults = $event"
+      >
+        <app-feature-group-item
+          class="product-item"
+          *ngFor="let classification of classificationResults"
+          [classification]="classification"
+          (selectedClassificationChange)="selectClassification($event)"
+        ></app-feature-group-item>
+      </virtual-scroller>
+      <div class="loading" *ngIf="(classificationList$ | async)?.isLoading">
+        <app-loading></app-loading>
+      </div>
+    </div>
+    <div class="loading" *ngIf="lodashIsEmpty(classificationResults$ | async) && (classificationList$ | async)?.isLoading">
+      <app-loading></app-loading>
+    </div>
+    <div
+      class="without-results"
+      *ngIf="lodashIsEmpty(classificationResults$ | async) && !(classificationList$ | async)?.isLoading"
+    >
+      <app-without-results></app-without-results>
+    </div>
+    <div class="footer">
+      <label>
+        #{{ (classificationResults$ | async).length }}
+        {{
+          (classificationResults$ | async).length === 1
+            ? ('formProvider.step8.cost' | translate)
+            : ('formProvider.step8.costs' | translate)
+        }}
+      </label>
+    </div>
+  </div>
+  <div class="right-container" *ngIf="!lodashIsEmpty(actualConfiguration)">
+    <div class="tabs">
+      <app-options-bar
+        [marginBottom]="'0px'"
+        [options]="levelSubConfigurationTabs"
+        [showArrows]="false"
+        (handleOptionSelected)="selectLevelSubConfigurationTab($event)"
+      ></app-options-bar>
+    </div>
+    <div class="center-container">
+      <div class="price-container" *ngIf="selectedLevelSubConfiguration.label === subTabs.Cost">
+        <div class="provider-list-price">
+          <app-provider-list-price
+            [activeConsolidatedCheck]="false"
+            [actualConfiguration]="actualConfiguration"
+            [enableEdit]="enableEdit"
+            [isMexican]="providerIsMexican"
+            [viewType]="viewType"
+          ></app-provider-list-price>
+        </div>
+        <div class="discount-freight">
+          <app-discount-freight
+            [actualConfiguration]="actualConfiguration"
+            [enableEdit]="enableEdit"
+            [isMexican]="providerIsMexican"
+            [viewType]="viewType"
+          >
+          </app-discount-freight>
+        </div>
+        <div class="import" *ngIf="!providerIsMexican">
+          <app-import [actualConfiguration]="actualConfiguration" [enableEdit]="enableEdit" [viewType]="viewType"></app-import>
+        </div>
+        <div class="custom-agent-cost" *ngIf="!providerIsMexican">
+          <app-custom-agent-cost [actualConfiguration]="actualConfiguration" [enableEdit]="enableEdit" [viewType]="viewType">
+          </app-custom-agent-cost>
+        </div>
+        <div class="expenses" *ngIf="!providerIsMexican">
+          <app-expenses [actualConfiguration]="actualConfiguration" [enableEdit]="enableEdit"></app-expenses>
+        </div>
+      </div>
+      <div class="performance" *ngIf="selectedLevelSubConfiguration.label === subTabs.Performance">
+        <app-performance
+          [actualConfiguration]="actualConfiguration"
+          [enableEdit]="enableEdit"
+          [industryFamily]="industryFamily"
+          [isHoveColorOriginal]="false"
+          [isMexican]="providerIsMexican"
+          [viewType]="viewType"
+        ></app-performance>
+      </div>
+      <div class="send-time-container" *ngIf="selectedLevelSubConfiguration.label === subTabs.logisticsTimes">
+        <div class="routes-list">
+          <h4 class="green-title">{{ 'formProvider.step8.subtitles.route' | translate }}</h4>
+          <div class="routes-container">
+            <app-delivery-routes [deliveryRoutes]="deliveryRoutes" [enableEdit]="enableEdit"></app-delivery-routes>
+          </div>
+        </div>
+        <div class="route-details">
+          <app-logistics-times [isMexican]="providerIsMexican"></app-logistics-times>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="without-results" *ngIf="lodashIsEmpty(actualConfiguration) && (hasCharacteristicGrouper$ | async)">
+    <app-without-results [title]="'formProvider.step8.notSelectedClassificationMessage' | translate"> </app-without-results>
+  </div>
+  <div class="without-results" *ngIf="!(hasCharacteristicGrouper$ | async)">
+    <app-without-results [title]="'formClient.step5.hasNotCharacteristicGrouper' | translate"></app-without-results>
+  </div>
+</div>

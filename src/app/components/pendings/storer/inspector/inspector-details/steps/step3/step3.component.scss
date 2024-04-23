@@ -1,0 +1,294 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  & #inspector-step3 {
+    @include s.absolute100;
+    @include s.flexColumn;
+
+    & > .content {
+      @include s.flexRow;
+      justify-content: center;
+      flex: 1;
+
+      & > .storer {
+        @include s.flexColumn;
+        flex: 1;
+        padding: 25px;
+
+        & > .title {
+          @include s.flexRow;
+          justify-content: flex-start;
+
+          & > label {
+            @include s.Novecento-Demibold;
+            @include s.escaledFontFormat(s.$textSize17to21, demibold, s.$pqGreen);
+            margin-bottom: 15px;
+          }
+        }
+
+        & > .container {
+          @include s.flexRow;
+          flex: 1;
+
+          & > .content1 {
+            @include s.flexColumn;
+            flex: 1;
+
+            & > .tag {
+              @include s.flexColumn;
+              flex: 1;
+
+              & > .title {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+                padding-bottom: 5px;
+                border-bottom: 0.5px solid s.$pqBlack2;
+              }
+
+              & > .content {
+                @include s.flexRow;
+                margin-top: 10px;
+                align-items: flex-start;
+
+                & > label {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize20to25, regular, s.$pqBlack2);
+                }
+              }
+            }
+
+            & > .location1 {
+              @include s.flexColumn;
+              flex: 1;
+
+              & > .title {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+                padding-bottom: 5px;
+                border-bottom: 0.5px solid s.$pqBlack2;
+              }
+
+              & > .content {
+                @include s.flexRow;
+                flex: 1;
+                margin-top: 10px;
+                align-items: flex-start;
+
+                & > div {
+                  flex: 1;
+                }
+              }
+            }
+
+            & > .drive1 {
+              @include s.flexColumn;
+              flex: 1;
+
+              & > .title {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+                padding-bottom: 5px;
+                border-bottom: 0.5px solid s.$pqBlack2;
+              }
+
+              & > .content {
+                @include s.flexRowNoWrap;
+                align-items: flex-start;
+                flex: 1;
+                margin-top: 10px;
+
+                & > div {
+                  @include s.flexRow;
+                  align-items: center;
+
+                  & > img {
+                    height: 19px;
+                    margin-right: 5px;
+                  }
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize20to25, regular, s.$pqGreen);
+                  }
+                }
+              }
+            }
+          }
+
+          & > .content2 {
+            @include s.flexColumn;
+            flex: 1;
+            margin: 0 100px;
+
+            & > .dispatch {
+              @include s.flexColumn;
+              flex: 1;
+
+              & > .title {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqGreen2);
+                padding-bottom: 5px;
+                border-bottom: 0.5px solid s.$pqBlack2;
+              }
+
+              & > .content {
+                @include s.flexColumn;
+                flex: 1;
+                margin-top: 10px;
+                justify-content: flex-start;
+
+                & > .total {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize15to18, regular, s.$pqBlack2);
+                }
+
+                & > .pieces {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize20to25, regular, s.$pqBlack2);
+                  margin-top: 5px;
+                }
+              }
+            }
+
+            & > .location2 {
+              @include s.flexColumn;
+              flex: 1;
+
+              & > .title {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+                padding-bottom: 5px;
+                border-bottom: 0.5px solid s.$pqBlack2;
+              }
+
+              & > .content {
+                @include s.flexRow;
+                flex: 1;
+                margin-top: 10px;
+                align-items: flex-start;
+
+                & > label {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize20to25, regular, s.$pqBlack2);
+                }
+              }
+            }
+
+            & > .drive2 {
+              @include s.flexColumn;
+              flex: 1;
+
+              & > .title {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+                padding-bottom: 5px;
+                border-bottom: 0.5px solid s.$pqBlack2;
+              }
+
+              & > .content {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: 1fr;
+                grid-column-gap: 20px;
+                margin-top: 10px;
+                align-items: flex-start;
+
+                & > div {
+                  @include s.flexColumn;
+
+                  & > .total {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize15to18, regular, s.$pqBlack2);
+                  }
+
+                  & > .pieces {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize20to25, regular, s.$pqBlack2);
+                    margin-top: 5px;
+                  }
+                }
+
+                & > div:first-child {
+                  border-right: 0.5px solid s.$pqBlack2;
+                }
+              }
+            }
+          }
+
+          & > .content3 {
+            @include s.flexColumn;
+            flex: 1;
+
+            & > .notDispatch {
+              @include s.flexColumn;
+              flex: 1;
+
+              & > .title {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormat(s.$textSize17to21, bold, s.$gnRojoSemaforo);
+                padding-bottom: 5px;
+                border-bottom: 0.5px solid s.$pqBlack2;
+              }
+
+              & > .content {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: 1fr;
+                grid-column-gap: 20px;
+                margin-top: 10px;
+                align-items: flex-start;
+
+                & > div {
+                  @include s.flexColumn;
+
+                  & > .total {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize15to18, regular, s.$pqBlack2);
+                  }
+
+                  & > .pieces {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize20to25, regular, s.$pqBlack2);
+                    margin-top: 5px;
+                  }
+                }
+
+                & > div:first-child {
+                  border-right: 0.5px solid s.$pqBlack2;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    & > .footer {
+      @include s.flexRow;
+      justify-content: space-between;
+
+      & > .back {
+        @include s.pqButton();
+      }
+
+      & > .tag {
+        @include s.pqButton($baseColor: s.$pqGreen2);
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .content {
+        & > .storer {
+          & > .container {
+          }
+        }
+      }
+    }
+  }
+}

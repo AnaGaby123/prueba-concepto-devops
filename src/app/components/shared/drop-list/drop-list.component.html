@@ -1,0 +1,132 @@
+<div
+  class="drop-list-container"
+  [ngClass]="dropListClass"
+  [style.min-width]="activeMinWidth ? '230px' : 'initial'"
+  [style.display]="controlInLine ? 'flex' : ''"
+  [style.text-align]="textAlign"
+>
+  <div class="label-container" *ngIf="label !== ''" [style.margin-bottom]="controlInLine ? '0' : '3px'">
+    <img *ngIf="required && showAsterisk && enableEdit && !errors" alt="" src="assets/Images/asterisco.svg" />
+    <img *ngIf="required && showAsterisk && enableEdit && errors" alt="" src="assets/Images/asterisco_red.svg" />
+    <div [style.padding-right]="controlInLine ? '7px' : ''">
+      <label
+        [ngClass]="errors ? 'label-danger' : 'label-default'"
+        [style.font-family]="!enableEdit ? 'Roboto-Bold' : font"
+        [style.color]="disable ? labelDisableFontColor : labelFontColor"
+      >
+        {{ label }}
+      </label>
+    </div>
+  </div>
+  <div class="label-disable-edit-container" *ngIf="!enableEdit" [style.height]="height">
+    <div>
+      <label>{{ title !== 'Seleccionar' ? title : 'N/D' }}</label>
+    </div>
+  </div>
+  <div class="container-drop" *ngIf="enableEdit">
+    <div
+      class="title"
+      [ngClass]="errors ? 'title-danger' : ''"
+      [style.border-color]="disable ? disableBorderColor : borderColor"
+      [style.cursor]="disable ? 'default' : 'pointer'"
+      [style.height]="height"
+      (click)="openDropList()"
+    >
+      <div *ngIf="isSearchable" class="img-initial" [ngClass]="reducePadding ? 'reduce' : ''">
+        <img
+          alt=""
+          class="magnifying-glass"
+          [src]="disable ? 'assets/Images/disabled-magnifying-glass.svg' : 'assets/Images/lupa.svg'"
+        />
+      </div>
+      <div class="content-info" [style.padding-left]="!isSearchable && '10px'" [ngClass]="reducePadding ? 'reduce' : ''">
+        <div *ngIf="!isSearchable">
+          <p
+            [ngClass]="{'align reduce': reducePadding, align: !reducePadding}"
+            [style.color]="disable ? disableFontColor : fontColor"
+            [style.margin-right]="marginRigth"
+          >
+            <span>{{ title }}</span>
+            <span [style.color]="colorSecundario" [style.font-family]="font" [style.font-size]="fontSize">
+              {{ subtitle }}
+            </span>
+          </p>
+        </div>
+        <div *ngIf="isSearchable">
+          <input
+            [class.disable]="disable"
+            [ngClass]="align"
+            [placeholder]="title"
+            [ngModel]="searchTerm"
+            (ngModelChange)="changeSearchTerm($event)"
+          />
+        </div>
+      </div>
+      <div class="img-final">
+        <img
+          alt=""
+          class="arrow"
+          *ngIf="(!showDropList && isSearchable) || !isSearchable"
+          [src]="disable ? srcDisableImage : srcImage"
+        />
+      </div>
+    </div>
+    <div
+      class="content"
+      [hidden]="!showDropList"
+      [style.width]="widthContent"
+      [style.margin-left]="marginLeftContent"
+      [style.top]="height"
+    >
+      <div>
+        <div>
+          <ul class="options" *ngIf="arrayAux != undefined">
+            <div
+              class="options-container"
+              *ngFor="let item of arrayAux"
+              [style.background]="item.id === selectedId || item.id + '|' + item.key === selectedId ? colorSelected : null"
+              [style.pointerEvents]="item.disable ? 'none' : 'auto'"
+              (click)="selectItem(item)"
+            >
+              <div class="border-separator" [style.display]="display" [style.justify-content]="justify">
+                <li class="option" [style.min-height]="heightLi" [style.align-items]="'left'">
+                  <label
+                    [ngClass]="
+                      validationDouble
+                        ? item.id + '|' + item.key === selectedId
+                          ? 'selected'
+                          : null
+                        : item.id === selectedId
+                        ? 'selected'
+                        : null
+                    "
+                    [style.color]="colorSecundario"
+                    [style.font-size]="size"
+                    [style.text-align]="textAlign"
+                  >
+                    {{ item.nombre }}
+                  </label>
+                  <label *ngIf="subtitleActive" [style.color]="colorSecundario">
+                    {{ item.nombre }}
+                    <label [style.color]="colorSecundario"> · {{ item.puesto }}</label></label
+                  >
+                </li>
+              </div>
+            </div>
+          </ul>
+          <ul class="options" *ngIf="arrayAux.length === 0">
+            <div class="options-container">
+              <div class="border-separator" [style.display]="display" [style.justify-content]="justify">
+                <li class="option" [style.min-height]="heightLi" [style.align-items]="'center'">
+                  <label [style.color]="colorSecundario" [style.font-size]="size" [style.text-align]="textAlign">{{
+                    'common.withoutResults' | translate
+                  }}</label>
+                </li>
+              </div>
+            </div>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

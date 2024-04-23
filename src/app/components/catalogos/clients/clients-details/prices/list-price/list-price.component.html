@@ -1,0 +1,140 @@
+<div class="list-price-container">
+  <div class="left-container">
+    <label class="title">{{ 'formProvider.step8.titleListPrice' | translate }}</label>
+    <div class="class-search">
+      <app-search [placeholder]="'Costo'" [searchTerm]="searchTerm$ | async" (textSearch)="handleSearch($event)"></app-search>
+      <img
+        alt="Filtrar"
+        [src]="
+          (hasConfiguration$ | async) ? 'assets/Images/clientes/enfoque.svg' : 'assets/Images/clientes/enfoque_default.svg'
+        "
+        (click)="filterConfiguredPrices()"
+      />
+    </div>
+    <div class="price-list-container" *ngIf="!lodashIsEmpty(pricesResults$ | async)">
+      <virtual-scroller
+        class="price-list"
+        [items]="pricesResults$ | async"
+        (vsEnd)="fetchMorePrices($event)"
+        (vsUpdate)="pricesResults = $event"
+      >
+        <app-list-price-item
+          class="price-item"
+          *ngFor="let price of pricesResults; trackBy: handleTrackByPriceList"
+          [price]="price"
+          (selectedPriceChange)="selectPrice($event)"
+        ></app-list-price-item>
+      </virtual-scroller>
+      <div class="loading" *ngIf="!lodashIsEmpty(pricesResults$ | async) && (pricesList$ | async).isLoading">
+        <app-loading></app-loading>
+      </div>
+    </div>
+    <div class="loading" *ngIf="lodashIsEmpty(pricesResults$ | async) && (pricesList$ | async).isLoading">
+      <app-loading></app-loading>
+    </div>
+    <div class="without-results" *ngIf="lodashIsEmpty(pricesResults$ | async) && !(pricesList$ | async).isLoading">
+      <app-without-results></app-without-results>
+    </div>
+    <div class="footer">
+      <label>
+        #{{ (pricesList$ | async).pricesList?.TotalResults }}
+        {{
+          (pricesList$ | async).pricesList?.TotalResults === 1
+            ? ('formProvider.step8.cost' | translate)
+            : ('formProvider.step8.costs' | translate)
+        }}
+      </label>
+    </div>
+  </div>
+  <div class="right-container" *ngIf="!lodashIsEmpty(actualConfiguration)">
+    <div class="tabs">
+      <app-options-bar
+        [marginBottom]="'0px'"
+        [optionMinWidth]="'190px'"
+        [options]="levelSubConfigurationTabs"
+        [showArrows]="false"
+        (handleOptionSelected)="selectLevelSubConfigurationTab($event)"
+      ></app-options-bar>
+      <app-see-breakdown
+        class="breakdown"
+        *ngIf="!hasConfigurationProvider"
+        [actualConfiguration]="actualConfiguration"
+      ></app-see-breakdown>
+    </div>
+    <div class="center-container">
+      <div class="price-container" *ngIf="selectedLevelSubConfiguration.label === subTabs.Cost">
+        <div class="provider-list-price">
+          <app-provider-list-price
+            [actualConfiguration]="actualConfiguration"
+            [enableEdit]="enableEdit"
+            [isMexican]="isMexican"
+            [showListPrice]="true"
+            [price]="selectedPrice$ | async"
+            [viewType]="viewType"
+          ></app-provider-list-price>
+        </div>
+        <div class="discount-freight">
+          <app-discount-freight
+            [actualConfiguration]="actualConfiguration"
+            [enableEdit]="enableEdit"
+            [isMexican]="isMexican"
+            [viewType]="viewType"
+          >
+          </app-discount-freight>
+        </div>
+        <div class="import" *ngIf="!isMexican">
+          <app-import
+            [actualConfiguration]="actualConfiguration"
+            [enableEdit]="enableEdit"
+            [isMexican]="isMexican"
+            [viewType]="viewType"
+          >
+          </app-import>
+        </div>
+        <div class="custom-agent-cost" *ngIf="!isMexican">
+          <app-custom-agent-cost
+            [actualConfiguration]="actualConfiguration"
+            [enableEdit]="enableEdit"
+            [isMexican]="isMexican"
+            [viewType]="viewType"
+          >
+          </app-custom-agent-cost>
+        </div>
+        <div class="expenses" *ngIf="!isMexican">
+          <app-expenses [actualConfiguration]="actualConfiguration" [enableEdit]="enableEdit" [isMexican]="isMexican">
+          </app-expenses>
+        </div>
+        <div class="fixed">
+          <app-fixed [enableEdit]="enableEdit" [actualConfiguration]="actualConfiguration" [isMexican]="isMexican"></app-fixed>
+        </div>
+        <div class="utility">
+          <app-utility
+            [viewType]="viewType"
+            [enableEdit]="enableEdit"
+            [actualConfiguration]="actualConfiguration"
+            [isMexican]="isMexican"
+          >
+          </app-utility>
+        </div>
+      </div>
+      <div class="performance" *ngIf="selectedLevelSubConfiguration.label === subTabs.Performance"></div>
+      <div class="send-time-container" *ngIf="selectedLevelSubConfiguration.label === subTabs.logisticsTimes">
+        <div class="routes-list">
+          <h4 class="green-title">{{ 'formProvider.step8.subtitles.route' | translate }}</h4>
+          <h5 class="route-name">{{ actualConfiguration?.ValorConfiguracionTiempoEntrega?.routeName || 'N/D' }}</h5>
+        </div>
+        <div class="route-details">
+          <app-client-logistics-times
+            [actualConfiguration]="actualConfiguration"
+            [enableEdit]="enableEdit"
+            [isMexican]="isMexican"
+            [viewType]="viewType"
+          ></app-client-logistics-times>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="without-results" *ngIf="lodashIsEmpty(actualConfiguration)">
+    <app-without-results [title]="'formProvider.step8.notSelectedPriceMessage' | translate"> </app-without-results>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<div class="cancel-reason-container">
+  <div class="cancel-container" *ngIf="columnCancelReason?.reasonCancel">
+    <label> {{ columnCancelReason?.reasonCancel }}</label>
+  </div>
+  <div class="img-container" *ngIf="columnCancelReason?.reasonCancel">
+    <img
+      #imageElement
+      alt=""
+      src="assets/Images/close-offer/comments-red.svg"
+      [id]="columnCancelReason?.elementIdComment ? columnCancelReason?.elementIdComment : 'img'"
+      (click)="handleClick($event, imageElement, true, nameActionsInternalSalesItem.SeeCommentsCancelReasonAction)"
+    />
+  </div>
+</div>

@@ -1,0 +1,42 @@
+@use 'base' as s;
+* {
+  box-sizing: border-box;
+}
+#intramitable-pop-up {
+  ::ng-deep .modal {
+    background: none;
+
+    & > .modal-content {
+      transition: none;
+    }
+  }
+  & .container {
+    @include s.flexColumn;
+    height: 100%;
+    width: 100%;
+    padding: 10px 0;
+
+    & > div {
+      @include s.flexColumn;
+      @include s.absoluteCenter;
+      padding: 0 30px;
+      flex: 1;
+      overflow: hidden;
+      & > img {
+        width: 60px;
+        height: 60px;
+      }
+
+      & > label {
+        @include s.escaledFontFormat(s.$textSize26to29, regular, s.$pqBlack2);
+        @include s.Roboto-Regular;
+        margin-bottom: 0;
+
+        & > span {
+          @include s.Roboto-Bold;
+          color: s.$pqGreen;
+        }
+      }
+    }
+  }
+}

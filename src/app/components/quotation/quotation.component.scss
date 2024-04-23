@@ -1,0 +1,21 @@
+@use 'base' as s;
+
+:host {
+  @include s.generic-main-component-structure();
+
+  & > #quotation-container {
+    & > .footer {
+      & > div {
+        & > img {
+          margin-right: 5px;
+        }
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize12to14, normal, s.$pqBlack2);
+          @include s.Roboto-Regular();
+          margin-top: 1px;
+        }
+      }
+    }
+  }
+}

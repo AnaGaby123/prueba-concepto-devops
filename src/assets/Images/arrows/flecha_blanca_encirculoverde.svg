@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width='60px' height='60px' viewBox='0 0 60 60' version='1.1' xmlns='http://www.w3.org/2000/svg'
+     xmlns:xlink='http://www.w3.org/1999/xlink'>
+  <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+  <title>icono_flecha</title>
+  <desc>Created with Sketch.</desc>
+  <defs>
+    <polygon id='path-1' points='0 30.99895 0 0.998 60 0.998 60 30.99895 60 60.9999 0 60.9999'></polygon>
+  </defs>
+  <g id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'>
+    <g id='16' transform='translate(-1146.000000, -464.000000)'>
+      <g id='icono/check' transform='translate(1146.000000, 463.000000)'>
+        <g id='icono_flecha'>
+          <g id='Group-3' transform='translate(0.000000, 0.002000)'>
+            <mask id='mask-2' fill='white'>
+              <use xlink:href='#path-1'></use>
+            </mask>
+            <g id='Clip-2'></g>
+            <path
+              d='M60,30.9979 C60,47.5659 46.566,60.9999 29.998,60.9999 C13.43,60.9999 0,47.5659 0,30.9979 C0,14.4299 13.43,0.9979 29.998,0.9979 C46.566,0.9979 60,14.4299 60,30.9979'
+              id='Fill-1' fill='#008A98' mask='url(#mask-2)'></path>
+          </g>
+          <path
+            d='M20.1152,45.6972 C20.4262,46.2452 20.8942,46.5512 21.4082,46.5512 C21.8472,46.5512 22.2712,46.3302 22.5992,45.9242 L45.5492,18.0562 C45.9222,17.6042 46.0902,17.0932 46.0102,16.6202 C45.9552,16.2202 45.7282,15.8712 45.3772,15.6422 C44.6252,15.1462 43.4592,15.5992 42.2692,16.9002 L23.1822,36.0022 C22.7172,36.4242 22.2252,36.8712 21.6112,36.8712 C21.3142,36.8712 21.0022,36.7732 20.6792,36.5772 L14.7152,32.3702 C14.1252,31.8542 13.4802,31.8612 13.2282,32.3102 C13.0452,32.6342 13.1072,33.1052 13.3832,33.5622 L20.1152,45.6972 Z'
+            id='Fill-4' fill='#FFFFFF'></path>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

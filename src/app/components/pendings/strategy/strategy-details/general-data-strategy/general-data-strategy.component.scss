@@ -1,0 +1,347 @@
+@use 'base' as s;
+* {
+  box-sizing: border-box;
+}
+:host {
+  @include s.absolute100;
+  position: relative;
+
+  #general-data-strategy-container {
+    @include s.flexRowWrap;
+    background-color: s.$pqWhite;
+    height: 100%;
+    position: relative;
+    width: auto;
+    overflow: hidden;
+    transition: all 0.4s ease-in-out;
+
+    & > .content {
+      @include s.flexRow;
+      align-content: space-between;
+      border-right: 1px solid s.$pqGray2;
+      height: 100%;
+      padding: 15px 18px 0 0;
+      position: relative;
+      width: 300px;
+      & > .info {
+        @include s.flexColumn();
+        row-gap: 15px;
+        overflow: hidden;
+        position: relative;
+        & > .header {
+          @include s.flexColumn;
+          row-gap: 15px;
+          & > .title {
+            @include s.flexColumn();
+            & > label {
+              @include s.responsive-font-format(
+                $font-family: s.$font_family_novecento_bold,
+                $font-size-map: s.$responsive-font-17-21
+              );
+              white-space: pre;
+              & > span {
+                color: s.$pqRed;
+                vertical-align: baseline;
+                white-space: pre;
+              }
+              & .with-contract {
+                color: s.$pqGreen;
+              }
+            }
+          }
+          & > .logo {
+            @include s.flexRowNoWrap;
+            & > .image {
+              @include s.gridCenter;
+              column-gap: 15px;
+              flex: 0 0 106px;
+              height: 70px;
+              & > img {
+                max-height: 100%;
+                max-width: 100%;
+                overflow: hidden;
+              }
+            }
+            & > .content-name-client {
+              @include s.flexColumn;
+              justify-content: center;
+              flex: 1;
+              overflow: hidden;
+              & > .name-client {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_roboto_bold,
+                  $font-weight: s.$font_weight_bold,
+                  $font-size-map: s.$responsive-font-17-21,
+                  $color: s.$pqGreen
+                );
+                @include s.multiLineTextTruncateSinHeight($lineHeight: 20px, $wordBreak: break-word);
+              }
+
+              & > .type {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_roboto_regular,
+                  $font-size-map: s.$responsive-font-14-16,
+                  $font-weight: s.$font_weight_regular
+                );
+              }
+            }
+          }
+          & > .totals {
+            @include s.flexRowNoWrap;
+            padding-bottom: 20px;
+            border-bottom: 1px solid s.$pqBlack2;
+            & > div {
+              @include s.flexColumn;
+              flex: 0 0 50%;
+              & > .title {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_roboto_bold,
+                  $font-size-map: s.$responsive-font-13-16,
+                  $font-weight: s.$font_weight_bold
+                );
+                margin-bottom: 1px;
+              }
+              & > .totals {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_roboto_regular,
+                  $font-size-map: s.$responsive-font-13-16,
+                  $font-weight: s.$font_weight_regular,
+                  $color: s.$main-proquifa
+                );
+              }
+              & > .segmentation {
+                @include s.flexRowNoWrap;
+                column-gap: 6px;
+                margin-top: 3px;
+                & > img {
+                  @include s.imageIconResponsiveSize;
+                }
+              }
+              &.right {
+                align-items: flex-end;
+              }
+            }
+          }
+        }
+        & > .body {
+          @include s.flexColumn;
+          flex: 1;
+          overflow-y: auto;
+          overflow-x: hidden;
+          row-gap: 15px;
+          & > .client-data-container {
+            @include s.flexColumn();
+            row-gap: 8px;
+            & > .title-data {
+              @include s.flexRow;
+              & > label {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_roboto_bold,
+                  $font-weight: s.$font_weight_bold,
+                  $font-size-map: s.$responsive-font-17-21,
+                  $color: s.$pqGreen
+                );
+              }
+            }
+            & > .details-data {
+              @include s.flexColumn;
+              row-gap: 5px;
+              & > label {
+                white-space: pre-wrap;
+                @include s.multiLineTextTruncateSinHeight($lineHeight: 15px);
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_roboto_bold,
+                  $font-weight: s.$font_weight_bold,
+                  $font-size-map: s.$responsive-font-14-16
+                );
+                text-align: left;
+                & > span:nth-of-type(1) {
+                  @include s.responsive-font-format($font-size-map: s.$responsive-font-14-16);
+                  vertical-align: baseline;
+                }
+              }
+            }
+          }
+          & > .contact-data-container {
+            @include s.flexColumn;
+            row-gap: 8px;
+            & > .contact-data-title {
+              @include s.flexRow;
+              & > label {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_roboto_bold,
+                  $font-weight: s.$font_weight_bold,
+                  $font-size-map: s.$responsive-font-17-21,
+                  $color: s.$pqGreen
+                );
+              }
+            }
+            & > .contact-data-details {
+              @include s.flexColumn;
+              row-gap: 5px;
+              & > div {
+                @include s.flexRowWrap;
+                justify-content: space-between;
+                & > div:nth-of-type(1) {
+                  @include s.flexRow;
+                  @include s.absoluteCenter;
+                  width: 20px;
+                }
+                & > label {
+                  @include s.responsive-font-format($font-size-map: s.$responsive-font-14-16);
+                  width: calc(100% - 40px);
+                }
+                & > .contact {
+                  align-self: center;
+                }
+                & > div:nth-of-type(2) {
+                  @include s.flexRow;
+                  @include s.absoluteCenter;
+                  width: calc(100% - 40px);
+                }
+              }
+            }
+
+            & > .contact-data-sub-details {
+              @include s.flexColumn;
+              row-gap: 5px;
+              & > label {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_roboto_bold,
+                  $font-weight: s.$font_weight_bold,
+                  $font-size-map: s.$responsive-font-14-16
+                );
+                text-align: left;
+                & > span:nth-of-type(1) {
+                  @include s.Roboto-Regular;
+                  vertical-align: baseline;
+                  padding-left: 7px;
+                }
+              }
+            }
+          }
+          & > .list-brands {
+            @include s.flexColumn;
+            flex: 1;
+            & > div:nth-of-type(1) {
+              @include s.flexRow;
+              border-bottom: 1px solid s.$pqBlack2;
+              margin-bottom: 12px;
+              & > label:nth-of-type(1) {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_roboto_bold,
+                  $font-weight: s.$font_weight_bold,
+                  $font-size-map: s.$responsive-font-17-21,
+                  $color: s.$main-proquifa
+                );
+                padding-bottom: 5px;
+              }
+            }
+            & > .virtual-scroller {
+              @include s.flexColumn;
+              flex: 1;
+              row-gap: 15px;
+              overflow: auto;
+              & label {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_roboto_regular,
+                  $font-weight: s.$font_weight_regular,
+                  $font-size-map: s.$responsive-font-15-15
+                );
+                display: block;
+                text-transform: uppercase;
+                width: 100%;
+              }
+            }
+
+            & > .loading {
+              @include s.flexRow;
+              @include s.absoluteCenter;
+              flex: 1;
+              width: 100%;
+            }
+
+            & > .without-results {
+              @include s.flexRow;
+              @include s.absoluteCenter;
+              flex: 1;
+              width: 100%;
+            }
+          }
+        }
+        & > .footer {
+          & > .total-marks {
+            @include s.flexColumn;
+            border-top: 1px solid s.$pqBlack2;
+            height: 54px;
+            padding-top: 5px;
+            width: 100%;
+            & > label:nth-of-type(1) {
+              @include s.responsive-font-format(
+                $font-family: s.$font_family_roboto_regular,
+                $font-weight: s.$font_weight_regular,
+                $font-size-map: s.$responsive-font-10-12-b
+              );
+              text-align: center;
+            }
+          }
+        }
+      }
+    }
+
+    &.hide {
+      width: 0;
+    }
+
+    &.show {
+      width: 300px;
+    }
+
+    @include s.media-query(s.$standard) {
+      &.show {
+        width: 360px;
+      }
+
+      & > .content {
+        width: 360px;
+
+        & > .info {
+          & > .body {
+            & > .client-data-container {
+              & > .details-data {
+                & > label {
+                  @include s.multiLineTextTruncateSinHeight($lineHeight: 20px);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .arrow {
+    cursor: pointer;
+    height: 21px;
+    position: absolute;
+    top: calc(50% - 42px);
+    width: 16px;
+    z-index: 3;
+
+    & > img {
+      height: 21px;
+      opacity: 1;
+      transform: scaleX(1);
+      transition: transform 0.8s ease-in-out;
+      width: 16px;
+
+      &:hover {
+        opacity: 0.4;
+      }
+    }
+
+    & > .reverse {
+      transform: scaleX(-1);
+    }
+  }
+}

@@ -1,0 +1,296 @@
+<div id="collection-monitoring-list-container">
+  <section>
+    <div class="payments" *ngIf="(selectedTabOption$ | async)?.id === 2">
+      <section class="filters" [ngClass]="isOpen ? 'show' : 'hide'">
+        <div class="data-filters">
+          <div>
+            <div class="title">
+              <div class="text">
+                <label>CONSULTAR COBRANZA</label>
+              </div>
+            </div>
+            <div class="dateFilter">
+              <div class="picker">
+                <app-date-picker
+                  class="date-picker"
+                  dateFormat="YYYYMMDD"
+                  [label]="'Del'"
+                  [labelFont]="'Roboto-Bold'"
+                  [color]="false"
+                  (fecha)="handleDate('fromCalendar', $event)"
+                ></app-date-picker>
+              </div>
+              <div class="pickerFrom">
+                <app-date-picker
+                  class="date-picker"
+                  dateFormat="YYYYMMDD"
+                  [label]="'Hasta'"
+                  [labelFont]="'Roboto-Bold'"
+                  [color]="false"
+                  (fecha)="handleDate('toCalendar', $event)"
+                ></app-date-picker>
+              </div>
+            </div>
+            <div class="content">
+              <div>
+                <div>
+                  <app-drop-down-list
+                    [items]="clientOptions$ | async"
+                    [itemSelected]="clientOptionSelected$ | async"
+                    (valueDropList)="setSelectedClientOption($event)"
+                    [font]="'Roboto-Bold'"
+                    [label]="'Cliente'"
+                  >
+                  </app-drop-down-list>
+                </div>
+              </div>
+              <div>
+                <div>
+                  <app-drop-down-list
+                    [items]="collectionsStatusOptions$ | async"
+                    [itemSelected]="collectionStatusSelected$ | async"
+                    (valueDropList)="setSelectedCollectionStatusOption($event)"
+                    [font]="'Roboto-Bold'"
+                    [label]="'Estados de Pago'"
+                  >
+                  </app-drop-down-list>
+                </div>
+              </div>
+              <div>
+                <div>
+                  <app-drop-down-list
+                    [items]="typeCollectionsOptions$ | async"
+                    [itemSelected]="typeCollectionsOptionsSelected$ | async"
+                    (valueDropList)="setSelectedTypeCollectionOption($event)"
+                    [font]="'Roboto-Bold'"
+                    [label]="'Tipos de Pagos'"
+                  >
+                  </app-drop-down-list>
+                </div>
+              </div>
+              <div>
+                <div>
+                  <app-drop-down-list
+                    [items]="typeClientsOptions$ | async"
+                    [itemSelected]="typeClientsOptionsSelected$ | async"
+                    (valueDropList)="setSelectedTypeClientOption($event)"
+                    [font]="'Roboto-Bold'"
+                    [label]="'Tipos de Clientes'"
+                  >
+                  </app-drop-down-list>
+                </div>
+              </div>
+              <div>
+                <div class="recharge">
+                  <img src="assets/Images/recharge.svg" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="arrow">
+          <img alt="arrow" src="assets/Images/arrows/flecha_cuadro.svg" [ngClass]="{reverse: !isOpen}" (click)="onClick()" />
+        </div>
+      </section>
+    </div>
+
+    <div class="monitoring">
+      <div class="tabs">
+        <app-tabs
+          [options]="tabOptions$ | async"
+          [tapSelected]="selectedTabOption$ | async"
+          (onSelectOption)="setSelectedTabOption($event)"
+        >
+        </app-tabs>
+      </div>
+      <div class="filters" *ngIf="(selectedTabOption$ | async)?.id === 1">
+        <div class="title">
+          <div class="title">
+            <label>{{ actualWeek$ | async | daysRange }}</label>
+          </div>
+          <div class="week-filter">
+            <div class="left" (click)="setCurrentDate('previous')">
+              <img src="assets/Images/arrows/flecha_mostrar.svg" alt="" />
+            </div>
+            <div class="center" (click)="setCurrentDate('today')">
+              <label>{{ 'common.today' | translate }}</label>
+            </div>
+            <div class="right" (click)="setCurrentDate('next')">
+              <img src="assets/Images/arrows/flecha_mostrar.svg" alt="" />
+            </div>
+          </div>
+        </div>
+        <div class="elements" *ngIf="(selectedTabOption$ | async)?.id === 1">
+          <div class="chips">
+            <app-chip
+              [dataChips]="optionsChip$ | async"
+              [fontColorDefault]="'#FFFFFF'"
+              (activeChip)="setActiveChipOption($event)"
+            >
+            </app-chip>
+          </div>
+          <div>
+            <app-search
+              [searchTerm]="searchTerm$ | async"
+              [placeholder]="'quotation.details.client' | translate"
+              (textSearch)="handleSearchTerm($event)"
+            >
+            </app-search>
+          </div>
+        </div>
+      </div>
+      <div
+        class="data"
+        *ngIf="(selectedTabOption$ | async)?.label === CALENDAR_VIEW_TYPES.week && (calendarApiStatus$ | async) === 3"
+      >
+        <div>
+          <div class="header">
+            <div *ngFor="let day of actualWeek$ | async; let i = index">
+              <div [ngClass]="day === currentDate && 'active'">
+                <label>{{ daysOfWeek[i] | translate }} {{ day | onlyDayNumber }}</label>
+              </div>
+            </div>
+          </div>
+          <div class="list" *ngIf="!lodashIsEmpty(daysArraysOfClients$ | async)">
+            <div
+              class="day-list"
+              *ngFor="let day of daysArraysOfClients$ | async; let i = index"
+              [ngClass]="i === (daysArraysOfClients$ | async).length - 1 && 'not-border'"
+            >
+              <div class="item-list">
+                <virtual-scroller
+                  *ngIf="(calendarApiStatus$ | async) === 3 && !lodashIsEmpty(day?.ListaClientes)"
+                  [items]="day?.ListaClientes"
+                  (vsUpdate)="daysArraysOfClients[i] = $event"
+                >
+                  <div class="item" *ngFor="let client of daysArraysOfClients[i]" (click)="selectClient(client)">
+                    <div class="content-item">
+                      <div class="index">
+                        <label>#{{ client.Index }}</label>
+                      </div>
+                      <div class="info">
+                        <div class="customer">
+                          <label>{{ client.NombreCliente }}</label>
+                        </div>
+                        <div class="date">
+                          <label class="green">FPP {{ client.Fecha | dateFormatSlashShort }}</label>
+                        </div>
+                        <div class="charged">
+                          <label>A cobrar {{ client.ACobrar | currency: 'USD':'symbol':'1.2-2' }} USD</label>
+                        </div>
+                        <div class="charges">
+                          <label>{{ client.Cobros }} Cobros ·</label>
+                        </div>
+                        <div class="image">
+                          <img src="assets/Images/labels/withCredit.svg" alt="Con crédito" />
+                        </div>
+                      </div>
+                      <div class="image">
+                        <img src="assets/Images/execute-collection/collectionNotReceived.svg" alt="Cobro no recibido" />
+                      </div>
+                    </div>
+                  </div>
+                </virtual-scroller>
+                <div *ngIf="(calendarApiStatus$ | async) !== 1 && lodashIsEmpty(day?.ListaClientes)" class="without-results">
+                  <app-without-results></app-without-results>
+                </div>
+              </div>
+              <div class="totals" *ngIf="!lodashIsEmpty(daysArraysOfClients[i])">
+                <div class="totals-content">
+                  <div>
+                    <label>#{{ daysArraysOfClients[i].length }}</label>
+                  </div>
+                  <div>
+                    <label
+                      >{{ 'collectionMonitoring.totalReceivable' | translate }}:
+                      {{ day?.ACobrar || 0 | currency: 'USD':'symbol':'1.2-2' }} USD</label
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="lodashIsEmpty(daysArraysOfClients$ | async)" class="loader">
+            <app-without-results></app-without-results>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="(calendarApiStatus$ | async) === 1" class="loader">
+        <app-loading></app-loading>
+      </div>
+      <div class="datamonth" *ngIf="(selectedTabOption$ | async)?.id === 2">
+        <div class="container-month">
+          <div class="header">
+            <span>Resultados</span>
+          </div>
+          <div class="table-container">
+            <div class="table">
+              <div class="header-table">
+                <div class="number">
+                  <span>#</span>
+                </div>
+                <div class="day-payment">
+                  <span>Fecha Promesa de Pago</span>
+                </div>
+
+                <div class="pay"></div>
+                <div class="client">
+                  <span>Cliente</span>
+                </div>
+                <div class="to-pay">
+                  <span>A Cobrar</span>
+                </div>
+                <div class="status"></div>
+              </div>
+              <div class="body">
+                <virtual-scroller>
+                  <div class="item" *ngFor="let item of items">
+                    <div class="number">
+                      <span>{{ item.Index }}</span>
+                    </div>
+                    <div class="day-payment">
+                      <span [ngClass]="letterColor(item.pagoRecibido, item.credito)">{{
+                        item.fechaPago | dateFormatSlash
+                      }}</span>
+                    </div>
+                    <div class="pay">
+                      <img
+                        *ngIf="item.pagoRecibido"
+                        src="assets/Images/execute-collection/collectionNotReceived.svg"
+                        alt="Con crédito"
+                      />
+                    </div>
+                    <div class="client">
+                      <span>{{ item.client }} </span>
+                      <span class="payment">{{ item.cobro + ' Cobros' }}</span>
+                    </div>
+                    <div class="to-pay">
+                      <span>{{ item.pagar | currency: 'USD':'symbol-narrow':'1.2-2' }} USD</span>
+                    </div>
+                    <div class="status">
+                      <img src="assets/Images/labels/withCredit.svg" alt="" *ngIf="item.credito" />
+                      <img src="assets/Images/labels/sin_credito.svg" alt="" *ngIf="!item.credito" />
+                    </div>
+                  </div>
+                </virtual-scroller>
+              </div>
+            </div>
+          </div>
+          <div class="footer">
+            <span>#14</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer>
+    <div *ngIf="(selectedTabOption$ | async)?.id === 1">
+      <label class="label-dark">FPP:</label>
+      <label class="label-normal">{{ 'collectionMonitoring.datePurchasePromisePay' | translate }}</label>
+    </div>
+    <div>
+      <img alt="" src="assets/Images/execute-collection/collectionNotReceived.svg" />
+      <span class="label-normal">{{ 'collectionMonitoring.chargeNotReceived' | translate }}</span>
+    </div>
+  </footer>
+</div>

@@ -1,0 +1,78 @@
+<div class="input-file-container">
+  <!--  DOCS: MUESTRA LABEL DEL TITULO-->
+  <div *ngIf="label" class="label-container">
+    <div>
+      <label [style.font-family]="labelFont" [style.color]="disabled ? labelDisabledFontColor : labelFontColor">{{
+        label
+      }}</label>
+    </div>
+  </div>
+  <!--  FIN TITULO-->
+  <div class="classic" *ngIf="classInput == 'classic'">
+    <div class="input" [ngClass]="disabled && 'disabled'" *ngIf="file === null && fileName === null">
+      <!-- DOCS: MUESTRA EL INPUT PARA SUBIR ARCHIVO-->
+      <div class="file-box" *ngIf="showInputFileBox" (click)="!disabled && file && handleCleanInput()">
+        <label [ngClass]="!file && 'placeholder'">{{ file ? file.name : fileName ? fileName : placeholder }}</label>
+      </div>
+      <label class="input" [for]="id">
+        <input
+          type="file"
+          [accept]="acceptedExtensions"
+          [disabled]="disabled"
+          [id]="id"
+          (change)="!disabled && selectFile($event)"
+        />
+        <img [src]="getSelectOrReloadImage()" alt="" />
+      </label>
+    </div>
+    <!--DOCS: MUSTRA EL NOMBRE DEL ARCHIVO SELECCIONADO COMO ITEM-->
+    <div class="file-added" *ngIf="file !== null || fileName !== null" [ngClass]="buttonsColor">
+      <div class="text">
+        <label (click)="handleSeeFile()">{{ file ? file.name : fileName }}</label>
+      </div>
+      <div class="close" *ngIf="enableEdit">
+        <img
+          alt=""
+          (click)="cleanInputFile()"
+          [src]="buttonsColor === 'ocean' ? 'assets/Images/cerrar.svg' : 'assets/Images/cerrar-' + buttonsColor + '.svg'"
+        />
+      </div>
+    </div>
+    <!--FIN DOCS-->
+    <button
+      *ngIf="showAddSelectedFile"
+      class="add-button"
+      [ngClass]="!disabled && file ? buttonsColor : 'disabled'"
+      (click)="!disabled && file && handleAddButton()"
+      >{{ 'common.add' | translate }}
+    </button>
+  </div>
+  <div class="special" *ngIf="classInput != 'classic'">
+    <div class="input" [ngClass]="disabled && 'disabled'" *ngIf="file === null && fileName === null">
+      <!-- DOCS: MUESTRA EL INPUT PARA SUBIR ARCHIVO-->
+      <div class="file-box" *ngIf="showInputFileBox" (click)="!disabled && file && handleCleanInput()">
+        <label [for]="id" [ngClass]="!file && 'placeholder'" class="input {{ buttonsColor }}"
+          >Cargar
+          {{ file ? (file.name | titlecase) : (fileName | titlecase) ? (fileName | titlecase) : (placeholder | titlecase) }}
+          <input
+            type="file"
+            [accept]="acceptedExtensions"
+            [disabled]="disabled"
+            [id]="id"
+            (change)="!disabled && selectFile($event)"
+          />
+        </label>
+      </div>
+    </div>
+    <!--DOCS: MUSTRA EL NOMBRE DEL ARCHIVO SELECCIONADO COMO ITEM-->
+    <div class="file-added" *ngIf="file !== null || fileName !== null">
+      <div class="text">
+        <label (click)="handleSeeFile()">Ver {{ placeholder | titlecase }}</label>
+      </div>
+      <div class="close" *ngIf="enableEdit">
+        <img (click)="cleanInputFile()" alt="" src="assets/Images/cerrar-green.svg" />
+      </div>
+    </div>
+    <!--FIN DOCS-->
+  </div>
+</div>

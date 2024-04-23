@@ -1,0 +1,46 @@
+<div class="component-container" id="adjustment-container">
+  <div class="header">
+    <app-header-bar
+      [activeBack]="isInDetailsView$ | async"
+      [name]="(customer$ | async)?.Nombre"
+      [title]="title$ | async"
+      (goBack)="goBack()"
+    >
+    </app-header-bar>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="footer" *ngIf="!(isInDetailsView$ | async)">
+    <ng-container>
+      <div>
+        <label class="oc">OC: </label>
+        <label>{{ 'preProcessing.purchaseOrder' | translate }}</label>
+      </div>
+      <div>
+        <label class="vt">VT: </label>
+        <label>{{ 'notProcessed.totalValue' | translate }}</label>
+      </div>
+      <div>
+        <img alt="Originales" src="assets/Images/pre-processing/originales.svg" />
+        <label>{{ 'preProcessing.typeOfItem.originals' | translate }}</label>
+      </div>
+      <div>
+        <img alt="Alternativas" src="assets/Images/pre-processing/alternativas.svg" />
+        <label>{{ 'preProcessing.typeOfItem.alternatives' | translate }}</label>
+      </div>
+      <div>
+        <img alt="Complementarias" src="assets/Images/pre-processing/complementarias.svg" />
+        <label>{{ 'preProcessing.typeOfItem.complementary' | translate }}</label>
+      </div>
+      <div>
+        <img alt="Promoción" src="assets/Images/pre-processing/promocion.svg" />
+        <label>{{ 'preProcessing.typeOfItem.promotion' | translate }}</label>
+      </div>
+      <div>
+        <img alt="Ahorro" src="assets/Images/pre-processing/ahorro.svg" />
+        <label>{{ 'preProcessing.typeOfItem.saving' | translate }}</label>
+      </div>
+    </ng-container>
+  </div>
+</div>

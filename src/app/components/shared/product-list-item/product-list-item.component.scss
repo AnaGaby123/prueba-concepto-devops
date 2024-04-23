@@ -1,0 +1,260 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  & > .product-list-item-container {
+    @include s.flexColumn;
+    align-items: center;
+    padding: 15px;
+    width: 100%;
+
+    &:hover {
+      background: s.$pqGray2;
+
+      * {
+        cursor: pointer;
+      }
+
+      & > .product-container {
+        & > .product-image {
+          & > img:nth-of-type(1) {
+            display: none;
+          }
+
+          & > img:nth-of-type(2) {
+            display: block;
+          }
+        }
+
+        & > .information-container {
+          & > .product-information {
+            & > .product-image {
+              & > img:nth-of-type(1) {
+                display: none;
+              }
+
+              & > img:nth-of-type(2) {
+                display: block;
+              }
+            }
+          }
+        }
+
+        & > .controlate {
+          color: s.$pqOrange2;
+        }
+
+        & > .indicator {
+          @include s.Roboto-Bold;
+          @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+          animation: fadeIn 0.5s;
+          display: flex;
+
+          &.enable-text {
+            color: s.$pqGreen2;
+          }
+
+          &.discontinued-text {
+            color: s.$pqGray3;
+          }
+
+          &.backOrder-text {
+            color: s.$colorPurple2;
+          }
+
+          &.unmarketable-text {
+            color: s.$orange;
+          }
+        }
+      }
+    }
+
+    & > .indicator {
+      place-self: flex-start;
+
+      & > .none {
+        opacity: 0;
+      }
+
+      &.enable,
+      &.backOrder,
+      &.unmarketable,
+      &.discontinued {
+        @include s.pqCircle(11px, s.$pqGreen2);
+      }
+
+      &.backOrder {
+        background-color: s.$colorPurple2;
+      }
+
+      &.unmarketable {
+        background-color: s.$orange;
+      }
+
+      &.discontinued {
+        background-color: s.$pqGray3;
+      }
+    }
+
+    & > .product-container {
+      @include s.absolute100;
+      display: grid;
+      grid-column-gap: 15px;
+      grid-template-columns: 115px minmax(500px, 1fr) repeat(3, minmax(150px, 190px));
+      padding-left: 11px;
+      place-items: center;
+
+      & > .product-image {
+        & > img {
+          animation: animateZoom 0.4s;
+          height: 60px;
+        }
+
+        & > img:nth-of-type(1) {
+          display: block;
+        }
+
+        & > img:nth-of-type(2) {
+          display: none;
+        }
+      }
+
+      & > .information-container {
+        @include s.absolute100;
+        @include s.flexColumn;
+        gap: 5px;
+        justify-content: center;
+        padding-left: 10px;
+
+        & > .product-information {
+          @include s.flexRowNoWrap;
+
+          & > label,
+          & > span {
+            @include s.Roboto-Bold;
+            @include s.escaledFontFormat(s.$textSize13to15, regular, s.$pqBlack);
+            line-height: normal;
+            white-space: pre;
+          }
+
+          & > span {
+            color: s.$pqGreen;
+          }
+
+          & > .product-image {
+            & > img {
+              animation: animateZoom 0.4s;
+              height: 13px;
+              margin: 0 3px;
+            }
+
+            & > img:nth-of-type(1) {
+              animation: animateZoom 0.4s;
+              display: block;
+            }
+
+            & > img:nth-of-type(2) {
+              animation: animateZoom 0.4s;
+              display: none;
+            }
+          }
+        }
+
+        & > .description {
+          @include s.flexRow;
+          align-items: flex-end;
+
+          & > .product-description {
+            @include s.Roboto-Regular;
+            @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack);
+            @include s.multiLineTextTruncateSinHeight(2, 1.3, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+          }
+        }
+
+        & > .alternatives-complementary {
+          & > label {
+            @include s.Roboto-Bold;
+            @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack);
+          }
+
+          & > span {
+            @include s.Roboto-Bold;
+            @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqGreen);
+          }
+        }
+      }
+
+      & > .indicator {
+        animation: fadeIn 1s;
+        display: none;
+      }
+
+      & > .controlate {
+        @include s.Roboto-Bold;
+        @include s.escaledFontFormat(s.$textSize13to16, regular, s.$gris);
+        grid-area: 1 / 4;
+      }
+
+      & > .price {
+        @include s.Roboto-Bold;
+        @include s.escaledFontFormat(s.$textSize15to17, regular, s.$pqGreen);
+        grid-area: 1 / 5;
+      }
+    }
+  }
+
+  & > .downSeparatorList {
+    @include s.flexRow;
+    background: linear-gradient(to left, #ffffff 2%, #ececec 50%, #ffffff 95%) 100%;
+    bottom: 0;
+    height: 1.5px !important;
+    left: 0;
+    padding: initial !important;
+    width: 100% !important;
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > .product-list-item-container {
+      padding: 20px;
+
+      & > .indicator {
+        &.enable,
+        &.backOrder,
+        &.unmarketable,
+        &.discontinued {
+          height: 13px;
+          width: 13px;
+        }
+      }
+
+      & > .product-container {
+        grid-column-gap: 20px;
+        grid-template-columns: 130px minmax(530px, 1fr) repeat(3, minmax(145px, 210px));
+        padding-left: 8px;
+
+        & > .product-image {
+          & > img {
+            height: 70px;
+          }
+        }
+
+        & > .information-container {
+          gap: 7px;
+
+          & > .product-information {
+            & > .product-image {
+              & > img {
+                height: 15px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,76 @@
+@use 'base' as s;
+
+:host {
+  @include s.absolute100;
+  @include s.flexColumn;
+  @include s.reset-line-height;
+  overflow: hidden;
+}
+
+#regulation-and-restrictions {
+  @include s.flexColumn;
+  flex: 1;
+  overflow: auto;
+
+  & > .general-data {
+    padding-top: 8px;
+
+    & > .content {
+      &.standardChemical,
+      &.labware {
+        grid-template-columns: repeat(3, 1fr);
+
+        & > .regulatoryNotes {
+          grid-column-end: span 3;
+        }
+      }
+
+      &.biologicStandard {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+  }
+
+  & > .psychotropics {
+    padding-top: 8px;
+
+    & > .content {
+      &.standardChemical,
+      &.biologicStandard {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  }
+
+  & > .generals {
+    padding-top: 8px;
+
+    & > .content {
+      &.standardChemical,
+      &.biologicStandard {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  }
+}
+
+.title {
+  @include s.flexRow;
+  border-bottom: 1px solid s.$pqBlack2;
+  padding: 0 31px 8px 31px;
+
+  & > label {
+    @include s.responsive-font-format(
+      $font-family: s.$font-family-roboto_bold,
+      $font-weight: s.$font-weight-bold,
+      $font-size-map: s.$responsive-font-20-20
+    );
+  }
+}
+
+.content {
+  display: grid;
+  grid-column-gap: 20px;
+  grid-row-gap: 36px;
+  padding: 16px 0;
+}

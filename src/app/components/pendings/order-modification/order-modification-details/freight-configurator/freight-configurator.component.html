@@ -1,0 +1,229 @@
+<app-pop-up-generic [titleHeader]="'quotation.details.configureFreight' | translate" [width]="width" [height]="height">
+  <div class="container">
+    <div class="info">
+      <div class="logo">
+        <img src="assets/Images/products/frasco.svg" />
+      </div>
+      <div class="data">
+        <div>
+          <label class="titlePqf">{{ (client$ | async).Nombre }}</label>
+        </div>
+        <div>
+          <label class="subPqf">Pedido {{ (order$ | async).NumeroOrdenDeCompra }}</label>
+          <label class="subBlack paddingL">
+            ·
+            {{
+              (order$ | async).Productos +
+                ' ' +
+                ((order$ | async).Productos === 1 ? 'producto' : 'productos') +
+                '·' +
+                '9' +
+                ' ' +
+                ((order$ | async).Productos === 1 ? 'pza.' : 'pzas.')
+            }}
+          </label>
+        </div>
+        <div>
+          <img src="assets/Images/contacto.svg" />
+          <label class="subTitle paddingL">
+            {{ (purchaseOrderDetails$ | async)?.ContactoDetalleObj?.Nombres }}
+            {{ (purchaseOrderDetails$ | async)?.ContactoDetalleObj?.ApellidoPaterno }}
+            {{ (purchaseOrderDetails$ | async)?.ContactoDetalleObj?.ApellidoMaterno }}
+          </label>
+        </div>
+      </div>
+      <div class="price">
+        <div>
+          <div>
+            <label class="titlePqf">{{ (order$ | async).Total | currency }} {{ (order$ | async).ClaveMoneda }}</label>
+          </div>
+          <div>
+            <label class="subTitle">Monto Total</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="steps" *ngIf="activeBarActivities">
+      <app-bar-activities
+        [options]="activities"
+        [selectedOption]="step"
+        [enableLeftArrow]="clickArrowsIzq"
+        [enableRightArrow]="true"
+        (handleOptionSelected)="setStep($event)"
+      >
+      </app-bar-activities>
+    </div>
+    <div class="list">
+      <div>
+        <div class="headerList">
+          <div class="title">
+            <label>{{ step === 0 ? 'Flete express' : 'Flete Convencional' }}</label>
+          </div>
+          <!--<div *ngIf="step === 0 && (listFreightExpress$ | async).length > 0">
+            <app-check-box [check]="allFreight"
+                           (event)="selectedAllFreight($event)">
+            </app-check-box>
+          </div>-->
+        </div>
+        <div class="dataList">
+          <div *ngIf="step === 0">
+            <virtual-scroller [items]="listFreightExpress$ | async" (vsUpdate)="scrollItems = $event">
+              <div
+                class="item"
+                *ngFor="let item of scrollItems; trackBy: hadletrackByFn"
+                (click)="selectedFreightExpress(item)"
+              >
+                <div class="data">
+                  <div>
+                    <label>{{ item.Nombre }}</label>
+                  </div>
+                  <div>
+                    <label>{{ item.LeyendaFleteExpress }}</label>
+                  </div>
+                </div>
+                <div class="selected">
+                  <div>
+                    <label>{{ item.PrecioFleteExpress | currency }}</label>
+                  </div>
+                  <div>
+                    <div>
+                      <app-check-box [check]="item.isSelected"></app-check-box>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="without-results" *ngIf="(listFreightExpress$ | async).length === 0">
+                <app-without-results></app-without-results>
+              </div>
+            </virtual-scroller>
+          </div>
+          <div *ngIf="step === 1">
+            <virtual-scroller [items]="listFreightConventional$ | async" (vsUpdate)="scrollItemConventional = $event">
+              <div class="item" *ngFor="let item of scrollItemConventional" (click)="setOptionFreightConventional(item)">
+                <div class="data">
+                  <div>
+                    <label>{{ item.Descripcion }}</label>
+                  </div>
+                  <div>
+                    <label>{{ item.Descripcion }}</label>
+                  </div>
+                </div>
+                <div class="selected">
+                  <div>
+                    <label>{{ item.Precio | currency }}</label>
+                  </div>
+                  <div>
+                    <div>
+                      <app-radio-button [value]="item.isSelected"></app-radio-button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </virtual-scroller>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flete-convencional" *ngIf="step === 1">
+      <div class="data">
+        <div>
+          <div class="paddingB">
+            <div>
+              <label class="text"
+                >#{{
+                  (listFreightConventional$ | async).length +
+                    ' ' +
+                    ((listFreightConventional$ | async).length === 1 ? 'Concepto' : 'Conceptos')
+                }}</label
+              >
+            </div>
+          </div>
+          <div>
+            <div>
+              <app-check-box [check]="(tpOrder$ | async)?.FleteDesglosado" (event)="setBrokenDown($event)"></app-check-box>
+            </div>
+            <div>
+              <label class="textPqf paddingL">Flete Desglosado</label>
+            </div>
+          </div>
+          <div>
+            <label class="text">(El monto del flete se distribuirá en las partidas)</label>
+          </div>
+        </div>
+        <div>
+          <div>
+            <div class="titleTotal">
+              <label class="text">Flete Express:</label>
+            </div>
+            <div>
+              <label class="number">{{ totalFreightExpress$ | async | currency }}</label>
+            </div>
+          </div>
+          <div>
+            <div class="titleTotal">
+              <label class="text">Flete Regular:</label>
+            </div>
+            <div>
+              <label class="number">{{ totalFreightConventional$ | async | currency }}</label>
+            </div>
+          </div>
+          <div>
+            <div class="titleTotal">
+              <label class="titleBlack">Total:</label>
+            </div>
+            <div>
+              <label class="total">{{ (totalFreightConventional$ | async) + (totalFreightExpress$ | async) | currency }}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="coment">
+          <label class="textPqf">Comentarios</label>
+        </div>
+        <div>
+          <app-generic-text-area
+            [height]="'52px'"
+            [value]="(tpOrder$ | async).ComentariosFlete"
+            (emitData)="handleKeySearch($event)"
+          >
+          </app-generic-text-area>
+        </div>
+      </div>
+    </div>
+    <div class="flete-convencional" *ngIf="step === 0">
+      <div class="data">
+        <div>
+          <div class="paddingB">
+            <div>
+              <label class="text"
+                >#{{
+                  (listFreightExpress$ | async).length +
+                    ' ' +
+                    ((listFreightConventional$ | async).length === 1 ? 'Proveedor' : 'Proveedores')
+                }}</label
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="buttons">
+      <div class="active" (click)="emitBtn(false)">
+        <label>CANCELAR</label>
+      </div>
+      <button *ngIf="step === 0" class="active" (click)="setStep(1)">
+        <label>SIGUIENTE</label>
+      </button>
+      <button
+        class="active"
+        [disabled]="!(isEnd$ | async)"
+        [ngClass]="(isEnd$ | async) ? 'active' : 'disable'"
+        (click)="setSaveFreight()"
+        *ngIf="step === 1"
+      >
+        <label>FINALIZAR</label>
+      </button>
+    </div>
+  </div>
+</app-pop-up-generic>

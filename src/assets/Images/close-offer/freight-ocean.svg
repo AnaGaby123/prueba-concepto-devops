@@ -1,0 +1,20 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='23' height='16' viewBox='0 0 23 16'>
+  <g fill='none' fill-rule='evenodd'>
+    <g stroke='#008894'>
+      <g>
+        <g>
+          <g
+            transform='translate(-1103.000000, -942.000000) translate(49.000000, 941.000000) translate(1055.000000, 2.000000) translate(0.000000, 0.000000)'>
+            <path stroke-linecap='round' stroke-linejoin='round'
+                  d='M1.961 0L14.12 0 14.12 5.8 19.557 5.8 21 7.828 21 12.124 2.486 12.124' />
+            <path stroke-linecap='round' stroke-linejoin='round' d='M14.125 0.688L17.607 0.688 19.862 6.062' />
+            <ellipse cx='6.754' cy='11.796' fill='#FFF' rx='2.19' ry='2.204' />
+            <ellipse cx='16.389' cy='11.796' fill='#FFF' rx='2.19' ry='2.204' />
+            <path stroke-linecap='round' stroke-linejoin='round'
+                  d='M1.113 2.717L8.33 2.717M0 5.608L7.122 5.608M1.113 8.555L5.445 8.555' />
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

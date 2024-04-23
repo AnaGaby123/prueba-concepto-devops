@@ -1,0 +1,465 @@
+<section id="purchase-order-items">
+  <div class="data-general">
+    <div class="preprocess-order">
+      <div>
+        <label>#{{ (order$ | async)?.Index + 1 || 0 }}</label>
+        <label>·</label>
+        <label>OC</label>
+        <label>·</label>
+        <label *ngIf="(order$ | async)?.IdArchivo"
+          >{{ (order$ | async)?.OrdenDeCompra }}
+          <img class="edit" src="assets/Images/edit_pencil.svg" (click)="referencePopOpen = true" #reference />
+          <app-custom-position-pop-up
+            *ngIf="referencePopOpen"
+            [popUpPosition]="'bottom-center'"
+            [closeButton]="false"
+            [target]="reference"
+            [backgroundColor]="'#424242'"
+            [borderColor]="'#424242'"
+            [triangleBackgroundColor]="'#424242'"
+            [borderRadius]="'6px'"
+            [padding]="'16px'"
+          >
+            <app-reference-form-edit
+              [reference]="(order$ | async)?.OrdenDeCompra"
+              (handleAction)="handleReferenceAction($event)"
+            ></app-reference-form-edit>
+          </app-custom-position-pop-up>
+        </label>
+        <label *ngIf="!(order$ | async)?.IdArchivo" class="red">{{ 'SIN OC' }}</label>
+        <label class="pqf">·</label>
+        <label class="pqf">
+          {{
+            ((total$ | async) || 0) +
+              ' ' +
+              ((total$ | async) === 1 ? ('preProcessing.item' | translate) : ('preProcessing.items' | translate))
+          }}
+        </label>
+        <label class="pqf">·</label>
+        <label>
+          {{
+            ('quotation.details.totalValue' | translate) +
+              ' ' +
+              (((order$ | async)?.ValorTotal ? (order$ | async)?.ValorTotal : 0)
+                | currency: (order$ | async)?.catMoneda?.ClaveMoneda:'symbol-narrow':'1.2-2')
+          }}
+          {{ (order$ | async)?.catMoneda?.ClaveMoneda }}
+        </label>
+      </div>
+    </div>
+    <div class="client">
+      <app-clients-contact
+        [contact]="clientContactData$ | async"
+        [showConfigAddress]="true"
+        [isCollapse]="true"
+      ></app-clients-contact>
+    </div>
+  </div>
+  <div class="validate-info-order">
+    <div class="title">
+      <label>{{ 'preProcessing.validityMessage' | translate }}</label>
+    </div>
+    <div class="compare-info" *ngIf="(order$ | async)?.ppPedidoConfiguracion || {}; let check">
+      <div class="details">
+        <div>
+          <div>
+            <img
+              alt="validate"
+              [src]="
+                (order$ | async)?.ppPedidoConfiguracion?.EmpresaValidada
+                  ? 'assets/Images/pre-processing/active.svg'
+                  : 'assets/Images/pre-processing/disable.svg'
+              "
+            />
+          </div>
+        </div>
+        <div>
+          <div>
+            <label class="text-bold">{{ '¿' + ('quotation.details.whoBills' | translate) + '?' }}</label>
+          </div>
+          <div>
+            <label class="text pqf">{{
+              (order$ | async)?.DatosFacturacionClienteDetalle?.empresa?.RazonSocial || 'N/D'
+            }}</label>
+          </div>
+          <div>
+            <label class="text">
+              {{ 'preProcessing.rfc' | translate }}
+              : {{ (order$ | async)?.DatosFacturacionClienteDetalle?.empresa?.RFC || 'N/D' }}
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="details">
+        <div>
+          <div>
+            <img
+              alt="No validado"
+              [src]="
+                (order$ | async)?.ppPedidoConfiguracion?.RazonSocialValidado
+                  ? 'assets/Images/pre-processing/active.svg'
+                  : 'assets/Images/pre-processing/disable.svg'
+              "
+            />
+          </div>
+        </div>
+        <div>
+          <div>
+            <label class="text-bold">{{ 'formProvider.step1.businessName' | translate }}</label>
+          </div>
+          <div>
+            <label class="text pqf">
+              {{ (order$ | async)?.DatosFacturacionClienteDetalle?.RazonSocial || 'N/D' }}
+            </label>
+          </div>
+          <div>
+            <label class="text">
+              {{ 'preProcessing.rfc' | translate }}
+              :
+              {{ (order$ | async)?.DatosFacturacionClienteDetalle?.RFC || 'N/D' }} ·
+            </label>
+          </div>
+          <div>
+            <label class="text"> {{ 'preProcessing.billingAddress' | translate }}: {{ billingAddress$ | async }} </label>
+          </div>
+        </div>
+      </div>
+      <div class="details">
+        <div>
+          <div>
+            <img
+              alt="No validado"
+              [src]="
+                (order$ | async)?.ppPedidoConfiguracion?.CondicionesDePagoValidado
+                  ? 'assets/Images/pre-processing/active.svg'
+                  : 'assets/Images/pre-processing/disable.svg'
+              "
+            />
+          </div>
+        </div>
+        <div>
+          <div>
+            <label class="text-bold">{{ 'quotation.details.paymentConditions' | translate }}</label>
+          </div>
+          <div>
+            <label class="text">
+              {{ (order$ | async)?.DatosFacturacionClienteDetalle?.catCondicionesDePago?.CondicionesDePago || 'N/D' }}
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="details address">
+        <div>
+          <div>
+            <img
+              alt="No validado"
+              [src]="
+                (order$ | async)?.ppPedidoConfiguracion?.DireccionClienteEntregaValidado
+                  ? 'assets/Images/pre-processing/active.svg'
+                  : 'assets/Images/pre-processing/disable.svg'
+              "
+            />
+          </div>
+        </div>
+        <div>
+          <div>
+            <label class="text-bold">{{ 'quotation.details.noticeCustomer.step1.DeliveryAddress' | translate }}</label>
+          </div>
+          <div>
+            <app-delivery-addresses-tooltip
+              [deliveriesAddress]="deliveryAddresses$ | async"
+              [deliverySelected]="deliveryAddressSelected$ | async"
+              (valueEmitter)="handleDeliveryAddress($event)"
+            ></app-delivery-addresses-tooltip>
+          </div>
+        </div>
+      </div>
+      <div class="details freight">
+        <div>
+          <div>
+            <img
+              alt="freight-no-validate"
+              [src]="
+                (order$ | async)?.ppPedidoConfiguracion?.oCSinIrregularidades
+                  ? 'assets/Images/pre-processing/active.svg'
+                  : 'assets/Images/pre-processing/disable.svg'
+              "
+            />
+          </div>
+        </div>
+        <div>
+          <div>
+            <label class="text-bold">{{ 'common.freights' | translate }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="order-items">
+    <div class="items">
+      <div class="title">
+        <label>
+          {{ 'preProcessing.validityInformationTitle' | translate }}
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="table-container">
+    <div class="container">
+      <div class="header">
+        <app-header-internal-sales-item
+          class="header"
+          [internalSalesItem]="displayColumnsConfig$ | async"
+        ></app-header-internal-sales-item>
+      </div>
+      <div class="header-separator"></div>
+      <virtual-scroller
+        *ngIf="(displayRowsConfig$ | async)?.length > 0 && (apiStatusItems$ | async) === 3"
+        [items]="displayRowsConfig$ | async"
+        [bufferAmount]="24"
+        [enableUnequalChildrenSizes]="true"
+        (vsUpdate)="scrolledItems = $event"
+      >
+        <div class="item" *ngFor="let item of scrolledItems; let index = index; trackBy: handleTrackBy">
+          <app-internal-sales-item [internalSalesItem]="item" (valueEmitter)="globalItemEventsHandler($event)">
+          </app-internal-sales-item>
+          <div class="incidence" *ngIf="item?.data?.Validada === false || item?.data?.hasInheritIncidences">
+            <div class="tab" *ngIf="item.data?.Validada === false && !item.data?.hasInheritIncidences"></div>
+            <div class="content">
+              <div>
+                <label> {{ 'preProcessing.inconsistencies' | translate }}: </label>
+              </div>
+              <div>
+                <app-check-box
+                  [label]="'Catálogo'"
+                  [backGroundCheckColor]="'#FFF'"
+                  [check]="item?.data?.ppIncidenciaPartida?.Catalogo ? item?.data?.ppIncidenciaPartida.Catalogo : false"
+                  (event)="setIncidenceValue(item?.data?.IdPPPartidaPedido, FIELD_CATALOG, $event)"
+                >
+                </app-check-box>
+                <app-check-box
+                  [label]="'Descripción'"
+                  [backGroundCheckColor]="'#FFF'"
+                  [check]="item?.data?.ppIncidenciaPartida?.Descripcion ? item?.data?.ppIncidenciaPartida.Descripcion : false"
+                  (event)="setIncidenceValue(item?.data?.IdPPPartidaPedido, FIELD_DESCRIPTION, $event)"
+                >
+                </app-check-box>
+                <app-check-box
+                  [label]="'Presentación'"
+                  [backGroundCheckColor]="'#FFF'"
+                  [check]="item?.data?.ppIncidenciaPartida?.Presentacion"
+                  (event)="setIncidenceValue(item?.data?.IdPPPartidaPedido, FIELD_PRESENTATION, $event)"
+                >
+                </app-check-box>
+                <app-check-box
+                  [label]="'Marca'"
+                  [backGroundCheckColor]="'#FFF'"
+                  [check]="item?.data?.ppIncidenciaPartida?.Marca"
+                  (event)="setIncidenceValue(item?.data?.IdPPPartidaPedido, FIELD_TRADEMARK, $event)"
+                >
+                </app-check-box>
+                <app-check-box
+                  *ngIf="
+                    item?.data?.cotPartidaCotizacionDetalle?.vProducto?.Tipo !== productsTypes.trainings &&
+                    item?.data?.cotPartidaCotizacionDetalle?.vProducto?.Tipo !== productsTypes.training
+                  "
+                  [label]="'TEE'"
+                  [backGroundCheckColor]="'#FFF'"
+                  [check]="item?.data?.ppIncidenciaPartida?.TiempoEstimadoEntrega"
+                  (event)="setIncidenceValue(item?.data?.IdPPPartidaPedido, FIELD_TEE, $event)"
+                >
+                </app-check-box>
+                <app-check-box
+                  *ngIf="
+                    item?.data?.cotPartidaCotizacionDetalle?.vProducto?.Tipo === productsTypes.trainings ||
+                    item?.data?.cotPartidaCotizacionDetalle?.vProducto?.Tipo === productsTypes.trainings
+                  "
+                  [label]="'Fecha de Realización'"
+                  [check]="item?.data?.ppIncidenciaPartida?.FechaRealizacionEnCapacitacion"
+                  [backGroundCheckColor]="'#fff'"
+                  (event)="setIncidenceValue(item?.data?.IdPPPartidaPedido, FIELD_DATE, $event)"
+                >
+                </app-check-box>
+                <app-check-box
+                  [label]="'Precio Unitario'"
+                  [backGroundCheckColor]="'#FFF'"
+                  [check]="item?.data?.ppIncidenciaPartida?.PrecioUnitario"
+                  (event)="setIncidenceValue(item?.data?.IdPPPartidaPedido, FIELD_UNIT_PRICE, $event)"
+                >
+                </app-check-box>
+                <app-check-box
+                  [label]="'Precio consistente con IVA'"
+                  [backGroundCheckColor]="'#FFF'"
+                  [check]="item?.data?.ppIncidenciaPartida?.IVA"
+                  (event)="setIncidenceValue(item?.data?.IdPPPartidaPedido, FIELD_IVA, $event)"
+                >
+                </app-check-box>
+                <app-check-box
+                  [label]="'Moneda'"
+                  [backGroundCheckColor]="'#FFF'"
+                  [check]="item?.data?.ppIncidenciaPartida?.Moneda"
+                  (event)="setIncidenceValue(item?.data?.IdPPPartidaPedido, FIELD_CURRENCY, $event)"
+                >
+                </app-check-box>
+              </div>
+              <div>
+                <label>
+                  {{ 'common.comments' | translate }}
+                </label>
+                <app-generic-input
+                  [value]="item?.data?.ppIncidenciaPartida?.Comentarios"
+                  [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+                  (textData)="setIncidenceValue(item?.data?.IdPPPartidaPedido, FIELD_COMMENTS, $event)"
+                >
+                </app-generic-input>
+              </div>
+            </div>
+            <!--            <div class="image">
+                                    <img
+                                      alt="Inconsistencia"
+                                      *ngIf="item.hasInheritIncidences"
+                                      src="assets/Images/pre-processing/partida_inconsistencias.svg"
+                                    />
+                                  </div>-->
+          </div>
+        </div>
+      </virtual-scroller>
+      <div class="without-results" *ngIf="(items$ | async)?.length === 0 && (apiStatusItems$ | async) === 3">
+        <app-without-results [title]="'NO SE ENCONTRÓ INFORMACIÓN'"></app-without-results>
+      </div>
+      <div class="loader" *ngIf="(apiStatusItems$ | async) === 1">
+        <app-loading></app-loading>
+      </div>
+    </div>
+  </div>
+  <div class="totals" *ngIf="(apiStatusItems$ | async) === 3 && (items$ | async)?.length > 0">
+    <div class="total-purchases">
+      <label>
+        {{
+          (items$ | async).length +
+            ' ' +
+            ((items$ | async).length === 1 ? ('preProcessing.item' | translate) : ('preProcessing.items' | translate))
+        }}
+      </label>
+    </div>
+    <div class="total-section">
+      <div class="labels">
+        <label class="subtotal"> {{ 'preProcessing.tableLabels.subtotal' | translate }}: </label>
+        <label class="iva"> {{ 'preProcessing.tableLabels.iva' | translate }}: </label>
+        <label class="total"> {{ 'preProcessing.tableLabels.total' | translate }}: </label>
+      </div>
+      <div class="totals">
+        <label class="subtotal">
+          {{
+            (selectTotalsOrderSelected$ | async)?.subTotal || 0
+              | currency: (selectCurrencyLabel$ | async):'symbol-narrow':'1.2-2'
+          }}
+          {{ selectCurrencyLabel$ | async }}
+        </label>
+        <label class="iva">
+          {{
+            (selectTotalsOrderSelected$ | async)?.totalTax || 0
+              | currency: (selectCurrencyLabel$ | async):'symbol-narrow':'1.2-2'
+          }}
+          {{ selectCurrencyLabel$ | async }}
+        </label>
+        <label class="total">
+          {{
+            (selectTotalsOrderSelected$ | async)?.totalPriceQuotation || 0
+              | currency: (selectCurrencyLabel$ | async):'symbol-narrow':'1.2-2'
+          }}
+          {{ selectCurrencyLabel$ | async }}
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="options">
+    <!--      <div>
+      <button class="btnActiveCancel" (click)="activeCancelPop(true)">
+        {{ lodash.toUpper('notProcessed.cancelProcess' | translate) }}
+      </button>
+    </div>-->
+    <!--DOCS: Botón para generar OC Interna -->
+    <div
+      *ngIf="
+        (customer$ | async)?.TramitarConOrdenDeCompraInterna && (order$ | async)?.ppPedidoConfiguracion?.oCSinIrregularidades
+      "
+    >
+      <button
+        (click)="popUpProtected()"
+        [disabled]="!(activeItems$ | async)?.length"
+        [ngClass]="!(activeItems$ | async)?.length ? 'btnDisableNotCovered' : 'btnActiveNotCovered'"
+      >
+        {{ 'notProcessed.generateInternalOC' | translate }}
+      </button>
+    </div>
+    <!--DOCS: Botón para reconfigurar flete tiene mayor peso que todos-->
+    <div *ngIf="(order$ | async) && !(order$ | async)?.ppPedidoConfiguracion?.oCSinIrregularidades">
+      <button (click)="showReconfigureFreightPopUp()" class="btnActiveFreight">
+        {{ 'notProcessed.reconfigureFreight' | translate }}
+      </button>
+    </div>
+    <!--DOCS: Botón para tramitar con errores-->
+    <div *ngIf="(order$ | async)?.ppPedidoConfiguracion?.oCSinIrregularidades">
+      <button
+        class="btnActive-process"
+        *ngIf="!(customer$ | async)?.TramitarConOrdenDeCompraInterna && (order$ | async)?.ConOrdenDeCompra"
+        (click)="activePop('validateSettings')"
+      >
+        {{ 'notProcessed.processWithError' | translate }}
+      </button>
+    </div>
+    <div>
+      <button class="btnActive-apply" *ngIf="!(customer$ | async)?.TramitarConOrdenDeCompraInterna" (click)="activePop('fea')">
+        {{ 'notProcessed.applyForFEA' | translate }}
+      </button>
+    </div>
+  </div>
+</section>
+<app-pop-up-generic
+  *ngIf="activePopCancel"
+  id="cancel-pop-up"
+  [activeButtons]="true"
+  [width]="'620px'"
+  [height]="'360px'"
+  (evento)="cancelProcess($event)"
+>
+  <div class="container">
+    <div>
+      <img src="assets/Images/alerta.svg" alt="Alerta" />
+    </div>
+    <div>
+      <label>
+        ¿Estas Seguro que deseas cancelar la
+      </label>
+      <span>OC-{{ (order$ | async).OrdenDeCompra }} con oferta de {{ (customer$ | async).Nombre }}? </span>
+    </div>
+  </div>
+</app-pop-up-generic>
+
+<!--DOCS: Se comenta porque actualmente no se está usando el servicio de traer las cotizaciones vinculadas, descomentar en caso de ser necesario-->
+<!--<div class="linked-items-pop">
+  <app-custom-position-pop-up
+    *ngIf="tooltip"
+    [minWidth]="'160px'"
+    [maxWidth]="'160px'"
+    [minHeight]="'60px'"
+    [maxHeight]="(viewType$ | async) === 'macBookAir' ? '95px' : '85px'"
+    [popUpPosition]="'bottom-center'"
+    [backgroundColor]="'#33333c'"
+    [target]="targetPop"
+    [borderColor]="'#33333c'"
+    [borderRadius]="'solid 0.5px #c8c8c9'"
+    [triangleBackgroundColor]="'#33333c'"
+    [closeButton]="false"
+    (closeEmitter)="openLinked('tooltip', false, $event, null, null)"
+  >
+    <div class="linked-items">
+      <ul>
+        <li *ngFor="let quote of (quotesLinked$ | async)?.quotesLinked; let i = index">
+          <label (click)="openLinkedFile(quote.IdArchivoPDF, quote.Folio)">{{ i + 1 + '.- FO-' + quote.Folio }}</label>
+        </li>
+      </ul>
+    </div>
+  </app-custom-position-pop-up>
+</div>-->

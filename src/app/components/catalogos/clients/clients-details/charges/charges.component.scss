@@ -1,0 +1,313 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  .charges {
+    @include s.absolute100;
+    @include s.flexColumn;
+    overflow: auto;
+
+    & > .container {
+      @include s.flexColumn;
+      flex: 1;
+
+      & > .credit {
+        & > .creditData {
+          padding: 25px 60px 45px 60px;
+
+          & > .containerCreditData {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1.5fr 1fr 150px 1fr;
+            grid-column-gap: 15px;
+            padding-bottom: 30px;
+
+            & > .over-draft {
+              & > .percent {
+                @include s.flexRow;
+
+                & > div {
+                  @include s.flexRow;
+                  align-items: flex-end;
+
+                  & > div {
+                    align-items: center;
+                    @include s.flexRow;
+                    height: 30px;
+
+                    & > label {
+                      margin-left: 4px;
+                      margin-right: 4px;
+                      @include s.Roboto-Bold;
+                      color: s.$pqGreen;
+                    }
+                  }
+                }
+              }
+            }
+
+            & > .creditLineLimit {
+              flex: 1 1 auto;
+            }
+          }
+
+          & > .amount {
+            @include s.flexRow;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 136, 148, 0.05);
+            margin-bottom: 20px;
+
+            & > div {
+              @include s.flexColumn;
+              justify-content: center;
+              align-items: center;
+              min-height: 76px;
+              margin: 20px 30px;
+
+              & > label {
+                @include s.Novecento-Bold;
+                @include s.escaledFontFormat(s.$textSize15to17, bold, s.$pqBlack2);
+                padding-bottom: 10px;
+              }
+
+              & > span {
+                @include s.Novecento-Bold;
+                @include s.escaledFontFormat(s.$textSize15to17, bold, s.$pqGreen);
+              }
+            }
+          }
+
+          & > .processPurchaseOrder {
+            @include s.flexRow;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 136, 148, 0.05);
+
+            & > div {
+              margin: 25px 40px;
+            }
+          }
+        }
+
+        & > .titleSection {
+          @include s.flexRow;
+          padding-bottom: 5px;
+          border-bottom: 1px solid #242424;
+
+          & > label {
+            @include s.Novecento-Bold;
+            @include s.escaledFontFormatImportant(s.$textSize17to21, bold, s.$pqBlack2);
+          }
+        }
+      }
+
+      & > .stpAccounts {
+        & > .titleSection {
+          @include s.flexRow;
+          padding-bottom: 5px;
+          border-bottom: 1px solid #242424;
+
+          & > label {
+            @include s.Novecento-Bold;
+            @include s.escaledFontFormatImportant(s.$textSize17to21, bold, s.$pqBlack2);
+          }
+        }
+
+        & > .stpAccountsData {
+          padding: 25px 60px 45px 60px;
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          grid-column-gap: 40px;
+
+          & > .left {
+            display: grid;
+            grid-template-columns: 95px 1fr 1fr;
+            grid-column-gap: 15px;
+
+            & > .howBills {
+              flex: 0 0 200px;
+            }
+
+            & > .accountNumber {
+              flex: 0 1 260px;
+            }
+
+            & > .clientAlias {
+              flex: 0 1 260px;
+            }
+          }
+
+          & > .right {
+            display: grid;
+            grid-template-columns: 180px 1fr 1fr;
+            grid-column-gap: 15px;
+
+            & > .howBillsPublications {
+              flex: 0 0 200px;
+            }
+
+            & > .accountNumber {
+              flex: 0 1 260px;
+            }
+
+            & > .clientAlias {
+              flex: 0 1 260px;
+            }
+          }
+        }
+      }
+
+      & > .review {
+        & > .reviewData {
+          padding: 25px 60px 45px 60px;
+
+          & > div {
+            background: rgba(0, 136, 148, 0.05);
+            align-items: center;
+            padding: 20px 200px 20px 50px;
+            grid-template-columns: 1.5fr repeat(2, 1fr);
+            grid-column-gap: 15px;
+            display: grid;
+
+            & > div:nth-of-type(1) {
+              display: flex;
+              align-self: flex-end;
+
+              & > label {
+                @include s.Novecento-Bold;
+                @include s.escaledFontFormatImportant(s.$textSize16to18, bold, s.$pqBlack2);
+                display: flex;
+                flex: 1 0 auto;
+                align-self: center;
+                padding-right: 10px;
+              }
+            }
+
+            & > div {
+              display: flex;
+              flex: 1 1 auto;
+            }
+          }
+        }
+
+        & > .titleSection {
+          @include s.flexRow;
+          padding-bottom: 5px;
+          border-bottom: 1px solid #242424;
+
+          & > label {
+            @include s.Novecento-Bold;
+            @include s.escaledFontFormatImportant(s.$textSize17to21, bold, s.$pqBlack2);
+          }
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    .charges {
+      & > .container {
+        & > .credit {
+          & > .creditData {
+            & > div {
+              & > .accountNumber {
+                flex: 1 1 50px;
+              }
+            }
+
+            & > .containerCreditData {
+              grid-template-columns: 1fr 1fr 1.5fr 1fr 200px 1fr;
+              grid-column-gap: 15px;
+            }
+          }
+        }
+
+        & > .stpAccounts {
+          & > .stpAccountsData {
+            grid-column-gap: 40px;
+
+            & > .left {
+              grid-template-columns: 115px 1fr 1fr;
+              grid-column-gap: 20px;
+            }
+
+            & > .right {
+              grid-template-columns: 215px 1fr 1fr;
+              grid-column-gap: 20px;
+            }
+          }
+        }
+
+        & > .review {
+          & > .reviewData {
+            & > div {
+              background: rgba(0, 136, 148, 0.05);
+              align-items: center;
+              padding: 20px 50px 20px 50px;
+              display: grid;
+              grid-template-columns: repeat(3, 1fr);
+
+              & > div:nth-of-type(1) {
+                display: flex;
+                align-self: flex-end;
+
+                & > label {
+                  @include s.Novecento-Bold;
+                  @include s.escaledFontFormatImportant(s.$textSize16to18, bold, s.$pqBlack2);
+                  display: flex;
+                  flex: 1 0 auto;
+                  align-self: center;
+                  padding-right: 10px;
+                }
+              }
+
+              & > div {
+                display: flex;
+                flex: 1 1 auto;
+                padding-right: 10px;
+              }
+            }
+          }
+
+          & > .titleSection {
+            @include s.flexRow;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #242424;
+
+            & > label {
+              @include s.Novecento-Bold;
+              @include s.escaledFontFormatImportant(s.$textSize18to21, bold, s.$pqBlack2);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .colum {
+    & > span {
+      padding-top: 8px;
+    }
+  }
+}
+
+.colum {
+  @include s.flexColumn;
+  padding-top: 4px;
+
+  & > label {
+    @include s.Roboto-Bold;
+    @include s.escaledFontFormatImportant(s.$textSize13to16, bold, s.$pqBlack2);
+  }
+
+  & > span {
+    @include s.Roboto-Regular;
+    @include s.escaledFontFormatImportant(s.$textSize13to16, regular, s.$pqBlack2);
+    padding-top: 7px;
+  }
+}

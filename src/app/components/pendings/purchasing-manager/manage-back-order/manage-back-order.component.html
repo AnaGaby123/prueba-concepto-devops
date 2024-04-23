@@ -1,0 +1,17 @@
+<div class="component-container" id="back-order-container">
+  <div class="header">
+    <app-header-bar [activeBack]="isDetails$ | async" [title]="title$ | async" (goBack)="goBackBackOrder($event)">
+    </app-header-bar>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="footer" *ngIf="!(isDetails$ | async)">
+    <ng-container>
+      <div>
+        <label class="label-dark">FDM:</label>
+        <label>{{ 'manageBackOrder.monitoringDate' | translate }}</label>
+      </div>
+    </ng-container>
+  </div>
+</div>

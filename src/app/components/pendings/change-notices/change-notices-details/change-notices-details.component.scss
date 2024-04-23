@@ -1,0 +1,592 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  height: 100%;
+  width: 100%;
+
+  & > #change-notices-details-container {
+    @include s.flexColumn;
+    height: 100%;
+    justify-content: flex-start;
+    overflow: hidden;
+    width: 100%;
+
+    & > .top-container {
+      @include s.flexRowNoWrap;
+      flex: 1 1 auto;
+      overflow: hidden;
+
+      & > .left-container {
+        @include s.flexColumn;
+        border-right: 1px solid s.$pqGray2;
+        flex: 0 0 540px;
+        padding: 20px 20px 0 20px;
+
+        & > .title {
+          @include s.flexRowNoWrap;
+          width: 100%;
+          margin-bottom: 10px;
+
+          & > label:nth-of-type(1) {
+            @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+            @include s.Novecento-Bold;
+          }
+        }
+
+        & > .tabs {
+          @include s.flexRowNoWrap;
+          width: 100%;
+          height: 55px;
+          margin-bottom: 15px;
+        }
+
+        & > .filters {
+          @include s.flexRowNoWrap;
+          width: 100%;
+          justify-content: space-between;
+          height: 55px;
+          align-items: center;
+          box-sizing: border-box;
+          padding-bottom: 15px;
+
+          & > div:nth-of-type(1) {
+            flex: 1 1 30%;
+            margin-right: 15px;
+          }
+
+          & > div:nth-of-type(2) {
+            flex: 1 1 60%;
+          }
+
+          & > div {
+            @include s.flexRow;
+            align-items: center;
+            justify-content: center;
+            width: 50%;
+          }
+        }
+
+        & > .list-clients {
+          width: 100%;
+          flex: 1;
+          border-top: 1px solid s.$pqBlack2;
+          border-bottom: 1px solid s.$pqBlack2;
+          overflow: hidden;
+
+          & > virtual-scroller {
+            width: 100%;
+            height: 100%;
+
+            .client {
+              @include s.flexRowNoWrap;
+              box-sizing: border-box;
+              border-bottom: 1px solid s.$pqGray2;
+
+              & * {
+                cursor: pointer;
+              }
+
+              &:hover {
+                background-color: s.$pqGray2;
+              }
+
+              &.selected {
+                background-color: s.$pqGray2;
+
+                & > .index {
+                  background-color: s.$pqGreen;
+                }
+              }
+
+              & > .index {
+                flex: 0 0 8px;
+              }
+
+              & > .information {
+                @include s.flexColumn;
+                @include s.absoluteTop;
+                flex: 1 1 auto;
+                padding: 12px 0 12px 20px;
+
+                & > div {
+                  @include s.flexRow;
+                  margin-bottom: 6px;
+                }
+
+                & > .name {
+                  @include s.multiLineTextTruncateSinHeight($lines: 2);
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize16to20, '', s.$pqGreen);
+                    @include s.Roboto-Bold;
+
+                    & > span {
+                      color: s.$pqBlack2;
+                    }
+                  }
+                }
+
+                & > .pieces {
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize16to20, bold, s.$pqBlack2);
+                    @include s.Roboto-Bold;
+                  }
+                }
+
+                & > .date {
+                  margin-bottom: 0;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize14to17, regular, s.$pqBlack2);
+                    @include s.Roboto-Regular;
+                  }
+                }
+              }
+
+              & > .arrow {
+                @include s.flexColumn;
+                @include s.absoluteCenter;
+                flex: 0 0 100px;
+
+                & > img {
+                  height: 15px;
+                }
+              }
+            }
+          }
+        }
+
+        & > .totals {
+          @include s.flexRowNoWrap;
+          align-items: flex-start;
+          height: 55px;
+          justify-content: space-between;
+          padding-top: 8px;
+          width: 100%;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize12to14, normal, s.$pqBlack2);
+            @include s.Roboto-Regular;
+            text-align: center;
+
+            &:nth-child(1) {
+              flex: 0 0 auto;
+            }
+
+            &:nth-child(2) {
+              flex: 1 1 auto;
+            }
+          }
+        }
+      }
+
+      & > .right-container {
+        @include s.flexColumn;
+        flex: 1 1 auto;
+        overflow: hidden;
+        padding: 20px 20px 0 20px;
+
+        & > .title {
+          @include s.multiLineTextTruncateSinHeight($lines: 1);
+          flex: 0 0 auto;
+          margin-bottom: 10px;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqGreen);
+            @include s.Novecento-Bold;
+
+            & > span {
+              color: s.$pqBlack2;
+            }
+          }
+        }
+
+        & > .client {
+          @include s.flexRow;
+          flex: 0 0 auto;
+          position: relative;
+          box-sizing: border-box;
+          width: 100%;
+          max-height: 168px;
+          height: 100%;
+          padding: 15px 0;
+          border-top: 1px solid s.$pqBlack2;
+          border-bottom: 1px solid s.$pqBlack2;
+
+          & > .data {
+            @include s.flexColumn;
+            box-sizing: border-box;
+            max-width: 430px;
+            padding-right: 20px;
+
+            & > .title {
+              box-sizing: border-box;
+              padding-bottom: 10px;
+              @include s.flexRow;
+
+              & > label {
+                $textSize: (
+                  'base': 15px,
+                  'macBookAir': 21px,
+                );
+                @include s.escaledFontFormat($textSize, '', s.$pqBlack2);
+                @include s.Novecento-Bold;
+              }
+            }
+
+            & > .data {
+              @include s.flexRow;
+              align-items: center;
+
+              & > .dataGeneral {
+                @include s.flexColumn;
+                box-sizing: border-box;
+                padding-left: 18px;
+
+                & > .type-client {
+                  @include s.flexRow;
+
+                  & > label {
+                    $textSize: (
+                      'base': 13px,
+                      'macBookAir': 16px,
+                    );
+                    @include s.escaledFontFormat($textSize, '', s.$pqBlack2);
+                    @include s.Roboto-Regular;
+                  }
+                }
+
+                & > .name {
+                  @include s.flexRow;
+
+                  & > label {
+                    $textSize: (
+                      'base': 14px,
+                      'macBookAir': 21px,
+                    );
+                    @include s.escaledFontFormat($textSize, '', s.$pqBlack2);
+                    @include s.Roboto-Bold;
+                  }
+                }
+              }
+
+              & > .logo {
+                @include s.flexRow;
+                max-height: 80px;
+
+                & > img {
+                }
+              }
+            }
+          }
+
+          & > .contact {
+            @include s.flexColumn;
+            flex: 1;
+            width: 100%;
+
+            & > .title {
+              @include s.flexRow;
+              box-sizing: border-box;
+              padding-bottom: 10px;
+              width: 100%;
+
+              & > label {
+                $textSize: (
+                  'base': 17px,
+                  'macBookAir': 21px,
+                );
+                @include s.escaledFontFormat($textSize, '', s.$pqGreen);
+                @include s.Roboto-Bold;
+              }
+            }
+
+            & > .dataContact {
+              @include s.flexRow;
+              box-sizing: border-box;
+              padding-left: 5px;
+              width: 100%;
+
+              & > div {
+                @include s.flexColumn;
+                margin-right: 30px;
+
+                &:last-child {
+                  margin-right: 0;
+                }
+
+                & > div {
+                  width: 100%;
+                  @include s.flexRow;
+
+                  & > div {
+                    @include s.flexRow;
+                    box-sizing: border-box;
+                    padding-bottom: 8px;
+
+                    & > .text-bold {
+                      margin-right: 8px;
+                      $textSize: (
+                        'base': 13px,
+                        'macBookAir': 16px,
+                      );
+                      @include s.escaledFontFormat($textSize, '', s.$pqBlack2);
+                      @include s.Roboto-Bold;
+                    }
+
+                    & > .text-original {
+                      word-break: break-word;
+                      $textSize: (
+                        'base': 13px,
+                        'macBookAir': 16px,
+                      );
+                      @include s.escaledFontFormat($textSize, '', s.$pqBlack2);
+                      @include s.Roboto-Regular;
+                    }
+
+                    & > .grass {
+                      $textSize: (
+                        'base': 13px,
+                        'macBookAir': 18px,
+                      );
+                      @include s.escaledFontFormat($textSize, bold, s.$pqGreen2);
+                      @include s.Roboto-Bold;
+                    }
+                  }
+
+                  & > .image {
+                    justify-content: center;
+                    width: 23px;
+
+                    & > img {
+                      margin-right: 8px;
+                      width: 100%;
+                    }
+
+                    & > .small {
+                      width: 14px !important;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        & > .item {
+          flex: 1 1 auto;
+          padding: 15px 0;
+
+          & > .title {
+            @include s.multiLineTextTruncateSinHeight($lines: 2);
+            flex: 0 0 auto;
+            margin-bottom: 4px;
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqGreen);
+              @include s.Novecento-Bold;
+
+              & > span {
+                color: s.$pqBlack2;
+              }
+            }
+          }
+
+          & > .info {
+            @include s.flexRow;
+            background-color: rgba(s.$pqGreen, 0.05);
+            margin-bottom: 30px;
+
+            & > .left {
+              flex: 1 1 auto;
+              padding: 20px;
+
+              & > div {
+                padding: 10px 0;
+              }
+
+              & > .top {
+                @include s.flexRow;
+                justify-content: space-between;
+                margin-bottom: 15px;
+
+                & > div {
+                  @include s.flexColumn;
+                  padding-right: 15px;
+
+                  &.center {
+                    align-items: center;
+                  }
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                    @include s.Roboto-Regular;
+
+                    &:first-of-type {
+                      @include s.Roboto-Bold;
+                      margin-bottom: 3px;
+                    }
+                  }
+                }
+              }
+
+              & > .bottom {
+                @include s.flexColumn;
+
+                & > label {
+                  @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                  @include s.Roboto-Regular;
+
+                  &:first-of-type {
+                    @include s.Roboto-Bold;
+                    margin-bottom: 3px;
+                  }
+                }
+              }
+            }
+
+            & > .right {
+              @include s.flexRow;
+              @include s.absoluteCenter;
+              flex: 0 0 auto;
+              padding: 20px 25px;
+
+              & > label {
+                @include s.escaledFontFormat(s.$textSize17to21, regular, s.$pqBlack2);
+                @include s.Novecento-Bold;
+
+                &.red {
+                  color: s.$pqTextAlert;
+                }
+
+                &.orange {
+                  color: s.$darkOrange;
+                }
+
+                &.purple {
+                  color: s.$purple;
+                }
+
+                &.ocean {
+                  color: s.$pqGreen;
+                }
+              }
+            }
+          }
+
+          & > .justification {
+            @include s.flexColumn;
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+              @include s.Roboto-Bold;
+              margin-bottom: 5px;
+            }
+          }
+        }
+
+        & > .button {
+          @include s.flexRow;
+          align-items: center;
+          border-top: 1px solid s.$pqBlack2;
+          flex: 0 0 55px;
+          justify-content: flex-end;
+
+          & > button {
+            &.active {
+              @include s.pqButton;
+            }
+
+            &.disabled {
+              @include s.pqButtonDisable;
+            }
+          }
+        }
+      }
+    }
+
+    & > .bottom-container {
+      @include s.flexRowNoWrap;
+      @include s.absoluteCenter;
+      border-top: 2px solid s.$pqBlack2;
+      flex: 0 0 48px;
+
+      & > div {
+        @include s.flexRowNoWrap;
+        align-items: center;
+        margin-right: 30px;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+          @include s.Roboto-Regular;
+          white-space: pre;
+
+          &:first-of-type {
+            @include s.Roboto-Bold;
+          }
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .top-container {
+        & > .left-container {
+          flex: 0 0 600px;
+
+          & > .filters {
+            height: 75px;
+          }
+
+          & > .list-clients {
+            width: 100%;
+
+            & > virtual-scroller {
+              .client {
+                & > .information {
+                  & > div {
+                    margin-bottom: 7px;
+                  }
+                }
+
+                & > .arrow {
+                  flex: 0 0 125px;
+
+                  & > img {
+                    height: 20px;
+                  }
+                }
+              }
+            }
+          }
+
+          & > .totals {
+            height: 69px;
+          }
+        }
+
+        & > .right-container {
+          & > .item {
+            & > .info {
+              margin-bottom: 35px;
+
+              & > .right {
+                padding: 20px 30px;
+              }
+            }
+          }
+
+          & > .button {
+            flex: 0 0 69px;
+          }
+        }
+      }
+      & > .bottom-container {
+        flex: 0 0 56px;
+      }
+    }
+  }
+}

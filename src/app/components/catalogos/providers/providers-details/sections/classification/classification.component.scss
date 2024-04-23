@@ -1,0 +1,160 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+#classifications {
+  @include s.flexColumn;
+  @include s.absolute100;
+
+  & > .familias {
+    @include s.flexColumn;
+
+    & > .title {
+      margin: 10px 0 15px 20px;
+
+      & > label {
+        @include s.Novecento-Bold;
+        @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+      }
+    }
+  }
+
+  & > .concept-content {
+    @include s.flexColumn;
+    flex: 1;
+    margin: 40px 210px;
+    overflow: hidden;
+
+    & > .input {
+      @include s.flexRow;
+
+      & > .entry {
+        @include s.flexColumn;
+        flex: 1;
+
+        & > label {
+          @include s.Roboto-Bold;
+          @include s.escaledFontFormat(s.$textSize15to17, bold, s.$pqBlack2);
+          margin-bottom: 5px;
+        }
+      }
+
+      & > .button {
+        @include s.flexRow;
+        align-items: flex-end;
+        margin-left: 10px;
+
+        & > button {
+          &.btnOk {
+            @include s.pqfButton();
+          }
+
+          &.btnDisabled {
+            @include s.pqfDisableButton();
+          }
+        }
+      }
+    }
+
+    & > .list-content {
+      @include s.flexColumn;
+      flex: 1;
+      margin-top: 40px;
+      overflow: hidden;
+
+      & > .title {
+        margin-bottom: 10px;
+
+        & > label {
+          @include s.Roboto-Bold;
+          @include s.escaledFontFormat(s.$textSize15to17, bold, s.$pqBlack2);
+        }
+      }
+
+      & > .list {
+        @include s.flexColumn;
+        flex: 1;
+        overflow: auto;
+
+        & > .item {
+          @include s.flexRow;
+          background-color: rgba(s.$pqGreen, 0.05);
+          margin: 5px 0;
+
+          & > div {
+            @include s.flexRow;
+            flex: 1;
+            padding: 10px 20px 10px 10px;
+
+            & > .text {
+              flex: 1;
+
+              & > label {
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormat(s.$textSize13to15, regular, s.$pqBlack2);
+              }
+            }
+
+            & > .image {
+              cursor: pointer;
+
+              & > img {
+                height: 15px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@include s.responsive_layout('macBookAir') {
+  #classifications {
+    & > .concept-content {
+      margin: 50px 140px;
+
+      & > .input {
+        & > .entry {
+          & > label {
+            margin-bottom: 7px;
+          }
+        }
+
+        & > .button {
+          margin-left: 15px;
+        }
+      }
+
+      & > .list-content {
+        margin-top: 45px;
+
+        & > .title {
+          margin-bottom: 15px;
+        }
+
+        & > .list {
+          & > .item {
+            & > div {
+              padding: 15px 25px 15px 15px;
+
+              & > .image {
+                & > img {
+                  height: 17px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.without-results {
+  @include s.flexRow;
+  flex: 1;
+  align-items: center;
+}

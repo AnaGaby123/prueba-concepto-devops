@@ -1,0 +1,44 @@
+/* tslint:disable */
+import { MarcaFamiliaProveedor } from './marca-familia-proveedor';
+export interface VMarcaFamiliaDetalle {
+  Activo?: boolean;
+  ArchivoUSMCA?: boolean;
+  CartaDeUso?: boolean;
+  CartaDeUsoPersonalizada?: boolean;
+  CartaTraduccion?: boolean;
+  CertificadoDeAnalisis?: boolean;
+  ClaveControl?: string;
+  ClaveSubtipo?: string;
+  ClaveTipo?: string;
+  Control?: string;
+  Controlado?: boolean;
+  DocumentosAdicionales?: boolean;
+  FacturaDeProveedor?: boolean;
+  FechaRegistro?: string;
+  FechaUltimaActualizacion?: string;
+  IdCatControl?: string;
+  IdCatMonedaPagos?: string;
+  IdCatMonedaVentas?: string;
+  IdCatSubtipoProducto?: string;
+  IdCatTipoProducto?: string;
+  IdFamilia?: string;
+  IdMarca?: string;
+  IdMarcaFamilia?: string;
+  IdMarcaFamiliaProveedor?: string;
+  IdProveedor?: string;
+  MarcaFamiliaProveedor?: MarcaFamiliaProveedor;
+  Mexicano?: boolean;
+  NombreFamilia?: string;
+  NombreImagen?: string;
+  NombreMarca?: string;
+  NombreProveedor?: string;
+  Orden?: string;
+  OrdenControl?: number;
+  OrdenSubtipo?: number;
+  OrdenTipo?: number;
+  PackingList?: boolean;
+  Productos?: number;
+  Subtipo?: string;
+  TieneProveedorPrincipal?: boolean;
+  Tipo?: string;
+}

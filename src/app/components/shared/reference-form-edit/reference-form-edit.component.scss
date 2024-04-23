@@ -1,0 +1,46 @@
+@import 'base.scss';
+#edit-reference-content {
+  @include flexRow;
+  flex: 1 1 auto;
+  overflow: hidden;
+  column-gap: 24px;
+  & > .reference {
+    @include flexRow;
+    align-items: center;
+    flex: 1;
+    column-gap: 8px;
+    & > label {
+      @include responsive-font-format($font-size-map: $responsive-font-14-14, $color: $pqWhite);
+    }
+  }
+  & > .actions {
+    @include flexColumn;
+    justify-content: center;
+    row-gap: 8px;
+    & > .save {
+      @include pqfButton(
+        $font-size-map: (
+          'base': 12px,
+          'macBookAir': 14px,
+        )
+      );
+      &.disable {
+        @include pqfDisableButton(
+          $font-size-map: (
+            'base': 12px,
+            'macBookAir': 14px,
+          )
+        );
+      }
+    }
+    & > .cancel {
+      @include pqfButton(
+        $background-color: $pqBlack2,
+        $font-size-map: (
+          'base': 12px,
+          'macBookAir': 14px,
+        )
+      );
+    }
+  }
+}

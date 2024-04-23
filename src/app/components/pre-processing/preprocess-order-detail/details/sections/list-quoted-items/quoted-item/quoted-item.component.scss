@@ -1,0 +1,91 @@
+@use 'base' as s;
+* {
+  box-sizing: border-box;
+}
+:host {
+  & > .item {
+    @include s.flexColumn;
+    width: 100%;
+    border-bottom: 1px solid s.$pqGray2;
+    position: relative;
+    min-width: 1707px;
+    &.deleted {
+      background-color: rgba(s.$dark-proquifa-e, 1);
+    }
+    &.added {
+      background-color: rgba(s.$pqGreen2, 0.15);
+    }
+    &.incidence {
+      background-color: s.$orangeLight;
+    }
+    & > .incidence {
+      @include s.flexRow;
+      background-color: s.$orangeLight;
+      justify-content: flex-start;
+      padding: 12px;
+      position: relative;
+      min-width: 1707px;
+      z-index: 2;
+      & > .tab {
+        background-color: s.$orangeLight;
+        height: 14px;
+        left: 15px;
+        position: absolute;
+        top: -7px;
+        transform: rotate(45deg);
+        width: 14px;
+      }
+      & > .content {
+        @include s.flexColumn;
+        flex: 1;
+        align-items: flex-start;
+        & > div:nth-child(1) {
+          margin-bottom: 8px;
+          & > label {
+            @include s.escaledFontFormat(s.$textSize13to14, bold, s.$pqBlack2);
+            @include s.Roboto-Bold;
+          }
+        }
+        & > div:nth-child(2) {
+          @include s.flexRow;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 12px;
+          width: 100%;
+        }
+        & > div:nth-child(3) {
+          @include s.flexRow;
+          justify-content: flex-start;
+          align-items: center;
+          width: 100%;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize13to14, bold, s.$pqBlack2);
+            @include s.Roboto-Bold;
+            margin-right: 5px;
+          }
+        }
+      }
+      & > .image {
+        @include s.flexColumn;
+        @include s.absoluteCenter;
+        width: 130px;
+        height: 100%;
+        & > img {
+          width: 65px;
+          height: 13px;
+        }
+      }
+    }
+    & > div {
+      @include s.flexRow;
+      align-items: center;
+      gap: 13px;
+      padding: 15px 10px;
+      & > div {
+        @include s.flexRow;
+        align-items: center;
+      }
+    }
+  }
+}

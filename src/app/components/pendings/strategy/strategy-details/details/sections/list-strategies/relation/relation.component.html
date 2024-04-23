@@ -1,0 +1,175 @@
+<div id="relation-container">
+  <div class="closing-sale">
+    <div class="title">
+      <label>Cierre de venta</label>
+      <label>· fo-92926355</label>
+    </div>
+    <div class="closing-sale-container">
+      <div class="dates">
+        <div class="info">
+          <div>
+            <label>Fecha Cierre Cotización</label>
+            <label>10/Abril/2020</label>
+            <label>5 Días en cerrar</label>
+          </div>
+          <div>
+            <label>Fecha Último Cierre de Venta</label>
+            <label>12/Abril/2020</label>
+          </div>
+        </div>
+        <div class="container-btn">
+          <div class="read-report">
+            <div>Ver reporte</div>
+          </div>
+        </div>
+      </div>
+      <div class="last-closing">
+        <label>Últimos cierres</label>
+        <div class="table">
+          <div>
+            <div class="body">
+              <virtual-scroller [items]="itemsClosing" (vsUpdate)="itemsClosingScroll = $event">
+                <div class="row-items-quotation" *ngFor="let item of itemsClosingScroll; index as productIndex">
+                  <div>
+                    <div class="line-one">
+                      <p>#{{ item.Index }} · </p>
+                      <p> Cotización F0-29834875</p>
+                    </div>
+                    <div class="line-two">
+                      <p>Fecha Envio Oferta: 12/Febrero/2020</p>
+                    </div>
+                    <div class="line-three">
+                      <p>Fecha Cierre: 20/Febrero/2020</p>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="tooltip">
+                      <img #anchor (click)="sendInititalData(anchor)" src="assets/Images/strategy/see-breakdown.svg" />
+                      <div class="tooltip-text">
+                        <p>{{ 'Ver Desglose' }}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <p>8 Días en cerrar</p>
+                  </div>
+                  <div>
+                    <p>Ver Reporte</p>
+                  </div>
+                </div>
+              </virtual-scroller>
+            </div>
+          </div>
+        </div>
+        <label>3 Cierres</label>
+        <label>Tiempo Promedio en Cierre · Últimas 4 Cotizaciones</label>
+        <label>20 Días Tiempo Promedio</label>
+      </div>
+    </div>
+  </div>
+  <div class="last-visit">
+    <div class="title">
+      <label>ÚLTIMA VISITA</label>
+      <label>· fo-92736266</label>
+    </div>
+    <div class="closing-sale-container">
+      <div class="dates">
+        <div class="info">
+          <div>
+            <label>Fecha Última Visita</label>
+            <label>10/Abril/2020</label>
+          </div>
+          <div>
+            <label># Quejas</label>
+            <label>25</label>
+          </div>
+        </div>
+        <div class="container-btn">
+          <div class="read-report">
+            <div>Ver reporte</div>
+          </div>
+        </div>
+      </div>
+      <div class="complaints">
+        <div class="container-chart">
+          <label>qUEJAS (ÚLTIMO AÑO NATURAL)</label>
+          <div class="chart-container">
+            <div class="chart">
+              <app-doughnut-chart
+                [title]=""
+                [typeChart]="9"
+                [titleDetails]="'Totales'"
+                [fontSize]="'small'"
+                [data]="doughnutChartData"
+                [optionDetails]="doughnutChartOptionDetails"
+                [optionDetailsHover]="doughnutChartOptionDetailsHover"
+              >
+              </app-doughnut-chart>
+            </div>
+            <div class="labels">
+              <div>
+                <span class="circulo" [style.background]="'#f3b23f'"></span>
+                <p>Abiertas</p>
+              </div>
+              <div>
+                <span class="circulo" [style.background]="'#1c5393'"></span>
+                <p>Cerradas</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container-table">
+          <div>
+            <div>
+              <div class="circulo" [style.background]="'#f3b23f'"></div>
+              <label>Abiertas</label>
+            </div>
+            <div>
+              <app-hamburger-menu
+                [options]="filters"
+                [value]="filterSelected.value"
+                [position]="'right'"
+                (valueEmit)="setOrder($event)"
+              >
+              </app-hamburger-menu>
+            </div>
+          </div>
+          <div class="table">
+            <div>
+              <div class="body">
+                <virtual-scroller [items]="itemsClosing" (vsUpdate)="itemsClosingScroll = $event">
+                  <div class="row-items-quotation" *ngFor="let item of itemsClosingScroll; index as productIndex">
+                    <div>
+                      <div class="line-one">
+                        <p>#{{ item.Index }} · </p>
+                        <p> Cotización F0-29834875</p>
+                        <p> · 13:00 Hrs.</p>
+                      </div>
+                      <div class="line-two">
+                        <p
+                          >Aenean leo ligula, porttitor eu, consequat vitae, ifend ac, enim. Aliquam lorem ante, dapibus in, rra
+                          quis, feugiat a, tellus. Phasellus viverra nulla metus varius laoreet. Quisque rutrum. Curabitur
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </virtual-scroller>
+              </div>
+            </div>
+          </div>
+          <label>5 Abiertas</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-strategy-pop-up
+  *ngIf="popUpIsOpen"
+  (closeEmitter)="closePopUp()"
+  [style.top]="dataPopUp.top"
+  [style.left]="dataPopUp.left"
+  [positions]="positionsPopUp"
+  [trianglePosition]="trianglePosition"
+  style="height: 500px; width: 500px;"
+>
+</app-strategy-pop-up>

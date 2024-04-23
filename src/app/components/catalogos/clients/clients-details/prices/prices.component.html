@@ -1,0 +1,95 @@
+<div class="container">
+  <img
+    alt="Abrir o Cerrar"
+    class="arrow-button"
+    [src]="(showProviderList$ | async) ? 'assets/Images/arrows/flecha_cuadro.svg' : 'assets/Images/arrows/flecha_mostrar.svg'"
+    [ngClass]="(showProviderList$ | async) ? 'arrow-hide-panel' : 'arrow-show-panel'"
+    (click)="showProvidersList()"
+  />
+  <div class="left-container" [ngClass]="!(showProviderList$ | async) && 'hide'">
+    <app-providers-panel class="left-side-panel" (event)="selectedProvider($event)"></app-providers-panel>
+  </div>
+  <div class="right-container">
+    <label class="title" *ngIf="selectedProvider$ | async">
+      {{ (selectedProvider$ | async).Nombre }}
+      <span>
+        · {{ (selectedProvider$ | async).Familias }}
+        {{ (selectedProvider$ | async).Familias === 1 ? 'Familia' : 'Familias' }}
+      </span>
+    </label>
+    <app-pqf-card
+      class="cards"
+      [enableMessage]="true"
+      [options]="families$ | async"
+      [withoutOptionsMessage]="'common.withoutFamilies' | translate"
+      (handleOptionSelected)="selectedFamilyChange($event)"
+    ></app-pqf-card>
+    <div class="tabs" *ngIf="!lodashIsEmpty(selectedFamily$ | async)">
+      <div class="tab-container">
+        <app-tabs
+          [options]="levelConfigurationTabs$ | async"
+          [tapSelected]="selectedLevelConfigurationTab$ | async"
+          (onSelectOption)="selectConfigurationTab($event)"
+        >
+        </app-tabs>
+      </div>
+      <img alt="xls" src="assets/Images/XLS.svg" (click)="downloadPrices()" />
+    </div>
+    <app-generals
+      class="main-container"
+      *ngIf="(selectedLevelConfigurationTab$ | async)?.id === 1 && (hasConfigurationProvider | async)"
+      [actualConfiguration]="actualConfiguration$ | async"
+      [deliveryRoutes]="deliveryRoutes$ | async"
+      [editMode]="editMode$ | async"
+      [enableEdit]="enableEdit$ | async"
+      [isMexican]="isMexican$ | async"
+      [levelSubConfigurationTabs]="levelSubConfigurationTabs$ | async"
+      [selectedLevelSubConfiguration]="selectedLevelSubConfiguration$ | async"
+      [viewType]="viewType$ | async"
+    >
+    </app-generals>
+    <app-list-price
+      class="main-container"
+      *ngIf="(selectedLevelConfigurationTab$ | async)?.id === 2 && (hasConfigurationProvider | async)"
+      [actualConfiguration]="actualConfiguration$ | async"
+      [deliveryRoutes]="deliveryRoutes$ | async"
+      [editMode]="editMode$ | async"
+      [enableEdit]="enableEdit$ | async"
+      [isMexican]="isMexican$ | async"
+      [levelSubConfigurationTabs]="levelSubConfigurationTabs$ | async"
+      [selectedLevelSubConfiguration]="selectedLevelSubConfiguration$ | async"
+      [viewType]="viewType$ | async"
+    >
+    </app-list-price>
+    <app-offer-classification
+      class="main-container"
+      *ngIf="(selectedLevelConfigurationTab$ | async)?.id === 3 && (hasConfigurationProvider | async)"
+      [actualConfiguration]="actualConfiguration$ | async"
+      [deliveryRoutes]="deliveryRoutes$ | async"
+      [editMode]="editMode$ | async"
+      [enableEdit]="enableEdit$ | async"
+      [isMexican]="isMexican$ | async"
+      [levelSubConfigurationTabs]="levelSubConfigurationTabs$ | async"
+      [selectedLevelSubConfiguration]="selectedLevelSubConfiguration$ | async"
+      [viewType]="viewType$ | async"
+    >
+    </app-offer-classification>
+    <app-product
+      class="main-container"
+      *ngIf="(selectedLevelConfigurationTab$ | async)?.id === 4 && (hasConfigurationProvider | async)"
+      [actualConfiguration]="actualConfiguration$ | async"
+      [deliveryRoutes]="deliveryRoutes$ | async"
+      [editMode]="editMode$ | async"
+      [enableEdit]="enableEdit$ | async"
+      [isMexican]="isMexican$ | async"
+      [levelSubConfigurationTabs]="levelSubConfigurationTabs$ | async"
+      [selectedLevelSubConfiguration]="selectedLevelSubConfiguration$ | async"
+      [viewType]="viewType$ | async"
+    >
+    </app-product>
+
+    <div class="without-results" *ngIf="!(hasConfigurationProvider | async)">
+      <app-without-results [title]="titleNotConfiguration"></app-without-results>
+    </div>
+  </div>
+</div>

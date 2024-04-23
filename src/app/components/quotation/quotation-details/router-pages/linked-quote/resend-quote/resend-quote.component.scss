@@ -1,0 +1,216 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100();
+
+  .container {
+    @include s.absolute100();
+    @include s.flexColumn;
+    padding: 15px;
+    @include s.responsive_layout('macBookAir') {
+      padding: 20px;
+    }
+
+    & > .content {
+      @include s.flexColumn;
+      width: 100%;
+      flex: 1;
+      overflow: hidden;
+      padding-bottom: 15px;
+
+      & > .email-info {
+        @include s.flexRowNoWrap;
+        width: 100%;
+        height: 40px;
+        border-bottom: 1px solid s.$pqBlack2;
+        @include s.responsive_layout('macBookAir') {
+          height: 45px;
+        }
+
+        & > div:nth-of-type(1) {
+          @include s.flexRowNoWrap;
+          align-items: flex-end;
+          width: 105px;
+          height: 100%;
+          justify-content: flex-end;
+          padding-bottom: 5px;
+
+          & > label {
+            @include s.responsive-font-format(
+              $color: s.$dark-proquifa,
+              $font-family: s.$font-family_roboto_bold,
+              $font-size-map: s.$responsive-font-18-18,
+              $font-weight: s.$font-weight-bold
+            );
+          }
+        }
+
+        & > div:nth-of-type(2) {
+          @include s.flexRowNoWrap;
+          width: calc(100% - 105px);
+          height: 100%;
+          padding: 0 4px;
+
+          & > .contacts {
+            @include s.absolute100();
+            @include s.flexRowNoWrap;
+
+            & > div:nth-of-type(2) {
+              @include s.flexRow;
+              align-items: flex-end;
+              width: 46px;
+
+              & > app-drop-list-contact {
+                width: 100%;
+                height: 50%;
+              }
+            }
+
+            & > div:nth-of-type(1) {
+              @include s.flexRowWrap;
+              width: calc(100% - 46px);
+              height: 100%;
+              max-height: 100%;
+              align-items: flex-end;
+              justify-content: flex-start;
+              overflow-x: hidden;
+              overflow-y: auto;
+              padding: 2px 0;
+
+              & > .item-contact {
+                width: 100%;
+                margin: 3px 3px;
+
+                & > input {
+                  border: 0;
+                  width: 100%;
+                  height: 20px;
+                  @include s.responsive-font-format(
+                    $color: s.$main-proquifa,
+                    $font-family: s.$font-family_roboto,
+                    $font-size-map: s.$responsive-font-16-16
+                  );
+                  &.error {
+                    color: s.$pqDanger;
+                  }
+                }
+                &.error {
+                  color: s.$pqDanger;
+                }
+              }
+            }
+          }
+
+          & > .carbon-copy {
+            @include s.absolute100();
+            @include s.flexRowNoWrap;
+
+            & > app-multiple-emails-input {
+              align-items: flex-end;
+            }
+          }
+
+          & > .subject {
+            @include s.absolute100();
+            @include s.flexRowNoWrap;
+            align-items: flex-end;
+            justify-content: flex-start;
+
+            & > input {
+              @include s.responsive-font-format(
+                $color: s.$main-proquifa,
+                $font-family: s.$font-family_roboto,
+                $font-size-map: s.$responsive-font-16-16
+              );
+              width: 100%;
+              height: 25px;
+              border-color: transparent;
+              outline: 0 none;
+            }
+          }
+        }
+
+        & > .contacts-drop {
+          align-self: center;
+        }
+      }
+
+      & > .attached-file {
+        @include s.flexRow;
+        @include s.absoluteCenter;
+        width: 100%;
+        height: 30px;
+        padding-top: 10px;
+
+        & > div:nth-of-type(1) {
+          @include s.flexRow;
+          @include s.absoluteCenter;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 136, 148, 0.07);
+          border-radius: 14px;
+          justify-content: flex-start;
+          padding: 0 20px;
+
+          & > label:nth-of-type(1) {
+            @include s.flexRow;
+            @include s.escaledFontFormat(s.$textSize13to15, regular, s.$pqGreen);
+            @include s.Roboto-Regular;
+          }
+        }
+      }
+
+      & > .comments {
+        @include s.flexRow;
+        @include s.absoluteCenter;
+        width: 100%;
+        flex: 1;
+        padding-top: 10px;
+        overflow: hidden;
+
+        & > app-generic-text-area {
+          @include s.absolute100();
+        }
+      }
+    }
+
+    & > .buttons-container {
+      @include s.flexRow;
+      @include s.absoluteCenter;
+      width: 100%;
+      justify-content: space-between;
+
+      & > .btn-disable {
+        @include s.pqButtonDisable();
+      }
+
+      & > .btn-enable {
+        @include s.pqButton();
+      }
+
+      & > div {
+        @include s.button(31px, 170px, s.$pqWhite, s.$pqGreen);
+      }
+    }
+  }
+
+  .email {
+    font-size: 16px;
+    @include s.Roboto-Regular;
+    color: s.$pqGreen;
+  }
+}
+
+.cc {
+  height: auto !important;
+  width: auto;
+  flex: 0 1 40px;
+  max-height: 65px;
+  @include s.responsive_layout('macBookAir') {
+    flex: 0 1 45px;
+  }
+}

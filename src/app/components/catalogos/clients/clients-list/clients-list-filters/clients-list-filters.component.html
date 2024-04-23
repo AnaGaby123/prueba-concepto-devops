@@ -1,0 +1,80 @@
+<div class="drops">
+  <app-drop-down-with-image
+    class="filter"
+    [defaultImgSource]="'assets/Images/catalogo/nivelingreso.svg'"
+    [isSelected]="(clientsListNode$ | async)?.selectedIncomeLevelOption.value !== '1'"
+    [mainImgSource]="'assets/Images/catalogo/nivel_de_ingreso_hover.svg'"
+    [title]="'Nivel de ingreso'"
+    [options]="(clientsListNode$ | async)?.incomeLevelOptions"
+    [selectedOption]="(clientsListNode$ | async)?.selectedIncomeLevelOption"
+    (selectOption)="setFilter($event, 'selectedIncomeLevelOption')"
+  >
+  </app-drop-down-with-image>
+  <app-drop-down-with-image
+    class="filter"
+    [defaultImgSource]="'assets/Images/catalogo/coorporativo.svg'"
+    [isSelected]="(clientsListNode$ | async)?.corporativeIsSelected"
+    [mainImgSource]="'assets/Images/catalogo/corporativo_hover.svg'"
+    [title]="'Corporativo'"
+    [showTriangle]="false"
+    (click)="getCorporates()"
+  ></app-drop-down-with-image>
+  <app-drop-down-with-image
+    class="filter"
+    [defaultImgSource]="'assets/Images/catalogo/ruta_negro.svg'"
+    [isSelected]="(clientsListNode$ | async)?.selectedRouteOption.value !== '1'"
+    [mainImgSource]="'assets/Images/catalogo/ruta_hover.svg'"
+    [title]="'Ruta'"
+    [options]="(clientsListNode$ | async)?.routeOptions"
+    [selectedOption]="(clientsListNode$ | async)?.selectedRouteOption"
+    (selectOption)="setFilter($event, 'selectedRouteOption')"
+  ></app-drop-down-with-image>
+  <app-drop-down-with-image
+    class="filter"
+    [defaultImgSource]="'assets/Images/catalogo/cliente_negro.svg'"
+    [isSelected]="(clientsListNode$ | async)?.selectedClientsOption.value !== '1'"
+    [mainImgSource]="'assets/Images/catalogo/contacto_hover.svg'"
+    [title]="'Clientes'"
+    [options]="(clientsListNode$ | async)?.clientsOptions"
+    [selectedOption]="(clientsListNode$ | async)?.selectedClientsOption"
+    (selectOption)="setFilter($event, 'selectedClientsOption')"
+  ></app-drop-down-with-image>
+  <app-drop-down-with-image
+    class="filter"
+    [defaultImgSource]="'assets/Images/catalogo/Cuenta_Clave_negro.svg'"
+    [isSelected]="(clientsListNode$ | async)?.KeyAccountIsSelected"
+    [mainImgSource]="'assets/Images/catalogo/cuenta_clave_hover.svg'"
+    [title]="'Cuenta clave'"
+    [showTriangle]="false"
+    (click)="getKayCount()"
+  ></app-drop-down-with-image>
+  <app-drop-down-with-image
+    class="filter"
+    [defaultImgSource]="'assets/Images/catalogo/ESAC_negro.svg'"
+    [isSelected]="(clientsListNode$ | async)?.selectedEsacOption.value !== '1'"
+    [mainImgSource]="'assets/Images/catalogo/esac_hover.svg'"
+    [title]="'Esac'"
+    [options]="(clientsListNode$ | async)?.esacOptions"
+    [selectedOption]="(clientsListNode$ | async)?.selectedEsacOption"
+    (selectOption)="setFilter($event, 'selectedEsacOption')"
+  ></app-drop-down-with-image>
+  <app-drop-down-with-image
+    class="filter"
+    [defaultImgSource]="'assets/Images/catalogo/ESAC_negro.svg'"
+    [isSelected]="(clientsListNode$ | async)?.selectedEvOption.value !== '1'"
+    [mainImgSource]="'assets/Images/catalogo/esac_hover.svg'"
+    [title]="'EV'"
+    [options]="(clientsListNode$ | async)?.evOptions"
+    [selectedOption]="(clientsListNode$ | async)?.selectedEvOption"
+    (selectOption)="setFilter($event, 'selectedEvOption')"
+  ></app-drop-down-with-image>
+</div>
+<div class="search">
+  <div>
+    <app-search
+      [searchTerm]="searchTerm$ | async"
+      [placeholder]="'Cliente'"
+      (textSearch)="handleKeySearch($event)"
+    ></app-search>
+  </div>
+</div>

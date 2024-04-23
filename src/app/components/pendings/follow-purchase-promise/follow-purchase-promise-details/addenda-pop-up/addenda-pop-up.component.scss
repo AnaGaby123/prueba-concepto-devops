@@ -1,0 +1,44 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+#addenda-pop-up {
+  @include s.flexColumn;
+  flex: 1;
+  .container {
+    @include s.flexColumn;
+    flex: 1;
+    padding: 25px 30px;
+    & > label {
+      @include s.responsive-font-format(
+        $color: s.$pqBlack2,
+        $font-family: s.$font_family_roboto,
+        $font-size-map: s.$responsive-font-16-16,
+        $font-weight: s.$font-weight_bold
+      );
+      text-align: start;
+    }
+    & > div {
+      @include s.flexColumn;
+      padding: 0 90px;
+
+      & > div {
+        @include s.flexColumn;
+        gap: 24px;
+        margin-bottom: 4px;
+        margin-top: 25px;
+      }
+
+      & > .required-text {
+        @include s.responsive-font-format(
+          $color: s.$main-proquifa,
+          $font-family: s.$font_family_roboto,
+          $font-size-map: s.$responsive-font-12-12
+        );
+        text-align: end;
+      }
+    }
+  }
+}

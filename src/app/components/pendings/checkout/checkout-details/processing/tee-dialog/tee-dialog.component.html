@@ -1,0 +1,205 @@
+<app-pop-up-generic
+  id="tee-pop-up"
+  [titleHeader]="'purchasePromise.seeItem' | translate"
+  [activeButtons]="true"
+  [activeBtn]="validateTeePop$ | async"
+  [rightButtonLabel]="'Aceptar'"
+  [width]="'930px'"
+  [height]="'810px'"
+  (evento)="onClose(TEE_POP, false, null, $event)"
+>
+  <!--      [activeBtn]="entryPopButtonValidator$ | async"-->
+  <div class="content">
+    <app-see-item-details-pop-top [seeItemDetailsPopTop]="selectInfoDetailsTop$ | async"></app-see-item-details-pop-top>
+    <div class="body">
+      <div class="item-info">
+        <div class="title">
+          <div class="purchase">
+            <label>{{ 'descriptionItemQuote.itemToBePreProcessing' | translate }}</label>
+          </div>
+          <div class="addenda-title" *ngIf="(tpPedido$ | async)?.AplicaAddendaLineaDeOrden">
+            <label class="addenda">{{ 'checkout.addenda' | translate }}</label>
+          </div>
+        </div>
+        <div class="content-purchase">
+          <div class="info">
+            <app-see-item-details-pop-bottom
+              [seeItemDetailsPopBottom]="selectDetailsItemPopBottom$ | async"
+            ></app-see-item-details-pop-bottom>
+          </div>
+          <div class="addenda" *ngIf="(tpPedido$ | async)?.AplicaAddendaLineaDeOrden">
+            <app-generic-input
+              class="input"
+              [label]="'Línea de Orden'"
+              [value]="(selectTpPartidaPedidoAddendaSanofi$ | async)?.LineaDeOrden"
+              [required]="true"
+              [typeValidation]="inputValidators.Number"
+              (textData)="setAddendaInfo($event, 'LineaDeOrden')"
+            ></app-generic-input>
+            <app-drop-down-list
+              class="input"
+              [label]="'Unidad de Medida'"
+              [items]="selectListUnidad$ | async"
+              [isSearchable]="(selectListUnidad$ | async)?.length > 5"
+              [required]="true"
+              [itemSelected]="selectListUnidadPqf$ | async"
+              (valueDropList)="selectUnidadMedida($event)"
+            ></app-drop-down-list>
+          </div>
+        </div>
+        <label
+          class="dates-trainings"
+          *ngIf="
+            (tpPartidaPedido$ | async)?.cotPartidaCotizacionDetalle?.gMCotPartidasDetalle?.fechasRealizacionCapacitacion
+              ?.length > 0
+          "
+          >{{ 'descriptionItemQuote.datesTraining' | translate }}:
+          <span
+            class="black"
+            *ngFor="
+              let date of (tpPartidaPedido$ | async)?.cotPartidaCotizacionDetalle?.gMCotPartidasDetalle
+                ?.fechasRealizacionCapacitacion;
+              let i = index
+            "
+          >
+            {{ date?.Fecha | dateFormatSlashShort }}
+            {{
+              i !==
+              (tpPartidaPedido$ | async)?.cotPartidaCotizacionDetalle?.gMCotPartidasDetalle?.fechasRealizacionCapacitacion
+                ?.length -
+                1
+                ? ','
+                : ''
+            }}
+          </span>
+        </label>
+        <app-products-supplements
+          *ngIf="(tpPartidaPedido$ | async)?.cotPartidaCotizacionDetalle?.vProductoSuplementarios?.length > 0"
+          [vProductsSupplements]="(tpPartidaPedido$ | async)?.cotPartidaCotizacionDetalle?.vProductoSuplementarios"
+        ></app-products-supplements>
+      </div>
+      <div class="config-info">
+        <div class="title">
+          <label>{{ 'descriptionItemQuote.processingOrder' | translate }}</label>
+        </div>
+        <div class="config-content">
+          <div class="delivery-restrictions">
+            <label *ngIf="(entry$ | async)?.RestriccionMensualDatosFacturacion.RestriccionFinDeMes"
+              ><span>{{ 'descriptionItemQuote.deliveryRestrictions' | translate }}: </span
+              ><label
+                >{{ 'common.restrictionNotAcceptEndMonth' | translate }} ({{
+                  (entry$ | async)?.RestriccionMensualDatosFacturacion.DiasAntesFinDeMes
+                }}
+                {{ 'common.beforeMonth' | translate }})</label
+              ></label
+            >
+            <label class="month" *ngIf="(entry$ | async)?.RestriccionMensualDatosFacturacion.RestriccionMensual"
+              ><span>{{ 'process.deliveryRestrictions' | translate }}: </span
+              ><label
+                >{{ 'common.endMonthRestriction' | translate }}
+                {{ (entry$ | async)?.RestriccionMensualDatosFacturacion.APartirDelDia }}
+                {{ 'process.everyMonth' | translate }}</label
+              ></label
+            >
+            <label class="month" *ngIf="(entry$ | async)?.RestriccionMensualDatosFacturacion.EntregaConRemision"
+              ><span>{{ 'process.deliveryRestrictions' | translate }}: </span
+              ><label>{{ 'common.referralRestriction' | translate }}</label></label
+            >
+            <div
+              class="temporal tooltip"
+              *ngIf="
+                (entry$ | async)?.RestriccionesTemporalesDatosFacturacion?.length > 0 &&
+                (purchaseOrder$ | async)?.purchaseOrderDetails?.DatosFacturacionClienteDetallePorDefecto
+                  ?.DatosFacturacionCliente?.RestriccionesTemporales
+              "
+            >
+              <label
+                >{{ 'process.temporaryRestriction' | translate }}:
+                <span
+                  >{{ (selectFirstRestrictionTemporalFacturation$ | async)?.Titulo }} {{ 'process.from' | translate }}
+                  {{ (selectFirstRestrictionTemporalFacturation$ | async)?.FechaInicio | dateFormatSlashShort }}
+                  {{ 'process.until' | translate }}
+                  {{ (selectFirstRestrictionTemporalFacturation$ | async)?.FechaFin | dateFormatSlashShort }}
+                  {{ (entry$ | async)?.RestriccionesTemporalesDatosFacturacion.length > 1 ? '...' : '' }}
+                </span></label
+              >
+              <div class="tooltip-text">
+                <p *ngFor="let restr of (entry$ | async)?.RestriccionesTemporalesDatosFacturacion"
+                  >{{ restr.Titulo }} desde {{ restr.FechaInicio | dateFormatSlashShort }} hasta
+                  {{ restr.FechaFin | dateFormatSlashShort }}</p
+                >
+              </div>
+            </div>
+          </div>
+          <div class="freightData" *ngIf="(entry$ | async)?.tpPartidaPedido?.AplicaFleteExpress">
+            <div class="aqua">
+              <label>
+                <span>{{ 'quotation.details.section.freight.express' | translate }}: </span>
+                <span class="green">FEE {{ selectFEE$ | async | dateFormatSlash }} </span>
+                <span class="proquifa">
+                  · {{ (purchaseOrder$ | async)?.purchaseOrderDetails?.tpPedidoFleteExpressObj?.NombreProveedor }}
+                </span>
+                <span class="green">
+                  ·
+                  {{
+                    (purchaseOrder$ | async)?.purchaseOrderDetails?.tpPedidoFleteExpressObj?.PrecioFlete
+                      | currency: 'USD':'symbol-narrow':'1.2-2'
+                  }}
+                  {{ (purchaseOrder$ | async)?.ClaveMoneda }}
+                </span>
+                <span
+                  class="black"
+                  *ngIf="(purchaseOrder$ | async)?.purchaseOrderDetails?.tpPedidoFleteExpressObj?.PorcentajeProquifa"
+                >
+                  · {{ (purchaseOrder$ | async)?.purchaseOrderDetails?.tpPedidoFleteExpressObj?.PorcentajeProquifa || 0 }} %
+                  PQF</span
+                >
+              </label>
+            </div>
+          </div>
+          <div class="regularData">
+            <div class="date">
+              <div class="check" *ngIf="!(entry$ | async)?.tpPartidaPedido?.AplicaFleteExpress">
+                <app-check-box
+                  class="check"
+                  [label]="'Entrega programada'"
+                  [check]="(tpPartidaPedido$ | async)?.tpPartidaPedido?.Programada"
+                  (event)="setPopItemScheduled($event)"
+                ></app-check-box>
+              </div>
+              <label
+                *ngIf="
+                  !(tpPartidaPedido$ | async)?.tpPartidaPedido?.Programada &&
+                  !(entry$ | async)?.tpPartidaPedido?.AplicaFleteExpress
+                "
+                class="fee"
+                >FEE:
+                {{ selectFEE$ | async | dateFormatSlash }}
+              </label>
+              <div class="picker" *ngIf="(tpPartidaPedido$ | async)?.tpPartidaPedido?.Programada">
+                <app-date-picker
+                  dateFormat="YYYYMMDD"
+                  [color]="false"
+                  [date]="selectedDate$ | async"
+                  [disabledCalendarDays]="selectNonAvailableDays$ | async"
+                  [position]="'top'"
+                  (fecha)="handleDate($event)"
+                  [rangeStart]="rangeStart$ | async"
+                  [rangeEnd]="selectFEERangeEnd$ | async"
+                ></app-date-picker>
+              </div>
+            </div>
+            <div class="comments">
+              <app-generic-text-area
+                [title]="'descriptionItemQuote.comments' | translate"
+                [height]="'110px'"
+                [value]="(tpPartidaPedido$ | async)?.tpPartidaPedido?.Notas"
+                (emitData)="setPopItemStringValue($event, 'Notas', false)"
+              ></app-generic-text-area>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-pop-up-generic>

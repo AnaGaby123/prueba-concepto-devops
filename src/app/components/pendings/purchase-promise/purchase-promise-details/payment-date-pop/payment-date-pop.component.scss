@@ -1,0 +1,240 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+.payment-date-pop {
+  & .container {
+    @include s.flexColumn;
+    flex: 1;
+    padding: 20px 20px 0 20px;
+
+    & > .header {
+      padding-bottom: 15px;
+      border-bottom: 1px solid s.$pqBlack2;
+
+      & > .header-content {
+        display: grid;
+        grid-template-columns: auto repeat(2, 1fr);
+        grid-template-rows: 100px;
+        grid-column-gap: 25px;
+
+        & > .image {
+          @include s.flexRow;
+          justify-content: flex-start;
+
+          & > img {
+            max-height: 100%;
+            max-width: 100%;
+          }
+        }
+
+        & > .client-data {
+          @include s.flexColumn;
+          align-items: flex-start;
+
+          & > .clientName {
+            & > label {
+              @include s.Novecento-Bold;
+              @include s.escaledFontFormat(s.$textSize17to22, bold, s.$pqGreen);
+              @include s.multiLineTextTruncateSinHeight(2, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+              text-align: initial;
+            }
+          }
+
+          & > .oc {
+            margin: 5px 0;
+
+            & > label {
+              @include s.Roboto-Regular;
+              @include s.escaledFontFormat(s.$textSize15to20, regular, s.$pqGreen);
+            }
+          }
+
+          & > .contact {
+            @include s.flexRow;
+            align-items: center;
+            height: 15px;
+
+            & > img {
+              max-height: 100%;
+              max-width: 100%;
+              margin-right: 3px;
+            }
+
+            & > label {
+              @include s.Roboto-Bold;
+              @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+            }
+          }
+
+          & > .phone {
+            @include s.flexRow;
+            align-items: center;
+            margin-top: 5px;
+            height: 15px;
+
+            & > img {
+              margin-right: 3px;
+              max-height: 100%;
+              max-width: 100%;
+            }
+
+            & > label {
+              @include s.Roboto-Regular;
+              @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+            }
+          }
+        }
+
+        & > .credit-info {
+          @include s.flexColumn;
+          align-items: flex-end;
+          justify-content: center;
+
+          & > .usd {
+            margin-bottom: 5px;
+
+            & > label {
+              @include s.Roboto-Bold;
+              @include s.escaledFontFormat(s.$textSize17to22, bold, s.$pqTextAlert);
+            }
+          }
+
+          & > .text {
+            & > label {
+              @include s.Roboto-Regular;
+              @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqTextAlert);
+            }
+          }
+        }
+      }
+    }
+
+    & > .body {
+      @include s.flexColumn;
+      flex: 1;
+
+      & > .title {
+        @include s.flexRow;
+        margin: 20px 0;
+
+        & > label {
+          @include s.Novecento-Bold;
+          @include s.escaledFontFormat(s.$textSize16to18, bold, s.$pqBlack2);
+        }
+      }
+
+      & > .aqua {
+        @include s.flexRow;
+        @include s.absoluteCenter;
+        background-color: rgba(s.$pqGreen, 0.05);
+        padding: 30px 0;
+        margin: 0 -20px;
+
+        & > .aqua-content {
+          display: grid;
+          align-items: center;
+          grid-template-columns: repeat(2, auto);
+          grid-column-gap: 5px;
+
+          & > label {
+            @include s.Roboto-Regular;
+            @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+          }
+        }
+      }
+
+      & > .observations {
+        @include s.flexRow;
+        flex: 1;
+        padding: 15px 0;
+      }
+    }
+
+    & > .requiredMessage {
+      @include s.flexRow;
+      justify-content: flex-end;
+
+      & > label {
+        @include s.Roboto-Regular;
+        @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen);
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & .container {
+      padding: 25px 25px 0 25px;
+
+      & > .header {
+        padding-bottom: 20px;
+
+        & > .header-content {
+          grid-template-rows: auto;
+          grid-column-gap: 30px;
+
+          & > .client-data {
+            & > .contact {
+              height: 20px;
+
+              & > img {
+                margin-right: 5px;
+              }
+            }
+
+            & > .phone {
+              height: 20px;
+
+              & > img {
+                margin-right: 5px;
+              }
+            }
+          }
+
+          & > .credit-info {
+            @include s.flexColumn;
+            align-items: flex-end;
+            justify-content: center;
+
+            & > .usd {
+              margin-bottom: 5px;
+
+              & > label {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormat(s.$textSize17to22, bold, s.$pqTextAlert);
+              }
+            }
+
+            & > .text {
+              & > label {
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqTextAlert);
+              }
+            }
+          }
+        }
+      }
+
+      & > .body {
+        & > .title {
+          margin: 25px 0;
+        }
+
+        & > .aqua {
+          padding: 40px 0;
+          margin: 0 -25px;
+
+          & > .aqua-content {
+            grid-column-gap: 7px;
+          }
+        }
+
+        & > .observations {
+          padding: 20px 0;
+        }
+      }
+    }
+  }
+}

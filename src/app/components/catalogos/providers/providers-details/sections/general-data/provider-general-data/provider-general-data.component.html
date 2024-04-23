@@ -1,0 +1,98 @@
+<div class="provider-general-data-container">
+  <div class="photo">
+    <img
+      #imageElement
+      class="photo"
+      alt="Logo del proveedor"
+      [src]="setImage((providerData$ | async)?.Activo, (providerData$ | async)?.imageHover)"
+      (error)="errorImage()"
+    />
+  </div>
+  <div class="check">
+    <label *ngIf="!(modeEdit$ | async); else check">{{ 'formProvider.step1.enabledProvider' | translate }}</label>
+    <ng-template #check>
+      <app-check-box
+        [label]="
+          !(enableEdit$ | async)
+            ? (providerData$ | async)?.Activo
+              ? ('formProvider.step1.enabledProvider' | translate)
+              : ('formProvider.step1.disabledProvider' | translate)
+            : ('formProvider.step1.enableProvider' | translate)
+        "
+        [fontBold]="true"
+        [fontSize]="(viewType$ | async) === viewTypes.small ? '13px' : '16px'"
+        [fontColor]="(enableEdit$ | async) ? '#008894' : (providerData$ | async)?.Activo ? '#39b54a' : '#A0A0A0'"
+        [enabledIconNoSelected]="false"
+        [check]="(providerData$ | async)?.Activo"
+        [enableEdit]="(enableEdit$ | async) && (modeEdit$ | async)"
+        [readOnlyCheckImage]="!(enableEdit$ | async) ? 'assets/Images/check-empty-green-light.svg' : 'assets/Images/check.svg'"
+        (event)="activeProviderHandler($event)"
+      >
+      </app-check-box>
+    </ng-template>
+  </div>
+  <div class="date">
+    <label>{{ 'formProvider.step1.creationDate' | translate }}</label>
+    <span>{{ (providerData$ | async)?.FechaRegistro | dateFormatSlash }}</span>
+  </div>
+  <app-generic-input
+    class="input-name"
+    [enableEdit]="enableEdit$ | async"
+    [label]="'formProvider.step1.name' | translate"
+    [maxlength]="100"
+    [required]="true"
+    [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+    [value]="(providerData$ | async)?.Nombre"
+    (textData)="generalDataHandler($event, FIELD_NAME, FIELD_INPUT, DATA_MODEL_TYPE_PROVIDER)"
+  ></app-generic-input>
+  <app-generic-input
+    class="input-business-name"
+    [label]="'formProvider.step1.businessName' | translate"
+    [enableEdit]="enableEdit$ | async"
+    [maxlength]="200"
+    [required]="true"
+    [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+    [value]="(providerData$ | async)?.RazonSocial"
+    (textData)="generalDataHandler($event, FIELD_BUSINESSNAME, FIELD_INPUT, DATA_MODEL_TYPE_PROVIDER)"
+  ></app-generic-input>
+  <app-generic-input
+    class="input-rfc"
+    [enableEdit]="enableEdit$ | async"
+    [forceActiveErrors]="!(rfcValidation$ | async)"
+    [label]="'formProvider.step1.rfcTax' | translate"
+    [maxlength]="20"
+    [typeValidation]="inputValidators.Alphanumeric"
+    [value]="(providerData$ | async)?.TaxId"
+    [required]="true"
+    (textData)="generalDataHandler($event, FIELD_RFC_TAX, FIELD_INPUT, DATA_MODEL_TYPE_PROVIDER)"
+  ></app-generic-input>
+  <app-drop-down-list
+    class="input-rol"
+    [enableEdit]="enableEdit$ | async"
+    [items]="itemCatRolProvider$ | async"
+    [isSearchable]="(itemCatRolProvider$ | async)?.length > 5"
+    [label]="'formProvider.step1.rol' | translate"
+    [required]="true"
+    [subtitleActive]="false"
+    [title]="'Seleccionar'"
+    [itemSelected]="selectedCatRolProvider$ | async"
+    (valueDropList)="generalDataHandler($event, FIELD_ROL, FIELD_DROP_LIST, DATA_MODEL_TYPE_PROVIDER)"
+  ></app-drop-down-list>
+  <app-generic-input
+    class="input-description"
+    [enableEdit]="enableEdit$ | async"
+    [label]="'formProvider.step1.extendedDescription' | translate"
+    [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+    [value]="(providerData$ | async)?.DescripcionAmplia"
+    (textData)="generalDataHandler($event, FIELD_EXTENDED_DESCRIPTION, FIELD_INPUT, DATA_MODEL_TYPE_PROVIDER)"
+  ></app-generic-input>
+  <app-generic-input
+    class="input-observations"
+    [enableEdit]="enableEdit$ | async"
+    [label]="'formProvider.step1.observations' | translate"
+    [maxlength]="500"
+    [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+    [value]="(providerData$ | async)?.Observaciones"
+    (textData)="generalDataHandler($event, FIELD_OBSERVATIONS, FIELD_INPUT, DATA_MODEL_TYPE_PROVIDER)"
+  ></app-generic-input>
+</div>

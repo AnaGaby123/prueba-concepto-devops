@@ -1,0 +1,16 @@
+<div class="component-container" id="control-supplier-claim">
+  <div class="header">
+    <app-header-bar [title]="title$ | async" [activeBack]="isDetails$ | async" (click)="goBack()"></app-header-bar>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="footer">
+    <ng-container>
+      <div>
+        <label *ngIf="!(isDetails$ | async)"><span>OC:</span> {{ 'common.purchaseOrder' | translate }}</label>
+        <label *ngIf="isDetails$ | async"><span>FEE:</span> {{ 'dailyMeeting.deliveryDate' | translate }}</label>
+      </div>
+    </ng-container>
+  </div>
+</div>

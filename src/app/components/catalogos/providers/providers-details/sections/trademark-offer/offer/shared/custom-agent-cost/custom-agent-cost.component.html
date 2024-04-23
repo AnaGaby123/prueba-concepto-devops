@@ -1,0 +1,235 @@
+<div class="custom-agent-cost">
+  <h4>{{ 'formProvider.step8.subtitles.customAgentCost' | translate }}</h4>
+  <div class="grid-drops">
+    <div class="drop-container">
+      <label [ngClass]="!enableEdit ? 'mt' : ''">Agente Aduanal</label>
+      <app-drop-down-list
+        class="drop-list"
+        [activeMinWidth]="false"
+        [enableEdit]="enableEdit"
+        [isSearchable]="(customsAgentsList$ | async)?.length > 5"
+        [itemSelected]="actualConfiguration?.selectedCustomsAgent"
+        [items]="customsAgentsList$ | async"
+        (valueDropList)="handleCustomsInputChange($event, fields.selectedCustomsAgent)"
+      ></app-drop-down-list>
+    </div>
+    <div class="drop-container">
+      <label [ngClass]="!editMode || enableEdit ? 'mt' : ''">Punto de despacho</label>
+      <app-drop-down-list
+        class="drop-list"
+        [activeMinWidth]="false"
+        [enableEdit]="enableEdit"
+        [items]="customsList$ | async"
+        [isSearchable]="(customsList$ | async)?.length > 5"
+        [itemSelected]="actualConfiguration?.selectedCustoms"
+        (valueDropList)="handleCustomsInputChange($event, fields.selectedCustoms)"
+      ></app-drop-down-list>
+    </div>
+    <div class="drop-container last">
+      <label [ngClass]="!editMode || enableEdit ? 'mt' : ''">Tarifa AA</label>
+      <app-drop-down-list
+        class="drop-list"
+        [activeMinWidth]="false"
+        [enableEdit]="enableEdit"
+        [itemSelected]="actualConfiguration?.selectedCustomsAgentConcept"
+        [items]="customsAgentConceptsList$ | async"
+        [isSearchable]="(customsAgentConceptsList$ | async)?.length > 5"
+        (valueDropList)="handleCustomsInputChange($event, fields.selectedCustomsAgentConcept)"
+      ></app-drop-down-list>
+    </div>
+    <div class="input-container first" *ngIf="!actualConfiguration?.ConceptoAgenteAduanal?.PorcentajeAPedimento">
+      <label>Cuenta de exportación</label>
+      <app-generic-input
+        class="input"
+        [enableEdit]="false"
+        [maxlength]="14"
+        [placeholder]="'0'"
+        [textAlign]="'center'"
+        [typeValidation]="inputValidators.DecimalNumber"
+        [value]="actualConfiguration?.ConceptoAgenteAduanal?.MontoExportacion"
+      >
+      </app-generic-input>
+      <span>USD</span>
+    </div>
+    <div class="input-container" *ngIf="!actualConfiguration?.ConceptoAgenteAduanal?.PorcentajeAPedimento">
+      <label>Cuenta de importación</label>
+      <app-generic-input
+        class="input"
+        [enableEdit]="false"
+        [placeholder]="'0'"
+        [textAlign]="'center'"
+        [typeValidation]="inputValidators.DecimalNumber"
+        [value]="actualConfiguration?.ConceptoAgenteAduanal?.MontoImportacion"
+        maxlength="14"
+      >
+      </app-generic-input>
+      <span>USD</span>
+    </div>
+    <div class="input-container" *ngIf="actualConfiguration?.ConceptoAgenteAduanal?.PorcentajeAPedimento">
+      <label>Porcentaje a pedimento</label>
+      <app-generic-input
+        class="input"
+        [enableEdit]="false"
+        [maxlength]="14"
+        [placeholder]="'0'"
+        [textAlign]="'center'"
+        [typeValidation]="inputValidators.Percentage"
+        [value]="actualConfiguration?.ConceptoAgenteAduanal?.Porcentaje"
+      >
+      </app-generic-input>
+      <span>%</span>
+    </div>
+  </div>
+  <div class="grid-inputs">
+    <div class="input-container">
+      <label>VUCEM</label>
+      <app-generic-input
+        class="input"
+        [enableEdit]="enableEdit"
+        [maxlength]="14"
+        [placeholder]="'0'"
+        [textAlign]="'center'"
+        [typeValidation]="inputValidators.DecimalNumber"
+        [value]="actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.VUCEM"
+        (textData)="handleInputChange($event, fields.VUCEM)"
+      >
+      </app-generic-input>
+      <span>USD</span>
+    </div>
+    <div class="input-container big">
+      <label>Servicio Logística</label>
+      <app-generic-input
+        class="input"
+        [enableEdit]="enableEdit"
+        [maxlength]="14"
+        [placeholder]="'0'"
+        [textAlign]="'center'"
+        [typeValidation]="inputValidators.DecimalNumber"
+        [value]="actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.ServicioLogistica"
+        (textData)="handleInputChange($event, fields.ServicioLogistica)"
+      >
+      </app-generic-input>
+      <span>USD</span>
+    </div>
+    <div class="input-container">
+      <label>TM</label>
+      <app-generic-input
+        class="input"
+        [enableEdit]="enableEdit"
+        [maxlength]="14"
+        [placeholder]="'0'"
+        [textAlign]="'center'"
+        [typeValidation]="inputValidators.DecimalNumber"
+        [value]="actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.TM"
+        (textData)="handleInputChange($event, fields.TM)"
+      >
+      </app-generic-input>
+      <span>USD</span>
+    </div>
+    <div class="input-container">
+      <label>Validación</label>
+      <app-generic-input
+        class="input"
+        [enableEdit]="enableEdit"
+        [maxlength]="14"
+        [placeholder]="'0'"
+        [textAlign]="'center'"
+        [typeValidation]="inputValidators.DecimalNumber"
+        [value]="actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.Validacion"
+        (textData)="handleInputChange($event, fields.Validacion)"
+      >
+      </app-generic-input>
+      <span>USD</span>
+    </div>
+    <div class="input-container">
+      <label>Previo</label>
+      <app-generic-input
+        class="input"
+        [enableEdit]="enableEdit"
+        [maxlength]="14"
+        [placeholder]="'0'"
+        [textAlign]="'center'"
+        [typeValidation]="inputValidators.DecimalNumber"
+        [value]="actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.Previo"
+        (textData)="handleInputChange($event, fields.Previo)"
+      >
+      </app-generic-input>
+      <span>USD</span>
+    </div>
+    <div class="input-container big">
+      <label>Desconsolidación</label>
+      <app-generic-input
+        class="input"
+        [enableEdit]="enableEdit"
+        [maxlength]="14"
+        [placeholder]="'0'"
+        [textAlign]="'center'"
+        [typeValidation]="inputValidators.DecimalNumber"
+        [value]="actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.Desconsolidacion"
+        (textData)="handleInputChange($event, fields.Desconsolidacion)"
+      >
+      </app-generic-input>
+      <span>USD</span>
+    </div>
+    <div class="input-container">
+      <label>Maniobras</label>
+      <app-generic-input
+        class="input"
+        [enableEdit]="enableEdit"
+        [maxlength]="14"
+        [placeholder]="'0'"
+        [textAlign]="'center'"
+        [typeValidation]="inputValidators.DecimalNumber"
+        [value]="actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.Maniobras"
+        (textData)="handleInputChange($event, fields.Maniobras)"
+      >
+      </app-generic-input>
+      <span>USD</span>
+    </div>
+    <div class="input-container">
+      <label>Tránsito</label>
+      <app-generic-input
+        class="input"
+        [enableEdit]="enableEdit"
+        [maxlength]="14"
+        [placeholder]="'0'"
+        [textAlign]="'center'"
+        [typeValidation]="inputValidators.DecimalNumber"
+        [value]="actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.Transito"
+        (textData)="handleInputChange($event, fields.Transito)"
+      >
+      </app-generic-input>
+      <span>USD</span>
+    </div>
+    <div class="input-container big area9">
+      <label>Clasificación y Proceso</label>
+      <app-generic-input
+        class="input"
+        [enableEdit]="enableEdit"
+        [maxlength]="14"
+        [placeholder]="'0'"
+        [textAlign]="'center'"
+        [typeValidation]="inputValidators.DecimalNumber"
+        [value]="actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.ClasificacionProceso"
+        (textData)="handleInputChange($event, fields.ClasificacionProceso)"
+      >
+      </app-generic-input>
+      <span>USD</span>
+    </div>
+    <div class="input-container area10">
+      <label>InBond</label>
+      <app-generic-input
+        class="input"
+        [enableEdit]="enableEdit"
+        [maxlength]="14"
+        [placeholder]="'0'"
+        [textAlign]="'center'"
+        [typeValidation]="inputValidators.DecimalNumber"
+        [value]="actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.InBond"
+        (textData)="handleInputChange($event, fields.InBond)"
+      >
+      </app-generic-input>
+      <span>USD</span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,50 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  & > .item {
+    @include s.flexRowNoWrap;
+    padding: 8px 0;
+
+    & > .family-name {
+      @include s.flexRowNoWrap;
+      align-items: center;
+      flex: 1 1 auto;
+    }
+
+    & > .provider-data {
+      @include s.flexColumn;
+      align-items: flex-end;
+      justify-content: center;
+      flex: 0 0 auto;
+
+      & > p {
+        @include s.escaledFontFormat(s.$textSize12to15, bold, s.$pqGreen);
+        @include s.Roboto-Bold;
+
+        &.disable {
+          color: s.$pqGray3;
+        }
+      }
+
+      & > .check-secondary {
+        margin-top: 4px;
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      padding: 10px 0;
+      & > .provider-data {
+        & > p {
+        }
+
+        & > .check-secondary {
+          margin-top: 6px;
+        }
+      }
+    }
+  }
+}

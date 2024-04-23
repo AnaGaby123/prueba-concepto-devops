@@ -1,0 +1,248 @@
+<app-pop-up-generic
+  id="request-fea-pop-up"
+  [activeButtons]="true"
+  [activeBtn]="
+    (data?.activeRequestFEA && (validateRequestFEAPop$ | async) && errors?.length === 0) ||
+    (data?.activeWithErrors && (validateProcessWithErrorsPop$ | async) && errors?.length === 0)
+  "
+  [width]="(viewType$ | async) === 'iPad' ? '745px' : '930px'"
+  [height]="(viewType$ | async) === 'iPad' ? '660px' : '805px'"
+  [titleHeader]="
+    data?.activeRequestFEA ? ('notProcessed.applyForFEA' | translate) : ('notProcessed.processWithClientError' | translate)
+  "
+  (evento)="onClose(data?.activeRequestFEA ? 'feaSend' : 'requestWithErrorsPop', $event)"
+>
+  <div class="container">
+    <div class="header">
+      <div class="logo">
+        <img #imageElement alt="Logo" [src]="setImagePop((customer$ | async)?.imageHover)" (error)="errorImagePop()" />
+      </div>
+      <div class="client">
+        <label class="textUpperCase">
+          {{ (customer$ | async).Nombre }}
+        </label>
+        <label> OC {{ (order$ | async).OrdenDeCompra }} </label>
+        <label class="payment-conditions">
+          {{ 'notProcessed.paymentConditions' | translate }}:
+          {{ (order$ | async)?.catCondicionesDePago?.CondicionesDePago || 'N/D' }}
+        </label>
+      </div>
+      <div class="totals">
+        <label>
+          {{ (selectTotalsOrderSelected$ | async)?.totalPriceQuotation | currency: 'USD':'symbol':'1.0-2' }}
+          {{ selectCurrencyLabel$ | async }}
+        </label>
+        <label>
+          {{ 'notProcessed.totalValue' | translate }}
+        </label>
+      </div>
+    </div>
+    <div class="title-container">
+      <div class="border-top">
+        <label class="textUpperCase">
+          {{ 'notProcessed.clientInstructions' | translate }}
+        </label>
+      </div>
+    </div>
+    <div class="data">
+      <div>
+        <app-generic-input
+          [label]="'Correo Electrónico'"
+          [value]="((contactsForDrop$ | async)?.[0]?.labels)?.[1]?.label"
+          [required]="true"
+          [typeValidation]="inputValidators.Email"
+          [height]="'100px'"
+          (textData)="setContact($event)"
+          (errorData)="validateEmail($event)"
+        ></app-generic-input>
+        <!--        <app-drop-down-multilabel-list-->
+        <!--          [items]="contactsForDrop$ | async"-->
+        <!--          [selectedItem]="-->
+        <!--            activeRequestFEA ? (selectedPpPedidoContactsForDrop$ | async) : (selectedDeliveryContactsForDrop$ | async)-->
+        <!--          "-->
+        <!--          [height]="(viewType$ | async) === 'iPad' ? '48px' : '55px'"-->
+        <!--          [label]="'* ' + ('notProcessed.contact' | translate)"-->
+        <!--          (valueDropList)="setContact($event)"-->
+        <!--        >-->
+        <!--        </app-drop-down-multilabel-list>-->
+      </div>
+      <div *ngIf="data?.activeRequestFEA" class="date-picker">
+        <app-date-picker
+          [dateFormat]="'YYYYMMDD'"
+          [label]="'* ' + ('notProcessed.fea' | translate)"
+          [disabledCalendarDays]="selectNonWorkingDays$ | async"
+          [date]="(order$ | async).FechaEstimadaAjusteDate"
+          [rangeStart]="rangeStart"
+          (fecha)="handleDate($event)"
+        >
+        </app-date-picker>
+      </div>
+      <div class="container-delivery-instructions">
+        <app-generic-text-area
+          [title]="
+            '* ' +
+            (data?.activeRequestFEA
+              ? ('notProcessed.observations' | translate)
+              : ('notProcessed.deliveryInstructions' | translate))
+          "
+          [lang]=""
+          [height]="(viewType$ | async) === 'iPad' ? '49px' : '55px'"
+          [value]="data?.activeRequestFEA ? (order$ | async).ObservacionesFEA : (order$ | async).ppPedidoInstruccionesEntrega"
+          (emitData)="setComments($event)"
+        >
+        </app-generic-text-area>
+      </div>
+      <!--      <div *ngIf="activeRequestFEA">-->
+      <!--        <div class="circle" (click)="openReviewPop()">-->
+      <!--          <label>-->
+      <!--            {{ 'notProcessed.sendLinkMessage' | translate }}-->
+      <!--          </label>-->
+      <!--        </div>-->
+      <!--      </div>-->
+    </div>
+    <div class="title-container">
+      <div>
+        <label class="textUpperCase">
+          {{ (invalidateItems$ | async)?.length }}
+          {{
+            (invalidateItems$ | async)?.length === 1
+              ? ('notProcessed.inconsistency' | translate)
+              : ('notProcessed.inconsistencies' | translate)
+          }}
+        </label>
+      </div>
+    </div>
+    <div class="list">
+      <div class="items">
+        <div class="item" *ngFor="let item of invalidateItems$ | async; let i = index">
+          <label class="cat">
+            <span class="span-index"> #{{ i + 1 }} ·</span>
+            <!--            <img class="img-label" alt="" [src]="item?.conceptQuote?.imgLabel" />-->
+            <!--            <img class="img-brand" alt="" [src]="setImagePop(item?.ImageHover)" (error)="errorImage()" />-->
+
+            {{ 'notProcessed.tableLabels.cat' | translate | uppercase }}
+            {{ item?.cotPartidaCotizacionDetalle?.vProducto?.Catalogo || 'N/D' }} ·
+            {{
+              (item?.cotPartidaCotizacionDetalle?.vProducto?.MedioDifusion !== null &&
+                item?.cotPartidaCotizacionDetalle?.vProducto?.Tipo === productType.training) ||
+              (item?.cotPartidaCotizacionDetalle?.vProducto?.MedioDifusion !== null &&
+                item?.cotPartidaCotizacionDetalle?.vProducto?.Tipo === productType.trainings)
+                ? item?.cotPartidaCotizacionDetalle?.vProducto?.MedioDifusion || 'N/D'
+                : item?.cotPartidaCotizacionDetalle?.vProducto?.FormatoPublicacion !== null &&
+                  item?.cotPartidaCotizacionDetalle?.vProducto?.Tipo === productType.publications
+                ? item?.cotPartidaCotizacionDetalle?.vProducto?.FormatoPublicacion || 'N/D'
+                : item?.cotPartidaCotizacionDetalle?.vProducto?.Tipo === productType.labware ||
+                  item?.cotPartidaCotizacionDetalle?.vProducto?.Tipo === productType.medicalDevice
+                ? ''
+                : (item?.cotPartidaCotizacionDetalle?.vProducto?.TipoPresentacion || 'N/D') +
+                  ' ' +
+                  ' ' +
+                  (item?.cotPartidaCotizacionDetalle?.vProducto?.Presentacion || 'N/D') +
+                  ' ' +
+                  (item?.cotPartidaCotizacionDetalle?.vProducto?.Unidad || 'N/D')
+            }}
+          </label>
+          <label class="product-description">
+            {{ item?.cotPartidaCotizacionDetalle?.vProducto?.Descripcion || 'N/D' }}
+          </label>
+          <label class="family">
+            {{
+              buildStringFamily(
+                item?.cotPartidaCotizacionDetalle?.vProducto?.Tipo,
+                item?.cotPartidaCotizacionDetalle?.vProducto?.Subtipo,
+                item?.cotPartidaCotizacionDetalle?.vProducto?.Control
+              )
+            }}
+            <span class="controlled" *ngIf="item?.cotPartidaCotizacionDetalle?.vProducto?.Controlado"> · Controlado</span>
+            <span class="controlled" *ngIf="item?.cotPartidaCotizacionDetalle?.vProducto?.Tipo === productType.publications">
+              Autor: {{ item?.cotPartidaCotizacionDetalle?.vProducto?.Autor || 'N/D' }}</span
+            ></label
+          >
+          <label class="date-validate" *ngIf="item?.cotPartidaCotizacionDetalle?.vProducto?.FechaCaducidadVigenciaCuraduria"
+            ><span class="validation">Vigencia: </span> Hasta el
+            {{ item?.cotPartidaCotizacionDetalle?.vProducto?.FechaCaducidadVigenciaCuraduria | dateFormatSlashShort }}
+          </label>
+          <label
+            class="date-validate"
+            *ngIf="
+              item?.cotPartidaCotizacionDetalle?.vProducto?.DisponibilidadClave === availabilitytypes.backorder &&
+              item?.cotPartidaCotizacionDetalle?.vProducto?.FechaDisponibilidadBackOrder
+            "
+          >
+            <span class="validation">Disponibilidad: </span> Hasta el
+            {{ item?.cotPartidaCotizacionDetalle?.vProducto?.FechaDisponibilidadBackOrder | dateFormatSlashShort }}
+          </label>
+          <label
+            class="dates-trainings"
+            *ngIf="item?.cotPartidaCotizacionDetalle?.gMCotPartidasDetalle?.fechasRealizacionCapacitacion?.length > 0"
+          >
+            {{ item?.cotPartidaCotizacionDetalle?.gMCotPartidasDetalle?.fechasRealizacionCapacitacion?.length }} Fechas
+            Sugeridas:
+            <span
+              class="dates"
+              *ngFor="let date of item?.cotPartidaCotizacionDetalle?.gMCotPartidasDetalle?.fechasRealizacionCapacitacion"
+            >
+              {{ date.Fecha | dateFormatSlashShort }}</span
+            >
+          </label>
+          <!--          <label class="freight" *ngIf="item?.conceptQuote?.expressFreight">{{-->
+          <!--            'descriptionItemQuote.express' | translate-->
+          <!--          }}</label>-->
+          <label class="totals">
+            {{ 'notProcessed.tableLabels.tee' | translate }}
+            {{ item?.TiempoEstimadoEntrega }}
+            {{ item?.TiempoEstimadoEntrega === 1 ? ('common.day' | translate) : ('common.days' | translate) }} ·
+            {{ item?.NumeroDePiezas }}
+            {{ item?.NumeroDePiezas === 1 ? ('common.piece' | translate) : ('common.pieces' | translate) }}
+            · {{ 'notProcessed.tableLabels.pu' | translate }} {{ item?.PrecioUnitario | currency: 'USD':'symbol':'1.0-2' }}
+            {{ selectCurrencyLabel$ | async }} · {{ 'notProcessed.tableLabels.subtotal' | translate }} ·
+            {{ item?.Subtotal | currency: 'USD':'symbol':'1.0-2' }}
+            {{ selectCurrencyLabel$ | async }} · {{ 'notProcessed.tableLabels.IVA' | translate }} ·
+            {{ item?.IVA | currency: 'USD':'symbol':'1.0-2' }}
+            {{ selectCurrencyLabel$ | async }} ·
+            {{ 'notProcessed.tableLabels.Total' | translate }}
+            {{ item?.Total | currency: 'USD':'symbol':'1.0-2' }}
+            {{ selectCurrencyLabel$ | async }}
+          </label>
+          <div class="inconsistencies">
+            {{ 'notProcessed.inconsistencyOn' | translate }}:
+            <label *ngIf="item?.ppIncidenciaPartida?.Catalogo">
+              CAT {{ item?.cotPartidaCotizacionDetalle?.vProducto?.Catalogo || 'N/D' }}<span>,</span>
+            </label>
+            <label *ngIf="item?.ppIncidenciaPartida?.Descripcion">
+              {{ 'notProcessed.inconsistenciesLabels.description' | translate }}:
+              {{ item?.cotPartidaCotizacionDetalle?.vProducto?.Descripcion || 'N/D' }}<span>,</span>
+            </label>
+            <label *ngIf="item?.ppIncidenciaPartida?.Presentacion">
+              {{ 'notProcessed.inconsistenciesLabels.presentation' | translate }}:
+              {{ item?.cotPartidaCotizacionDetalle?.vProducto?.Presentacion || 'N/D' }}<span>,</span>
+            </label>
+            <label *ngIf="item?.ppIncidenciaPartida?.Marca">
+              {{ 'notProcessed.inconsistenciesLabels.brand' | translate }}:
+              {{ item?.cotPartidaCotizacionDetalle?.vProducto?.NombreMarca || 'N/D' }}<span>,</span>
+            </label>
+            <label *ngIf="item?.ppIncidenciaPartida?.TiempoEstimadoEntrega">
+              {{ 'notProcessed.inconsistenciesLabels.tee' | translate }}: {{ item?.TiempoEstimadoEntrega }}
+              {{ item?.TiempoEstimadoEntrega === 1 ? ('common.day' | translate) : ('common.days' | translate) }}<span>,</span>
+            </label>
+            <label *ngIf="item?.ppIncidenciaPartida?.PrecioUnitario">
+              {{ 'notProcessed.tableLabels.pu' | translate }}
+              .: {{ item?.PrecioUnitario }} {{ selectCurrencyLabel$ | async }}<span>,</span>
+            </label>
+            <label *ngIf="item?.ppIncidenciaPartida?.IVA">
+              {{ 'notProcessed.inconsistenciesLabels.iva' | translate }}:
+              {{ item?.IVA }}
+              {{ selectCurrencyLabel$ | async }}
+            </label>
+          </div>
+          <label class="comments">
+            {{ 'notProcessed.comments' | translate }}: {{ item?.ppIncidenciaPartida?.Comentarios }}
+          </label>
+        </div>
+      </div>
+      <div>
+        <label>* {{ 'common.requiredField' | translate }}</label>
+      </div>
+    </div>
+  </div>
+</app-pop-up-generic>

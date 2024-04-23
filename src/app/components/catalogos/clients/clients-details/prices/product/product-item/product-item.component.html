@@ -1,0 +1,39 @@
+<div class="product-item" [ngClass]="product.isSelected ? 'selected' : ''" (click)="handleSelectedProductChange()">
+  <div class="select-indicator"></div>
+  <div class="item-content">
+    <div class="title">
+      <label class="title">
+        #{{ product.Index }} · CAT {{ product?.Catalogo || 'N/D' }} · <span>{{ product.DescripcionProducto }}</span>
+      </label>
+    </div>
+    <div class="subtitle">
+      <label>
+        {{ product?.PrecioLista }} {{ product?.MonedaVentaProveedor }}
+        <span *ngIf="product.PrecioListaMonedaProveedor">
+          {{ product?.PrecioListaMonedaProveedor?.toFixed(2) }}
+          {{ product?.ClaveMonedaPagos }}</span
+        >
+        <span *ngIf="!product.PrecioListaMonedaProveedor">N/D</span>
+      </label>
+    </div>
+    <div class="prices">
+      <div class="marker" *ngIf="product.NivelConfiguracionProductoCliente === levels.Product">
+        <img
+          alt=""
+          [src]="
+            product.Temporal === true
+              ? 'assets/Images/reloj.svg'
+              : product.Temporal === false
+              ? 'assets/Images/clientes/enfoque.svg'
+              : ''
+          "
+        />
+        <label *ngIf="product.Temporal"> 2:00 Hrs.</label>
+      </div>
+      <label
+        >{{ selectClientIncomeLevel$ | async }}<span class="black"> · {{ product.PrecioProquifaNet | currency }} · </span
+        ><span [ngClass]="product.isNegative ? 'red' : 'green'">{{ product.percentage.toFixed(2) }} %</span></label
+      >
+    </div>
+  </div>
+</div>

@@ -1,0 +1,52 @@
+<div class="container">
+  <div class="header">
+    <app-tabs
+      class="tabs"
+      [options]="stepsOptions$ | async"
+      [tapSelected]="selectedStepsOption$ | async"
+      (onSelectOption)="selectStep($event)"
+    ></app-tabs>
+  </div>
+  <div class="principal">
+    <app-general-data *ngIf="(selectedStepsOption$ | async)?.label === tabs.GeneralData"></app-general-data>
+    <app-trademark-offer *ngIf="(selectedStepsOption$ | async)?.label === tabs.TrademarkOffer"></app-trademark-offer>
+    <app-campaing *ngIf="(selectedStepsOption$ | async)?.label === tabs.Campaign"></app-campaing>
+    <app-logictics-payments *ngIf="(selectedStepsOption$ | async)?.label === tabs.LogisticPayment"></app-logictics-payments>
+    <app-sell-buy-licenses *ngIf="(selectedStepsOption$ | async)?.label === tabs.BuySale"></app-sell-buy-licenses>
+    <app-classification *ngIf="(selectedStepsOption$ | async)?.label === tabs.FeatureGroup"></app-classification>
+  </div>
+  <footer
+    class="footer"
+    [style.justify-content]="
+      (modeEdit$ | async) && !(enableEdit$ | async) && !(getAddCampaing$ | async) ? 'flex-end' : 'space-between'
+    "
+  >
+    <!--DOCS: Botón de Cancelar para todas las secciones de Proveedores-->
+    <button class="btn cancel enable" *ngIf="(enableEdit$ | async) || (getAddCampaing$ | async)" (click)="cancelHandler()">
+      {{ 'common.cancel' | translate }}
+    </button>
+    <!--DOCS: Botón de Aceptar para todas las secciones de Proveedores-->
+    <button
+      class="btn save"
+      *ngIf="enableEdit$ | async"
+      [disabled]="!(saveValidatorsBySteps$ | async)"
+      [ngClass]="(saveValidatorsBySteps$ | async) ? 'enable' : 'disable'"
+      (click)="saveHandler()"
+    >
+      {{
+        (selectedStepsOption$ | async)?.label === tabs.TrademarkOffer && (isInTrademarkView$ | async)
+          ? ('common.next' | translate)
+          : ('common.save' | translate)
+      }}
+    </button>
+    <!--DOCS: Botón de Editar para todas las secciones de Proveedores-->
+    <button
+      class="btn edit"
+      *ngIf="(modeEdit$ | async) && !(enableEdit$ | async) && !(getAddCampaing$ | async)"
+      [ngClass]="'enable'"
+      (click)="editButtonHandler()"
+    >
+      {{ 'common.edit' | translate }}
+    </button>
+  </footer>
+</div>

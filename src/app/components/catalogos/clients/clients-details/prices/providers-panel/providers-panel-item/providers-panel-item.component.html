@@ -1,0 +1,16 @@
+<div
+  class="item"
+  [ngClass]="provider?.IdProveedor === (selectedProvider$ | async)?.IdProveedor ? 'selected' : ''"
+  (click)="handleSelectedProviderChange()"
+>
+  <div class="indicator"></div>
+  <div class="data" *ngIf="provider">
+    <div class="datoProv">
+      <label>{{ provider?.Nombre }}</label>
+    </div>
+    <div class="tipo">
+      <label class="tipoP">{{ provider?.Familias }} F</label>
+      <label class="tipoP">{{ provider?.Productos }} P</label>
+    </div>
+  </div>
+</div>

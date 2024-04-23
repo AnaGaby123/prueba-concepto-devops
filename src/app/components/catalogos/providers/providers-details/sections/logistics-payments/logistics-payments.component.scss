@@ -1,0 +1,374 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+  @include s.flexColumn;
+
+  #logistics-payments {
+    @include s.flexColumn;
+    flex: 1;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    & > .content {
+      @include s.flexColumn;
+      flex: 1;
+
+      & > .logistic {
+        @include s.flexColumn;
+        flex: 0 0 auto;
+
+        & > .body {
+          @include s.flexColumn;
+          padding: 15px 0 30px;
+
+          & > .freight {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            grid-template-rows: repeat(2, auto);
+            grid-column-gap: 20px;
+            grid-row-gap: 10px;
+            margin-bottom: 15px;
+
+            & > .subtitle {
+              grid-area: 1 / 1 / 2 / 7;
+              @include s.flexRow;
+              align-items: flex-end;
+            }
+
+            & > .check {
+              @include s.flexRow;
+              align-items: flex-end;
+            }
+
+            & > .concept {
+              grid-column-end: span 2;
+            }
+
+            & > .legend {
+              grid-column-end: span 2;
+            }
+
+            & > .ammount {
+              @include s.flexRow;
+              align-items: flex-end;
+
+              & > div {
+                width: 100%;
+
+                &.enable {
+                  width: 50%;
+                }
+              }
+
+              & > .dls {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormatImportant(s.$textSize13to15, bold, s.$pqGreen);
+                margin: 0 0 6px 7px;
+
+                &.disable {
+                  color: s.$pqGray3 !important;
+                }
+              }
+            }
+          }
+
+          & > .delivery {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            grid-template-rows: repeat(2, auto);
+            grid-column-gap: 20px;
+            grid-row-gap: 15px;
+
+            & > .subtitle1 {
+              grid-area: 1 / 1 / 2 / 7;
+              @include s.flexRow;
+              align-items: flex-end;
+            }
+
+            & > .deliveryTime-item {
+              display: grid;
+              grid-template-columns: 1fr auto;
+              grid-column-gap: 5px;
+              grid-row-gap: 5px;
+              align-items: flex-end;
+
+              & > .name {
+                grid-area: 1 / 1 / 2 / 3;
+
+                & > label {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormatImportant(s.$textSize13to15, regular, s.$pqBlack2);
+
+                  &.disable {
+                    color: s.$pqGray3 !important;
+                  }
+                }
+              }
+
+              & > .input {
+                grid-area: 2 / 1 / 3 / 2;
+              }
+
+              & > .drop {
+                grid-area: 2 / 2 / 3 / 3;
+              }
+            }
+          }
+        }
+      }
+
+      & > .payments {
+        @include s.flexColumn;
+        flex: 1;
+
+        & > .content {
+          @include s.flexColumn;
+          flex: 1 1 auto;
+          padding: 15px 0;
+
+          & > .firstSection {
+            @include s.flexRow;
+            flex: 0 0 auto;
+            margin: 10px 0 20px 0;
+
+            & > .generals {
+              display: grid;
+              grid-template-columns: repeat(4, 1fr);
+              grid-template-rows: 1fr;
+              grid-column-gap: 15px;
+              flex: 1;
+              padding: 0 15px;
+
+              & > .paymentConditions {
+                display: grid;
+                grid-template-columns: auto 3fr;
+                grid-column-gap: 10px;
+                align-items: flex-end;
+
+                & > label {
+                  @include s.Roboto-Bold;
+                  @include s.escaledFontFormatImportant(s.$textSize13to15, bold, s.$pqBlack2);
+                  margin-bottom: 5px;
+                }
+              }
+
+              & > .creditLine {
+                @include s.flexRow;
+                align-items: flex-end;
+                flex: 1;
+
+                & > div {
+                  width: 100%;
+
+                  &.enable {
+                    width: 50%;
+                  }
+                }
+
+                & > label {
+                  @include s.Roboto-Bold;
+                  @include s.escaledFontFormatImportant(s.$textSize13to15, bold, s.$pqGreen);
+                  margin: 0 0 6px 5px;
+
+                  &.disable {
+                    color: s.$pqGray3 !important;
+                  }
+                }
+              }
+            }
+          }
+
+          & > .aquaSection {
+            @include s.flexColumn;
+            background-color: rgba(s.$pqGreen, 0.05);
+            padding: 40px 30px;
+
+            & > .title {
+              & > label {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormatImportant(s.$textSize15to17, bold, s.$pqBlack2);
+              }
+            }
+
+            &.disableEdit {
+              padding: 20px 15px;
+            }
+
+            & > .form {
+              display: grid;
+              grid-column-gap: 15px;
+              grid-row-gap: 15px;
+              margin-top: 15px;
+              grid-template-columns: repeat(5, 1fr) 0.5fr;
+
+              &.otro {
+                & > .benef {
+                  grid-column-end: span 2;
+                }
+              }
+
+              & > .cards {
+                grid-column-end: span 4;
+                display: grid;
+                grid-template-columns: repeat(3, auto);
+                align-items: flex-end;
+                justify-items: center;
+                padding: 5px 0;
+              }
+
+              & > .btn {
+                @include s.flexRow;
+                align-items: flex-end;
+
+                & > button {
+                  @include s.pqfButton();
+
+                  &.disable {
+                    @include s.pqfDisableButton();
+                  }
+                }
+              }
+            }
+          }
+
+          & > .accounts {
+            @include s.flexRowWrap;
+            min-height: 30px;
+            margin-top: 40px;
+            align-items: flex-start;
+
+            & > .account-item {
+              @include s.flexRow;
+              background-color: rgba(s.$pqGreen, 0.03);
+              align-items: center;
+              flex: 0 0 auto;
+              margin: 0 10px 10px 0;
+              max-width: 600px;
+              padding: 6px 15px;
+
+              & > .text {
+                flex: 1 1 auto;
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormatImportant(s.$textSize13to15, regular, s.$pqBlack2);
+
+                & > .type {
+                  @include s.Roboto-Bold;
+                  color: s.$pqGreen;
+                  vertical-align: baseline;
+                }
+
+                & > .numbers {
+                  @include s.Roboto-Regular;
+                  color: s.$pqGreen;
+                  vertical-align: baseline;
+                }
+              }
+
+              & > img {
+                height: 13px;
+                width: 13px;
+                margin-left: 15px;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    & > .requiredMessage {
+      @include s.flexRow;
+      justify-content: flex-end;
+      align-items: center;
+      height: 50px;
+
+      & > label {
+        @include s.Roboto-Regular;
+        @include s.escaledFontFormatImportant(s.$textSize13to15, regular, s.$pqGreen);
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .content {
+        & > .logistic {
+          & > .body {
+            padding: 20px 0 40px;
+
+            & > .freight {
+              grid-column-gap: 20px;
+              grid-row-gap: 15px;
+              margin-bottom: 20px;
+
+              & > .ammount {
+                & > .dls {
+                  margin: 0 0 6px 7px;
+                }
+              }
+            }
+
+            & > .delivery {
+              grid-column-gap: 20px;
+              grid-row-gap: 20px;
+            }
+          }
+        }
+
+        & > .payments {
+          & > .content {
+            padding: 20px 0;
+
+            & > .firstSection {
+              margin: 15px 0 25px 0;
+
+              & > .generals {
+                grid-column-gap: 20px;
+                padding: 0 20px;
+
+                & > .paymentConditions {
+                  grid-column-gap: 15px;
+                }
+              }
+            }
+
+            & > .aquaSection {
+              padding: 30px 40px;
+            }
+
+            & > .accounts {
+              & > .account-item {
+                max-width: 700px;
+              }
+            }
+          }
+        }
+      }
+      & > .requiredMessage {
+        height: 40px;
+      }
+    }
+  }
+}
+
+.section-title {
+  @include s.flexRow;
+  border-bottom: 1px solid s.$pqBlack2;
+  padding-bottom: 10px;
+
+  & > label {
+    @include s.Novecento-Bold;
+    @include s.escaledFontFormatImportant(s.$textSize17to21, bold, s.$pqBlack2);
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    padding-bottom: 15px;
+  }
+}
+
+.subtitleText {
+  @include s.Roboto-Bold;
+  @include s.escaledFontFormatImportant(s.$textSize15to17, bold, s.$pqBlack2);
+}

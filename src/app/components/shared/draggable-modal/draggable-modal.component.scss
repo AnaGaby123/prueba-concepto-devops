@@ -1,0 +1,182 @@
+@use 'base' as s;
+
+.modal {
+  box-sizing: border-box;
+
+  & > .ui-modal {
+    box-sizing: border-box;
+    border-radius: 20px;
+    @include s.flexColumn;
+    justify-content: flex-start;
+
+    & > .ui-modal-header {
+      border-radius: 20px 20px 0 0;
+      height: 56px;
+      background-color: s.$pqGreen;
+      flex-basis: 56px;
+      box-sizing: border-box;
+      flex-shrink: 0;
+      position: relative;
+
+      &:hover,
+      & > .ui-titlebar:hover,
+      & > .ui-titlebar > label:hover {
+        cursor: grab;
+      }
+
+      &:active,
+      & > .ui-titlebar:active,
+      & > .ui-titlebar > label:active {
+        cursor: grabbing;
+      }
+
+      & > .ui-titlebar {
+        @include s.flexRow;
+        @include s.absoluteCenter;
+
+        & > label {
+          $textSize: (
+            'base': 20px,
+            'macBookAir': 26px,
+          );
+          @include s.escaledFontFormat($textSize, bold, s.$pqWhite);
+          @include s.Novecento-Bold;
+          @include s.multiLineTextTruncateSinHeight(1, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+          padding-right: 5%;
+        }
+      }
+
+      & > .ui-controlbar {
+        display: none;
+      }
+
+      & .close {
+        padding-left: 15px;
+        position: absolute;
+        right: 15px;
+        top: 20px;
+        height: 15px;
+        cursor: pointer;
+        @include s.responsive_layout('macBookAir') {
+          height: 20px;
+          top: 15px;
+        }
+      }
+    }
+
+    & > .ui-modal-body {
+      height: calc(100% - 76px) !important;
+      box-sizing: border-box;
+      @include s.flexRow;
+      justify-content: flex-start;
+      padding: 27px 0 0 0;
+
+      & > div {
+        @include s.flexRow;
+        flex: 1;
+      }
+    }
+
+    & > .ui-modal-footer {
+      height: 20px;
+      padding: 0;
+      border-radius: 0 0 20px 20px;
+    }
+  }
+
+  & > .ui-modal.dragging {
+    box-shadow: 0 0.25rem 0.5rem 0 rgb(0 0 0 / 20%), 0 0.375rem 1.25rem 0 rgb(0 0 0 / 19%);
+    cursor: grabbing;
+  }
+}
+
+// TODO: Clases que se aplicarán de acuerdo al input que se reciba, sirven para asignar si el modal permite ajustar su tamaño y el color de fondo
+
+.static-modal-default {
+  & > .ui-modal {
+    width: 883px;
+    height: 783px;
+    max-width: 888px;
+    max-height: 788px;
+    min-width: 888px;
+    min-height: 788px;
+
+    & > .ui-modal-body {
+      background-color: #ffffff;
+    }
+
+    & span {
+      cursor: default;
+    }
+  }
+}
+
+.resizable-modal-default {
+  & > .ui-modal {
+    width: 883px;
+    height: 783px;
+    max-width: 950px;
+    max-height: 895px;
+    min-width: 500px;
+    min-height: 500px;
+
+    & > .ui-modal-body {
+      background-color: #ffffff;
+    }
+
+    & > .ui-modal-footer {
+      background-color: #ffffff;
+    }
+  }
+}
+
+.static-modal-gray {
+  & > .ui-modal {
+    width: 883px;
+    height: 783px;
+    max-width: 888px;
+    max-height: 788px;
+    min-width: 888px;
+    min-height: 788px;
+
+    & > .ui-modal-body {
+      background-color: #eceef0;
+    }
+
+    & > .ui-modal-footer {
+      background-color: #eceef0;
+    }
+
+    & span {
+      cursor: default;
+    }
+  }
+}
+
+.resizable-modal-gray {
+  & > .ui-modal {
+    width: 883px;
+    height: 783px;
+    max-width: 950px;
+    max-height: 895px;
+    min-width: 500px;
+    min-height: 500px;
+
+    & > .ui-modal-body {
+      background-color: #eceef0;
+    }
+
+    & > .ui-modal-footer {
+      background-color: #eceef0;
+    }
+  }
+}
+
+.loader {
+  @include s.flexRow;
+  height: 100%;
+
+  & > app-loading {
+    @include s.flexRow;
+  }
+}

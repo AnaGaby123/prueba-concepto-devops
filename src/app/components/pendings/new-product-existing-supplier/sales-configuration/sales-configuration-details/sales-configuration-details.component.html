@@ -1,0 +1,408 @@
+<div class="details-container">
+  <div class="left-container">
+    <div class="filters">
+      <label>{{ 'common.families' | translate }}</label>
+      <pqf-search
+        [placeholder]="'Ingresar texto'"
+        [searchTerm]="searchTerm$ | async"
+        (textSearch)="handleKeySearch($event)"
+      ></pqf-search>
+      <pqf-filter-options
+        [filterText]="('filters.orderBy' | translate) + ': '"
+        [flexDirection]="'column'"
+        [options]="filterOptions$ | async"
+        [onlyOneOption]="true"
+        (selectedOptionEmitter)="setFilterSelected($event)"
+      >
+      </pqf-filter-options>
+    </div>
+    <div class="list-items">
+      <virtual-scroller
+        *ngIf="!lodashIsEmpty(families$ | async) && (listItemsApiStatus$ | async) !== 1"
+        [items]="families$ | async"
+        (vsUpdate)="listItems = $event"
+      >
+        <div
+          class="item"
+          *ngFor="let item of listItems; trackBy: familyItemQuotation"
+          [ngClass]="{
+            active: item.isSelected,
+            disabled: item.IdCotPartidaCotizacionInvestigacion === (selectedItem$ | async)?.IdCotPartidaCotizacionInvestigacion
+          }"
+          (click)="setSelectedItem(item)"
+        >
+          <div class="index">
+            <label>#{{ item?.Index }}</label>
+          </div>
+          <div class="data-container">
+            <div class="brand-information">
+              <div class="brand-name">
+                <label>{{ item?.NombreMarca }}</label>
+              </div>
+              <div class="family">
+                <label>{{ item?.fullFamilyName }}</label>
+              </div>
+              <div class="provider-name">
+                <label>{{ item?.NombreProveedor }}</label>
+              </div>
+            </div>
+            <div class="date">
+              <label>{{ 'newProductExistingSupplier.salesConfiguration.earringCreationDate' | translate }}: </label>
+              <label>{{ item?.FechaCreacionPendiente | dateFormatSlashShortNumbers }}</label>
+            </div>
+          </div>
+
+          <div class="arrow">
+            <img
+              [src]="
+                item.isSelected
+                  ? 'assets/Images/arrows/arrow-selected-dashboard-item.svg'
+                  : 'assets/Images/arrows/arrow-dashboard-item.svg'
+              "
+            />
+          </div>
+        </div>
+      </virtual-scroller>
+      <div class="loading" *ngIf="lodashIsEmpty(families$ | async) && (listItemsApiStatus$ | async) === 1">
+        <app-loading></app-loading>
+      </div>
+      <div class="without-results" *ngIf="lodashIsEmpty(families$ | async) && (listItemsApiStatus$ | async) !== 1">
+        <app-without-results></app-without-results>
+      </div>
+    </div>
+    <div class="footer">
+      <label>
+        {{ (families$ | async).length }}
+        {{
+          (families$ | async).length === 1
+            ? ('newProductExistingSupplier.salesConfiguration.pendingsInList' | translate)
+            : ('newProductExistingSupplier.salesConfiguration.pendingsInList' | translate)
+        }}</label
+      >
+    </div>
+  </div>
+  <div class="right-container">
+    <div class="card-brand-container" *ngIf="!lodashIsEmpty(families$ | async) && (detailsFamilyStatus$ | async) !== 1">
+      <div class="information-container">
+        <div class="image-brand">
+          <img #imageElement alt="" [src]="setImage((selectedItem$ | async)?.imageHover)" (error)="errorImage()" />
+        </div>
+        <div class="card-brand-data">
+          <div class="provider-name">
+            <label>{{ (selectedItem$ | async)?.NombreMarca }}</label>
+          </div>
+          <div class="details">
+            <div class="brand-name">
+              <label>{{ (selectedItem$ | async)?.fullFamilyName }} </label>
+            </div>
+            <div class="family-data">
+              <label>{{ (selectedItem$ | async)?.NombreProveedor }}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="more-details">
+        <label>{{ 'common.moreInfo' | translate }}</label>
+      </div>
+    </div>
+    <div class="sales-container" *ngIf="!lodashIsEmpty(families$ | async) && (detailsFamilyStatus$ | async) !== 1">
+      <div class="header" [ngClass]="{mexican: (selectedItem$ | async).Mexicano}">
+        <label class="sector">{{ 'newProductExistingSupplier.salesConfiguration.sector' | translate }}</label>
+        <label class="factor-fixed-cost">
+          {{ 'newProductExistingSupplier.salesConfiguration.factorFixedCost' | translate }}
+        </label>
+        <label class="infrastructure" *ngIf="!(selectedItem$ | async)?.Mexicano">{{
+          'newProductExistingSupplier.salesConfiguration.infrastructures' | translate
+        }}</label>
+        <label class="utility">{{ 'newProductExistingSupplier.salesConfiguration.utility' | translate }}</label>
+        <label class="available-configuration">
+          {{ 'newProductExistingSupplier.salesConfiguration.configurationAvailable' | translate }}
+        </label>
+      </div>
+      <div class="body">
+        <virtual-scroller>
+          <div
+            class="item"
+            [ngClass]="{mexican: (selectedItem$ | async).Mexicano}"
+            *ngFor="let item of selectedFamilyIndustries$ | async; let i = index; trackBy: handleTrackBy"
+          >
+            <div class="sector-industry">
+              <label>{{ item?.Sector }}</label>
+              <label>{{ item?.Industria }}</label>
+            </div>
+            <div class="factor-fixed-cost">
+              <pqf-generic-input
+                [isActive]="item?.habilitado"
+                [isRequired]="true"
+                [placeholder]="'0'"
+                [textAlign]="'center'"
+                [typeValidation]="inputTypes.Percentage"
+                [value]="item?.ConfiguracionComisionProveedor?.FactorDeCostoFijo"
+                [width]="'46px'"
+                (valueChangeEmitter)="handleInputChange($event, fields.FactorDeCostoFijo, i)"
+              ></pqf-generic-input>
+              <label>%</label>
+            </div>
+            <div class="infrastructures" *ngIf="!(selectedItem$ | async)?.Mexicano">
+              <div>
+                <pqf-generic-input
+                  [isActive]="item?.habilitado"
+                  [isAlignColumn]="false"
+                  [label]="'Frente Comercial'"
+                  [placeholder]="'0'"
+                  [textAlign]="'center'"
+                  [typeValidation]="inputTypes.Percentage"
+                  [value]="item?.ConfiguracionComisionProveedor?.ComisionFrenteComercial"
+                  [width]="'46px'"
+                  (valueChangeEmitter)="handleInputChange($event, fields.ComisionFrenteComercial, i)"
+                ></pqf-generic-input>
+                <label>%</label>
+              </div>
+              <div>
+                <pqf-generic-input
+                  [isActive]="item?.habilitado"
+                  [isAlignColumn]="false"
+                  [label]="'Pharma'"
+                  [placeholder]="'0'"
+                  [textAlign]="'center'"
+                  [typeValidation]="inputTypes.Percentage"
+                  [value]="item?.ConfiguracionComisionProveedor?.ComisionPharma"
+                  [width]="'46px'"
+                  (valueChangeEmitter)="handleInputChange($event, fields.ComisionPharma, i)"
+                ></pqf-generic-input>
+                <label>%</label>
+              </div>
+            </div>
+            <div class="utility">
+              <div>
+                <pqf-generic-input
+                  [isActive]="item?.habilitado"
+                  [isAlignColumn]="false"
+                  [label]="'AA+'"
+                  [placeholder]="'0'"
+                  [textAlign]="'center'"
+                  [typeValidation]="inputTypes.Percentage"
+                  [value]="getUtility(fields.AAPlus, item.ConfiguracionPrecioUtilidadCategoriaProveedor)"
+                  [width]="'46px'"
+                  (valueChangeEmitter)="setUtility($event, fields.AAPlus, i)"
+                ></pqf-generic-input>
+                <label>%</label>
+              </div>
+              <div>
+                <pqf-generic-input
+                  [isActive]="item?.habilitado"
+                  [isAlignColumn]="false"
+                  [label]="'AA'"
+                  [placeholder]="'0'"
+                  [textAlign]="'center'"
+                  [typeValidation]="inputTypes.Percentage"
+                  [value]="getUtility(fields.AA, item.ConfiguracionPrecioUtilidadCategoriaProveedor)"
+                  [width]="'46px'"
+                  (valueChangeEmitter)="setUtility($event, fields.AA, i)"
+                ></pqf-generic-input>
+                <label>%</label>
+              </div>
+            </div>
+            <div class="utility">
+              <div>
+                <pqf-generic-input
+                  [isActive]="item?.habilitado"
+                  [isAlignColumn]="false"
+                  [label]="'MA'"
+                  [placeholder]="'0'"
+                  [textAlign]="'center'"
+                  [typeValidation]="inputTypes.Percentage"
+                  [value]="getUtility(fields.MA, item.ConfiguracionPrecioUtilidadCategoriaProveedor)"
+                  [width]="'46px'"
+                  (valueChangeEmitter)="setUtility($event, fields.MA, i)"
+                ></pqf-generic-input>
+                <label>%</label>
+              </div>
+              <div>
+                <pqf-generic-input
+                  [isActive]="item?.habilitado"
+                  [isAlignColumn]="false"
+                  [label]="'AM'"
+                  [placeholder]="'0'"
+                  [textAlign]="'center'"
+                  [typeValidation]="inputTypes.Percentage"
+                  [value]="getUtility(fields.AM, item.ConfiguracionPrecioUtilidadCategoriaProveedor)"
+                  [width]="'46px'"
+                  (valueChangeEmitter)="setUtility($event, fields.AM, i)"
+                ></pqf-generic-input>
+                <label>%</label>
+              </div>
+            </div>
+            <div class="utility">
+              <div>
+                <pqf-generic-input
+                  [isActive]="item?.habilitado"
+                  [isAlignColumn]="false"
+                  [label]="'MM'"
+                  [placeholder]="'0'"
+                  [textAlign]="'center'"
+                  [typeValidation]="inputTypes.Percentage"
+                  [value]="getUtility(fields.MM, item.ConfiguracionPrecioUtilidadCategoriaProveedor)"
+                  [width]="'46px'"
+                  (valueChangeEmitter)="setUtility($event, fields.MM, i)"
+                ></pqf-generic-input>
+                <label>%</label>
+              </div>
+              <div>
+                <pqf-generic-input
+                  [isActive]="item?.habilitado"
+                  [isAlignColumn]="false"
+                  [label]="'AB'"
+                  [placeholder]="'0'"
+                  [textAlign]="'center'"
+                  [typeValidation]="inputTypes.Percentage"
+                  [value]="getUtility(fields.AB, item.ConfiguracionPrecioUtilidadCategoriaProveedor)"
+                  [width]="'46px'"
+                  (valueChangeEmitter)="setUtility($event, fields.AB, i)"
+                ></pqf-generic-input>
+                <label>%</label>
+              </div>
+            </div>
+            <div class="utility">
+              <div>
+                <pqf-generic-input
+                  [isActive]="item?.habilitado"
+                  [isAlignColumn]="false"
+                  [label]="'MB'"
+                  [placeholder]="'0'"
+                  [textAlign]="'center'"
+                  [typeValidation]="inputTypes.Percentage"
+                  [value]="getUtility(fields.MB, item.ConfiguracionPrecioUtilidadCategoriaProveedor)"
+                  [width]="'46px'"
+                  (valueChangeEmitter)="setUtility($event, fields.MB, i)"
+                ></pqf-generic-input>
+                <label>%</label>
+              </div>
+              <div>
+                <pqf-generic-input
+                  [isActive]="item?.habilitado"
+                  [isAlignColumn]="false"
+                  [label]="'BAJO'"
+                  [placeholder]="'0'"
+                  [textAlign]="'center'"
+                  [typeValidation]="inputTypes.Percentage"
+                  [value]="getUtility(fields.BAJO, item.ConfiguracionPrecioUtilidadCategoriaProveedor)"
+                  [width]="'46px'"
+                  (valueChangeEmitter)="setUtility($event, fields.BAJO, i)"
+                ></pqf-generic-input>
+                <label>%</label>
+              </div>
+            </div>
+            <div class="utility">
+              <div>
+                <pqf-generic-input
+                  [isActive]="item?.habilitado"
+                  [isAlignColumn]="false"
+                  [label]="'WEB'"
+                  [placeholder]="'0'"
+                  [textAlign]="'center'"
+                  [typeValidation]="inputTypes.Percentage"
+                  [value]="getUtility(fields.WEB, item.ConfiguracionPrecioUtilidadCategoriaProveedor)"
+                  [width]="'46px'"
+                  (valueChangeEmitter)="setUtility($event, fields.WEB, i)"
+                ></pqf-generic-input>
+                <label>%</label>
+              </div>
+              <div>
+                <pqf-generic-input
+                  [isActive]="item?.habilitado"
+                  [isAlignColumn]="false"
+                  [label]="'DIST'"
+                  [placeholder]="'0'"
+                  [textAlign]="'center'"
+                  [typeValidation]="inputTypes.Percentage"
+                  [value]="getUtility(fields.DIST, item.ConfiguracionPrecioUtilidadCategoriaProveedor)"
+                  [width]="'46px'"
+                  (valueChangeEmitter)="setUtility($event, fields.DIST, i)"
+                ></pqf-generic-input>
+                <label>%</label>
+              </div>
+            </div>
+            <div class="check-configuration">
+              <pqf-check-box
+                [check]="item?.habilitado"
+                [inactive]="item.isOriginal"
+                (event)="handleCheck(i, $event)"
+              ></pqf-check-box>
+            </div>
+          </div>
+        </virtual-scroller>
+      </div>
+    </div>
+    <div class="without-pending" *ngIf="lodashIsEmpty(families$ | async) && (detailsFamilyStatus$ | async) !== 1">
+      <label>{{ 'newProductExistingSupplier.salesConfiguration.selectPending' | translate }}</label>
+    </div>
+    <div class="loading" *ngIf="(detailsFamilyStatus$ | async) === 1">
+      <app-loading></app-loading>
+    </div>
+    <div class="buttons-container">
+      <button
+        [ngClass]="(hasChanges | async) ? 'cancel' : 'disable'"
+        [disabled]="!(hasChanges | async)"
+        (click)="cancelConfiguration()"
+        >{{ 'common.cancel' | translate }}
+      </button>
+      <button
+        [disabled]="!(validationToSaveConfiguration$ | async)"
+        [ngClass]="(validationToSaveConfiguration$ | async) ? 'save-changes' : 'disable'"
+        (click)="saveConfiguration()"
+        >{{ 'newProductExistingSupplier.salesConfiguration.buttons.saveChanges' | translate }}</button
+      >
+      <button
+        [disabled]="!(finishValidation$ | async)"
+        [ngClass]="(finishValidation$ | async) ? 'close-pending' : 'disable'"
+        (click)="saveConfiguration(true)"
+        >{{ 'newProductExistingSupplier.salesConfiguration.buttons.finishPending' | translate }}</button
+      >
+    </div>
+    <pqf-secure-code-pop-up
+      *ngIf="IsActiveSecureCodePop | async"
+      [height]="'auto'"
+      [isActivePrimaryButton]="true"
+      [isShowClose]="false"
+      [onlySecondaryButton]="!(authorization$ | async)?.valid"
+      [paddingBottomContent]="'24px'"
+      [paddingTopContent]="'32px'"
+      [secureCode]="secureCode$ | async"
+      [status]="(authorization$ | async)?.status"
+      [textHeaderContent]="'Inserta tu código aquí para activar la familia.'"
+      [textPrimaryButton]="'Aceptar'"
+      [textSecondaryButton]="'Cancelar Solicitud'"
+      (arrayCodeChangeEmitter)="eventEmitterArray($event)"
+      (event)="eventEmitterPopUpSecureCode()"
+      (stringCodeCompleteEmitter)="setSecureCode($event)"
+    ></pqf-secure-code-pop-up>
+    <pqf-pop-up
+      *ngIf="IsActiveMessageSecureCodePop | async"
+      [textPrimaryButton]="'common.codeRequest' | translate"
+      [textSecondaryButton]="'common.cancel' | translate"
+      [text]="messagePop$ | async"
+      [secondText]="'newProductExistingSupplier.salesConfiguration.messageSecureCode' | translate"
+      [widthButton]="'md'"
+      (event)="eventEmitterMessageSecureCodePopUp($event)"
+    >
+    </pqf-pop-up>
+    <pqf-pop-up
+      *ngIf="IsActiveDiscardMessageSecureCodePop$ | async"
+      [textPrimaryButton]="'common.keepWaiting' | translate"
+      [textSecondaryButton]="'common.cancelRequest' | translate"
+      [text]="'newProductExistingSupplier.salesConfiguration.messageDiscardSecureCode' | translate"
+      (event)="eventEmitterDiscardMessageSecureCodePopUp($event)"
+    >
+    </pqf-pop-up>
+    <pqf-pop-up
+      *ngIf="isActivePop | async"
+      [textPrimaryButton]="'common.discard' | translate"
+      [textSecondaryButton]="'common.exit' | translate"
+      [text]="'common.discardMessage' | translate"
+      [widthButton]="'md'"
+      (event)="eventEmitterPopUp($event)"
+    >
+    </pqf-pop-up>
+  </div>
+</div>

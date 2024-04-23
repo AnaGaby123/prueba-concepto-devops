@@ -1,0 +1,115 @@
+<div class="list-investigation-container">
+  <div class="title">
+    <label>{{ 'attendInvestigation.attendInvestigationDetail.products' | translate }}</label>
+  </div>
+  <div class="tabs">
+    <app-tabs
+      [options]="tabOptions$ | async"
+      [tapSelected]="tabOption$ | async"
+      (onSelectOption)="setTabOptionSelected($event)"
+    >
+    </app-tabs>
+  </div>
+  <div class="filters">
+    <app-check-box
+      [check]="checkAll"
+      [height]="(viewType$ | async) === viewTypes.small ? '17px' : '20px'"
+      [label]="'filters.selectAll' | translate"
+      (event)="handleCheckAll()"
+      [disabled]="isAllAwaitingResponse$ | async"
+    ></app-check-box>
+    <div class="filter-by-type" *ngIf="(tabOption$ | async)?.id !== '3'">
+      <app-hamburger-menu
+        [options]="filterOptions$ | async"
+        [value]="(filterOption$ | async).value"
+        (valueEmit)="setFilterSelected($event)"
+      >
+      </app-hamburger-menu>
+    </div>
+  </div>
+  <div class="list-clients">
+    <virtual-scroller
+      *ngIf="!lodashIsEmpty(productInvestigationList$ | async) && (listApiStatus$ | async) === 3"
+      [enableUnequalChildrenSizes]="true"
+      [items]="productInvestigationList$ | async"
+      (vsUpdate)="investigationScroll = $event"
+    >
+      <div
+        *ngFor="let product of investigationScroll; let i = index; trackBy: handleTrackByIdInvestigation"
+        class="product"
+        [ngClass]="{selected: product.selected}"
+        (click)="productIndex = product.index"
+      >
+        <div class="indicator"></div>
+        <div class="product-info-card" (click)="setContent(product)">
+          <div class="check-product">
+            <app-check-box
+              *ngIf="product.ClaveEstadoInvestigacion !== productStatus.EnEsperaDeRespuesta"
+              [check]="product.isChecked"
+              [height]="(viewType$ | async) === viewTypes.small ? '17px' : '20px'"
+              (click)="handleClick($event, product)"
+            ></app-check-box>
+          </div>
+          <div class="content-product-list">
+            <div class="information-product">
+              <label>
+                #{{ i + 1 }} ·
+                <img
+                  alt="new"
+                  src="assets/Images/labels/nuevos.svg"
+                  *ngIf="product.ClaveEstadoInvestigacion === productStatus.Nueva"
+                />
+                <img
+                  alt="reattend"
+                  src="assets/Images/labels/por-reatender.svg"
+                  *ngIf="product.ClaveEstadoInvestigacion === productStatus.PorReatender"
+                />
+                <img
+                  alt="standby"
+                  src="assets/Images/labels/waiting-answer.svg"
+                  *ngIf="product.ClaveEstadoInvestigacion === productStatus.EnEsperaDeRespuesta"
+                />
+                · #CAT {{ product.Catalogo }}<span> · {{ product.Marca }} · </span>
+                {{ product.Descripcion }}
+              </label>
+            </div>
+            <div class="information-product">
+              <label>
+                {{ product.Tipo !== 'N/A' ? product.Tipo : '' }}{{ product.SubTipo !== 'N/A' ? ' · ' + product.SubTipo : ''
+                }}{{ product.Control !== 'N/A' ? ' · ' + product.Control : '' }}
+              </label>
+            </div>
+            <div class="receptionEvi">
+              <label>
+                Recepción {{ product.FechaRegistro | dateFormatSlash }} ·
+                <span *ngIf="product.Folio">Cot: {{ product.Folio }}</span> · Evi: {{ product.EVI }}
+              </label>
+            </div>
+          </div>
+          <div class="select-product-icon">
+            <img [src]="getItemMessageImg(product)" alt="selected-product-icon" (click)="handleOpenDetails(product)" />
+          </div>
+        </div>
+      </div>
+    </virtual-scroller>
+    <div class="loader" *ngIf="(listApiStatus$ | async) === 1">
+      <app-loading></app-loading>
+    </div>
+  </div>
+  <div class="totals">
+    <button
+      [disabled]="!(enableOnlineInvestigation$ | async)"
+      [ngClass]="(enableOnlineInvestigation$ | async) ? 'enable' : 'disable'"
+      (click)="handleOnlineInvestigation()"
+    >
+      {{ 'attendInvestigation.attendInvestigationDetail.onlineInvestigation' | translate }}</button
+    >
+    <button
+      [disabled]="(productsChecked$ | async)?.length === 0"
+      [ngClass]="(productsChecked$ | async)?.length > 0 ? 'enable' : 'disable'"
+      (click)="handleOpenPop()"
+    >
+      {{ 'attendInvestigation.attendInvestigationDetail.providerMail' | translate }}
+    </button>
+  </div>
+</div>

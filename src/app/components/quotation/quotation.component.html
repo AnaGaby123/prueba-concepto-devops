@@ -1,0 +1,31 @@
+<div class="component-container" id="quotation-container">
+  <div class="header">
+    <app-header-bar
+      [activeBack]="(detailsMode$ | async) && !(hiddenBack$ | async)"
+      [name]="nameClient$ | async"
+      [title]="title$ | async"
+      (goBack)="returnMainPage()"
+    ></app-header-bar>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+  <div *ngIf="(detailsMode$ | async) === false" class="footer">
+    <div>
+      <img alt="quotes" class="label" src="assets/Images/quotation/quotes.svg" />
+      <label>{{ 'quotation.statusQuotation' | translate }}</label>
+    </div>
+    <div>
+      <img alt="new" class="label" src="assets/Images/quotation/new.svg" />
+      <label>{{ 'quotation.statusNew' | translate }}</label>
+    </div>
+    <div>
+      <img alt="saved" class="label" src="assets/Images/quotation/saved.svg" />
+      <label>{{ 'quotation.statusSaved' | translate }}</label>
+    </div>
+    <div>
+      <img alt="sent" class="label" src="assets/Images/quotation/sent.svg" />
+      <label>{{ 'quotation.statusSent' | translate }}</label>
+    </div>
+  </div>
+</div>

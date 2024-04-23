@@ -1,0 +1,19 @@
+<div class="arrival-date-container">
+  <label [ngClass]="columnArrivalDate?.color ? columnArrivalDate.color : 'black'" *ngIf="columnArrivalDate?.date">{{
+    columnArrivalDate?.date | dateFormatSlash
+  }}</label>
+  <div class="img-container">
+    <img
+      #imageElement
+      alt="comments"
+      *ngIf="columnArrivalDate?.showComments"
+      [id]="columnArrivalDate?.elementIdComment ? columnArrivalDate?.elementIdComment : 'img'"
+      [src]="
+        columnArrivalDate?.color
+          ? 'assets/Images/close-offer/comments-' + columnArrivalDate?.color + '.svg'
+          : 'assets/Images/close-offer/comments-ocean.svg'
+      "
+      (click)="handleClick($event, imageElement, true, nameActionsInternalSalesItem?.ArrivalDateCommentsAction)"
+    />
+  </div>
+</div>

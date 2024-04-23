@@ -1,0 +1,6 @@
+<div class="label-container">
+  <label [class]="column?.colorLabel ? column?.colorLabel : colorLabel" *ngIf="column?.currency && isNumber(column?.value)">{{
+    (column?.value | currency: column.currency:'symbol-narrow':'1.2-2') + ' ' + column?.currency
+  }}</label>
+  <label [class]="colorLabel" *ngIf="!isNumber(column?.value)">{{ column.value }}</label>
+</div>

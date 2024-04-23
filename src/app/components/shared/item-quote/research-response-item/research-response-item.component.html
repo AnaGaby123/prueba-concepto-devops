@@ -1,0 +1,17 @@
+<div class="research-container">
+  <label
+    [ngClass]="columnResearchResponse?.productNotFound ? 'red' : columnResearchResponse?.productSuggested ? 'orange' : 'green'"
+  >
+    {{
+      columnResearchResponse?.productNotFound
+        ? ('quotation.details.productNotFound' | translate)
+        : columnResearchResponse?.productFound
+        ? ('quotation.details.productFound' | translate)
+        : columnResearchResponse?.productAvailable
+        ? ('quotation.details.productAvailable' | translate)
+        : columnResearchResponse?.productSuggested
+        ? ('quotation.details.suggestedProduct' | translate)
+        : ''
+    }}
+  </label>
+</div>

@@ -1,0 +1,405 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+  @include s.flexColumn;
+
+  & > .collapse {
+    @include s.flexRow;
+    align-items: center;
+    background-color: s.$main-proquifa-f;
+    padding: 4px 8px;
+    justify-content: space-between;
+
+    & > .info {
+      @include s.flexRow;
+      gap: 210px;
+      & > .client-title {
+        @include s.responsive-font-format(
+          $font-size-map: s.$responsive-font-17-21,
+          $font-family: s.$font_family_novecento_bold
+        );
+        text-transform: uppercase;
+      }
+
+      & > .data-contact {
+        @include s.responsive-font-format(
+          $font-size-map: s.$responsive-font-16-21,
+          $font-family: s.$font_family_novecento_bold,
+          $color: s.$main-proquifa
+        );
+        text-transform: lowercase;
+      }
+
+      @include s.media-query(s.$standard) {
+        gap: 318px;
+      }
+    }
+
+    & > img {
+      cursor: pointer;
+      height: 16px;
+      width: 24px;
+      transform: scaleX(1);
+      transition: transform 0.3s ease-in-out;
+      &.reverse {
+        transform: scaleY(-1);
+      }
+    }
+  }
+
+  .client-contact-container {
+    display: grid;
+    gap: 25px;
+    grid-template-columns: minmax(270px, max-content) 1fr;
+
+    &.hide {
+      animation-duration: 0.3s;
+      animation-fill-mode: forwards;
+      animation-name: hideClientInfo;
+      transition: 0.3s ease-in-out;
+    }
+
+    &.show {
+      animation-duration: 0.3s;
+      animation-fill-mode: forwards;
+      animation-name: showClientInfo;
+    }
+
+    &.isCollapse {
+      overflow: hidden;
+      height: 100%;
+      flex: 1 1 auto;
+    }
+
+    & > .client-data-container {
+      @include s.flexColumn;
+      max-width: 350px;
+
+      & > .client-title {
+        margin-bottom: 10px;
+        padding-left: 16px;
+
+        & > label {
+          @include s.responsive-font-format(
+            $font-size-map: s.$responsive-font-17-21,
+            $font-family: s.$font_family_novecento_bold
+          );
+        }
+      }
+
+      & > .client-info {
+        @include s.flexRowNoWrap;
+        gap: 18px;
+
+        & > .image-client {
+          @include s.gridCenter;
+          flex: 0 0 106px;
+          height: 70px;
+
+          & > img {
+            max-height: 100%;
+            max-width: 100%;
+            overflow: hidden;
+          }
+        }
+
+        & > .client-name {
+          @include s.flexColumn;
+          align-items: flex-start;
+          flex: 1;
+          justify-content: center;
+          row-gap: 6px;
+
+          & > label {
+            @include s.multiLineTextTruncateSinHeight($lineHeight: 20px, $wordBreak: break-word);
+            @include s.responsive-font-format(
+              $font-family: s.$font_family_roboto_bold,
+              $font-weight: s.$font_weight_bold,
+              $font-size-map: s.$responsive-font-16-20,
+              $color: s.$pqGreen
+            );
+          }
+
+          & > .segmentation {
+            @include s.flexRowNoWrap;
+            gap: 8px;
+
+            & > img {
+              height: 20px;
+            }
+          }
+
+          & > .config-address {
+            @include s.flexRow;
+            column-gap: 8px;
+            & > label {
+              @include s.responsive-font-format(
+                $font-family: s.$font_family_roboto_bold,
+                $font-weight: s.$font_weight_bold,
+                $font-size-map: s.$responsive-font-13-16,
+                $color: s.$pqBlack2
+              );
+
+              & > span {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_roboto_regular,
+                  $font-weight: s.$font_weight_regular,
+                  $font-size-map: s.$responsive-font-13-16,
+                  $color: s.$pqBlack2
+                );
+                vertical-align: baseline;
+              }
+            }
+          }
+        }
+      }
+      &.padding-top-16 {
+        padding-top: 16px;
+      }
+    }
+
+    & > .contact-data-container {
+      @include s.flexColumn;
+
+      & > .title-contact {
+        & > label {
+          @include s.responsive-font-format(
+            $font-size-map: s.$responsive-font-16-21,
+            $font-family: s.$font_family_novecento_bold,
+            $color: s.$main-proquifa
+          );
+        }
+
+        margin-bottom: 10px;
+      }
+
+      & > .provider-contact-content {
+        display: grid;
+        gap: 25px;
+        grid-template-columns: repeat(2, minmax(150px, max-content));
+
+        & > .column-one {
+          @include s.flexColumn;
+          gap: 3px;
+
+          & > .provider-contact {
+            @include s.flexColumn;
+            gap: 3px;
+
+            & > div {
+              @include s.multiLineTextTruncateSinHeight($lines: 1, $lineHeight: 16px);
+              align-items: center;
+              display: grid;
+              gap: 5px;
+              grid-template-columns: 19px 1fr;
+            }
+
+            & > div:nth-of-type(1) {
+              & > img {
+                height: 19px;
+                margin-right: 5px;
+              }
+
+              & > label {
+                @include s.responsive-font-format(
+                  $font-size-map: s.$responsive-font-13-16,
+                  $font-family: s.$font_family_roboto_bold,
+                  $font-weight: s.$font_weight_bold
+                );
+                min-width: max-content;
+              }
+            }
+
+            & > div:nth-of-type(2) {
+              & > img {
+                height: 11px;
+                margin-right: 8px;
+              }
+
+              & > label {
+                @include s.responsive-font-format($font-size-map: s.$responsive-font-13-16);
+              }
+            }
+
+            & > div:nth-of-type(3) {
+              & > img {
+                height: 13px;
+                margin-right: 8px;
+              }
+
+              & > label {
+                @include s.responsive-font-format($font-size-map: s.$responsive-font-13-16);
+              }
+            }
+          }
+
+          & > .assigned-esac {
+            @include s.multiLineTextTruncateSinHeight($lines: 1, $lineHeight: 16px);
+
+            & > label:nth-of-type(1) {
+              @include s.responsive-font-format(
+                $font-size-map: s.$responsive-font-13-16,
+                $font-family: s.$font_family_roboto_bold,
+                $font-weight: s.$font_weight_bold
+              );
+            }
+
+            & > label:nth-of-type(2) {
+              @include s.responsive-font-format($font-size-map: s.$responsive-font-13-16);
+            }
+          }
+        }
+
+        & > .column-two {
+          @include s.flexColumn;
+          gap: 4px;
+
+          & > div {
+            @include s.flexRowNoWrap;
+            @include s.multiLineTextTruncateSinHeight($lines: 1, $lineHeight: 16px);
+
+            & > label:nth-of-type(1) {
+              @include s.responsive-font-format(
+                $font-size-map: s.$responsive-font-13-16,
+                $font-family: s.$font_family_roboto_bold,
+                $font-weight: s.$font_weight_bold
+              );
+
+              &.with-credit {
+                color: s.$success;
+              }
+
+              &.without-credit {
+                color: s.$alert;
+              }
+            }
+
+            & > label:nth-of-type(2) {
+              @include s.responsive-font-format($font-size-map: s.$responsive-font-13-16);
+            }
+          }
+        }
+      }
+      &.padding-top-16 {
+        padding-top: 16px;
+      }
+    }
+  }
+
+  @include s.media-query('standard') {
+    .client-contact-container {
+      gap: 35px;
+      grid-template-columns: minmax(320px, 380px) 1fr;
+
+      & > .client-data-container {
+        & > .client-title {
+          margin-bottom: 15px;
+          padding-left: 10px;
+        }
+
+        & > .client-info {
+          & > .client-name {
+            & > label {
+              @include s.multiLineTextTruncateSinHeight($lineHeight: 25px, $wordBreak: break-word);
+            }
+          }
+        }
+        &.padding-top-16 {
+          padding-top: 16px;
+        }
+      }
+
+      & > .contact-data-container {
+        & > .title-contact {
+          margin-bottom: 15px;
+        }
+
+        & > .provider-contact-content {
+          display: grid;
+          gap: 60px;
+
+          & > .column-one {
+            & > .provider-contact {
+              & > div {
+                @include s.multiLineTextTruncateSinHeight($lines: 1, $lineHeight: 20px);
+              }
+
+              & > div:nth-of-type(1) {
+                & > img {
+                  height: 21px;
+                }
+              }
+
+              & > div:nth-of-type(2) {
+                & > img {
+                  height: 13px;
+                }
+              }
+
+              & > div:nth-of-type(3) {
+                & > img {
+                  height: 15px;
+                }
+              }
+            }
+
+            & > .assigned-esac {
+              @include s.multiLineTextTruncateSinHeight($lines: 1, $lineHeight: 20px);
+            }
+          }
+
+          & > .column-two {
+            & > div {
+              @include s.multiLineTextTruncateSinHeight($lines: 1, $lineHeight: 20px);
+            }
+          }
+        }
+        &.padding-top-16 {
+          padding-top: 16px;
+        }
+      }
+    }
+  }
+}
+
+@keyframes showClientInfo {
+  from {
+    height: 0;
+  }
+  to {
+    height: 111px;
+  }
+}
+
+@keyframes hideClientInfo {
+  from {
+    height: 111px;
+  }
+  to {
+    height: 0;
+  }
+}
+@include s.media-query(s.$standard) {
+  @keyframes showClientInfo {
+    from {
+      height: 0;
+    }
+    to {
+      height: 111px;
+    }
+  }
+
+  @keyframes hideClientInfo {
+    from {
+      height: 111px;
+    }
+    to {
+      height: 0;
+    }
+  }
+}

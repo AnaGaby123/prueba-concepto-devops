@@ -1,0 +1,20 @@
+<div class="import">
+  <h4>{{ 'formProvider.step8.subtitles.import' | translate }}</h4>
+  <div class="grid">
+    <div class="input-container">
+      <label>{{ 'formProvider.step8.inputs.igi' | translate }}</label>
+      <label class="green">{{ actualConfiguration?.ConfiguracionPrecioProveedor?.IGI | percentageTransform }}</label>
+    </div>
+    <div class="input-container">
+      <label>{{ 'formProvider.step8.inputs.dta' | translate }}</label>
+      <label class="green">{{ actualConfiguration?.ConfiguracionPrecioProveedor?.DTA | percentageTransform }}</label>
+    </div>
+    <div class="input-container">
+      <label>{{ 'formProvider.step8.inputs.prv' | translate }}</label>
+      <label class="green"
+        >{{ (actualConfiguration?.ConfiguracionPrecioProveedor?.PRV | currency: 'USD':'symbol-narrow':'1.2-2') || 'N/D' }}
+        USD
+      </label>
+    </div>
+  </div>
+</div>

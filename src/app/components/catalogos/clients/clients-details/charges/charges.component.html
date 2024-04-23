@@ -1,0 +1,292 @@
+<div class="charges">
+  <div class="container">
+    <div class="credit" *ngIf="(credit$ | async) || {}">
+      <div class="titleSection">
+        <label>{{ 'clientCatalog.credit' | translate }}</label>
+      </div>
+      <div class="creditData">
+        <div class="containerCreditData">
+          <div class="paymentConditions">
+            <app-drop-down-list
+              [activeMinWidth]="false"
+              [capitalize]="false"
+              [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+              [isSearchable]="(selectPaymentConditions$ | async)?.length > 5"
+              [itemSelected]="(credit$ | async)?.paymentConditionsSelected"
+              [items]="selectPaymentConditions$ | async"
+              [label]="'common.paymentConditions' | translate"
+              [required]="true"
+              [subtitleActive]="false"
+              (valueDropList)="setPaymentConditions($event)"
+            >
+            </app-drop-down-list>
+          </div>
+          <div class="paymentForms">
+            <app-drop-down-list
+              [activeMinWidth]="false"
+              [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+              [isSearchable]="(selectPaymentForm$ | async)?.length > 5"
+              [itemSelected]="(credit$ | async)?.paymentFormSelected"
+              [items]="selectPaymentForm$ | async"
+              [label]="'attendReviewPayment.wayToPay' | translate"
+              [required]="true"
+              [subtitleActive]="false"
+              (valueDropList)="setPaymentForm($event)"
+            ></app-drop-down-list>
+          </div>
+          <div class="accountNumber">
+            <app-generic-input
+              [label]="'clientCatalog.accountNumber' | translate"
+              [value]="(credit$ | async)?.NumeroDeCuenta"
+              [typeValidation]="inputValidators.Number"
+              [required]="true"
+              [minlength]="18"
+              [maxlength]="18"
+              [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+              (textData)="setAccountNumber($event)"
+            >
+            </app-generic-input>
+          </div>
+          <div class="creditLine">
+            <app-generic-input
+              [label]="'strategy.details.creditLine' | translate"
+              [typeValidation]="inputValidators.DecimalNumber"
+              [value]="(credit$ | async)?.LineaCredito"
+              [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+              [isDisable]="(selectedPaymentCondition$ | async)?.sinCredito && (enableEdit$ | async)"
+              (textData)="setCreditLine($event)"
+            >
+            </app-generic-input>
+          </div>
+          <div class="over-draft" [style.align-items]="'flex-end'">
+            <div class="percent" *ngIf="!(editMode$ | async) || (enableEdit$ | async)">
+              <app-generic-input
+                [label]="'clientCatalog.overdraft' | translate"
+                [value]="(credit$ | async)?.PorcentajeSobregiroLineaCredito"
+                [typeValidation]="inputValidators.Percentage"
+                [max]="100"
+                [isDisable]="(selectedPaymentCondition$ | async)?.sinCredito && (enableEdit$ | async)"
+                (textData)="setOverdraft($event)"
+              >
+              </app-generic-input>
+              <div>
+                <div [style.align-items]="'flex-end'" [style.padding-bottom]="'3px'"> <label>%</label></div>
+              </div>
+            </div>
+            <div *ngIf="(editMode$ | async) && !(enableEdit$ | async)" class="colum">
+              <label>{{ 'clientCatalog.overdraft' | translate }}</label>
+              <span
+                >{{ (credit$ | async)?.PorcentajeSobregiroLineaCredito | pqfPercentageTransform }}
+                <label class="colorProquifa"></label
+              ></span>
+            </div>
+          </div>
+          <div class="creditLineLimit">
+            <app-generic-input
+              [label]="'clientCatalog.creditLimit' | translate"
+              [value]="
+                (selectedPaymentCondition$ | async)?.labelKey === enumpaymentconditions.prepaid
+                  ? 'N/A'
+                  : (credit$ | async)?.LineaCredito
+                  ? '$ ' + (credit$ | async).LimiteLineaCredito
+                  : '$ 0'
+              "
+              [typeValidation]="inputValidators.DecimalNumber"
+              [enableEdit]="false"
+            >
+            </app-generic-input>
+          </div>
+        </div>
+        <div class="amount">
+          <div>
+            <label> {{ 'clientCatalog.credtLine' | translate }} </label>
+            <span>
+              {{
+                (selectedPaymentCondition$ | async)?.labelKey === enumpaymentconditions.prepaid
+                  ? 'N/A'
+                  : (credit$ | async)?.LineaCredito
+                  ? ((credit$ | async)?.LineaCredito | currency: 'USD') + ' DLS'
+                  : '0 DLS'
+              }}
+            </span>
+          </div>
+          <div>
+            <label> {{ 'clientCatalog.overdraft' | translate }} </label>
+            <span>
+              {{
+                (selectedPaymentCondition$ | async)?.labelKey === enumpaymentconditions.prepaid
+                  ? 'N/A'
+                  : ((credit$ | async)?.PorcentajeSobregiroLineaCredito | pqfPercentageTransform)
+              }}</span
+            >
+          </div>
+          <div>
+            <label> {{ 'clientCatalog.creditLimit' | translate }} </label>
+            <span>
+              {{
+                (selectedPaymentCondition$ | async)?.labelKey === enumpaymentconditions.prepaid
+                  ? 'N/A'
+                  : (credit$ | async)?.LimiteLineaCredito
+                  ? ((credit$ | async)?.LimiteLineaCredito | currency: 'USD') + ' DLS'
+                  : '0 DLS'
+              }}
+            </span>
+          </div>
+        </div>
+        <div class="processPurchaseOrder">
+          <div>
+            <app-radio-button
+              [label]="'clientCatalog.processWithoutPurchaseOrder' | translate"
+              [height]="(viewType$ | async) === viewTypes.small ? '17px' : '20px'"
+              [labelFontStyle]="
+                (clientSelected | async)?.TramitarSinOrdenDeCompra ? 'labelRobotoBoldProquifa16' : 'labelRobotoBold16'
+              "
+              [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+              [value]="(clientSelected | async)?.TramitarSinOrdenDeCompra"
+              (emitValue)="setProcessWithoutPurchaseOrder($event)"
+            ></app-radio-button>
+          </div>
+          <div>
+            <app-radio-button
+              [label]="'clientCatalog.processWithPurchaseOrder' | translate"
+              [height]="(viewType$ | async) === viewTypes.small ? '17px' : '20px'"
+              [labelFontStyle]="
+                (clientSelected | async)?.TramitarConOrdenDeCompraInterna ? 'labelRobotoBoldProquifa16' : 'labelRobotoBold16'
+              "
+              [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+              [value]="(clientSelected | async)?.TramitarConOrdenDeCompraInterna"
+              (emitValue)="setProcessPurchaseOrder($event)"
+            ></app-radio-button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="stpAccounts">
+      <div class="titleSection">
+        <label>{{ 'clientCatalog.stpAccounts' | translate }}</label>
+      </div>
+      <div class="stpAccountsData">
+        <div class="left">
+          <div class="howBills">
+            <app-drop-down-list
+              [label]="'clientCatalog.whoBills' | translate"
+              [itemSelected]="(clientSTP$ | async)?.enterpriseSelected"
+              [items]="selectEnterprise$ | async"
+              [activeMinWidth]="false"
+              [subtitleActive]="false"
+              [enableEdit]="false"
+            ></app-drop-down-list>
+          </div>
+          <div class="accountNumber">
+            <app-generic-input
+              [label]="'clientCatalog.accountNumber' | translate"
+              [value]="(clientSTP$ | async)?.NumeroDeCuenta"
+              [minlength]="18"
+              [maxlength]="18"
+              [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+              [isDisable]="!(clientSTP$ | async)?.enterpriseSelected"
+              (textData)="setAccountNumberSTP($event)"
+              [typeValidation]="inputValidators.Number"
+            >
+            </app-generic-input>
+          </div>
+
+          <div class="clientAlias">
+            <app-generic-input
+              [label]="'clientCatalog.clientAlias' | translate"
+              [value]="(clientSTP$ | async)?.Alias"
+              [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+              [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+              [isDisable]="!(clientSTP$ | async)?.enterpriseSelected"
+              (textData)="setAlias($event)"
+            >
+            </app-generic-input>
+          </div>
+        </div>
+        <div class="right">
+          <div class="howBillsPublications">
+            <app-drop-down-list
+              [label]="'clientCatalog.whoBillPublications' | translate"
+              [itemSelected]="(clientSTP$ | async)?.publicationEnterpriseSelected"
+              [items]="selectEnterprise$ | async"
+              [activeMinWidth]="false"
+              [subtitleActive]="false"
+              [enableEdit]="false"
+            ></app-drop-down-list>
+          </div>
+          <div class="accountNumber">
+            <app-generic-input
+              [label]="'clientCatalog.accountNumber' | translate"
+              [value]="(clientSTP$ | async)?.NumeroDeCuentaPublicaciones"
+              [minlength]="18"
+              [maxlength]="18"
+              [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+              [isDisable]="!(clientSTP$ | async)?.enterpriseSelected || !(clientSTP$ | async)?.enterpriseSelected"
+              (textData)="setPublicationsAccountNumberSTP($event)"
+              [typeValidation]="inputValidators.Number"
+            >
+            </app-generic-input>
+          </div>
+          <div class="clientAlias">
+            <app-generic-input
+              [label]="'clientCatalog.clientAlias' | translate"
+              [value]="(clientSTP$ | async)?.AliasPublicaciones"
+              [typeValidation]="inputValidators.AlphaAndSpaces"
+              [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+              [isDisable]="!(clientSTP$ | async)?.enterpriseSelected || !(clientSTP$ | async)?.enterpriseSelected"
+              (textData)="setPublicationAlias($event)"
+            >
+            </app-generic-input>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="review">
+      <div class="titleSection">
+        <label>{{ 'clientCatalog.review' | translate }}</label>
+      </div>
+      <div class="reviewData">
+        <div>
+          <div class="reviewType">
+            <app-drop-down-list
+              [label]="'clientCatalog.reviewType' | translate"
+              [items]="selectCatRevisionSelected$ | async"
+              [activeMinWidth]="false"
+              [subtitleActive]="false"
+              [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+              [itemSelected]="(billing$ | async)?.CatRevisionSelected"
+              [required]="true"
+              (valueDropList)="setReviewType($event)"
+            >
+            </app-drop-down-list>
+          </div>
+          <div class="useCfdi">
+            <app-drop-down-list
+              [label]="'clientCatalog.UseCFDI' | translate"
+              [items]="selectCatUsoCFDISelected$ | async"
+              [activeMinWidth]="false"
+              [subtitleActive]="false"
+              [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+              [itemSelected]="(billing$ | async)?.CatUseCFDISelected"
+              [required]="true"
+              (valueDropList)="setUseCfdi($event)"
+            ></app-drop-down-list>
+          </div>
+          <div class="paymentMethod">
+            <app-drop-down-list
+              [label]="'clientCatalog.paymentMethod' | translate"
+              [items]="selectCatMetodoDePagoCFDISelected$ | async"
+              [activeMinWidth]="false"
+              [subtitleActive]="false"
+              [enableEdit]="!(editMode$ | async) || (enableEdit$ | async)"
+              [itemSelected]="(billing$ | async)?.CatPaymentMethodCFDISelected"
+              [required]="true"
+              [capitalize]="false"
+              (valueDropList)="setPaymentMethod($event)"
+            ></app-drop-down-list>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

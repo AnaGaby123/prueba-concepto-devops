@@ -1,0 +1,1000 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  & > #resume-container {
+    @include s.flexColumn;
+    @include s.absolute100;
+    justify-content: flex-start;
+    padding: 20px 20px 14px 20px;
+
+    & > .resume-section {
+      @include s.flexRow;
+      justify-content: space-between;
+      margin-bottom: 12px;
+
+      & > div {
+        @include s.flexRow;
+
+        & > label {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_novecento_bold,
+            $font-size-map: s.$responsive-font-17-21,
+            $font-weight: s.$font_weight_bold,
+            $color: s.$main-proquifa
+          );
+          white-space: pre;
+        }
+
+        & > label:nth-of-type(1) {
+          color: s.$pqBlack2;
+        }
+      }
+
+      & > button {
+        @include s.pqButton();
+      }
+    }
+
+    & > .status-tabs {
+      @include s.flexColumn;
+      margin-bottom: 15px;
+    }
+
+    & > .brands-tabs {
+      @include s.flexColumn;
+
+      & > label {
+        @include s.responsive-font-format(
+          $font-family: s.$font_family_novecento_bold,
+          $font-size-map: s.$responsive-font-15-18,
+          $font-weight: s.$font_weight_bold
+        );
+      }
+    }
+
+    & > .search-section {
+      @include s.flexRow;
+      justify-content: space-between;
+
+      & > .info {
+        @include s.flexColumn;
+
+        & > label:nth-of-type(1) {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_novecento_bold,
+            $font-size-map: s.$responsive-font-17-21,
+            $font-weight: s.$font_weight_bold
+          );
+          margin-bottom: 5px;
+        }
+
+        & > label:nth-of-type(2) {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_novecento_bold,
+            $font-size-map: s.$responsive-font-13-16,
+            $font-weight: s.$font_weight_bold,
+            $color: s.$main-proquifa
+          );
+          margin-bottom: 5px;
+        }
+
+        & > div {
+        }
+      }
+
+      & > .search {
+        @include s.flexColumn;
+        width: 458px;
+      }
+    }
+
+    & > .schedules {
+      @include s.flexRow;
+
+      & > .schedule {
+        @include s.flexRow;
+        & > label {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_roboto_regular,
+            $font-size-map: s.$responsive-font-13-16,
+            $font-weight: s.$font_weight_bold,
+            $color: s.$main-proquifa
+          );
+        }
+
+        & > label:nth-of-type(2) {
+          color: s.$pqBlack2;
+          white-space: pre;
+        }
+      }
+    }
+
+    & > .table-container {
+      @include s.flexRow;
+      flex: 1;
+      & > virtual-scroller {
+        overflow: hidden;
+        @include s.fixVirtualScroller();
+        ::ng-deep .scrollable-content {
+          overflow: auto;
+          & > .header {
+            flex: 0 0 auto;
+            position: sticky;
+            top: 0;
+            z-index: 6;
+            min-width: 1604px;
+          }
+
+          & > .header-separator {
+            position: sticky;
+            top: 47px;
+            left: 0;
+            border-bottom: 1px solid s.$dark-proquifa;
+          }
+          & > .item {
+            min-width: 1604px;
+          }
+        }
+      }
+      & > .loading {
+        @include s.flexColumn;
+        @include s.absoluteCenter;
+        height: 100%;
+        width: 100%;
+      }
+      #pop-up-price-cat {
+        & .container-price-cat {
+          @include s.flexColumn;
+          box-sizing: border-box;
+          height: calc(100% - 35px);
+          padding: 15px 0;
+
+          & > .container-blue {
+            @include s.flexColumn;
+            @include s.absoluteCenter;
+            background-color: s.$pqFondo;
+            height: 40px;
+            justify-content: center;
+            width: 100%;
+
+            & > .container-radio-buttons {
+              @include s.flexRowNoWrap;
+              width: 60%;
+              justify-content: space-around;
+            }
+
+            & > .amount {
+              @include s.flexRowNoWrap;
+              width: auto;
+
+              & > label {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_roboto_regular,
+                  $font-size-map: s.$responsive-font-13-16,
+                  $font-weight: s.$font_weight_regular
+                );
+                & > span:nth-of-type(1) {
+                  @include s.Roboto-Bold;
+                  color: s.$pqBlack2;
+                  margin-right: 3px;
+                }
+
+                & > span:nth-of-type(2) {
+                  @include s.Roboto-Regular;
+                  color: s.$pqGreen;
+                  margin-left: 3px;
+                }
+              }
+            }
+          }
+
+          & > .container-second-section {
+            @include s.flexColumn;
+            box-sizing: border-box;
+            height: 100%;
+            padding: 0 20px;
+
+            & > app-slider {
+              padding-bottom: 20px;
+            }
+
+            & > .amount-controls {
+              @include s.flexRowNoWrap;
+              justify-content: space-between;
+              height: 60px;
+              width: 100%;
+
+              & > div {
+                @include s.flexRowNoWrap;
+                @include s.absoluteCenter;
+
+                & > input {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font_family_roboto_bold,
+                    $font-size-map: s.$responsive-font-14-16,
+                    $font-weight: s.$font_weight_bold
+                  );
+                  background-color: s.$pqWhite;
+                  border-radius: 2px;
+                  box-sizing: border-box;
+                  height: 26px;
+                  outline: none;
+                  padding: 2px 5px;
+                  text-align: center;
+                }
+
+                & > input::placeholder {
+                  @include s.responsive-font-format($font-size-map: s.$responsive-font-15-15);
+                }
+
+                & > label {
+                  @include s.responsive-font-format($font-size-map: s.$responsive-font-15-15);
+                  margin-left: 8px;
+                }
+              }
+
+              & > div:nth-of-type(1) {
+                width: 35%;
+
+                & > input {
+                  width: calc(100% - 12px);
+                }
+
+                & > label {
+                  @include s.Roboto-Bold;
+                  color: s.$pqGreen;
+                }
+              }
+
+              & > div:nth-of-type(2) {
+                width: 55%;
+
+                & > input {
+                  width: calc(100% - 50px);
+                }
+
+                & > label {
+                  @include s.Roboto-Regular;
+                }
+              }
+            }
+            & > .container-comments {
+              @include s.flexColumn;
+              height: 100%;
+              padding-top: 20px;
+
+              & > label:nth-of-type(1) {
+                @include s.responsive-font-format($font-size-map: s.$responsive-font-15-15);
+                padding-bottom: 10px;
+              }
+
+              & > textarea {
+                @include s.responsive-font-format($font-size-map: s.$responsive-font-16-16);
+                width: 100%;
+                height: 100px;
+                box-sizing: border-box;
+                padding: 10px;
+              }
+            }
+          }
+        }
+
+        & .button {
+          width: 100%;
+          height: 35px;
+
+          & > button {
+            border-radius: 0 !important;
+          }
+
+          & > .btn-active-accept {
+            @include s.pqButton(100%, 100%, 35px, 35px);
+          }
+
+          & > .btn-disable-accept {
+            @include s.pqButtonDisable(100%, 100%, 35px, 35px);
+            cursor: default;
+          }
+        }
+      }
+    }
+
+    & > .footer-tracing {
+      @include s.flexRow;
+      background-color: rgba(s.$main-proquifa, 0.05);
+      padding: 30px 16px;
+
+      & > label {
+        @include s.responsive-font-format(
+          $font-family: s.$font_family_novecento_bold,
+          $font-size-map: s.$responsive-font-17-21,
+          $font-weight: s.$font_weight_bold,
+          $color: s.$main-proquifa
+        );
+      }
+
+      & > .total-entries {
+        @include s.flexRow;
+        justify-content: center;
+        align-items: center;
+        flex: 0 0 90px;
+        & > label {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_novecento_bold,
+            $font-size-map: s.$responsive-font-17-21,
+            $font-weight: s.$font_weight_bold,
+            $color: s.$main-proquifa
+          );
+        }
+      }
+
+      & > .separator {
+        @include s.flexRow;
+        justify-content: center;
+        align-items: center;
+        margin-right: 54px;
+      }
+      & > .next-tracing {
+        @include s.flexColumn;
+        margin-right: 40px;
+        flex-grow: 1;
+        max-width: 220px;
+
+        & > label {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_novecento_bold,
+            $font-size-map: s.$responsive-font-17-21,
+            $font-weight: s.$font_weight_bold,
+            $color: s.$main-proquifa
+          );
+          margin-right: 6px;
+        }
+      }
+
+      & > .reason {
+        @include s.flexColumn;
+        flex-grow: 2;
+        margin-right: 40px;
+
+        & > label {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_novecento_bold,
+            $font-size-map: s.$responsive-font-17-21,
+            $font-weight: s.$font_weight_bold,
+            $color: s.$main-proquifa
+          );
+          margin-right: 6px;
+        }
+      }
+
+      & > .button {
+        @include s.flexColumn;
+        justify-content: flex-end;
+
+        & > button {
+          &.active {
+            @include s.pqButton($min-width: 160px, $max-width: 230px);
+          }
+
+          &.disabled {
+            @include s.pqButtonDisable($min-width: 160px, $max-width: 230px);
+          }
+        }
+      }
+    }
+
+    & > .footer-adjustment {
+      @include s.flexRow;
+      background-color: rgba(s.$main-proquifa, 0.05);
+      padding: 19px 16px 18px 16px;
+      align-items: center;
+      & > label {
+        @include s.responsive-font-format(
+          $font-family: s.$font_family_novecento_bold,
+          $font-size-map: s.$responsive-font-17-21,
+          $font-weight: s.$font_weight_bold,
+          $color: s.$main-proquifa
+        );
+      }
+
+      & > .total-entries {
+        @include s.flexRow;
+        flex: 0 0 90px;
+        justify-content: center;
+        align-items: center;
+        & > label {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_novecento_bold,
+            $font-size-map: s.$responsive-font-17-21,
+            $font-weight: s.$font_weight_bold,
+            $color: s.$main-proquifa
+          );
+        }
+      }
+      & > .separator {
+        @include s.flexRow;
+        justify-content: center;
+        align-items: center;
+        margin-right: 54px;
+      }
+
+      & > .options-adjustment {
+        @include s.flexRowWrap;
+        flex: 0 0 340px;
+        gap: 8px;
+        align-items: center;
+        & > div {
+          @include s.flexRow;
+          align-items: center;
+          gap: 5px;
+          & > label {
+            @include s.responsive-font-format(
+              $color: s.$main-proquifa,
+              $font-family: s.$font_family_novecento_bold,
+              $font-size-map: s.$responsive-font-13-16,
+              $font-weight: s.$font_weight_bold
+            );
+            &.disabled {
+              color: s.$pqGray3;
+            }
+          }
+        }
+      }
+      & > .adjust-data-container {
+        @include s.flexRowNoWrap;
+        flex: 1;
+        gap: 20px;
+        & > div {
+          @include s.flexColumn;
+          flex: 1;
+          gap: 8px;
+          & > .freight-configurator-container {
+            @include s.flexRowNoWrap;
+            gap: 16px;
+            & > .percentage {
+              flex: 0 0 80px;
+            }
+            & > .freights {
+              @include s.flexRow;
+              align-items: center;
+              flex: 1;
+              justify-content: flex-end;
+              & > label {
+                @include s.responsive-font-format(
+                  $color: s.$main-proquifa,
+                  $font-family: s.$font_family_novecento_bold,
+                  $font-size-map: s.$responsive-font-13-16,
+                  $font-weight: s.$font_weight_bold
+                );
+              }
+            }
+          }
+          & > .reason {
+            @include s.flexColumn;
+            justify-content: flex-end;
+            flex: 1;
+            gap: 4px;
+            & > label {
+              @include s.responsive-font-format(
+                $color: s.$main-proquifa,
+                $font-family: s.$font_family_novecento_bold,
+                $font-size-map: s.$responsive-font-13-16,
+                $font-weight: s.$font_weight_bold
+              );
+            }
+          }
+        }
+        & > .button {
+          @include s.flexColumn;
+          justify-content: flex-end;
+          flex: 0 0 auto;
+          & > button {
+            &.active {
+              @include s.pqButton($min-width: 155px, $max-width: 220px);
+            }
+
+            &.disabled {
+              @include s.pqButtonDisable($min-width: 155px, $max-width: 220px);
+            }
+          }
+        }
+      }
+      & > .form-per-option {
+        @include s.flexRow;
+        flex: 1;
+      }
+    }
+
+    & > .footer-promise {
+      @include s.flexRow;
+      background-color: rgba(s.$main-proquifa, 0.05);
+      padding: 30px 16px;
+
+      & > label {
+        @include s.responsive-font-format(
+          $font-family: s.$font_family_novecento_bold,
+          $font-size-map: s.$responsive-font-17-21,
+          $font-weight: s.$font_weight_bold,
+          $color: s.$main-proquifa
+        );
+      }
+
+      & > .total-entries {
+        @include s.flexRow;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 90px;
+        @include s.responsive-font-format(
+          $font-family: s.$font_family_novecento_bold,
+          $font-size-map: s.$responsive-font-17-21,
+          $font-weight: s.$font_weight_bold,
+          $color: s.$main-proquifa
+        );
+      }
+      & .separator {
+        @include s.flexRow;
+        justify-content: center;
+        align-items: center;
+        margin-right: 54px;
+      }
+
+      & > .next-tracing {
+        @include s.flexColumn;
+        margin-right: 40px;
+        flex-grow: 1;
+        max-width: 220px;
+
+        & > label {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_novecento_bold,
+            $font-size-map: s.$responsive-font-17-21,
+            $font-weight: s.$font_weight_bold,
+            $color: s.$main-proquifa
+          );
+          margin-right: 5px;
+        }
+      }
+
+      & > .reason {
+        @include s.flexColumn;
+        flex-grow: 2;
+        margin-right: 12px;
+
+        & > label {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_novecento_bold,
+            $font-size-map: s.$responsive-font-17-21,
+            $font-weight: s.$font_weight_bold,
+            $color: s.$main-proquifa
+          );
+          margin-right: 5px;
+        }
+      }
+
+      & > .button {
+        @include s.flexColumn;
+        justify-content: flex-end;
+
+        & > button {
+          &.active {
+            @include s.pqButton($min-width: 180px, $max-width: 270px);
+          }
+
+          &.disabled {
+            @include s.pqButtonDisable($min-width: 180px, $max-width: 270px);
+          }
+        }
+      }
+    }
+
+    & > .footer-cancel {
+      @include s.flexRow;
+      background-color: rgba(s.$main-proquifa, 0.05);
+      padding: 30px 16px;
+
+      & > label {
+        @include s.responsive-font-format(
+          $font-family: s.$font_family_novecento_bold,
+          $font-size-map: s.$responsive-font-17-21,
+          $font-weight: s.$font_weight_bold,
+          $color: s.$main-proquifa
+        );
+        margin-right: 15px;
+      }
+
+      & > .total-entries {
+        @include s.flexRow;
+        justify-content: center;
+        align-items: center;
+        flex: 0 0 90px;
+        @include s.responsive-font-format(
+          $font-family: s.$font_family_novecento_bold,
+          $font-size-map: s.$responsive-font-17-21,
+          $font-weight: s.$font_weight_bold,
+          $color: s.$main-proquifa
+        );
+      }
+
+      & .separator {
+        @include s.flexRow;
+        justify-content: center;
+        align-items: center;
+        margin-right: 54px;
+      }
+
+      & > .next-tracing {
+        @include s.flexColumn;
+        margin-right: 40px;
+        flex-grow: 1;
+        max-width: 260px;
+
+        & > label {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_novecento_bold,
+            $font-size-map: s.$responsive-font-17-21,
+            $font-weight: s.$font_weight_bold,
+            $color: s.$main-proquifa
+          );
+          margin-right: 5px;
+        }
+      }
+
+      & > .reason {
+        @include s.flexColumn;
+        flex-grow: 2;
+        margin-right: 12px;
+
+        & > label {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_novecento_bold,
+            $font-size-map: s.$responsive-font-17-21,
+            $font-weight: s.$font_weight_bold,
+            $color: s.$main-proquifa
+          );
+          margin-right: 5px;
+        }
+      }
+
+      & > .button {
+        @include s.flexColumn;
+        justify-content: flex-end;
+
+        & > button {
+          &.active {
+            @include s.pqButton($min-width: 200px, $max-width: 295px);
+          }
+
+          &.disabled {
+            @include s.pqButtonDisable($min-width: 200px, $max-width: 295px);
+          }
+        }
+      }
+    }
+
+    & > .footer-tracing,
+    & > .footer-adjustment,
+    & > .footer-promise,
+    & > .footer-cancel {
+      &.disabled {
+        & > label {
+          color: s.$pqGray3 !important;
+        }
+
+        & > .next-tracing {
+          & label {
+            color: s.$pqGray3 !important;
+          }
+        }
+
+        & > .reason {
+          & > label {
+            color: s.$pqGray3 !important;
+          }
+        }
+      }
+    }
+
+    @include s.media-query(s.$standard) {
+      & > .status-tabs {
+        margin-bottom: 25px;
+      }
+
+      & > .table-container {
+        & > .table {
+          //
+          //& > .header {
+          //  min-width: 1572px;
+          //
+          //  & > div {
+          //    padding: 6px 3px;
+          //  }
+          //
+          //  & > .check-column {
+          //    width: 39px;
+          //    align-items: center;
+          //  }
+          //
+          //  & > .number-column {
+          //    width: 39px;
+          //    align-items: center;
+          //  }
+          //
+          //  & > .type-column {
+          //    width: 39px;
+          //  }
+          //
+          //  & > .cat-column {
+          //    width: 82px;
+          //    align-items: center;
+          //  }
+          //
+          //  & > .concept-column {
+          //    flex: 1;
+          //  }
+          //
+          //  & > .brands-column {
+          //    flex: 0 0 185px;
+          //  }
+          //
+          //  & > .days-column {
+          //    width: 115px;
+          //    align-items: flex-end;
+          //    flex-direction: row;
+          //    justify-content: center;
+          //    white-space: nowrap;
+          //  }
+          //
+          //  & > .pieces-column {
+          //    width: 78px;
+          //    align-items: flex-end;
+          //    flex-direction: row;
+          //    justify-content: center;
+          //  }
+          //
+          //  & > .cat-price-column {
+          //    width: 110px;
+          //  }
+          //
+          //  & > .bot-price-column {
+          //    width: 110px;
+          //  }
+          //
+          //  & > .total-column {
+          //    width: 130px;
+          //  }
+          //
+          //  & > .percentage-column {
+          //    width: 60px;
+          //  }
+          //}
+          //
+          //& > .body {
+          //  min-width: 1572px;
+          //
+          //  & > virtual-scroller {
+          //    & > ::ng-deep .scrollable-content {
+          //      & .item {
+          //        @include flexColumn;
+          //
+          //        & .top {
+          //          & > .check-column {
+          //            width: 39px;
+          //          }
+          //
+          //          & > .number-column {
+          //            width: 39px;
+          //          }
+          //
+          //          & > .type-column {
+          //            width: 39px;
+          //
+          //            & > img {
+          //              width: 17px;
+          //              height: 17px;
+          //            }
+          //          }
+          //
+          //          & > .cat-column {
+          //            width: 82px;
+          //          }
+          //
+          //          & > .concept-column {
+          //            flex: 1;
+          //          }
+          //
+          //          & > .brands-column {
+          //            width: 185px;
+          //          }
+          //
+          //          & > .days-column {
+          //            width: 115px;
+          //          }
+          //
+          //          & > .pieces-column {
+          //            width: 78px;
+          //          }
+          //
+          //          & > .cat-price-column {
+          //            width: 110px;
+          //          }
+          //
+          //          & > .bot-price-column {
+          //            width: 110px;
+          //          }
+          //
+          //          & > .total-column {
+          //            min-width: 130px;
+          //          }
+          //
+          //          & > .percentage-column {
+          //            min-width: 60px;
+          //
+          //            & > img {
+          //              width: 9px;
+          //              height: 11px;
+          //            }
+          //          }
+          //        }
+          //
+          //        & > .bottom {
+          //          & > .item {
+          //            & > .check-column {
+          //              width: 39px;
+          //            }
+          //
+          //            & > .number-column {
+          //              width: 39px;
+          //
+          //              & > img {
+          //                width: 8px;
+          //                height: 14px;
+          //              }
+          //            }
+          //
+          //            & > .type-column {
+          //              width: 39px;
+          //
+          //              & > img {
+          //                width: 17px;
+          //                height: 17px;
+          //              }
+          //            }
+          //
+          //            & > .cat-column {
+          //              width: 82px;
+          //            }
+          //
+          //            & > .concept-column {
+          //              flex: 1;
+          //            }
+          //
+          //            & > .brands-column {
+          //              width: 185px;
+          //            }
+          //
+          //            & > .days-column {
+          //              width: 115px;
+          //            }
+          //
+          //            & > .pieces-column {
+          //              width: 78px;
+          //            }
+          //
+          //            & > .cat-price-column {
+          //              width: 110px;
+          //            }
+          //
+          //            & > .bot-price-column {
+          //              width: 110px;
+          //            }
+          //
+          //            & > .total-column {
+          //              min-width: 130px;
+          //            }
+          //
+          //            & > .percentage-column {
+          //              min-width: 60px;
+          //
+          //              & > img {
+          //                width: 9px;
+          //                height: 11px;
+          //              }
+          //            }
+          //          }
+          //        }
+          //      }
+          //    }
+          //  }
+          //}
+        }
+      }
+
+      & > .footer-tracing {
+        & > .next-tracing {
+          @include s.flexRow;
+          align-items: center;
+          max-width: 330px;
+
+          & > label {
+            white-space: nowrap;
+          }
+        }
+
+        & > .reason {
+          @include s.flexRow;
+          align-items: center;
+
+          & > label {
+            white-space: nowrap;
+          }
+        }
+      }
+
+      & > .footer-adjustment {
+        padding: 21px 16px;
+        & > .next-tracing {
+          max-width: 240px;
+        }
+
+        & > .percentage {
+          margin-right: 50px;
+          width: 90px;
+
+          & > app-drop-down-list {
+            height: 30px;
+          }
+        }
+      }
+
+      & > .footer-promise {
+        & > .next-tracing {
+          @include s.flexRow;
+          align-items: center;
+          max-width: 440px;
+          margin-right: 20px;
+
+          & > label {
+            white-space: nowrap;
+          }
+        }
+
+        & > .reason {
+          @include s.flexRow;
+          align-items: center;
+
+          & > label {
+            white-space: nowrap;
+          }
+        }
+      }
+
+      & > .footer-cancel {
+        & > .next-tracing {
+          @include s.flexRow;
+          align-items: center;
+          max-width: 440px;
+          margin-right: 36px;
+
+          & > label {
+            white-space: nowrap;
+          }
+        }
+
+        & > .reason {
+          @include s.flexRow;
+          align-items: center;
+
+          & > label {
+            white-space: nowrap;
+          }
+        }
+      }
+    }
+  }
+}

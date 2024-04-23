@@ -1,0 +1,717 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  #indirect-payment-container {
+    @include s.absolute100;
+    @include s.flexColumn;
+    overflow: hidden;
+
+    & > .header-bar {
+      flex: 0 0 50px;
+    }
+
+    & > .main {
+      @include s.flexRowNoWrap;
+      flex: 1 1 auto;
+      overflow-y: auto;
+
+      & > div {
+        @include s.flexColumn;
+        flex: 1 0 850px;
+
+        & > footer {
+          @include s.flexRowNoWrap;
+          align-items: center;
+          border-top: 1px solid s.$pqBlack2;
+          flex: 0 0 50px;
+          justify-content: flex-end;
+          margin: 0 20px;
+        }
+      }
+
+      & > .general-data {
+        overflow: hidden;
+
+        & > .title {
+          border-bottom: 1px solid s.$pqBlack2;
+          margin: 0 20px;
+          padding: 15px 0 8px 0;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+            @include s.Novecento-Bold;
+          }
+        }
+
+        & > .center {
+          border-right: 1px solid s.$pqGray2;
+          flex: 1 1 auto;
+          overflow-x: auto;
+          padding: 15px 20px 10px 20px;
+
+          & > .title {
+            @include s.flexRowNoWrap;
+            justify-content: space-between;
+            margin-bottom: 7px;
+
+            &.no-margin {
+              margin-bottom: 0;
+            }
+
+            & > .ocean {
+              @include s.escaledFontFormat(s.$textSize15to21, bold, s.$pqGreen);
+              @include s.Novecento-Bold;
+            }
+
+            & > .subtitle {
+              @include s.escaledFontFormat(s.$textSize13to15, bold, s.$pqGreen);
+              @include s.Roboto-Regular;
+            }
+          }
+
+          & > .payment-type {
+            @include s.flexRowWrap;
+            align-items: flex-end;
+            margin-bottom: 12px;
+
+            & > .radio {
+              flex: 0 0 auto;
+              margin: 0 20px 6px 0;
+            }
+
+            & > .drop {
+              flex: 1 0 110px;
+              margin: 3px 15px 3px 0;
+            }
+
+            & > .drop-100 {
+              flex: 0 0 100%;
+              margin: 3px 0;
+            }
+
+            & > .drop-25 {
+              flex: 1 0 20%;
+              margin: 3px 15px 3px 0;
+
+              &.no-margin {
+                margin-right: 0;
+              }
+            }
+
+            & > .drop-75 {
+              flex: 1 0 71%;
+              margin: 3px 0;
+            }
+
+            & > .input-file {
+              flex: 1 0 190px;
+              margin: 3px 15px 3px 0;
+
+              &:last-of-type {
+                margin-right: 0;
+              }
+            }
+          }
+
+          & > .payment-data {
+            @include s.flexRowWrap;
+
+            & > div {
+              margin-bottom: 12px;
+            }
+
+            & > .w-40 {
+              @include s.flexColumn;
+              flex: 0 0 40%;
+              margin-right: 25px;
+
+              & > .check {
+                margin-bottom: 4px;
+              }
+
+              & > .drops {
+                @include s.flexRowNoWrap;
+
+                & > .input {
+                  flex: 1 0 140px;
+                  margin-right: 15px;
+                }
+
+                & > .drop {
+                  flex: 1 0 140px;
+                  height: auto;
+                }
+              }
+
+              & > .inputs {
+                @include s.flexRowWrap;
+
+                & > .input-50 {
+                  flex: 1 0 140px;
+                  margin-right: 15px;
+
+                  &.no-margin {
+                    margin-right: 0;
+                  }
+                }
+
+                & > .input-100 {
+                  flex: 1 0 140px;
+                  margin-top: 5px;
+                }
+              }
+            }
+
+            & > .w-60 {
+              @include s.flexColumn;
+              flex: 1 0 50%;
+
+              & > .check {
+                margin-bottom: 4px;
+              }
+
+              & > .drops {
+                @include s.flexRowNoWrap;
+
+                & > .input {
+                  flex: 1 0 140px;
+                  margin-right: 15px;
+
+                  &:last-of-type {
+                    margin-right: 0;
+                  }
+                }
+
+                & > .drop {
+                  flex: 1 0 140px;
+                  height: auto;
+                  margin-right: 15px;
+                }
+              }
+            }
+
+            & > .w-60-row {
+              @include s.flexRowNoWrap;
+              flex: 1 0 50%;
+
+              & > .left {
+                @include s.flexColumn;
+                flex: 1 0 140px;
+                margin-right: 15px;
+
+                & > .check {
+                  margin-bottom: 4px;
+                }
+              }
+
+              & > .right {
+                @include s.flexColumn;
+                flex: 2 0 280px;
+                padding-top: 21px;
+
+                & > label {
+                  @include s.escaledFontFormat(s.$textSize15to21, bold, s.$pqGreen);
+                  @include s.Novecento-Bold;
+                  margin-bottom: 8px;
+                }
+
+                & > .files-container {
+                  @include s.flexRowWrap;
+                  padding: 10px 0;
+
+                  & > .file {
+                    @include s.flexRowNoWrap;
+                    align-items: center;
+                    background-color: rgba(s.$pqGreen, 0.05);
+                    border-radius: 15px;
+                    margin-right: 13px;
+                    padding: 5px 11px;
+
+                    & > label {
+                      @include s.escaledFontFormat(s.$textSize13to15, regular, s.$pqGreen);
+                      @include s.Roboto-Regular;
+                      margin-right: 5px;
+                      max-width: 120px;
+                      overflow: hidden;
+                      text-decoration: underline;
+                      text-overflow: ellipsis;
+                      white-space: nowrap;
+                    }
+
+                    & > img {
+                      cursor: pointer;
+                      height: 12px;
+                      margin-left: 8px;
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          & > .opacity {
+            @include s.opacityColor;
+            @include s.flexRowNoWrap;
+            align-items: center;
+            height: 70px;
+            justify-content: space-between;
+            padding: 0 14px;
+
+            & > div {
+              @include s.flexRowNoWrap;
+              align-items: center;
+            }
+
+            & > .picker {
+              padding-left: 20px;
+
+              & > label {
+                @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+                @include s.Roboto-Bold;
+                margin-right: 6px;
+                white-space: pre;
+              }
+
+              & > .date-picker {
+                height: 25px;
+              }
+            }
+
+            & > .input {
+              justify-content: flex-end;
+
+              & > label {
+                @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+                @include s.Roboto-Bold;
+                margin-right: 6px;
+                white-space: pre;
+
+                &.ocean {
+                  color: s.$pqGreen;
+                  margin-right: 0;
+                }
+              }
+
+              & > .input {
+                margin-right: 6px;
+                flex: 0 0 140px;
+              }
+            }
+          }
+
+          & > .totals {
+            @include s.flexRowNoWrap;
+            flex: 0 0 auto;
+            justify-content: flex-end;
+
+            & > .border {
+              @include s.flexRowNoWrap;
+              border-top: 1px solid s.$pqGreen;
+              justify-content: flex-end;
+
+              & > .labels {
+                @include s.flexColumn;
+
+                & > label {
+                  @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+                  @include s.Roboto-Regular;
+                  padding: 5px 14px 5px 40px;
+                  text-align: end;
+                }
+
+                & > label:first-of-type {
+                  padding: 10px 14px 5px 40px;
+                }
+
+                & > label:nth-child(4) {
+                  padding: 5px 14px 10px 40px;
+                }
+
+                & > label:last-of-type {
+                  @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+                  @include s.Roboto-Bold;
+                  border-top: 1px solid s.$pqGreen;
+                  padding: 10px 14px 5px 40px;
+                }
+              }
+
+              & > .numbers {
+                @include s.flexColumn;
+
+                & > label {
+                  @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqGreen);
+                  @include s.Roboto-Regular;
+                  padding: 5px 14px 5px 40px;
+                  text-align: end;
+                }
+
+                & > label:first-of-type {
+                  padding: 10px 14px 5px 40px;
+                }
+
+                & > label:nth-child(4) {
+                  padding: 5px 14px 10px 40px;
+                }
+
+                & > label:last-of-type {
+                  @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqGreen2);
+                  @include s.Roboto-Bold;
+                  border-top: 1px solid s.$pqGreen;
+                  padding: 10px 14px 5px 40px;
+                }
+              }
+            }
+          }
+        }
+
+        & > footer {
+          & > .active {
+            @include s.pqButton($max-width: 190px);
+          }
+
+          & > .disabled {
+            @include s.pqButtonDisable($max-width: 190px);
+          }
+        }
+      }
+
+      & > .resume {
+        & > .title {
+          margin: 0 20px;
+          padding: 15px 0 8px 0;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+            @include s.Novecento-Bold;
+          }
+        }
+
+        & > .without-results {
+          @include s.absoluteCenter;
+          @include s.flexColumn;
+          flex: 1 1 100%;
+          overflow: hidden;
+          padding: 30px;
+        }
+
+        & > .center {
+          flex: 1 1 auto;
+          overflow-x: auto;
+          padding: 0 20px 10px 20px;
+
+          & > .title {
+            @include s.flexRowNoWrap;
+            justify-content: space-between;
+            margin-bottom: 8px;
+
+            &.no-margin {
+              margin-bottom: 0;
+            }
+
+            & > .ocean {
+              @include s.escaledFontFormat(s.$textSize15to21, bold, s.$pqGreen);
+              @include s.Novecento-Bold;
+            }
+
+            & > .subtitle {
+              @include s.escaledFontFormat(s.$textSize13to15, bold, s.$pqGreen);
+              @include s.Roboto-Regular;
+            }
+          }
+
+          & > .opacity {
+            @include s.opacityColor;
+            @include s.flexRowNoWrap;
+            height: 90px;
+            margin-bottom: 18px;
+
+            & > div {
+              @include s.flexColumn;
+              flex: 0 0 50%;
+              justify-content: center;
+              padding: 0 20px;
+
+              & > label {
+                @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                @include s.Roboto-Regular;
+                margin-bottom: 2px;
+
+                &.bold {
+                  @include s.Roboto-Bold;
+                }
+
+                & > .ocean {
+                  color: s.$pqGreen;
+                }
+
+                & > .underline {
+                  text-decoration: underline;
+                }
+              }
+            }
+          }
+
+          & > .general-data {
+            @include s.flexRowWrap;
+
+            & > div {
+              @include s.flexColumn;
+              flex: 1 0 22%;
+              margin-bottom: 18px;
+              padding-right: 10px;
+
+              & > label {
+                @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                @include s.Roboto-Regular;
+
+                &.bold {
+                  @include s.Roboto-Bold;
+                }
+
+                &.ocean {
+                  color: s.$pqGreen;
+                }
+
+                &.underline {
+                  text-decoration: underline;
+                }
+
+                &:first-of-type {
+                  margin-bottom: 3px;
+                }
+              }
+            }
+
+            & > .files {
+              @include s.flexColumn;
+              flex: 0 0 100%;
+              margin-bottom: 18px;
+
+              & > .files-container {
+                @include s.flexRowWrap;
+                padding: 10px 0;
+
+                & > .file {
+                  @include s.flexRowNoWrap;
+                  align-items: center;
+                  background-color: rgba(s.$pqGreen, 0.05);
+                  border-radius: 15px;
+                  margin-right: 13px;
+                  padding: 5px 11px;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize13to15, regular, s.$pqGreen);
+                    @include s.Roboto-Regular;
+                    margin-right: 5px;
+                    max-width: 120px;
+                    overflow: hidden;
+                    text-decoration: underline;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                  }
+
+                  & > img {
+                    cursor: pointer;
+                    height: 12px;
+                    margin-left: 8px;
+                  }
+                }
+              }
+            }
+          }
+
+          & > .spei-opacity {
+            @include s.flexColumn;
+            @include s.opacityColor;
+            justify-content: center;
+            margin-bottom: 18px;
+            padding: 20px;
+
+            & > .ocean {
+              @include s.escaledFontFormat(s.$textSize12to15, bold, s.$pqGreen);
+              @include s.Roboto-Bold;
+              margin-bottom: 2px;
+            }
+
+            & > .bold {
+              @include s.Roboto-Regular;
+              @include s.escaledFontFormat(s.$textSize12to15, regular, s.$pqBlack2);
+              margin-bottom: 2px;
+
+              & > span {
+                @include s.Roboto-Bold;
+                white-space: pre;
+              }
+            }
+          }
+
+          & > .picker-opacity {
+            @include s.flexColumn;
+            @include s.absoluteCenter;
+            @include s.opacityColor;
+            height: 70px;
+            margin-bottom: 18px;
+
+            & > .picker {
+              @include s.flexRowNoWrap;
+              align-items: center;
+
+              & > label {
+                @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+                @include s.Roboto-Bold;
+                margin-right: 6px;
+                white-space: pre;
+              }
+
+              & > .date-picker {
+                height: 25px;
+              }
+            }
+          }
+
+          & > .totals {
+            @include s.flexRowNoWrap;
+            @include s.opacityColor;
+            flex: 0 0 auto;
+            justify-content: flex-end;
+            padding: 10px 20px;
+
+            & > .border {
+              @include s.flexRowNoWrap;
+              justify-content: flex-end;
+
+              & > .labels {
+                @include s.flexColumn;
+
+                & > label {
+                  @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+                  @include s.Roboto-Regular;
+                  padding: 5px 14px 5px 40px;
+                  text-align: end;
+                }
+
+                & > label:nth-child(4) {
+                  padding: 5px 14px 10px 40px;
+                }
+
+                & > label:last-of-type {
+                  @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+                  @include s.Roboto-Bold;
+                  border-top: 1px solid s.$pqGreen;
+                }
+              }
+
+              & > .numbers {
+                @include s.flexColumn;
+
+                & > label {
+                  @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqGreen);
+                  @include s.Roboto-Regular;
+                  padding: 5px 0 5px 40px;
+                  text-align: end;
+                }
+
+                & > label:nth-child(4) {
+                  padding: 5px 0 10px 40px;
+                }
+
+                & > label:last-of-type {
+                  @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqGreen2);
+                  @include s.Roboto-Bold;
+                  border-top: 1px solid s.$pqGreen;
+                }
+              }
+            }
+          }
+        }
+
+        & > footer {
+          justify-content: space-between;
+          margin: 0 20px;
+
+          & > .active {
+            @include s.pqButton;
+          }
+
+          & > .active-green {
+            @include s.pqButton($baseColor: s.$pqGreen2);
+          }
+
+          & > .disabled {
+            @include s.pqButtonDisable;
+          }
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > #indirect-payment-container {
+      & > .header-bar {
+        flex: 0 0 64px;
+      }
+
+      & > .main {
+        & > div {
+          flex: 1 0 960px;
+
+          & > footer {
+            flex: 0 0 59px;
+          }
+        }
+
+        & > .general-data {
+          & > .title {
+            padding: 18px 0 10px 0;
+          }
+
+          & > .center {
+            & > .payment-type {
+              & > .radio {
+                margin: 0 20px 8px 0;
+              }
+            }
+
+            & > .payment-data {
+              & > div {
+                margin-bottom: 15px;
+              }
+
+              & > .w-60-row {
+                & > .right {
+                  padding-top: 17px;
+                }
+              }
+            }
+
+            & > .opacity {
+              & > .picker {
+                & > .date-picker {
+                  height: 30px;
+                }
+              }
+            }
+          }
+        }
+
+        & > .resume {
+          & > .center {
+            & > .picker-opacity {
+              & > .picker {
+                & > .date-picker {
+                  height: 30px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

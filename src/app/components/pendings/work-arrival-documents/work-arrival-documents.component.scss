@@ -1,0 +1,46 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.generic-main-component-structure;
+
+  & > #work-arrival-documents-container {
+    & > .footer {
+      & > div {
+        & > label {
+          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+          @include s.Roboto-Regular;
+        }
+
+        & > label:first-child {
+          @include s.Roboto-Bold;
+          margin-right: 4px;
+        }
+
+        & > div {
+          border-radius: 50%;
+          width: 15px;
+          height: 15px;
+          margin-right: 6px;
+        }
+
+        & > .green-circle {
+          background-color: s.$pqGreen2;
+        }
+
+        & > .red-circle {
+          background-color: s.$pqRed;
+        }
+
+        & > img {
+          width: 18px;
+          height: 16px;
+          margin-right: 6px;
+        }
+      }
+    }
+  }
+}

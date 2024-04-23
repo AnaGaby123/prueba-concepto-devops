@@ -1,0 +1,534 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  #contracts-list {
+    width: 100%;
+    height: 100%;
+    @include s.flexColumn;
+    overflow: hidden;
+
+    & > .principal {
+      @include s.flexRow;
+      @include s.absolute100;
+    }
+
+    & > div {
+      & > .sectionList {
+        @include s.flexColumn;
+        flex: 1;
+        padding: 10px 10px 10px 0;
+        overflow: hidden;
+      }
+
+      & > .informacion {
+        @include s.flexColumn;
+        width: 45%;
+        height: 100%;
+        background: #eceef0;
+        padding: 10px 20px 10px 20px;
+        position: relative;
+
+        & > .generalInfoContract {
+          display: grid;
+          grid-template-columns: 2fr auto;
+          grid-column-gap: 10px;
+          padding: 10px 0;
+          height: 80px;
+          border-bottom: 1px solid s.$pqBlack2;
+
+          & > .info {
+            @include s.flexColumn;
+            justify-content: space-between;
+
+            & > .contractInfoData {
+              & > label {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormat(s.$textSize15to20, bold, s.$pqBlack2);
+
+                & > .aqua {
+                  color: s.$pqGreen;
+                  vertical-align: baseline;
+                }
+
+                & > .active {
+                  color: s.$greenActive;
+                  vertical-align: baseline;
+                }
+
+                & > .saved {
+                  color: #df9722;
+                  vertical-align: baseline;
+                }
+
+                & > .expired {
+                  color: #dd2e44;
+                  vertical-align: baseline;
+                }
+
+                & > .canceled {
+                  color: #bf3849;
+                  vertical-align: baseline;
+                }
+
+                & > .black {
+                  color: s.$pqBlack;
+                  vertical-align: baseline;
+                }
+              }
+            }
+          }
+
+          & > .btn {
+            @include s.flexRow;
+            align-items: flex-end;
+            justify-content: flex-end;
+
+            & > .btnActive {
+              @include s.pqfButton(
+                $background-color: s.$alert-b,
+                $max-width-map: (
+                  'base': 216px,
+                  'macBookAir': 314px,
+                )
+              );
+            }
+
+            & > .btnBlock {
+              @include s.pqfDisableButton(
+                $max-width-map: (
+                  'base': 216px,
+                  'macBookAir': 314px,
+                )
+              );
+            }
+          }
+        }
+
+        & > .datosContrato {
+          @include s.flexColumn;
+          width: 100%;
+          height: calc(100% - 80px);
+          align-items: flex-start;
+          align-content: flex-start;
+          justify-content: flex-start;
+          padding-top: 10px;
+          @include s.responsive_layout('macBookAir') {
+            height: calc(100% - 100px);
+          }
+
+          & > .datos {
+            @include s.flexRow;
+            width: 100%;
+            justify-content: space-between;
+
+            & > div {
+              @include s.flexColumn;
+              padding-bottom: 5px;
+
+              & > div:nth-of-type(1) {
+                @include s.flexRow;
+
+                & > label:nth-of-type(1) {
+                  @include s.escaledFontFormatImportant(s.$textSize16to18, bold, s.$pqBlack2);
+                  @include s.Roboto-Bold;
+                }
+              }
+
+              & > div:nth-of-type(2) {
+                @include s.flexRow;
+
+                padding: 10px 0;
+
+                & > label:nth-of-type(1) {
+                  @include s.escaledFontFormatImportant(s.$textSize13to16, regular, s.$pqBlack2);
+                  @include s.Roboto-Regular;
+                }
+              }
+            }
+
+            & > div:nth-of-type(2) {
+              & > div {
+                justify-content: flex-end;
+              }
+            }
+          }
+        }
+
+        & > .loading {
+          @include s.flexRow;
+          @include s.absoluteCenter;
+          width: calc(100% - 40px);
+          height: calc(100% - 20px);
+          background-color: rgb(236, 238, 240, 0.8);
+          position: absolute;
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > div {
+        & > .sectionList {
+          padding: 20px 20px 20px 0;
+        }
+      }
+    }
+  }
+}
+
+.datosLista {
+  @include s.flexColumn;
+  height: 125px;
+  border-bottom: 1px solid #242424;
+  justify-content: space-between;
+
+  & > .title {
+    margin-bottom: 5px;
+  }
+
+  & > .botonera {
+    margin-bottom: 15px;
+  }
+
+  & > div:nth-of-type(3) {
+    margin-bottom: 15px;
+  }
+}
+
+.botonera {
+  height: 30px;
+  width: 100%;
+
+  & > app-botonera {
+    height: 100%;
+  }
+}
+
+.spacioListas {
+  @include s.flexColumn;
+  flex: 1;
+  overflow: hidden;
+}
+
+.spaceList {
+  display: flex;
+  flex: 1;
+  overflow: auto;
+}
+
+.totales {
+  height: 44px;
+  @include s.flexColumn;
+  width: 100%;
+
+  & > div {
+    @include s.flexRow;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid #242424;
+    height: 100%;
+  }
+}
+
+.text {
+  @include s.Roboto-Regular;
+  @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+}
+
+.listaCont {
+  @include s.flexColumn;
+  flex: 1;
+  overflow: hidden;
+}
+
+.lista {
+  @include s.flexColumn;
+  flex: 1;
+
+  div:hover {
+    background-color: #eceef0;
+  }
+
+  & > .contactItem {
+    @include s.flexRow;
+
+    & > .contactItemBar {
+      width: 5px;
+      height: 100%;
+      margin-right: 10px;
+    }
+
+    & > div:nth-of-type(2) {
+      flex: 1;
+      margin: 10px 0;
+    }
+  }
+
+  > .divActive {
+    background-color: #eceef0;
+
+    .contactItemBar {
+      background-color: s.$pqGreen;
+    }
+  }
+}
+
+.boton {
+  height: 30px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & > .btnActive {
+    @include s.pqfButton();
+  }
+
+  & > .btnBlock {
+    @include s.pqfDisableButton();
+  }
+}
+
+.contactName {
+  @include s.Roboto-Bold;
+  @include s.escaledFontFormat(s.$textSize15to20, bold, s.$pqBlack2);
+
+  & > span:nth-of-type(2) {
+    color: #008894 !important;
+  }
+}
+
+.title {
+  @include s.flexRow;
+
+  & > label {
+    @include s.escaledFontFormat(s.$textSize17to21, bold, #242424);
+    @include s.Novecento-Bold;
+  }
+}
+
+.listaVacia {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+
+  & > label {
+    @include s.fontFormat('Novecento-bold', 35px, '', #c2c3c9);
+  }
+}
+
+.loader {
+  @include s.flexRow;
+  @include s.absoluteCenter;
+  flex: 1;
+}
+
+.marcas {
+  @include s.flexColumn;
+  width: 100%;
+  padding-bottom: 10px;
+
+  & > div:nth-of-type(1) {
+    width: 100%;
+
+    & > label:nth-of-type(1) {
+      @include s.escaledFontFormatImportant(s.$textSize16to18, bold, s.$pqBlack2);
+      @include s.Roboto-Bold;
+    }
+  }
+
+  & > .sectionBrand {
+    @include s.flexRowWrap;
+    width: 100%;
+    min-height: 30px;
+    flex-wrap: wrap;
+
+    & > div {
+      @include s.flexRow;
+      width: calc(100% / 2);
+      padding: 5px;
+      @include s.responsive_layout('macBookAir') {
+        width: calc(100% / 3);
+      }
+      @media screen and (min-width: 1650px) {
+        width: calc(100% / 4);
+      }
+
+      & > div:nth-of-type(1) {
+        width: 100%;
+
+        & > label:nth-of-type(1) {
+          @include s.escaledFontFormatImportant(s.$textSize13to16, regular, s.$pqBlack2);
+          @include s.Roboto-Regular;
+
+          & > span:nth-of-type(1) {
+            @include s.Roboto-Bold;
+            color: #008894 !important;
+            font-weight: 900;
+          }
+        }
+      }
+    }
+  }
+}
+
+.fileContract {
+  @include s.flexRowWrap;
+  width: 100%;
+  height: 100%;
+  align-items: flex-start;
+  align-content: flex-start;
+  justify-content: flex-start;
+  padding-bottom: 20px;
+
+  & > p:nth-of-type(1) {
+    @include s.escaledFontFormatImportant(s.$textSize16to18, bold, s.$pqBlack2);
+    @include s.Roboto-Bold;
+  }
+
+  & > .withFile {
+    @include s.flexRow;
+    @include s.absoluteCenter;
+    width: 100%;
+    height: 100%;
+
+    & > app-upload-view-file {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  & > .withoutFile {
+    @include s.flexRow;
+    @include s.absoluteCenter;
+    width: 100%;
+    height: 100%;
+
+    & > app-without-results {
+      padding-bottom: 10px;
+    }
+  }
+}
+
+.btnCancel {
+  display: flex;
+  align-items: center;
+  @include s.button(31px, 220px, #ffffff, s.$gnRojoSemaforo);
+}
+
+.datosContract {
+  @include s.flexRow;
+
+  & > .infoContract {
+    width: 100%;
+    height: 100%;
+
+    & > div:nth-child(1) {
+      display: flex;
+      flex-direction: row;
+      margin-top: 3px;
+
+      & > label {
+        @include s.Roboto-Bold;
+        @include s.escaledFontFormat(s.$textSize15to20, bold, s.$pqBlack2);
+      }
+
+      & > pre {
+        @include s.Roboto-Bold;
+        @include s.escaledFontFormat(s.$textSize15to20, bold, s.$pqGreen);
+      }
+    }
+
+    & > .year {
+      @include s.flexRow;
+      margin-top: 3px;
+
+      & > label {
+        @include s.Roboto-Regular;
+        @include s.escaledFontFormat(s.$textSize15to17, regular, s.$pqBlack2);
+      }
+    }
+
+    & > div {
+      margin-top: 3px;
+
+      & > label {
+        @include s.Roboto-Regular;
+        @include s.escaledFontFormat(s.$textSize15to17, regular, s.$pqBlack2);
+      }
+
+      & > span {
+        @include s.Roboto-Regular;
+        @include s.escaledFontFormat(s.$textSize15to17, regular, s.$pqGreen);
+      }
+    }
+  }
+
+  & > .csv {
+    @include s.flexRow;
+    @include s.absoluteCenter;
+    margin-right: 60px;
+
+    & > label {
+      $textSize: (
+        'base': 14px,
+        'macBookAir': 17px,
+      );
+      @include s.escaledFontFormat($textSize, bold, s.$pqGreen);
+      @include s.Roboto-Bold;
+      text-decoration: underline;
+      cursor: pointer;
+      white-space: nowrap;
+
+      &:hover {
+        opacity: 80%;
+      }
+    }
+  }
+
+  & > .estatus {
+    @include s.flexRow;
+    @include s.absoluteCenter;
+    padding-left: 5px;
+    min-width: 100px;
+
+    & > img:nth-of-type(1) {
+      @include s.imageIconResponsiveSize;
+      /*      width: 16px;*/
+      cursor: pointer;
+      /*      padding: 6px;*/
+    }
+
+    & > label {
+      @include s.Roboto-Bold;
+      @include s.escaledFontFormat(s.$textSize15to17, bold, s.$pqBlack2);
+    }
+
+    & > .Activo {
+      color: #39b54a;
+      vertical-align: baseline;
+    }
+
+    & > .Guardado {
+      color: #d49c42;
+      vertical-align: baseline;
+    }
+
+    & > .Expirado {
+      color: #dd2e44;
+      vertical-align: baseline;
+    }
+
+    & > .Cancelado {
+      color: #b34f58;
+      vertical-align: baseline;
+    }
+  }
+}

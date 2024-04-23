@@ -1,0 +1,49 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+#footer-customs-agents {
+  @include s.flexRow;
+  align-items: center;
+  border-top: 2px solid;
+  flex: 1 1 auto;
+  height: 50px;
+  padding: 0 15px;
+
+  & > .one-button {
+    @include s.flexRow;
+    flex: 1;
+    justify-content: flex-end;
+
+    & > button {
+      @include s.pqfButton();
+    }
+
+    & > .button-disable {
+      @include s.pqfDisableButton();
+    }
+  }
+
+  & > .two-buttons {
+    @include s.flexRow;
+    flex: 1;
+    justify-content: space-between;
+
+    & > button {
+      &.button-enable {
+        @include s.pqfButton();
+      }
+
+      &.button-disable {
+        @include s.pqfDisableButton();
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    height: 55px;
+    padding: 0 20px;
+  }
+}

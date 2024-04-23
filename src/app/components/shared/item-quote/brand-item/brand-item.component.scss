@@ -1,0 +1,53 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  width: 100%;
+  & > .brand-container {
+    @include s.flexColumn;
+    row-gap: 4px;
+    width: 100%;
+    & > .brand {
+      @include s.flexRow;
+      column-gap: 4px;
+      & > .img-brand {
+        @include s.gridCenter;
+        flex: 0 0 41px;
+        height: 20px;
+        & > img {
+          max-height: 100%;
+          max-width: 100%;
+          overflow: hidden;
+        }
+      }
+      & > .name-brand {
+        @include s.flexRow;
+        align-items: flex-end;
+        & > label {
+          @include s.multiLineTextTruncateSinHeight(2, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_roboto_light,
+            $font-weight: s.$font_weight_light,
+            $font-size-map: s.$responsive-font-12-12,
+            $color: s.$pqBlack2
+          );
+        }
+      }
+    }
+    & > .conversion-rate {
+      & > label {
+        @include s.responsive-font-format(
+          $font-family: s.$font_family_roboto,
+          $font-weight: s.$font_weight_regular,
+          $font-size-map: s.$responsive-font-12-12,
+          $color: s.$pqGreen
+        );
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+  }
+}

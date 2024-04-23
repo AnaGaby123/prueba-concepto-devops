@@ -1,0 +1,61 @@
+@use 'base' as s;
+
+:host {
+  @include s.generic-main-component-structure();
+
+  #plan-collection-container {
+    & > .footer {
+      & > div {
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+
+          & > span {
+            @include s.Roboto-Bold;
+            vertical-align: baseline;
+          }
+        }
+      }
+
+      & > div {
+        & > .text-blue {
+          color: s.$pqGreen;
+        }
+
+        & > .text-black {
+          color: s.$pqBlack2;
+        }
+
+        & > .text-green {
+          color: s.$pqGreen2;
+        }
+
+        & > .text-red {
+          color: s.$pqTextAlert;
+        }
+
+        & > label {
+          @include s.Roboto-Bold;
+          @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+        }
+      }
+
+      & > .tooltip {
+        @include s.tooltip(auto, auto, auto, 150px, $trianglePosition: 'top');
+
+        & > .tooltip-text {
+          min-width: max-content !important;
+
+          & > p {
+            width: 100% !important;
+          }
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #plan-collection-container {
+    }
+  }
+}

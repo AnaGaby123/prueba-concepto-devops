@@ -1,0 +1,32 @@
+<div class="component-container" id="attend-investigation">
+  <div class="header">
+    <app-header-bar
+      [activeBack]="(isDetails$ | async) && !(isAddProduct$ | async)"
+      [title]="title$ | async"
+      (goBack)="goBack()"
+    >
+    </app-header-bar>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="footer" *ngIf="isDetails$ | async">
+    <ng-container *ngIf="!(isAddProduct$ | async)">
+      <div>
+        <label class="title">{{ 'attendInvestigation.attendInvestigationDetail.quotationShort' | translate }}: </label>
+        <label>{{ 'attendInvestigation.attendInvestigationDetail.quotation' | translate }}</label>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="isAddProduct$ | async">
+      <div class="buttons">
+        <button [ngClass]="'enable'" (click)="cancelAdd()">{{ 'common.cancel' | translate }}</button>
+        <button
+          (click)="saveData()"
+          [ngClass]="(saveValidator$ | async) ? 'enable' : 'disable'"
+          [disabled]="!(saveValidator$ | async)"
+          >{{ 'common.save' | translate }}</button
+        >
+      </div>
+    </ng-container>
+  </div>
+</div>

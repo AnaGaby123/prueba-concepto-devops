@@ -1,0 +1,18 @@
+<div class="padre">
+  <div>
+    <div
+      [ngClass]="selectedPos === item.IdFamilia ? 'botonesDiasActive' : ''"
+      class="botonesDias"
+      *ngFor="let item of lista; let i = index"
+      (click)="billingMethod(item, i)"
+      [style.border-right]="indiceBorder == i || indiceBorder + 1 == i ? 'initial' : '0.3px solid #D8D9DD'"
+    >
+      <a id="dhoy">N/A</a>
+      <div class="tipos">
+        <label>{{ item.Tipo }}</label>
+        <label>{{ item.Subtipo }}</label>
+        <label>{{ item.Control }}</label>
+      </div>
+    </div>
+  </div>
+</div>

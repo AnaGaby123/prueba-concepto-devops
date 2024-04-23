@@ -1,0 +1,104 @@
+<div id="purchase-orders-container">
+  <div class="title">
+    <label>{{ 'preProcessing.purchaseOrders' | translate }}</label>
+  </div>
+  <div class="filters-container">
+    <div class="filter-order">
+      <app-dropdown-button [options]="options$ | async" [value]="optionSelected$ | async" (valueEmit)="optionSelected($event)">
+      </app-dropdown-button>
+    </div>
+    <div class="filters">
+      <div class="search">
+        <app-search [placeholder]="'search' | translate" (textSearch)="handleKeySearch($event)"></app-search>
+      </div>
+      <div class="hamburger">
+        <app-hamburger-menu
+          [options]="filter$ | async"
+          [value]="(filterSelected$ | async).value"
+          (valueEmit)="selectedOrder($event)"
+        >
+        </app-hamburger-menu>
+      </div>
+    </div>
+  </div>
+  <div class="list-container">
+    <virtual-scroller
+      class="list"
+      *ngIf="(apisStatusDashboard$ | async) === 3 && (totalResults$ | async) > 0"
+      [items]="purchaseOrder$ | async"
+      [bufferAmount]="3"
+      (vsUpdate)="listOrderScrollItems = $event"
+    >
+      <div
+        class="item"
+        [ngClass]="(purchaseItem$ | async)?.IdPPPedido === oc.IdPPPedido ? 'active' : ''"
+        *ngFor="let oc of listOrderScrollItems; let i = index; trackBy: handleTrackByProduct"
+        (click)="selectedPurchase(oc, i + 1)"
+      >
+        <div class="active-indicator"></div>
+        <div class="info-container">
+          <div class="info">
+            <div class="oc">
+              <label
+                >#{{ i + 1 }} ·
+                <span [ngClass]="!oc?.IdArchivo ? 'red' : ''">{{ oc?.IdArchivo ? oc?.OrdenDeCompra : 'SIN OC' }}</span>
+              </label>
+            </div>
+            <div class="value">
+              <label>{{ 'common.totalValue' | translate }} {{ oc.ValorTotal | currency }} {{ oc.catMoneda.ClaveMoneda }}</label>
+            </div>
+            <div class="classification">
+              <div>
+                <img alt="originals" src="assets/Images/pre-processing/originales.svg" />
+                <label>{{ oc.TipoPartidasCotizacion[0].Total }}</label>
+              </div>
+              <div>
+                <img alt="alternatives" src="assets/Images/pre-processing/alternativas.svg" />
+                <label>{{ oc.TipoPartidasCotizacion[1].Total }}</label>
+              </div>
+              <div>
+                <img alt="complementary" src="assets/Images/pre-processing/complementarias.svg" />
+                <label>{{ oc.TipoPartidasCotizacion[4].Total }}</label>
+              </div>
+              <div>
+                <img alt="promotion" src="assets/Images/pre-processing/promocion.svg" />
+                <label>{{ oc.TipoPartidasCotizacion[2].Total }}</label>
+              </div>
+              <div>
+                <img alt="saving" src="assets/Images/pre-processing/ahorro.svg" />
+                <label>{{ oc.TipoPartidasCotizacion[3].Total }}</label>
+              </div>
+            </div>
+            <div class="reception">
+              <label>{{ 'executeCollection.details.reception' | translate }} : {{ oc.FechaRegistro | dateFormatSlash }}</label>
+            </div>
+          </div>
+          <div class="type">
+            <img
+              alt=""
+              [src]="
+                oc.ConOrdenDeCompra
+                  ? 'assets/Images/pre-processing/con_orden.svg'
+                  : oc.OcInterna
+                  ? 'assets/Images/pre-processing/oc-interna.svg'
+                  : 'assets/Images/pre-processing/sin_orden.svg'
+              "
+            />
+          </div>
+        </div>
+      </div>
+    </virtual-scroller>
+    <div class="without-results" *ngIf="(apisStatusDashboard$ | async) === 3 && (totalResults$ | async) === 0">
+      <app-without-results [title]="'common.withoutInformation' | translate"></app-without-results>
+    </div>
+    <div class="loading" *ngIf="(apisStatusDashboard$ | async) === 1">
+      <app-loading></app-loading>
+    </div>
+    <div class="total">
+      <label
+        >#{{ (purchaseOrder$ | async)?.length ? (purchaseOrder$ | async)?.length : 0 }}
+        {{ (purchaseOrder$ | async)?.length === 1 ? ('common.order' | translate) : ('notProcessed.orders' | translate) }}</label
+      >
+    </div>
+  </div>
+</div>

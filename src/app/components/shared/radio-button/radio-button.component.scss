@@ -1,0 +1,114 @@
+@use 'base' as s;
+
+.principal {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+
+  &.pointer {
+    @include s.cursor-pointer;
+  }
+
+  & > label {
+    margin-left: 5px;
+    line-height: 100%;
+
+    &.disabledBtn {
+      color: s.$pqGray3 !important;
+    }
+  }
+}
+
+.defaultLabel,
+.default {
+  @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+  @include s.Roboto-Regular;
+}
+
+.labelNovecentoBold21 {
+  @include s.escaledFontFormat(s.$textSize15to21, bold, s.$pqBlack2);
+  @include s.Novecento-Bold;
+}
+
+.labelNovecentoBoldRed21 {
+  @include s.escaledFontFormat(s.$textSize15to21, bold, s.$pqTextAlert);
+  @include s.Novecento-Bold;
+}
+
+.labelNovecentoBoldProquifa21 {
+  @include s.escaledFontFormat(s.$textSize15to21, bold, s.$pqGreen);
+  @include s.Novecento-Bold;
+}
+
+.labelRobotoRegularProquifa {
+  @include s.escaledFontFormat(s.$textSize16to19, regular, s.$pqGreen);
+  @include s.Roboto-Regular;
+}
+
+.labelRobotoRegularDisable13 {
+  @include s.escaledFontFormat(s.$textSize13to16, regular, s.$gnHeadreTable);
+  @include s.Roboto-Regular;
+}
+
+.labelRobotoRegularDisable {
+  @include s.escaledFontFormat(s.$textSize16to19, regular, s.$gnHeadreTable);
+  @include s.Roboto-Regular;
+}
+
+.robotoBold13 {
+  @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+  @include s.Roboto-Bold;
+}
+
+.labelRobotoRegularProquifa13 {
+  @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen);
+  @include s.Roboto-Regular;
+}
+
+.labelRobotoBoldProquifa13 {
+  @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen);
+  @include s.Roboto-Bold;
+}
+
+.labelRobotoRegularProquifa14 {
+  @include s.escaledFontFormat(s.$textSize14to16, regular, s.$pqGreen);
+  @include s.Roboto-Regular;
+}
+
+.labelRobotoRegular14 {
+  @include s.escaledFontFormat(s.$textSize14to16, regular, s.$pqBlack2);
+  @include s.Roboto-Regular;
+}
+
+.labelRobotoBoldProquifa16 {
+  @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqGreen);
+  @include s.Roboto-Bold;
+}
+
+.labelRobotoBold16 {
+  @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+  @include s.Roboto-Bold;
+}
+
+.robotoRegular15 {
+  @include s.escaledFontFormatImportant(s.$textSize13to15, regular, s.$pqBlack2);
+  @include s.Roboto-Regular;
+}
+
+.robotoRegularProquifa15 {
+  @include s.escaledFontFormatImportant(s.$textSize12to15, regular, s.$pqBlack2);
+  @include s.Roboto-Regular;
+}
+
+.robotoRegular25 {
+  @include s.Roboto-Regular;
+  @include s.escaledFontFormat(s.$textSize20to25, regular, s.$pqBlack2);
+}
+
+.robotoRegularProquifa25 {
+  @include s.Roboto-Regular;
+  @include s.escaledFontFormat(s.$textSize20to25, regular, s.$pqGreen);
+}

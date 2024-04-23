@@ -1,0 +1,26 @@
+<div id="customs-agents-list">
+  <div class="content">
+    <div class="filters">
+      <app-filters></app-filters>
+    </div>
+    <div class="list">
+      <virtual-scroller
+        *ngIf="(customsAgents$ | async)?.TotalResults > 0"
+        [items]="(customsAgents$ | async)?.Results"
+        (vsUpdate)="customAgentsScroll = $event"
+      >
+        <app-generic-grid-item
+          *ngFor="let agent of customAgentsScroll"
+          [item]="buildItem(agent)"
+          (emitValue)="setCustomAgent(agent)"
+        ></app-generic-grid-item>
+      </virtual-scroller>
+      <div class="without-results" *ngIf="(customsAgents$ | async)?.TotalResults === 0">
+        <app-without-results></app-without-results>
+      </div>
+    </div>
+    <div class="index">
+      <label>{{ '#' + (customsAgents$ | async)?.TotalResults + ' Agentes' }}</label>
+    </div>
+  </div>
+</div>

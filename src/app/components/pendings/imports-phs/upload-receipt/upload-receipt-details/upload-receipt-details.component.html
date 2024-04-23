@@ -1,0 +1,63 @@
+<div id="upload-receipt-details">
+  <div class="container-component">
+    <div class="first-section">
+      <div class="content">
+        <!--TODO: Agregar al es.json-->
+        <label>{{ 'Acuse de recibo' }}</label>
+        <div class="container-filters">
+          <div class="hamburger-menu">
+            <app-hamburger-menu [options]="orderOptions" [value]="orderOptions[0].value"></app-hamburger-menu>
+          </div>
+          <div class="app-search">
+            <app-search [placeholder]="'Acuse de recibo'" [searchTerm]="searchTerm" (textSearch)="handleKeySearch($event)">
+            </app-search>
+          </div>
+        </div>
+        <div class="container-content">
+          <virtual-scroller *ngIf="true" [items]="receipts" (vsUpdate)="receiptsResults = $event" id="all-cards">
+            <div *ngFor="let receipt of receiptsResults; let i = index" [ngClass]="receipt.selected ? 'card active' : 'card'">
+              <div class="card-body">
+                <div class="line-one">
+                  <label>#{{ receipt.Index }} ·</label>
+                  <label>{{ receipt.AR }} ·</label>
+                  <label>{{ receipt.date | dateFormatSlashShort }}</label>
+                </div>
+                <div class="line-two">
+                  <label>{{ receipt.od }}</label>
+                </div>
+                <div class="line-three">
+                  <label>{{ receipt.amount | currency: 'USD':'symbol':'1.2-2' }} ·</label>
+                  <label
+                    >{{ receipt.pzas }}
+                    {{ receipt.pzas === 1 ? ('common.piece' | translate) : ('common.pieces' | translate) }}</label
+                  >
+                </div>
+              </div>
+            </div>
+          </virtual-scroller>
+          <div class="is-loading" *ngIf="false">
+            <div class="load-circle">
+              <app-loading></app-loading>
+            </div>
+          </div>
+          <div *ngIf="false" class="without-results">
+            <app-without-results></app-without-results>
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        <label>#{{ 2 }}</label>
+        <label>{{ 352 }} {{ false ? ('common.piece' | translate) : ('common.pieces' | translate) }}</label>
+        <label>{{ 'common.totalAmount' | translate }}: {{ 10000 | currency: 'USD':'symbol':'1.2-2' }}</label>
+      </div>
+    </div>
+    <div class="second-section">
+      <app-upload-view-file></app-upload-view-file>
+      <div class="footer">
+        <button class="btn-save" [disabled]="false">
+          {{ 'common.save' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

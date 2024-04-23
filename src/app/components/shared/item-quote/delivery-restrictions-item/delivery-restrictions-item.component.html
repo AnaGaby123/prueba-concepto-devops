@@ -1,0 +1,11 @@
+<div
+  class="delivery-restrictions-container"
+  *ngIf="
+    columnDeliveryRestrictions?.showColumn &&
+    columnDeliveryRestrictions?.value !== purchaseRestrictions.none &&
+    columnDeliveryRestrictions?.value
+  "
+>
+  <label>{{ 'descriptionItemQuote.purchaseRestrictions' | translate }}</label>
+  <label>{{ columnDeliveryRestrictions?.value }} </label>
+</div>

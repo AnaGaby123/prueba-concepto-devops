@@ -1,0 +1,41 @@
+<app-pop-up-generic
+  [activeBtn]="data?.datesArray?.length > 0"
+  [activeButtons]="true"
+  [height]="'auto'"
+  [overflow]="'visible'"
+  [rightButtonLabel]="'AGREGAR'"
+  [width]="'620px'"
+  (evento)="onClose($event)"
+>
+  <div id="pop-up-add-new-client-success">
+    <img src="assets/Images/alerta.svg" alt="alerta" />
+    <div class="content">
+      <label>Para agregar este producto al carrito debes establecer como mínimo una fecha de realización</label>
+      <div>
+        <div class="add-date">
+          <app-date-picker
+            [dateFormat]="'YYYYMMDD'"
+            [disabledCalendarDays]="data?.nonWorkingDays"
+            [date]="newDate"
+            [disabled]="data?.datesArray?.length === 5"
+            (onSelect)="setDates($event)"
+          ></app-date-picker>
+          <img
+            [ngClass]="{disable: data?.datesArray?.length === 5 || newDate === null}"
+            [src]="
+              newDate === null
+                ? 'assets/Images/components-src/generic-input-file/plus-gray-fill.svg'
+                : 'assets/Images/components-src/generic-input-file/plus-green-fill.svg'
+            "
+            alt="add-date-icon"
+            (click)="addDate()"
+          />
+        </div>
+        <div class="date" *ngFor="let date of showOnlyActives(data?.datesArray)">
+          <label>{{ date.Fecha | dateFormatSlashShort }}</label>
+          <img src="assets/Images/pqf-close.svg" alt="" (click)="removeDate(date)" />
+        </div>
+      </div>
+    </div>
+  </div>
+</app-pop-up-generic>

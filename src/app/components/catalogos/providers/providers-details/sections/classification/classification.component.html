@@ -1,0 +1,63 @@
+<div id="classifications">
+  <div class="familias">
+    <div class="title">
+      <label>{{ 'formProvider.classification.title' | translate }}</label>
+    </div>
+    <div [className]="(enableEdit$ | async) ? 'botoneraCard' : 'botoneraCard enabled'">
+      <app-pqf-card
+        [enableMessage]="true"
+        [isLoading]="(familiesStatus$ | async) === 1"
+        [options]="families$ | async"
+        [withoutOptionsMessage]="'common.withoutFamilies' | translate"
+        (handleOptionSelected)="handleSelectedFamilyChange($event)"
+      ></app-pqf-card>
+    </div>
+  </div>
+  <div class="concept-content" *ngIf="!lodashIsEmpty(families$ | async)">
+    <div class="input">
+      <div class="entry">
+        <label>{{ 'Nuevo agrupador por característica' }}</label>
+        <app-generic-input
+          [isDisable]="!(enableEdit$ | async)"
+          [value]="(concept$ | async).Descripcion"
+          (textData)="recivedConcept($event)"
+          [typeValidation]="inputValidators.AcceptAll"
+          [maxlength]="255"
+        >
+        </app-generic-input>
+      </div>
+      <div class="button" *ngIf="(familySelected$ | async) || {}; let family">
+        <button
+          [disabled]="(concept$ | async) && (concept$ | async).Descripcion?.trim() === '' && !(isConceptDuplicade$ | async)"
+          [ngClass]="
+            (concept$ | async) && (concept$ | async).Descripcion?.trim() !== '' && !(isConceptDuplicade$ | async)
+              ? 'btnOk'
+              : 'btnDisabled'
+          "
+          (click)="addConcept()"
+          >{{ 'common.add' | translate }}</button
+        >
+      </div>
+    </div>
+    <div class="list-content">
+      <div class="title" *ngIf="!lodashIsEmpty((familySelected$ | async).conceptsList)">
+        <label>{{ 'Agrupadores por característica' }}</label>
+      </div>
+      <div class="list" *ngIf="!lodashIsEmpty((familySelected$ | async).conceptsList)">
+        <div *ngFor="let item of concepts$ | async" class="item">
+          <div>
+            <div class="text">
+              <label>{{ item.Descripcion }}</label>
+            </div>
+            <div (click)="deleteConcept(item)" class="image" *ngIf="enableEdit$ | async">
+              <img src="assets/Images/cerrar.svg" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="without-results" *ngIf="lodashIsEmpty((familySelected$ | async).conceptsList)">
+        <app-without-results [title]="'formProvider.classification.withoutMessage' | translate"></app-without-results>
+      </div>
+    </div>
+  </div>
+</div>

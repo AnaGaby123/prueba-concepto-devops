@@ -1,0 +1,135 @@
+<div id="config-container">
+  <div class="title">
+    <label>#{{ (dispatchOrder$ | async)?.Index + 1 }} · OD-{{ (dispatchOrder$ | async)?.Folio || 'N/D' }}</label>
+  </div>
+  <div class="inputs">
+    <div>
+      <app-generic-input
+        class="input"
+        [label]="'Número de Referencia'"
+        [value]="(dispatchOrder$ | async)?.NumeroReferencia"
+        (textData)="setFieldValue('NumeroReferencia', $event)"
+      ></app-generic-input>
+      <app-date-picker
+        class="picker"
+        dateFormat="YYYYMMDD"
+        [color]="false"
+        [date]="(dispatchOrder$ | async)?.FechaHoraEstimadaArriboDate"
+        [disabledCalendarDays]="selectNonWorkingDays$ | async"
+        (fecha)="handleDate($event, 'FechaHoraEstimadaArribo')"
+      ></app-date-picker>
+      <app-drop-down-list
+        class="min"
+        [activeMinWidth]="false"
+        [placeholder]="'00'"
+        [items]="hoursList$ | async"
+        [itemSelected]="(dispatchOrder$ | async)?.selectedEnterHrs"
+        (valueDropList)="setFieldValue('selectedEnterHrs', $event)"
+      ></app-drop-down-list>
+      <label class="bold-ocean">{{ 'Hrs.' }}</label>
+      <app-drop-down-list
+        class="min"
+        [activeMinWidth]="false"
+        [placeholder]="'00'"
+        [items]="minutesList$ | async"
+        [itemSelected]="(dispatchOrder$ | async)?.selectedEnterMinutes"
+        (valueDropList)="setFieldValue('selectedEnterMinutes', $event)"
+      ></app-drop-down-list>
+      <label class="bold-ocean">{{ 'Min.' }}</label>
+      <app-drop-down-list
+        class="big"
+        [label]="'A que comprador llega el despacho'"
+        [items]="usersList$ | async"
+        [itemSelected]="(dispatchOrder$ | async)?.selectedBuyerUser"
+        (valueDropList)="setFieldValue('selectedBuyerUser', $event)"
+      ></app-drop-down-list>
+    </div>
+    <div>
+      <app-generic-input
+        class="input"
+        [label]="'Tipo de cambio de Pedimento'"
+        [typeValidation]="inputValidators.DecimalNumber"
+        [value]="(dispatchOrder$ | async)?.TipoDeCambio"
+        (textData)="setFieldValue('TipoDeCambio', $event)"
+      ></app-generic-input>
+      <app-date-picker
+        class="picker"
+        dateFormat="YYYYMMDD"
+        [color]="false"
+        [date]="(dispatchOrder$ | async)?.FechaHoraEstimadaSalidaAduanaDate"
+        [disabledCalendarDays]="selectNonWorkingDays$ | async"
+        (fecha)="handleDate($event, 'FechaHoraEstimadaSalidaAduana')"
+      ></app-date-picker>
+      <app-drop-down-list
+        class="min"
+        [activeMinWidth]="false"
+        [placeholder]="'00'"
+        [items]="hoursList$ | async"
+        [itemSelected]="(dispatchOrder$ | async)?.selectedOutHrs"
+        (valueDropList)="setFieldValue('selectedOutHrs', $event)"
+      ></app-drop-down-list>
+      <label class="bold-ocean">{{ 'Hrs.' }}</label>
+      <app-drop-down-list
+        class="min"
+        [activeMinWidth]="false"
+        [placeholder]="'00'"
+        [items]="minutesList$ | async"
+        [itemSelected]="(dispatchOrder$ | async)?.selectedOutMinutes"
+        (valueDropList)="setFieldValue('selectedOutMinutes', $event)"
+      ></app-drop-down-list>
+      <label class="bold-ocean">{{ 'Min.' }}</label>
+      <app-generic-input
+        class="w-270"
+        [label]="'Guía de embarque'"
+        [value]="(dispatchOrder$ | async)?.GuiaDeEmbarque"
+        (textData)="setFieldValue('GuiaDeEmbarque', $event)"
+      ></app-generic-input>
+      <app-generic-input
+        class="w-120 mr"
+        [label]="'Peso'"
+        [typeValidation]="inputValidators.Number"
+        [value]="(dispatchOrder$ | async)?.PesoKg"
+        (textData)="setFieldValue('PesoKg', $event)"
+      ></app-generic-input>
+      <label class="normal">{{ 'Kg' }}</label>
+      <app-generic-input
+        class="w-120"
+        [label]="'Bultos'"
+        [typeValidation]="inputValidators.Number"
+        [value]="(dispatchOrder$ | async)?.Bultos"
+        (textData)="setFieldValue('Bultos', $event)"
+      ></app-generic-input>
+    </div>
+  </div>
+  <div class="images">
+    <div>
+      <app-upload-view-file
+        [text]="'Cargar pedimento del embarque'"
+        (handleFileUpload)="setPetitionFile($event)"
+      ></app-upload-view-file>
+    </div>
+    <div>
+      <app-load-and-carousel-images
+        [imageContainerWidth]="'100%'"
+        [imageContainerHeight]="viewType === 'iPad' ? '450px' : '650px'"
+        [text]="'Cargar evidencia de embarque'"
+        (arrayEmit)="setEvidenceFile($event)"
+      ></app-load-and-carousel-images>
+    </div>
+  </div>
+  <div class="button">
+    <button
+      [disabled]="!(validatorForFinalizeButton$ | async)"
+      [ngClass]="(validatorForFinalizeButton$ | async) ? 'active' : 'disabled'"
+      (click)="openAlertModal()"
+      >{{ 'common.finish' | translate }}</button
+    >
+  </div>
+</div>
+<app-pop-up-alert
+  *ngIf="popAlert"
+  [textInitial]="''"
+  [textInter]="'¿Registrar el despacho del pedimento ' + (dispatchOrder$ | async)?.NumeroPedimento"
+  [textFinal]="'de la OD-' + (dispatchOrder$ | async)?.Folio + '?'"
+  (confirmacion)="closeAlertModal($event)"
+></app-pop-up-alert>

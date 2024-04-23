@@ -1,0 +1,19 @@
+<div id="pqf-dashboard-filters">
+  <div class="search">
+    <pqf-search
+      [searchTerm]="searchTerm"
+      [placeholder]="searchPlaceholder"
+      [typeValidation]="searchTypeValidation"
+      (textSearch)="handleTextSearch($event)"
+    ></pqf-search>
+  </div>
+  <pqf-filter-options
+    [options]="options"
+    [filterText]="filterText"
+    [showOptions]="showOptions"
+    [flexDirection]="filterOptionsFlexDirection"
+    [onlyOneOption]="onlyOneOption"
+    [rowGap]="(viewType$ | async) === viewTypes.standard ? '24px' : '8px'"
+    (selectedOptionEmitter)="emitOptions($event)"
+  ></pqf-filter-options>
+</div>

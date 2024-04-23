@@ -1,0 +1,414 @@
+<div id="plan-dispatch-details-dashboard">
+  <div class="main-content">
+    <div class="container">
+      <div class="dashboard">
+        <div class="header">
+          <div class="title">
+            <label>{{ 'planDispatchDetails.savedDispatchOrders' | translate }}</label>
+            <button (click)="initNewDispatchOrder()">{{ 'planDispatchDetails.generateOD' | translate }}</button>
+          </div>
+        </div>
+        <div class="body">
+          <virtual-scroller
+            class="virtual-scroller"
+            *ngIf="(dispatchOrdersStatus$ | async) === 3 && !lodashIsEmpty(dispatchOrdersList$ | async)"
+            [items]="dispatchOrdersList$ | async"
+            [bufferAmount]="2"
+            (vsUpdate)="dispatchOrdersList = $event"
+          >
+            <div
+              class="card"
+              *ngFor="let item of dispatchOrdersList; trackBy: handleTrackByItem"
+              (click)="selectDispatchOrder(item)"
+            >
+              <div class="image">
+                <img src="assets/Images/clientes/logo_proquifa_default.svg" alt="" />
+              </div>
+              <div class="card-header">
+                <div class="content1"
+                  ><label
+                    >#{{ item.Index }} · <span>OD {{ item.Folio }}</span> ·
+                    {{ item.MontoTotalUSD | currency: 'USD':'symbol-narrow':'1.2-2' }} USD
+                  </label></div
+                >
+                <div class="content2"
+                  ><label
+                    >{{ item.TotalImpListaArribo }}
+                    {{
+                      item.TotalImpListaArribo === 1 ? ('common.arrivalList' | translate) : ('common.arrivalLists' | translate)
+                    }}<span> · {{ (item.FechaEstimadaDeEntrega | dateFormatSlashShort) || 'N/D' }}</span></label
+                  >
+                </div>
+              </div>
+              <div class="card-content">
+                <div class="content1">
+                  <div class="importer">
+                    <label>{{ 'planDispatchDetails.importer' | translate }}:</label>
+                    <label>{{ item.EmpresaImportador || 'N/D' }}</label>
+                  </div>
+                  <div class="exporter">
+                    <label>{{ 'planDispatchDetails.exporter' | translate }}:</label>
+                    <label>{{ item.EmpresaExportador || 'N/D' }}</label>
+                  </div>
+                  <div class="agent">
+                    <label>{{ 'planDispatchDetails.customsBroker' | translate }}:</label>
+                    <label>{{ item.NombreComercial || 'N/D' }}</label>
+                  </div>
+                </div>
+                <div class="content2">
+                  <div class="border">
+                    <label>{{ 'planDispatchDetails.forwarder' | translate }}:</label>
+                    <label>{{ item.Fletera || 'N/D' }}</label>
+                  </div>
+                  <div class="incoterm">
+                    <label>{{ 'planDispatchDetails.incoterm' | translate }}:</label>
+                    <label>{{ item.Incoterm || 'N/D' }}</label>
+                  </div>
+                  <div class="packing-list">
+                    <label>{{ 'planDispatchDetails.packingList' | translate }}:</label>
+                    <label>{{
+                      item.PackingListSimplificado
+                        ? 'Simplificado'
+                        : item.PackingListDetallado
+                        ? 'Detallado'
+                        : item.PackingListAmbos
+                        ? 'Ambos'
+                        : 'N/D'
+                    }}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer">
+                <div class="left">
+                  <img src="assets/Images/plan-dispatch/consolidado.svg" alt="" />
+                </div>
+                <div class="center">
+                  <div class="green-text">
+                    <label>11</label>
+                    <img src="assets/Images/plan-dispatch/Docs_cargados.svg" alt="" />
+                  </div>
+                  <div class="red-text">
+                    <label>0</label>
+                    <img alt="sent" src="assets/Images/plan-dispatch/docs_faltantes.svg" />
+                  </div>
+                </div>
+                <div class="right">
+                  <img src="assets/Images/eliminar.svg" alt="" />
+                </div>
+              </div>
+              <div class="leftSeparator"></div>
+              <div class="rightSeparator"></div>
+              <div class="downSeparator"></div>
+            </div>
+          </virtual-scroller>
+          <div class="loading" *ngIf="(dispatchOrdersStatus$ | async) === 1">
+            <app-loading></app-loading>
+          </div>
+          <div class="loading" *ngIf="(dispatchOrdersStatus$ | async) !== 1 && lodashIsEmpty(dispatchOrdersList$ | async)">
+            <app-without-results></app-without-results>
+          </div>
+          <!--<div class="card" (click)="setOrder()">
+            <div class="image">
+              <img src="assets/Images/clientes/logo_proquifa_default.svg" />
+            </div>
+            <div class="card-header">
+              <div class="content1"
+                ><label
+                  >#{{ 1 }} · <span>{{ 'OD 00957400 ' }}</span> · {{ '$3, 804, 00' }}
+                </label></div
+              >
+              <div class="content2"
+                ><label
+                  >5 {{ 'common.arrivalLists' | translate }}<span> ·{{ ' 22 / Sep / 2021' }}</span></label
+                >
+              </div>
+            </div>
+            <div class="card-content">
+              <div class="content1">
+                <div class="importer">
+                  <label>{{ 'planDispatchDetails.importer' | translate }}</label>
+                  <label>Proveedora</label>
+                </div>
+                <div class="exporter">
+                  <label>{{ 'planDispatchDetails.exporter' | translate }}</label>
+                  <label>Pharma</label>
+                </div>
+                <div class="agent">
+                  <label>{{ 'planDispatchDetails.customsBroker' | translate }}</label>
+                  <label>Midvia Logistics</label>
+                </div>
+              </div>
+              <div class="content2">
+                <div class="border">
+                  <label>{{ 'planDispatchDetails.border' | translate }}</label>
+                  <label>odm</label>
+                </div>
+                <div class="incoterm">
+                  <label>{{ 'planDispatchDetails.incoterm' | translate }}</label>
+                  <label>cpt</label>
+                </div>
+                <div class="packing-list">
+                  <label>{{ 'planDispatchDetails.packingList' | translate }}</label>
+                  <label>Simplificado</label>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <div class="left">
+                <img src="assets/Images/plan-dispatch/consolidado.svg" />
+              </div>
+              <div class="center">
+                <div class="green-text">
+                  <label>11</label>
+                  <img src="assets/Images/plan-dispatch/Docs_cargados.svg" />
+                </div>
+                <div class="red-text">
+                  <label>0</label>
+                  <img alt="sent" src="assets/Images/plan-dispatch/docs_faltantes.svg" />
+                </div>
+              </div>
+              <div class="right">
+                <img src="assets/Images/eliminar.svg" />
+              </div>
+            </div>
+            <div class="leftSeparator"></div>
+            <div class="rightSeparator"></div>
+            <div class="downSeparator"></div>
+          </div>
+          <div class="card" (click)="setOrder()">
+            <div class="image">
+              <img src="assets/Images/clientes/logo_proquifa_default.svg" />
+            </div>
+            <div class="card-header">
+              <div class="content1"
+                ><label
+                  >#{{ 1 }} · <span>{{ 'OD 00957400 ' }}</span> · {{ '$3, 804, 00' }}
+                </label></div
+              >
+              <div class="content2"
+                ><label
+                  >5 {{ 'common.arrivalLists' | translate }}<span> ·{{ ' 22 / Sep / 2021' }}</span></label
+                >
+              </div>
+            </div>
+            <div class="card-content">
+              <div class="content1">
+                <div class="importer">
+                  <label>{{ 'planDispatchDetails.importer' | translate }}</label>
+                  <label>Proveedora</label>
+                </div>
+                <div class="exporter">
+                  <label>{{ 'planDispatchDetails.exporter' | translate }}</label>
+                  <label>Pharma</label>
+                </div>
+                <div class="agent">
+                  <label>{{ 'planDispatchDetails.customsBroker' | translate }}</label>
+                  <label>Midvia Logistics</label>
+                </div>
+              </div>
+              <div class="content2">
+                <div class="border">
+                  <label>{{ 'planDispatchDetails.border' | translate }}</label>
+                  <label>odm</label>
+                </div>
+                <div class="incoterm">
+                  <label>{{ 'planDispatchDetails.incoterm' | translate }}</label>
+                  <label>cpt</label>
+                </div>
+                <div class="packing-list">
+                  <label>{{ 'planDispatchDetails.packingList' | translate }}</label>
+                  <label>Simplificado</label>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <div class="left">
+                <img src="assets/Images/plan-dispatch/consolidado.svg" />
+              </div>
+              <div class="center">
+                <div class="green-text">
+                  <label>11</label>
+                  <img src="assets/Images/plan-dispatch/Docs_cargados.svg" />
+                </div>
+                <div class="red-text">
+                  <label>0</label>
+                  <img alt="sent" src="assets/Images/plan-dispatch/docs_faltantes.svg" />
+                </div>
+              </div>
+              <div class="right">
+                <img src="assets/Images/eliminar.svg" />
+              </div>
+            </div>
+            <div class="leftSeparator"></div>
+            <div class="rightSeparator"></div>
+            <div class="downSeparator"></div>
+          </div>
+          <div class="card" (click)="setOrder()">
+            <div class="image">
+              <img src="assets/Images/clientes/logo_proquifa_default.svg" />
+            </div>
+            <div class="card-header">
+              <div class="content1"
+                ><label
+                  >#{{ 1 }} · <span>{{ 'OD 00957400 ' }}</span> · {{ '$3, 804, 00' }}
+                </label></div
+              >
+              <div class="content2"
+                ><label
+                  >5 {{ 'common.arrivalLists' | translate }}<span> ·{{ ' 22 / Sep / 2021' }}</span></label
+                >
+              </div>
+            </div>
+            <div class="card-content">
+              <div class="content1">
+                <div class="importer">
+                  {{ 'planDispatchDetails.importer' | translate }}
+                  <label>Proveedora</label>
+                </div>
+                <div class="exporter">
+                  {{ 'planDispatchDetails.exporter' | translate }}
+                  <label>Pharma</label>
+                </div>
+                <div class="agent">
+                  {{ 'planDispatchDetails.customsBroker' | translate }}
+                  <label>Midvia Logistics</label>
+                </div>
+              </div>
+              <div class="content2">
+                <div class="border">
+                  {{ 'planDispatchDetails.border' | translate }}
+                  <label>odm</label>
+                </div>
+                <div class="incoterm">
+                  {{ 'planDispatchDetails.incoterm' | translate }}
+                  <label>cpt</label>
+                </div>
+                <div class="packing-list">
+                  {{ 'planDispatchDetails.packingList' | translate }}
+                  <label>Simplificado</label>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <div class="left">
+                <img src="assets/Images/plan-dispatch/consolidado.svg" />
+              </div>
+              <div class="center">
+                <div class="green-text">
+                  <label>11</label>
+                  <img src="assets/Images/plan-dispatch/Docs_cargados.svg" />
+                </div>
+                <div class="red-text">
+                  <label>0</label>
+                  <img alt="sent" src="assets/Images/plan-dispatch/docs_faltantes.svg" />
+                </div>
+              </div>
+              <div class="right">
+                <img src="assets/Images/eliminar.svg" />
+              </div>
+            </div>
+            <div class="leftSeparator"></div>
+            <div class="rightSeparator"></div>
+            <div class="downSeparator"></div>
+          </div>
+          <div class="card" (click)="setOrder()">
+            <div class="image">
+              <img src="assets/Images/clientes/logo_proquifa_default.svg" />
+            </div>
+            <div class="card-header">
+              <div class="content1"
+                ><label
+                  >#{{ 1 }} · <span>{{ 'OD 00957400 ' }}</span> · {{ '$3, 804, 00' }}
+                </label></div
+              >
+              <div class="content2"
+                ><label
+                  >5 {{ 'common.arrivalLists' | translate }}<span> ·{{ ' 22 / Sep / 2021' }}</span></label
+                >
+              </div>
+            </div>
+            <div class="card-content">
+              <div class="content1">
+                <div class="importer">
+                  {{ 'planDispatchDetails.importer' | translate }}
+                  <label>Proveedora</label>
+                </div>
+                <div class="exporter">
+                  {{ 'planDispatchDetails.exporter' | translate }}
+                  <label>Pharma</label>
+                </div>
+                <div class="agent">
+                  {{ 'planDispatchDetails.customsBroker' | translate }}
+                  <label>Midvia Logistics</label>
+                </div>
+              </div>
+              <div class="content2">
+                <div class="border">
+                  {{ 'planDispatchDetails.border' | translate }}
+                  <label>odm</label>
+                </div>
+                <div class="incoterm">
+                  {{ 'planDispatchDetails.incoterm' | translate }}
+                  <label>cpt</label>
+                </div>
+                <div class="packing-list">
+                  {{ 'planDispatchDetails.packingList' | translate }}
+                  <label>Simplificado</label>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <div class="left">
+                <img src="assets/Images/plan-dispatch/consolidado.svg" />
+              </div>
+              <div class="center">
+                <div class="green-text">
+                  <label>11</label>
+                  <img src="assets/Images/plan-dispatch/Docs_cargados.svg" />
+                </div>
+                <div class="red-text">
+                  <label>0</label>
+                  <img alt="sent" src="assets/Images/plan-dispatch/docs_faltantes.svg" />
+                </div>
+              </div>
+              <div class="right">
+                <img src="assets/Images/eliminar.svg" />
+              </div>
+            </div>
+            <div class="leftSeparator"></div>
+            <div class="rightSeparator"></div>
+            <div class="downSeparator"></div>
+          </div>-->
+        </div>
+      </div>
+    </div>
+    <footer>
+      <div>
+        <div>
+          <img alt="quotes" src="assets/Images/plan-dispatch/ajuste_importacion.svg" />
+          <label>1.- Ajustes de importación</label>
+        </div>
+        <div>
+          <img alt="new" src="assets/Images/plan-dispatch/consolidado.svg" />
+          <label>2.- Consolidado</label>
+        </div>
+        <div>
+          <img alt="saved" src="assets/Images/plan-dispatch/documentacion.svg" />
+          <label>3.- Documentación</label>
+        </div>
+        <div>
+          <img alt="sent" src="assets/Images/plan-dispatch/generar_orden.svg" />
+          <label>4.- Generar Orden</label>
+        </div>
+        <div>
+          <img class="small" alt="sent" src="assets/Images/plan-dispatch/Docs_cargados.svg" />
+          <label>Documentos cargados</label>
+        </div>
+        <div>
+          <img class="small" alt="sent" src="assets/Images/plan-dispatch/docs_faltantes.svg" />
+          <label>Documentos Faltantes</label>
+        </div>
+      </div>
+    </footer>
+  </div>
+</div>

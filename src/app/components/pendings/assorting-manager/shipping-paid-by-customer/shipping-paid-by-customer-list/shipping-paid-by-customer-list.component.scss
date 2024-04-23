@@ -1,0 +1,215 @@
+@use 'base' as s;
+
+:host {
+  @include s.absolute100;
+
+  * {
+    box-sizing: border-box;
+  }
+
+  #clients-shipping {
+    @include s.absolute100;
+    @include s.flexColumn;
+    overflow: hidden;
+    padding: 0 20px;
+
+    & > .top {
+      @include s.flexRowNoWrap;
+      flex: 0 0 45px;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid s.$pqGray3;
+
+      & > label {
+        @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+        @include s.Novecento-Bold;
+      }
+
+      & > div {
+        flex: 0 0 300px;
+      }
+    }
+
+    & > .cards {
+      justify-content: center;
+      align-items: center;
+      align-content: center;
+      flex-wrap: wrap;
+      width: 100%;
+      height: calc(100% - 25px);
+
+      & > div {
+        @include s.flexRowWrap;
+        width: 100%;
+        height: 100%;
+        margin-top: 5px;
+
+        & > virtual-scroller {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      & > div:nth-of-type(1) ::ng-deep .scrollable-content {
+        @include s.flexRowWrap;
+        width: 100%;
+        min-width: 1095px;
+        align-items: flex-start;
+        align-content: flex-start;
+      }
+
+      .client {
+        @include s.flexRowWrap;
+        width: 31.3%;
+        max-width: initial;
+        height: 280px;
+        align-self: stretch;
+        margin: 0 1%;
+        padding: 10px 0;
+        position: relative;
+
+        @media screen and (min-width: 93.75em) {
+          // 1500px
+          width: 23%;
+          max-width: initial;
+          margin: 0 1%;
+        }
+        @media screen and (min-width: 117.5em) {
+          // 1880px
+          width: 18%;
+          max-width: initial;
+          margin: 0 1%;
+        }
+        @media screen and (min-width: 140em) {
+          // 2240px
+          width: 14.6%;
+          max-width: initial;
+          margin: 0 1%;
+        }
+
+        &:hover {
+          & > .centerPagination {
+            & > img:nth-of-type(1) {
+              display: none;
+            }
+
+            & > img:nth-of-type(2) {
+              display: block;
+            }
+          }
+        }
+
+        & > .centerPagination {
+          @include s.flexRow;
+          @include s.absoluteCenter;
+          width: 100%;
+          height: 170px;
+
+          & > img {
+            width: 110px;
+            animation: animatezoom 0.2s;
+          }
+
+          & > img:nth-of-type(1) {
+            display: block;
+          }
+
+          & > img:nth-of-type(2) {
+            display: none;
+          }
+        }
+
+        & > .footContent {
+          @include s.flexColumn;
+          @include s.absoluteCenter;
+          width: 100%;
+          height: calc(100% - 170px);
+          box-sizing: border-box;
+          line-height: 20px;
+          justify-content: flex-start;
+          padding-top: 10px;
+
+          & > span:nth-of-type(1) {
+            @include s.escaledFontFormat(s.$textSize15to18, regular, s.$pqBlack2);
+            @include s.multiLineTextTruncateSinHeight(2, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+            @include s.Roboto-Regular;
+            box-sizing: border-box;
+            padding: 0 10px;
+            text-align: center;
+            margin-bottom: 3px;
+          }
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize13to14, regular, s.$pqBlack2);
+            @include s.Roboto-Regular;
+            margin-bottom: 3px;
+
+            &.colors {
+              @include s.Roboto-Bold;
+
+              & > .red {
+                color: s.$gnRojoSemaforo;
+                margin-right: 6px;
+              }
+
+              & > .yellow {
+                color: s.$yellowText;
+                margin-right: 6px;
+              }
+
+              & > .green {
+                color: s.$greenActive;
+              }
+            }
+          }
+        }
+
+        & > .rightSeparator {
+          @include s.flexRow;
+          width: 1px;
+          height: 100%;
+          background: linear-gradient(to top, #ffffff 2%, #bcbcbc 72%, #ffffff 95%) 100%;
+          position: absolute;
+          right: calc(-5% + 1px);
+          top: 0;
+        }
+
+        & > .downSeparator {
+          @include s.flexRow;
+          width: 100%;
+          height: 1.5px;
+          background: linear-gradient(to left, #ffffff 2%, #bcbcbc 72%, #ffffff 95%) 100%;
+          position: absolute;
+          left: 0;
+          bottom: 0;
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #clients-shipping {
+      & > .top {
+        flex: 0 0 60px;
+
+        & > div {
+          flex: 0 0 400px;
+        }
+      }
+
+      & > .cards {
+        & > .card {
+          width: 420px;
+          height: 140px;
+
+          & > .column-one {
+            & > img {
+              height: 90px;
+              width: 90px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

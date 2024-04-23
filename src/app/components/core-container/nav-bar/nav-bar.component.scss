@@ -1,0 +1,379 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  width: 100%;
+  height: 100%;
+
+  * {
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  #navBarContainer {
+    @include s.flexRow;
+    width: 100%;
+    height: 100%;
+
+    & > .navOptionsContent {
+      background-color: s.$pqBlack2;
+      height: 100%;
+      overflow: hidden;
+      width: 100%;
+
+      &.hideMenuAnimation {
+        animation-duration: 0.7s;
+        animation-fill-mode: forwards;
+        animation-name: hideMenu;
+      }
+
+      &.showMenuAnimation {
+        animation-duration: 0.7s;
+        animation-fill-mode: forwards;
+        animation-name: showMenu;
+      }
+
+      & > .submenuSelected {
+        width: fit-content;
+
+        & > .submenuItem {
+          @include s.flexColumn;
+          background-color: s.$pqBlack2;
+          width: auto;
+
+          & > .firstLevel {
+            @include s.flexRow;
+
+            * {
+              @include s.default-transition($duration: 0.3s);
+              cursor: pointer;
+            }
+
+            & > .indicator {
+              @include s.flexRow;
+              flex: 0 0 8px;
+
+              & > div {
+                background-color: s.$pqGreen;
+                flex: 0 0 0;
+              }
+            }
+
+            & > .content {
+              @include s.flexRow;
+              align-items: center;
+              background-color: s.$pqBlack2;
+              column-gap: 16px;
+              flex: 1;
+              padding: 20px;
+              user-select: none;
+
+              & > .icon {
+                @include s.flexRow;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+
+                & > img {
+                  height: 16px;
+                  width: 16px;
+                }
+
+                & > .elipse {
+                  background-color: s.$pqGreen;
+                  border-radius: 50%;
+                  height: 12px;
+                  width: 12px;
+                  position: absolute;
+                  right: -6px;
+                  top: -6px;
+                }
+              }
+
+              & > .titleOption {
+                @include s.flexRow;
+                flex: 1;
+
+                & > label {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font-family-roboto_medium,
+                    $font-weight: s.$font-weight-medium,
+                    $font-size-map: s.$responsive-font-16-16,
+                    $color: s.$pqWhite
+                  );
+                  line-height: 19px;
+                }
+              }
+
+              & > .arrows {
+                @include s.flexRow;
+                align-items: center;
+                justify-content: center;
+
+                & > img {
+                  transform: rotate(180deg);
+                  width: 16px;
+                }
+              }
+            }
+
+            &.active {
+              & > .indicator {
+                background-color: s.$dark-proquifa-b;
+
+                & > div {
+                  flex: 0 0 8px;
+                }
+              }
+
+              & > .content {
+                background-color: s.$dark-proquifa-b;
+
+                & > .titleOption {
+                  & > label {
+                    color: s.$main-proquifa-e;
+                  }
+                }
+
+                & > .arrows {
+                  & > img {
+                    transform: rotate(0);
+                  }
+                }
+              }
+            }
+          }
+
+          & > .secondLevel {
+            @include s.flexColumn;
+            background-color: s.$dark-proquifa-e;
+
+            & > .submenuOptions {
+              @include s.flexRowWrap;
+              overflow: auto;
+              transition: max-height 0.6s ease;
+              width: 100%;
+              scrollbar-gutter: stable;
+              user-select: none;
+
+              * {
+                cursor: pointer;
+              }
+
+              & > .submenuOption {
+                @include s.flexColumn;
+                @include s.default-transition($duration: 0.3s);
+                height: auto;
+                width: 100%;
+
+                &:hover {
+                  background-color: s.$dark-proquifa-d;
+                }
+
+                & > .content-submenu-option {
+                  @include s.flexRow;
+
+                  & > .indicator {
+                    @include s.flexRow;
+                    flex: 0 0 8px;
+                    background-color: s.$pqGreen !important;
+                  }
+
+                  & > .content {
+                    @include s.flexRow;
+                    @include s.default-transition($duration: 0.3s);
+                    flex: 1;
+                    column-gap: 16px;
+                    padding: 16px 12px 16px 16px;
+
+                    & > .bulletPoint {
+                      @include s.flexRow;
+                      @include s.default-transition($duration: 0.3s);
+                      align-items: center;
+                      width: 8px;
+
+                      & > span {
+                        background-color: s.$dark-proquifa-b;
+                        border-radius: 16px;
+                        height: 8px;
+                        width: 100%;
+                      }
+                    }
+
+                    & > .title {
+                      @include s.flexRow;
+                      align-items: center;
+                      flex: 1;
+
+                      & > label {
+                        @include s.responsive-font-format($font-size-map: s.$responsive-font-16-16);
+                        white-space: break-spaces;
+                      }
+                    }
+
+                    & > .badgeContent {
+                      @include s.flexRow;
+                      align-items: center;
+
+                      & > .badge {
+                        @include s.flexRow;
+                        align-items: center;
+                        background-color: s.$pqGreen;
+                        border-radius: 16px;
+                        column-gap: 4px;
+                        flex: 1;
+                        padding: 5px 8px;
+
+                        & > .indicator {
+                          border-radius: 50%;
+                          background-color: s.$pqWhite;
+                          height: 8px;
+                          width: 8px;
+                        }
+
+                        & > label {
+                          @include s.responsive-font-format(
+                            $font-family: s.$font-family-roboto_bold,
+                            $font-weight: s.$font-weight-bold,
+                            $font-size-map: s.$responsive-font-12-12,
+                            $color: s.$pqWhite
+                          );
+                          line-height: 14px !important;
+                        }
+                      }
+                    }
+
+                    &.active {
+                      background-color: s.$pqGreen;
+
+                      & > .bulletPoint {
+                        width: 24px;
+
+                        & > span {
+                          background-color: s.$pqWhite;
+                          border-radius: 4px;
+                        }
+                      }
+
+                      & > .title {
+                        & > label {
+                          color: s.$pqWhite;
+                        }
+                      }
+
+                      & > .badgeContent {
+                        & > .badge {
+                          background-color: s.$pqWhite;
+
+                          & > .indicator {
+                            background-color: s.$pqGreen;
+                          }
+
+                          & > label {
+                            color: s.$pqGreen;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+
+                & > .active {
+                  background-color: #989898;
+
+                  & > div:nth-of-type(1) {
+                    & > label:nth-of-type(1) {
+                      color: s.$pqWhite !important;
+                    }
+                  }
+                }
+
+                & > .sub-options {
+                  @include s.flexColumn;
+                  height: 0;
+                  overflow: hidden;
+                  width: 100%;
+
+                  & > .sub-option {
+                    & > .content-sub-option {
+                      @include s.flexRowNoWrap;
+                      align-items: center;
+                      height: 30px;
+                      justify-content: space-between;
+                      padding-left: 45px;
+
+                      * {
+                        cursor: pointer;
+                      }
+
+                      & > div:nth-of-type(1) {
+                        & > label:nth-of-type(1) {
+                          @include s.escaledFontFormat(s.$textSize12, bold, s.$pqBlack2);
+                          @include s.Roboto-Bold;
+                        }
+                      }
+
+                      & > div:nth-of-type(2) {
+                        @include s.absoluteCenter;
+                        @include s.flexRow;
+                        background-color: s.$pqWhite;
+                        border-radius: 6px;
+                        height: 12px;
+                        margin-right: 30px;
+                        width: 32px;
+
+                        & > label:nth-of-type(1) {
+                          @include s.escaledFontFormat(s.$textSize12, bold, s.$pqBlack2);
+                          @include s.Roboto-Bold;
+                          cursor: pointer;
+                        }
+                      }
+                    }
+
+                    & > .active {
+                      background-color: #989898;
+
+                      & > div:nth-of-type(1) {
+                        & > label:nth-of-type(1) {
+                          color: s.$pqWhite !important;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+
+            & > .submenuOptionsIsOpen {
+              max-height: 100vh !important;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+  }
+}
+
+@keyframes hideMenu {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0;
+  }
+}
+
+@keyframes showMenu {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}

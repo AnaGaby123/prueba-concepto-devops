@@ -1,0 +1,148 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  position: relative;
+  & > .header-container {
+    @include s.flexRow;
+    height: 47px;
+    //padding: 0 16px;
+    justify-content: space-between;
+    & > div {
+      @include s.flexRow;
+      padding: 0 10px 4px 10px;
+      align-items: flex-end;
+      & > label {
+        @include s.responsive-font-format(
+          $font-family: s.$font_family_roboto,
+          $font-weight: s.$font_weight_regular,
+          $font-size-map: s.$responsive-font-11-b-11-b,
+          $color: s.$pqBlack2
+        );
+      }
+    }
+    &.white {
+      background: s.$pqWhite;
+      *,
+      & {
+        background: s.$pqWhite;
+      }
+    }
+    &.gray {
+      background: s.$pqGray2;
+      *,
+      & {
+        background: s.$pqGray2;
+      }
+    }
+    & > .indicator {
+      width: 5px;
+      padding: 0;
+    }
+    & > .options-column {
+      flex: 0 0 90px;
+    }
+    & > .number-column {
+      flex: 0 0 33px;
+      padding: 0 5px 4px 5px;
+      justify-content: center;
+    }
+    & > .img-type-quote {
+      flex: 0 0 37px;
+    }
+    & > .img-type-presentation-column {
+      padding-left: 10px;
+      margin-right: 4px;
+      flex: 0 0 55px;
+    }
+    & > .concept-column {
+      flex: 0 0 294px;
+      //padding: 0px 10px 0px 0px;
+    }
+    & > .notes-column {
+      flex: 0 0 47px;
+    }
+    & > .brand-column {
+      flex: 0 0 169px;
+    }
+    & > .delivery-time-suggested-column {
+      @include s.flexColumn;
+      align-items: center;
+      justify-content: flex-end;
+      flex: 0 0 95px;
+    }
+    & > .delivery-time-suggested-column,
+    & > .delivery-time-column {
+      @include s.flexColumn;
+      align-items: center;
+      justify-content: flex-end;
+      flex: 0 0 95px;
+
+      & > .suggested {
+        color: s.$complementario-c;
+      }
+    }
+    & > .pieces-column {
+      @include s.flexColumn;
+      align-items: center;
+      justify-content: flex-end;
+      flex: 0 0 52px;
+    }
+    & > .requested-price-column,
+    & > .adjustment-price-column,
+    & > .agreed-price-column,
+    & > .unit-price-column {
+      justify-content: flex-end;
+      flex: 0 0 185px;
+    }
+    & > .pro-freight-column,
+    & > .subtotal-column,
+    & > .iva-column {
+      justify-content: flex-end;
+      min-width: 150px;
+    }
+    & > .delivery-restrictions-column {
+      flex: 0 0 135px;
+    }
+    & > .value-total-column {
+      justify-content: flex-end;
+      flex: 0 0 197px;
+    }
+    & > .last-follow-up-column {
+      @include s.flexColumn;
+      align-items: center;
+      justify-content: flex-end;
+      flex: 0 0 82px;
+    }
+    & > .see-resume-column,
+    & > .cancel-reason-column,
+    & > .purchase-arrival-date-column {
+      flex: 0 0 226px;
+    }
+    & > .state-column,
+    & > .research-response-column {
+      flex: 0 0 96px;
+    }
+    //& > .add-item-quotation-column,
+    //& > .checks-colors-column {
+    //  flex: 0 0 460px;
+    //}
+    & > .arrow-column {
+      flex: 52px;
+    }
+    & > .comment-column,
+    & > .delete-column,
+    & > .trash-column {
+      flex: 0 0 44px;
+    }
+    & > .trash-reverse-setting-column {
+      flex: 0 0 54px;
+    }
+    & > .see-more-column {
+      flex: 0 0 65px;
+    }
+  }
+}

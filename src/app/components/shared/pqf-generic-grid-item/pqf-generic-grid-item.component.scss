@@ -1,0 +1,187 @@
+@use 'base' as s;
+
+:host {
+  * {
+    @include s.reset-line-height;
+    @include s.default-transition();
+  }
+}
+
+.pqf-generic-grid-item {
+  @include s.absolute100;
+  @include s.flexRow;
+  background-color: s.$dark-proquifa-f;
+  cursor: pointer;
+
+  & * {
+    cursor: pointer;
+  }
+
+  & > .agent {
+    @include s.flexColumn;
+    flex: 1;
+    padding: 16px;
+    position: relative;
+    row-gap: 8px;
+
+    &:hover {
+      & > .status {
+        & > .indicator {
+          & > .enable-text {
+            @include s.responsive-font-format($font-size-map: s.$responsive-font-14-14, $color: s.$pqGreen2);
+            animation: fadeIn 0.5s;
+            display: flex;
+          }
+
+          & > .disable-text {
+            @include s.responsive-font-format($font-size-map: s.$responsive-font-14-14, $color: s.$dark-proquifa-d);
+            animation: fadeIn 0.5s;
+            display: flex;
+          }
+        }
+
+        & > img:nth-of-type(1) {
+          display: none;
+        }
+
+        & > img:nth-of-type(2) {
+          display: block;
+        }
+      }
+
+      & > .centerPagination {
+        & > img:nth-of-type(1) {
+          display: none;
+        }
+
+        & > img:nth-of-type(2) {
+          display: block;
+        }
+      }
+
+      & > .footContent {
+        & > span {
+          color: s.$pqGreen !important;
+        }
+
+        & > label {
+          @include s.Roboto-Bold-Important;
+          text-align: center;
+        }
+      }
+    }
+
+    & > .status {
+      @include s.flexRow;
+      align-items: center;
+
+      & > .indicator {
+        @include s.flexRow;
+        align-items: center;
+        column-gap: 8px;
+        height: 16px;
+
+        & > .none {
+          opacity: 0;
+        }
+
+        & > .enable {
+          @include s.pqCircle(13px, s.$pqGreen2);
+        }
+
+        & > .disable {
+          @include s.pqCircle(13px, s.$dark-proquifa-d);
+        }
+
+        & > .enable-text {
+          animation: fadeIn 1s;
+          display: none;
+        }
+
+        & > .disable-text {
+          animation: fadeIn 1s;
+          display: none;
+        }
+      }
+
+      & > img {
+        animation: animateZoom 0.4s;
+        height: 16px;
+      }
+
+      & > img:nth-of-type(1) {
+        display: block;
+      }
+
+      & > img:nth-of-type(2) {
+        display: none;
+      }
+    }
+
+    & > .centerPagination {
+      @include s.absoluteCenter;
+      @include s.flexColumn;
+      flex: 0 0 auto;
+      padding: 10px;
+      height: 120px;
+
+      & > img {
+        animation: animateZoom 0.4s;
+        max-height: 100%;
+        max-width: 100%;
+      }
+
+      & > img:nth-of-type(1) {
+        display: block;
+      }
+
+      & > img:nth-of-type(2) {
+        display: none;
+      }
+    }
+
+    & > .footContent {
+      @include s.absoluteCenter;
+      @include s.flexColumn;
+      justify-content: flex-start;
+      row-gap: 8px;
+
+      & > .name {
+        @include s.flexRow;
+        flex: 0 0 48px;
+
+        & > label {
+          @include s.multiLineTextTruncateSinHeight(3, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+          @include s.responsive-font-format();
+          text-align: center;
+        }
+      }
+
+      & > .product {
+        @include s.flexRow;
+
+        & > label {
+          @include s.multiLineTextTruncateSinHeight(2, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+          @include s.responsive-font-format($font-size-map: s.$responsive-font-14-14);
+          text-align: center;
+        }
+      }
+    }
+  }
+
+  @include s.media-query('standard') {
+    & > .agent {
+      padding: 16px 24px;
+
+      & > .footContent {
+        & > .name {
+          flex: 0 0 40px;
+
+          & > label {
+            @include s.multiLineTextTruncateSinHeight(2, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+<div id="quotation-details-container">
+  <div class="general-data-quotation-content" *ngIf="newClientRegis$ | async">
+    <app-client-info-side-bar [isOpen]="navBarGeneralData$ | async" (handleIsOpen)="handleEmit()"></app-client-info-side-bar>
+  </div>
+  <div class="request-quotation-content" *ngIf="newClientRegis$ | async">
+    <app-request-quotation [isOpen]="requestIsOpen$ | async" (handleIsOpen)="handleEmit()"></app-request-quotation>
+  </div>
+  <div class="quotations">
+    <router-outlet></router-outlet>
+  </div>
+</div>

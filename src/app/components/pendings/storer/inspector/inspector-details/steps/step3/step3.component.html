@@ -1,0 +1,94 @@
+<div id="inspector-step3">
+  <div class="content">
+    <div class="storer">
+      <div class="title">
+        <label>{{ 'inspector.storage' | translate }}</label>
+      </div>
+      <div class="container">
+        <div class="content1">
+          <div class="tag">
+            <label class="title">{{ 'inspector.tag' | translate }}</label>
+            <div class="content">
+              <label>{{ 'FD-ABCD1049579' }}</label>
+            </div>
+          </div>
+          <div class="location1">
+            <label class="title">{{ 'inspector.location' | translate }}</label>
+            <div class="content">
+              <div>
+                <app-radio-button
+                  [height]="(viewType$ | async) === 'macBookAir' ? '20px' : '17px'"
+                  [label]="'inspector.shelf' | translate"
+                  [labelFontStyle]="'robotoRegular25'"
+                ></app-radio-button>
+              </div>
+              <div>
+                <app-radio-button
+                  [height]="(viewType$ | async) === 'macBookAir' ? '20px' : '17px'"
+                  [label]="'inspector.pallet' | translate"
+                  [labelFontStyle]="'robotoRegular25'"
+                ></app-radio-button>
+              </div>
+            </div>
+          </div>
+          <div class="drive1">
+            <label class="title">{{ 'inspector.drive' | translate }}</label>
+            <div class="content">
+              <div>
+                <img alt="" src="assets/Images/ambiente.svg" />
+                <label>{{ 'priorityConsole.environment' | translate }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="content2">
+          <div class="dispatch">
+            <label class="title">{{ 'inspector.dispatchables' | translate }}</label>
+            <div class="content">
+              <label class="total">{{ 'inspector.totalOfPieces' | translate }}</label>
+              <label class="pieces">{{ 80 + ('common.pieces' | translate) }}</label>
+            </div>
+          </div>
+          <div class="location2">
+            <label class="title">{{ 'inspector.location' | translate }}</label>
+            <div class="content">
+              <label>{{ 'Anaquel 1- A' }}</label>
+            </div>
+          </div>
+          <div class="drive2">
+            <label class="title">{{ 'inspector.drive' | translate }}</label>
+            <div class="content">
+              <div>
+                <label class="total">{{ 'inspector.totalOfPieces' | translate }}</label>
+                <label class="pieces">{{ 80 + ('common.pieces' | translate) }}</label>
+              </div>
+              <div>
+                <label class="total">{{ 'inspector.location' | translate }}</label>
+                <label class="pieces">{{ 'Refrigeración H' }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="content3">
+          <div class="notDispatch">
+            <label class="title">{{ 'inspector.notDispatchables' | translate }}</label>
+            <div class="content">
+              <div>
+                <label class="total">{{ 'inspector.totalOfPieces' | translate }}</label>
+                <label class="pieces">{{ 80 + ('common.pieces' | translate) }}</label>
+              </div>
+              <div>
+                <label class="total">{{ 'inspector.location' | translate }}</label>
+                <label class="pieces">{{ 'Refrigeración H' }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <button class="back">{{ 'inspector.back' | translate }}</button>
+    <button class="tag">{{ 'inspector.label' | translate }}</button>
+  </div>
+</div>

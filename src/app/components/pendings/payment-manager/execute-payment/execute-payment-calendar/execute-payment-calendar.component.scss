@@ -1,0 +1,423 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  #execute-collection {
+    @include s.absolute100;
+    @include s.flexColumn;
+
+    & > .content-container {
+      @include s.absolute100;
+      @include s.flexRow;
+
+      & > .filters-payments {
+        & > .payments-filters {
+          @include s.flexRowWrap;
+          background-color: s.$pqGray2;
+          height: 100%;
+          position: relative;
+          width: auto;
+
+          &.hide {
+            animation-name: hideContent;
+            animation-duration: 1s;
+            animation-fill-mode: forwards;
+            transition: 1s ease-in-out;
+          }
+
+          &.show {
+            animation-name: showContent;
+            animation-duration: 0.7s;
+            animation-fill-mode: forwards;
+          }
+
+          & > .data-filters {
+            @include s.flexRow;
+            @include s.absolute100;
+            overflow: hidden;
+
+            & > div {
+              @include s.flexColumn;
+              @include s.absolute100;
+              min-width: 370px;
+
+              & > .title {
+                @include s.flexRow;
+                box-sizing: border-box;
+                border-bottom: 1px solid #d8d9dd;
+                justify-content: center;
+                max-height: 100px;
+                margin: 33px 20px 20px 20px;
+
+                & > .text {
+                  @include s.flexColumn;
+                  align-items: center;
+                  justify-content: flex-start;
+                  width: 100%;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize20to25, bold, s.$pqBlack2);
+                    @include s.Novecento-Demibold;
+                    margin-bottom: 20px;
+                  }
+                }
+              }
+
+              & > .dateFilter {
+                @include s.flexRowNoWrap;
+                margin-top: 10px;
+
+                & > .picker {
+                  margin: 0 10px 0 20px;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize16to18, '', s.$pqBlack2);
+                    @include s.Roboto-Bold;
+                    margin-bottom: 10px;
+                  }
+
+                  & > .date-picker {
+                    height: 25px;
+                  }
+                }
+
+                & > .pickerFrom {
+                  margin: 0 20px 0 10px;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize16to18, '', s.$pqBlack2);
+                    @include s.Roboto-Bold;
+                    margin-bottom: 10px;
+                  }
+
+                  & > .date-picker {
+                    height: 25px;
+                  }
+                }
+              }
+
+              & > .content {
+                @include s.flexColumn;
+                height: calc(100% - 123px);
+
+                & > div {
+                  @include s.flexColumn;
+                  box-sizing: border-box;
+                  padding: 70px 20px 0;
+                  width: 100%;
+
+                  & > .title {
+                    @include s.flexRow;
+
+                    & > label {
+                      @include s.escaledFontFormat(s.$textSize16to18, '', s.$pqBlack2);
+                      @include s.Roboto-Bold;
+                      margin-bottom: 10px;
+                    }
+                  }
+
+                  & > .recharge {
+                    @include s.flexRow;
+                    @include s.absoluteCenter;
+                    border-radius: 25px;
+                    background-color: s.$pqBlack2;
+                    cursor: pointer;
+                    height: 35px;
+                    width: 100%;
+
+                    & > img {
+                      height: 17px;
+                    }
+                  }
+
+                  & > .recharge:hover {
+                    background-color: s.$recharge;
+                  }
+                }
+              }
+            }
+          }
+
+          & > .arrow {
+            height: 21px;
+            margin-left: 10px;
+            position: absolute;
+            right: 0;
+            top: calc(50% + 75px);
+            z-index: 3;
+
+            & > img {
+              cursor: pointer;
+              height: 21px;
+              opacity: 1;
+              transform: scaleX(1);
+              transition: transform 0.8s ease-in-out;
+
+              &:hover {
+                opacity: 0.8;
+              }
+            }
+
+            & > .reverse {
+              transform: scaleX(-1);
+            }
+          }
+        }
+      }
+
+      & > .information-payments {
+        @include s.flexColumn;
+        padding: 25px 20px 0 20px;
+        flex: 1 1 auto;
+        overflow: hidden;
+
+        & > .tabs {
+          @include s.flexRow;
+          flex: 0 0 50px;
+          padding-bottom: 15px;
+
+          & > app-tabs {
+            height: 100%;
+          }
+        }
+
+        & > .date {
+          @include s.flexRowNoWrap;
+          flex: 0 0 auto;
+          justify-content: space-between;
+          padding-bottom: 15px;
+
+          & > label:nth-of-type(1) {
+            @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+            @include s.Novecento-Bold;
+          }
+        }
+
+        & > .filters {
+          @include s.flexRowNoWrap;
+          flex: 0 0 auto;
+          justify-content: space-between;
+          padding-bottom: 30px;
+
+          & > div {
+            @include s.flexRowNoWrap;
+            align-items: center;
+            flex: 1 1 auto;
+          }
+
+          & > .column-one {
+            padding-right: 15px;
+
+            & > .chips {
+              padding-right: 10px;
+            }
+
+            & > .search {
+            }
+          }
+
+          & > .column-two {
+            justify-content: flex-end;
+
+            & > .drop-list {
+              @include s.flexRowNoWrap;
+              align-items: center;
+              padding-right: 15px;
+              min-width: 300px;
+
+              & > label {
+                @include s.escaledFontFormat(s.$textSize16to18, regular, s.$pqBlack2);
+                @include s.Roboto-Regular;
+                padding-right: 5px;
+              }
+            }
+
+            & > .btn-see-breakdown {
+              @include s.pqButton(150px, 250px, 25px, 30px, s.$pqGreen2);
+            }
+          }
+        }
+
+        & > .calendar {
+          @include s.flexRow;
+          flex: 1 1 auto;
+          overflow: hidden;
+        }
+      }
+    }
+
+    & > footer {
+      @include s.flexRowNoWrap;
+      @include s.absoluteCenter;
+      width: 100%;
+      flex: 0 0 54px;
+      border-top: 2px solid s.$pqBlack;
+      box-sizing: border-box;
+
+      & > div:nth-of-type(1) {
+        @include s.flexRowNoWrap;
+        @include s.absoluteCenter;
+        @include s.absolute100;
+        box-sizing: border-box;
+        padding-right: 16px;
+        padding-left: 16px;
+        justify-content: center;
+
+        & > div {
+          @include s.flexRowNoWrap;
+          @include s.absoluteCenter;
+          width: auto;
+          padding-left: 10px;
+          padding-right: 10px;
+
+          & > .green {
+            @include s.pqCircle(12px, s.$pqGreen2);
+          }
+
+          & > .yellow {
+            @include s.pqCircle(12px, s.$pqOrange6);
+          }
+
+          & > .orange {
+            @include s.pqCircle(12px, s.$pqOrange7);
+          }
+
+          & > .red {
+            @include s.pqCircle(12px, s.$pqRed2);
+          }
+
+          & > .purple {
+            @include s.pqCircle(12px, s.$purple);
+          }
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize12to14, normal, s.$pqBlack2);
+            @include s.Roboto-Regular;
+            padding-left: 5px;
+          }
+
+          & > img {
+            margin-right: 5px;
+            height: 17px;
+          }
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #execute-collection {
+      & > .content-container {
+        & > .filters-payments {
+          & > .payments-filters {
+            &.hide {
+              animation-name: hideContentBig;
+            }
+
+            &.show {
+              animation-name: showContentBig;
+            }
+
+            & > .data-filters {
+              & > div {
+                min-width: 385px;
+
+                & > .dateFilter {
+                  & > .picker {
+                    & > .date-picker {
+                      height: 30px;
+                    }
+                  }
+
+                  & > .pickerFrom {
+                    & > .date-picker {
+                      height: 30px;
+                    }
+                  }
+                }
+
+                & > .content {
+                  & > div {
+                    & > .recharge {
+                      height: 50px;
+
+                      & > img {
+                        height: 20px;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+
+            & > .arrow > img {
+              height: 31px;
+            }
+          }
+        }
+
+        & > .information-payments {
+          & > .tabs {
+            flex: 0 0 65px;
+            padding-bottom: 25px;
+
+            & > app-tabs {
+              height: 100%;
+            }
+          }
+
+          & > .date {
+            padding-bottom: 25px;
+          }
+
+          & > .filters {
+            padding-bottom: 40px;
+
+            & > .column-two {
+              & > .drop-list {
+                min-width: 345px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  @keyframes hideContent {
+    from {
+      width: 370px;
+    }
+    to {
+      width: 0;
+    }
+  }
+  @keyframes showContent {
+    from {
+      width: 0;
+    }
+    to {
+      width: 370px;
+    }
+  }
+  @keyframes hideContentBig {
+    from {
+      width: 385px;
+    }
+    to {
+      width: 0;
+    }
+  }
+  @keyframes showContentBig {
+    from {
+      width: 0;
+    }
+    to {
+      width: 385px;
+    }
+  }
+}

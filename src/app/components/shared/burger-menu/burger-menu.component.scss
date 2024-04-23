@@ -1,0 +1,168 @@
+@use 'base' as s;
+
+:host {
+  @include s.absolute100;
+
+  & * {
+    box-sizing: border-box;
+  }
+
+  & > .principal {
+    @include s.flexRow;
+    width: 100%;
+    height: 19px;
+
+    & > .menu {
+      @include s.flexColumn;
+      justify-content: center;
+      width: 100%;
+      position: relative;
+
+      &:focus {
+        @include s.focusDisable;
+      }
+
+      & * {
+        cursor: pointer;
+      }
+
+      & > .box {
+        @include s.flexRow;
+        width: 100%;
+        height: 19px;
+        align-items: center;
+
+        & > .icons {
+          cursor: pointer;
+          display: inline-block;
+          height: 100%;
+          justify-content: center;
+          position: relative;
+          width: 25px;
+          flex: 0 0 25px;
+
+          & > span {
+            background-color: s.$pqGray3;
+            border-radius: 2px;
+            height: 1px;
+            position: absolute;
+            transition: all 0.3s ease-in-out;
+            width: 100%;
+
+            &:nth-child(1) {
+              top: 0;
+              left: 0;
+              // DOCS inset: 0;
+            }
+
+            &:nth-child(2) {
+              top: 9px;
+              left: 0;
+            }
+
+            &:nth-child(3) {
+              top: 18px;
+              left: 0;
+            }
+          }
+
+          &.open {
+            & > span {
+              top: 9px;
+            }
+          }
+        }
+
+        & > .label {
+          flex: 0 0 auto;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize15to18, regular, s.$pqBlack2);
+            @include s.Roboto-Regular;
+          }
+        }
+      }
+
+      & > .left {
+        justify-content: flex-start;
+
+        & > .icons {
+          margin: 0 15px 0 0;
+          order: 1;
+        }
+
+        & > .label {
+          order: 2;
+        }
+      }
+
+      & > .right {
+        justify-content: space-between;
+
+        & > .icons {
+          margin: 0 0 0 15px;
+          order: 2;
+        }
+
+        & > .label {
+          order: 1;
+        }
+      }
+
+      & > section {
+        @include s.flexRow;
+        transition: 0.3s ease-in-out;
+        overflow: hidden;
+        width: 100%;
+        background-color: s.$pqWhite;
+        z-index: 2;
+        position: absolute !important;
+        top: 23px;
+        left: 0;
+
+        & > div {
+          width: 100%;
+          @include s.flexColumn;
+          border: 1px solid s.$pqGray2;
+
+          & > .burger-item {
+            width: 100%;
+            @include s.flexColumn;
+            padding-right: 15px;
+            padding-left: 15px;
+            height: 30px;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+
+            &:last-child {
+              & > li {
+                border-bottom: none;
+              }
+            }
+
+            &:hover {
+              background-color: s.$pqGray2;
+            }
+
+            &.selected {
+              background-color: s.$pqGray2;
+
+              & > li {
+                @include s.Roboto-Regular-Important;
+              }
+            }
+
+            & > li {
+              padding-bottom: 7px;
+              padding-top: 7px;
+              display: flex;
+              border-bottom: 0.5px solid s.$pqGray2;
+              @include s.Roboto-Light;
+              font-size: 13px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

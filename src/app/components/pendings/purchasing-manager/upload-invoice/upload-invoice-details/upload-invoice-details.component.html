@@ -1,0 +1,417 @@
+<div id="upload-invoice-details">
+  <div class="top-container">
+    <div class="left-container">
+      <label class="title">{{ 'common.ocs' | translate }}</label>
+      <div class="filters">
+        <app-hamburger-menu [options]="sortList$ | async" [value]="(sort$ | async).value" (valueEmit)="sortSelected($event)">
+        </app-hamburger-menu>
+        <app-search
+          [placeholder]="'common.purchaseOrder' | translate"
+          [searchTerm]="searchTerm$ | async"
+          (textSearch)="handleKeySearch($event)"
+        >
+        </app-search>
+      </div>
+      <div class="list-container">
+        <virtual-scroller
+          [items]="purchaseOrders$ | async"
+          (vsUpdate)="listOrdersScrollItems = $event"
+          (vsEnd)="fetchMore($event)"
+        >
+          <div class="item-oc" *ngFor="let order of listOrdersScrollItems" (click)="selectedOrder(order)">
+            <div
+              class="indicator"
+              [ngClass]="order.IdOcOrdenDeCompra === (orderSelected$ | async).IdOcOrdenDeCompra ? 'selected' : ''"
+            ></div>
+            <div class="info">
+              <label
+                >#{{ order.Index }} · <span>{{ order.NumeroOrdenDeCompra }} ·</span>
+                {{ order.Total | currency: '':'symbol':'1.2-2' }} <label>{{ order.ClaveMoneda }}</label></label
+              >
+              <label
+                >{{ order.NumeroDePiezas }} {{ 'common.pieces' | translate }} · {{ order.Partidas }}
+                {{ 'common.items' | translate }}</label
+              >
+            </div>
+          </div>
+          <div *ngIf="listOrdersScrollItems.length === 0" class="without-results">
+            <app-without-results></app-without-results>
+          </div>
+          <div class="loadingContainer" *ngIf="isLoading$ | async">
+            <div class="load-circle">
+              <div class="line"></div>
+              <div class="line"></div>
+              <div class="line"></div>
+            </div>
+          </div>
+        </virtual-scroller>
+      </div>
+      <div class="totals">
+        <label>#{{ (provider$ | async)?.TotalOrdenesDeCompra }}</label>
+        <label>{{ (provider$ | async)?.NumPiezas }} {{ 'common.pieces' | translate }}</label>
+        <label>{{ 'common.totalAmount' | translate }}: {{ (provider$ | async)?.TotalUSD | currency }}</label>
+      </div>
+    </div>
+    <div class="center-container">
+      <label class="title"
+        >#{{ (orderSelected$ | async)?.Index }} ·
+        <span class="underline">OC-{{ (orderSelected$ | async)?.NumeroOrdenDeCompra }}</span> <span> ·</span>
+        {{ (orderSelected$ | async)?.Total | currency }} {{ (orderSelected$ | async)?.ClaveMoneda }} ·
+        {{ (orderSelected$ | async)?.NumeroDePiezas }}
+        {{ (orderSelected$ | async)?.NumeroDePiezas === 1 ? ('common.piece' | translate) : ('common.pieces' | translate) }}
+        ·
+        {{ (orderSelected$ | async)?.Partidas }}
+        {{ (orderSelected$ | async)?.Partidas === 1 ? ('common.item' | translate) : ('common.items' | translate) }}
+      </label>
+      <div class="header-container">
+        <app-provider-contacts
+          [contactList]="selectContactsProvidersDropList$ | async"
+          [selectedContact]="providerContactSelected$ | async"
+          (emitResponse)="setContactSelectedProvider($event)"
+          [sizeGeneralData]="'350px'"
+        ></app-provider-contacts>
+      </div>
+      <div class="tables">
+        <div class="top">
+          <div class="table">
+            <div class="header">
+              <div class="number">
+                <label>#</label>
+              </div>
+              <div class="name">
+                <label>{{ 'uploadInvoice.name' | translate }}</label>
+              </div>
+              <div class="pieces">
+                <label>{{ 'uploadInvoice.quantity' | translate }}</label>
+              </div>
+              <div class="price">
+                <label>{{ 'uploadInvoice.amount' | translate }}</label>
+              </div>
+              <div class="amount">
+                <label>{{ 'uploadInvoice.import' | translate }}</label>
+              </div>
+              <div class="state">
+                <label>{{ 'uploadInvoice.state' | translate }}</label>
+              </div>
+              <div class="button">
+                <img src="assets/Images/mas.svg" alt="" />
+              </div>
+              <div class="space"></div>
+            </div>
+            <div class="body">
+              <virtual-scroller
+                [items]="items$ | async"
+                (vsUpdate)="itemsScroller = $event"
+                id="all-items"
+                cdkDropList
+                cdkDropListSortingDisabled
+                cdkDropListConnectedTo="selected-items"
+                [cdkDropListData]="itemsScroller"
+                [cdkDropListEnterPredicate]="noReturnPredicate"
+              >
+                <div class="item" *ngFor="let item of itemsScroller" cdkDrag [cdkDragData]="item">
+                  <div class="number">
+                    <label class="bold">{{ item.Index }}</label>
+                  </div>
+                  <div class="name">
+                    <label
+                      ><span>#CAT · {{ item.Catalogo }}</span> · {{ item.Descripcion }}</label
+                    >
+                  </div>
+                  <div class="pieces">
+                    <label>{{ item.NumeroDePiezas }}</label>
+                  </div>
+                  <div class="price">
+                    <div class="tooltip">
+                      <label class="ocean underline" (click)="handleOpenPop(item)">{{ item.PrecioLista | currency }}</label>
+                      <div class="tooltip-text">
+                        <p>{{ 'uploadInvoice.modifyCost' | translate }}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="amount">
+                    <label>{{ item.TotalPartida | currency }}</label>
+                  </div>
+                  <div class="state">
+                    <label>{{ item.Estado }}</label>
+                  </div>
+                  <div class="button" (click)="addItem(item)">
+                    <img src="assets/Images/mas.svg" alt="" />
+                  </div>
+                  <div class="space"></div>
+                </div>
+              </virtual-scroller>
+            </div>
+            <div class="footer">
+              <div class="number">
+                <label>#{{ (items$ | async)?.length }}</label>
+              </div>
+              <div class="name"></div>
+              <div class="pieces">
+                <label class="ocean">{{ (totalItems$ | async)?.cant }}</label>
+              </div>
+              <div class="price">
+                <label>{{ (totalItems$ | async)?.amount | currency }}</label>
+              </div>
+              <div class="amount">
+                <label class="ocean">{{ (totalItems$ | async)?.import | currency }}</label>
+              </div>
+              <div class="state"></div>
+              <div class="button"></div>
+              <div class="space"></div>
+            </div>
+          </div>
+        </div>
+        <div class="bottom">
+          <div class="table">
+            <div class="header">
+              <div class="number">
+                <label>#</label>
+              </div>
+              <div class="name">
+                <label>{{ 'uploadInvoice.name' | translate }}</label>
+              </div>
+              <div class="pieces">
+                <label>{{ 'uploadInvoice.quantity' | translate }}</label>
+              </div>
+              <div class="price">
+                <label>{{ 'uploadInvoice.amount' | translate }}</label>
+              </div>
+              <div class="amount">
+                <label>{{ 'uploadInvoice.import' | translate }}</label>
+              </div>
+              <div class="state">
+                <label>{{ 'uploadInvoice.state' | translate }}</label>
+              </div>
+              <div class="button">
+                <img src="assets/Images/polizasEliminar.svg" alt="" />
+              </div>
+              <div class="space"></div>
+            </div>
+            <div
+              class="body"
+              id="selected-items"
+              cdkDropList
+              cdkDropListSortingDisabled
+              [cdkDropListData]="itemsInvoice$ | async"
+              (cdkDropListDropped)="dropItem($event)"
+            >
+              <div class="item" *ngFor="let item of itemsInvoice$ | async; let i = index">
+                <div class="number">
+                  <label class="bold">{{ i + 1 }}</label>
+                </div>
+                <div class="name">
+                  <label
+                    ><span>#CAT · {{ item.Catalogo }}</span> · {{ item.Descripcion }}</label
+                  >
+                </div>
+                <div class="pieces">
+                  <label>{{ item.NumeroDePiezas }}</label>
+                </div>
+                <div class="price">
+                  <label class="ocean">{{ item.PrecioLista | currency }}</label>
+                </div>
+                <div class="amount">
+                  <label>{{ item.TotalPartida | currency }}</label>
+                </div>
+                <div class="state">
+                  <label>{{ item.Estado }}</label>
+                </div>
+                <div class="button" (click)="deleteItem(item)">
+                  <img src="assets/Images/polizasEliminar.svg" alt="" />
+                </div>
+                <div class="space"></div>
+              </div>
+              <div class="without-results" *ngIf="(itemsInvoice$ | async).length === 0">
+                <app-without-results [title]="'uploadInvoice.withOutResultsMessage' | translate"></app-without-results>
+              </div>
+            </div>
+            <div class="footer">
+              <div class="number">
+                <label>#{{ (itemsInvoice$ | async).length }}</label>
+              </div>
+              <div class="name"></div>
+              <div class="pieces">
+                <label class="ocean">{{ (totalItemsInvoice$ | async)?.cant }}</label>
+              </div>
+              <div class="price">
+                <label>{{ (totalItemsInvoice$ | async)?.amount | currency }}</label>
+              </div>
+              <div class="amount">
+                <label class="ocean">{{ (totalItemsInvoice$ | async)?.import | currency }}</label>
+              </div>
+              <div class="state"></div>
+              <div class="button"></div>
+              <div class="space"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="right-container">
+      <label class="title">{{ 'uploadInvoice.generalData' | translate }}</label>
+      <app-generic-input
+        [labelFont]="'Roboto-Bold'"
+        [label]="'uploadInvoice.freightAmount' | translate"
+        [textAlign]="'center'"
+        [value]="(dataInvoice$ | async).amount"
+        (textData)="setParamInvoice($event, 'amount')"
+      ></app-generic-input>
+      <app-generic-input
+        [labelFont]="'Roboto-Bold'"
+        [label]="'uploadInvoice.invoiceNumber' | translate"
+        [textAlign]="'center'"
+        [value]="(dataInvoice$ | async).invoiceNum"
+        (textData)="setParamInvoice($event, 'invoiceNum')"
+      ></app-generic-input>
+      <div class="date">
+        <label>{{ 'uploadInvoice.invoiceDate' | translate }}</label>
+        <app-date-picker
+          [color]="false"
+          dateFormat="YYYYMMDD"
+          [rangeStart]="rangeStart"
+          [disabledCalendarDays]="selectNonWorkingDays$ | async"
+          [rangeEnd]="rangeEnd"
+          [date]="(dataInvoice$ | async).invoiceDateDate"
+          (fecha)="handleDate($event, 'invoiceDate')"
+        >
+        </app-date-picker>
+      </div>
+      <div class="date">
+        <label>{{ 'uploadInvoice.invoiceReceptionDate' | translate }}</label>
+        <app-date-picker
+          [color]="false"
+          dateFormat="YYYYMMDD"
+          [disabledCalendarDays]="selectNonWorkingDays$ | async"
+          [rangeStart]="rangeStart"
+          [rangeEnd]="rangeEnd"
+          [date]="(dataInvoice$ | async).receptionDateDate"
+          (fecha)="handleDate($event, 'receptionDate')"
+        >
+        </app-date-picker>
+      </div>
+      <div class="file">
+        <label>{{ 'uploadInvoice.uploadPdf' | translate }}</label>
+        <app-generic-input-file
+          *ngIf="(dataInvoice$ | async).showInputsFiles"
+          [acceptedExtensions]="'application/pdf,.pdf'"
+          (autoEmitFile)="setParamInvoice($event, 'filePDF')"
+        >
+        </app-generic-input-file>
+      </div>
+      <div class="file" *ngIf="isNational$ | async">
+        <label>{{ 'uploadInvoice.uploadXml' | translate }}</label>
+        <app-generic-input-file
+          *ngIf="(dataInvoice$ | async).showInputsFiles"
+          [acceptedExtensions]="'.xml'"
+          (autoEmitFile)="setParamInvoice($event, 'fileXML')"
+        >
+        </app-generic-input-file>
+      </div>
+
+      <label class="subtitle">{{ 'uploadInvoice.providerData' | translate }}</label>
+      <div class="tuple">
+        <label>{{ 'common.coin' | translate }}</label>
+        <label
+          >{{
+            ((orderSelected$ | async)?.ClaveMoneda === 'USD' || (orderSelected$ | async)?.ClaveMoneda === 'CAD'
+              ? 'common.dollars'
+              : (orderSelected$ | async)?.ClaveMoneda === 'MXN'
+              ? 'common.pesos'
+              : (orderSelected$ | async)?.ClaveMoneda === 'EUR'
+              ? 'common.euros'
+              : ''
+            ) | translate
+          }}
+          $</label
+        >
+      </div>
+      <div class="tuple mb">
+        <label>{{ 'uploadInvoice.availableCredit' | translate }}</label>
+        <label>$ 0.00 USD</label>
+      </div>
+      <label class="subtitle">{{ 'uploadInvoice.importAmount' | translate }}</label>
+      <div class="table">
+        <div class="left">
+          <label>{{ 'uploadInvoice.commercialValue' | translate }}</label>
+          <label>{{ 'uploadInvoice.fte' | translate }}</label>
+          <label>{{ 'common.subtotal' | translate }}</label>
+          <label>{{ 'uploadInvoice.dta' | translate }}</label>
+          <label>{{ 'common.tax' | translate }}</label>
+          <label>{{ 'uploadInvoice.igi' | translate }}</label>
+          <label>{{ 'uploadInvoice.estimatedCustomsValue' | translate }}</label>
+        </div>
+        <div class="right">
+          <label>{{ (importAmount$ | async)?.ValorComercial | currency }} {{ (orderSelected$ | async)?.ClaveMoneda }}</label>
+          <label>{{ (importAmount$ | async)?.MontoFlete | currency }} {{ (orderSelected$ | async)?.ClaveMoneda }}</label>
+          <label>{{ (importAmount$ | async)?.Subtotal | currency }} {{ (orderSelected$ | async)?.ClaveMoneda }}</label>
+          <label>{{ (importAmount$ | async)?.DTA | currency }} {{ (orderSelected$ | async)?.ClaveMoneda }}</label>
+          <label>{{ (importAmount$ | async)?.IVA | currency }} {{ (orderSelected$ | async)?.ClaveMoneda }}</label>
+          <label>{{ (importAmount$ | async)?.IGI | currency }} {{ (orderSelected$ | async)?.ClaveMoneda }}</label>
+          <label>{{ (importAmount$ | async)?.Total | currency }} {{ (orderSelected$ | async)?.ClaveMoneda }}</label>
+        </div>
+      </div>
+      <app-generic-text-area
+        [title]="'common.additionalComments' | translate"
+        [height]="'120px'"
+        [value]="(dataInvoice$ | async).comment"
+        (emitData)="setParamInvoice($event, 'comment')"
+      >
+      </app-generic-text-area>
+      <button [ngClass]="(btnGenerate$ | async) ? 'active' : 'disabled'" (click)="generate()">{{
+        'common.generate' | translate
+      }}</button>
+    </div>
+  </div>
+  <footer class="bottom-container">
+    <div>
+      <label>OC: </label>
+      <label>{{ 'common.purchaseOrder' | translate }}</label>
+    </div>
+  </footer>
+</div>
+<app-pop-up-generic
+  *ngIf="popIsOpen"
+  [activeButtons]="true"
+  [width]="(viewType$ | async) === 'macBookAir' ? '620px' : '550px'"
+  [height]="(viewType$ | async) === 'macBookAir' ? '561px' : '490px'"
+  [titleHeader]="'uploadInvoice.modifyCost' | translate"
+  (evento)="handleClosePop($event)"
+>
+  <div class="pop-modify-cost">
+    <img src="assets/Images/alerta.svg" alt="" />
+    <label class="black">{{ 'uploadInvoice.isGoingToModifyCost' | translate }}</label>
+    <label class="ocean">{{ modifiedItem?.Descripcion }}</label>
+    <div class="ocean-bg">
+      <label>{{ 'uploadInvoice.modificationScope' | translate }}:</label>
+      <label class="pqf">OC</label>
+      <!--<app-toggle-switch></app-toggle-switch>-->
+    </div>
+    <div class="cost">
+      <div>
+        <label
+          >{{ 'uploadInvoice.actualCost' | translate }}:
+          <span>{{ modifiedItem?.PrecioLista | currency }} {{ 'common.dollars' | translate }}</span></label
+        >
+      </div>
+      <div>
+        <label class="red">{{ 'uploadInvoice.newCost' | translate }}: </label>
+        <app-generic-input
+          [placeholder]="'$'"
+          [textAlign]="'center'"
+          [typeValidation]="inputValidators.DecimalNumber"
+          [width]="'120px'"
+          (textData)="newPrice = $event"
+        ></app-generic-input>
+      </div>
+    </div>
+  </div>
+</app-pop-up-generic>
+<app-alert
+  *ngIf="viewPop$ | async"
+  [activarBoton]="false"
+  [onlyButton]="true"
+  [alertaTxt]="'No es posible seleccionar otra orden de compra cuando se han agregado partidas a una factura'"
+  (confirmacion)="closePop($event)"
+>
+</app-alert>

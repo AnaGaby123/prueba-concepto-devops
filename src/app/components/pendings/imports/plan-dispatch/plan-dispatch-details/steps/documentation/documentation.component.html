@@ -1,0 +1,218 @@
+<div id="plan-dispatch-details-step3">
+  <div class="container-component">
+    <div class="chart-container">
+      <app-doughnut-chart [title]="'Todos'"></app-doughnut-chart>
+      <div class="input-container">
+        <label for="file-input" class="btn-load">
+          {{ 'Cargar Adicionales' }}
+        </label>
+        <input id="file-input" type="file" accept=".pdf" />
+      </div>
+    </div>
+    <div class="documents-container">
+      <div class="content">
+        <label>{{ 'Documentos' }}</label>
+        <app-tabs [options]="tabs" [tapSelected]="tabs[0]" (onSelectOption)="setTab($event)"></app-tabs>
+        <app-search [placeholder]="'Nombre de documento'" [searchTerm]="''" (textSearch)="handleKeySearch($event)">
+        </app-search>
+        <div class="table-container">
+          <virtual-scroller
+            *ngIf="documents.length > 0"
+            [items]="documents"
+            (vsUpdate)="documentsResults = $event"
+            id="all-cards"
+          >
+            <div
+              class="card"
+              *ngFor="let document of documentsResults; trackBy: handleTrackBy"
+              [ngClass]="document.isSelected && 'active'"
+              (click)="selectDocument(document)"
+            >
+              <div class="document-proforma" *ngIf="document.type === 'Proforma'">
+                <label class="line-one"
+                  >{{ '#' + document.Index }} · <span>{{ 'Proforma' }} </span>· {{ '9316' }}</label
+                >
+                <label class="line-two">{{ 3804 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                <div class="line-three">
+                  <label>{{ '01/Oct/2021' }}</label>
+                  <label class="green">{{ 'Completo' }}</label>
+                </div>
+              </div>
+              <div class="document-packing-list" *ngIf="document.type === 'Packing List'">
+                <label class="line-one"
+                  >{{ '#' + document.Index }} · <span>{{ 'Packing List' }} </span>· {{ 'OD-080320-2622' }}</label
+                >
+                <label class="line-two">{{ 'Simplificado_OD-080320-2622' }}</label>
+                <label class="line-three">{{ '3 Partidas' }} · {{ '6 Piezas' }}</label>
+                <label class="line-four">{{ '2 OC Relacionadas' }}</label>
+              </div>
+              <div class="document-letter-of-use" *ngIf="document.type === 'Carta de uso químicos'">
+                <label class="line-one"
+                  >{{ '#' + document.Index }} · <span>{{ 'Carta de uso químicos' }} </span>· {{ 'OD-080320-2622_1' }}
+                </label>
+                <label class="line-two">{{ '150 pzas' }} · {{ 3804 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                <div class="line-three">
+                  <label>{{ '2 Listas de Arribo' }}</label>
+                  <label class="green">{{ 'Completo' }}</label>
+                </div>
+              </div>
+              <div class="document-bill" *ngIf="document.type === 'Factura'">
+                <label class="line-one"
+                  >{{ '#' + document.Index }} · <span>{{ 'Factura' }} </span></label
+                >
+                <label class="line-two">{{ 98.2 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                <label class="line-three">{{ '01/Oct/2021' }}</label>
+              </div>
+              <div class="document-oc" *ngIf="document.type === 'OC'">
+                <label class="line-one"
+                  >{{ '#' + document.Index }} · <span>{{ 'OC-090821-8695' }} </span></label
+                >
+                <div class="line-two">
+                  <label>{{ 98.2 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                  <img src="assets/Images/close-offer/warning.svg" alt="warning" />
+                </div>
+                <label class="line-three">{{ 'Cygnus' }}</label>
+              </div>
+              <div class="document-additional" *ngIf="document.type === 'Adicional'">
+                <label class="line-one"
+                  >{{ '#' + document.Index }} · <span>{{ 'Adicionales' }} </span>· {{ 'prueba.pdf' }}</label
+                >
+                <label class="line-two">{{ 'Alejandro Lagarde' }}</label>
+                <label class="line-three">{{ '01/Oct/2021' }}</label>
+              </div>
+            </div>
+          </virtual-scroller>
+          <div class="is-loading" *ngIf="false">
+            <div class="load-circle">
+              <app-loading></app-loading>
+            </div>
+          </div>
+          <div *ngIf="documents.length === 0" class="without-results">
+            <app-without-results></app-without-results>
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        <label>{{ '#6 Documentos' }}</label>
+      </div>
+    </div>
+    <div class="letter-of-user">
+      <div class="content">
+        <div class="header">
+          <label>{{ documentSelected.type }}</label>
+        </div>
+        <div class="pdf-viewer">
+          <app-upload-view-file></app-upload-view-file>
+        </div>
+        <div class="document-info">
+          <div class="proforma-or-bill" *ngIf="documentSelected.type === 'Factura' || documentSelected.type === 'Proforma'">
+            <div class="name">
+              <label>{{ 'common.fileName' | translate }}</label>
+              <label>{{ 'OD-080320-2622' }}</label>
+            </div>
+            <div class="amount">
+              <label>{{ 'common.amount' | translate }}</label>
+              <label>{{ 8000 | currency: 'USD':'symbol-narrow':'1.0-2' }}</label>
+            </div>
+            <div class="date">
+              <label>{{ 'common.date' | translate }}</label>
+              <label>{{ '01/Oct/2021' }}</label>
+            </div>
+          </div>
+          <div
+            class="packing-list"
+            *ngIf="documentSelected.type === 'Packing List' || documentSelected.type === 'Carta de uso químicos'"
+          >
+            <div class="column-one">
+              <div class="name">
+                <label>{{ 'common.fileName' | translate }}</label>
+                <label>{{ 'OD-080320-2622' }}</label>
+              </div>
+              <div class="items">
+                <label>{{ 'common.items' | translate }}</label>
+                <label>{{ 3 }}</label>
+              </div>
+              <div class="type">
+                <label>{{ 'common.type' | translate }}</label>
+                <label>{{ 'OD-080320-2622' }}</label>
+              </div>
+              <div class="oc-relations">
+                <label>{{ 'common.ocRelations' | translate }}</label>
+                <label>{{ 5 }}</label>
+              </div>
+            </div>
+            <div class="column-two">
+              <div class="pieces">
+                <label>{{ 'common.pieces' | translate }}</label>
+                <label>{{ 6 }}</label>
+              </div>
+            </div>
+          </div>
+          <div class="oc" *ngIf="documentSelected.type === 'OC'">
+            <div class="name">
+              <label>{{ 'common.fileName' | translate }}</label>
+              <label>{{ 'OD-080320-2622' }}</label>
+            </div>
+            <div class="amount">
+              <label>{{ 'common.amount' | translate }}</label>
+              <label>{{ 8000 | currency: 'USD':'symbol-narrow':'1.0-2' }}</label>
+            </div>
+            <div class="date">
+              <label>{{ 'common.purchaseOrder' | translate }}</label>
+              <label>{{ '090821-8695' }}</label>
+            </div>
+          </div>
+          <div class="additional" *ngIf="documentSelected.type === 'Adicional'">
+            <div class="column-one">
+              <div class="name">
+                <label>{{ 'common.fileName' | translate }}</label>
+                <label>{{ 'OD-080320-2622' }}</label>
+              </div>
+              <div class="date">
+                <label>{{ 'common.date' | translate }}</label>
+                <label>{{ '01/Oct/2021' }}</label>
+              </div>
+            </div>
+            <div class="column-two">
+              <div class="notes">
+                <label>{{ 'common.notes' | translate }}</label>
+                <label>{{ 'hola soy una nota' }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer"></div>
+    </div>
+  </div>
+  <footer>
+    <button class="btn-save">{{ 'common.save' | translate }}</button>
+  </footer>
+  <div class="footer">
+    <div class="al">
+      <label
+        >AL: <span>{{ 'common.arrivalLists' | translate }}</span></label
+      >
+    </div>
+    <div class="cv">
+      <label
+        >CV:<span> {{ 'planDispatchDetails.commercialValue' | translate }}</span>
+      </label>
+    </div>
+    <div class="fte">
+      <label
+        >FTE: <span>{{ 'common.freight' | translate }} </span></label
+      >
+    </div>
+    <div class="vad">
+      <label
+        >VAD: <span> {{ 'planDispatchDetails.customsValue' | translate }}</span></label
+      >
+    </div>
+    <div class="imp">
+      <label
+        >IMP: <span>{{ 'planDispatchDetails.taxes' | translate }} </span></label
+      >
+    </div>
+  </div>
+</div>

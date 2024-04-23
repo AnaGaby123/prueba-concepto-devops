@@ -1,0 +1,250 @@
+<app-pop-up-generic
+  (evento)="handleClosePopUpConfiguration($event)"
+  [activeBtn]="selectActiveBtnConfiguration$ | async"
+  [activeButtons]="true"
+  [height]="(viewType$ | async) === viewTypes.small ? '830px' : '977px'"
+  [titleHeader]="'formClient.step5.contractPopUp.configureContractTitle' | translate"
+  [width]="(viewType$ | async) === viewTypes.small ? '841px' : '990px'"
+  id="pop-contract-configuration"
+>
+  <div class="container">
+    <div class="header">
+      <div class="data-customer">
+        <div class="image">
+          <img src="assets/Images/clientes/logo_proquifa_hover.svg" />
+        </div>
+        <div class="text">
+          <label class="client-name">{{ (selectedClient$ | async)?.Nombre }}</label>
+          <label class="client-rfc">{{ 'RFC: ' + (selectedClient$ | async)?.RFC ?? 'N/D' }}</label>
+        </div>
+      </div>
+      <div class="validity-date">
+        <label class="info">
+          {{ (contract$ | async)?.FechaInicio | dateFormatSlashShort }} -
+          {{ (contract$ | async)?.FechaFin | dateFormatSlashShort }}
+        </label>
+        <label class="text">{{ 'formClient.step5.validity' | translate }}</label>
+      </div>
+    </div>
+    <div class="contract-types">
+      <app-radio-button
+        [label]="'formClient.step5.contract' | translate"
+        (emitValue)="setValueTypeContract($event)"
+        [value]="(contract$ | async)?.Contrato"
+      ></app-radio-button>
+      <app-radio-button
+        [label]="'formClient.step5.contractPopUp.agreement' | translate"
+        (emitValue)="setValueTypeAgreement($event)"
+        [value]="(contract$ | async)?.Acuerdo"
+      ></app-radio-button>
+    </div>
+    <div class="contract-upload">
+      <app-check-box
+        [label]="
+          (contract$ | async)?.Contrato
+            ? ('formClient.step5.contractPopUp.clientSendContract' | translate)
+            : ('formClient.step5.contractPopUp.uploadAgreementLetterConfirmation' | translate)
+        "
+        (event)="setDataContract('ClienteEnvia', $event)"
+        [fontSize]="(viewType$ | async) === viewTypes.small ? '16px' : '18px'"
+        [check]="(contract$ | async)?.ClienteEnvia"
+      ></app-check-box>
+      <div>
+        <label>
+          *
+          {{
+            (contract$ | async)?.Contrato
+              ? ('formClient.step5.contractPopUp.uploadContract' | translate)
+              : ('formClient.step5.contractPopUp.uploadAgreementLetter' | translate)
+          }}
+        </label>
+        <div>
+          <app-generic-input-file
+            *ngIf="showInputFile$ | async"
+            (emitFileToDelete)="removeFile()"
+            [acceptedExtensions]="'application/pdf'"
+            [disabled]="!(clientSendContract$ | async)"
+            [placeholder]="'common.filesTypePdf' | translate"
+            (autoEmitFile)="saveClientContract($event)"
+          ></app-generic-input-file>
+        </div>
+      </div>
+    </div>
+    <div class="data-contract">
+      <div>
+        <label>
+          {{ 'formClient.step5.contractPopUp.whoSigns' | translate }}
+        </label>
+      </div>
+      <div>
+        <app-generic-input
+          [label]="'formClient.step5.contractPopUp.name' | translate"
+          [typeValidation]="inputValidators.AlphaAndSpaces"
+          [required]="true"
+          [value]="(contract$ | async).NombreFirma"
+          (textData)="setDataContract('NombreFirma', $event)"
+        >
+        </app-generic-input>
+      </div>
+      <div>
+        <app-generic-input
+          [label]="'formClient.step5.contractPopUp.lastName' | translate"
+          [typeValidation]="inputValidators.AlphaAndSpaces"
+          [required]="true"
+          [value]="(contract$ | async).ApellidoPaternoFirma"
+          (textData)="setDataContract('ApellidoPaternoFirma', $event)"
+        >
+        </app-generic-input>
+      </div>
+      <div>
+        <app-generic-input
+          [label]="'formClient.step5.contractPopUp.mothersLastName' | translate"
+          [typeValidation]="inputValidators.AlphaAndSpaces"
+          [required]="true"
+          [value]="(contract$ | async).ApellidoMaternoFirma"
+          (textData)="setDataContract('ApellidoMaternoFirma', $event)"
+        >
+        </app-generic-input>
+      </div>
+      <div>
+        <label *ngIf="(contract$ | async)?.Contrato">
+          {{ 'formClient.step5.contractPopUp.agentLegalClient' | translate }}
+        </label>
+        <label *ngIf="(contract$ | async)?.Acuerdo">
+          {{ 'formClient.step5.contractPopUp.whoSignsProquifa' | translate }}
+        </label>
+      </div>
+      <div>
+        <app-generic-input
+          *ngIf="(contract$ | async)?.Contrato"
+          [label]="'formClient.step5.contractPopUp.name' | translate"
+          [typeValidation]="inputValidators.AlphaAndSpaces"
+          [required]="true"
+          [value]="(contract$ | async)?.NombreRepresentanteLegalFirma"
+          (textData)="setDataContract('NombreRepresentanteLegalFirma', $event)"
+        >
+        </app-generic-input>
+        <app-generic-input
+          *ngIf="(contract$ | async)?.Acuerdo"
+          [label]="'formClient.step5.contractPopUp.name' | translate"
+          [typeValidation]="inputValidators.AlphaAndSpaces"
+          [required]="true"
+          [value]="(contract$ | async)?.NombreRepresentanteLegalEmpresa"
+          (textData)="setDataContract('NombreRepresentanteLegalEmpresa', $event)"
+        >
+        </app-generic-input>
+      </div>
+      <div>
+        <app-generic-input
+          *ngIf="(contract$ | async)?.Contrato"
+          [label]="'formClient.step5.contractPopUp.lastName' | translate"
+          [typeValidation]="inputValidators.AlphaAndSpaces"
+          [required]="true"
+          [value]="(contract$ | async).ApellidoPaternoRepresentanteLegalFirma"
+          (textData)="setDataContract('ApellidoPaternoRepresentanteLegalFirma', $event)"
+        >
+        </app-generic-input>
+        <app-generic-input
+          *ngIf="(contract$ | async)?.Acuerdo"
+          [label]="'formClient.step5.contractPopUp.lastName' | translate"
+          [typeValidation]="inputValidators.AlphaAndSpaces"
+          [required]="true"
+          [value]="(contract$ | async).ApellidoPaternoRepresentanteLegalEmpresa"
+          (textData)="setDataContract('ApellidoPaternoRepresentanteLegalEmpresa', $event)"
+        >
+        </app-generic-input>
+      </div>
+      <div>
+        <app-generic-input
+          *ngIf="(contract$ | async)?.Contrato"
+          [label]="'formClient.step5.contractPopUp.mothersLastName' | translate"
+          [typeValidation]="inputValidators.AlphaAndSpaces"
+          [required]="true"
+          [value]="(contract$ | async).ApellidoMaternoRepresentanteLegalFirma"
+          (textData)="setDataContract('ApellidoMaternoRepresentanteLegalFirma', $event)"
+        >
+        </app-generic-input>
+        <app-generic-input
+          *ngIf="(contract$ | async)?.Acuerdo"
+          [label]="'formClient.step5.contractPopUp.mothersLastName' | translate"
+          [typeValidation]="inputValidators.AlphaAndSpaces"
+          [required]="true"
+          [value]="(contract$ | async)?.ApellidoMaternoRepresentanteLegalEmpresa"
+          (textData)="setDataContract('ApellidoMaternoRepresentanteLegalEmpresa', $event)"
+        >
+        </app-generic-input>
+      </div>
+      <div>
+        <label *ngIf="(contract$ | async)?.Contrato">
+          {{ 'formClient.step5.contractPopUp.contractor' | translate }}
+        </label>
+      </div>
+      <div class="business-name">
+        <app-drop-down-list
+          *ngIf="(contract$ | async)?.Contrato"
+          [isSearchable]="(enterprises$ | async)?.length > 5"
+          [itemSelected]="enterpriseSelected$ | async"
+          [items]="enterprises$ | async"
+          [label]="'formClient.step5.contractPopUp.bussinessName' | translate"
+          [required]="true"
+          (valueDropList)="setDataContractBussinessName($event)"
+        ></app-drop-down-list>
+        <app-generic-input
+          *ngIf="(contract$ | async)?.Acuerdo"
+          [label]="'formClient.step5.contractPopUp.position' | translate"
+          [typeValidation]="inputValidators.AlphaAndSpaces"
+          [required]="true"
+          [value]="(contract$ | async)?.Puesto"
+          (textData)="setDataContract('Puesto', $event)"
+        >
+        </app-generic-input>
+      </div>
+      <div *ngIf="(contract$ | async)?.Contrato">
+        <label>
+          {{ 'formClient.step5.contractPopUp.agentLegal' | translate }}
+        </label>
+      </div>
+      <div *ngIf="(contract$ | async)?.Contrato">
+        <app-generic-input
+          [label]="'formClient.step5.contractPopUp.name' | translate"
+          [typeValidation]="inputValidators.AlphaAndSpaces"
+          [required]="true"
+          [value]="(contract$ | async).NombreRepresentanteLegalEmpresa"
+          (textData)="setDataContract('NombreRepresentanteLegalEmpresa', $event)"
+        >
+        </app-generic-input>
+      </div>
+      <div *ngIf="(contract$ | async)?.Contrato">
+        <app-generic-input
+          [label]="'formClient.step5.contractPopUp.lastName' | translate"
+          [typeValidation]="inputValidators.AlphaAndSpaces"
+          [required]="true"
+          [value]="(contract$ | async).ApellidoPaternoRepresentanteLegalEmpresa"
+          (textData)="setDataContract('ApellidoPaternoRepresentanteLegalEmpresa', $event)"
+        >
+        </app-generic-input>
+      </div>
+      <div *ngIf="(contract$ | async)?.Contrato">
+        <app-generic-input
+          [label]="'formClient.step5.contractPopUp.mothersLastName' | translate"
+          [typeValidation]="inputValidators.AlphaAndSpaces"
+          [required]="true"
+          [value]="(contract$ | async).ApellidoMaternoRepresentanteLegalEmpresa"
+          (textData)="setDataContract('ApellidoMaternoRepresentanteLegalEmpresa', $event)"
+        >
+        </app-generic-input>
+      </div>
+    </div>
+    <div class="observations">
+      <app-generic-text-area
+        [title]="'Observaciones'"
+        [height]="(viewType$ | async) === viewTypes.small ? '83px' : '100px'"
+        [value]="(contract$ | async)?.Observacion"
+        (emitData)="setDataContract('Observacion', $event)"
+      ></app-generic-text-area>
+    </div>
+    <footer>
+      <label> *{{ 'formClient.step5.contractPopUp.requiredData' | translate }} </label>
+    </footer>
+  </div>
+</app-pop-up-generic>

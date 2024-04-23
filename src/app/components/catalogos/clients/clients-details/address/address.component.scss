@@ -1,0 +1,646 @@
+@use 'base' as s;
+* {
+  box-sizing: border-box;
+}
+:host {
+  @include s.absolute100;
+  #registerDir {
+    @include s.absolute100;
+    @include s.flexColumn;
+    & > .schedules-data {
+      @include s.flexRow;
+      flex: 1 1 auto;
+      overflow: hidden;
+      & > .direcciones {
+        @include s.flexColumn;
+        flex: 0 0 650px;
+        padding: 15px 15px 15px 0;
+        & > .title {
+          border-bottom: 1px solid s.$pqBlack2;
+          & > label {
+            @include s.Novecento-Bold;
+            @include s.escaledFontFormatImportant(s.$textSize17to21, bold, s.$pqBlack2);
+          }
+          & > div {
+            padding: 15px 0;
+          }
+        }
+        & > .listaDir {
+          @include s.flexColumn;
+          flex: 1;
+          overflow: auto;
+          & > .lista {
+            @include s.flexColumn;
+            flex: 1;
+            & > .item {
+              @include s.flexRow;
+              &:hover {
+                background-color: s.$pqGray2;
+              }
+              & .active {
+                background-color: s.$pqGray2;
+              }
+              * {
+                cursor: pointer;
+              }
+              & > .indicator {
+                height: 100%;
+                width: 5px;
+                &.active {
+                  background-color: s.$pqGreen;
+                }
+              }
+              & > .datosDireccion {
+                @include s.flexRow;
+                flex: 1;
+                padding: 10px 15px 10px 7px;
+                & > .datos {
+                  @include s.flexColumn;
+                  flex: 1;
+
+                  & > p {
+                    margin-bottom: 4px;
+                  }
+
+                  & > p:last-child {
+                    margin-bottom: 0;
+                  }
+
+                  & > .index {
+                    @include s.Roboto-Bold;
+                    @include s.escaledFontFormatImportant(s.$textSize15to20, bold, s.$pqGreen);
+                  }
+
+                  & > .address {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormatImportant(s.$textSize14to18, regular, s.$pqBlack2);
+                  }
+
+                  & > .city {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormatImportant(s.$textSize14to18, regular, s.$pqGreen);
+                  }
+                }
+                & > .type {
+                  align-items: center;
+                  display: flex;
+                  justify-content: center;
+                  flex: 0 0 150px;
+                  & > span {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormatImportant(s.$textSize15to20, regular, s.$pqGreen);
+                  }
+                }
+                & > .icons {
+                  @include s.flexColumn;
+                  flex: 0 0 150px;
+                  justify-content: space-between;
+                  & > .schedule-types {
+                    display: flex;
+                    justify-content: flex-end;
+                    & > img {
+                      height: 20px;
+                      padding: 0 5px;
+                    }
+                  }
+                  & > .actions {
+                    display: flex;
+                    justify-content: flex-end;
+                    & > img {
+                      height: 15px;
+                      padding: 0 5px;
+                    }
+                  }
+                }
+              }
+              &.active {
+                background-color: s.$pqGray2;
+              }
+            }
+          }
+        }
+        & > .btnAgregar {
+          @include s.flexColumn;
+          align-items: center;
+          border-top: 1px solid s.$pqBlack2;
+          & > div {
+            padding: 7px 0 15px 0;
+            & > label {
+              @include s.Roboto-Regular;
+              @include s.escaledFontFormatImportant(s.$textSize12to14, regular, s.$pqBlack2);
+            }
+          }
+          & > button {
+            &.active {
+              @include s.pqfButton();
+            }
+            &.disable {
+              @include s.pqfDisableButton();
+            }
+          }
+        }
+      }
+      & > .horarios {
+        @include s.flexColumn;
+        background-color: s.$pqGray2;
+        flex: 1 1 auto;
+        padding: 12px 14px;
+        overflow: hidden;
+        & > .title {
+          @include s.flexColumn;
+          border-bottom: 1px solid s.$pqBlack2;
+          & > .text {
+            & > label {
+              @include s.Novecento-Bold;
+              @include s.escaledFontFormatImportant(s.$textSize17to21, bold, s.$pqBlack2);
+              vertical-align: baseline;
+            }
+          }
+          & > .address {
+            padding: 17px 0 18px 0;
+            & > label {
+              @include s.Roboto-Regular;
+              @include s.escaledFontFormatImportant(s.$textSize15to20, regular, s.$pqBlack2);
+              & > .green {
+                @include s.Roboto-Bold;
+                color: s.$pqGreen;
+                vertical-align: baseline;
+              }
+              & > .black {
+                @include s.Roboto-Bold;
+                color: s.$pqBlack2;
+                vertical-align: baseline;
+              }
+            }
+          }
+        }
+        & > .schedule-info {
+          overflow: auto;
+          & > .sectionEntrega {
+            border-bottom: 1px solid s.$pqBlack2;
+            padding: 20px 15px;
+            & > .tipoHorarios {
+              @include s.flexRow;
+              & > .imgTipo {
+                flex: 0 0 100px;
+                & > div {
+                  @include s.flexColumn;
+                  align-items: center;
+                  height: 100%;
+                  justify-content: center;
+                  & > img {
+                    height: 35px;
+                  }
+                  & > label {
+                    @include s.Roboto-Bold;
+                    @include s.escaledFontFormatImportant(s.$textSize15to20, bold, s.$pqBlack2);
+                    padding-top: 7px;
+                  }
+                }
+              }
+              & > .address {
+                @include s.flexRow;
+                flex: 1 1 auto;
+                justify-content: center;
+                & > .content {
+                  @include s.flexColumn;
+                  align-items: flex-end;
+
+                  & > div {
+                    & > .schedule-content {
+                      margin: 2px 0;
+                      & > label {
+                        @include s.Roboto-Regular;
+                        @include s.escaledFontFormatImportant(s.$textSize15to18, regular, s.$pqBlack2);
+                        & > span {
+                          color: s.$pqGreen;
+                          vertical-align: baseline;
+                        }
+                      }
+                    }
+                  }
+                }
+                & > .pencilEdit {
+                  padding-left: 15px;
+                  & > img {
+                    cursor: pointer;
+                  }
+                }
+              }
+              & > .btn {
+                @include s.flexRow;
+                align-items: center;
+                flex: 1;
+                justify-content: flex-end;
+                & > button {
+                  $max-width-map: (
+                    'base': 200px,
+                    'macBookAir': 270px,
+                  );
+                  &.active {
+                    @include s.pqfButton($max-width-map: $max-width-map);
+                  }
+                  &.disable {
+                    @include s.pqfDisableButton($max-width-map: $max-width-map);
+                  }
+                }
+              }
+            }
+            & > .content {
+              @include s.flexColumn;
+              padding-top: 20px;
+              & > .configuraciones-entrega {
+                & > div {
+                  & > label {
+                    @include s.Roboto-Bold;
+                    @include s.escaledFontFormatImportant(s.$textSize15to18, bold, s.$pqBlack2);
+                  }
+                }
+                & > .container-items {
+                  align-items: center;
+                  display: grid;
+                  grid-template-columns: repeat(3, 1fr);
+                  grid-template-rows: 1fr;
+                  grid-column-gap: 15px;
+                  grid-row-gap: 15px;
+                  margin-top: 10px;
+                  /*                  height: 40px;*/
+                  & > div {
+                    @include s.flexRow;
+                    align-items: center;
+                    & > .input {
+                      justify-content: flex-start;
+                      flex: 1;
+                    }
+                  }
+                }
+              }
+              & > .configuraciones {
+                padding: 20px 0;
+                & > div {
+                  & > label {
+                    @include s.Roboto-Bold;
+                    @include s.escaledFontFormatImportant(s.$textSize15to18, bold, s.$pqBlack2);
+                  }
+                }
+                & > .container-items {
+                  display: grid;
+                  grid-template-columns: repeat(3, 1fr);
+                  grid-template-rows: 1fr;
+                  grid-column-gap: 15px;
+                  grid-row-gap: 15px;
+                  margin-top: 10px;
+                  /*                  padding-top: 7px;*/
+                  /*                  height: 45px;*/
+                  & > div {
+                    @include s.flexRow;
+                    padding: 7px 15px;
+                  }
+                  :nth-child(1) {
+                    padding: 0;
+                  }
+                  :last-child {
+                    padding: 0;
+                  }
+                }
+              }
+              & > .comment-container {
+                @include s.flexColumn;
+                padding-top: 20px;
+                & > div {
+                  margin-bottom: 5px;
+                  & > label {
+                    @include s.Roboto-Bold;
+                    @include s.escaledFontFormatImportant(s.$textSize15to18, bold, s.$pqBlack2);
+                  }
+                }
+                & > .comment {
+                  @include s.flexRow;
+                  align-items: center;
+                  & > div {
+                    display: flex;
+                    flex: 1;
+                  }
+                  & > button {
+                    margin-left: 10px;
+                    $max-width-map: (
+                      'base': 200px,
+                      'macBookAir': 270px,
+                    );
+                    &.btnEnable {
+                      @include s.pqfButton($max-width-map: $max-width-map);
+                    }
+                    &.btnDisable {
+                      @include s.pqfDisableButton($max-width-map: $max-width-map);
+                    }
+                  }
+                }
+                & > .commentsList {
+                  @include s.flexColumn;
+                  & > div {
+                    @include s.flexRow;
+                    background-color: rgba(s.$pqGreen, 0.12);
+                    margin: 4px 0;
+                    padding: 5px 20px;
+                    & > div {
+                      display: flex;
+                      column-gap: 20px;
+                      flex: 1;
+                      overflow: hidden;
+                      & > .info {
+                        flex: 1;
+                        overflow: hidden;
+                        & > label {
+                          @include s.Roboto-Regular;
+                          @include s.escaledFontFormatImportant(s.$textSize13to16, regular, s.$pqBlack2);
+                          word-break: break-word;
+                        }
+                      }
+                      & > .img {
+                        @include s.flexRow;
+                        align-items: flex-start;
+                        & > img {
+                          cursor: pointer;
+                          height: 10px;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+              @include s.responsive_layout('media-1800') {
+                & > .configuraciones-entrega {
+                  & > .container-items {
+                    align-items: center;
+                    display: grid;
+                    grid-template-columns: repeat(4, 1fr);
+                    grid-template-rows: 1fr;
+                    /*                    grid-column-gap: 15px;*/
+                    grid-row-gap: 15px;
+                    height: 45px;
+                    margin-top: 0;
+                  }
+                }
+                & > .configuraciones {
+                  & > .container-items {
+                    display: grid;
+                    grid-template-columns: repeat(4, 1fr);
+                    grid-template-rows: 1fr;
+                    grid-column-gap: 15px;
+                    /*                    grid-row-gap: 15px;*/
+                    padding-top: 7px;
+                    height: 45px;
+                    margin-top: 0;
+                  }
+                }
+              }
+            }
+          }
+        }
+        & > .without-results {
+          @include s.flexRow;
+          align-items: center;
+          flex: 1;
+        }
+      }
+    }
+    & > footer {
+      @include s.flexRow;
+      border-top: 2px solid s.$pqBlack2;
+      width: 100%;
+      height: 55px;
+      & > .footer {
+        @include s.flexRow;
+        align-items: center;
+        justify-content: flex-end;
+        flex: 1;
+        height: 55px;
+        padding: 0 20px;
+        & > div {
+          @include s.flexRow;
+          justify-content: flex-end;
+          & > button {
+            $max-width-map: (
+              'base': 100px,
+              'macBookAir': 150px,
+            );
+            @include s.pqfButton($max-width-map: $max-width-map);
+          }
+        }
+        & > .two-buttons {
+          @include s.flexRow;
+          flex: 1;
+          justify-content: space-between;
+          & > button {
+            @include s.pqfButton();
+          }
+        }
+      }
+    }
+  }
+  .disable {
+    pointer-events: none;
+
+    & > div {
+      & > div {
+        & > app-check-box {
+          opacity: 0.8;
+        }
+      }
+
+      & > span,
+      label {
+        color: #c2c3c9 !important;
+        opacity: 1 !important;
+      }
+
+      & > app-generic-input {
+        opacity: 0.8 !important;
+      }
+
+      & > app-check-box,
+      app-drop-down-list {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #registerDir {
+      & > .schedules-data {
+        @include s.flexRow;
+        flex: 1 1 auto;
+        overflow: hidden;
+        & > .direcciones {
+          flex: 0 0 900px;
+          padding: 20px 20px 20px 0;
+          & > .title {
+            border-bottom: 1px solid s.$pqBlack2;
+            & > label {
+              @include s.Novecento-Bold;
+              @include s.escaledFontFormatImportant(s.$textSize17to21, bold, s.$pqBlack2);
+            }
+            & > div {
+              padding: 20px 0;
+            }
+          }
+          & > .listaDir {
+            & > .lista {
+              & > .item {
+                & > .indicator {
+                  height: 100%;
+                  width: 7px;
+                }
+                & > .datosDireccion {
+                  padding: 15px 20px 15px 10px;
+                  & > .icons {
+                    & > .schedule-types {
+                      & > img {
+                        height: 30px;
+                        padding: 0 5px;
+                      }
+                    }
+                    & > .actions {
+                      & > img {
+                        height: 20px;
+                        padding: 0 10px;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          & > .btnAgregar {
+            & > div {
+              padding: 10px 0 20px 0;
+            }
+          }
+        }
+        & > .horarios {
+          padding: 14px 18px;
+          & > .title {
+            & > .address {
+              padding: 23px 0;
+            }
+          }
+          & > .schedule-info {
+            & > .sectionEntrega {
+              padding: 20px 15px;
+              & > .tipoHorarios {
+                & > .imgTipo {
+                  & > div {
+                    & > img {
+                      height: 45px;
+                    }
+                    & > label {
+                      padding-top: 10px;
+                    }
+                  }
+                }
+                & > .address {
+                  & > .content {
+                    & > div {
+                      & > .schedule-content {
+                        margin: 3px 0;
+                      }
+                    }
+                  }
+                  & > .pencilEdit {
+                    padding-left: 20px;
+                  }
+                }
+              }
+              & > .content {
+                padding-top: 30px;
+                & > .configuraciones-entrega {
+                  & > .container-items {
+                    align-items: center;
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    grid-template-rows: 1fr;
+                    grid-column-gap: 15px;
+                    grid-row-gap: 15px;
+                    height: auto;
+                    margin-top: 10px;
+                  }
+                }
+                & > .configuraciones {
+                  & > .container-items {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    grid-template-rows: 1fr;
+                    grid-column-gap: 15px;
+                    grid-row-gap: 15px;
+                    height: auto;
+                    margin-top: 10px;
+                  }
+                }
+                & > .comment-container {
+                  padding-top: 25px;
+                  & > div {
+                    margin-bottom: 10px;
+                  }
+                  & > .comment {
+                    & > .button {
+                      padding: 10px 0;
+                    }
+                  }
+                  & > .commentsList {
+                    & > div {
+                      margin: 5px 0;
+                      padding: 10px 30px;
+                      & > div {
+                        & > .img {
+                          & > img {
+                            height: 15px;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+                @include s.responsive_layout('media-2300') {
+                  & > .configuraciones-entrega {
+                    & > .container-items {
+                      align-items: center;
+                      display: grid;
+                      grid-template-columns: repeat(4, 1fr);
+                      grid-template-rows: 1fr;
+                      /*                    grid-column-gap: 15px;*/
+                      grid-row-gap: 15px;
+                      height: 45px;
+                    }
+                  }
+                  & > .configuraciones {
+                    & > .container-items {
+                      display: grid;
+                      grid-template-columns: repeat(4, 1fr);
+                      grid-template-rows: 1fr;
+                      grid-column-gap: 15px;
+                      /*                    grid-row-gap: 15px;*/
+                      padding-top: 7px;
+                      height: 45px;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      & > footer {
+        height: 50px;
+        & > .footer {
+          height: 50px;
+          padding: 0 15px;
+        }
+      }
+    }
+  }
+}
+.messageEmptyList {
+  @include s.flexRow;
+  @include s.absoluteCenter;
+  flex: 1 1 auto;
+}

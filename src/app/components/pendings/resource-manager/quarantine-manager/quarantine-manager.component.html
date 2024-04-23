@@ -1,0 +1,19 @@
+<div class="component-container" id="quarantine-manager">
+  <div class="header">
+    <app-header-bar [activeBack]="detailsMode$ | async" [title]="title$ | async" (goBack)="returnMainPage()"></app-header-bar>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+
+  <div class="footer" *ngIf="!(detailsMode$ | async)">
+    <div class="list-footer" *ngIf="!(detailsMode$ | async)">
+      <label><span>OC:</span> {{ 'common.purchaseOrder' | translate }}</label>
+    </div>
+    <div class="details-footer" *ngIf="detailsMode$ | async">
+      <label><span>FEE: </span>{{ 'confirmDispatch.estimatedDelivery' | translate }}</label>
+      <label><span>DRE: </span>{{ 'quarantineManager.remainingDaysOfDelivery' | translate }}</label>
+      <label><span>UEP: </span>{{ 'quarantineManager.pending' | translate }}</label>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+<div class="cont" [ngClass]="disable ? 'disable' : ''">
+  <p
+    (click)="toggleSwitch('left')"
+    [ngClass]="items.selected == 'left' ? 'selected' : 'textNormal'"
+    [style.font-size]="items.fontSize ? items.fontSize : '14px'"
+    >{{ items.leftOptionText }}</p
+  >
+  <div [style.background-color]="backgroundColor" class="switch">
+    <div class="click" (click)="toggleSwitch('left')"></div>
+    <div class="click" (click)="toggleSwitch('right')"></div>
+    <div
+      class="circle"
+      [ngClass]="{
+        'circle-left': items.selected === 'left',
+        'circle-center': items.selected === 'default',
+        'circle-right': items.selected === 'right'
+      }"
+    >
+    </div>
+  </div>
+  <p
+    (click)="toggleSwitch('right')"
+    [ngClass]="items.selected == 'right' ? 'selected' : 'textNormal'"
+    [style.font-size]="items.fontSize ? items.fontSize : '14px'"
+    >{{ items.rightOptionText }}</p
+  >
+</div>

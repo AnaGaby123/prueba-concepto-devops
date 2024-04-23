@@ -1,0 +1,41 @@
+<div class="item">
+  <div class="number">
+    <label>{{ '#' + (index + 1) }}</label>
+  </div>
+  <div class="content">
+    <div class="name">
+      <label>{{ dailyMeeting.UsuarioTramita || 'N/D' }}</label>
+    </div>
+    <div class="classification">
+      <label>{{
+        ('dailyMeeting.valueTotalClosing' | translate) +
+          ': ' +
+          ((dailyMeeting?.TotalCotizadoUSD ? dailyMeeting?.TotalCotizadoUSD : 0) | currency: 'USD') +
+          ' USD'
+      }}</label>
+    </div>
+    <div class="states">
+      <div>
+        <img alt="quotes" src="assets/Images/quotation/quotes.svg" />
+        <label>{{
+          (dailyMeeting.IdCotCotizacion | number: '1.0-0') +
+            (dailyMeeting.IdCotCotizacion === 1
+              ? ' ' + ('dailyMeeting.quotation' | translate)
+              : ' ' + ('dailyMeeting.quotations' | translate))
+        }}</label>
+      </div>
+      <div class="clients" *ngIf="dailyMeeting.IdCliente > 0">
+        <label>{{
+          '· ' +
+            (dailyMeeting.IdCliente | number: '1.0-0') +
+            (dailyMeeting.IdCliente === 1
+              ? ' ' + ('dailyMeeting.customer' | translate)
+              : ' ' + ('dailyMeeting.customers' | translate))
+        }}</label>
+      </div>
+    </div>
+  </div>
+  <div class="arrow">
+    <img alt="arrow" src="assets/Images/arrows/arrow_right.svg" />
+  </div>
+</div>

@@ -1,0 +1,49 @@
+<div id="link-new-contact">
+  <div class="search">
+    <app-search
+      class="search-input"
+      [searchTerm]="searchTerm$ | async"
+      [placeholder]="'Buscar Cliente'"
+      (textSearch)="handleKeySearch($event)"
+    ></app-search>
+  </div>
+
+  <div class="info" [ngClass]="!(clientList$ | async)?.length && 'info-content'">
+    <div class="list" *ngIf="(clientListStatus$ | async) === statusRequest.Success && (clientList$ | async).length">
+      <virtual-scroller>
+        <app-link-new-contact-item *ngFor="let client of clientList$ | async" [client]="client"></app-link-new-contact-item>
+      </virtual-scroller>
+    </div>
+    <div class="loading" *ngIf="(clientListStatus$ | async) === statusRequest.Loading">
+      <app-loading></app-loading>
+    </div>
+    <div
+      class="without-results"
+      *ngIf="(clientList$ | async)?.length === 0 && (clientListStatus$ | async) === statusRequest.Success"
+    >
+      <app-without-results></app-without-results>
+    </div>
+
+    <ng-container *ngIf="(clientListStatus$ | async) === statusRequest.Default">
+      <label class="requesting-new-customer-text">
+        Estás atendiendo la solicitud de un cliente nuevo
+      </label>
+      <label class="request-description-text">
+        Es necesario consultar la existencia del cliente antes de crear uno nuevo, utiliza el buscador para realizar tu
+        consulta.
+      </label>
+    </ng-container>
+  </div>
+  <div class="add-client">
+    <button
+      (click)="goToAddClient()"
+      [ngClass]="
+        (clientList$ | async)?.length === 0 && (clientListStatus$ | async) === statusRequest.Success
+          ? 'button-enable'
+          : 'button-disabled'
+      "
+    >
+      <label>Agregar nuevo cliente</label>
+    </button>
+  </div>
+</div>

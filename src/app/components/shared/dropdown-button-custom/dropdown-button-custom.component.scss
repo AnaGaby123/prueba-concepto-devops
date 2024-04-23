@@ -1,0 +1,224 @@
+@use 'base' as s;
+
+:host {
+  width: 100%;
+  height: 100%;
+
+  #principal-container {
+    @include s.flexRow;
+    width: 100%;
+    height: 100%;
+
+    & > .menu {
+      @include s.flexColumn;
+      width: 100%;
+      position: relative;
+
+      section {
+        @include s.flexRow;
+        background-color: s.$pqWhite;
+        box-shadow: 0 2px 4px -1px rgb(0 0 0 / 20%), 0 4px 5px 0 rgb(0 0 0 / 14%), 0 1px 10px 0 rgb(0 0 0 / 12%);
+        position: absolute !important;
+        overflow: hidden;
+        top: 40px;
+        transition: 0.5s;
+        left: 0;
+        width: 100%;
+        z-index: 2;
+
+        & > div {
+          @include s.flexRowNoWrap;
+          width: 100%;
+          height: 300px;
+          box-sizing: border-box;
+          border: 1px solid s.$pqGray2;
+          padding: 20px;
+          justify-content: space-between;
+
+          & > div {
+            @include s.flexColumn;
+            width: 32%;
+            height: 100%;
+            cursor: pointer;
+
+            & > div {
+              @include s.flexColumn;
+              @include s.absoluteCenter;
+
+              & > label {
+                cursor: pointer;
+              }
+
+              & > label:nth-of-type(1) {
+                @include s.escaledFontFormat(s.$textSize11to12, bold, s.$pqWhite);
+                @include s.Novecento-Bold;
+
+                & > sup {
+                  @include s.escaledFontFormat(s.$textSize11to12, bold, s.$pqWhite);
+                  @include s.Novecento-Bold;
+                  padding-left: 3px;
+                  font-size: smaller;
+                  vertical-align: super;
+                }
+              }
+
+              & > label:nth-of-type(2) {
+                @include s.escaledFontFormat(s.$textSize10to11, regular, s.$pqWhite);
+                @include s.Novecento;
+              }
+
+              & > hr {
+                width: 60%;
+                border: 0.5px solid white;
+              }
+            }
+          }
+
+          & > .column-one,
+          .column-three {
+            justify-content: space-between;
+
+            & > .container-one {
+              height: 30%;
+            }
+
+            & > .container-two {
+              height: 30%;
+            }
+
+            & > .container-three {
+              height: 30%;
+            }
+          }
+
+          & > .column-one {
+            & > .container-one {
+              background-color: #9a1d1f;
+            }
+
+            & > .container-two {
+              background-color: #82191c;
+            }
+
+            & > .container-three {
+              background-color: #601311;
+            }
+          }
+
+          & > .column-two {
+            justify-content: space-between;
+
+            & > .container-one {
+              height: 65%;
+              background-color: #424242;
+            }
+
+            & > .container-two {
+              height: 30%;
+              background-color: #008894;
+            }
+          }
+
+          & > .column-three {
+            & > .container-one {
+              background-color: #86a13c;
+            }
+
+            & > .container-two {
+              background-color: #6e8830;
+            }
+
+            & > .container-three {
+              background-color: #526721;
+            }
+          }
+        }
+      }
+    }
+
+    & > .menu > div:hover {
+      background-color: s.$pqGreen;
+      cursor: pointer;
+      transition: background-color 0.5ms;
+
+      & > .text {
+        & > label {
+          color: s.$pqWhite !important;
+        }
+      }
+
+      & > .icons > div {
+        background-color: s.$pqWhite;
+      }
+    }
+
+    & > .menu:focus {
+      @include s.focusDisable;
+    }
+
+    & .menu > div {
+      @include s.flexRow;
+      width: 100%;
+      height: 40px;
+      justify-content: flex-start;
+      align-items: center;
+      box-sizing: border-box;
+      background-color: s.$pqGray2;
+      border: 1px solid s.$gris;
+      padding: 8px 15px 8px 15px;
+
+      & > .icons {
+        @include s.flexColumn;
+        height: 100%;
+        box-sizing: border-box;
+        padding-right: 15px;
+        justify-content: center;
+        transition: all 0.5s ease-in-out;
+
+        & > div {
+          @include s.flexRow;
+          width: 20px;
+          height: 1px;
+          background: s.$gris;
+          box-sizing: border-box;
+          transition: all 0.5s ease-in-out;
+        }
+
+        & > div:nth-of-type(2) {
+          cursor: pointer;
+          margin-top: 5px;
+          margin-bottom: 5px;
+        }
+      }
+
+      & > .text {
+        @include s.flexRow;
+        width: calc(100% - 43px);
+        justify-content: center;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize16to20, regular, s.$pqBlack2);
+          @include s.Novecento-Bold;
+        }
+      }
+
+      & > .close {
+        @include s.flexColumn;
+        height: 100%;
+        box-sizing: border-box;
+        padding-right: 15px;
+        justify-content: center;
+
+        & > div:first-child {
+          transition: flex-basis 0.5s ease-in-out;
+          flex-basis: 0;
+        }
+
+        & > div:last-child {
+          transition: flex-basis 0.5s ease-in-out;
+          flex-basis: 0;
+        }
+      }
+    }
+  }
+}

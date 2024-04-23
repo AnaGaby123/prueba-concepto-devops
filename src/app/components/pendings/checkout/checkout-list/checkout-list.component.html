@@ -1,0 +1,116 @@
+<div class="dashboard-container" id="checkout-list-container">
+  <div class="left-container">
+    <label class="title">{{ 'checkout.customers' | translate }}</label>
+    <div class="tabs">
+      <app-tabs
+        [options]="options$ | async"
+        [tapSelected]="tapSelected$ | async"
+        (onSelectOption)="onSelectOption($event)"
+      ></app-tabs>
+    </div>
+    <div class="filters">
+      <div class="filter-by-type">
+        <app-hamburger-menu
+          [options]="valueFilter$ | async"
+          [value]="(filterType$ | async).value"
+          (valueEmit)="selectFilterByType($event)"
+        >
+        </app-hamburger-menu>
+      </div>
+    </div>
+    <div class="search-bar">
+      <app-search
+        [imageFill]="'#008894'"
+        [isSearchByType]="true"
+        [placeholder]="'Cliente, #OC'"
+        [searchTerm]="searchTerm$ | async"
+        [typeSelected]="selectedSearchType$ | async"
+        [typesOfSearch]="searchTypes$ | async"
+        (textSearch)="handleKeySearch($event)"
+        (handleTypeSelected)="setSearchType($event)"
+      ></app-search>
+    </div>
+    <div class="list-container">
+      <virtual-scroller
+        *ngIf="(listOrders$ | async)?.length > 0 && !(isLoadingListOrders$ | async)"
+        class="virtual-list"
+        [items]="listOrders$ | async"
+        [bufferAmount]="defaultBufferAmount"
+        (vsUpdate)="listOrdersScrollItems = $event"
+      >
+        <div
+          class="item"
+          *ngFor="let order of listOrdersScrollItems; trackBy: handleTrackByIdClient"
+          (click)="redirectToDetails(order)"
+        >
+          <div class="number">
+            <label>{{ '#' + order.Index }}</label>
+          </div>
+          <div class="content">
+            <div class="name">
+              <label>{{ order.Nombre }}</label>
+            </div>
+            <div class="classification">
+              <label *ngIf="order.ConOC > 0">{{ order.ConOC + ' OC' }}</label>
+              <label [ngClass]="'yellow'" *ngIf="order.OcInternaPendientetrue > 0">
+                {{ order.ConOC > 0 ? ' · ' : ''
+                }}{{ order.OcInternaPendientetrue + ' ' + ('preProcessing.pendingInternalOC' | translate) }}</label
+              >
+              <label [ngClass]="'yellow'" *ngIf="order.ConOcInterna > 0">
+                {{ order.ConOC > 0 ? ' · ' : ''
+                }}{{ order.ConOcInterna + ' ' + ('preProcessing.internalOC' | translate) }}</label
+              >
+              <label [ngClass]="'red'" *ngIf="order.SinOc > 0">
+                {{ order.ConOcInterna > 0 ? ' · ' : '' }}{{ order.SinOc + ' ' + ('checkout.withoutOC' | translate) }}</label
+              >
+              <label class="VT">{{
+                ' · VT ' + ((order.TotalUSD ? order.TotalUSD : 0) | currency: 'USD':'symbol-narrow':'1.2-2') + ' USD'
+              }}</label>
+            </div>
+          </div>
+          <div class="arrow">
+            <img alt="arrow" src="assets/Images/arrows/arrow_right.svg" />
+          </div>
+        </div>
+      </virtual-scroller>
+      <div class="without-results" *ngIf="(listOrders$ | async)?.length === 0 && !(isLoadingListOrders$ | async)">
+        <app-without-results></app-without-results>
+      </div>
+      <div class="loader">
+        <app-loading *ngIf="isLoadingListOrders$ | async"></app-loading>
+      </div>
+    </div>
+    <div class="footer">
+      <label>{{ '#' + (listTotals$ | async).index }}</label>
+      <label>{{
+        (listTotals$ | async)?.purchaseOrders +
+          ' ' +
+          ((listTotals$ | async)?.purchaseOrders === 1
+            ? ('checkout.purchaseOrder' | translate)
+            : ('checkout.purchaseOrders' | translate))
+      }}</label>
+      <label>{{
+        ('checkout.valueTotal' | translate) +
+          ': ' +
+          (((listTotals$ | async)?.totalValue ? (listTotals$ | async)?.totalValue : 0)
+            | currency: 'USD':'symbol-narrow':'2.2-4') +
+          ' USD'
+      }}</label>
+    </div>
+  </div>
+  <div class="right-container">
+    <ng-container *ngIf="!(isLoadingListOrders$ | async)">
+      <app-doughnut-chart
+        [data]="doughnutChartData$ | async"
+        [maxWidth]="'550px'"
+        [optionDetailsHover]="doughnutChartOptionDetailsHover$ | async"
+        [optionDetails]="doughnutChartOptionDetails$ | async"
+        [titleDetails]="'Totales'"
+        [title]="'common.clients' | translate"
+        [typeChart]="1"
+      ></app-doughnut-chart>
+      <app-bar-chart [maxWidth]="'700px'" [values]="valuesBarChart$ | async" [title]="titleBarChart"></app-bar-chart>
+    </ng-container>
+    <app-loading class="loading" *ngIf="isLoadingListOrders$ | async"></app-loading>
+  </div>
+</div>

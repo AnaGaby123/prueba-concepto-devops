@@ -1,0 +1,83 @@
+<div class="component-container" id="offer-adjustment-container" xmlns="http://www.w3.org/1999/html">
+  <div class="header">
+    <app-header-bar [activeBack]="detailsMode$ | async" [name]="''" [title]="title$ | async" (goBack)="returnMainPage()">
+    </app-header-bar>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+  <footer>
+    <ng-container *ngIf="!(detailsMode$ | async)">
+      <div>
+        <img alt="pending" src="assets/Images/quotation/quotes.svg" />
+        <label>{{ 'dailyMeeting.quotation' | translate }}</label>
+      </div>
+      <div>
+        <div class="red-circle"></div>
+        <label>{{ 'closeOffer.expiringQuotation' | translate }}</label>
+      </div>
+      <div>
+        <div class="green-circle"></div>
+        <label>{{ 'closeOffer.inTimeQuotation' | translate }}</label>
+      </div>
+      <div>
+        <span>{{ ('offerAdjustment.abrDelivery' | translate) + ':' }}</span>
+        <label>{{ 'offerAdjustment.deliveryTime' | translate }}</label>
+      </div>
+      <div>
+        <span>{{ ('offerAdjustment.abrPayment' | translate) + ':' }}</span>
+        <label>{{ 'offerAdjustment.paymentConditions' | translate }}</label>
+      </div>
+      <div>
+        <img alt="originales" src="assets/Images/pre-processing/originales.svg" />
+        <label>{{ 'offerAdjustment.originals' | translate }}</label>
+      </div>
+      <div>
+        <img alt="alternativas" src="assets/Images/pre-processing/alternativas.svg" />
+        <label>{{ 'offerAdjustment.alternatives' | translate }}</label>
+      </div>
+      <div>
+        <img alt="complementarias" src="assets/Images/pre-processing/complementarias.svg" />
+        <label>{{ 'offerAdjustment.complements' | translate }}</label>
+      </div>
+      <div>
+        <img alt="programadas" src="assets/Images/pre-processing/promocion.svg" />
+        <label>{{ 'offerAdjustment.promotion' | translate }}</label>
+      </div>
+      <div>
+        <img alt="ahorro" src="assets/Images/pre-processing/ahorro.svg" />
+        <label>{{ 'offerAdjustment.saving' | translate }}</label>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="detailsMode$ | async">
+      <div>
+        <img src="assets/Images/pre-processing/originales.svg" />
+        <label>{{ 'offerAdjustment.originals' | translate }}</label>
+      </div>
+      <div>
+        <img src="assets/Images/pre-processing/alternativas.svg" />
+        <label>{{ 'offerAdjustment.alternatives' | translate }}</label>
+      </div>
+      <div>
+        <img src="assets/Images/pre-processing/complementarias.svg" />
+        <label>{{ 'offerAdjustment.complements' | translate }}</label>
+      </div>
+      <div>
+        <img src="assets/Images/pre-processing/promocion.svg" />
+        <label>{{ 'offerAdjustment.promotion' | translate }}</label>
+      </div>
+      <div>
+        <img src="assets/Images/pre-processing/ahorro.svg" />
+        <label>{{ 'offerAdjustment.saving' | translate }}</label>
+      </div>
+      <div>
+        <img alt="pending" src="assets/Images/quotation/quotes.svg" />
+        <label>{{ 'offerAdjustment.quotation' | translate }}</label>
+      </div>
+      <div>
+        <span>TEE:</span>
+        <label>{{ 'offerAdjustment.timeOfDelivery' | translate }}</label>
+      </div>
+    </ng-container>
+  </footer>
+</div>

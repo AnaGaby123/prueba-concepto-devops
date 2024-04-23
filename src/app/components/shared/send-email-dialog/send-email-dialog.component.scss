@@ -1,0 +1,391 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+  line-height: initial;
+}
+
+:host {
+  @include s.absolute100;
+
+  app-pop-up-generic {
+    ::ng-deep .modal {
+      background: none;
+
+      & > .modal-content {
+        transition: none;
+      }
+    }
+  }
+
+  .container {
+    @include s.flexColumn;
+    @include s.absolute100;
+
+    & > .message-sender {
+      @include s.flexColumn;
+      flex: 1;
+      overflow: hidden;
+      padding-bottom: 15px;
+      width: 100%;
+
+      & > .message-content-data {
+        @include s.flexColumn;
+        padding: 20px 20px 0 20px;
+
+        & > div {
+          & > label {
+            @include s.escaledFontFormat(s.$textSize16to18, bold, s.$pqBlack2);
+            @include s.Novecento-Bold;
+            justify-self: flex-end;
+          }
+        }
+
+        & > .email-info-emails {
+          border-bottom: 1px solid s.$pqBlack2;
+          display: grid;
+          grid-template-columns: 98px 1fr 50px;
+          grid-template-rows: 30px;
+          place-items: center;
+
+          & > .contacts {
+            @include s.absolute100;
+            @include s.flexRowNoWrap;
+            align-items: center;
+            max-height: 21px;
+
+            & > div {
+              @include s.flexRowWrap;
+              align-items: center;
+              box-sizing: border-box;
+              height: 100%;
+              justify-content: flex-start;
+              max-height: 100%;
+              overflow-x: hidden;
+              overflow-y: auto;
+              width: calc(100% - 46px);
+
+              & > .item-contact {
+                margin: 0 5px;
+                width: 100%;
+
+                & > label:nth-of-type(1) {
+                  @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen);
+                  @include s.Roboto-Regular;
+                }
+              }
+            }
+
+            & > .contact-edit {
+              @include s.flexRowWrap;
+              overflow-y: hidden;
+              width: 100%;
+              & > input {
+                border: 0;
+                width: 100%;
+                height: 20px;
+                @include s.responsive-font-format(
+                  $color: s.$main-proquifa,
+                  $font-family: s.$font-family_roboto,
+                  $font-size-map: s.$responsive-font-16-16
+                );
+                &.error {
+                  color: s.$pqDanger;
+                }
+              }
+            }
+          }
+        }
+
+        & > .email-info {
+          @include s.flexRowNoWrap;
+          width: 100%;
+          height: 40px;
+          border-bottom: 1px solid s.$pqBlack2;
+          @include s.responsive_layout('macBookAir') {
+            height: 45px;
+          }
+
+          & > div:nth-of-type(1) {
+            @include s.flexRowNoWrap;
+            align-items: flex-end;
+            width: 105px;
+            height: 100%;
+            justify-content: flex-end;
+            padding-bottom: 5px;
+
+            & > label {
+              @include s.responsive-font-format(
+                $color: s.$dark-proquifa,
+                $font-family: s.$font-family_roboto_bold,
+                $font-size-map: s.$responsive-font-18-18,
+                $font-weight: s.$font-weight-bold
+              );
+            }
+          }
+
+          & > div:nth-of-type(2) {
+            @include s.flexRowNoWrap;
+            width: calc(100% - 105px);
+            height: 100%;
+            padding: 0 4px;
+
+            & > .contacts {
+              @include s.absolute100();
+              @include s.flexRowNoWrap;
+
+              & > div:nth-of-type(2) {
+                @include s.flexRow;
+                align-items: flex-end;
+                width: 46px;
+
+                & > app-drop-list-contact {
+                  width: 100%;
+                  height: 50%;
+                }
+              }
+
+              & > div:nth-of-type(1) {
+                @include s.flexRowWrap;
+                width: calc(100% - 46px);
+                height: 100%;
+                max-height: 100%;
+                align-items: flex-end;
+                justify-content: flex-start;
+                overflow-x: hidden;
+                overflow-y: auto;
+                padding: 2px 0;
+
+                & > .item-contact {
+                  width: 100%;
+                  margin: 3px 3px;
+
+                  & > input {
+                    border: 0;
+                    width: 100%;
+                    height: 20px;
+                    @include s.responsive-font-format(
+                      $color: s.$main-proquifa,
+                      $font-family: s.$font-family_roboto,
+                      $font-size-map: s.$responsive-font-16-16
+                    );
+                    &.error {
+                      color: s.$pqDanger;
+                    }
+                  }
+                  &.error {
+                    color: s.$pqDanger;
+                  }
+                }
+              }
+            }
+
+            & > .carbon-copy {
+              @include s.absolute100();
+              @include s.flexRowNoWrap;
+
+              & > app-multiple-emails-input {
+                align-items: flex-end;
+              }
+            }
+
+            & > .subject {
+              @include s.absolute100();
+              @include s.flexRowNoWrap;
+              align-items: flex-end;
+              justify-content: flex-start;
+
+              & > input {
+                @include s.responsive-font-format(
+                  $color: s.$main-proquifa,
+                  $font-family: s.$font-family_roboto,
+                  $font-size-map: s.$responsive-font-16-16
+                );
+                width: 100%;
+                height: 25px;
+                border-color: transparent;
+                outline: 0 none;
+              }
+            }
+          }
+
+          & > .contacts-drop {
+            align-self: center;
+          }
+        }
+
+        .cc {
+          height: auto !important;
+          width: auto;
+          flex: 0 1 40px;
+          max-height: 65px;
+          @include s.responsive_layout('macBookAir') {
+            flex: 0 1 45px;
+          }
+        }
+
+        & > .email-info-subject {
+          border-bottom: 1px solid s.$pqBlack2;
+          display: grid;
+          grid-template-columns: 98px 1fr;
+          grid-template-rows: 30px;
+          margin-top: 10px;
+          place-items: center;
+
+          & > .subject {
+            @include s.flexRowNoWrap;
+            @include s.absoluteCenter;
+            @include s.absolute100;
+            justify-content: flex-start;
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen);
+              @include s.Roboto-Regular;
+            }
+
+            & > input {
+              @include s.Roboto-Regular;
+              @include s.Roboto-Regular;
+              @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen);
+              display: flex;
+              flex: 1 1 auto;
+              outline: 0 none;
+              border: 0;
+              padding: 4px 5px 0 5px;
+            }
+          }
+        }
+      }
+
+      & > .attached-file {
+        @include s.flexRow;
+        @include s.absoluteCenter;
+        height: 30px;
+        width: 100%;
+        padding: 10px 20px 0 20px;
+
+        & > div:nth-of-type(1) {
+          @include s.flexRow;
+          @include s.absoluteCenter;
+          @include s.absolute100;
+          background-color: rgba(0, 136, 148, 0.07);
+          border-radius: 14px;
+          justify-content: flex-start;
+          padding: 0 20px;
+
+          & > label:nth-of-type(1) {
+            @include s.flexRow;
+            @include s.escaledFontFormat(s.$textSize13to15, regular, s.$pqGreen);
+            @include s.Roboto-Regular;
+          }
+        }
+      }
+
+      & > .filesContainer {
+        @include s.flexRowWrap;
+        max-height: 110px;
+        overflow: auto;
+        padding: 10px 20px 0 20px;
+
+        & > .file {
+          @include s.flexRowNoWrap;
+          align-items: center;
+          background-color: rgba(s.$pqGreen, 0.05);
+          border-radius: 15px;
+          justify-content: center;
+          margin: 5px;
+          max-width: 250px;
+          min-width: 90px;
+          padding: 5px 11px;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqGreen);
+            @include s.Roboto-Regular;
+            margin-right: 5px;
+            max-width: 120px;
+            overflow: hidden;
+            padding-right: 5px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
+      }
+
+      & > .comments {
+        @include s.flexRow;
+        @include s.absoluteCenter;
+        flex: 1;
+        overflow: hidden;
+        padding: 10px 20px 0 20px;
+        width: 100%;
+
+        & > app-generic-text-area {
+          @include s.absolute100;
+        }
+      }
+
+      .ngContainer {
+        @include s.flexColumn;
+        flex: 1 1 auto;
+        overflow-y: auto;
+      }
+    }
+
+    & > .buttons-container {
+      @include s.flexRow;
+      @include s.absoluteCenter;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0 20px 20px 20px;
+
+      & > .btn-disable {
+        @include s.pqfDisableButton();
+      }
+
+      & > .btn-enable {
+        @include s.pqfButton();
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    .container {
+      & > .message-sender {
+        & > .message-content-data {
+          padding: 25px 25px 0 25px;
+
+          & > .email-info-emails {
+            grid-template-columns: 110px 1fr 50px;
+            grid-template-rows: 40px;
+          }
+
+          & > .email-info-with-copy {
+            grid-template-columns: 110px 1fr;
+            grid-template-rows: 40px;
+          }
+
+          & > .email-info-subject {
+            grid-template-columns: 110px 1fr;
+            grid-template-rows: 40px;
+
+            & > .subject {
+              & > input {
+                padding: 2px 5px 0 5px;
+              }
+            }
+          }
+        }
+
+        & > .attached-file,
+        .filesContainer,
+        .comments {
+          padding: 15px 25px 0 25px;
+        }
+      }
+
+      & > .buttons-container {
+        padding: 0 25px 25px 25px;
+      }
+    }
+  }
+}

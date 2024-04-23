@@ -1,0 +1,226 @@
+<div class="container-padding">
+  <div class="price-info">
+    <label class="subtitle-black">{{ 'productsManager.additionalData' | translate }}</label>
+    <div class="section">
+      <label class="gray">{{ 'quotation.details.section.detailsProducts.priceUn' | translate }}: </label>
+      <label class="green">
+        {{ productData.PrecioDeVenta | currency: (quotationCurrency$ | async):'':'1.2-2' }}
+        {{ quotationCurrency$ | async }}
+      </label>
+    </div>
+    <div class="section">
+      <label class="gray">{{ 'quotation.details.section.detailsProducts.present' | translate }}: </label>
+      <label class="green">{{ productData.TipoPresentacion }} {{ productData.Presentacion }} {{ productData.Unidad }}</label>
+    </div>
+    <div class="section">
+      <label class="gray"> {{ 'quotation.details.section.detailsProducts.tDelivery' | translate }}: </label>
+      <label class="green">{{ productData?.TiempoEntrega }}</label>
+    </div>
+    <div class="section curatorship-date">
+      <label class="gray"> {{ 'quotation.details.section.detailsProducts.dateCura' | translate }}: </label>
+      <label
+        class="green"
+        [style.color]="curashipValidator(productData?.FechaCaducidadVigenciaCuraduria) ? '#cc4757' : '#4BA92B'"
+      >
+        Hasta el
+        {{
+          productData?.FechaCaducidadVigenciaCuraduria ? (productData.FechaCaducidadVigenciaCuraduria | dateFormatSlash) : 'N/A'
+        }}
+      </label>
+    </div>
+    <div class="section pieces">
+      <label class="gray">
+        {{ productData.NumeroDePiezas === 1 ? ('common.piece' | translate) : ('common.pieces' | translate) }}:
+      </label>
+      <div class="input">
+        <app-generic-input
+          [activeArrows]="true"
+          [onlyNumbers]="true"
+          [font]="'Roboto-Bold'"
+          [placeholder]="'1'"
+          [textAlign]="'center'"
+          [min]="1"
+          [maxlength]="5"
+          [fontColor]="'#008894'"
+          [typeValidation]="validators.Number"
+          [value]="productData.PiezasACotizar"
+          [width]="(viewType$ | async) === 'macBookAir' ? '60px' : '55px'"
+          (textData)="handleSetPieces($event, productData)"
+          [isDisable]="!productData.Configurado || !(deliveryAddressSelected$ | async)"
+        >
+        </app-generic-input>
+      </div>
+    </div>
+    <div class="section total-price">
+      <label class="gray">{{ 'formProvider.step8.subtitles.totalPrice' | translate }}:</label>
+      <div>
+        <label class="title">
+          {{ productData.PrecioDeVenta * productData.PiezasACotizar | currency: (quotationCurrency$ | async):'':'1.2-2' }}
+          {{ quotationCurrency$ | async }}
+        </label>
+      </div>
+    </div>
+    <div class="addToCar">
+      <button
+        [ngClass]="
+          !productData.Configurado || !isCuratorshipsValidity(productData.FechaCaducidadVigenciaCuraduria)
+            ? 'disabled'
+            : 'enable'
+        "
+        (click)="addProductToCart(productData)"
+        [disabled]="!productData.Configurado || !isCuratorshipsValidity(productData.FechaCaducidadVigenciaCuraduria)"
+      >
+        {{ 'quotation.details.addToCart' | translate }}
+      </button>
+    </div>
+  </div>
+  <div class="details-info">
+    <div class="tabs">
+      <app-tabs [options]="options$ | async" [tapSelected]="optionSelected$ | async" (onSelectOption)="setTabs($event)">
+      </app-tabs>
+    </div>
+    <div class="content">
+      <div class="data-sheet" *ngIf="(optionSelected$ | async).id === '1'">
+        <div class="technical-information">
+          <label>{{ 'quotation.details.technicalInformation' | translate }}</label>
+          <div class="information">
+            <div class="logo">
+              <img #imageElementDetails alt="logo" [src]="setImage(productData?.image)" (error)="errorImage()" />
+            </div>
+            <div class="container-bottom">
+              <div class="container-brand-data">
+                <div class="brand-image">
+                  <img
+                    #imageElementDetailsBrand
+                    alt="logo"
+                    [src]="setImageBrand(productData?.imageBrand)"
+                    (error)="errorImageBrand()"
+                  />
+                </div>
+                <div
+                  *ngIf="
+                    productData.Tipo !== productsTypes.training && productData.Tipo !== productsTypes.trainings;
+                    else elseTrainings
+                  "
+                >
+                  <label class="subtitlePqf"> CAT #{{ productData?.Catalogo }}</label>
+                  <label class="separator"> · </label>
+                  <label class="subtitlePqf">{{ productData.TipoPresentacion }}</label>
+                  <label class="separator"> · </label>
+                  <label class="subtitlePqf">{{ productData.Presentacion }} {{ productData.Unidad }}</label>
+                </div>
+                <ng-template #elseTrainings>
+                  <div>
+                    <label class="subtitlePqf">{{ productData?.vProductDetails?.MedioDifusion }} </label>
+                  </div>
+                </ng-template>
+              </div>
+              <div class="text-truncate">
+                <label class="text-black">{{ productData?.Descripcion }}</label>
+              </div>
+              <div class="family">
+                <label (click)="open(openOpop)">
+                  {{ buildStringFamilyProduct(productData?.Tipo, productData?.Subtipo, productData?.Control) }}
+                  <span class="controlled" *ngIf="productData?.Controlado">
+                    · {{ 'descriptionItemQuote.controlled' | translate }}</span
+                  >
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <app-item-chemical
+          *ngIf="isTypeChemical$ | async"
+          [isBackOrder]="isBackOrder$ | async"
+          [isNotMarketable]="isNotMarketable$ | async"
+          [product]="productData"
+          [currency]="quotationCurrency$ | async"
+          [family]="buildStringFamilyProduct(productData?.Tipo, productData?.Subtipo, productData?.Control)"
+        ></app-item-chemical>
+        <app-item-biologic
+          *ngIf="isTypeBiological$ | async"
+          [isBackOrder]="isBackOrder$ | async"
+          [isNotMarketable]="isNotMarketable$ | async"
+          [product]="productData"
+          [currency]="quotationCurrency$ | async"
+          [family]="buildStringFamilyProduct(productData?.Tipo, productData?.Subtipo, productData?.Control)"
+        ></app-item-biologic>
+        <app-item-training
+          *ngIf="isTypeTraining$ | async"
+          [isBackOrder]="isBackOrder$ | async"
+          [isNotMarketable]="isNotMarketable$ | async"
+          [product]="productData"
+          [currency]="quotationCurrency$ | async"
+          [family]="buildStringFamilyProduct(productData?.Tipo, productData?.Subtipo, productData?.Control)"
+        ></app-item-training>
+        <app-item-publications
+          *ngIf="isTypePublications$ | async"
+          [isBackOrder]="isBackOrder$ | async"
+          [isNotMarketable]="isNotMarketable$ | async"
+          [product]="productData"
+          [family]="buildStringFamilyProduct(productData?.Tipo, productData?.Subtipo, productData?.Control)"
+        ></app-item-publications>
+        <app-item-labware
+          *ngIf="isTypeLabware$ | async"
+          [isBackOrder]="isBackOrder$ | async"
+          [isNotMarketable]="isNotMarketable$ | async"
+          [product]="productData"
+          [family]="buildStringFamilyProduct(productData?.Tipo, productData?.Subtipo, productData?.Control)"
+        ></app-item-labware>
+        <app-item-devices
+          *ngIf="isTypeMedicalDevice$ | async"
+          [isBackOrder]="isBackOrder$ | async"
+          [isNotMarketable]="isNotMarketable$ | async"
+          [product]="productData"
+          [family]="buildStringFamilyProduct(productData?.Tipo, productData?.Subtipo, productData?.Control)"
+        ></app-item-devices>
+      </div>
+      <div class="alternatives" *ngIf="(optionSelected$ | async).id === '2'">
+        <ng-container *ngIf="productData?.vProductDetails?.vProductoAlternativo.length > 0">
+          <app-product-card-item
+            *ngFor="
+              let alternative of productData?.vProductDetails?.vProductoAlternativo;
+              let i = index;
+              trackBy: handleTrackByAlternativeProductId
+            "
+            [backGroundColor]="'yellow-card'"
+            [borderColorWhite]="true"
+            [showCheck]="false"
+            [showIndex]="true"
+            [product]="buildAlternativeItem(alternative, i + 1)"
+          ></app-product-card-item>
+        </ng-container>
+        <app-without-results
+          *ngIf="productData?.vProductDetails?.vProductoAlternativo.length === 0"
+          class="without"
+          [title]="'quotation.details.notProductsAlternative' | translate"
+        ></app-without-results>
+      </div>
+      <div class="complements" *ngIf="(optionSelected$ | async).id === '3'">
+        <ng-container *ngIf="productData?.vProductDetails?.vProductoComplementario.length > 0">
+          <app-product-card-item
+            *ngFor="
+              let complementary of productData?.vProductDetails?.vProductoComplementario;
+              let i = index;
+              trackBy: handleTrackByComplementaryProductId
+            "
+            [backGroundColor]="'blue-card'"
+            [borderColorWhite]="false"
+            [showCheck]="false"
+            [showIndex]="true"
+            [product]="buildComplementaryItem(complementary, i + 1)"
+          ></app-product-card-item>
+        </ng-container>
+        <app-without-results
+          *ngIf="productData?.vProductDetails?.vProductoComplementario.length === 0"
+          class="without"
+          [title]="'quotation.details.notProductsComplementary' | translate"
+        ></app-without-results>
+      </div>
+    </div>
+  </div>
+</div>
+<!--<app-add-realization-dates-pop-up-->
+<!--  *ngIf="datesPopIsOpen"-->
+<!--  (emitDates)="handleSetDates($event)"-->
+<!--&gt;</app-add-realization-dates-pop-up>-->

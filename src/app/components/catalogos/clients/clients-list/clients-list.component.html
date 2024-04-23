@@ -1,0 +1,84 @@
+<div id="clients-list">
+  <div class="content">
+    <div class="filters">
+      <app-clients-list-filters></app-clients-list-filters>
+    </div>
+    <div class="list">
+      <div class="clients" *ngIf="!(clientsListNode$ | async)?.corporativeIsSelected">
+        <virtual-scroller
+          *ngIf="!lodashIsEmpty(clients$ | async)"
+          [items]="clients$ | async"
+          (vsUpdate)="scrollItems = $event"
+          (vsEnd)="fetchMore($event)"
+        >
+          <app-generic-grid-item
+            *ngFor="let client of scrollItems; let i = index"
+            [showSegmentation]="true"
+            [item]="buildItem(client)"
+            (emitValue)="handleShowClient(client)"
+          >
+          </app-generic-grid-item>
+        </virtual-scroller>
+        <div class="loadingContainer" *ngIf="(clientsApiStatus$ | async) === 1 && !lodashIsEmpty(clients$ | async)">
+          <app-loading></app-loading>
+        </div>
+        <div class="loading" *ngIf="(clientsApiStatus$ | async) === 1 && lodashIsEmpty(clients$ | async)">
+          <app-loading></app-loading>
+        </div>
+        <div class="loading" *ngIf="(clientsApiStatus$ | async) !== 1 && lodashIsEmpty(clients$ | async)">
+          <app-without-results></app-without-results>
+        </div>
+      </div>
+      <div class="corporates" *ngIf="(clientsListNode$ | async)?.corporativeIsSelected">
+        <virtual-scroller
+          *ngIf="!lodashIsEmpty(corporatesToShow$ | async)"
+          [items]="corporatesToShow$ | async"
+          (vsUpdate)="corporatesScrollItems = $event"
+        >
+          <div class="corporationContainer" *ngFor="let corporation of corporatesScrollItems; index as i">
+            <div class="corporationName">
+              <label>{{ corporation.NombreCorporativo }}</label>
+            </div>
+            <div class="clientsContainer">
+              <app-generic-grid-item
+                *ngFor="let client of corporation?.Clientes"
+                [item]="buildItem(client)"
+                (emitValue)="handleShowClient(client)"
+              >
+              </app-generic-grid-item>
+            </div>
+          </div>
+        </virtual-scroller>
+        <div class="loading" *ngIf="(corporates$ | async)?.corporatesStatus === 1 && lodashIsEmpty(corporatesToShow$ | async)">
+          <app-loading></app-loading>
+        </div>
+        <div class="loading" *ngIf="(corporates$ | async)?.corporatesStatus !== 1 && lodashIsEmpty(corporatesToShow$ | async)">
+          <app-without-results></app-without-results>
+        </div>
+      </div>
+    </div>
+    <div class="index" *ngIf="!(clientsListNode$ | async)?.corporativeIsSelected; else corporate">
+      <label
+        >#{{ totalClients$ | async }}
+        {{ (totalClients$ | async) === 1 ? ('common.client' | translate) : ('common.clients' | translate) }}</label
+      >
+    </div>
+    <ng-template #corporate>
+      <div class="index">
+        <label
+          >#{{ (corporates$ | async)?.totalCorporates }}
+          {{
+            (corporates$ | async)?.totalCorporates === 1
+              ? ('common.corporative' | translate)
+              : ('common.corporatives' | translate)
+          }}</label
+        >
+      </div>
+    </ng-template>
+  </div>
+  <footer>
+    <!-- DOCS: Se quita imagen hasta que se le dé funcionalidad -->
+    <!--<img src="assets/Images/catalogo/engraneGrisGrande.png" />-->
+    <button (click)="addClient()">{{ 'common.add' | translate }}</button>
+  </footer>
+</div>

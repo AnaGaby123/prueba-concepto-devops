@@ -1,0 +1,279 @@
+<div
+  id="saved-quotation-items-container"
+  [ngClass]="{
+    'quotation-sent': (selectedQuotationStatus$ | async)?.EstadoCotizacion === catQuotationState.Enviada,
+    'quotation-saved':
+      (selectedQuotationStatus$ | async)?.EstadoCotizacion === catQuotationState.Guardada &&
+      !(selectedQuotation$ | async).CotizacionDeInvestigacion &&
+      !(selectedQuotation$ | async).EnviadaConInvestigacion,
+    'quotation-new':
+      (selectedQuotationStatus$ | async)?.EstadoCotizacion === catQuotationState.Nueva &&
+      !(selectedQuotation$ | async).CotizacionDeInvestigacion,
+    'quotation-investigation':
+      ((selectedQuotation$ | async)?.CotizacionDeInvestigacion || (selectedQuotation$ | async)?.EnviadaConInvestigacion) &&
+      !(selectedQuotation$ | async)?.InvestigacionesFinalizadas,
+    'quotation-investigation-finish':
+      ((selectedQuotation$ | async)?.CotizacionDeInvestigacion || (selectedQuotation$ | async)?.EnviadaConInvestigacion) &&
+      (selectedQuotation$ | async)?.InvestigacionesFinalizadas
+  }"
+>
+  <div class="title">
+    <label>
+      {{ 'quotation.quotation' | translate }}
+      <span
+        class="ocean"
+        *ngIf="
+          (selectedQuotationStatus$ | async)?.EstadoCotizacion !== catQuotationState.Enviada &&
+          !(selectedQuotation$ | async).CotizacionDeInvestigacion &&
+          !(selectedQuotation$ | async).EnviadaConInvestigacion
+        "
+      >
+        · {{ (selectedQuotation$ | async)?.Folio }}
+      </span>
+      <label
+        class="ocean-sent"
+        *ngIf="
+          (selectedQuotationStatus$ | async)?.EstadoCotizacion === catQuotationState.Enviada ||
+          (selectedQuotation$ | async).CotizacionDeInvestigacion ||
+          (selectedQuotation$ | async).EnviadaConInvestigacion
+        "
+      >
+        · <span (click)="onClickViewQuotationPdf()">FO-{{ (selectedQuotation$ | async)?.Folio }}</span>
+      </label>
+      <ng-container>
+        <label
+          class="quotation-status"
+          [ngClass]="{
+            sent: (selectedQuotationStatus$ | async)?.EstadoCotizacion === catQuotationState.Enviada,
+            saved:
+              (selectedQuotationStatus$ | async)?.EstadoCotizacion === catQuotationState.Guardada &&
+              !(selectedQuotation$ | async)?.CotizacionDeInvestigacion &&
+              !(selectedQuotation$ | async)?.EnviadaConInvestigacion,
+            investigation:
+              ((selectedQuotation$ | async)?.CotizacionDeInvestigacion ||
+                (selectedQuotation$ | async)?.EnviadaConInvestigacion) &&
+              !(selectedQuotation$ | async)?.InvestigacionesFinalizadas,
+            'investigation-finish':
+              ((selectedQuotation$ | async)?.CotizacionDeInvestigacion ||
+                (selectedQuotation$ | async)?.EnviadaConInvestigacion) &&
+              (selectedQuotation$ | async)?.InvestigacionesFinalizadas
+          }"
+        >
+          ·
+          {{
+            (selectedQuotationStatus$ | async)?.EstadoCotizacion === catQuotationState.Enviada ||
+            ((selectedQuotationStatus$ | async)?.EstadoCotizacion === catQuotationState.Guardada &&
+              !(selectedQuotation$ | async)?.CotizacionDeInvestigacion &&
+              !(selectedQuotation$ | async)?.EnviadaConInvestigacion) ||
+            ((selectedQuotationStatus$ | async)?.EstadoCotizacion === catQuotationState.Nueva &&
+              !(selectedQuotation$ | async)?.CotizacionDeInvestigacion &&
+              !(selectedQuotation$ | async)?.EnviadaConInvestigacion)
+              ? (selectedQuotationStatus$ | async)?.EstadoCotizacion
+              : ((selectedQuotation$ | async)?.CotizacionDeInvestigacion ||
+                  (selectedQuotation$ | async)?.EnviadaConInvestigacion) &&
+                !(selectedQuotation$ | async)?.InvestigacionesFinalizadas
+              ? ('quotation.quotationWithProductsInvestigation' | translate)
+              : ('quotation.quotationInvestigationFinish' | translate)
+          }}</label
+        >
+      </ng-container>
+    </label>
+    <button
+      *ngIf="
+        (selectedQuotationStatus$ | async)?.EstadoCotizacion !== catQuotationState.Enviada &&
+        !(selectedQuotation$ | async)?.CotizacionDeInvestigacion &&
+        !(selectedQuotation$ | async)?.EnviadaConInvestigacion
+      "
+      (click)="redirectToListDetail()"
+    >
+      {{ 'common.back' | translate }}
+    </button>
+  </div>
+  <div
+    class="tabs"
+    *ngIf="
+      (!(selectedQuotation$ | async)?.CotizacionDeInvestigacion &&
+        !(selectedQuotation$ | async)?.EnviadaConInvestigacion &&
+        (selectedQuotationStatus$ | async)?.EstadoCotizacion !== catQuotationState.Enviada) ||
+      ((selectedQuotation$ | async)?.EnviadaConInvestigacion &&
+        !(selectedQuotation$ | async)?.InvestigacionesFinalizadas &&
+        (selectedQuotationStatus$ | async)?.EstadoCotizacion !== catQuotationState.Enviada)
+    "
+  >
+    <app-tabs
+      [options]="options$ | async"
+      [tapSelected]="tapSelected$ | async"
+      (onSelectOption)="onSelectOption($event)"
+    ></app-tabs>
+  </div>
+
+  <div class="filters">
+    <div
+      class="search-bar"
+      *ngIf="
+        (selectedQuotationStatus$ | async)?.EstadoCotizacion !== catQuotationState.Enviada ||
+        ((selectedQuotation$ | async)?.CotizacionDeInvestigacion &&
+          (selectedQuotationStatus$ | async)?.EstadoCotizacion !== catQuotationState.Enviada)
+      "
+    >
+      <app-search
+        [placeholder]="'quotation.details.section.listQuotes.search' | translate"
+        [searchTerm]="searchTerm$ | async"
+        (textSearch)="handleKeySearch($event)"
+      ></app-search>
+    </div>
+    <label
+      class="currency"
+      *ngIf="
+        (selectedQuotationStatus$ | async)?.EstadoCotizacion !== catQuotationState.Enviada ||
+        ((selectedQuotation$ | async)?.CotizacionDeInvestigacion &&
+          (selectedQuotationStatus$ | async)?.EstadoCotizacion !== catQuotationState.Enviada)
+      "
+    >
+      {{ 'quotation.details.typeOfCurrency' | translate }}:
+      <span>{{ (selectedQuotation$ | async)?.selectedQuotationDetails?.ClaveMoneda }}</span>
+    </label>
+    <div
+      class="freight"
+      *ngIf="
+        (selectedQuotationStatus$ | async)?.EstadoCotizacion !== catQuotationState.Enviada ||
+        ((selectedQuotation$ | async)?.CotizacionDeInvestigacion &&
+          (selectedQuotationStatus$ | async)?.EstadoCotizacion !== catQuotationState.Enviada)
+      "
+    >
+      <div
+        (click)="onClickOpenFreight()"
+        [ngClass]="{
+          disabled: (selectedQuotation$ | async).selectedQuotationDetails?.CotPartidasCotizacion?.length === 0
+        }"
+      >
+        <img alt="freight" src="assets/Images/quotation/freight.svg" />
+        <label>
+          {{ 'quotation.details.addFreight' | translate }}
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="products">
+    <app-item-saved-list
+      *ngIf="
+        ((tapSelected$ | async)?.id === '1' && (itemsQuotation2$ | async)?.length !== 0) ||
+        ((selectedQuotation$ | async)?.InvestigacionesFinalizadas &&
+          ((selectedQuotation$ | async)?.CotizacionDeInvestigacion || (selectedQuotation$ | async)?.EnviadaConInvestigacion))
+      "
+    ></app-item-saved-list>
+    <app-item-investigation-list
+      *ngIf="
+        ((tapSelected$ | async)?.id === '2' && (itemsInvestigation$ | async)?.length !== 0) ||
+        ((selectedQuotation$ | async)?.CotizacionDeInvestigacion && !(selectedQuotation$ | async)?.InvestigacionesFinalizadas)
+      "
+      [investigationProducts]="itemsInvestigation$ | async"
+    ></app-item-investigation-list>
+    <div
+      class="without-results"
+      *ngIf="
+        (tapSelected$ | async)?.id === '1'
+          ? (itemsQuotation2$ | async)?.length === 0 &&
+            !(selectedQuotation$ | async)?.EnviadaConInvestigacion &&
+            !(selectedQuotation$ | async)?.CotizacionDeInvestigacion
+          : (tapSelected$ | async)?.id === '2'
+          ? (itemsInvestigation$ | async)?.length === 0 &&
+            !(selectedQuotation$ | async)?.EnviadaConInvestigacion &&
+            !(selectedQuotation$ | async)?.CotizacionDeInvestigacion
+          : false
+      "
+    >
+      <app-without-results></app-without-results>
+    </div>
+  </div>
+
+  <div
+    class="type-quotation"
+    [ngClass]="(tapSelected$ | async)?.id === '1' ? 'grey' : 'green'"
+    *ngIf="
+      (selectedQuotationStatus$ | async)?.EstadoCotizacion !== catQuotationState.Enviada &&
+      !(selectedQuotation$ | async)?.CotizacionDeInvestigacion
+    "
+  >
+    <div>
+      <div>
+        <p>{{ 'quotation.quotes' | translate }}:</p>
+      </div>
+      <div>
+        <app-pqf-toggle-switch
+          [options]="optionSwitch$ | async"
+          [selectedOption]="itemConfigSelected$ | async"
+          (selectedOptionChange)="onClickTypeQuotation($event)"
+          [disable]="
+            !(itemsInvestigation$ | async)?.length ||
+            !(selectedQuotation$ | async).clientInfo.addressSelected.EsMensajeriaInterna ||
+            (selectedQuotation$ | async)?.CotizacionDeInvestigacion ||
+            (selectedQuotation$ | async)?.EnviadaConInvestigacion
+          "
+        ></app-pqf-toggle-switch>
+      </div>
+    </div>
+    <div
+      [ngClass]="{disabled: !(hasDifferentFEE$ | async)}"
+      *ngIf="
+        (infoAddress$ | async)?.AceptaParciales &&
+        !(selectedQuotation$ | async).clientInfo.addressSelected.EsMensajeriaInterna &&
+        !(selectedQuotation$ | async).clientInfo.addressSelected.PagaGuiaEnvio
+      "
+    >
+      <div>
+        <p>{{ 'quotation.typeDelivery' | translate }}:</p>
+      </div>
+      <div>
+        <app-pqf-toggle-switch
+          [options]="optionTypeDelivery | async"
+          [selectedOption]="optionDeliverySelected$ | async"
+          [disable]="!(hasDifferentFEE$ | async)"
+          (selectedOptionChange)="onClickTypeDeliveryQuotation($event)"
+        ></app-pqf-toggle-switch>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <label
+      *ngIf="
+        !(validationMessageItem$ | async) && (selectedQuotationStatus$ | async)?.EstadoCotizacion !== catQuotationState.Enviada
+      "
+      >{{ 'quotation.details.messageValidation' | translate }}</label
+    >
+    <div class="buttons-container">
+      <button
+        class="save"
+        *ngIf="
+          (selectedQuotationStatus$ | async)?.EstadoCotizacion !== catQuotationState.Enviada &&
+          !(selectedQuotation$ | async)?.CotizacionDeInvestigacion &&
+          !(selectedQuotation$ | async)?.EnviadaConInvestigacion
+        "
+        [ngClass]="{disabled: !(activeSave$ | async)}"
+        [disabled]="!(activeSave$ | async)"
+        (click)="handleSaveQuotation()"
+        >{{ 'common.save' | translate }}</button
+      >
+      <button
+        class="send"
+        *ngIf="(selectedQuotationStatus$ | async)?.EstadoCotizacion !== catQuotationState.Enviada"
+        [disabled]="!(activeSend$ | async)"
+        [ngClass]="{disabled: !(activeSend$ | async)}"
+        (click)="handleSaveQuotation(true)"
+      >
+        {{ 'common.sendQuotation' | translate }}
+      </button>
+      <button
+        class="resend"
+        *ngIf="(selectedQuotationStatus$ | async)?.EstadoCotizacion === catQuotationState.Enviada"
+        (click)="handleModalIsOpenSendQuotation(true)"
+      >
+        {{ 'common.resendQuotation' | translate }}
+      </button>
+    </div>
+  </div>
+</div>
+<app-investigation-details
+  [isOpen]="IsOpenDetailsProductInvestigation$ | async"
+  [data]="cotPartidaCotizacionInvestigacion$ | async"
+></app-investigation-details>

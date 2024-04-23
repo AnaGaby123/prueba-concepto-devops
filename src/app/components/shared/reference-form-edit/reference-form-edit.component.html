@@ -1,0 +1,21 @@
+<div id="edit-reference-content">
+  <div class="reference">
+    <label>{{ 'indirectPayment.reference' | translate }}</label>
+    <app-generic-input
+      [typeValidation]="inputValidators.AlphaNumberAndDashesAndSlashAndComa"
+      [value]="reference"
+      (errorData)="inputError = $event?.errors"
+      (textData)="reference = $event"
+    ></app-generic-input>
+  </div>
+  <div class="actions">
+    <button
+      class="save"
+      [ngClass]="{disable: inputError || lodashIsEmpty(reference)}"
+      [disabled]="inputError || lodashIsEmpty(reference)"
+      (click)="handleEmitAction(true)"
+      >{{ 'common.accept' | translate }}</button
+    >
+    <button class="cancel" (click)="handleEmitAction(false)"> {{ 'common.cancel' | translate }}</button>
+  </div>
+</div>

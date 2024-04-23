@@ -1,0 +1,298 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  #request-not-processed {
+    @include s.flexRowWrap;
+    background-color: s.$pqGray2;
+    flex: 1 1 auto;
+    height: 100%;
+    position: relative;
+
+    &.hide {
+      animation-duration: 1s;
+      animation-fill-mode: forwards;
+      animation-name: hideContent;
+      transition: 1s ease-in-out;
+    }
+
+    &.show {
+      animation-duration: 0.7s;
+      animation-fill-mode: forwards;
+      animation-name: showContent;
+    }
+
+    & > section {
+      @include s.flexRowWrap;
+      flex: 1;
+      overflow: hidden;
+
+      & > .content {
+        @include s.flexRowWrap;
+        flex: 0 0 250px;
+        align-content: space-between;
+        overflow: hidden;
+        padding: 20px 20px 10px 20px;
+        position: relative;
+
+        & > .info {
+          @include s.flexColumn;
+          flex: 1;
+          z-index: 1;
+
+          & > .title {
+            @include s.flexRow;
+            border-bottom: 1px solid s.$pqBlack2;
+            align-items: center;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+
+            & > label:nth-of-type(1) {
+              @include s.responsive-font-format(
+                $font-family: s.$font-family-novecento_bold,
+                $font-weight: s.$font-weight-bold,
+                $font-size-map: s.$responsive-font-17-21
+              );
+              text-transform: uppercase;
+            }
+          }
+
+          & > .folio {
+            @include s.flexRowWrap;
+            width: 100%;
+            margin-bottom: 25px;
+
+            & > label:nth-of-type(1) {
+              width: 100%;
+              @include s.responsive-font-format(
+                $font-family: s.$font-family-novecento_bold,
+                $font-weight: s.$font-weight-bold,
+                $font-size-map: s.$responsive-font-14-16,
+                $color: s.$pqGreen
+              );
+              &.red {
+                color: s.$pqRed;
+              }
+            }
+
+            & > label:nth-of-type(2) {
+              @include s.responsive-font-format(
+                $font-family: s.$font-family-roboto_regular,
+                $font-weight: s.$font-weight-regular,
+                $font-size-map: s.$responsive-font-12-14
+              );
+              margin-top: 5px;
+              width: 100%;
+            }
+          }
+
+          & > .message {
+            @include s.flexRowWrap;
+            width: 100%;
+            overflow: auto;
+            overflow-x: hidden;
+            height: 100%;
+
+            & > label {
+              @include s.responsive-font-format(
+                $font-family: s.$font-family-roboto_regular,
+                $font-weight: s.$font-weight-regular,
+                $font-size-map: s.$responsive-font-12-14
+              );
+              width: 100%;
+              margin-bottom: 7px;
+              word-break: break-word;
+              white-space: pre-wrap;
+            }
+          }
+
+          & > .without-results {
+            @include s.flexRow;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+          }
+        }
+
+        & > .files {
+          @include s.flexColumn();
+          border-top: 1px solid s.$pqBlack2;
+          flex: 1 1 100%;
+          height: 40px;
+          margin-top: 10px;
+          overflow-y: scroll;
+          padding-top: 10px;
+          row-gap: 8px;
+
+          & > .file {
+            @include s.flexRowNoWrap();
+            align-items: center;
+            column-gap: 5px;
+            flex-shrink: 0;
+            overflow: hidden;
+
+            & > .index {
+              @include s.responsive-font-format(
+                $font-family: s.$font_family_novecento_bold,
+                $font-weight: s.$font-weight-bold,
+                $font-size-map: s.$responsive-font-13-16,
+                $color: s.$pqGreen
+              );
+            }
+
+            & > img {
+              height: 15px;
+            }
+
+            & > .btn {
+              @include s.responsive-font-format(
+                $font-family: s.$font_family_roboto_bold,
+                $font-weight: s.$font-weight-bold,
+                $font-size-map: s.$responsive-font-12-14-b
+              );
+              @include s.multiLineTextTruncateSinHeight(1, 14px);
+              cursor: pointer;
+              word-break: break-all;
+
+              &:hover {
+                text-decoration: underline;
+              }
+            }
+          }
+        }
+
+        & > .under-construction {
+          @include s.flexRowNoWrap;
+          @include s.absoluteCenter;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(236, 238, 240, 0.5);
+          position: absolute;
+          top: 0;
+          right: 0;
+          z-index: 2;
+
+          & > label:nth-of-type(1) {
+            @include s.escaledFontFormat(s.$textSize14to16, bold, s.$pqGreen);
+            @include s.Novecento-Bold;
+          }
+        }
+      }
+    }
+
+    & > .arrow {
+      width: 16px;
+      height: 21px;
+      cursor: pointer;
+      position: absolute;
+      top: calc(50% + 42px);
+      right: 0;
+      z-index: 3;
+
+      & > img {
+        width: 16px;
+        height: 21px;
+        opacity: 1;
+        transform: scaleX(1);
+        transition: transform 0.8s ease-in-out;
+
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+
+      & > .reverse {
+        transform: scaleX(-1);
+      }
+    }
+
+    @include s.media-query(s.$standard) {
+      & > section {
+        & > .content {
+          flex: 0 0 280px;
+
+          & > .files {
+            height: 60px;
+
+            & > .file {
+              & > img {
+                height: 21px;
+              }
+
+              & > .btn {
+                @include s.multiLineTextTruncateSinHeight(1, 16px);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @keyframes hideContent {
+    from {
+      width: 250px;
+    }
+    to {
+      width: 0;
+    }
+  }
+  @keyframes showContent {
+    from {
+      width: 0;
+    }
+    to {
+      width: 250px;
+    }
+  }
+  @include s.media-query(s.$standard) {
+    @keyframes hideContent {
+      from {
+        width: 280px;
+      }
+      to {
+        width: 0;
+      }
+    }
+    @keyframes showContent {
+      from {
+        width: 0;
+      }
+      to {
+        width: 280px;
+      }
+    }
+  }
+}
+
+.imageFile {
+  @include s.flexColumn;
+  width: 100%;
+  height: 100%;
+
+  & > div {
+    @include s.flexRow;
+
+    & > .img {
+      width: 100%;
+    }
+  }
+
+  & > .fill {
+    & > div {
+      width: 100%;
+      height: 48px;
+      background-color: s.$pqBlack2;
+      @include s.flexRow;
+      justify-content: center;
+      padding: 5px;
+
+      & > img {
+        cursor: pointer;
+      }
+    }
+  }
+}

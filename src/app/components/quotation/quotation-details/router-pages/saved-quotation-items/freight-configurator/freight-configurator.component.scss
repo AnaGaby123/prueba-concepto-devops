@@ -1,0 +1,396 @@
+@use 'base' as s;
+* {
+  box-sizing: border-box;
+}
+:host {
+  app-pop-up-generic {
+    ::ng-deep .modal {
+      background: none;
+
+      & > .modal-content {
+        transition: none;
+      }
+    }
+  }
+  @include s.absolute100();
+  .configure-freight-container {
+    @include s.absolute100();
+    @include s.flexColumn;
+    flex: 1;
+    & > .quotation-info-container {
+      @include s.flexRowNoWrap;
+      background-color: s.$main-proquifa-f;
+      gap: 22px;
+      padding: 25px 35px;
+      & > .logo {
+        height: 60px;
+        & > img {
+          max-height: 100%;
+          max-width: 60px;
+        }
+      }
+      & > .data-container {
+        @include s.flexColumn;
+        align-items: flex-start;
+        flex: 1;
+        gap: 4px;
+        & > .title {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family_novecento_bold,
+            $font-weight: s.$font-weight-bold,
+            $font-size-map: s.$responsive-font-16-20,
+            $color: s.$main-proquifa
+          );
+        }
+        & > .quotation-info {
+          @include s.responsive-font-format($font-size-map: s.$responsive-font-15-15, $color: s.$main-proquifa);
+          & > span {
+            color: s.$dark-proquifa;
+            vertical-align: baseline;
+          }
+        }
+        & > div {
+          @include s.flexRowNoWrap;
+          gap: 7px;
+          & > img {
+            height: 15px;
+          }
+          & > label {
+            @include s.responsive-font-format($font-size-map: s.$responsive-font-15-15);
+          }
+        }
+      }
+      & > .total-amount {
+        @include s.flexColumn;
+        align-items: flex-end;
+        flex: 0 0 210px;
+        justify-content: center;
+        & > .total {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-roboto_bold,
+            $font-weight: s.$font-weight-bold,
+            $font-size-map: s.$responsive-font-16-16,
+            $color: s.$main-proquifa
+          );
+        }
+        & > .subtitle {
+          @include s.responsive-font-format($font-size-map: s.$responsive-font-16-16, $color: s.$main-proquifa);
+        }
+      }
+    }
+    & > .steps {
+      @include s.flexRow;
+      padding: 20px 50px 10px 50px;
+      width: 100%;
+    }
+    & > .list {
+      @include s.flexColumn;
+      flex: 1;
+      overflow: hidden;
+      padding-left: 30px;
+      padding-right: 30px;
+      &.onlyFreightExpress {
+        padding-top: 16px;
+      }
+      & > div {
+        @include s.flexColumn;
+        border-bottom: 1px solid #a0a0a0;
+        flex: 1;
+        overflow: hidden;
+        & > .headerList {
+          @include s.flexRow;
+          justify-content: space-between;
+          padding-right: 20px;
+          & > .title {
+            @include s.flexRow;
+            padding-bottom: 12px;
+            & > label {
+              @include s.responsive-font-format(
+                $font-family: s.$font_family_roboto_regular,
+                $font-weight: s.$font_weight_regular,
+                $font-size-map: s.$responsive-font-15-15
+              );
+            }
+          }
+          & > div:nth-child(2) {
+            width: 20px;
+            & > app-check-box {
+              display: flex;
+            }
+          }
+        }
+        & > .dataList {
+          @include s.absolute100();
+          @include s.flexRow;
+          border-top: 1px solid;
+          overflow: auto;
+          padding-bottom: 7px;
+          & > div {
+            @include s.flexColumn;
+            flex: 1;
+            & > .item-freight-express,
+            & > .item-freight {
+              @include s.flexRow;
+              align-items: center;
+              border-bottom: 1px solid s.$dark-proquifa-d;
+              justify-content: space-between;
+              padding: 9px 20px;
+              & > .data {
+                & > div {
+                  @include s.flexRow;
+                }
+                & > div:nth-child(1) {
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize14to19, '', s.$dark-proquifa);
+                    @include s.Roboto-Bold;
+                    & > span {
+                      color: s.$main-proquifa;
+                      vertical-align: baseline;
+                    }
+                  }
+                }
+                & > div:nth-child(2) {
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize13to17, '', s.$pqBlack2);
+                    @include s.Roboto-Regular;
+                  }
+                }
+              }
+              & > .selected {
+                @include s.flexRow;
+                align-items: center;
+                gap: 18px;
+                justify-content: center;
+                & > div:nth-child(1) {
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize14to18, '', s.$pqGreen);
+                    @include s.Roboto-Bold;
+                    text-align: start;
+                  }
+                }
+                & > div:last-child {
+                  @include s.flexRow;
+                  & > div {
+                    width: 20px;
+                    height: 20px;
+                    & > app-check-box {
+                      display: flex;
+                    }
+                  }
+                }
+              }
+            }
+
+            & > .item-freight-express:hover,
+            & > .item-freight:hover {
+              background-color: s.$pqGray2;
+              cursor: pointer;
+            }
+
+            & > .without-results {
+              display: flex;
+              @include s.absoluteCenter;
+              height: 100%;
+            }
+          }
+        }
+      }
+    }
+    & > .freight-express-footer {
+      @include s.flexRowNoWrap;
+      justify-content: space-between;
+      padding: 7px 30px 40px 30px;
+      & > .text {
+        @include s.escaledFontFormat(s.$textSize12to14, '', s.$pqBlack2);
+        @include s.Roboto-Regular;
+        padding: 0 20px;
+      }
+      & > .total-amount {
+        @include s.flexRowNoWrap;
+        flex: 0 0 260px;
+        gap: 5px;
+        & > label {
+          @include s.escaledFontFormat(s.$textSize12to14, '', s.$pqBlack2);
+          @include s.Roboto-Regular;
+        }
+        & > .total {
+          color: s.$main-proquifa;
+          flex: 1;
+          text-align: end;
+        }
+      }
+    }
+    & > .freight-conventional {
+      @include s.flexColumn;
+      padding: 0 30px;
+      & > .data {
+        @include s.flexRow;
+        justify-content: space-between;
+        margin: 20px 0;
+        & > .column-left-container {
+          @include s.flexColumn;
+          gap: 5px;
+          & > .total-concept {
+            & > label {
+              @include s.responsive-font-format(
+                $font-family: s.$font_family_roboto_regular,
+                $font-weight: s.$font_weight_regular,
+                $font-size-map: s.$responsive-font-12-14
+              );
+            }
+          }
+          & > .freight-apportion {
+            @include s.flexRowNoWrap;
+            align-items: center;
+            gap: 9px;
+          }
+          & > .legend-freight {
+            & > label {
+              @include s.responsive-font-format(
+                $font-family: s.$font_family_roboto_regular,
+                $font-weight: s.$font_weight_regular,
+                $font-size-map: s.$responsive-font-11-13
+              );
+            }
+          }
+        }
+        & > .totals-container {
+          @include s.flexRowNoWrap;
+          justify-content: flex-end;
+          & > .left {
+            @include s.flexColumn;
+            align-items: flex-end;
+            flex: 0 0 auto;
+            & > label {
+              @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+              @include s.Roboto-Regular;
+              padding-bottom: 8px;
+            }
+
+            & > label.titleBlack {
+              @include s.escaledFontFormat(s.$textSize15to16, bold, s.$pqBlack2);
+              @include s.Roboto-Bold;
+            }
+          }
+          & > .right {
+            @include s.flexColumn;
+            align-items: flex-end;
+            flex: 0 0 auto;
+            padding-left: 10px;
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqGreen);
+              @include s.Roboto-Regular;
+              min-width: 160px;
+              text-align: right;
+              padding-bottom: 8px;
+            }
+            & > label.total {
+              @include s.escaledFontFormat(s.$textSize15to16, regular, s.$pqGreen2);
+              @include s.Roboto-Bold;
+            }
+          }
+        }
+      }
+      & > .comments-container {
+        @include s.flexColumn;
+        gap: 7px;
+        justify-content: flex-start;
+        margin-bottom: 20px;
+        & > .comment {
+          align-self: flex-start;
+          & > label {
+            @include s.responsive-font-format(
+              $font-family: s.$font_family_roboto_regular,
+              $font-weight: s.$font_weight_regular,
+              $font-size-map: s.$responsive-font-12-14,
+              $color: s.$main-proquifa
+            );
+          }
+        }
+      }
+    }
+    & > .only-freight-express-footer {
+      @include s.flexColumn;
+      padding: 7px 30px 40px 30px;
+      gap: 18px;
+      & > .totals {
+        @include s.flexRowNoWrap;
+        justify-content: space-between;
+        & > .text {
+          @include s.responsive-font-format($font-size-map: s.$responsive-font-12-14);
+        }
+        & > .total-amount {
+          @include s.flexRowNoWrap;
+          flex: 0 0 160px;
+          & > label {
+            @include s.responsive-font-format(
+              $font-family: s.$font-family-roboto_bold,
+              $font-weight: s.$font-weight-bold,
+              $font-size-map: s.$responsive-font-15-15
+            );
+          }
+          & > label:nth-of-type(1) {
+            display: flex;
+            flex: 0;
+          }
+          & > label:nth-of-type(2) {
+            display: flex;
+            flex: 1;
+            justify-content: flex-end;
+          }
+          & > .total {
+            color: s.$success;
+          }
+        }
+      }
+      & > .freight-info-container {
+        @include s.flexColumn;
+
+        & > .freight-apportion {
+          @include s.flexRowNoWrap;
+          align-items: center;
+          gap: 9px;
+          margin-bottom: 7px;
+        }
+        & > .legend-freight {
+          @include s.flexRowNoWrap;
+          align-self: flex-start;
+          margin-bottom: 20px;
+          & > label {
+            @include s.responsive-font-format(
+              $font-family: s.$font_family_roboto_regular,
+              $font-weight: s.$font_weight_regular,
+              $font-size-map: s.$responsive-font-11-13
+            );
+          }
+        }
+        & > .comment {
+          @include s.flexRowNoWrap;
+          align-self: flex-start;
+          margin-bottom: 7px;
+          & > label {
+            @include s.responsive-font-format(
+              $font-family: s.$font_family_roboto_regular,
+              $font-weight: s.$font_weight_regular,
+              $font-size-map: s.$responsive-font-12-14,
+              $color: s.$main-proquifa
+            );
+          }
+        }
+      }
+    }
+    & > .buttons {
+      @include s.flexRow;
+      width: 100%;
+      padding: 0 30px 44px 30px;
+      justify-content: space-between;
+      & > .active {
+        @include s.pqfButton();
+      }
+      & > .disable {
+        @include s.pqfDisableButton();
+      }
+    }
+  }
+}

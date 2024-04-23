@@ -1,0 +1,583 @@
+@use 'base' as s;
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  width: 100%;
+  height: 100%;
+
+  label {
+    @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+    @include s.Roboto-Regular;
+  }
+
+  span {
+    @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqGreen);
+    @include s.Roboto-Bold;
+  }
+
+  & > .generalDataClients {
+    @include s.flexColumn;
+    height: 100%;
+    width: 100%;
+
+    & > .content {
+      @include s.flexColumn;
+      flex: 1;
+
+      & > .general-data {
+        @include s.flexColumn;
+        flex: 0 0 auto;
+        margin-bottom: 10px;
+        padding: 0 50px;
+
+        & > .client-data {
+          align-items: center;
+          display: grid;
+          grid-column-gap: 15px;
+          grid-row-gap: 15px;
+          grid-template-columns: repeat(5, 1fr);
+          grid-template-rows: repeat(3, auto);
+          margin-bottom: 20px;
+          margin-top: 15px;
+
+          & > .client-image {
+            @include s.gridCenter;
+            & > img {
+              max-height: 89px;
+              max-width: 100%;
+            }
+          }
+          & > .status {
+            margin-top: 20px;
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqGreen);
+              @include s.Roboto-Bold;
+            }
+          }
+          & > .date {
+            @include s.flexColumn;
+            justify-content: center;
+            & > div {
+              @include s.flexRow;
+              align-items: center;
+            }
+          }
+          & > .alias {
+            @include s.flexRow;
+            align-items: center;
+            grid-column-end: span 2;
+          }
+          & > .name {
+            @include s.flexRow;
+            align-items: center;
+            grid-column-end: span 2;
+          }
+          & > .role {
+            @include s.flexRow;
+            align-items: center;
+            grid-column-end: span 1;
+          }
+          & > .seller {
+            @include s.flexRow;
+            align-items: center;
+          }
+          & > .esac {
+          }
+          & > .colector {
+          }
+          & > .important {
+            @include s.flexRow;
+            align-items: center;
+            align-self: end;
+            margin-bottom: 5px;
+
+            & > img {
+              height: 15px;
+              margin-left: 6px;
+            }
+          }
+          & > .industry {
+            grid-column-end: span 1;
+          }
+          & > .deseado {
+            &.fundamental {
+              grid-column-end: span 1;
+            }
+
+            & > .input {
+              @include s.flexRow;
+              align-items: flex-end;
+              & > .percentage {
+                margin-left: 5px;
+                margin-bottom: 4px;
+              }
+            }
+
+            & > .text {
+              & > .title {
+                margin-bottom: 11px;
+              }
+            }
+          }
+          & > .check1,
+          & > .check2,
+/*          & > .check3*/ {
+            display: flex;
+            align-items: center;
+            padding-top: 1.5rem !important;
+          }
+        }
+
+        & > .aqua {
+          @include s.flexColumn;
+          align-items: flex-start;
+          justify-content: center;
+          background-color: rgba(s.$pqGreen, 0.05);
+          /*          height: 100px;*/
+          padding: 15px;
+          & > label {
+            @include s.Roboto-Bold;
+            @include s.escaledFontFormatImportant(s.$textSize13to16, bold, s.$pqGreen);
+          }
+          & > .editable {
+            @include s.flexColumn;
+            flex: 1;
+            justify-content: flex-end;
+            width: 40%;
+            & > .drop {
+              @include s.flexRow;
+              margin: 10px 0;
+              & > .list {
+                @include s.flexRow;
+                flex: 1;
+              }
+              & > .button {
+                margin-left: 10px;
+                & .btn-enable {
+                  @include s.pqButton();
+                }
+                & .btn-disable {
+                  @include s.pqButtonDisable();
+                }
+              }
+            }
+          }
+          & > .authorized {
+            @include s.flexRow;
+            margin: 5px 0;
+            height: 25px;
+            width: 100%;
+            & > .authorized-item {
+              @include s.flexRow;
+              background-color: rgba(0, 136, 148, 0.05);
+              align-items: center;
+              margin: 0 5px;
+              & > .text {
+                margin: 0 5px;
+                & > label {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormatImportant(s.$textSize13to16, regular, s.$pqBlack2);
+                }
+              }
+              & > .image {
+                @include s.flexRow;
+                align-items: center;
+                & > img {
+                  height: 11px;
+                  cursor: pointer;
+                }
+              }
+            }
+            :nth-child(1) {
+              margin: 0 5px 0 0;
+            }
+          }
+        }
+      }
+
+      & > .required-field {
+        @include s.flexRow;
+        width: 100%;
+        height: 18px;
+        box-sizing: border-box;
+        justify-content: flex-end;
+        padding: 0 50px;
+        @include s.responsive_layout('macBookAir') {
+          padding: 0 65px;
+        }
+
+        & > p:nth-of-type(1) {
+          $textSize: (
+            'base': 12px,
+            'macBookAir': 15px,
+          );
+          @include s.flexRow;
+          @include s.absoluteCenter;
+          @include s.escaledFontFormat($textSize, regular, s.$pqGreen);
+          @include s.Roboto-Regular;
+          position: relative;
+
+          & > span {
+            padding-top: 3px;
+            position: absolute;
+            top: 50%;
+            left: -4px;
+            transform: translate(-50%, -50%);
+          }
+        }
+      }
+
+      & > .contacts {
+        @include s.flexColumn;
+        flex: 1;
+
+        & > .listContact {
+          @include s.flexColumn;
+          flex: 1;
+
+          & > .borderLine {
+            @include s.flexRow;
+            border-bottom: 1px solid;
+            box-sizing: border-box;
+            padding: 14px 0 8px 0;
+
+            & > .title {
+              @include s.escaledFontFormat(s.$textSize17to21, regular, s.$pqBlack4);
+              @include s.Novecento-Bold;
+              text-transform: uppercase;
+            }
+          }
+
+          & > .contactContainer {
+            width: 100%;
+            height: calc(100% - 58px);
+
+            & > div:nth-of-type(1) {
+              width: 100%;
+              height: 100%;
+
+              & > .contactGrid {
+                @include s.flexRowWrap;
+                width: 100%;
+                height: 100%;
+                align-items: flex-start;
+                align-content: flex-start;
+                box-sizing: border-box;
+                padding-top: 10px;
+
+                & > virtual-scroller {
+                  @include s.absolute100;
+                  @include s.fixVirtualScroller;
+                  &::ng-deep > .scrollable-content {
+                    $ItemsSizeMap: (
+                      'base': 140px,
+                      'macBookAir': 155px,
+                    );
+                    @include s.itemsCardWithGrid(350px, $ItemsSizeMap);
+                  }
+                  @include s.responsive_layout('macBookAir') {
+                    &::ng-deep > .scrollable-content {
+                      $ItemsSizeMap: (
+                        'base': 140px,
+                        'macBookAir': 155px,
+                      );
+                      @include s.itemsCardWithGrid(375px, $ItemsSizeMap);
+                    }
+                  }
+                }
+              }
+            }
+
+            & > .center {
+              @include s.flexRow;
+              @include s.absoluteCenter;
+            }
+          }
+        }
+      }
+      & > .message {
+        @include s.flexRowNoWrap;
+        justify-content: flex-end;
+        padding-bottom: 10px;
+        & > .required-data {
+          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqGreen);
+          @include s.Roboto-Regular;
+        }
+      }
+    }
+
+    & > footer {
+      @include s.flexRow;
+      width: 100%;
+      height: 55px;
+      max-height: 55px;
+      border-top: 2px solid #424242;
+      justify-content: space-between;
+
+      .justifyBetween {
+        @include s.flexRowImportant;
+        justify-content: space-between !important;
+      }
+
+      & > div {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: flex-end;
+        align-content: center;
+        align-items: center;
+        margin-left: 20px;
+        margin-right: 20px;
+
+        & > .btn-add-client {
+          height: 100%;
+          align-content: center;
+          align-items: center;
+          display: flex;
+
+          & > .btn-enable {
+            @include s.pqButton();
+          }
+          & > .btn-disable {
+            @include s.pqButtonDisable();
+          }
+        }
+      }
+    }
+  }
+
+  .add-contact {
+    & .content {
+      @include s.flexColumn;
+      flex: 1;
+      & > .form-container {
+        @include s.flexColumn;
+        padding: 30px 20px;
+        & > .header {
+          @include s.flexColumn;
+          & > .info-content {
+            display: grid;
+            grid-template-columns: 110px 1fr;
+            grid-column-gap: 20px;
+            margin-bottom: 20px;
+
+            & > .image {
+              @include s.gridCenter;
+
+              & > img {
+                max-height: 70px;
+                max-width: 100%;
+              }
+            }
+            & > .text {
+              @include s.flexColumn;
+              align-items: flex-start;
+              flex: 1;
+              justify-content: center;
+              & > .aqua {
+                padding-bottom: 3px;
+                & > label {
+                  @include s.Roboto-Bold;
+                  @include s.escaledFontFormat(s.$textSize17to22, bold, s.$pqGreen);
+                }
+              }
+              & > .black {
+                & > label {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                }
+              }
+            }
+          }
+          & > .subtitle {
+            @include s.flexRow;
+            justify-content: flex-start;
+            padding-bottom: 20px;
+            & > label {
+              @include s.Novecento-Bold;
+              @include s.escaledFontFormat(s.$textSize15to18, bold, s.$pqGreen);
+            }
+          }
+        }
+        & > .datasContact {
+          @include s.flexColumn;
+          row-gap: 18px;
+          margin-bottom: 18px;
+          & > div {
+            @include s.flexRow;
+            align-items: center;
+            flex: 1;
+            column-gap: 20px;
+            & > div {
+              @include s.flexColumn;
+            }
+            & > .equals {
+              @include s.flexRow;
+              column-gap: 10px;
+              flex: 1;
+
+              & > .lineal {
+                height: 100%;
+                display: flex;
+                align-items: center;
+                margin-top: 25px;
+                & > input {
+                  height: initial;
+                }
+                label {
+                  margin-left: 10px;
+                }
+              }
+
+              & > .divSubSection {
+                & > input {
+                  width: 100%;
+                }
+              }
+            }
+          }
+        }
+        & > .required-data {
+          @include s.flexRow;
+          align-items: flex-end;
+          flex: 1;
+          justify-content: flex-end;
+          & > label {
+            @include s.Roboto-Regular;
+            @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen);
+          }
+        }
+      }
+      & > .alert-content {
+        height: 40px;
+        & > .alert-message {
+          @include s.flexRow;
+          background-color: #fdf7f8;
+          justify-content: center;
+          & > label {
+            @include s.Roboto-Bold;
+            @include s.escaledFontFormat(s.$textSize15to17, bold, s.$pqTextAlert);
+            padding: 10px 0;
+          }
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('media-1800') {
+    & > .generalDataClients {
+      & > .content {
+        & > .general-data {
+          & > .client-data {
+            grid-template-columns: 0.8fr repeat(5, 1fr);
+
+            & > .role,
+            .industry {
+              grid-column-end: span 1;
+            }
+            & > .check1,
+            & > .check2,
+/*            & > .check3 */ {
+              padding-top: 0;
+            }
+            & > .deseado {
+              grid-column-end: span 1;
+              &.fundamental {
+                grid-column-end: span 1;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > .generalDataClients {
+      & > .content {
+        & > .general-data {
+          max-height: 500px;
+          padding: 0 65px;
+          & > .client-data {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            margin-bottom: 20px;
+
+            & > .role,
+            .industry {
+              grid-column-end: span 2;
+            }
+          }
+
+          & > .aqua {
+            padding: 20px;
+            /*            height: 130px;*/
+            & > .authorized {
+              margin: 10px 0;
+              height: 30px;
+              & > .authorized-item {
+                @include s.flexRow;
+                background-color: rgba(0, 136, 148, 0.05);
+                align-items: center;
+                margin: 0 10px;
+                & > .text {
+                  margin: 0 10px;
+                }
+                & > .image {
+                  @include s.flexRow;
+                  align-items: center;
+                  & > img {
+                    height: 13px;
+                    cursor: pointer;
+                  }
+                }
+              }
+              :nth-child(1) {
+                margin: 0 10px 0 0;
+              }
+            }
+          }
+        }
+
+        & > .contacts {
+          & > .listContact {
+            & > .borderLine {
+              padding: 14px 0 10px 0;
+            }
+          }
+        }
+      }
+    }
+
+    & > .add-contact {
+      & .content {
+        & > .form-container {
+          padding: 35px 25px;
+          & > .header {
+            & > .info-content {
+              grid-template-columns: 130px 1fr;
+              margin-bottom: 30px;
+
+              & > .image {
+                & > img {
+                  max-height: 90px;
+                }
+              }
+              & > .text {
+                & > .aqua {
+                  padding-bottom: 5px;
+                }
+              }
+            }
+          }
+          & > .datasContact {
+            row-gap: 25px;
+          }
+        }
+      }
+    }
+  }
+}

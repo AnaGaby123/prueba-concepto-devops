@@ -1,0 +1,25 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  #contracts {
+    @include s.flexColumn;
+    @include s.absolute100;
+    overflow: hidden;
+
+    & > .list {
+      flex: 1;
+      overflow: hidden;
+    }
+
+    & > .details {
+      flex: 1;
+      overflow: hidden;
+    }
+  }
+}

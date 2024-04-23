@@ -1,0 +1,42 @@
+/* tslint:disable */
+import { CorreoElectronico } from './correo-electronico';
+import { NumeroTelefonico } from './numero-telefonico';
+import { VCliente } from './vcliente';
+import { VUsuario } from './vusuario';
+export interface ContactoDetalleObj {
+  Activo?: boolean;
+  AgregadoExpo?: boolean;
+  ApellidoMaterno?: string;
+  ApellidoPaterno?: string;
+  CorreoElectronico?: Array<CorreoElectronico>;
+  Departamento?: string;
+  Dificultad?: string;
+  FechaCaducidadRegistro?: string;
+  FechaRegistro?: string;
+  FechaUltimaActualizacion?: string;
+  IdCatDificultad?: string;
+  IdCatMantenimiento?: string;
+  IdCatNivelDecision?: string;
+  IdCatNivelPuesto?: string;
+  IdContacto?: string;
+  IdContactoCliente?: string;
+  IdDatosPersona?: string;
+  Mail?: string;
+  Mantenimiento?: string;
+  NivelDecision?: string;
+  NivelPuesto?: string;
+  Nombres?: string;
+  NumeroMovil?: string;
+  NumeroTelefonico?: Array<NumeroTelefonico>;
+  NumeroTelefono1?: string;
+  NumeroTelefono2?: string;
+  OrigenRegistro?: string;
+  Prioridad?: number;
+  PrioridadContacto?: number;
+  Puesto?: string;
+  Titulo?: string;
+  vCliente?: VCliente;
+  vUsuarioCobrosAsignados?: Array<VUsuario>;
+  vUsuarioEsacAsignados?: Array<VUsuario>;
+  vUsuarioVentasAsignados?: Array<VUsuario>;
+}

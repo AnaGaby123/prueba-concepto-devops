@@ -1,0 +1,276 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  #guide-client-list {
+    @include s.flexColumn;
+    @include s.absolute100;
+
+    & > .container {
+      @include s.flexRow;
+      flex: 1;
+
+      & > .list-content {
+        @include s.flexColumn;
+        border-right: 1px solid s.$pqGray;
+        flex: 0 0 360px;
+        padding: 20px 20px 30px 20px;
+
+        & > .list-header {
+          @include s.flexColumn;
+
+          & > label {
+            @include s.Novecento-Bold;
+            @include s.escaledFontFormat(s.$textSize20to25, bold, s.$pqBlack2);
+          }
+
+          & > .filters {
+            @include s.flexColumn;
+            border-bottom: 1px solid s.$pqBlack2;
+            padding: 11px 0 15px 0;
+          }
+        }
+
+        & > .list-body {
+          @include s.flexColumn;
+          flex: 1 1 auto;
+
+          & > virtual-scroller {
+            @include s.absolute100;
+            @include s.fixVirtualScroller;
+
+            .item {
+              @include s.flexRow;
+              border-bottom: 1px solid s.$pqGray2;
+
+              &.selected-item {
+                background-color: s.$pqGray2;
+              }
+
+              & * {
+                cursor: pointer;
+              }
+
+              &:hover {
+                background-color: s.$pqGray2;
+              }
+
+              & > .content {
+                @include s.flexRow;
+                flex: 1;
+
+                & > .indicator {
+                  width: 5px;
+
+                  &.selected {
+                    background-color: s.$pqGreen;
+                  }
+                }
+
+                & > .item-content {
+                  flex: 1;
+                  padding: 15px;
+
+                  & > .index {
+                    & > label {
+                      @include s.Roboto-Bold;
+                      @include s.escaledFontFormat(s.$textSize15to20, bold, s.$pqBlack2);
+                      @include s.multiLineTextTruncateSinHeight(2, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+
+                      & > span {
+                        color: s.$pqGreen;
+                        vertical-align: baseline;
+                      }
+                    }
+                  }
+
+                  & > .price {
+                    padding: 3px 0;
+
+                    & > label {
+                      @include s.Roboto-Bold;
+                      @include s.escaledFontFormat(s.$textSize15to20, bold, s.$pqBlack2);
+                    }
+                  }
+
+                  & > .pi {
+                    & > label {
+                      @include s.Roboto-Regular;
+                      @include s.escaledFontFormat(s.$textSize14to18, regular, s.$pqBlack2);
+                      text-decoration: underline;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        & > .list-footer {
+          @include s.flexRow;
+          border-top: 1px solid s.$pqBlack2;
+          justify-content: flex-end;
+          padding-top: 10px;
+
+          & > div {
+            & > div {
+              @include s.flexRow;
+
+              & > label {
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+                vertical-align: baseline;
+              }
+
+              :nth-child(2) {
+                padding-left: 75px;
+              }
+            }
+          }
+        }
+      }
+
+      & > .document-content {
+        @include s.flexColumn;
+        flex: 1;
+        padding: 20px 20px 15px 20px;
+
+        & > .header {
+          & > label {
+            @include s.Novecento-Bold;
+            @include s.escaledFontFormat(s.$textSize20to25, bold, s.$pqBlack2);
+
+            & > span {
+              color: s.$pqGreen;
+            }
+          }
+
+          padding-bottom: 11px;
+        }
+
+        & > .body {
+          @include s.flexColumn;
+          flex: 1;
+
+          & > .document {
+            @include s.flexRow;
+            width: 100%;
+            height: 100%;
+          }
+
+          & > .aqua {
+            @include s.flexRow;
+            background-color: rgba(s.$pqGreen, 0.05);
+            align-items: center;
+            justify-content: center;
+            margin: 35px 0 43px 0;
+
+            & > .aqua-content {
+              @include s.flexRow;
+              align-items: center;
+              padding: 30px 0;
+
+              & > .guide {
+                @include s.flexRow;
+                align-items: center;
+                padding: 0 40px;
+
+                & > label {
+                  @include s.Roboto-Bold;
+                  @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+                  flex: 1 0 auto;
+                  padding-right: 10px;
+                }
+              }
+
+              & > .freight {
+                @include s.flexRow;
+                align-items: center;
+                padding: 0 40px;
+
+                & > label {
+                  @include s.Roboto-Bold;
+                  @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+                  flex: 1 0 auto;
+                  padding-right: 10px;
+                }
+
+                & > app-drop-down-list {
+                  width: 354px;
+                }
+              }
+            }
+          }
+        }
+
+        & > .footer {
+          @include s.flexRow;
+          border-top: 1px solid s.$pqBlack2;
+          justify-content: flex-end;
+
+          padding-top: 15px;
+
+          & > .active {
+            @include s.pqButton();
+          }
+
+          & > .disabled {
+            @include s.pqButtonDisable();
+          }
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .container {
+        & > .list-content {
+          flex: 0 0 450px;
+          padding: 20px 20px 35px 20px;
+
+          & > .list-header {
+            & > .filters {
+              padding: 15px 0 20px 0;
+            }
+          }
+
+          & > .list-body {
+            & > virtual-scroller {
+              & .item {
+                & > .content {
+                  & > .indicator {
+                    width: 7px;
+
+                    & > .item-content {
+                      padding: 20px;
+
+                      & > .price {
+                        padding: 5px 0;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        & > .document-content {
+          & > .header {
+            padding-bottom: 15px;
+          }
+
+          & > .body {
+            & > .aqua {
+              margin: 40px 0 48px 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}

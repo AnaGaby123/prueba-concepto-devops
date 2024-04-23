@@ -1,0 +1,36 @@
+<div *ngIf="showCollapse" class="collapse">
+  <div class="info">
+    <label class="client-title">{{ 'common.client' | translate }} </label>
+    <label class="data-contact">{{ 'common.contactData' | translate }}</label>
+  </div>
+  <div class="container">
+    <img [src]="imgArrow" alt="client-img" (click)="collapseInfo()" [ngClass]="{reverse: isCollapse}" />
+    <div class="tooltip-text">
+      <p>{{ !isCollapse ? ('common.expandButtonMessage' | translate) : ('common.collapseButtonMessage' | translate) }}</p>
+    </div>
+  </div>
+</div>
+<div
+  class="client-contact-bar-collapse-container"
+  [ngClass]="{
+    show: showCollapse && isCollapse,
+    hide: showCollapse && !isCollapse,
+    isCollapse: showCollapse
+  }"
+>
+  <div class="contact-container" *ngIf="showContact">
+    <app-clients-contact [showTitles]="false" [isCollapse]="false" [contact]="contact"></app-clients-contact>
+  </div>
+  <div class="progress-bar-container" *ngIf="showBar">
+    <app-progress-bar-details
+      [showCollapse]="false"
+      [totalQuotedUSD]="totalQuotedUSD"
+      [percentage]="percentage"
+      [fundamentalObjectiveUSD]="fundamentalObjectiveUSD"
+      [efficiency]="efficiency"
+      [currentYear]="currentYear"
+      [currentDate]="currentDate"
+      [currency]="currency"
+    ></app-progress-bar-details>
+  </div>
+</div>

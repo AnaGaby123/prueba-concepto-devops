@@ -1,0 +1,1751 @@
+@use "sass:math" as m;
+@use 'colors' as c;
+@use 'displayed' as d;
+@use 'fonts' as f;
+@use 'reusable-mixin' as rm;
+
+/* ------------------------------------- */
+
+/* ------------Mixin de Flex------------ */
+/* ------------------------------------- */
+
+@mixin flexRow {
+  display: flex;
+  flex-direction: row;
+}
+
+@mixin flexRowImportant {
+  display: flex !important;
+  flex-direction: row !important;
+}
+
+@mixin flexRowWrap {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+@mixin flexRowNoWrap {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+@mixin flexRowNoWrapReverse {
+  display: flex;
+  flex-direction: row-reverse;
+  flex-wrap: nowrap;
+}
+
+@mixin flexColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin flexColumnImportant {
+  display: flex;
+  flex-direction: column !important;
+}
+
+@mixin absoluteCenter {
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+@mixin flex-center-items {
+  align-items: center;
+  justify-content: center;
+}
+@mixin absoluteLeft {
+  justify-content: left;
+  align-items: center;
+  align-content: center;
+}
+
+@mixin absoluteTop {
+  align-items: flex-start;
+  align-content: flex-start;
+  justify-content: flex-start;
+}
+
+@mixin focusDisable {
+  outline: none !important;
+  outline-width: 0 !important;
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+}
+
+@mixin absolute100 {
+  width: 100%;
+  height: 100%;
+}
+
+@mixin gridCenter {
+  display: grid;
+  place-items: center;
+}
+
+/*DOCS: Images*/
+$warning-pop-image-map: (
+  'base': 50px,
+  'macBookAir': 60px,
+);
+
+/* ------------------------------------- */
+
+/* ------------Mixin Variados----------- */
+
+/* ------------------------------------- */
+
+// DOCS: Contiene los estilos para la flecha de los items de las listas
+//  Para usarlo, solo hay que crear una etiqueta contenedora <div> y dentro <img>
+//  Llamar @right-arrow-in-item-list dentro del div en el css
+@mixin right-arrow-in-item-list {
+  @include flexRow;
+  @include absoluteCenter;
+  flex: 0 0 40px;
+  & > img {
+    height: 22px;
+  }
+  @include rm.responsive_layout('macBookAir') {
+    flex: 0 0 50px;
+    & > img {
+      height: 27px;
+    }
+  }
+}
+// DOCS Tamaño del header
+@mixin generic-main-component-header {
+  flex: 0 0 45px;
+  @include rm.responsive_layout('macBookAir') {
+    flex: 0 0 60px;
+  }
+}
+// DOCS: Contiene los estilos para el footer
+//  Para usarlo, hay que crear una etiqueta <div> o <footer> y colocar @generic-main-component-footer dentro en el css
+@mixin generic-main-component-footer {
+  @include flexRow;
+  @include absoluteCenter;
+  border-top: 2px solid c.$pqBlack2;
+  column-gap: 30px;
+  flex: 0 0 50px;
+
+  & > div {
+    @include flexRow;
+    align-items: center;
+
+    & > img.label {
+      @include imageIconResponsiveSize;
+    }
+
+    & > label {
+      white-space: pre-wrap;
+    }
+  }
+  @include rm.responsive_layout('macBookAir') {
+    flex: 0 0 55px;
+    column-gap: 40px;
+  }
+}
+
+// DOCS: mixin que contiene el tamaño para los iconos
+@mixin imageIconResponsiveSize {
+  height: 17px;
+  @include rm.responsive_layout('macBookAir') {
+    height: 20px;
+  }
+}
+
+// DOCS: Mixin que contiene los tamaños para las imagenes "label"
+@mixin imageLabel {
+  height: 15px;
+  @include rm.responsive_layout('macBookAir') {
+    height: 20px;
+  }
+}
+
+// DOCS Mixin en el que se definen los tamaños que tendran los items dentro de un display grid
+@mixin itemsCardWithGrid($minWidth, $ItemsSizeMap) {
+  @include sizeMapItemCard($ItemsSizeMap);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax($minWidth, 1fr));
+}
+
+// DOCS Mixin que recibe un mapa de tamaños junto con su medida respectiva para los items dentro de un display grid
+@mixin sizeMapItemCard($ItemsSizeMap) {
+  @each $breakpoint, $size in $ItemsSizeMap {
+    @if $breakpoint== 'base' {
+      grid-template-rows: repeat(auto-fill, $size);
+    } @else {
+      @include rm.responsive_layout($breakpoint) {
+        grid-template-rows: repeat(auto-fill, $size);
+      }
+    }
+  }
+}
+
+// DOCS: Define height responsivo para una imagen cualquiera
+@mixin height-scaled-image($height-map) {
+  @include height-image-map($height-map);
+}
+
+@mixin height-image-map($height-map) {
+  @each $breakpoint, $height in $height-map {
+    @if $breakpoint== 'base' {
+      height: $height;
+    } @else {
+      @include rm.responsive_layout($breakpoint) {
+        height: $height;
+      }
+    }
+  }
+}
+
+// DOCS: Define width responsivo para una imagen cualquiera
+@mixin width-scaled-image($width-map) {
+  @include width-image-map($width-map);
+}
+
+@mixin width-image-map($width-map) {
+  @each $breakpoint, $width in $width-map {
+    @if $breakpoint== 'base' {
+      width: $width;
+    } @else {
+      @include rm.responsive_layout($breakpoint) {
+        width: $width;
+      }
+    }
+  }
+}
+
+@mixin noSelect {
+  user-select: none;
+}
+
+@mixin appleBlinkFix {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+@mixin appleTouchFix {
+  -webkit-overflow-scrolling: touch;
+}
+
+@mixin ieFlexColumnFix {
+  -ms-flex: 1 1 auto !important;
+}
+
+@mixin webkitFlexColumnFix {
+  -webkit-flex: 1 1 auto !important;
+}
+
+@mixin mozFlexColumnFix {
+  -moz-flex: 1 1 auto !important;
+}
+
+//@mixin fontScalingFix {
+//  -webkit-font-smoothing: antialiased;
+//}
+//@mixin fontScalingFixImportant {
+//  -webkit-font-smoothing: antialiased !important;
+//}
+
+@mixin safariOnlyStyle {
+  @media screen and (min-color-index: 0) and (-webkit-min-device-pixel-ratio: 0) {
+    @content;
+  }
+}
+
+@mixin chromeOnlyStyle {
+  @media all and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: 0.001dpcm) {
+    @content;
+  }
+}
+
+@mixin fireFoxOnlyStyle {
+  @-moz-document url-prefix() {
+    @content;
+  }
+}
+
+@mixin clearfix {
+  *zoom: 1;
+  &:before,
+  &:after {
+    content: ' ';
+    /* 1 */
+    display: table;
+    /* 2 */
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+@mixin noScrollBars {
+  // Solo funciona en navegadores webkit / blink
+  &::-webkit-scrollbar {
+    height: 0;
+    width: 0;
+  }
+}
+
+@mixin windowsScrollbars($hideStyle) {
+  @if $hideStyle == 'none' {
+    -ms-overflow-style: none;
+  }
+  @if $hideStyle == 'autohide' {
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+  }
+}
+
+@mixin borderLine($width: 1.1px, $height: 100%) {
+  width: $width;
+  height: $height;
+  background: linear-gradient(to top, #ffffff 2%, #bcbcbc 70%, #ffffff 93%) 100%;
+}
+
+@mixin borderLineHorizontal($width: 100%, $height: 1.1px) {
+  width: $width;
+  height: $height;
+  background: linear-gradient(to right, #fefefe 0%, #dbdbdb 16%, #d1d1d1 51%, #d8d9dd 83%, #fefefe 100%);
+}
+
+/* ------------------------------------- */
+
+/* -------Mixin de Media Queries-------- */
+
+/* ------------------------------------- */
+
+//@mixin responsive_layout($size) {
+//  @if map-has-key(d.$breakpoints, $size) {
+//    @media #{inspect(map-get(d.$breakpoints, $size))} {
+//      @content;
+//    }
+//  } @else {
+//    @warn "No existe el tamaño `#{$size}`. "+"en la lista de breakpoints, revise el map de `$breakpoints`.";
+//  }
+//}
+
+/* ------------------------------------- */
+
+/* -----Manejo de tamaño de fuentes----- */
+
+/* ------------------------------------- */
+
+// Convierte puntos a la unidad pedida
+@function convertPts($value, $convertUnit) {
+  $resultValue: 0;
+  @if $convertUnit==px {
+    $resultValue: $value * 1.3333 + 0px;
+  } @else if $convertUnit==ems {
+    $resultValue: $value / 12 + 0em;
+  } @else if $convertUnit==percent {
+    $resultValue: percentage($value / 12);
+  }
+  @return $resultValue;
+}
+
+// DOCS: Convierte pixeles a em
+//@function em($pixels, $context: c.$browser-context) {
+//  @return m.div($pixels, $context) * 1em;
+//}
+//
+//// responsive font size mixin
+//@mixin font-size-map($font-size-map) {
+//  @each $breakpoint, $font-size in $font-size-map {
+//    @if $breakpoint== 'base' {
+//      font-size: em($font-size);
+//    } @else {
+//      @include rm.responsive_layout($breakpoint) {
+//        font-size: em($font-size);
+//      }
+//    }
+//  }
+//}
+//
+//@mixin font-size-map-important($font-size-map) {
+//  @each $breakpoint, $font-size in $font-size-map {
+//    @if $breakpoint== 'base' {
+//      font-size: em($font-size) !important;
+//    } @else {
+//      @include rm.responsive_layout($breakpoint) {
+//        font-size: em($font-size) !important;
+//      }
+//    }
+//  }
+//}
+
+/* ------------------------------------- */
+
+/* ------------ Componentes ------------ */
+
+/* ------------------------------------- */
+
+/* ------------------------------------- */
+
+/* --- Animaciones y Transisciones  --- */
+
+/* ------------------------------------- */
+
+@mixin pqCircle($size, $color) {
+  height: $size;
+  width: $size;
+  background-color: $color;
+  border-radius: 50%;
+}
+
+@mixin default-transition($property: all, $duration: 0.4s, $effect: ease-in-out) {
+  transition: $property $duration $effect;
+}
+
+/* ------------------------------------- */
+
+/* --- Tooltip --- */
+
+/* ------------------------------------- */
+/**Tooltip Nuevo*/
+@mixin tooltip(
+  $widthContainer: auto,
+  $heightContainer: auto,
+  $widthTooltip: auto,
+  $minWidthTooltip: 150px,
+  $align: 'center',
+  $textAlign: center,
+  $backgroundColor: #33333c,
+  $color: #ffffff,
+  $trianglePosition: 'default',
+  $margin: 0
+) {
+  // TODO: $align => left | center | right | right_0
+  width: $widthContainer;
+  height: $heightContainer;
+  cursor: pointer;
+  position: relative;
+  &:hover {
+    & > .tooltip-text {
+      opacity: 1;
+    }
+  }
+  & > .tooltip-text {
+    @include flexColumn;
+    @include absoluteTop;
+    @include f.Roboto-Regular;
+    width: $widthTooltip;
+    height: auto;
+    min-width: $minWidthTooltip;
+    align-self: flex-start;
+    box-sizing: border-box;
+    justify-content: flex-start;
+    background-color: $backgroundColor;
+    box-shadow: 1px 3px 4px 0 rgba(53, 53, 53, 0.5);
+    border-radius: 2px;
+    line-height: 15px;
+    margin: auto;
+    opacity: 0;
+    padding: 6px;
+    pointer-events: none;
+    transition: opacity 0.5s;
+    position: absolute;
+    @if $align == 'left' {
+      left: $margin;
+    } @else if $align == 'center' {
+      left: 50%;
+      transform: translateX(-50%);
+    } @else if $align == 'right' {
+      right: $margin;
+    } @else if $align == 'right_0' {
+      right: 0;
+    }
+    @if $trianglePosition == 'default' {
+      top: calc(100% + 5px);
+    } @else if($trianglePosition == 'right') {
+      top: calc(100% - 12px);
+      right: 9px;
+    } @else if($trianglePosition == 'top') {
+      bottom: calc(100% + 5px);
+    }
+    z-index: 5;
+    &::before {
+      content: '';
+      width: 0;
+      height: 0;
+      position: absolute;
+      @if $trianglePosition == 'default' {
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-bottom: 5px solid $backgroundColor;
+        top: -5px;
+        @if $align == 'left' {
+          left: calc(25% - 5px);
+        } @else if $align == 'center' {
+          left: calc(50% - 5px);
+        } @else if $align == 'right' {
+          left: calc(75% - 5px);
+        } @else if $align == 'right_0' {
+          left: calc(90% - 5px);
+        }
+      } @else if($trianglePosition == 'right') {
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-bottom: 5px solid $backgroundColor;
+        top: 11px;
+        left: calc(100% - 5px);
+        transform: rotate(90deg);
+        margin-left: 2px;
+      } @else if($trianglePosition == 'top') {
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 5px solid $backgroundColor;
+        bottom: -5px;
+        left: calc(50% - 5px);
+      }
+    }
+
+    & > p {
+      font-size: 12px;
+      color: $color;
+      text-align: $textAlign;
+    }
+    & > .more-text {
+      font-size: 12px;
+      color: $color;
+      text-align: $textAlign;
+    }
+  }
+}
+
+@mixin button($height: 31px, $width: 170px, $fontColor: c.$pqWhite, $backgroundColor: #c2c3c9, $fontSize: 18px) {
+  display: flex;
+  width: $width !important;
+  height: $height !important;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  background: $backgroundColor;
+  cursor: pointer;
+  & > label {
+    font-family: f.$font_family_novecento_bold;
+    font-size: $fontSize !important;
+    color: $fontColor;
+    text-align: left;
+    align-items: center;
+    cursor: pointer;
+  }
+}
+
+@mixin pqfDisableButton(
+  $background-color: c.$pqGray3,
+  $font-size-map: (
+    'base': 14px,
+    'macBookAir': 21px,
+  ),
+  $font-color: c.$pqWhite,
+  $height-map: (
+    'base': 25px,
+    'macBookAir': 30px,
+  ),
+  $max-width-map: (
+    'base': 135px,
+    'macBookAir': 180px,
+  ),
+  $padding-map: (
+    'base': 0 20px,
+    'macBookAir': 0 26px,
+  ),
+  $width: auto
+) {
+  @include pqfButton($background-color, $font-size-map, $font-color, $height-map, $max-width-map, $padding-map, $width);
+  cursor: default;
+  pointer-events: none;
+
+  & * {
+    cursor: default;
+  }
+}
+
+/*DOCS: Mixin a aplicar a todos los botones del proyecto
+    Params:
+      $background-color: Color de fondo del botón
+      $font-color:Color del texto
+      $height-map: height del botón en distintas resoluciones
+      $max-width-map: max-width del botón en distintas resoluciones*/
+@mixin pqfButton(
+  $background-color: c.$pqGreen,
+  $font-size-map: (
+    'base': 14px,
+    'macBookAir': 21px,
+  ),
+  $font-color: c.$pqWhite,
+  $height-map: (
+    'base': 25px,
+    'macBookAir': 30px,
+  ),
+  $max-width-map: (
+    'base': 135px,
+    'macBookAir': 180px,
+  ),
+  $padding-map: (
+    'base': 0 20px,
+    'macBookAir': 0 26px,
+  ),
+  $width: auto
+) {
+  @include appleBlinkFix;
+  @include f.Novecento-Bold;
+  @include f.escaledFontFormat($font-size-map, bold, #ffffff);
+  background-color: $background-color;
+  border: 0;
+  box-sizing: border-box;
+  color: $font-color;
+  cursor: pointer;
+  display: inline-block;
+  letter-spacing: 0.25px;
+  line-height: 16px;
+  min-width: 120px;
+  outline: none;
+  overflow: hidden;
+  pointer-events: auto;
+  text-overflow: ellipsis;
+  transition: all 0.4s;
+  white-space: pre;
+  width: $width;
+  word-break: break-all;
+
+  & * {
+    cursor: pointer;
+  }
+
+  @each $breakpoint, $height in $height-map {
+    @if $breakpoint== 'base' {
+      height: $height;
+    } @else {
+      @include rm.responsive_layout($breakpoint) {
+        height: $height;
+      }
+    }
+  }
+
+  @each $breakpoint, $max-width in $max-width-map {
+    @if $breakpoint== 'base' {
+      max-width: $max-width;
+    } @else {
+      @include rm.responsive_layout($breakpoint) {
+        max-width: $max-width;
+      }
+    }
+  }
+
+  @each $breakpoint, $padding in $padding-map {
+    @if $breakpoint== 'base' {
+      padding: $padding;
+    } @else {
+      @include rm.responsive_layout($breakpoint) {
+        padding: $padding;
+      }
+    }
+  }
+
+  @include rm.responsive_layout('macBookAir') {
+    min-width: 150px;
+  }
+}
+
+@mixin pqButton(
+  $min-width: 135px,
+  $max-width: 170px,
+  $min-height: 25px,
+  $max-height: 30px,
+  $baseColor: #008894,
+  $textSizeButton: (
+    'base': 14px,
+    'macBookAir': 21px,
+  )
+) {
+  /* Estilos del botón */
+  width: $min-width;
+  height: $min-height;
+  @media screen and (min-width: 2100px) {
+    width: $max-width;
+    height: $max-height;
+    line-height: 18px;
+    padding: 4px 6px;
+  }
+  background-color: $baseColor;
+  border: 0;
+  box-sizing: border-box;
+  border-radius: 2px;
+  cursor: pointer;
+  display: inline-block;
+  letter-spacing: 0.25px;
+  line-height: 16px;
+  outline: none;
+  padding: 5px 6px;
+  transition: all 0.4s;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  @include appleBlinkFix;
+  @include f.escaledFontFormat($textSizeButton, bold, #ffffff);
+  @include f.Novecento-Bold;
+  & * {
+    cursor: pointer;
+  }
+  & > label,
+  & > p {
+    letter-spacing: 0.25px;
+    overflow: hidden;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+@mixin pqButtonDisable(
+  $min-width: 135px,
+  $max-width: 170px,
+  $min-height: 25px,
+  $max-height: 30px,
+  $baseColor: #c2c3c9,
+  $textSizeButton: (
+    'base': 14px,
+    'macBookAir': 21px,
+  )
+) {
+  /* Estilos del botón */
+  width: $min-width;
+  height: $min-height;
+  @media screen and (min-width: 2100px) {
+    width: $max-width;
+    height: $max-height;
+    line-height: 18px;
+    padding: 4px 6px;
+  }
+  background-color: $baseColor;
+  border: 0;
+  box-sizing: border-box;
+  border-radius: 2px;
+  cursor: default;
+  display: inline-block;
+  letter-spacing: 0.25px;
+  line-height: 16px;
+  outline: none;
+  padding: 5px 6px;
+  transition: all 0.4s;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  @include appleBlinkFix;
+  @include f.escaledFontFormat($textSizeButton, bold, #ffffff);
+  @include f.Novecento-Bold;
+  & > label,
+  & > p {
+    letter-spacing: 0.25px;
+    overflow: hidden;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+@mixin opacityColor($opacity: 0.05) {
+  background-color: rgba(0, 136, 148, $opacity);
+}
+
+@mixin fixVirtualScroller() {
+  @include absolute100;
+
+  ::ng-deep .scrollable-content {
+    @include absolute100;
+    max-width: 100% !important;
+    max-height: 100% !important;
+  }
+}
+
+@mixin table-container {
+  @include flexColumn;
+  flex: 1 1 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+@mixin table($min-width: 1500px) {
+  @include flexColumn;
+  flex: 1 0 100%;
+  min-width: $min-width;
+}
+
+@mixin table-header($min-width: 1500px, $border-color: c.$pqBlack2) {
+  @include flexRowNoWrap;
+  border-bottom: 1px solid $border-color;
+  flex: 0 0 auto;
+  min-width: $min-width;
+}
+
+@mixin table-body($min-width: 1500px, $border-color: c.$pqBlack2) {
+  @include flexColumn;
+  flex: 1 1 auto;
+  min-width: $min-width;
+}
+
+@mixin generic-main-component-structure {
+  @include absolute100;
+
+  &,
+  & * {
+    box-sizing: border-box;
+  }
+
+  & > .component-container {
+    @include absolute100;
+    @include flexColumn;
+
+    & > .header {
+      @include generic-main-component-header;
+    }
+    & > .outlet {
+      display: flex;
+      flex: 1 1 auto;
+      overflow: hidden;
+    }
+    & > .footer {
+      @include generic-main-component-footer;
+    }
+  }
+}
+
+// DOCS: Mixin para la estructura principal
+@mixin pqf-generic-main-component-structure {
+  @include absolute100;
+  @include f.reset-line-height;
+  overflow: hidden;
+
+  & > .component-container {
+    @include absolute100;
+    @include flexColumn;
+    overflow: hidden;
+    flex: 1;
+    & > .outlet {
+      display: flex;
+      flex: 1 1 auto;
+      overflow: hidden;
+    }
+  }
+}
+/* DOCS: Mixin para la estructura del dashboard o detalle ya que en ambas se usara en tamaño responsive screen un grid de 12
+    y en tamaño full screen uno grid de 10 de igual forma en ambos casos puede contar con los filtros que ya estan estandarizados en el padding tanto para el dashboard como el detalle*/
+@mixin pqf-pending-generic-structure {
+  @include absolute100;
+  @include flexRowNoWrap;
+  @include f.reset-line-height;
+  overflow: hidden;
+  & > .dashboard-container,
+  & > .details-container {
+    display: grid;
+    flex: 1;
+    grid-column-gap: 20px;
+    grid-template-columns: repeat(12, 1fr);
+    overflow: hidden;
+    & > .left-container {
+      @include flexColumn;
+      grid-column-end: span 3;
+      & > .filters {
+        border-bottom: 1px solid c.$dark-proquifa-d;
+        padding: 8px 8px 15px 8px;
+      }
+    }
+    & > .right-container {
+      grid-column-end: span 9;
+    }
+  }
+  @include d.media-query(d.$standard) {
+    & > .dashboard-container,
+    & > .details-container {
+      grid-template-columns: repeat(10, 1fr);
+      & > .left-container {
+        & > .filters {
+          padding: 16px 16px 15px 16px;
+        }
+      }
+      & > .right-container {
+        grid-column-end: span 7;
+      }
+    }
+  }
+}
+
+/*DOCS: DASHBOARD: CONTENEDOR DERECHO Y SIRVE PARA EL POSICIONAMIENTO DE LAS GRAFICAS
+ LAS VARIABLES QUE UTILIZA SON PARA EL PADDING DEL CONTENEDOR, EL GAP PARA EL ESPACIADO ENTRE GRAFICAS Y
+ PARA LAS GRAFICAS SE COLOCA EL NUMERO DE GRAFICAS QUE NECESITAS PARA LA SECCION DE ARRIBA Y ABAJO
+ */
+@mixin grid-dashboard-graphics(
+  $graphics-padding: (
+    'base': 10px 60px,
+    'macBookAir': 5px 30px,
+  ),
+  $graphics-structure: (
+    'top': 1,
+    'bottom': 0,
+  ),
+  $graphics-gap: (
+    'base': 15px 25px,
+    'macBookAir': 25px 60px,
+  )
+) {
+  // DOCS: Variables
+  $top: map-get($graphics-structure, 'top');
+  $bottom: map-get($graphics-structure, 'bottom');
+  $maxValue: max($top, $bottom);
+  $minValue: min($top, $bottom);
+
+  background: c.$pqGray2;
+  display: grid;
+  grid-template-rows: 1fr;
+  height: 100%;
+
+  @if $bottom > 0 {
+    grid-template-rows: repeat(2, 1fr);
+  }
+  @if ($maxValue % $minValue == 0 or $bottom == 0) {
+    grid-template-columns: repeat($maxValue, 1fr);
+  } @else {
+    grid-template-columns: repeat($top * $bottom, 1fr);
+  }
+  @each $paddings, $value in $graphics-padding {
+    @if $paddings == 'base' {
+      padding: $value;
+    } @else {
+      @include rm.responsive_layout($paddings) {
+        padding: $value;
+      }
+    }
+  }
+  @each $grid-gap, $value in $graphics-gap {
+    @if $grid-gap == 'base' {
+      gap: $value;
+    } @else {
+      @include rm.responsive_layout($grid-gap) {
+        gap: $value;
+      }
+    }
+  }
+}
+
+// DOCS padding del item del listado de pendientes
+@mixin list-item-padding-pending {
+  padding: 15px 0;
+  @include rm.responsive_layout('macBookAir') {
+    padding: 20px 0;
+  }
+}
+
+// DOCS indice de los item del listado de pendientes
+@mixin list-item-index-pending {
+  @include flexColumn;
+  flex: 0 0 65px;
+  padding-left: 15px;
+
+  & > label {
+    @include f.responsive-font-format(
+      $font-family: f.$font-family-roboto_regular,
+      $font-weight: f.$font-weight-regular,
+      $font-size-map: f.$responsive-font-16-20
+    );
+    line-height: normal;
+  }
+
+  /*  @include rm.responsive_layout('macBookAir') {
+    flex: 0 0 85px;
+    padding-left: 20px;
+  }*/
+}
+
+@mixin list-item-content-pending {
+  padding-left: 15px;
+
+  @include rm.responsive_layout('macBookAir') {
+    padding-left: 20px;
+  }
+}
+
+// DOCS estructura del dashboard del listado de pendientes
+@mixin pending-dashboard-structure(
+  $left-container-flex: (
+    'base': 430px,
+    'macBookAir': 540px,
+  ),
+  $graphics-padding: (
+    'base': 10px 60px,
+    'macBookAir': 5px 30px,
+  ),
+  $graphics-structure: (
+    'top': 1,
+    'bottom': 0,
+  ),
+  $graphics-gap: (
+    'base': 15px 25px,
+    'macBookAir': 25px 60px,
+  )
+) {
+  @include absolute100;
+  &,
+  & * {
+    box-sizing: border-box;
+  }
+  & > .dashboard-container {
+    @include absolute100;
+    @include flexRowNoWrap;
+    overflow: hidden;
+    & > .left-container {
+      @include flexColumn;
+      @include default-transition;
+      padding: 15px 15px 15px 0;
+      @each $breakpoint, $flex in $left-container-flex {
+        @if $breakpoint== 'base' {
+          flex: 0 0 $flex;
+        } @else {
+          @include rm.responsive_layout($breakpoint) {
+            flex: 0 0 $flex;
+          }
+        }
+      }
+      & > .title {
+        /*@include escaledFontFormat($textSize17to24, bold, $pqBlack2);
+        @include Novecento-Bold;*/
+        @include f.responsive-font-format(
+          $font-family: f.$font_family_novecento_bold,
+          $font-size-map: f.$responsive-font-17-21
+        );
+        margin-bottom: 15px;
+        flex: 0 0 auto;
+      }
+      & .filters {
+        @include flexRowNoWrap;
+        align-items: center;
+        box-sizing: border-box;
+        height: 30px;
+        margin-bottom: 15px;
+        justify-content: space-between;
+        width: 100%;
+      }
+      & > .tabs {
+        height: 45px;
+        margin-bottom: 15px;
+      }
+      & > .search-bar {
+        @include flexRowNoWrap;
+        height: 30px;
+        margin-bottom: 15px;
+        width: 100%;
+        & > app-search {
+          width: 100%;
+        }
+      }
+      & > .list-container {
+        border-top: 1px solid c.$pqBlack2;
+        flex: 1 1 auto;
+        overflow: hidden;
+        & > .virtual-list {
+          @include absolute100;
+          @include flexColumn;
+          flex: 1;
+          overflow: auto;
+          & .item {
+            @include cursor-pointer;
+            @include default-transition;
+            @include flexRow;
+            @include list-item-padding-pending;
+            border-bottom: 1px solid c.$pqGray2;
+            & > .indicator {
+              & > .circle {
+                border-radius: 50%;
+                flex-shrink: 0;
+              }
+            }
+            &:hover {
+              background-color: c.$pqGray2;
+            }
+            & > .number {
+              @include list-item-index-pending;
+            }
+            & > .content {
+              @include list-item-content-pending;
+              flex: 1 1 auto;
+            }
+            & > .arrow {
+              @include right-arrow-in-item-list;
+            }
+          }
+        }
+
+        & > .without-results {
+          @include flexRow;
+          align-items: center;
+          height: 100%;
+          & > app-without-results {
+            @include absoluteCenter;
+            @include flexRow;
+            flex: 1;
+          }
+        }
+        & > .loader {
+          @include flexRow;
+          height: 100%;
+          & > app-loading {
+            @include flexRow;
+          }
+        }
+      }
+      & > .footer {
+        @include footerListDashboard;
+      }
+    }
+    & > .right-container {
+      @include grid-dashboard-graphics($graphics-padding, $graphics-structure, $graphics-gap);
+      background: c.$pqGray2;
+      flex: 1 1 auto;
+    }
+
+    @include rm.responsive_layout('macBookAir') {
+      & > .left-container {
+        padding: 20px 20px 20px 0;
+        & > .title {
+          margin-bottom: 20px;
+        }
+        & > .filters {
+          height: 35px;
+          margin-bottom: 20px;
+        }
+        & > .search-bar {
+          margin-bottom: 20px;
+        }
+        & > .tabs {
+          height: 55px;
+          margin-bottom: 20px;
+        }
+      }
+    }
+  }
+}
+
+// DOCS: Mixin para darle estilos al item de la lista del dashboard de pendientes
+@mixin pending-dashboard-list-item {
+  @include cursor-pointer;
+  @include default-transition;
+  @include flexRow;
+  @include list-item-padding-pending;
+  border-bottom: 1px solid c.$pqGray2;
+
+  & > .indicator {
+    & > .circle {
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+  }
+
+  &:hover {
+    background-color: c.$pqGray2;
+  }
+  & > .number {
+    @include list-item-index-pending;
+  }
+
+  & > .content {
+    @include list-item-content-pending;
+    flex: 1 1 auto;
+  }
+
+  & > .arrow {
+    @include right-arrow-in-item-list;
+  }
+}
+// MIXIN CREADO PARA LA ESTRUCTURA GEBERAK DE LOS DETALLES DEL COMPONENTE
+@mixin pending-details-structure(
+  $left-container-flex: (
+    'base': 430px,
+    'macBookAir': 540px,
+  )
+) {
+  @include absolute100;
+  &,
+  & * {
+    box-sizing: border-box;
+  }
+  & > .container-details {
+    @include absolute100;
+    @include flexRowNoWrap;
+    overflow: hidden;
+    & > .left-container {
+      @include flexColumn;
+      overflow: hidden;
+      padding: 15px;
+      @each $breakpoint, $flex in $left-container-flex {
+        @if $breakpoint== 'base' {
+          flex: 0 0 $flex;
+        } @else {
+          @include rm.responsive_layout($breakpoint) {
+            flex: 0 0 $flex;
+          }
+        }
+      }
+
+      & > .title {
+        @include f.escaledFontFormat(f.$textSize17to24, bold, c.$pqBlack2);
+        @include f.Novecento-Bold;
+        flex: 0 0 auto;
+      }
+
+      & > .list-container {
+        flex: 1 1 auto;
+        overflow: hidden;
+        & > virtual-scroller {
+          & .item {
+            @include default-transition;
+          }
+        }
+      }
+      & > .footer {
+        @include footerListDashboard;
+      }
+    }
+
+    & > .right-container {
+      flex: 1 1 auto;
+    }
+
+    @include rm.responsive_layout('macBookAir') {
+      & > .left-container {
+        padding: 20px;
+      }
+    }
+  }
+}
+// DOCS footer para el listado del dashboard
+@mixin footerListDashboard {
+  flex: 0 0 30px;
+  padding: 5px 15px 0 15px;
+  /*  @include rm.responsive_layout('macBookAir') {
+    flex: 0 0 35px;
+    padding: 5px 35px 0 35px;
+  }*/
+}
+@mixin borderTypeCamera {
+  position: relative;
+  .leftTop {
+    border-top: 1px solid c.$pqGray3;
+    border-left: 1px solid c.$pqGray3;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+  }
+  .rightTop {
+    position: absolute;
+    border-top: 1px solid c.$pqGray3;
+    border-right: 1px solid c.$pqGray3;
+    top: 0;
+    right: 0;
+    height: 25px;
+    width: 25px;
+  }
+  .leftBot {
+    position: absolute;
+    border-right: 1px solid c.$pqGray3;
+    border-bottom: 1px solid c.$pqGray3;
+    bottom: 0;
+    right: 0;
+    height: 25px;
+    width: 25px;
+  }
+  .rightBot {
+    position: absolute;
+    border-left: 1px solid c.$pqGray3;
+    border-bottom: 1px solid c.$pqGray3;
+    bottom: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+  }
+}
+
+@mixin cursor-pointer {
+  &,
+  & * {
+    cursor: pointer;
+  }
+}
+
+@keyframes shake {
+  10%,
+  90% {
+    transform: translate3d(-1px, 1px, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(2px, -1px, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-3px, 1px, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(3px, -1px, 0);
+  }
+}
+@keyframes animateZoom {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+// Es para los items de biologic and chemical ya que tienen los miesmos estilos solo cambian en algunnas cosas
+@mixin structure-item-products-quotation-complete() {
+  * {
+    box-sizing: border-box;
+  }
+  @include absolute100();
+  @include flexColumn();
+  gap: 15px;
+  #items-products {
+    column-gap: 30px;
+    display: grid;
+    grid-template-columns: 10fr 3fr;
+    & > .content-items {
+      & > label {
+        @include f.responsive-font-format(
+          $color: c.$main-proquifa,
+          $font-family: f.$font-family_roboto_bold,
+          $font-size-map: f.$responsive-font-12-b-12-b,
+          $font-weight: f.$font-weight_bold
+        );
+      }
+      & > .information {
+        @include flexRow();
+        margin-top: 8px;
+        & > .section-first,
+        .section-second,
+        .section-three {
+          @include absolute100();
+          @include flexColumn();
+          flex: 1 0 30%;
+          gap: 4px;
+          & > div {
+            @include absolute100();
+            @include flexRow();
+            & > label {
+              @include f.responsive-font-format(
+                $color: c.$dark-proquifa-d,
+                $font-family: f.$font-family_roboto,
+                $font-size-map: f.$responsive-font-12-b-12-b
+              );
+              & > .text {
+                @include f.responsive-font-format(
+                  $color: c.$dark-proquifa,
+                  $font-family: f.$font-family_roboto,
+                  $font-size-map: f.$responsive-font-12-b-12-b
+                );
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  #technical-product {
+    column-gap: 5px;
+    display: grid;
+    flex: 0 0 auto;
+    grid-template-columns: 2fr 2fr 4fr;
+    & > div {
+      row-gap: 5px;
+    }
+    & > .section {
+      @include flexColumn();
+      flex: 0 0 auto;
+      gap: 5px;
+      & > label {
+        @include f.responsive-font-format(
+          $color: c.$main-proquifa,
+          $font-family: f.$font-family_roboto_bold,
+          $font-size-map: f.$responsive-font-12-b-12-b,
+          $font-weight: f.$font-weight_bold
+        );
+      }
+      & > .family-items {
+        @include flexColumn();
+        row-gap: 5px;
+        flex: 1 1 auto;
+        justify-content: initial;
+        & > label {
+          @include f.responsive-font-format(
+            $color: c.$main-proquifa,
+            $font-family: f.$font-family_roboto_bold,
+            $font-size-map: f.$responsive-font-12-b-12-b,
+            $font-weight: f.$font-weight_bold
+          );
+        }
+        & > .content {
+          @include flexColumn();
+          row-gap: 10px;
+          width: 100%;
+          & > label {
+            @include f.responsive-font-format(
+              $color: c.$dark-proquifa,
+              $font-family: f.$font-family_roboto,
+              $font-size-map: f.$responsive-font-12-b-12-b
+            );
+          }
+          & > .title,
+          .not-marketable {
+            @include f.responsive-font-format(
+              $color: c.$main-proquifa,
+              $font-family: f.$font-family_roboto_bold,
+              $font-size-map: f.$responsive-font-12-b-12-b,
+              $font-weight: f.$font-weight_bold
+            );
+            & > .text {
+              @include f.responsive-font-format(
+                $color: c.$dark-proquifa,
+                $font-family: f.$font-family_roboto,
+                $font-size-map: f.$responsive-font-12-b-12-b
+              );
+            }
+          }
+        }
+      }
+      & > div {
+        & > .description {
+          @include f.responsive-font-format(
+            $color: c.$dark-proquifa,
+            $font-family: f.$font-family_roboto,
+            $font-size-map: f.$responsive-font-12-b-12-b
+          );
+        }
+      }
+      & > .content {
+        display: grid;
+        grid-template-columns: 1fr;
+        & > div {
+          @include flexRow();
+          padding-bottom: 8px;
+          & > .text {
+            @include f.responsive-font-format(
+              $color: c.$dark-proquifa,
+              $font-family: f.$font-family_roboto,
+              $font-size-map: f.$responsive-font-12-b-12-b
+            );
+            vertical-align: baseline;
+          }
+          & > img {
+            height: 13px;
+            margin-right: 3px;
+            @include rm.responsive_layout('macBookAir') {
+              height: 17px;
+            }
+          }
+          &.line {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+    & > .comment {
+      @include flexColumn();
+      width: 100%;
+      & > .title {
+        @include f.responsive-font-format(
+          $color: c.$main-proquifa,
+          $font-family: f.$font-family_roboto,
+          $font-size-map: f.$responsive-font-12-b-12-b
+        );
+      }
+      & > .text {
+        @include f.responsive-font-format(
+          $color: c.$dark-proquifa,
+          $font-family: f.$font-family_roboto,
+          $font-size-map: f.$responsive-font-12-b-12-b
+        );
+      }
+    }
+  }
+  @include rm.responsive_layout('macBookAir') {
+    gap: 30px;
+    #items-products {
+      column-gap: 0;
+      grid-template-columns: 8fr 2fr;
+      & > .content-items {
+        & > .title {
+          max-height: 29px;
+        }
+        & > .information {
+          gap: 32px;
+          padding-right: 5px;
+          & > .section-second,
+          .section-first {
+            gap: 5px;
+          }
+          & > .section-three {
+            & > .column {
+              & > .item-date {
+                & > .space {
+                  width: 91px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    #technical-product {
+      grid-template-columns: 4fr 4fr 6fr;
+      & > .comment {
+        @include flexColumn;
+        width: 100%;
+        & > img {
+          height: 13px;
+          margin-right: 3px;
+          @include rm.responsive_layout('macBookAir') {
+            height: 17px;
+          }
+        }
+      }
+    }
+  }
+  // mismo tamaño de fuente pero con diferntes colores
+  .title {
+    @include f.escaledFontFormat(f.$textSize12to16, '', c.$textGray);
+    @include f.Roboto-Regular();
+  }
+  .text {
+    color: c.$pqBlack2;
+    vertical-align: baseline;
+  }
+  .blue {
+    @include f.Roboto-Bold();
+    color: c.$pqGreen;
+    vertical-align: baseline;
+  }
+  .line {
+    text-decoration: underline;
+  }
+}
+// es para los items de publications y training solo para los items ya que se repiten todos los estilos
+@mixin structure-item-quotation-products() {
+  * {
+    box-sizing: border-box;
+  }
+  @include flexColumn();
+  gap: 21px;
+  #items-products {
+    @include absolute100();
+    display: grid;
+    grid-template-columns: 6fr 1fr;
+    & > .content-items {
+      flex: 0 0 70%;
+      & > .title {
+        @include absolute100();
+        @include flexRow();
+        max-height: 20px;
+        padding-bottom: 10px;
+      }
+      & > .information {
+        @include flexRow();
+        & > .section-second,
+        .section-first {
+          @include absolute100();
+          @include flexColumn();
+          flex: 0 1 45%;
+          gap: 5px;
+          & > div {
+            @include absolute100();
+            @include flexRow();
+          }
+        }
+      }
+    }
+    & > .family-items {
+      @include flexColumn();
+      flex: 1 1 auto;
+      row-gap: 8px;
+      & > .content {
+        @include flexColumn();
+        row-gap: 10px;
+        width: 100%;
+      }
+    }
+  }
+  // mismo tamaño de fuente pero con diferntes colores
+  .title {
+    @include f.escaledFontFormat(f.$textSize12to16, '', c.$textGray);
+    @include f.Roboto-Regular();
+  }
+  .text {
+    @include f.escaledFontFormat(f.$textSize12to16, '', c.$pqBlack2);
+    @include f.Roboto-Regular();
+  }
+  .blue {
+    color: c.$pqGreen;
+    @include f.Roboto-Bold();
+    vertical-align: baseline;
+  }
+  .line {
+    text-decoration: underline;
+  }
+  .tex-gray {
+    color: c.$pqGray3 !important;
+  }
+  .text-black {
+    color: c.$pqBlack2 !important;
+  }
+}
+
+/// BOTONES PQF ///
+
+// Variables //
+// Versiones
+$full: 'full';
+$empty: 'empty';
+// Tipos
+$primary: 'primary';
+$secondary: 'secondary';
+$disable: 'disable';
+// Altos
+$short: 36px;
+$tall: 44px;
+// Anchos (para saber cual colocar se debe de verificar cual es el padding del botón)
+$sm: 31px;
+$md: 78px;
+$lg: 132px;
+$xl: 185px;
+
+// Mixins //
+// Mixin general
+@mixin pqf-button($version, $type, $height, $width) {
+  @include flexRow;
+  @include f.responsive-font-format(
+    $font-family: f.$font-family-roboto_bold,
+    $font-weight: f.$font-weight-bold,
+    $font-size-map: f.$responsive-font-16-16
+  );
+  @if ($type == $primary) {
+    @include btn-config($apply-hover: true, $btn-version: $version, $hover-theme: $primary, $width-btn: $width);
+  } @else if($type == $secondary) {
+    @include btn-config(
+      $apply-hover: true,
+      $background-color: c.$pqBlack2,
+      $btn-version: $version,
+      $hover-theme: $secondary,
+      $width-btn: $width
+    );
+  } @else {
+    cursor: initial !important;
+    @if ($version == $full) {
+      @include btn-config(
+        $apply-hover: false,
+        $background-color: c.$dark-proquifa-e,
+        $btn-version: $version,
+        $text-color: c.$dark-proquifa-d,
+        $width-btn: $width
+      );
+    } @else {
+      @include btn-config(
+        $apply-hover: false,
+        $background-color: c.$dark-proquifa-d,
+        $btn-version: $version,
+        $text-color: c.$dark-proquifa-d,
+        $width-btn: $width
+      );
+    }
+  }
+  align-items: center;
+  border-radius: 4px !important;
+  height: $height;
+  padding-left: $width;
+  padding-right: $width;
+}
+// Mixins de configuraciones
+@mixin btn-config(
+  $apply-hover,
+  $background-color: c.$pqGreen,
+  $btn-version: $full,
+  $hover-theme: $primary,
+  $text-color: c.$pqWhite,
+  $width-btn: $sm
+) {
+  @if ($btn-version == $full) {
+    background-color: $background-color;
+    color: $text-color !important;
+  } @else {
+    background-color: c.$pqWhite;
+    color: $background-color !important;
+  }
+  @if ($apply-hover) {
+    @include btn-config-hover($btn-width: $width-btn, $theme: $hover-theme, $version-btn: $btn-version);
+  }
+  border: 1px solid $background-color;
+}
+
+@mixin btn-config-hover($btn-width: $sm, $theme: $primary, $version-btn: $full) {
+  &:hover {
+    @if ($version-btn == $full) {
+      @if ($theme == $primary) {
+        background-color: c.$main-proquifa-c;
+        border: 3px solid c.$main-proquifa-c;
+        color: c.$pqWhite !important;
+      } @else {
+        background-color: c.$dark-proquifa-d;
+        border: 3px solid c.$dark-proquifa-d;
+        color: c.$pqBlack2 !important;
+      }
+    } @else {
+      @if ($theme == $primary) {
+        color: c.$main-proquifa-c !important;
+        border: 3px solid c.$main-proquifa-c;
+      } @else {
+        color: c.$pqBlack2 !important;
+        border: 3px solid c.$pqBlack2;
+      }
+      background-color: c.$pqWhite !important;
+    }
+    cursor: pointer;
+    padding-left: $btn-width - 2px;
+    padding-right: $btn-width - 2px;
+  }
+}
+
+@mixin new-table-container {
+  @include flexColumn;
+  flex: 1 1 auto;
+  overflow: auto;
+  scrollbar-gutter: stable;
+  position: relative;
+
+  & > .header {
+    flex: 0 0 auto;
+    position: sticky;
+    top: 0;
+    z-index: 6;
+  }
+
+  & > .header-separator {
+    position: sticky;
+    top: 47px;
+    left: 0;
+    border-bottom: 1px solid c.$dark-proquifa;
+  }
+}

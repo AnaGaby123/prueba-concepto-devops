@@ -1,0 +1,181 @@
+<div id="payment-order-list">
+  <div class="container">
+    <div class="top">
+      <label
+        >{{ 'paymentOrder.payments' | translate }}<span>{{ ' · JUNIO 2021 ' }}</span></label
+      >
+      <div class="chips">
+        <div>
+          <app-chip [dataChips]="chips" [fontColorDefault]="'#ffffff'" [totalsIsAmount]="true" [separator]="' · '"></app-chip>
+        </div>
+        <div class="image">
+          <img src="assets/Images/labels/exportarCSV-defult.svg" />
+          <img src="assets/Images/labels/exportatCSV-hover.svg" />
+        </div>
+      </div>
+    </div>
+    <div class="mid">
+      <div class="left">
+        <div class="header-left">
+          <div class="header-content">
+            <div class="left-text">
+              <label>{{ 'Del 21 al 25 de junio del 2021' }}</label>
+            </div>
+            <div class="right-text">
+              <label
+                ><span>{{ '6 PAGOS EN mxn · ' }}</span> {{ (113000 | currency: 'MXN':'symbol-narrow':'0.2-4') + ' MXN' }}
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="body-left">
+          <div class="item-content">
+            <div class="item" [style.border-bottom]="validateRed ? 'none' : ''">
+              <div class="item-body">
+                <div class="check">
+                  <div class="false">
+                    <img
+                      alt="No validada"
+                      [src]="'assets/Images/pre-processing/disable.svg'"
+                      [ngClass]="validateRed == false ? 'img-opacity' : ''"
+                      (click)="validateRed = !validateRed && validateGreen == false"
+                    />
+                  </div>
+                  <div class="true">
+                    <img
+                      alt="Validada"
+                      [src]="'assets/Images/pre-processing/active.svg'"
+                      [ngClass]="validateGreen == false ? 'img-opacity' : ''"
+                      (click)="validateGreen = !validateGreen && validateRed == false"
+                    />
+                  </div>
+                </div>
+                <div class="info">
+                  <div class="index">
+                    <label
+                      >#{{ 1 }} · <span>{{ 'F0-924857' }}</span> · {{ 'paymentOrder.toPay' | translate }}
+                      {{ (1000 | currency: 'USD':'symbol-narrow':'0.2-4') + ' USD' }}</label
+                    >
+                  </div>
+                  <div class="description">
+                    <img src="assets/Images/labels/directos.svg" /><label
+                      >{{ 'paymentOrder.description' | translate }}: {{ 'Renta de Auto · Ejemplo Cuenta Contable' }}</label
+                    >
+                  </div>
+                  <div class="emitter">
+                    <label
+                      >{{ 'paymentOrder.emitter' | translate }}:
+                      {{ 'Radio movil dipsa, sa de cv · Receptor: Proveedora químico farmaceutica · Banamex M.N. ' }}</label
+                    >
+                  </div>
+                  <div class="method">
+                    <label>{{ 'paymentOrder.paymentMethod' | translate }} : {{ 'PPD · Fecha de Pago: 21/Junio/2021' }}</label>
+                  </div>
+                </div>
+                <div class="status">
+                  <label>{{ 'paymentOrder.refund' | translate }}</label>
+                </div>
+              </div>
+              <div class="comments" *ngIf="validateRed == true">
+                <div class="tab"></div>
+                <label>{{ 'common.comments' | translate }}</label>
+                <app-generic-input></app-generic-input>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="footer-left">
+          <div class="footer-content">
+            <label
+              ><span>{{ 0 }} {{ 'paymentOrder.declinedPayments' | translate }}</span> · {{ 0 }}
+              {{ 'paymentOrder.aceptedPayments' | translate }} ·
+              {{ (0 | currency: 'MXN':'symbol-narrow':'0.2-4') + ' MXN' }}</label
+            >
+          </div>
+        </div>
+      </div>
+      <div class="right">
+        <div class="header-right">
+          <div class="header-content">
+            <div class="left-text">
+              <label>{{ 'Del 21 al 25 de junio del 2021' }}</label>
+            </div>
+            <div class="right-text">
+              <label
+                ><span>{{ '6 PAGOS EN mxn · ' }}</span> {{ (113000 | currency: 'MXN':'symbol-narrow':'0.2-4') + ' MXN' }}
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="body-right">
+          <div class="item-content">
+            <div class="item" [style.border-bottom]="validateRed ? 'none' : ''">
+              <div class="item-body">
+                <div class="check">
+                  <div class="false">
+                    <img
+                      alt="No validada"
+                      [src]="'assets/Images/pre-processing/disable.svg'"
+                      [ngClass]="validateRed == false ? 'img-opacity' : ''"
+                      (click)="validateRed = !validateRed && validateGreen == false"
+                    />
+                  </div>
+                  <div class="true">
+                    <img
+                      alt="Validada"
+                      [src]="'assets/Images/pre-processing/active.svg'"
+                      [ngClass]="validateGreen == false ? 'img-opacity' : ''"
+                      (click)="validateGreen = !validateGreen && validateRed == false"
+                    />
+                  </div>
+                </div>
+                <div class="info">
+                  <div class="index">
+                    <label
+                      >#{{ 1 }} · <span>{{ 'F0-924857' }}</span> · {{ 'paymentOrder.toPay' | translate }}
+                      {{ (1000 | currency: 'USD':'symbol-narrow':'0.2-4') + ' USD' }}</label
+                    >
+                  </div>
+                  <div class="description">
+                    <img src="assets/Images/labels/directos.svg" /><label
+                      >{{ 'paymentOrder.description' | translate }}: {{ 'Renta de Auto · Ejemplo Cuenta Contable' }}</label
+                    >
+                  </div>
+                  <div class="emitter">
+                    <label
+                      >{{ 'paymentOrder.emitter' | translate }}:
+                      {{ 'Radio movil dipsa, sa de cv · Receptor: Proveedora químico farmaceutica · Banamex M.N. ' }}</label
+                    >
+                  </div>
+                  <div class="method">
+                    <label>{{ 'paymentOrder.paymentMethod' | translate }} : {{ 'PPD · Fecha de Pago: 21/Junio/2021' }}</label>
+                  </div>
+                </div>
+                <div class="status">
+                  <label>{{ 'paymentOrder.refund' | translate }}</label>
+                </div>
+              </div>
+              <div class="comments" *ngIf="validateRed == true">
+                <div class="tab"></div>
+                <label>{{ 'common.comments' | translate }}</label>
+                <app-generic-input></app-generic-input>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="footer-right">
+          <div class="footer-content">
+            <label
+              ><span>{{ 1 }} {{ 'paymentOrder.declinedPayment' | translate }}</span> · {{ 0 }}
+              {{ 'paymentOrder.aceptedPayments' | translate }} ·
+              {{ (0 | currency: 'USD':'symbol-narrow':'0.2-4') + ' USD' }}</label
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bot">
+      <button>{{ 'common.accept' | translate }}</button>
+    </div>
+  </div>
+</div>

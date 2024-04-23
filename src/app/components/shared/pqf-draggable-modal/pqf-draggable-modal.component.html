@@ -1,0 +1,34 @@
+<div #draggable id="draggable-modal" [style.top.px]="top" [style.left.px]="left">
+  <div class="modal">
+    <div class="ui-modal" [style.width.px]="width" [style.height.px]="height">
+      <ng-container class="app-modal-header">
+        <div class="ui-modal-header" (window:mouseup)="setEvent($event, 0)" (mousedown)="setEvent($event, 2)">
+          <div class="ui-titlebar">
+            <label>{{ titleHeader }}</label>
+            <img alt="" class="close" src="assets/Images/cerrar_pop.svg" (click)="onclose()" />
+          </div>
+        </div>
+      </ng-container>
+      <ng-container class="app-modal-body">
+        <div class="ui-modal-body" *ngIf="!isLoading">
+          <ng-content></ng-content>
+        </div>
+        <div class="loader" *ngIf="isLoading">
+          <app-loading></app-loading>
+        </div>
+      </ng-container>
+    </div>
+    <img src="assets/Images/resize.svg" alt="" draggable="false" />
+  </div>
+
+  <!--  DOCS: SOLO SE DEJA DISPONIBLE EL CAMBIO DE TAMAÑO EN LA ESQUINA INFERIOR DERECHA-->
+  <!--  DOCS: SE DEBE DE DESCOMENTAR EN SIGUIENTES VERSIONES DEL DRAGGABLE-->
+  <!--  <span class="resize-handle-s" (mousedown)="setEvent($event, 1)"></span>
+  <span class="resize-handle-e" (mousedown)="setEvent($event, 1)"></span>-->
+  <span class="resize-handle-se" (mousedown)="setEvent($event, 1)"></span>
+  <!--  <span class="resize-handle-sw" (mousedown)="setEvent($event, 1)"></span>
+  <span class="resize-handle-w" (mousedown)="setEvent($event, 1)"></span>
+  <span class="resize-handle-nw" (mousedown)="setEvent($event, 1)"></span>
+  <span class="resize-handle-n" (mousedown)="setEvent($event, 1)"></span>
+  <span class="resize-handle-ne" (mousedown)="setEvent($event, 1)"></span>-->
+</div>

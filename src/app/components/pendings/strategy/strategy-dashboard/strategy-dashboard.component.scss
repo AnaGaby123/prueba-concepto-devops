@@ -1,0 +1,82 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  $left-container-flex: (
+    'base': 555px,
+    'macBookAir': 680px,
+  );
+  $graphics-padding: (
+    'base': 25px 30px,
+    'macBookAir': 30px 40px,
+  );
+  $graphics-structure: (
+    'top': 1,
+    'bottom': 1,
+  );
+  $graphics-gap: (
+    'base': 40px 0,
+    'macBookAir': 80px 0,
+  );
+
+  @include s.pending-dashboard-structure($left-container-flex, $graphics-padding, $graphics-structure, $graphics-gap);
+
+  #strategy-list-container {
+    & > .left-container {
+      & > .filters {
+        & > div:nth-of-type(1) {
+          flex: 0 0 40%;
+        }
+
+        & > div:nth-of-type(2) {
+          flex: 0 0 60%;
+          justify-content: flex-end;
+        }
+
+        & > div {
+          @include s.flexRow;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+
+      & > .list-container {
+        & > .virtual-list {
+        }
+      }
+
+      & > .footer {
+        @include s.flexRow;
+        border-top: 1px solid s.$pqBlack2;
+        justify-content: space-between;
+
+        & > label {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-roboto_regular,
+            $font-weight: s.$font-weight-regular,
+            $font-size-map: s.$responsive-font-10-12-b
+          );
+          @include s.flexRow;
+        }
+      }
+    }
+
+    & > .right-container {
+      & > app-doughnut-chart {
+        grid-column-end: span 2;
+        overflow: hidden;
+      }
+
+      & > app-bar-chart {
+        overflow: hidden;
+      }
+
+      & > .loading {
+        grid-area: 2/1/2/2;
+      }
+    }
+  }
+}

@@ -1,0 +1,80 @@
+<div id="general-data-container">
+  <div class="center-container">
+    <!--    SE COMENTÓ TEMPORALMENTE HASTA QUE SE DEFINA-->
+    <!--    <div class="progress-bar-container">
+      <app-progress-bar-details
+        [showCollapse]="true"
+        [efficiency]="(clientTotals$ | async)?.TasaEfectividad"
+        [currency]="(quote$ | async)?.claveMoneda"
+        [percentage]="(clientTotals$ | async)?.TasaEfectividad"
+        [totalQuotedUSD]="(clientTotals$ | async)?.TotalCotizadoUSD"
+        [fundamentalObjectiveUSD]="(clientTotals$ | async)?.ObjetivoFundamentalUSD"
+        [currentDate]="currentDate"
+        [currentYear]="currentYear"
+      ></app-progress-bar-details
+    ></div>-->
+    <div class="title">
+      <div class="quotations">
+        <label
+          >{{ (client$ | async)?.Total }}
+          {{ (client$ | async)?.Total === 1 ? ('closeOffer.quotation' | translate) : ('closeOffer.quotes' | translate) }}</label
+        >
+      </div>
+      <!--<div class="new" *ngIf="(client$ | async).PartidasNuevas && (client$ | async).PartidasNuevas > 0">
+        <img src="assets/Images/close-offer/new-label.svg" alt="" />
+        <label>{{ (client$ | async).PartidasNuevas }} {{ 'closeOffer.entries' | translate }}</label>
+      </div>
+      <div class="in-progress" *ngIf="(client$ | async).PartidasEnProgreso && (client$ | async).PartidasEnProgreso > 0">
+        <label> · </label>
+        <img src="assets/Images/close-offer/in-progress-label.svg" alt="En progreso" />
+        <label class="in-progress">{{
+          (client$ | async).PartidasEnProgreso +
+            ' ' +
+            ((client$ | async).PartidasEnProgreso === 1 ? ('closeOffer.entry' | translate) : ('closeOffer.entries' | translate))
+        }}</label>
+      </div>
+      <div
+        class="ajuste-oferta"
+        *ngIf="(client$ | async).PartidasEnAjustarOferta && (client$ | async).PartidasEnAjustarOferta > 0"
+      >
+        <label> · </label>
+        <img src="assets/Images/close-offer/ajuste-oferta-label.svg" alt="Ajuste oferta" />
+        <label *ngIf="(client$ | async).ajusteTiempoEntrega">TE {{ (client$ | async).ajusteTiempoEntrega }} PARTIDAS</label>
+        <label *ngIf="(client$ | async).ajusteCondicionesPago"> · CP</label>
+        <label *ngIf="(client$ | async).ajustePrecio"> · PRECIO {{ (client$ | async).ajustePrecio }} PARTIDAS</label>
+      </div>-->
+      <div class="closing">
+        <label>
+          · {{ 'closeOffer.totalInClosing' | translate }}
+          {{ (client$ | async)?.TotalCotizadoUSD | currency: 'USD':'symbol-narrow':'1.2-2' }} USD
+        </label>
+      </div>
+    </div>
+    <div class="list">
+      <app-pqf-card [options]="quotesForCards$ | async" (handleOptionSelected)="selectQuote($event)"> </app-pqf-card>
+    </div>
+    <div class="bar-percentage">
+      <div class="labels">
+        <label class="folio">#{{ (quote$ | async)?.index }} · </label>
+        <label class="folio" (click)="downloadQuotation()">{{ (quote$ | async)?.Folio }}</label>
+        <label class="folio"> · </label>
+        <label class="quote-value">
+          {{ (quote$ | async)?.TotalCotizado | currency: 'USD':'symbol-narrow':'1.2-2' }}
+          {{ (quote$ | async)?.claveMoneda }}</label
+        >
+        <label class="date" [ngClass]="(quote$ | async)?.PorExpirar ? 'red' : 'green'">
+          · CAD {{ (quote$ | async)?.FechaCaducidad | dateFormatSlashShort }} · {{ (quote$ | async)?.Vigencia }}
+          {{ (quote$ | async)?.Vigencia === 1 ? ('common.day' | translate) : ('common.days' | translate) }}</label
+        >
+      </div>
+      <div class="bars" [ngClass]="actualRoute === 'new' ? 'border-b' : ''">
+        <div>
+          <app-percentage-bar [items]="percentageBarTotal$ | async"></app-percentage-bar>
+        </div>
+      </div>
+    </div>
+    <div class="outlet">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

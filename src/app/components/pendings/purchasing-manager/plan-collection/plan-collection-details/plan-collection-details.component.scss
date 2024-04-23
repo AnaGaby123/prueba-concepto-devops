@@ -1,0 +1,701 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  $left-container-flex: (
+    'base': 500px,
+    'macBookAir': 620px,
+  );
+  @include s.pending-details-structure($left-container-flex);
+
+  #plan-collection-details-content {
+    & > .left-container {
+      position: relative;
+
+      &::before {
+        content: '';
+        width: 1px;
+        height: calc(100% - 50px);
+        background-color: s.$pqGray2;
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+
+      & > .title {
+        padding-bottom: 10px;
+      }
+
+      & > .tabs {
+        height: 40px;
+        margin: 0 0 17px 0;
+      }
+
+      & > .search {
+        @include s.flexRowNoWrap;
+        align-items: center;
+        border-bottom: 1px solid s.$pqBlack2;
+        flex: 0 0 auto;
+        justify-content: space-between;
+        padding: 0 0 10px;
+      }
+
+      & > .list-container {
+        & > .virtual {
+          @include s.absolute100();
+
+          & .item {
+            @include s.flexRowNoWrap();
+            border-bottom: 1px solid s.$pqGray2;
+            cursor: pointer;
+            justify-content: space-between;
+            padding: 17px 17px 12px 23px;
+            position: relative;
+
+            &.active,
+            &:hover {
+              background-color: s.$pqGray2;
+            }
+
+            & * {
+              cursor: pointer;
+            }
+
+            & > .select {
+              background-color: s.$pqGreen;
+              height: 100%;
+              left: 0;
+              position: absolute;
+              top: 0;
+              width: 5px;
+            }
+
+            & > .content-left {
+              @include s.flexColumn;
+              flex: 1 1 auto;
+              overflow: hidden;
+
+              & > label {
+                @include s.escaledFontFormat(s.$textSize16to20, bold, s.$pqBlack2);
+                @include s.Roboto-Bold();
+                margin-bottom: 4px;
+                white-space: pre;
+
+                & > span {
+                  color: s.$pqGreen;
+                  text-decoration: underline;
+                  vertical-align: baseline;
+                }
+              }
+
+              & > .text-date {
+                @include s.escaledFontFormat(s.$textSize16to18, regular, s.$pqBlack2);
+                @include s.Roboto-Regular();
+              }
+            }
+
+            & > .content-right {
+              @include s.flexColumn;
+              align-items: flex-end;
+              justify-content: space-between;
+              padding-left: 20px;
+
+              & > label {
+                text-align: end;
+                white-space: pre;
+              }
+
+              & > .ocean {
+                @include s.escaledFontFormat(s.$textSize13to17, bold, s.$pqGreen);
+                @include s.Novecento-Bold();
+              }
+
+              & > .fee {
+                @include s.escaledFontFormat(s.$textSize14to18, regular, s.$pqBlack2);
+                @include s.Roboto-Regular();
+                margin-bottom: 5px;
+              }
+
+              & > .green {
+                color: s.$pqGreen2;
+              }
+
+              & > .red {
+                color: s.$pqTextAlert;
+              }
+            }
+          }
+        }
+      }
+
+      & > .result-total {
+        @include s.flexRowNoWrap;
+        border-top: 1px solid s.$pqBlack2;
+        flex: 0 0 36px;
+        justify-content: space-between;
+        padding: 7px 15px;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+          @include s.Roboto-Regular();
+        }
+      }
+    }
+
+    & > .right-container {
+      @include s.flexColumn;
+      overflow: hidden;
+      padding: 15px 15px 0;
+
+      & > .title {
+        @include s.flexRowNoWrap;
+        padding-bottom: 10px;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+          @include s.Novecento-Bold();
+          white-space: pre;
+
+          & > span {
+            white-space: pre;
+            vertical-align: baseline;
+          }
+        }
+      }
+
+      & > .section-direction {
+        background: s.$pqGreen4;
+        padding: 15px 20px;
+
+        & > .section-collection {
+          @include s.flexRowNoWrap();
+          gap: 25px;
+          padding-bottom: 10px;
+
+          & > .content {
+            @include s.flexColumn();
+            gap: 10px;
+
+            & > .step {
+              @include s.flexRowNoWrap();
+              gap: 10px;
+              padding-bottom: 20px;
+
+              & > label {
+                @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+                @include s.Roboto-Bold();
+              }
+
+              & > .text-blue {
+                color: s.$pqGreen;
+              }
+
+              & > app-check-box {
+                width: 40%;
+              }
+
+              & > .column {
+                @include s.flexColumn();
+              }
+            }
+
+            & > .text-bold-black {
+              @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+              @include s.Roboto-Bold();
+            }
+
+            & > #text-date-collection {
+              @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqGreen);
+              @include s.Roboto-Bold();
+            }
+
+            .popup > div > div {
+              height: 66px;
+            }
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize14to16, bold, s.$pqBlack2);
+              @include s.Roboto-Bold();
+            }
+
+            & > .text-bold-black {
+              @include s.escaledFontFormat(s.$textSize14to16, bold, s.$pqBlack2);
+              @include s.Roboto-Bold();
+            }
+
+            & > .text-direction {
+              @include s.escaledFontFormat(s.$textSize14to16, regular, s.$pqBlack2);
+              @include s.Roboto-Regular();
+              padding-top: 4px;
+            }
+
+            & > .content-dates {
+              @include s.absolute100();
+              @include s.absoluteCenter();
+              @include s.flexRowNoWrap();
+              gap: 25px;
+
+              & > .content {
+                @include s.flexColumn();
+
+                & > a {
+                  @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqGreen);
+                  @include s.Roboto-Regular();
+                  padding-top: 8px;
+                  text-decoration: underline;
+                  cursor: pointer;
+                }
+
+                & > a:hover {
+                  @include s.Roboto-Bold();
+                }
+
+                & > app-custom-position-pop-up {
+                  display: flex;
+                  @include s.absoluteCenter();
+
+                  & ::ng-deep {
+                    & #content-hours {
+                      @include s.flexRowNoWrap();
+                      margin: 7px 0 0 10px;
+                      padding: 0;
+                      position: fixed;
+                      z-index: 9999;
+
+                      & > app-check-box {
+                        width: 143px;
+                      }
+
+                      & > app-drop-down-list {
+                        max-width: 85px;
+                      }
+
+                      &.text-black {
+                        color: s.$pqBlack;
+                      }
+
+                      &.text-gray {
+                        color: s.$pqGray3;
+                      }
+
+                      &.text-blue {
+                        color: s.$pqGreen;
+                      }
+
+                      & > label {
+                        @include s.absoluteCenter();
+                        @include s.escaledFontFormat(s.$textSize14to16, regular, '');
+                        @include s.Roboto-Regular();
+                        display: flex;
+                        padding: 0 10px;
+                        text-align: center;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          & > .column {
+            @include s.flexColumn();
+          }
+        }
+      }
+
+      & > .table-container {
+        @include s.flexColumn;
+        border: 1px solid s.$pqBlack2;
+        flex: 1 1 100%;
+        margin-top: 10px;
+        overflow: hidden;
+
+        & > .table {
+          @include s.flexColumn;
+          flex: 1 0 100%;
+
+          & > .header {
+            border-bottom: 1px solid #424242;
+            display: grid;
+            flex: 0 0 auto;
+            grid-template-columns: 0.3fr 2fr 1.5fr 1.5fr;
+            grid-template-rows: auto;
+
+            & > div {
+              @include s.absoluteCenter;
+              @include s.flexRowNoWrap;
+              padding: 8px 5px;
+
+              & > label {
+                @include s.escaledFontFormat(s.$textSize13to15, bold, s.$pqBlack2);
+                @include s.Novecento-Bold();
+              }
+            }
+
+            & > .number {
+              flex: 0 0 auto;
+
+              & > label {
+                line-height: normal;
+              }
+            }
+
+            & > .description {
+              flex: 1 1 auto;
+              justify-content: flex-start;
+            }
+
+            & > .client {
+              flex: 0 0 auto;
+              justify-content: flex-start;
+              margin-left: 50px;
+            }
+          }
+
+          & > .body {
+            @include s.flexColumn;
+            flex: 1 1 50px;
+            overflow: auto;
+
+            & > virtual-scroller {
+              @include s.absolute100();
+
+              &::ng-deep > .scrollable-content {
+                & > .item {
+                  @include s.flexColumn();
+
+                  & > div {
+                    @include s.default-transition($duration: 0.2s);
+                    border-bottom: 1px solid s.$pqGray2;
+                    display: grid;
+                    grid-template-columns: 0.3fr 2fr 1.5fr 1.5fr;
+                    grid-template-rows: auto;
+                    cursor: pointer;
+
+                    & * {
+                      cursor: pointer;
+                    }
+
+                    &:hover {
+                      background-color: s.$pqGray2;
+                    }
+
+                    & > div {
+                      @include s.flexRowNoWrap();
+                      @include s.absoluteCenter();
+                      padding: 15px 5px;
+                    }
+
+                    & > .number {
+                      flex: 0 0 auto;
+                      align-items: start;
+
+                      & > label {
+                        @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                        @include s.Roboto-Bold();
+                        text-align: center;
+                      }
+                    }
+
+                    & > .description {
+                      @include s.flexColumn();
+                      align-items: flex-start;
+                      flex: 1 1 auto;
+                      justify-content: flex-start;
+                      padding: 15px 40px 15px 5px;
+
+                      & > .label {
+                        @include s.tooltip();
+                        margin-bottom: 9px;
+
+                        & > label {
+                          @include s.multiLineTextTruncateSinHeight($lineHeight: 1.1em);
+                          @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                          @include s.Roboto-Regular();
+                        }
+                      }
+
+                      & > .prices {
+                        @include s.flexRowWrap;
+
+                        & > label {
+                          @include s.escaledFontFormat(s.$textSize13to15, regular, s.$pqBlack2);
+                          @include s.Roboto-Regular();
+                          white-space: pre;
+                        }
+
+                        & > .price {
+                          @include s.flexRowNoWrap;
+                          justify-content: center;
+                          max-width: 180px;
+
+                          & > .tooltip {
+                            @include s.tooltip(auto, auto, auto, 100px);
+
+                            & > div {
+                              @include s.flexRowNoWrap;
+                              @include s.absoluteCenter;
+                              width: 100%;
+
+                              & > label {
+                                @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen);
+                                @include s.Roboto-Regular();
+                                cursor: pointer;
+                                letter-spacing: 0;
+                                margin-right: 4px;
+                              }
+                            }
+
+                            & > .tooltip-text {
+                              min-width: 100px !important;
+
+                              & > p {
+                                width: 100% !important;
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+
+                    & > .oc {
+                      & > label {
+                        @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                        @include s.Roboto-Regular();
+                      }
+                    }
+
+                    & > .client {
+                      @include s.flexColumn;
+                      align-items: flex-start;
+                      flex: 0 0 145px;
+                      justify-content: flex-start;
+                      margin-left: 50px;
+
+                      & > label {
+                        margin-bottom: 3px;
+                        @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                        @include s.Roboto-Regular();
+
+                        &:last-of-type {
+                          margin-bottom: 0;
+                        }
+
+                        &.red {
+                          color: s.$pqTextAlert;
+                        }
+
+                        &.ocean {
+                          color: s.$pqGreen;
+                        }
+
+                        &.green {
+                          color: s.$pqGreen2;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          & > .footer {
+            border-top: 1px solid #424242;
+            display: grid;
+            flex: 0 0 50px;
+            grid-template-columns: 0.3fr 3fr 1fr 1fr 130px;
+            grid-template-rows: auto;
+            min-width: 980px;
+
+            & > div {
+              @include s.absoluteCenter;
+              @include s.flexRowNoWrap;
+              padding: 0 5px;
+
+              & > label {
+                @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+                @include s.Novecento-Bold();
+
+                &.red {
+                  color: s.$pqTextAlert;
+                }
+              }
+            }
+
+            & > .number {
+              flex: 0 0 auto;
+            }
+
+            & > .description {
+              @include s.flexRowNoWrap;
+              flex: 1 1 auto;
+              justify-content: space-around;
+            }
+          }
+        }
+      }
+
+      & > .buttons {
+        @include s.flexRowNoWrap;
+        align-items: center;
+        flex: 0 0 50px;
+        justify-content: flex-end;
+
+        & > .active {
+          @include s.pqfButton();
+        }
+
+        & > .disabled {
+          @include s.pqfDisableButton();
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #plan-collection-details-content {
+      & > .left-container {
+        & > .title {
+          padding-bottom: 15px;
+        }
+
+        & > .tabs {
+          height: 50px;
+          margin: 0 0 15px 0;
+        }
+
+        & > .search {
+          padding-bottom: 15px;
+
+          & > label {
+            margin-right: 40px;
+          }
+
+          & > .search {
+            flex: 1 1 50%;
+          }
+        }
+
+        & > .list-container {
+          & > .virtual {
+            & .item {
+              padding: 20px 20px 15px 25px;
+
+              & > .select {
+                width: 7px;
+              }
+            }
+          }
+        }
+
+        & > .result-total {
+          flex: 0 0 31px;
+        }
+      }
+
+      & > .right-container {
+        padding: 20px 20px 0;
+
+        & > .title {
+          padding-bottom: 15px;
+        }
+
+        & > .section-direction {
+          & > .section-collection {
+            gap: 70px;
+            @include s.flexRowNoWrap();
+
+            & > .content {
+              & > .content-dates {
+                gap: 50px;
+
+                & > .content {
+                  & > app-custom-position-pop-up {
+                    & ::ng-deep {
+                      & #content-hours {
+                        & > app-check-box {
+                          width: 135px;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        & > .table-container {
+          margin-top: 15px;
+
+          & > .table {
+            & > .header {
+              grid-template-columns: 0.3fr 2.5fr 1.5fr 1.5fr;
+
+              & > div {
+                padding: 10px 7px;
+              }
+            }
+
+            & > .body {
+              & > virtual-scroller {
+                &::ng-deep > .scrollable-content {
+                  & > .item {
+                    & > div {
+                      grid-template-columns: 0.3fr 2.5fr 1.5fr 1.5fr;
+
+                      & > div {
+                        padding: 20px 7px;
+                      }
+
+                      & > .client {
+                        & > label {
+                          margin-bottom: 5px;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        & > .buttons {
+          flex: 0 0 50px;
+        }
+      }
+    }
+  }
+}
+
+//DOCS: SON CLASES QUE SE REPITEN MAS DE DOS VECES CON LOS CARGADORES O TEMPLATE DE NO HAY RESULTADOS
+.loading {
+  @include s.absolute100();
+  @include s.absoluteCenter();
+  @include s.flexRow();
+}
+
+.without-results {
+  @include s.absolute100();
+  @include s.absoluteCenter();
+  @include s.flexRow();
+  flex: 1;
+}
+
+//DOCS: SON CLASES DE COLORES DE LETRA QUE SE REPITEN
+.aqua {
+  color: s.$pqGreen;
+}
+
+.red {
+  color: s.$pqTextAlert;
+}
+
+.green {
+  color: s.$pqGreen2;
+}

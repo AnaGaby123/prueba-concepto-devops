@@ -1,0 +1,131 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  height: 100%;
+  width: 100%;
+
+  & > .genericInput {
+    @include s.default-transition();
+    @include s.flexColumn;
+    height: 100%;
+    overflow: hidden;
+
+    &.genericInputDanger {
+      & > .label-container {
+        & > div:nth-of-type(1) {
+          & > label {
+            color: #dc3545 !important;
+          }
+        }
+      }
+
+      & > .input-container {
+        border: 1px solid #dc3545 !important;
+      }
+    }
+
+    & > .label-container {
+      @include s.flexRow;
+      @include s.absoluteCenter;
+      flex: 0 0 19px;
+      height: 19px;
+      justify-content: flex-start;
+      margin-bottom: 3px;
+      overflow: hidden;
+      width: 100%;
+
+      & > img {
+        flex: 0 0 7px;
+        margin-right: 3px;
+        width: 7px;
+      }
+
+      & > div:nth-of-type(1) {
+        flex: 1 1 auto;
+        @include s.multiLineTextTruncateSinHeight(1, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+
+        & > label:nth-of-type(1) {
+          @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+          @include s.Roboto-Regular;
+        }
+      }
+    }
+
+    & > .input-container {
+      @include s.flexColumn;
+      border: 1px solid s.$boxShadow;
+      flex: 1 1 auto;
+      overflow: hidden;
+
+      &.not-enable-edit {
+        border: none;
+
+        & > .label {
+          padding-top: 5px;
+        }
+      }
+
+      & > textarea {
+        @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+        @include s.Roboto-Regular;
+        border: none;
+        outline: none;
+        flex: 0 0 100%;
+        padding: 4px 10px;
+
+        &::-webkit-input-placeholder {
+          /* WebKit, Blink, Edge */
+          color: s.$pqGray3;
+        }
+
+        &:-moz-placeholder {
+          /* Mozilla Firefox 4 to 18 */
+          color: s.$pqGray3;
+        }
+
+        &::-moz-placeholder {
+          /* Mozilla Firefox 19+ */
+          color: s.$pqGray3;
+        }
+
+        &::-ms-input-placeholder {
+          /* Internet Explorer 10-11 */
+          color: s.$pqGray3;
+        }
+
+        &::-ms-input-placeholder {
+          /* Microsoft Edge */
+          color: s.$pqGray3;
+        }
+
+        &::placeholder {
+          /* Most modern browsers support this now. */
+          color: s.$pqGray3;
+        }
+      }
+
+      & > .label {
+        @include s.flexColumn;
+        flex: 0 0 100%;
+        overflow-y: auto;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+          @include s.Roboto-Regular;
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .input-container {
+        & > textarea {
+          padding: 5px 10px;
+        }
+      }
+    }
+  }
+}

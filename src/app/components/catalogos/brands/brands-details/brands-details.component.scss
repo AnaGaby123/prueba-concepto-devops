@@ -1,0 +1,262 @@
+@use 'base.scss' as s;
+
+:host {
+  @include s.reset-line-height;
+}
+
+#brands-details {
+  @include s.absolute100;
+  @include s.flexColumn;
+
+  & > .head {
+    border-bottom: 1px solid s.$pqBlack2;
+    display: grid;
+    grid-column-gap: 20px;
+    grid-template-columns: repeat(10, 1fr);
+    padding: 10px 0 24px 0;
+
+    & > .image-brand {
+      @include s.flexColumn;
+      align-items: center;
+      grid-column-end: span 2;
+
+      & > .image {
+        @include s.flexRow;
+        align-items: center;
+        flex: 1;
+        justify-content: center;
+        margin-bottom: 10px;
+
+        & > img {
+          max-height: 69px;
+          max-width: 100%;
+        }
+      }
+
+      & > .status {
+        @include s.flexRow;
+        align-items: center;
+        column-gap: 8px;
+
+        & > .indicator {
+          @include s.flexRow;
+          @include s.pqCircle(13px, s.$pqGreen2);
+          align-items: center;
+          column-gap: 8px;
+
+          &.disable-brand {
+            background-color: s.$dark-proquifa-d;
+          }
+        }
+
+        & > label {
+          @include s.responsive-font-format($font-size-map: s.$responsive-font-14-14, $color: s.$pqGreen2);
+
+          &.disable {
+            color: s.$dark-proquifa-d;
+          }
+        }
+      }
+    }
+
+    & > .date-content {
+      @include s.flexColumn;
+      align-items: flex-start;
+      grid-column-end: span 2;
+      justify-content: center;
+      row-gap: 8px;
+
+      & > label {
+        @include s.responsive-font-format($font-size-map: s.$responsive-font-16-16);
+      }
+
+      & > .date {
+        @include s.responsive-font-format($font-size-map: s.$responsive-font-16-16, $color: s.$pqGreen);
+        height: 40px;
+      }
+    }
+
+    & > .input {
+      @include s.flexRow;
+      align-items: center;
+      grid-column-end: span 3;
+    }
+
+    & > .drop {
+      @include s.flexRow;
+      align-items: center;
+      grid-column-end: span 3;
+    }
+  }
+
+  & > .body {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-column-gap: 20px;
+    overflow: hidden;
+    padding-top: 32px;
+
+    & > .checks {
+      grid-column-end: span 2;
+      overflow: auto;
+    }
+
+    & > .content {
+      @include s.flexColumn;
+      flex: 1;
+      grid-column-end: span 8;
+
+      & > .cards {
+        @include s.flexColumn;
+        flex: 1;
+        padding-bottom: 24px;
+
+        & > virtual-scroller {
+          @include s.absolute100;
+          @include s.fixVirtualScroller;
+          flex: 1 1 auto;
+
+          &::ng-deep > .scrollable-content {
+            @include s.flexColumn;
+            row-gap: 18px;
+
+            & > .section {
+              @include s.flexColumn;
+              row-gap: 8px;
+
+              & > .title {
+                @include s.flexRow;
+                border-bottom: 1px solid s.$pqBlack2;
+                padding: 8px 24px;
+
+                & > label {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font-family-roboto_bold,
+                    $font-weight: s.$font-weight-bold,
+                    $font-size-map: s.$responsive-font-24-24
+                  );
+                }
+              }
+
+              & > .section-list-items {
+                display: grid;
+                grid-template-columns: repeat(8, 1fr);
+                grid-template-rows: repeat(auto-fill, 245px);
+                grid-column-gap: 20px;
+                grid-row-gap: 20px;
+
+                & > .grid-item {
+                  grid-column-end: span 2;
+                }
+              }
+            }
+          }
+        }
+
+        & > .message {
+          @include s.absoluteCenter;
+          @include s.flexRow;
+          flex: 1;
+
+          & > label {
+            @include s.responsive-font-format(
+              $font-family: s.$font-family-roboto_bold,
+              $font-weight: s.$font-weight-bold,
+              $font-size-map: s.$responsive-font-20-20
+            );
+            max-width: 474px;
+            text-align: center;
+          }
+        }
+      }
+
+      & > .footer {
+        @include s.flexRow;
+        border-top: 1px solid s.$pqBlack2;
+        justify-content: space-between;
+        padding: 18px 105px 22px 105px;
+
+        & > .cancel {
+          @include s.pqf-button($version: s.$empty, $type: s.$secondary, $height: s.$short, $width: s.$md);
+
+          &.disable {
+            @include s.pqf-button($version: s.$empty, $type: s.$disable, $height: s.$short, $width: s.$md);
+          }
+        }
+
+        & > .save {
+          @include s.pqf-button($version: s.$full, $type: s.$primary, $height: s.$short, $width: s.$md);
+
+          &.disable {
+            @include s.pqf-button($version: s.$full, $type: s.$disable, $height: s.$short, $width: s.$md);
+          }
+        }
+      }
+    }
+  }
+
+  @include s.media-query(s.$standard) {
+    & > .head {
+      & > .date-content {
+        grid-column-end: span 1;
+      }
+
+      & > .input {
+        grid-column-end: span 4;
+      }
+    }
+    & > .body {
+      & > .content {
+        & > .cards {
+          & > virtual-scroller {
+            &::ng-deep > .scrollable-content {
+              row-gap: 22px;
+
+              & > .section {
+                row-gap: 20px;
+
+                & > .section-list-items {
+                  grid-template-rows: repeat(auto-fill, 148px);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.alertPop {
+  @include s.flexRow;
+  flex: 1;
+
+  & .content {
+    @include s.flexColumn;
+    flex: 1;
+    padding: 28px 0;
+    row-gap: 28px;
+
+    & > .image {
+      max-height: 100%;
+      max-width: 100%;
+      overflow: hidden;
+
+      & > img {
+        height: 64px;
+        width: 64px;
+      }
+    }
+
+    & > .message {
+      & > label {
+        @include s.responsive-font-format(
+          $font-family: s.$font-family-roboto_bold,
+          $font-weight: s.$font-weight-bold,
+          $font-size-map: s.$responsive-font-20-20
+        );
+      }
+    }
+  }
+}

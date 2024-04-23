@@ -1,0 +1,224 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  #principal {
+    @include s.absolute100;
+    @include s.flexColumn;
+    overflow: hidden;
+    padding: 20px 0 20px 0;
+    position: relative;
+
+    & > .title {
+      @include s.flexRowNoWrap;
+      padding: 0 15px 15px;
+
+      & > label {
+        @include s.responsive-font-format(
+          $font-family: s.$font_family_novecento_bold,
+          $font-size-map: s.$responsive-font-17-24,
+          $font-weight: s.$font_weight_bold
+        );
+        white-space: pre;
+      }
+
+      & > .pqf {
+        color: s.$pqGreen !important;
+      }
+    }
+
+    & > .search {
+      @include s.flexRow;
+      @include s.opacityColor();
+      align-items: center;
+      justify-content: center;
+      padding: 35px 15px;
+
+      & > div {
+        @include s.flexRow;
+        justify-content: center;
+        max-width: 705px;
+        width: 100%;
+      }
+    }
+
+    & > .quotes {
+      @include s.flexRow;
+      width: 100%;
+      margin: 15px 0;
+
+      & > app-botonera-card {
+        width: 100%;
+      }
+    }
+
+    & > .items {
+      @include s.flexColumn;
+      flex: 1;
+      overflow-x: hidden;
+      height: 100%;
+      width: 100%;
+      padding-right: 20px;
+      padding-left: 20px;
+      padding-top: 20px;
+
+      & > .title {
+        @include s.flexRow;
+        width: 100%;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize15to21, '', s.$pqBlack2);
+          @include s.Novecento-Bold;
+        }
+      }
+
+      & > .table-container {
+        @include s.flexColumn;
+        flex: 1;
+        overflow: auto;
+
+        & > .container {
+          @include s.flexColumn;
+          min-width: 1700px;
+          flex: 1;
+
+          & > .header {
+            border-bottom: 1px solid s.$pqBlack;
+          }
+
+          & > virtual-scroller {
+            @include s.fixVirtualScroller();
+            @include s.absolute100;
+
+            ::ng-deep .scrollable-content {
+              @include s.flexColumn;
+            }
+          }
+
+          & > .loader,
+          & > .without-results {
+            @include s.flexRow;
+            @include s.absoluteCenter;
+          }
+        }
+      }
+
+      & > .total {
+        @include s.flexRow;
+        justify-content: center;
+        max-height: 86px;
+        height: 100%;
+        border-top: 1px solid s.$pqBlack2;
+        padding-top: 5px;
+
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormatImportant(s.$textSize13to16, regular, s.$pqBlack2);
+        }
+      }
+    }
+
+    & > .buttons {
+      @include s.flexRow;
+      width: 100%;
+      padding: 0 15px;
+      max-height: 50px;
+      height: 100%;
+      flex-shrink: 0;
+
+      & > div {
+        @include s.flexRow;
+        width: 100%;
+        height: 100%;
+        padding-top: 20px;
+        border-top: 1px solid s.$pqBlack2;
+        justify-content: space-between;
+
+        & > .cancel {
+          @include s.flexRowImportant;
+          @include s.pqButton();
+          justify-content: center !important;
+        }
+
+        & > .add {
+          @include s.flexRowImportant;
+          @include s.pqButton(135px, 170px, 25px, 30px, s.$success);
+          justify-content: center !important;
+        }
+
+        & > .addDisabled {
+          @include s.flexRowImportant;
+          @include s.pqButton(135px, 170px, 25px, 30px, s.$pqGray3);
+          justify-content: center !important;
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #principal {
+      & > .items {
+        & > .total {
+          padding-top: 8px;
+        }
+      }
+    }
+  }
+}
+
+.linked-items-pop {
+  & > app-custom-position-pop-up {
+    transition: all 0.4s ease-in-out;
+  }
+
+  & ::ng-deep {
+    & .linked-items {
+      overflow: auto;
+      padding: 5px 3px;
+
+      & > ul {
+        & > li {
+          @include s.escaledFontFormat(s.$textSize12to13, regular, s.$pqWhite);
+          @include s.Roboto-Regular;
+          margin-bottom: 5px;
+          text-align: center;
+          white-space: pre-wrap;
+
+          & > label {
+            cursor: pointer;
+          }
+
+          &:hover {
+            text-decoration: underline;
+          }
+
+          @include s.responsive_layout('macBookAir') {
+            margin-bottom: 8px;
+          }
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+.loader,
+.without-results {
+  @include s.flexRow;
+  height: 100%;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  & > app-loading {
+    @include s.flexRow;
+    flex: 1;
+  }
+}

@@ -1,0 +1,54 @@
+<div class="component-container" id="follow-purchase-promise">
+  <div class="header">
+    <app-header-bar
+      [activeBack]="detailsMode$ | async"
+      [name]="clientName$ | async"
+      [title]="title$ | async"
+      (goBack)="handleGoBack()"
+    >
+    </app-header-bar>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="footer" *ngIf="!(detailsMode$ | async)">
+    <ng-container>
+      <div>
+        <div class="red-circle"></div>
+        <label>{{ 'followPPurchase.datePPromiseOutTime' | translate }}</label>
+      </div>
+      <div>
+        <div class="green-circle"></div>
+        <label>{{ 'followPPurchase.datePPromiseInTime' | translate }}</label>
+      </div>
+      <div>
+        <label class="label-dark">PC: </label>
+        <label>{{ 'closeOffer.buyPromise' | translate }}</label>
+      </div>
+      <div>
+        <img alt="pending" src="assets/Images/quotation/quotes.svg" />
+        <label>{{ 'closeOffer.quotation' | translate }}</label>
+      </div>
+      <div>
+        <img alt="originales" src="assets/Images/pre-processing/originales.svg" />
+        <label>{{ 'offerAdjustment.originals' | translate }}</label>
+      </div>
+      <div>
+        <img alt="alternativas" src="assets/Images/pre-processing/alternativas.svg" />
+        <label>{{ 'offerAdjustment.alternatives' | translate }}</label>
+      </div>
+      <div>
+        <img alt="complementarias" src="assets/Images/pre-processing/complementarias.svg" />
+        <label class="label-normal">{{ 'offerAdjustment.complements' | translate }}</label>
+      </div>
+      <div>
+        <img alt="programadas" src="assets/Images/pre-processing/promocion.svg" />
+        <label class="label-normal">{{ 'offerAdjustment.promotion' | translate }}</label>
+      </div>
+      <div>
+        <img alt="ahorro" src="assets/Images/pre-processing/ahorro.svg" />
+        <label class="label-normal">{{ 'offerAdjustment.saving' | translate }}</label>
+      </div>
+    </ng-container>
+  </div>
+</div>

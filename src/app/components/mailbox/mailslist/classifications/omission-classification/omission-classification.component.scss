@@ -1,0 +1,739 @@
+@use 'base' as s;
+
+.classification-elements {
+  @include s.flexColumn;
+  flex-basis: 100%;
+
+  & > .element {
+    @include s.flexColumn;
+    justify-content: flex-start;
+    padding: 0;
+    border-bottom: 1px solid #eceef0;
+
+    &:first-of-type {
+      & > .top {
+        border-top: 1px solid s.$pqGray2;
+      }
+    }
+
+    .active {
+      background-color: rgba(0, 136, 148, 0.05);
+    }
+
+    & > .container-clasification {
+      display: grid;
+      grid-template-columns: 80px repeat(3, 1fr) 1.5fr 0.75fr 120px;
+      grid-template-rows: repeat(2, auto);
+      grid-column-gap: 5px;
+      grid-row-gap: 7px;
+      padding: 14px 20px;
+
+      &:hover {
+        background-color: rgba(0, 136, 148, 0.05);
+      }
+
+      & > div {
+        display: flex;
+        align-items: flex-end;
+      }
+
+      & > div:nth-of-type(1) {
+      }
+
+      & > div:nth-of-type(2) {
+        position: relative;
+        grid-area: 1 / 2 / 2 / 3;
+
+        & > img {
+          cursor: pointer;
+          height: 26px;
+        }
+
+        & > input[type='file'],
+        input[type='file']::-webkit-file-upload-button {
+          position: absolute;
+          width: 26px;
+          top: 20px;
+          left: 0;
+          opacity: 0;
+          cursor: pointer;
+          height: 26px;
+          font-size: 0;
+        }
+      }
+
+      & > .fileAdded {
+        @include s.flexRow;
+        @include s.tooltip(auto, auto, auto, 130px, 'center', center, #33333c, #ffffff);
+        grid-area: 1 / 2 / 2 / 3;
+
+        & > label {
+          $textSize: (
+            'base': 13px,
+            'macBookAir': 15px,
+          );
+          @include s.escaledFontFormat($textSize, regular, s.$pqBlack2);
+          @include s.Roboto-Regular;
+          max-width: 90px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          text-decoration: underline;
+          padding-bottom: 5px;
+          cursor: pointer;
+        }
+
+        & > img {
+          height: 13px;
+          width: 13px;
+          cursor: pointer;
+          padding-bottom: 5px;
+        }
+      }
+
+      & > .classification {
+        grid-area: 1 / 3 / 2 / 4;
+
+        & > app-drop-down-list {
+          height: auto;
+        }
+      }
+
+      & > .ocNumber {
+        grid-area: 1/4/2/5;
+      }
+
+      & > .subtotal {
+        grid-area: 1 / 5 / 2 / 6;
+      }
+
+      & > .Iva {
+        grid-area: 1 / 6 / 2 / 7;
+
+        & > app-generic-input {
+          padding-right: 5px;
+        }
+      }
+
+      & > .total {
+        grid-area: 1/7/2/8;
+
+        & > app-generic-input {
+          padding-right: 5px;
+        }
+      }
+
+      & > .comments {
+        grid-area: 2/2/3/7;
+      }
+
+      & > .saveButton {
+        grid-area: 2/7/3/8;
+        justify-content: end;
+
+        & > .button {
+          flex: 1;
+        }
+
+        $max-width-map: (
+          'base': 120px,
+          'macBookAir': 150px,
+        );
+
+        $padding-map: (
+          'base': 0 15px,
+          'macBookAir': 0 19px,
+        );
+
+        & > .button.active {
+          @include s.pqfButton($max-width-map: $max-width-map, $padding-map: $padding-map);
+        }
+
+        & > .button.disable {
+          @include s.pqfDisableButton($max-width-map: $max-width-map, $padding-map: $padding-map);
+        }
+      }
+    }
+
+    & > .bottom-clasifications {
+      & > .content {
+        @include s.flexRow;
+        flex: 1;
+        flex-wrap: wrap;
+        justify-content: center;
+
+        & > .invoice-item {
+          @include s.flexRow;
+          align-items: center;
+          background-color: rgba(s.$pqGreen, 0.05);
+          border-radius: 10px;
+          margin: 5px 10px 5px 0;
+          padding: 5px 10px;
+
+          & > label {
+            @include s.Roboto-Regular;
+            @include s.escaledFontFormat(s.$textSize14to16, regular, s.$pqBlack2);
+            max-width: 750px;
+            line-height: 20px;
+
+            & > .bold-blue {
+              @include s.Roboto-Bold;
+              color: s.$pqGreen;
+              vertical-align: baseline;
+            }
+
+            & > .bold {
+              @include s.Roboto-Bold;
+              color: s.$pqBlack2;
+              vertical-align: baseline;
+            }
+
+            & > .regular-blue {
+              color: s.$pqGreen;
+              vertical-align: baseline;
+            }
+
+            & > .regular-red {
+              color: s.$redInactivateFile;
+              vertical-align: baseline;
+            }
+
+            & > .regular-underline {
+              color: s.$pqGreen;
+              vertical-align: middle;
+              max-width: 120px;
+              display: inline-block;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              text-decoration: underline;
+              cursor: pointer;
+              height: 17px;
+              @media screen and (min-width: 2100px) {
+                height: 19px;
+              }
+            }
+          }
+
+          & > img {
+            height: 14px;
+            padding: 0 20px;
+          }
+        }
+      }
+
+      & > .wallet-error {
+        box-sizing: border-box;
+        @include s.flexRow;
+        @include s.absoluteCenter;
+        background-color: rgba(194, 195, 201, 0.1);
+        width: 100%;
+        padding: 8px 0;
+
+        &.red {
+          background-color: rgba(s.$redInactivateFile, 0.1);
+        }
+
+        & > app-check-box {
+          flex-basis: 160px;
+          flex-shrink: 0;
+        }
+
+        & > app-drop-down-list {
+          flex-basis: 250px;
+          flex-shrink: 0;
+        }
+      }
+    }
+
+    & > .top {
+      flex-basis: 55px;
+      @include s.flexRow;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid s.$pqGray2;
+      padding: 0 18px;
+
+      &:hover {
+        background-color: rgba(0, 136, 148, 0.05);
+      }
+
+      @include s.responsive_layout('media-1700') {
+        flex-basis: 70px;
+      }
+
+      & > .left {
+        height: 100%;
+        @include s.flexRow;
+        justify-content: flex-start;
+        align-items: center;
+        flex: 0 0 55%;
+
+        & > app-check-box {
+          flex-basis: 90px;
+          margin-right: 5px;
+          flex-shrink: 0;
+        }
+
+        @include s.responsive_layout('macBookAir') {
+          flex-basis: 110px;
+        }
+
+        & > app-drop-down-list {
+          height: auto;
+          min-width: 120px;
+          width: 120px;
+          margin-right: 10px;
+        }
+
+        & > app-generic-input {
+          width: 100px;
+        }
+
+        & > app-radio-button {
+          flex-shrink: 0;
+
+          &:first-of-type {
+            flex-basis: 100px;
+          }
+
+          &:last-of-type {
+            flex-basis: 120px;
+          }
+        }
+      }
+
+      & > .right {
+        height: 100%;
+        @include s.flexRow;
+        align-items: center;
+        justify-content: flex-end;
+        flex: 0 0 45%;
+
+        & > label {
+          $textSize: (
+            'base': 13px,
+            'macBookAir': 15px,
+          );
+          @include s.escaledFontFormat($textSize, regular, s.$pqBlack2);
+          @include s.Roboto-Regular;
+          font-weight: 400;
+        }
+
+        & > app-generic-input {
+          margin: 0 5px;
+          flex: 1 1 auto;
+        }
+
+        & > .button {
+          flex: 0 0 auto;
+        }
+
+        $max-width-map: (
+          'base': 120px,
+          'macBookAir': 150px,
+        );
+        $padding-map: (
+          'base': 0 15px,
+          'macBookAir': 0 19px,
+        );
+
+        & > .button.active {
+          @include s.pqfButton($max-width-map: $max-width-map, $padding-map: $padding-map);
+        }
+
+        & > .button.disable {
+          @include s.pqfDisableButton($max-width-map: $max-width-map, $padding-map: $padding-map);
+        }
+      }
+    }
+
+    & > .top.active {
+      background-color: rgba(0, 136, 148, 0.05);
+    }
+
+    & > .bottom {
+      @include s.flexRow;
+      justify-content: flex-start;
+      border-bottom: 1px solid s.$pqGray2;
+      align-items: center;
+      padding: 9px 25px 1px 25px;
+      /*flex-wrap: wrap;*/
+
+      & .invoice {
+        padding: 2px 35px 4px 20px;
+        border-radius: 17px;
+        background-color: rgba(0, 136, 148, 0.05);
+        margin: 0 16px 8px 0;
+        position: relative;
+        @include s.responsive_layout('media-1700') {
+          padding: 4px 35px 6px 20px;
+        }
+
+        & > span {
+          $textSize: (
+            'base': 13px,
+            'macBookAir': 15px,
+          );
+          @include s.escaledFontFormat($textSize, regular, s.$pqGreen);
+          @include s.Roboto-Regular;
+        }
+
+        & > .label {
+          padding: 0;
+          $textSize: (
+            'base': 13px,
+            'macBookAir': 15px,
+          );
+          @include s.escaledFontFormatImportant($textSize, regular, s.$pqBlack2);
+          @include s.Roboto-Regular-Important;
+          font-weight: 400 !important;
+        }
+
+        & > img {
+          position: absolute;
+          top: 5px;
+          right: 10px;
+          cursor: pointer;
+          @include s.responsive_layout('macBookAir') {
+            top: 7px;
+          }
+        }
+      }
+    }
+  }
+
+  & > .without-radios {
+    & > .top {
+      & > .left {
+        & > app-check-box {
+          flex-basis: 163px;
+          flex-shrink: 0;
+
+          @include s.responsive_layout('macBookAir') {
+            flex-basis: 193px;
+          }
+        }
+      }
+    }
+  }
+
+  & > .without-radios.wallet {
+    & > .top {
+      & > .left {
+        & > app-check-box {
+          flex-basis: 125px;
+          flex-shrink: 0;
+
+          @include s.responsive_layout('macBookAir') {
+            flex-basis: 150px;
+          }
+        }
+      }
+    }
+  }
+
+  & > .element.wallet {
+    & > .top {
+      & > .left {
+        & > .upload-file {
+          position: relative;
+          margin-right: 25px;
+
+          & > img {
+            cursor: pointer;
+            height: 26px;
+          }
+
+          & > input[type='file'],
+          input[type='file']::-webkit-file-upload-button {
+            position: absolute;
+            width: 21px;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            cursor: pointer;
+            height: 26px;
+            font-size: 0;
+          }
+        }
+
+        & > .file-name.tooltip {
+          @include s.flexRow;
+          @include s.absoluteCenter;
+          margin-left: -25px;
+          margin-right: 5px;
+          @include s.tooltip(auto, auto, auto, 130px, 'center', center, #33333c, #ffffff);
+          @include s.responsive_layout('macBookAir') {
+            margin-right: 15px;
+          }
+
+          & > label {
+            $textSize: (
+              'base': 13px,
+              'macBookAir': 15px,
+            );
+            @include s.escaledFontFormat($textSize, regular, s.$pqBlack2);
+            @include s.Roboto-Regular;
+            margin-right: 5px;
+            max-width: 110px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-decoration: underline;
+            cursor: pointer;
+          }
+
+          & > img {
+            height: 13px;
+            width: 13px;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+
+    & > .bottom {
+      @include s.flexColumn;
+      justify-content: flex-start;
+      border-bottom: 1px solid s.$pqGray2;
+      align-items: center;
+      padding: 9px 0 1px 0;
+
+      & > .invoices {
+        box-sizing: border-box;
+        @include s.flexRow;
+        justify-content: flex-start;
+        width: 100%;
+        padding: 0 25px;
+        flex-wrap: wrap;
+
+        & > .invoice {
+          margin: 0 16px 14px 0;
+
+          & .ancle {
+            max-width: 120px;
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-decoration: underline;
+            cursor: pointer;
+          }
+        }
+      }
+
+      & > .wallet-error {
+        box-sizing: border-box;
+        @include s.flexRow;
+        @include s.absoluteCenter;
+        background-color: rgba(194, 195, 201, 0.1);
+        width: 100%;
+        padding: 8px 0;
+
+        &.red {
+          background-color: rgba(s.$redInactivateFile, 0.1);
+        }
+
+        & > app-check-box {
+          flex-basis: 160px;
+          flex-shrink: 0;
+        }
+
+        & > app-drop-down-list {
+          flex-basis: 250px;
+          flex-shrink: 0;
+        }
+      }
+    }
+  }
+
+  & > .default-classif {
+    & > .top {
+      & > .left {
+        & > app-check-box {
+          flex-basis: 260px;
+          flex-shrink: 0;
+        }
+      }
+
+      & > .right {
+        & > app-generic-input {
+          margin: 0 0 0 5px;
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('media-1600') {
+    & > .element {
+      & > .container-clasification {
+        grid-template-columns: 80px repeat(3, 1fr) 160px repeat(2, 0.75fr) 2fr 120px;
+        grid-template-rows: repeat(2, auto);
+        grid-column-gap: 5px;
+        grid-row-gap: 7px;
+        padding: 14px 20px;
+
+        & > div:nth-of-type(1) {
+          grid-area: 1 / 1 / 2 / 2;
+        }
+
+        & > div:nth-of-type(2) {
+          grid-area: 1 / 2 / 2 / 3;
+        }
+
+        & > .fileAdded {
+          grid-area: 1 / 2 / 2 / 3;
+        }
+
+        & > .classification {
+          grid-area: 1 / 3 / 2 / 4;
+        }
+
+        & > .ocNumber {
+          grid-area: 1 / 4 / 2 / 5;
+        }
+
+        & > .subtotal {
+          grid-area: 1 / 5 / 2 / 6;
+        }
+
+        & > .Iva {
+          grid-area: 1 / 6 / 2 / 7;
+        }
+
+        & > .total {
+          grid-area: 1 / 7 / 2 / 8;
+        }
+
+        > .comments {
+          grid-area: 1 / 8 / 2 / 9;
+        }
+
+        & > .saveButton {
+          grid-area: 1 / 9 / 2 / 10;
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > .element {
+      & > .container-clasification {
+        grid-template-columns: 80px 110px repeat(2, 0.75fr) 180px repeat(2, 1fr) 2fr;
+        grid-template-rows: repeat(2, auto);
+        grid-column-gap: 5px;
+        grid-row-gap: 7px;
+        padding: 14px 20px;
+
+        & > div:nth-of-type(1) {
+          grid-area: 1 / 1 / 2 / 2;
+        }
+
+        & > div:nth-of-type(2) {
+          grid-area: 1 / 2 / 2 / 3;
+        }
+
+        & > .fileAdded {
+          grid-area: 1 / 2 / 2 / 3;
+        }
+
+        & > .classification {
+          grid-area: 1 / 3 / 2 / 4;
+        }
+
+        & > .ocNumber {
+          grid-area: 1 / 4 / 2 / 5;
+        }
+
+        & > .subtotal {
+          grid-area: 1 / 5 / 2 / 6;
+        }
+
+        & > .Iva {
+          grid-area: 1 / 6 / 2 / 7;
+        }
+
+        & > .total {
+          grid-area: 1 / 7 / 2 / 8;
+        }
+
+        > .comments {
+          grid-area: 1 / 8 / 2 / 9;
+        }
+
+        & > .saveButton {
+          grid-area: 2 / 8 / 3 / 9;
+        }
+      }
+
+      & > .top {
+        & > .left {
+          & > .upload-file {
+            & > img {
+              height: 30px;
+            }
+
+            & > input[type='file'],
+            input[type='file']::-webkit-file-upload-button {
+              width: 24px;
+              height: 30px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+#deleteMailPop {
+  @include s.flexColumn;
+  flex: 1;
+  height: 100%;
+  padding: 20px 90px;
+  row-gap: 30px;
+  & > .alert {
+    @include s.flexColumn;
+    align-items: center;
+    row-gap: 30px;
+    & > .icon {
+      max-height: 60px;
+      max-width: 60px;
+      & > img {
+        max-height: 100%;
+        max-width: 100%;
+      }
+    }
+    & > label {
+      @include s.responsive-font-format($font-size-map: s.$responsive-font-26-26);
+    }
+  }
+  & > .message {
+    align-items: center;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: repeat(2, auto);
+    grid-column-gap: 8px;
+    grid-row-gap: 5px;
+    & > .check {
+      * {
+        cursor: pointer;
+      }
+    }
+    & > .infoMessage {
+      grid-area: 2 / 2 / 3 / 3;
+      & > label {
+        color: s.$pqGreen !important;
+      }
+    }
+    & > .checkMessage,
+    .infoMessage {
+      & > label {
+        @include s.responsive-font-format(
+          $font-family: s.$font-family-roboto_bold,
+          $font-weight: s.$font-weight-bold,
+          $font-size-map: s.$responsive-font-14-14
+        );
+      }
+    }
+  }
+}

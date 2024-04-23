@@ -1,0 +1,140 @@
+<div id="right-sidebar" [ngClass]="isOpen ? 'show' : 'hide'">
+  <div class="content">
+    <div class="header-container">
+      <div class="header">
+        <img
+          src="assets/Images/new-product-existing-supplier/attend-investigation/mark_unread_chat_alt.svg"
+          alt="mark-unread-chat"
+        />
+        <label>{{ 'quotation.investigationDetail.detailsProduct' | translate }}</label>
+      </div>
+    </div>
+    <div class="content">
+      <app-message-history
+        class="history-chat"
+        [messages]="cotPartidaCotizacionInvestigacionMessages$ | async"
+      ></app-message-history>
+      <div class="radios">
+        <app-radio-button
+          *ngIf="data?.cotPartidaCotizacionInvestigacionAtencion?.ProductoDisponible"
+          [enableEdit]="false"
+          [labelFontStyle]="'labelRobotoBoldProquifa16'"
+          [label]="'quotation.investigationDetail.productAvailable' | translate"
+          [radioColor]="'green'"
+          [value]="data?.cotPartidaCotizacionInvestigacionAtencion?.ProductoDisponible"
+        ></app-radio-button>
+        <app-radio-button
+          *ngIf="data?.cotPartidaCotizacionInvestigacionAtencion?.Sugerencias"
+          [enableEdit]="false"
+          [labelFontStyle]="'labelRobotoBoldProquifa16'"
+          [label]="'quotation.investigationDetail.suggestions' | translate"
+          [value]="data?.cotPartidaCotizacionInvestigacionAtencion?.Sugerencias"
+        ></app-radio-button>
+      </div>
+      <div class="details">
+        <div class="title">
+          <label>{{ 'quotation.investigationDetail.details' | translate }}:</label>
+        </div>
+        <div class="container">
+          <div class="info-full" id="productDetails">
+            <div class="details">
+              <div class="product-logo-type">
+                <img
+                  class="logo"
+                  #imageElement
+                  alt="{{ 'logo ' + data?.Producto?.NombreMarca ?? 'image-product' }}"
+                  [src]="data?.Producto?.imageHover"
+                  (error)="errorImage()"
+                />
+                <label
+                  >CAT #{{
+                    data?.Producto?.TipoProductoClave === productsType.trainings ? 'N/D' : data?.Producto?.Catalogo
+                  }}</label
+                >
+              </div>
+              <div class="type-subtype">
+                <label>
+                  {{ data?.Producto?.fullFamilyName }}
+                </label>
+              </div>
+              <div class="description">
+                <label>{{ data?.Producto?.Descripcion }}</label>
+                <div class="totals">
+                  <div class="alternative">
+                    <label>
+                      {{ 'quotation.investigationDetail.alternatives' | translate }}
+                      {{
+                        data?.Producto?.TipoProductoClave === productsType.trainings ? ' N/A' : data?.Producto?.TotalAlternativo
+                      }}
+                    </label>
+                  </div>
+                  <div class="complementary">
+                    <label>
+                      {{ 'quotation.investigationDetail.complementary' | translate }}
+                      {{
+                        data?.Producto?.TipoProductoClave === productsType.trainings
+                          ? ' N/A '
+                          : data?.Producto?.TotalComplementario
+                      }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="footer">
+                <div class="presentation-details">
+                  <label class="presentation">
+                    {{ data?.Producto?.TipoPresentacion }}
+                    {{ data?.Producto?.Presentacion }}
+                    {{ data?.Producto?.Unidad }}
+                  </label>
+                  <label class="use">{{
+                    data?.Producto?.Uso || 'quotation.investigationDetail.pharmacopoeia' | translate
+                  }}</label>
+                </div>
+                <div class="price">
+                  <label>{{ data?.Producto?.PrecioLista | currency }} {{ data?.Producto?.MonedaVentaProveedor }}</label>
+                </div>
+              </div>
+            </div>
+            <div class="message-configuration" *ngIf="showMessageConfiguration$ | async">
+              <label>{{ 'quotation.investigationDetail.messageConfiguration' | translate }}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="comments">
+        <div class="title">
+          <label> {{ 'quotation.investigationDetail.comments' | translate }}:</label>
+        </div>
+        <app-generic-text-area
+          [borderColor]="'#424242'"
+          [height]="'103px'"
+          [placeholder]="'quotation.investigationDetail.writeAComment' | translate"
+          [value]="(selectReattendedInvestigation$ | async)?.Comentario"
+          (emitData)="setEviComment($event)"
+        ></app-generic-text-area>
+      </div>
+    </div>
+    <div class="buttons">
+      <button
+        class="accept"
+        [ngClass]="{disable: (selectReattendedInvestigation$ | async)?.Comentario === ''}"
+        (click)="handleSendResponse()"
+      >
+        {{ 'quotation.investigationDetail.sendComment' | translate }}
+      </button>
+      <button
+        class="add-to-quotation"
+        (click)="handleAddToQuotation(data)"
+        [ngClass]="{
+          'add-to-quotation-disabled': showMessageConfiguration$ | async
+        }"
+      >
+        {{ 'quotation.investigationDetail.addToQuotation' | translate }}
+      </button>
+    </div>
+  </div>
+</div>
+<div class="arrow">
+  <img alt="arrow" src="assets/Images/arrows/flecha_cuadro.svg" class="reverse" (click)="closeDetailsInvestigation()" />
+</div>

@@ -1,0 +1,11 @@
+<div class="imageFile">
+  <div *ngIf="isBase64Image(base64File)" class="image">
+    <img alt="file" [src]="base64File" class="img" />
+  </div>
+  <label>{{ 'common.downloadInstructions' | translate }}</label>
+  <div class="fill">
+    <div class="download" (click)="download()">
+      <button>{{ 'common.download' | translate }}</button>
+    </div>
+  </div>
+</div>

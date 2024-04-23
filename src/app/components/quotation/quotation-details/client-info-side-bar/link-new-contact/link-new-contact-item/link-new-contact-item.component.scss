@@ -1,0 +1,55 @@
+@use 'base' as s;
+
+#link-new-contact-item {
+  @include s.flexRow;
+  align-items: center;
+  background-color: s.$main-proquifa-f;
+  border-bottom: 1px solid s.$pqWhite;
+  cursor: pointer;
+  padding: 36px 16px 15px;
+
+  & > .logo {
+    @include s.flexColumn;
+
+    & > img {
+      width: 48px;
+      height: 48px;
+    }
+  }
+
+  & > .name {
+    @include s.flexColumn;
+    flex: 1;
+    padding-left: 12px;
+
+    & > label {
+      @include s.responsive-font-format(
+        $color: s.$main-proquifa-b,
+        $font-family: s.$font-family_roboto_bold,
+        $font-size-map: s.$responsive-font-14-14,
+        $font-weight: s.$font-weight_bold
+      );
+    }
+
+    & > .business-name {
+      @include s.responsive-font-format(
+        $color: s.$main-proquifa-b,
+        $font-family: s.$font-family_roboto,
+        $font-size-map: s.$responsive-font-13-13
+      );
+    }
+  }
+
+  & > .link {
+    @include s.flexColumn;
+    align-items: center;
+    flex: 0 0 62px;
+    gap: 4px;
+    justify-content: center;
+
+    & > label {
+      @include s.responsive-font-format($color: s.$pqGreen, $font-size-map: s.$responsive-font-10-10);
+      text-align: center;
+    }
+  }
+}

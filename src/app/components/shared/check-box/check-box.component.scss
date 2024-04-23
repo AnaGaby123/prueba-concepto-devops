@@ -1,0 +1,294 @@
+@use 'base' as s;
+
+.padre {
+  display: flex;
+  height: 100%;
+  align-items: center;
+
+  & > div {
+    display: flex;
+    height: 100%;
+  }
+
+  & > .checkbox {
+    flex: 0 0 auto;
+  }
+
+  & > .labels {
+    @include s.flexColumn;
+    justify-content: center;
+    /*width: calc(100% - 20px);*/
+    & > label:first-of-type {
+      //@include fontFormat(Roboto-regular, 14px, '', #424242);
+      @include s.Roboto-Regular;
+      @include s.escaledFontFormat(s.$textSize14to16, regular, s.$pqBlack2);
+      box-sizing: border-box;
+      padding: 0 0 0 6px;
+
+      & > span {
+        @include s.Roboto-Bold;
+        vertical-align: baseline;
+      }
+    }
+
+    & > label:last-of-type {
+      box-sizing: border-box;
+      padding-left: 6px;
+      text-align: start;
+    }
+  }
+
+  & > .checkbox-multicolor {
+    width: 25px;
+    height: 25px;
+
+    & > .hover {
+      display: none;
+    }
+
+    &:hover {
+      & > .default,
+      & > .selected {
+        display: none;
+      }
+
+      & > .hover {
+        display: block;
+      }
+    }
+  }
+}
+
+.checkbox label {
+  display: inline-block;
+  cursor: pointer;
+  -webkit-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  left: 0;
+}
+
+.checkbox label:before {
+  @include s.absoluteCenter;
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  left: 15px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid #afaeb4;
+  top: -1px;
+}
+
+.checkbox label:before {
+  border-radius: 0;
+  left: 0;
+}
+
+.checkbox input[type='checkbox'] {
+  display: none;
+  -webkit-transform: scale(2);
+  transform: scale(2.3);
+  z-index: 1;
+  opacity: 0;
+  cursor: pointer;
+  top: 3px;
+  left: 5px;
+}
+
+.imgCheck {
+  width: 100%;
+  height: 100%;
+  /*  background-color: #ffffff;*/
+}
+
+.imgCheck-disable {
+  height: 11px;
+  @include s.responsive_layout('macBookAir') {
+    height: 13px;
+  }
+}
+
+.imgCheck-close {
+  height: 13px;
+  @include s.responsive_layout('macBookAir') {
+    height: 15px;
+  }
+}
+
+.checkbox {
+  @include s.absoluteCenter;
+}
+
+.robotoRegular10 {
+  $textSize: (
+    'base': 8px,
+    'macBookAir': 10px,
+  );
+  @include s.escaledFontFormatImportant($textSize, regular, s.$redInactivateFile);
+  @include s.Roboto-Regular-Important;
+}
+
+.robotoRegular13 {
+  @include s.Roboto-Regular;
+  @include s.escaledFontFormatImportant(s.$textSize13to16, regular, s.$pqBlack2);
+}
+
+.robotoRegular13Red {
+  @include s.Roboto-Regular;
+  @include s.escaledFontFormatImportant(s.$textSize13to16, regular, s.$gnRojoSemaforo);
+}
+
+.robotoRegular14 {
+  @include s.Roboto-Regular;
+  @include s.escaledFontFormatImportant(s.$textSize14to16, regular, s.$pqBlack2);
+}
+
+.robotoRegular14Proquifa {
+  @include s.Roboto-Regular;
+  @include s.escaledFontFormatImportant(s.$textSize14to16, regular, s.$pqGreen);
+}
+
+.robotoBold13 {
+  @include s.escaledFontFormatImportant(s.$textSize13to16, bold, s.$pqBlack2);
+  @include s.Roboto-Bold-Important;
+}
+
+.robotoBoldGray13 {
+  @include s.escaledFontFormatImportant(s.$textSize14to16, bold, s.$pqGray3);
+  @include s.Roboto-Bold-Important;
+}
+
+.robotoBoldGreen13 {
+  @include s.escaledFontFormatImportant(s.$textSize14to16, bold, s.$pqGreen);
+  @include s.Roboto-Bold-Important;
+}
+
+.robotoBold12 {
+  @include s.escaledFontFormatImportant(s.$textSize12to14, bold, s.$pqBlack2);
+  @include s.Roboto-Bold-Important;
+}
+
+.robotoBold12Green {
+  @include s.escaledFontFormatImportant(s.$textSize12to14, bold, s.$pqGreen);
+  @include s.Roboto-Bold-Important;
+}
+
+.robotoRegular12Proquifa {
+  @include s.Roboto-Regular;
+  @include s.escaledFontFormatImportant(s.$textSize12to14, regular, s.$pqGreen);
+}
+
+.robotoRegular12Regular {
+  @include s.Roboto-Regular;
+  @include s.escaledFontFormatImportant(s.$textSize12to14, regular, s.$pqBlack2);
+}
+
+.robotoBoldProquifa13 {
+  @include s.escaledFontFormatImportant(s.$textSize13to16, bold, s.$pqGreen);
+  @include s.Roboto-Bold-Important;
+}
+
+.robotoRegular15 {
+  $textSize: (
+    'base': 12px,
+    'macBookAir': 15px,
+  );
+  @include s.escaledFontFormatImportant($textSize, regular, s.$pqBlack2);
+  @include s.Roboto-Regular;
+}
+
+.robotoRegular15Disabled {
+  $textSize: (
+    'base': 12px,
+    'macBookAir': 15px,
+  );
+  @include s.escaledFontFormatImportant($textSize, regular, s.$pqGray3);
+  @include s.Roboto-Regular;
+}
+
+.robotoRegular15Red {
+  $textSize: (
+    'base': 12px,
+    'macBookAir': 15px,
+  );
+  @include s.escaledFontFormatImportant($textSize, regular, s.$redInactivateFile);
+  @include s.Roboto-Regular;
+}
+
+.robotoBoldProquifa15 {
+  $textSize: (
+    'base': 12px,
+    'macBookAir': 15px,
+  );
+  @include s.escaledFontFormatImportant($textSize, bold, s.$pqGreen);
+  @include s.Roboto-Bold-Important;
+}
+
+.novecentoBold15 {
+  $textSize: (
+    'base': 15px,
+    'macBookAir': 20px,
+  );
+  @include s.escaledFontFormatImportant($textSize, bold, s.$pqBlack2);
+  @include s.Novecento-Bold-Important;
+}
+
+.novecentoBold17 {
+  $textSize: (
+    'base': 17px,
+    'macBookAir': 22px,
+  );
+  @include s.escaledFontFormatImportant($textSize, bold, s.$pqBlack2);
+  @include s.Novecento-Bold-Important;
+}
+
+.labelRobotoRegularProquifa13 {
+  @include s.escaledFontFormatImportant(s.$textSize13to16, regular, s.$pqGreen);
+  @include s.Roboto-Regular;
+}
+
+.labelRobotoRegularDisable13 {
+  @include s.escaledFontFormatImportant(s.$textSize13to16, regular, s.$pqGray3);
+  @include s.Roboto-Regular;
+}
+
+.labelRobotoRegular13 {
+  @include s.escaledFontFormatImportant(s.$textSize13to16, regular, s.$pqBlack2);
+  @include s.Roboto-Regular;
+}
+
+.robotoRegularRegularBlack11 {
+  @include s.Roboto-Regular;
+  @include s.escaledFontFormatImportant(s.$textSize11to13, regular, s.$pqBlack2);
+}
+
+.labelRobotoRegularProquifa11 {
+  @include s.escaledFontFormatImportant(s.$textSize11to13, regular, s.$pqGreen);
+  @include s.Roboto-Regular;
+}
+
+.labelRobotoRegularDisable11 {
+  @include s.escaledFontFormatImportant(s.$textSize11to13, regular, s.$pqGray3);
+  @include s.Roboto-Regular;
+}
+
+.labelRobotoBold21Black21 {
+  @include s.Roboto-Bold;
+  @include s.escaledFontFormatImportant(s.$textSize15to21, bold, s.$pqBlack2);
+}
+
+.novecentoBold22Proquifa {
+  $textSize: (
+    'base': 17px,
+    'macBookAir': 22px,
+  );
+  @include s.escaledFontFormatImportant($textSize, bold, s.$pqGreen);
+  @include s.Novecento-Bold-Important;
+}
+
+.robotoRegular16Proquifa {
+  @include s.Roboto-Regular;
+  @include s.escaledFontFormatImportant(s.$textSize13to16, regular, s.$pqGreen);
+}

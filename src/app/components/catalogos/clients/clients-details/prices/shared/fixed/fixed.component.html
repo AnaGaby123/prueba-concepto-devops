@@ -1,0 +1,36 @@
+<div class="fixed">
+  <div class="container" [style.margin-right]="!isMexican ? '50px' : '0'">
+    <h4>{{ 'formClient.fixed' | translate }}</h4>
+    <div class="flex">
+      <div class="input-container">
+        <label>{{ 'formProvider.step8.inputs.fixedCost' | translate }}</label>
+        <app-generic-input
+          class="input"
+          [textAlign]="'center'"
+          [placeholder]="'0'"
+          [enableEdit]="enableEdit"
+          [typeValidation]="inputValidators.Percentage"
+          [value]="actualConfiguration?.ConfiguracionPrecioCliente?.FactorDeCostoFijo"
+          (textData)="handleInputChange($event, fields.FactorDeCostoFijo)"
+        >
+        </app-generic-input>
+        <span>%</span>
+      </div>
+    </div>
+  </div>
+  <div class="container" *ngIf="!isMexican">
+    <h4 class="margin-bottom">{{ 'formClient.interBillings' | translate }}</h4>
+    <div class="flex">
+      <div class="input-container column">
+        <label>{{ 'formClient.commercialFront' | translate }}</label>
+        <label class="green">{{
+          actualConfiguration?.configurationPriceProvider?.ComisionFrenteComercial | percentageTransform
+        }}</label>
+      </div>
+      <div class="input-container column">
+        <label>Pharma</label>
+        <label class="green">{{ actualConfiguration?.configurationPriceProvider?.ComisionPharma | percentageTransform }}</label>
+      </div>
+    </div>
+  </div>
+</div>

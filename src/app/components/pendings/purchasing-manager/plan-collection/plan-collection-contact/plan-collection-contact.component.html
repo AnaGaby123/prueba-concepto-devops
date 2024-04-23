@@ -1,0 +1,89 @@
+<div class="header">
+  <div class="image">
+    <img #imageElement width="150" alt="logo" [src]="setImage()" (error)="errorImage()" />
+  </div>
+  <div class="data">
+    <label class="title">{{ 'FEUM FARMACOPEA' }}</label>
+    <div class="flex-content">
+      <div class="info">
+        <div class="contact">
+          <div class="icon">
+            <img src="assets/Images/contacto.svg" alt="" />
+          </div>
+          <div class="text">
+            <label>{{ 'José Ramon Ruiz Fernandez' }} </label>
+          </div>
+        </div>
+      </div>
+      <div class="phone">
+        <div class="icon">
+          <img src="assets/Images/quotation/phone.svg" alt="" />
+        </div>
+        <div class="text">
+          <label
+            >{{ '01 (55) 364 74 85' }}
+            · Ext.
+            {{ '1245' }}</label
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="aqua-content">
+  <div class="title">
+    <label>{{ 'planCollection.directionTemporary' | translate }}</label>
+  </div>
+</div>
+<div class="input-content">
+  <div>
+    <app-drop-down-list
+      [label]="'common.direction.country' | translate"
+      [items]="itemsCountry$ | async"
+      [required]="true"
+      [isSearchable]="true"
+    ></app-drop-down-list>
+  </div>
+  <div>
+    <app-generic-input [label]="'common.direction.city' | translate" [required]="true" [maxlength]="50"></app-generic-input>
+  </div>
+  <div>
+    <app-generic-input [label]="'common.direction.zipCode' | translate" [required]="true" [maxlength]="10"></app-generic-input>
+  </div>
+  <div>
+    <app-generic-input [label]="'common.direction.street' | translate" [maxlength]="50"></app-generic-input>
+  </div>
+  <div>
+    <app-generic-input [label]="'common.direction.externalNumber' | translate" [required]="true"></app-generic-input>
+  </div>
+  <div>
+    <app-generic-input [label]="'common.direction.apartmentNumber' | translate"></app-generic-input>
+  </div>
+  <div class="municipality">
+    <app-generic-input [label]="'common.direction.Suburb' | translate" [required]="true" [maxlength]="50"></app-generic-input>
+  </div>
+  <div>
+    <app-generic-input [label]="'common.direction.municipality' | translate" [required]="true"></app-generic-input>
+  </div>
+  <div>
+    <app-generic-input [label]="'common.direction.state' | translate" [required]="true" [maxlength]="50"></app-generic-input>
+  </div>
+  <div>
+    <app-drop-down-list
+      [items]="itemsRoutesDelivery$ | async"
+      [label]="'common.direction.typeOfRegion' | translate"
+      [required]="true"
+    ></app-drop-down-list>
+  </div>
+  <div>
+    <app-drop-down-list
+      [label]="'common.direction.region' | translate"
+      [items]="itemsCatZona$ | async"
+      [optionsPosition]="'top'"
+      [required]="true"
+    ></app-drop-down-list>
+  </div>
+</div>
+<div class="required-field">
+  <label>{{ '*' }} {{ 'formClient.step5.contractPopUp.requiredData' | translate }}</label>
+</div>

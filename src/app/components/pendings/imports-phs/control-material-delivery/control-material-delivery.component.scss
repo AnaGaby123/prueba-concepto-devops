@@ -1,0 +1,16 @@
+@use 'base' as s;
+
+:host {
+  @include s.generic-main-component-structure;
+
+  @include s.responsive_layout('macBookAir') {
+    & > #control-material-delivery-container {
+      & > .header-bar {
+      }
+
+      & > .outlet {
+        //height: calc(100% - 64px);
+      }
+    }
+  }
+}

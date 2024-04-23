@@ -1,0 +1,198 @@
+<div id="products-logistic">
+  <div class="product-content">
+    <div class="title">
+      <label>{{ 'common.product' | translate }}</label>
+    </div>
+    <div class="product-item-info">
+      <app-product-item-general-info></app-product-item-general-info>
+    </div>
+  </div>
+  <div class="general-data-content">
+    <div class="title">
+      <label>{{ 'formProduct.general.generalData' | translate }}</label>
+    </div>
+    <div class="body">
+      <div class="custom-agent">
+        <div class="title">
+          <label>{{ 'loadMissing.customBroker' | translate }}</label>
+        </div>
+        <div class="text">
+          <div>
+            <label
+              ><span>{{ 'customsAgents.tradeName' | translate }} · </span> {{ (customAgent$ | async)?.NombreComercial || 'N/D'
+              }}{{ ' · ' }}
+            </label>
+          </div>
+          <div>
+            <label>
+              <span>{{ 'productsForm.logistic.LegalName' | translate }} · </span>
+              {{ (customAgent$ | async)?.NombreLegal || 'N/D' }}
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="two">
+        <div class="logic-route">
+          <app-generic-input
+            [enableEdit]="false"
+            [label]="'productsForm.logistic.logicRoute' | translate"
+            [value]="(vProduct$ | async)?.RutaEntrega"
+          >
+          </app-generic-input>
+        </div>
+        <div class="sending-time">
+          <app-generic-input
+            [enableEdit]="false"
+            [label]="'productsForm.logistic.costsSendingTypes' | translate"
+            [value]="(customAgent$ | async)?.Concepto"
+          >
+          </app-generic-input>
+        </div>
+      </div>
+      <div class="freight">
+        <app-drop-down-list
+          [enableEdit]="enableEdit$ | async"
+          [itemSelected]="selectedFreight$ | async"
+          [items]="freightRestrictions$ | async"
+          [isSearchable]="(freightRestrictions$ | async)?.length > 5"
+          [label]="'productsForm.logistic.freightRestrictions' | translate"
+          (valueDropList)="setdropOption($event)"
+        ></app-drop-down-list>
+      </div>
+      <div class="documents">
+        <div class="title">
+          <label>{{ 'productsForm.logistic.documentationTitle' | translate }}</label>
+        </div>
+        <div class="content">
+          <div class="security">
+            <app-generic-input-file
+              [acceptedExtensions]="'application/pdf'"
+              [disabled]="!(enableEdit$ | async)"
+              [enableEdit]="enableEdit$ | async"
+              [fileName]="
+                (vProduct$ | async)?.ArchivoHojaSeguridad
+                  ? getFileName((vProduct$ | async)?.ArchivoHojaSeguridad?.FileKey)
+                  : null
+              "
+              [file]="securitySheetFile$ | async"
+              [idFile]="(vProduct$ | async)?.ArchivoHojaSeguridad?.IdArchivo"
+              [label]="'inspector.safetySheet' | translate"
+              [placeholder]="'.Pdf'"
+              (emitExternalFile)="getExternalFile('ArchivoHojaSeguridad')"
+              (autoEmitFile)="setNewFile($event, 'ArchivoHojaSeguridad')"
+              (emitFileToDelete)="setIdFileToDelete(null, 'ArchivoHojaSeguridad')"
+            ></app-generic-input-file>
+          </div>
+          <div class="certificate">
+            <app-generic-input-file
+              [acceptedExtensions]="'application/pdf'"
+              [disabled]="!(enableEdit$ | async)"
+              [enableEdit]="enableEdit$ | async"
+              [fileName]="
+                (vProduct$ | async)?.ArchivoCertificadoLote
+                  ? getFileName((vProduct$ | async)?.ArchivoCertificadoLote?.FileKey)
+                  : null
+              "
+              [file]="certificate$ | async"
+              [idFile]="(vProduct$ | async)?.ArchivoCertificadoLote?.IdArchivo"
+              [label]="'uploadInvoice.certificate' | translate"
+              [placeholder]="'.Pdf'"
+              (emitExternalFile)="getExternalFile('ArchivoCertificadoLote')"
+              (autoEmitFile)="setNewFile($event, 'ArchivoCertificadoLote')"
+              (emitFileToDelete)="setIdFileToDelete(null, 'ArchivoCertificadoLote')"
+            ></app-generic-input-file>
+          </div>
+        </div>
+      </div>
+      <div class="datasheet">
+        <app-generic-input-file
+          [acceptedExtensions]="'application/pdf'"
+          [disabled]="!(enableEdit$ | async)"
+          [enableEdit]="enableEdit$ | async"
+          [fileName]="
+            (vProduct$ | async)?.ArchivoFichaTecnica ? getFileName((vProduct$ | async)?.ArchivoFichaTecnica?.FileKey) : null
+          "
+          [file]="dataSheet$ | async"
+          [idFile]="(vProduct$ | async)?.ArchivoFichaTecnica?.IdArchivo"
+          [label]="'productsForm.logistic.dataSheet' | translate"
+          [placeholder]="'.Pdf'"
+          (emitExternalFile)="getExternalFile('ArchivoFichaTecnica')"
+          (autoEmitFile)="setNewFile($event, 'ArchivoFichaTecnica')"
+          (emitFileToDelete)="setIdFileToDelete(null, 'ArchivoFichaTecnica')"
+        >
+        </app-generic-input-file>
+      </div>
+      <div class="radios-input">
+        <div class="radios">
+          <div *ngFor="let radio of radioOptions$ | async">
+            <app-radio-button
+              [disabled]="!(enableEdit$ | async)"
+              [height]="(viewType$ | async) === viewTypes.small ? '15px' : '20px'"
+              [label]="radio.label"
+              [value]="radio.value"
+              (emitSelected)="setRadioOption($event)"
+            ></app-radio-button>
+          </div>
+        </div>
+        <div class="input">
+          <app-generic-input-file
+            [acceptedExtensions]="'application/pdf'"
+            [disabled]="!(enableEdit$ | async)"
+            [enableEdit]="enableEdit$ | async"
+            [fileName]="(vProduct$ | async)?.ArchivoTratado ? getFileName((vProduct$ | async)?.ArchivoTratado?.FileKey) : null"
+            [file]="archivoTratado$ | async"
+            [idFile]="(vProduct$ | async)?.ArchivoTratado?.IdArchivo"
+            [placeholder]="'.Pdf'"
+            (emitExternalFile)="getExternalFile('ArchivoTratado')"
+            (autoEmitFile)="setNewFile($event, 'ArchivoTratado')"
+            (emitFileToDelete)="setIdFileToDelete(null, 'ArchivoTratado')"
+          ></app-generic-input-file>
+        </div>
+        <div class="item" *ngIf="false">
+          <div class="text">
+            <label>{{ 'Nombre_Archivo.pdf' }}</label>
+          </div>
+          <div class="close">
+            <img src="assets/Images/cerrar.svg" />
+          </div>
+        </div>
+      </div>
+      <div class="others">
+        <app-generic-input-file
+          [acceptedExtensions]="'application/pdf'"
+          [disabled]="!(enableEdit$ | async)"
+          [enableEdit]="enableEdit$ | async"
+          [label]="'productsForm.logistic.others' | translate"
+          [placeholder]="'.Pdf'"
+          [showAddSelectedFile]="true"
+          (manualEmitFile)="addNewFile($event)"
+        ></app-generic-input-file>
+      </div>
+      <div class="otherFiles">
+        <div class="subtitle">
+          <div class="text">
+            <label>{{ 'productsForm.logistic.otherFiles' | translate }}: </label>
+          </div>
+        </div>
+        <div class="items" *ngIf="(otherFiles$ | async).length > 0">
+          <div class="file" *ngFor="let item of otherFiles$ | async; let i = index">
+            <div class="content">
+              <label (click)="getExternalFile('OtrosTratados', item)"
+                >#{{ i + 1 }} · <span>{{ item.name ? item.name : getFileName(item.Archivo.FileKey) }}</span></label
+              >
+            </div>
+            <div class="close" *ngIf="enableEdit$ | async">
+              <img
+                (click)="setOtherFileToDelete(item.Archivo ? null : i, item.Archivo ? item.IdArchivoTratadosOtros : null)"
+                src="assets/Images/cerrar.svg"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="without-results" *ngIf="(otherFiles$ | async).length === 0">
+          <label>{{ 'productsForm.logistic.withoutResults' | translate }}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

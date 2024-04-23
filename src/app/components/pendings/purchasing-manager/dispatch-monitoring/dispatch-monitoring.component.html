@@ -1,0 +1,18 @@
+<div class="component-container" id="dispatch-monitoring-container">
+  <div class="header">
+    <app-header-bar [activeBack]="isInDetailsView$ | async" [title]="title$ | async" (goBack)="goBack()"></app-header-bar>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="footer" *ngIf="!(isInDetailsView$ | async)">
+    <ng-container>
+      <div>
+        <label><span>FEE:</span> {{ 'dailyMeeting.deliveryDate' | translate }}</label>
+      </div>
+      <div>
+        <label><span>OC:</span> {{ 'common.purchaseOrder' | translate }}</label>
+      </div>
+    </ng-container>
+  </div>
+</div>

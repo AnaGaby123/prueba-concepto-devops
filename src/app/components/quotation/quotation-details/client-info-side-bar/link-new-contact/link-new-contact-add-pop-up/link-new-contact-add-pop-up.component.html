@@ -1,0 +1,197 @@
+<app-pop-up-generic
+  class="newContact"
+  [activeBtn]="!errors.length && isValidFormContact$ | async"
+  [activeButtons]="true"
+  (evento)="onClose($event)"
+  [height]="(viewType$ | async) === viewTypes.small ? '730px' : '800px'"
+  [width]="(viewType$ | async) === viewTypes.small ? '850px' : '930px'"
+  [titleHeader]="'AGREGAR CONTACTO'"
+  [rightButtonLabel]="'VINCULAR'"
+>
+  <div class="pop-up-container">
+    <div class="form-container">
+      <div class="container">
+        <div class="info-content">
+          <div class="image">
+            <img src="assets/Images/clientes/logo_proquifa_hover.svg" alt="client-logo" />
+          </div>
+          <div class="text">
+            <div class="aqua">
+              <label>{{ selectedClientName$ | async }}</label>
+            </div>
+            <div class="black">
+              <label class="rfc"> {{ 'RFC: No. ' }} {{ (selectedClientRFC$ | async) || 'N/D' }} </label>
+            </div>
+          </div>
+        </div>
+        <div class="datasContact">
+          <span>{{ 'formProduct.general.generalData' | translate }}</span>
+          <div class="grid-container">
+            <app-generic-input
+              [label]="'quotation.details.noticeCustomer.step1.name' | translate"
+              [required]="true"
+              [maxlength]="50"
+              [minlength]="3"
+              [typeValidation]="inputValidators.AlphaAndSpaces"
+              [value]="(contactForm$ | async)?.DatosPersona.Nombres"
+              (textData)="setContactFormData($event, 'Nombres', 'DatosPersona')"
+              (errorData)="validate($event, FIELD_NOMBRES)"
+            ></app-generic-input>
+            <app-generic-input
+              [label]="'quotation.details.noticeCustomer.step1.lastNamePa' | translate"
+              [required]="true"
+              [maxlength]="30"
+              [minlength]="3"
+              [typeValidation]="inputValidators.AlphaAndSpaces"
+              [value]="(contactForm$ | async)?.DatosPersona.ApellidoPaterno"
+              (textData)="setContactFormData($event, 'ApellidoPaterno', 'DatosPersona')"
+              (errorData)="validate($event, FIELD_APELLIDO_PATERNO)"
+            ></app-generic-input>
+            <app-generic-input
+              [label]="'quotation.details.noticeCustomer.step1.lastNameMa' | translate"
+              [maxlength]="30"
+              [minlength]="3"
+              [typeValidation]="inputValidators.AlphaAndSpaces"
+              [value]="(contactForm$ | async)?.DatosPersona.ApellidoMaterno"
+              (textData)="setContactFormData($event, 'ApellidoMaterno', 'DatosPersona')"
+              (errorData)="validate($event, FIELD_APELLIDO_MATERNO)"
+            ></app-generic-input>
+            <app-generic-input
+              [label]="'quotation.details.noticeCustomer.step1.title' | translate"
+              [required]="true"
+              [maxlength]="10"
+              [minlength]="3"
+              [typeValidation]="inputValidators.AlphaAndSpaces"
+              [value]="(contactForm$ | async)?.DatosPersona.Titulo"
+              (textData)="setContactFormData($event, 'Titulo', 'DatosPersona')"
+              (errorData)="validate($event, FIELD_TITULO)"
+            ></app-generic-input>
+            <app-generic-input
+              [label]="'quotation.details.noticeCustomer.step1.stall' | translate"
+              [required]="true"
+              [maxlength]="50"
+              [minlength]="3"
+              [typeValidation]="inputValidators.AlphaAndSpaces"
+              [value]="(contactForm$ | async)?.DatosPersona.Puesto"
+              (textData)="setContactFormData($event, 'Puesto', 'DatosPersona')"
+              (errorData)="validate($event, FIELD_PUESTO)"
+            ></app-generic-input>
+            <app-generic-input
+              [label]="'quotation.details.noticeCustomer.step1.department' | translate"
+              [required]="true"
+              [maxlength]="50"
+              [minlength]="3"
+              [typeValidation]="inputValidators.AlphaAndSpaces"
+              [value]="(contactForm$ | async)?.DatosPersona.Departamento"
+              (textData)="setContactFormData($event, 'Departamento', 'DatosPersona')"
+              (errorData)="validate($event, FIELD_DEPARTAMENTO)"
+            ></app-generic-input>
+            <app-generic-input
+              (textData)="setContactFormData($event, 'Correo', 'CorreoElectronico')"
+              [enableEdit]="false"
+              [forceActiveErrors]="existingEmail$ | async"
+              [label]="'common.email' | translate"
+              [required]="false"
+              [typeValidation]="inputValidators.Email"
+              [value]="(contactForm$ | async)?.CorreoElectronico.Correo"
+            ></app-generic-input>
+            <div class="sub-grid">
+              <app-generic-input
+                [label]="'quotation.details.noticeCustomer.step1.phone' | translate"
+                [required]="true"
+                [typeValidation]="inputValidators.Phonev2"
+                [minlength]="8"
+                [maxlength]="14"
+                (textData)="setPhoneNumber($event, 'Numero', 'telefono1')"
+                (errorData)="validate($event, FIELD_PHONE_1)"
+              ></app-generic-input>
+              <app-generic-input
+                [label]="'quotation.details.noticeCustomer.step1.ext' | translate"
+                [required]="false"
+                [typeValidation]="inputValidators.Number"
+                [maxlength]="5"
+                [isDisable]="(phone1Lenght$ | async) < 8"
+                (textData)="setPhoneNumber($event, 'Extension', 'telefono1')"
+                (errorData)="validate($event, FIELD_EXT_1)"
+              ></app-generic-input>
+            </div>
+            <div class="sub-grid">
+              <app-generic-input
+                [label]="'quotation.details.noticeCustomer.step1.phone2' | translate"
+                [required]="false"
+                [typeValidation]="inputValidators.Phonev2"
+                [minlength]="8"
+                [maxlength]="14"
+                [isDisable]="(phone1Lenght$ | async) < 8"
+                (textData)="setPhoneNumber($event, 'Numero', 'telefono2')"
+                (errorData)="validate($event, FIELD_PHONE_2)"
+              ></app-generic-input>
+              <app-generic-input
+                [label]="'quotation.details.noticeCustomer.step1.ext' | translate"
+                [required]="false"
+                [typeValidation]="inputValidators.Number"
+                [isDisable]="(phone2Lenght$ | async) < 8"
+                [maxlength]="5"
+                (textData)="setPhoneNumber($event, 'Extension', 'telefono2')"
+                (errorData)="validate($event, FIELD_EXT_2)"
+              ></app-generic-input>
+            </div>
+            <app-generic-input
+              [label]="'quotation.details.noticeCustomer.step1.mobile' | translate"
+              [required]="false"
+              [typeValidation]="inputValidators.Phonev2"
+              [minlength]="8"
+              [maxlength]="14"
+              (textData)="setPhoneNumber($event, 'Numero', 'movil')"
+              (errorData)="validate($event, FIELD_MOBILE)"
+            ></app-generic-input>
+            <app-drop-down-list
+              [label]="'quotation.details.noticeCustomer.step1.difficulty' | translate"
+              [items]="catDificultad$ | async"
+              [isSearchable]="(catDificultad$ | async)?.length > 5"
+              [itemSelected]="difficulty$ | async"
+              (valueDropList)="setContactFormData($event.value, 'IdCatDificultad', 'DatosPersona')"
+              (errorData)="validate($event, FIELD_DIFFICULTY)"
+            ></app-drop-down-list>
+            <app-drop-down-list
+              [label]="'quotation.details.noticeCustomer.step1.maintenance' | translate"
+              [items]="catMaintance$ | async"
+              [isSearchable]="(catMaintance$ | async)?.length > 5"
+              [itemSelected]="maintenance$ | async"
+              (valueDropList)="setContactFormData($event.value, 'IdCatMantenimiento', 'DatosPersona')"
+              (errorData)="validate($event, FIELD_MAINTANCE)"
+            ></app-drop-down-list>
+            <app-drop-down-list
+              [label]="'quotation.details.noticeCustomer.step1.DecisionLevel' | translate"
+              [required]="false"
+              [items]="catDecisionLevel$ | async"
+              [itemSelected]="decisionLevel$ | async"
+              [optionsPosition]="'top'"
+              (valueDropList)="setContactFormData($event.value, 'IdCatNivelDecision', 'DatosPersona')"
+            ></app-drop-down-list>
+            <app-drop-down-list
+              [label]="'quotation.details.noticeCustomer.step1.LevelStall' | translate"
+              [required]="false"
+              [items]="catJobLevel$ | async"
+              [itemSelected]="jobLevel$ | async"
+              [optionsPosition]="'top'"
+              (valueDropList)="setContactFormData($event.value, 'IdCatNivelPuesto', 'DatosPersona')"
+            ></app-drop-down-list>
+            <app-check-box
+              class="check"
+              [check]="(contactForm$ | async)?.DatosPersona.AgregadoExpo"
+              [label]="'quotation.details.noticeCustomer.step1.AddExpo' | translate"
+              [labelFontStyle]="
+                (contactForm$ | async)?.DatosPersona.AgregadoExpo ? 'robotoRegular16Proquifa' : 'robotoRegular13'
+              "
+              (event)="setContactFormData($event, 'AgregadoExpo', 'DatosPersona')"
+            ></app-check-box>
+          </div>
+        </div>
+      </div>
+      <div class="required">
+        <p>* {{ 'common.requiredField' | translate }}</p>
+      </div>
+    </div>
+  </div>
+</app-pop-up-generic>

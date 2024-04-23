@@ -1,0 +1,75 @@
+<div class="table-container">
+  <div class="container">
+    <app-header-internal-sales-item
+      class="header"
+      [internalSalesItem]="(itemsQuotation3$ | async)?.[0]"
+    ></app-header-internal-sales-item>
+    <virtual-scroller [bufferAmount]="24" [items]="itemsQuotation3$ | async" (vsUpdate)="internalSalesItems = $event">
+      <app-internal-sales-item
+        *ngFor="let item of internalSalesItems"
+        [internalSalesItem]="item"
+        (valueEmitter)="globalItemEventsHandler($event)"
+      ></app-internal-sales-item>
+    </virtual-scroller>
+  </div>
+</div>
+<div class="totals">
+  <div class="total-items-quotation">
+    <div class="total-products">
+      <label>
+        {{ totalItemsInQuotation$ | async }}
+        {{ ((totalItemsInQuotation$ | async) === 1 ? 'common.item' : 'common.items') | translate }}
+      </label>
+      <label
+        class="freight"
+        (click)="openDetailsFreight()"
+        *ngIf="!(isProratedFreight$ | async) && (hasFreightSelected$ | async)"
+        >{{ 'quotation.seeFreightDetails' | translate }}</label
+      >
+    </div>
+    <div>
+      <label>
+        {{
+          (totalPieces$ | async) +
+            ((totalPieces$ | async) === 1 ? ('quotation.details.piece' | translate) : ('quotation.details.pieces' | translate))
+        }}
+      </label>
+    </div>
+    <div class="totals">
+      <div class="left">
+        <label>{{ 'common.subtotal' | translate }}:</label>
+        <label>{{ 'common.tax' | translate }}:</label>
+        <label class="big">{{ 'common.total' | translate }}:</label>
+      </div>
+      <div class="right">
+        <label>
+          {{
+            ((totalQuoted$ | async)?.subTotal
+              | currency: (selectedQuotation$ | async)?.selectedQuotationDetails?.ClaveMoneda:'symbol-narrow':'1.2-2') +
+              ' ' +
+              (selectedQuotation$ | async)?.selectedQuotationDetails?.ClaveMoneda
+          }}
+        </label>
+        <label>
+          {{
+            ((totalQuoted$ | async)?.totalTax
+              | currency: (selectedQuotation$ | async)?.selectedQuotationDetails?.ClaveMoneda:'symbol-narrow':'1.2-2') +
+              ' ' +
+              (selectedQuotation$ | async)?.selectedQuotationDetails?.ClaveMoneda
+          }}
+        </label>
+        <label class="big">
+          {{
+            ((totalQuoted$ | async)?.totalPriceQuotation
+              | currency: (selectedQuotation$ | async)?.selectedQuotationDetails?.ClaveMoneda:'symbol-narrow':'1.2-2') +
+              ' ' +
+              (selectedQuotation$ | async)?.selectedQuotationDetails?.ClaveMoneda
+          }}
+        </label>
+      </div>
+      <div class="subtotal"> </div>
+      <div class="tax"> </div>
+      <div class="total"> </div>
+    </div>
+  </div>
+</div>

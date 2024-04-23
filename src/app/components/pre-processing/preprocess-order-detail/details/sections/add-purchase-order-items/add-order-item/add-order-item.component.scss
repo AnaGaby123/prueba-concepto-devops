@@ -1,0 +1,390 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  & > .items {
+    @include s.flexRow;
+    width: 100%;
+
+    & > div {
+      @include s.flexRow;
+      flex: 1;
+      padding: 5px 15px 5px 15px;
+      border-bottom: 1px solid s.$pqGray2;
+      align-items: center;
+
+      & > div {
+        @include s.flexRow;
+      }
+
+      & > .select {
+        max-width: 25px;
+        width: 100%;
+        justify-content: center;
+        cursor: pointer;
+      }
+
+      & > .index {
+        justify-content: center;
+        max-width: 58px;
+        width: 100%;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize13, '', s.$pqBlack2);
+          @include s.Roboto-Bold;
+        }
+      }
+
+      & > .typeItem {
+        justify-content: center;
+        max-width: 17px;
+        width: 100%;
+        margin-right: 20px;
+
+        & > img {
+          max-height: 17px;
+        }
+      }
+
+      & > .concept {
+        @include s.flexColumn;
+        justify-content: flex-start;
+        align-items: flex-start;
+        flex: 1 0 260px;
+
+        & > .cat-product {
+          @include s.multiLineTextTruncateSinHeight(3, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+
+          & > .img-concept {
+            height: 17px;
+          }
+
+          & > .cat {
+            @include s.responsive-font-format(
+              $font-size-map: s.$responsive-font-13-13,
+              $font-family: s.$font_family_roboto_bold,
+              $font-weight: s.$font_weight_bold,
+              $color: s.$main-proquifa
+            );
+          }
+        }
+
+        & > .product-description {
+          @include s.responsive-font-format(
+            $font-size-map: s.$responsive-font-12-12,
+            $font-family: s.$font_family_roboto_light,
+            $font-weight: s.$font_weight_light
+          );
+        }
+
+        & > .details-family {
+          @include s.flexRow;
+
+          & > .product-family {
+            @include s.responsive-font-format(
+              $font-size-map: s.$responsive-font-11-13,
+              $font-family: s.$font_family_roboto_bold,
+              $font-weight: s.$font_weight_bold,
+              $color: s.$main-proquifa
+            );
+          }
+
+          & > .controlled {
+            @include s.responsive-font-format(
+              $font-size-map: s.$responsive-font-11-13,
+              $font-family: s.$font_family_roboto_bold,
+              $font-weight: s.$font_weight_bold,
+              $color: s.$pqOrange2
+            );
+            white-space: break-spaces;
+          }
+
+          & > .publications-autor {
+            @include s.responsive-font-format(
+              $font-size-map: s.$responsive-font-11-13,
+              $font-family: s.$font_family_roboto_bold,
+              $font-weight: s.$font_weight_bold,
+              $color: s.$pqBlack2
+            );
+          }
+
+          white-space: break-spaces;
+        }
+
+        & > .date-container {
+          @include s.flexRow;
+
+          & > .validation {
+            @include s.responsive-font-format(
+              $font-size-map: s.$responsive-font-11-13,
+              $font-family: s.$font_family_roboto_bold,
+              $font-weight: s.$font_weight_bold,
+              $color: s.$main-proquifa
+            );
+          }
+
+          & > .date {
+            @include s.responsive-font-format(
+              $font-size-map: s.$responsive-font-11-13,
+              $font-family: s.$font_family_roboto_bold,
+              $font-weight: s.$font_weight_bold,
+              $color: s.$success
+            );
+            white-space: pre-wrap;
+          }
+        }
+
+        & > .dates-trainings {
+          @include s.flexRow;
+
+          & > label {
+            @include s.responsive-font-format(
+              $font-size-map: s.$responsive-font-10-12-b,
+              $font-family: s.$font_family_roboto_bold,
+              $font-weight: s.$font_weight_bold,
+              $color: s.$pqBlack2
+            );
+          }
+
+          & > label:nth-of-type(1) {
+            min-width: 95px;
+          }
+        }
+
+        & > .quotations-linked {
+          @include s.responsive-font-format(
+            $font-size-map: s.$responsive-font-11-13,
+            $font-family: s.$font_family_roboto_regular,
+            $color: s.$success
+          );
+          cursor: pointer;
+          text-decoration: underline;
+        }
+
+        & > .express {
+          @include s.responsive-font-format(
+            $font-size-map: s.$responsive-font-11-13,
+            $font-family: s.$font_family_roboto_regular,
+            $color: s.$alert-c
+          );
+        }
+
+        & > .more-info {
+          @include s.responsive-font-format(
+            $font-size-map: s.$responsive-font-11-13,
+            $font-family: s.$font_family_roboto_regular_italic,
+            $font-weight: s.$font_weight_regular,
+            $color: s.$main-proquifa
+          );
+        }
+      }
+
+      & > .brand {
+        @include s.responsive-font-format(
+          $font-size-map: s.$responsive-font-12-12,
+          $font-family: s.$font_family_roboto_light,
+          $font-weight: s.$font_weight_light
+        );
+        min-width: 160px;
+        align-items: flex-end;
+
+        & > .img-brand {
+          width: 40px;
+        }
+
+        //& > div:nth-child(1) {
+        //  @include multiLineTextTruncateSinHeight(3, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+        //
+        //  & > label {
+        //    @include escaledFontFormat($textSize12to14, light, $pqBlack2);
+        //    @include Roboto-Light;
+        //  }
+        //
+        //  & > .label-cat {
+        //    @include Roboto-Bold;
+        //  }
+        //}
+        //
+        //& > div:nth-child(2) {
+        //  & label {
+        //    @include escaledFontFormat($textSize11to12, regular, $pqBlack2);
+        //    @include Roboto-Regular;
+        //  }
+        //
+        //  & > .current-quotation {
+        //    color: $pqGreen2;
+        //    cursor: pointer;
+        //
+        //    &:hover {
+        //      text-decoration: underline;
+        //    }
+        //  }
+        //
+        //  & > .expiring-quotation {
+        //    color: $pqOrange3;
+        //    cursor: pointer;
+        //
+        //    &:hover {
+        //      text-decoration: underline;
+        //    }
+        //  }
+        //
+        //  & > .expired-quotation {
+        //    color: $redExpired;
+        //    cursor: pointer;
+        //
+        //    &:hover {
+        //      text-decoration: underline;
+        //    }
+        //  }
+        //
+        //  & > .in-contract {
+        //    color: $gold;
+        //    cursor: pointer;
+        //
+        //    &:hover {
+        //      text-decoration: underline;
+        //    }
+        //  }
+        //
+        //  & > .controlled {
+        //    @include Roboto-Bold;
+        //    color: $pqOrange2;
+        //  }
+        //}
+      }
+
+      & > .trademark {
+        max-width: 130px;
+        width: 100%;
+        margin-left: 10px;
+        justify-content: center;
+
+        & > .brand-image {
+          display: grid;
+          place-items: center;
+
+          & > img {
+            height: 17px;
+          }
+        }
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize14, '', s.$pqBlack2);
+          @include s.Roboto-Light;
+          margin-left: 5px;
+        }
+      }
+
+      & > .tee {
+        max-width: 100px;
+        width: 100%;
+        justify-content: center;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize14, '', s.$pqBlack2);
+          @include s.Roboto-Regular;
+          margin-left: 5px;
+        }
+      }
+
+      & > .amount {
+        max-width: 50px;
+        width: 100%;
+        justify-content: center;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize13to14, '', s.$pqGreen);
+          @include s.Roboto-Regular;
+          margin-left: 5px;
+        }
+      }
+
+      & > .price {
+        max-width: 140px;
+        width: 100%;
+        justify-content: center;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize14, '', s.$pqBlack2);
+          @include s.Roboto-Light;
+          margin-left: 5px;
+        }
+      }
+
+      & > .subtotal {
+        max-width: 140px;
+        width: 100%;
+        justify-content: center;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize14, '', s.$pqBlack2);
+          @include s.Roboto-Light;
+          margin-left: 5px;
+        }
+      }
+
+      & > .iva {
+        max-width: 140px;
+        width: 100%;
+        justify-content: center;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize14, '', s.$pqBlack2);
+          @include s.Roboto-Light;
+          margin-left: 5px;
+        }
+      }
+
+      & > .value {
+        justify-content: center;
+        max-width: 142px;
+        width: 100%;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize14, '', s.$pqGreen);
+          @include s.Roboto-Bold;
+          margin-left: 5px;
+        }
+      }
+
+      & > .status {
+        justify-content: center;
+        max-width: 115px;
+        width: 100%;
+
+        & > .pending {
+          @include s.escaledFontFormat(s.$textSize12, '', s.$pqBlack2);
+        }
+
+        & > .control-purchase {
+          @include s.escaledFontFormat(s.$textSize12, '', s.$success);
+        }
+
+        & > .follow {
+          @include s.escaledFontFormat(s.$textSize12, '', s.$complementario-c);
+        }
+
+        & > .cancel {
+          @include s.escaledFontFormat(s.$textSize12, '', s.$pqAlert);
+        }
+
+        & > .adjustment-offer {
+          @include s.escaledFontFormat(s.$textSize12, '', s.$etiqueta-a);
+        }
+
+        & > label {
+          @include s.Roboto-Bold;
+          margin-left: 5px;
+        }
+      }
+    }
+  }
+
+  & > .items:hover {
+    background-color: s.$pqGray2;
+  }
+}

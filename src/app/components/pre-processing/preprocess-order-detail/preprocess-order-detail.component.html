@@ -1,0 +1,11 @@
+<div id="order-details-container">
+  <div class="list-purchase-order">
+    <app-purchase-order-list></app-purchase-order-list>
+  </div>
+  <div class="request-preprocess-content">
+    <app-request-preprocess [isOpen]="requestIsOpen" (handleIsOpen)="handleRequest()"></app-request-preprocess>
+  </div>
+  <div class="quote-items" [ngClass]="{closeOptions: !requestIsOpen}">
+    <router-outlet></router-outlet>
+  </div>
+</div>

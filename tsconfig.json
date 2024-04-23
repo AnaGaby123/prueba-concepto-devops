@@ -1,0 +1,101 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "esModuleInterop": false ,
+    "baseUrl": "./",
+    "downlevelIteration": true,
+    "module": "es2020",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es2020",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2018",
+      "dom"
+    ],
+    "types": [
+      "jest"
+    ],
+    "paths": {
+      "@appComponents/*": [
+        "src/app/components/*"
+      ],
+      "@appCore/*": [
+        "src/app/core/*"
+      ],
+      "@appGuards/*": [
+        "src/app/guards/*"
+      ],
+      "@appInterfaces/*": [
+        "src/app/interfaces/*"
+      ],
+      "@appPipes/*": [
+        "src/app/pipes/*"
+      ],
+      "@appModels/*": [
+        "src/app/models/*"
+      ],
+      "@appServices/*": [
+        "src/app/services/*"
+      ],
+      "@appActions/*": [
+        "src/app/store/actions/*"
+      ],
+      "@appSelectors/*": [
+        "src/app/store/selectors/*"
+      ],
+      "@appReducers/*": [
+        "src/app/store/reducers/*"
+      ],
+      "@appEffects/*": [
+        "src/app/store/effects/*"
+      ],
+      "@appUtil/*": [
+        "src/app/util/*"
+      ],
+      "@appHelpers/*": [
+        "src/app/helpers/*"
+      ],
+      "@purchasing-manager/*": [
+        "src/app/components/pendings/purchasing-manager/*"
+      ],
+      "@env/*": [
+        "src/environments/*"
+      ],
+      /*DOCS: Se comentó hasta que se defina si se van a utilizar dentro del proyecto
+          o colo librerías externas*/
+      /*"api-catalogos": [
+        "dist/api-catalogos/api-catalogos",
+        "dist/api-catalogos"
+      ],
+      "api-logistica": [
+        "dist/api-logistica/api-logistica",
+        "dist/api-logistica"
+      ],
+      "api-finanzas": [
+        "dist/api-finanzas/api-finanzas",
+        "dist/api-finanzas"
+      ],*/
+      "api-catalogos": [
+        "projects/api-catalogos/src/public-api"
+      ],
+      "api-logistica": [
+        "projects/api-logistica/src/public-api"
+      ],
+      "api-finanzas": [
+        "projects/api-finanzas/src/public-api"
+      ]
+    }
+  },
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true,
+  }
+}

@@ -1,0 +1,362 @@
+@use 'base' as s;
+
+:host {
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+  #clients {
+    @include s.flexRowWrap;
+    height: 100%;
+    position: relative;
+    width: 100%;
+
+    & > .container {
+      @include s.flexRowWrap;
+      height: 100%;
+      overflow: hidden;
+      width: 100%;
+
+      & > .content {
+        @include s.flexColumn;
+        width: 100%;
+        height: 100%;
+
+        & > .title {
+          @include s.flexRow;
+          width: 100%;
+
+          & > label {
+            @include s.responsive-font-format(
+              $font-family: s.$font_family_novecento_bold,
+              $font-weight: s.$font_weight_bold,
+              $font-size-map: s.$responsive-font-17-21
+            );
+            @include s.Novecento-Bold;
+          }
+        }
+
+        & > .container-tabs {
+          padding-top: 9px;
+          padding-bottom: 19px;
+        }
+
+        & > .search {
+          padding-bottom: 15px;
+        }
+
+        & > .filter-hamburger {
+          padding-bottom: 15px;
+        }
+
+        & > .list-container {
+          @include s.flexColumn;
+          flex: 1;
+          overflow: hidden;
+          width: 100%;
+
+          & > .dataList {
+            @include s.flexRow;
+            border-bottom: 1px solid s.$pqBlack;
+            border-top: 1px solid s.$pqBlack;
+            box-sizing: border-box;
+            height: 100%;
+            overflow: auto;
+            width: 100%;
+
+            & > .list {
+              @include s.flexColumn;
+              align-content: stretch;
+              align-items: center;
+              box-sizing: border-box;
+              display: unset;
+              flex-wrap: nowrap;
+              justify-content: flex-start;
+              line-height: 1.3;
+              width: 100%;
+
+              & > ::ng-deep .scrollable-content > div {
+                @include s.flexRow;
+                border-bottom: 1px solid s.$pqGray2;
+                box-sizing: border-box;
+                height: 126px;
+                min-height: 126px;
+                width: 100%;
+
+                & > div:nth-child(2) {
+                  @include s.flexRow;
+                  box-sizing: border-box;
+                  padding: 17px 19px 17px 19px;
+                  width: 100%;
+
+                  & > .info {
+                    @include s.flexColumn;
+                    justify-content: center;
+                    width: 100%;
+
+                    & > div {
+                      align-items: center;
+                      box-sizing: border-box;
+                      padding-bottom: 5px;
+                    }
+
+                    & > .oc {
+                      @include s.flexRow;
+
+                      & > label {
+                        @include s.responsive-font-format(
+                          $font-family: s.$font_family_roboto_bold,
+                          $font-weight: s.$font_weight_bold,
+                          $font-size-map: s.$responsive-font-16-20
+                        );
+                      }
+                    }
+
+                    & > .strategy {
+                      @include s.flexRow;
+
+                      & > label {
+                        @include s.responsive-font-format(
+                          $font-family: s.$font_family_roboto_regular,
+                          $font-weight: s.$font_weight_regular,
+                          $font-size-map: s.$responsive-font-14-16
+                        );
+                      }
+                    }
+
+                    & > .total {
+                      @include s.flexRow;
+
+                      & > label {
+                        @include s.responsive-font-format(
+                          $font-family: s.$font_family_roboto_regular,
+                          $font-weight: s.$font_weight_regular,
+                          $font-size-map: s.$responsive-font-14-16,
+                          $color: s.$pqGreen
+                        );
+                      }
+
+                      & > img {
+                        padding-right: 5px;
+                        padding-left: 5px;
+                      }
+                    }
+
+                    & > .time {
+                      @include s.flexRow;
+
+                      & > .red {
+                        @include s.responsive-font-format(
+                          $font-family: s.$font_family_roboto_regular,
+                          $font-weight: s.$font_weight_regular,
+                          $font-size-map: s.$responsive-font-14-16,
+                          $color: s.$pqRed
+                        );
+                      }
+
+                      & > .green {
+                        @include s.responsive-font-format(
+                          $font-family: s.$font_family_roboto_regular,
+                          $font-weight: s.$font_weight_regular,
+                          $font-size-map: s.$responsive-font-14-16,
+                          $color: s.$pqGreen2
+                        );
+                      }
+
+                      & > .yellow {
+                        @include s.responsive-font-format(
+                          $font-family: s.$font_family_roboto_regular,
+                          $font-weight: s.$font_weight_regular,
+                          $font-size-map: s.$responsive-font-14-16,
+                          $color: #e29d2a
+                        );
+                      }
+
+                      & > img {
+                        padding-right: 5px;
+                        padding-left: 5px;
+                      }
+                    }
+
+                    & > .classification {
+                      @include s.flexRow;
+
+                      & > div {
+                        @include s.flexRow;
+                        box-sizing: border-box;
+                        padding-right: 10px;
+                        align-items: center;
+
+                        & > img {
+                          height: 16px;
+                          margin-right: 5px;
+                        }
+
+                        & > label {
+                          @include s.responsive-font-format(
+                            $font-family: s.$font_family_roboto_regular,
+                            $font-weight: s.$font_weight_regular,
+                            $font-size-map: s.$responsive-font-12-14,
+                            $color: s.$pqBlack4
+                          );
+                        }
+                      }
+                    }
+                  }
+                }
+
+                & > .client-selected {
+                  border-left: solid 8px s.$pqGreen;
+                  padding: 17px 19px 17px 11px !important;
+                }
+              }
+
+              & > ::ng-deep .scrollable-content > .loading-more-clients {
+                height: 50px !important;
+                min-height: 50px !important;
+              }
+
+              & > ::ng-deep .scrollable-content > div:hover {
+                background-color: #eceef0;
+                cursor: pointer;
+              }
+
+              & > ::ng-deep .scrollable-content > .divActive {
+                background-color: s.$pqGray2;
+
+                & > .df-select {
+                  background: s.$pqGreen !important;
+                  color: s.$pqGreen;
+                  width: 8px !important;
+                }
+
+                & > div:nth-child(2) {
+                  padding-left: 12px;
+                  width: calc(100% - 5px);
+                }
+              }
+            }
+
+            & > .loading-center {
+              align-content: center;
+              align-items: center;
+              display: flex;
+              flex-direction: row;
+              flex: 1;
+              justify-content: center;
+              width: 100%;
+            }
+
+            & > .without-results {
+              align-content: center;
+              align-items: center;
+              display: flex;
+              flex-direction: row;
+              flex: 1;
+              justify-content: center;
+              width: 100%;
+            }
+          }
+
+          & > .total {
+            @include s.flexRowNoWrap;
+            box-sizing: border-box;
+            flex: 0 0 25px;
+            justify-content: space-around;
+            padding-top: 10px;
+            width: 100%;
+
+            & .values {
+              @include s.flexRow;
+              justify-content: space-around;
+              padding-left: 15px;
+              padding-right: 15px;
+              width: 100%;
+
+              & > label {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_roboto_regular,
+                  $font-weight: s.$font_weight_regular,
+                  $font-size-map: s.$responsive-font-10-12-b
+                );
+              }
+
+              & > label:nth-of-type(1) {
+                width: 40%;
+              }
+
+              & > label:nth-of-type(2) {
+                width: 60%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @include s.media-query(s.$standard) {
+    #clients {
+      & > section {
+        & > .content {
+          width: 100%;
+
+          & > .list-container {
+            & > .dataList {
+              & > .list {
+                & > div {
+                  height: 159px;
+                  min-height: 159px;
+
+                  & > .info {
+                    width: calc(100% - 155px);
+                  }
+
+                  & > .type {
+                    width: 155px;
+                  }
+
+                  & > div:nth-child(2) {
+                    & > .info {
+                      & > .classification {
+                        @include s.flexRow;
+
+                        & > div {
+                          padding-right: 20px;
+
+                          & > img {
+                            height: 22px;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+
+                & > div:hover {
+                  background-color: #eceef0;
+                }
+
+                & > .divActive {
+                  .df-select {
+                    background: s.$pqGreen !important;
+                    color: s.$pqGreen;
+                    width: 5px !important;
+                  }
+
+                  & > div:nth-child(2) {
+                    padding-left: 12px;
+                  }
+                }
+              }
+            }
+
+            & > .total {
+              height: 60px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

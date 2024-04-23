@@ -1,0 +1,75 @@
+<div class="item">
+  <div class="family-name">
+    <!--DOCS: Esta seleccionado si el objeto de MarcaFamiliaProveedor esta activo,
+          MarcaFamiliaProveedor es la relación de la familia de la marca con el proveedor actualmente seleccionado-->
+    <!--DOCS: Se agrega condición para poder desmarcar check solamente cuando el proveedor seleccionado no es el principal-->
+    <app-check-box
+      [check]="!!family?.MarcaFamiliaProveedor?.Activo"
+      [enableEdit]="
+        (!editMode || enableEdit) &&
+        ((family?.IdProveedorBackup !== null && selectedProviderId !== family?.IdProveedorBackup) ||
+          !family?.TieneProveedorPrincipal)
+      "
+      [height]="viewType === 'iPad' ? '17px' : '20px'"
+      [labelFontStyle]="family?.MarcaFamiliaProveedor?.Activo ? 'robotoRegular13' : 'labelRobotoRegularDisable13'"
+      [label]="buildFamilyName"
+      (event)="handleTrademarkFamilyChange($event)"
+    ></app-check-box>
+  </div>
+  <div class="provider-data">
+    <!--DOCS: Se muestra esta etiqueta si el check de MarcaFamiliaProveedor esta marcado,
+          sino se muestra la otra etiqueta, se separó para facilitar la lectura y entendimiento de las validaciones-->
+    <!--DOCS: IdProveedorBackup: Es el proveedor que originalmente es proveedor principal,
+          se hace backup porque puede cambiarlo por otro, pero también puede cancelar y mantener el original-->
+    <!--DOCS: La etiqueta esta deshabilitada si la familia tiene un proveedor principal, y este no es el proveedor seleccionado,
+          pero se quiere asignar como principal-->
+    <p
+      *ngIf="family?.MarcaFamiliaProveedor?.Activo; else disableLabel"
+      [ngClass]="{
+        disable:
+          selectedProviderId !== family?.IdProveedorBackup &&
+          family?.IdProveedorBackup !== null &&
+          selectedProviderId === family?.IdProveedor
+      }"
+      >{{
+        selectedProviderId === family?.IdProveedor &&
+        (family?.IdProveedorBackup === null || selectedProviderId === family?.IdProveedorBackup)
+          ? 'Proveedor Principal y de Oferta'
+          : 'Proveedor Secundario'
+      }}</p
+    >
+    <ng-template #disableLabel>
+      <p class="disable">{{
+        family?.IdProveedorBackup === null || selectedProviderId === family?.IdProveedorBackup
+          ? 'Proveedor Principal y de Oferta'
+          : 'Proveedor Secundario'
+      }}</p>
+    </ng-template>
+
+    <!--DOCS: EL check de Cambiar a principal y de oferta aparecerá siempre y cuando la familia ya tenga un Proveedor principal (IdProveedorBackup)
+          y este no sea el Proveedor que esta seleccionado (selectedProviderId)-->
+    <!--DOCS: El check estará marcado siempre y cuando la familia tenga un proveedor principal (IdProveedorBackup)
+          y este no sea el Proveedor que esta seleccionado (selectedProviderId)
+          y se indique que se quiere colocar este Proveedor como principal (al llenar el IdProveedor)-->
+    <app-check-box
+      class="check-secondary"
+      *ngIf="selectedProviderId !== family?.IdProveedorBackup && family?.IdProveedorBackup !== null"
+      [check]="
+        family?.IdProveedorBackup !== null &&
+        family?.IdProveedorBackup !== selectedProviderId &&
+        selectedProviderId === family?.IdProveedor
+      "
+      [enableEdit]="!editMode || enableEdit"
+      [height]="viewType === 'iPad' ? '13px' : '17px'"
+      [label]="'¿Cambiar a Principal y de Oferta?'"
+      [labelFontStyle]="
+        !family?.MarcaFamiliaProveedor?.Activo
+          ? 'labelRobotoRegularDisable11'
+          : selectedProviderId === family?.IdProveedor
+          ? 'labelRobotoRegularProquifa11'
+          : 'robotoRegularRegularBlack11'
+      "
+      (event)="handleChangeMainProviderChange($event)"
+    ></app-check-box>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+<div class="unit-price-container">
+  <div class="floating-container">
+    <label *ngIf="columnRequestedPrice?.pricePerson">{{ 'formProduct.general.personPrice' | translate }}</label>
+    <label *ngIf="columnRequestedPrice?.priceGroup">{{ 'formProduct.general.groupPrice' | translate }}</label>
+    <label *ngIf="columnRequestedPrice?.priceGroup && columnRequestedPrice?.numberPeopleGroup">
+      {{
+        columnRequestedPrice?.numberPeopleGroup === 1
+          ? ('formProduct.step1.person' | translate)
+          : ('formProduct.step1.people' | translate)
+      }}</label
+    >
+    <label
+      #priceInputDispatch
+      *ngIf="columnRequestedPrice?.value || columnRequestedPrice?.currency"
+      [id]="columnRequestedPrice?.idElementsUnitPrice ? columnRequestedPrice?.idElementsUnitPrice : 'unit-price'"
+      [ngClass]="
+        columnRequestedPrice?.color && columnRequestedPrice?.textBold
+          ? columnRequestedPrice?.color + '-bold'
+          : columnRequestedPrice?.color
+          ? columnRequestedPrice?.color
+          : columnRequestedPrice?.textBold
+          ? 'bold'
+          : ''
+      "
+      [style.text-decoration]="columnRequestedPrice?.textUnderline ? 'underline' : ''"
+      [style.cursor]="columnRequestedPrice?.isEdit ? 'pointer' : 'default'"
+      (click)="
+        columnRequestedPrice?.activeGenericEmitter
+          ? handleClickEmmit($event, priceInputDispatch, true, nameActionsInternalSalesItem.RequestedPriceClickNumberAction)
+          : null
+      "
+      >{{
+        (columnRequestedPrice?.value | currency: 'USD':'symbol-narrow':'1.2-2') + ' ' + columnRequestedPrice?.currency
+      }}</label
+    >
+  </div>
+</div>

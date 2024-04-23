@@ -1,0 +1,105 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  .back-order-container {
+    @include s.flexColumn;
+    background-color: rgba(s.$purple, 0.13);
+    border-bottom: 1px solid s.$pqGray2;
+    justify-content: space-between;
+    min-width: 900px;
+
+    & > .close-button {
+      display: flex;
+      justify-content: flex-end;
+      margin: 15px 15px 0 0;
+
+      & > img {
+        @include s.imageIconResponsiveSize;
+        cursor: pointer;
+      }
+    }
+
+    & > .form-container {
+      @include s.flexRowNoWrap;
+      justify-content: space-between;
+      padding: 0 60px 15px 60px;
+
+      & > .form {
+        display: grid;
+        grid-template-columns: repeat(2, 200px) 1fr;
+        grid-column-gap: 15px;
+        flex: 1;
+
+        & > div {
+          display: grid;
+          grid-row-gap: 5px;
+
+          & > .input {
+            @include s.flexRowNoWrap;
+            align-items: flex-end;
+
+            & > div {
+              display: flex;
+              flex: 1 1 85px;
+            }
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+              @include s.Roboto-Regular;
+              margin: 0 0 5px 5px;
+              width: max-content;
+            }
+          }
+        }
+      }
+
+      & > .buttons {
+        @include s.flexColumn;
+        flex: 0 0 auto;
+        justify-content: space-between;
+        margin-left: 40px;
+        padding-bottom: 3px;
+
+        & > .active {
+          @include s.pqfButton($background-color: s.$purple);
+        }
+
+        & > .disabled {
+          @include s.pqfDisableButton();
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      min-width: 1230px;
+      & > .close-button {
+        margin: 20px 20px 0 0;
+      }
+      & > .form-container {
+        padding: 0 60px 20px 60px;
+
+        & > .form {
+          grid-column-gap: 20px;
+
+          & > div {
+            grid-row-gap: 10px;
+
+            & > .input {
+              & > label {
+                margin: 0 0 6px 5px;
+              }
+            }
+          }
+        }
+
+        & > .buttons {
+          margin-left: 60px;
+        }
+      }
+    }
+  }
+}

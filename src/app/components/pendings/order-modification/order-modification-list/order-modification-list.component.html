@@ -1,0 +1,106 @@
+<div class="dashboard-container" id="order-modification-list-container">
+  <div class="left-container">
+    <label class="title">{{ 'preProcessing.clients' | translate }}</label>
+    <div class="tabs">
+      <app-tabs [options]="tabs$ | async" [tapSelected]="tab$ | async" (onSelectOption)="setTab($event)"></app-tabs>
+    </div>
+    <div class="filters">
+      <div class="filter-by-type">
+        <app-hamburger-menu [options]="dataFilters$ | async" [value]="(filter$ | async).value" (valueEmit)="setFilter($event)">
+        </app-hamburger-menu>
+      </div>
+      <div class="filter-by-date">
+        <app-date-range (emitValues)="setDateRange($event)"></app-date-range>
+      </div>
+    </div>
+    <div class="search-bar">
+      <app-search [placeholder]="'Cliente, #Pedido'"></app-search>
+    </div>
+    <div class="list-container">
+      <virtual-scroller
+        *ngIf="(chartsStatus$ | async) === 3 && !lodashIsEmpty(listCustomer$ | async)"
+        [items]="listCustomer$ | async"
+        (vsEnd)="fetchMore($event)"
+        (vsUpdate)="listCustomerScrollItems = $event"
+      >
+        <div class="client" *ngFor="let customer of listCustomerScrollItems" (click)="viewDetails(customer)">
+          <div>
+            <label>{{ '#' + customer.Index }}</label>
+          </div>
+          <div class="details">
+            <div class="name">
+              <label>{{ customer.Nombre }}</label>
+            </div>
+            <div class="totals">
+              <label>{{
+                customer.TotalPedidos +
+                  ' ' +
+                  (customer.TotalPedidos === 1
+                    ? ('orderModification.order' | translate)
+                    : ('orderModification.orders' | translate))
+              }}</label>
+              <img alt="Icono sin incidencias" src="assets/Images/icono-sin-incidencia.svg" />
+              <label class="sin-incidencias">{{ customer.PedidosSinIncidencias }}</label>
+              <img alt="Icono Incidencia" src="assets/Images/icono-incidencia.svg" *ngIf="customer.PedidosConIncidencias > 0" />
+              <label class="con-incidencias" *ngIf="customer.PedidosConIncidencias > 0">{{
+                customer.PedidosConIncidencias
+              }}</label>
+            </div>
+            <div class="amount">
+              <label>{{
+                'Valor Total ' +
+                  ' ' +
+                  ((customer.ValorTotalUSD ? customer.ValorTotalUSD : 0) | currency: 'USD':'symbol-narrow':'2.2-4') +
+                  ' USD'
+              }}</label>
+            </div>
+            <div class="items">
+              <label>{{
+                customer.TotalPartidas +
+                  ' ' +
+                  (customer.TotalPartidas === 1
+                    ? ('strategy.details.item' | translate)
+                    : ('strategy.details.items' | translate))
+              }}</label>
+            </div>
+          </div>
+          <div class="arrow">
+            <img alt="arrow" src="assets/Images/arrows/arrow_right.svg" />
+          </div>
+        </div>
+      </virtual-scroller>
+      <div class="without-results" *ngIf="(chartsStatus$ | async) === 3 && lodashIsEmpty(listCustomer$ | async)">
+        <app-without-results></app-without-results>
+      </div>
+      <div class="loader" *ngIf="(chartsStatus$ | async) === 1">
+        <app-loading></app-loading>
+      </div>
+    </div>
+    <div class="footer">
+      <label>{{ '#' + ((listCustomer$ | async).length | number: '1.0-0') }}</label>
+      <label>{{ (totalOrders$ | async | number: '1.0-0') + ((totalOrders$ | async) === 1 ? ' Pedido' : ' Pedidos') }}</label>
+      <label>{{ 'Valor Total ' + (totalAmount$ | async | currency: 'USD':'symbol-narrow':'2.2-4') + ' USD' }}</label>
+    </div>
+  </div>
+  <div class="right-container">
+    <ng-container *ngIf="true">
+      <app-doughnut-chart
+        *ngIf="(chartsStatus$ | async) === 3"
+        [data]="doughnutChartData$ | async"
+        [optionDetailsHover]="doughnutChartOptionDetailsHover$ | async"
+        [optionDetails]="doughnutChartOptionDetails$ | async"
+        [titleDetails]="'totals' | translate"
+        [title]="'notProcessed.clients' | translate"
+      >
+      </app-doughnut-chart>
+      <app-bar-chart
+        *ngIf="(chartsStatus$ | async) === 3"
+        [title]="'notProcessed.orders' | translate"
+        [values]="barChartData$ | async"
+      ></app-bar-chart>
+    </ng-container>
+    <div class="loading" *ngIf="(chartsStatus$ | async) === 1">
+      <app-loading></app-loading>
+    </div>
+  </div>
+</div>

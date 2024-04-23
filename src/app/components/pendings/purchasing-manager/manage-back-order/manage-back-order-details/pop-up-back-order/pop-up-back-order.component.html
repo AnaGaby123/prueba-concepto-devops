@@ -1,0 +1,127 @@
+<app-pop-up-generic
+  [height]="'650px'"
+  [width]="'800px'"
+  [titleHeader]="
+    (status$ | async).value === '1'
+      ? ('manageBackOrder.continueBackOrder' | translate)
+      : (status$ | async).value === '2'
+      ? ('manageBackOrder.discontinuedProduct' | translate)
+      : ('manageBackOrder.availableProduct' | translate)
+  "
+>
+  <div id="pop-up-container">
+    <div class="product">
+      <div class="title">
+        <label>{{ 'common.product' | translate }}</label>
+      </div>
+      <div class="name">
+        <label>{{ (product$ | async).Descripcion }}</label>
+      </div>
+    </div>
+    <div *ngIf="(status$ | async)?.value === 1" class="back-order">
+      <div class="dates">
+        <div class="date-elements">
+          <div>
+            <label>{{ 'manageBackOrder.nextMonitoring' | translate }}</label>
+            <app-date-picker
+              dateFormat="YYYYMMDD"
+              [color]="false"
+              (fecha)="handleDate($event, 'nextMonitoring')"
+              [disabledCalendarDays]="selectNonWorkingDays$ | async"
+            >
+            </app-date-picker>
+          </div>
+          <div>
+            <label>FDP</label>
+            <app-date-picker
+              dateFormat="YYYYMMDD"
+              [color]="false"
+              (fecha)="handleDate($event, 'fdp')"
+              [disabledCalendarDays]="selectNonWorkingDays$ | async"
+            >
+            </app-date-picker>
+          </div>
+          <div>
+            <label>{{ 'registerConfirmation.feeNew' | translate }}</label>
+            <app-date-picker
+              dateFormat="YYYYMMDD"
+              [color]="false"
+              (fecha)="handleDate($event, 'newFEE')"
+              [disabledCalendarDays]="selectNonWorkingDays$ | async"
+            >
+            </app-date-picker>
+          </div>
+        </div>
+      </div>
+      <div class="reason">
+        <app-generic-text-area
+          [title]="'Razones'"
+          [placeholder]="'common.enterHere' | translate"
+          [height]="'153px'"
+          (emitData)="dataBackOrder.reason = $event"
+        >
+        </app-generic-text-area>
+      </div>
+    </div>
+    <div *ngIf="(status$ | async)?.value === 2" class="discontinued">
+      <div class="content">
+        <label>{{ 'manageBackOrder.justificationCustomer' | translate }}</label>
+        <app-generic-text-area [height]="'272px'" (emitData)="setJustification($event)"></app-generic-text-area>
+      </div>
+    </div>
+    <div *ngIf="(status$ | async)?.value === 3" class="available">
+      <div class="content">
+        <div class="options">
+          <div>
+            <app-radio-button
+              [label]="'Generar nuevas ordenes de compra'"
+              [value]="dataAvailable.isNewOc"
+              (emitValue)="setOption($event, true)"
+            >
+            </app-radio-button>
+          </div>
+          <div>
+            <app-radio-button
+              [label]="'Continuar con la orden de compra'"
+              [value]="dataAvailable.isOldOc"
+              (emitValue)="setOption($event, false)"
+            >
+            </app-radio-button>
+          </div>
+        </div>
+        <div class="date" *ngIf="dataAvailable.isOldOc">
+          <label>{{ 'manageBackOrder.estimatedDateOfArrival' | translate }}</label>
+          <app-date-picker
+            dateFormat="YYYYMMDD"
+            [color]="false"
+            [heightInput]="'30px'"
+            (fecha)="handleDateAvailable($event)"
+            [disabledCalendarDays]="selectNonWorkingDays$ | async"
+          >
+          </app-date-picker>
+        </div>
+      </div>
+    </div>
+    <div class="buttons">
+      <button class="active" (click)="close(false)">{{ 'common.cancel' | translate }}</button>
+      <button
+        [ngClass]="
+          ((status$ | async)?.value === 1 &&
+            dataBackOrder.fdp &&
+            dataBackOrder.newFEE &&
+            dataBackOrder.nextMonitoring &&
+            dataBackOrder.reason) ||
+          ((status$ | async)?.value === 2 && justification) ||
+          ((status$ | async)?.value === 3 &&
+            dataAvailable.isOldOc !== null &&
+            dataAvailable.isNewOc !== null &&
+            dataAvailable.estimatedArrival)
+            ? 'active'
+            : 'disabled'
+        "
+        (click)="save($event)"
+        >{{ 'common.accept' | translate }}
+      </button>
+    </div>
+  </div>
+</app-pop-up-generic>

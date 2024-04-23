@@ -1,0 +1,719 @@
+<div id="commercial-technical-research">
+  <div class="general-data">
+    <div class="title">
+      <label>{{ 'newProductExistingSupplier.regulatoryResearch.details.generalData' | translate }}</label>
+    </div>
+    <div class="content" [ngClass]="{trainings: false}" *ngIf="!(isTraining$ | async)">
+      <div class="description">
+        <pqf-generic-input
+          [value]="(selectProductOnDetails$ | async)?.Descripcion"
+          [label]="'* ' + ('newProductExistingSupplier.regulatoryResearch.details.productDescription' | translate)"
+          [isReadonly]="!(enableEdit$ | async)"
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          [minLength]="3"
+          [maxLength]="700"
+          (valueChangeEmitter)="changeValueNode('Descripcion', $event, true)"
+        ></pqf-generic-input>
+      </div>
+      <div class="catalogNumber">
+        <pqf-generic-input
+          [value]="(selectProductOnDetails$ | async)?.Catalogo"
+          [label]="'* ' + ('newProductExistingSupplier.regulatoryResearch.details.catalogNumber' | translate)"
+          [placeholder]="'#'"
+          [isReadonly]="!(enableEdit$ | async)"
+          [typeValidation]="inputValidators.AlphaNumberAndDashesAndSlashAndColon"
+          [maxLength]="200"
+          [minLength]="2"
+          (valueChangeEmitter)="changeValueNode('Catalogo', $event, true)"
+        ></pqf-generic-input>
+      </div>
+      <div class="presentationAmount">
+        <pqf-generic-input
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          [value]="(selectProductOnDetails$ | async)?.Presentacion"
+          [label]="'* ' + ('newProductExistingSupplier.regulatoryResearch.details.presentationAmount' | translate)"
+          [placeholder]="'#'"
+          [maxLength]="50"
+          [isReadonly]="!(enableEdit$ | async)"
+          (valueChangeEmitter)="changeValueNode('Presentacion', $event, true)"
+        ></pqf-generic-input>
+      </div>
+      <div class="unity">
+        <pqf-drop-down-list
+          [options]="selectUnidadList$ | async"
+          [selectedOption]="selectUnidad$ | async"
+          [label]="'* ' + ('newProductExistingSupplier.regulatoryResearch.details.unity' | translate)"
+          [isReadonly]="!(enableEdit$ | async)"
+          (selectedOptionChangeEmitter)="changeValueNode('IdCatUnidad', $event, true)"
+        ></pqf-drop-down-list>
+      </div>
+      <div class="providerPriceList">
+        <pqf-generic-input
+          [typeValidation]="inputValidators.DecimalNumber"
+          [value]="(selectProductOnDetails$ | async)?.PrecioListaMonedaProveedor"
+          [label]="'* ' + ('newProductExistingSupplier.regulatoryResearch.details.providerPriceList' | translate)"
+          [placeholder]="'$' + (providerBuyCurrency$ | async)"
+          [maxLength]="14"
+          [isReadonly]="!(enableEdit$ | async)"
+          (valueChangeEmitter)="changeValueNode('PrecioListaMonedaProveedor', $event, true)"
+        ></pqf-generic-input>
+        <div>
+          <label>{{ providerBuyCurrency$ | async }}</label>
+        </div>
+      </div>
+      <div class="curatorshipValidity">
+        <pqf-date-picker
+          [date]="selectFechaCaducidadVigenciaCuraduria$ | async"
+          dateFormat="YYYYMMDD"
+          [label]="'* ' + ('newProductExistingSupplier.regulatoryResearch.details.curatorshipValidity' | translate)"
+          [isReadonly]="!(enableEdit$ | async)"
+          [disabledCalendarDays]="selectNonWorkingDays$ | async"
+          [labelInsidePlaceHolder]="'Hasta el'"
+          [labelInside]="true"
+          [rangeStart]="rangeStart"
+          (fecha)="setDataValidityCuratorships($event, 'FechaCaducidadVigenciaCuraduria')"
+        >
+        </pqf-date-picker>
+      </div>
+      <div class="featureBundler">
+        <pqf-drop-down-list
+          [options]="selectGroupCharacteristicList$ | async"
+          [selectedOption]="selectGroupCharacteristic$ | async"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.featureBundler' | translate"
+          [isReadonly]="!(enableEdit$ | async)"
+          (selectedOptionChangeEmitter)="changeValueNode('IdAgrupadorCaracteristica', $event, true)"
+        ></pqf-drop-down-list>
+      </div>
+      <div class="available">
+        <pqf-drop-down-list
+          [options]="selectAvaibleList$ | async"
+          [selectedOption]="selectedAvaible$ | async"
+          [label]="'* ' + ('newProductExistingSupplier.regulatoryResearch.details.available' | translate)"
+          [isReadonly]="!(enableEdit$ | async)"
+          (selectedOptionChangeEmitter)="selectionChange('IdCatDisponibilidad', $event)"
+        ></pqf-drop-down-list>
+      </div>
+      <div class="backorder-date" *ngIf="selectedAvailabilityIsBackOrder$ | async">
+        <pqf-date-picker
+          [dateFormat]="'YYYYMMDD'"
+          [date]="backOrderAvailabilityDate$ | async"
+          [disabledCalendarDays]="selectNonWorkingDays$ | async"
+          [isReadonly]="!(enableEdit$ | async)"
+          [label]="'* ' + ('newProductExistingSupplier.regulatoryResearch.details.backOrderAvailabilityDate' | translate)"
+          [rangeStart]="rangeStart"
+          (fecha)="setBackOrderAvailabilityDate($event, 'FechaDisponibilidadBackOrder')"
+        >
+        </pqf-date-picker>
+      </div>
+      <div *ngIf="!((isPublication$ | async) || (isTraining$ | async))" class="purchaseRestrictions">
+        <pqf-drop-down-list
+          [options]="selectPurchaseRestrictionList$ | async"
+          [selectedOption]="selectPurchaseRestriction$ | async"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.purchaseRestrictions' | translate"
+          [isReadonly]="!(enableEdit$ | async)"
+          (selectedOptionChangeEmitter)="changeValueNode('IdCatRestriccionDeCompra', $event)"
+        ></pqf-drop-down-list>
+      </div>
+      <div *ngIf="!((isPublication$ | async) || (isTraining$ | async))" class="piecesToMonth">
+        <pqf-generic-input
+          (valueChangeEmitter)="changeValueNode('NumeroDePiezas', $event, true)"
+          [isActive]="!(enableEdit$ | async) || (selectPurchaseRestriction$ | async)?.label === 'Límite de Piezas'"
+          [label]="
+            ((selectPurchaseRestriction$ | async)?.label === 'Límite de Piezas' ? '* ' : '') +
+            ('newProductExistingSupplier.regulatoryResearch.details.piecesToMonth' | translate)
+          "
+          [placeholder]="'#'"
+          [maxLength]="10"
+          [typeValidation]="inputValidators.Int"
+          [value]="(selectProductOnDetails$ | async)?.NumeroDePiezas"
+          [isReadonly]="!(enableEdit$ | async)"
+        ></pqf-generic-input>
+      </div>
+      <div *ngIf="isPublication$ | async" class="tariffFraction">
+        <pqf-generic-input
+          [typeValidation]="inputValidators.NumberAndDots"
+          [value]="(selectProductOnDetails$ | async)?.FraccionArancelaria"
+          (valueChangeEmitter)="changeValueNode('FraccionArancelaria', $event, true)"
+          [maxLength]="10"
+          [minLength]="10"
+          [isRequired]="!(selectIsDigitalPublication$ | async)"
+          [label]="
+            (!(selectIsDigitalPublication$ | async) ? '* ' : '') +
+            ('newProductExistingSupplier.regulatoryResearch.details.tariffFraction' | translate)
+          "
+          [isReadonly]="!(enableEdit$ | async)"
+        ></pqf-generic-input>
+      </div>
+      <div *ngIf="isPublication$ | async" class="importFraction">
+        <pqf-generic-input
+          [typeValidation]="inputValidators.NumberAndDots"
+          [value]="(selectProductOnDetails$ | async)?.FraccionImportacion"
+          (valueChangeEmitter)="changeValueNode('FraccionImportacion', $event, true)"
+          [maxLength]="10"
+          [minLength]="10"
+          [isRequired]="!(selectIsDigitalPublication$ | async)"
+          [label]="
+            (!(selectIsDigitalPublication$ | async) ? '* ' : '') +
+            ('newProductExistingSupplier.regulatoryResearch.details.importFraction' | translate)
+          "
+          [isReadonly]="!(enableEdit$ | async)"
+        ></pqf-generic-input>
+      </div>
+    </div>
+    <div class="trainings" *ngIf="isTraining$ | async">
+      <div class="row">
+        <div class="name">
+          <pqf-generic-input
+            [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+            [value]="(selectProductDetails$ | async).Descripcion"
+            (valueChangeEmitter)="changeValueProducDetails('Descripcion', $event)"
+            [label]="'* ' + ('newProductExistingSupplier.regulatoryResearch.details.trainingName' | translate)"
+            [isReadonly]="!(enableEdit$ | async)"
+            [maxLength]="700"
+            [minLength]="3"
+          ></pqf-generic-input>
+        </div>
+        <div class="description">
+          <pqf-generic-input
+            [value]="(nodeTypeProductDetails$ | async)?.DescripcionDetallada"
+            (valueChangeEmitter)="changeValueNode('DescripcionDetallada', $event)"
+            [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+            [label]="'* ' + ('newProductExistingSupplier.regulatoryResearch.details.detailedDescription' | translate)"
+            [isReadonly]="!(enableEdit$ | async)"
+            [maxLength]="500"
+            [minLength]="3"
+          ></pqf-generic-input>
+        </div>
+      </div>
+      <div class="row">
+        <div class="available">
+          <pqf-drop-down-list
+            [options]="selectAvaibleList$ | async"
+            [selectedOption]="selectedAvaible$ | async"
+            [label]="'* ' + ('newProductExistingSupplier.regulatoryResearch.details.available' | translate)"
+            [isReadonly]="!(enableEdit$ | async)"
+            (selectedOptionChangeEmitter)="selectionChange('IdCatDisponibilidad', $event)"
+          ></pqf-drop-down-list>
+        </div>
+        <div
+          class="price"
+          *ngIf="(enableEdit$ | async) || (!(enableEdit$ | async) && (nodeTypeProductDetails$ | async)?.PrecioPorPersona)"
+        >
+          <div class="edit" *ngIf="enableEdit$ | async">
+            <label>{{ '* ' + ('newProductExistingSupplier.regulatoryResearch.details.price' | translate) }}</label>
+            <div>
+              <div class="radio">
+                <pqf-radio-button
+                  [active]="(nodeTypeProductDetails$ | async)?.PrecioPorPersona"
+                  [label]="'Por Persona'"
+                  (emitSelected)="changePriceNode('PrecioPorPersona', $event)"
+                >
+                </pqf-radio-button>
+              </div>
+              <pqf-generic-input
+                (valueChangeEmitter)="changePriceValueNode('PrecioListaMonedaProveedor', +$event, true, 'PrecioPorPersona')"
+                [isActive]="(nodeTypeProductDetails$ | async)?.PrecioPorPersona"
+                [isReadonly]="!(enableEdit$ | async)"
+                [placeholder]="'$USD'"
+                [minNumber]="0"
+                [maxLength]="14"
+                [typeValidation]="inputValidators.DecimalNumber"
+                [value]="productDetailsListPrice$ | async"
+              >
+              </pqf-generic-input>
+            </div>
+          </div>
+          <div class="read" *ngIf="!(enableEdit$ | async) && (nodeTypeProductDetails$ | async)?.PrecioPorPersona">
+            <pqf-generic-input
+              [value]="(productDetailsListPrice$ | async) + ' ' + (providerBuyCurrency$ | async)"
+              [label]="
+                '* ' +
+                ('newProductExistingSupplier.regulatoryResearch.details.price' | translate) +
+                ' ' +
+                ('newProductExistingSupplier.regulatoryResearch.details.perPerson' | translate)
+              "
+              [isReadonly]="true"
+            ></pqf-generic-input>
+          </div>
+        </div>
+      </div>
+      <div class="row" [ngClass]="{read: !(enableEdit$ | async)}">
+        <div
+          class="price"
+          *ngIf="(enableEdit$ | async) || (!(enableEdit$ | async) && (nodeTypeProductDetails$ | async)?.PrecioPorGrup)"
+        >
+          <div class="edit" *ngIf="enableEdit$ | async">
+            <div>
+              <div class="radio">
+                <pqf-radio-button
+                  [active]="(nodeTypeProductDetails$ | async)?.PrecioPorGrupo"
+                  (emitSelected)="changePriceNode('PrecioPorGrupo', $event)"
+                  [label]="'newProductExistingSupplier.regulatoryResearch.details.perGroup' | translate"
+                ></pqf-radio-button>
+              </div>
+              <pqf-generic-input
+                [isActive]="(nodeTypeProductDetails$ | async)?.PrecioPorGrupo"
+                [value]="(nodeTypeProductDetails$ | async)?.NumeroDePersonasPorGrupo"
+                [typeValidation]="inputValidators.Int"
+                [isReadonly]="!(enableEdit$ | async)"
+                [maxLength]="10"
+                [minLength]="0"
+                (valueChangeEmitter)="changeValueNode('NumeroDePersonasPorGrupo', +$event)"
+                [placeholder]="'# ' + ('newProductExistingSupplier.regulatoryResearch.details.persons' | translate)"
+              ></pqf-generic-input>
+              <pqf-generic-input
+                (valueChangeEmitter)="changePriceValueNode('PrecioListaMonedaProveedor', +$event, true, 'PrecioPorGrupo')"
+                [isActive]="(nodeTypeProductDetails$ | async)?.PrecioPorGrupo"
+                [isReadonly]="!(enableEdit$ | async)"
+                [maxLength]="14"
+                [minLength]="0"
+                [placeholder]="'$USD'"
+                [textAlign]="'center'"
+                [typeValidation]="inputValidators.DecimalNumber"
+                [value]="productDetailsListPrice$ | async"
+              >
+              </pqf-generic-input>
+            </div>
+          </div>
+          <div class="read" *ngIf="!(enableEdit$ | async) && (nodeTypeProductDetails$ | async)?.PrecioPorGrup">
+            <pqf-generic-input
+              [value]="(productDetailsListPrice$ | async) + ' ' + (providerBuyCurrency$ | async)"
+              [label]="
+                '* ' +
+                ('newProductExistingSupplier.regulatoryResearch.details.price' | translate) +
+                ' ' +
+                ('newProductExistingSupplier.regulatoryResearch.details.perGroup' | translate) +
+                ' ' +
+                (providerBuyCurrency$ | async)
+              "
+              [isReadonly]="true"
+            ></pqf-generic-input>
+          </div>
+        </div>
+        <div class="curatorshipValidity">
+          <pqf-date-picker
+            [date]="selectFechaCaducidadVigenciaCuraduria$ | async"
+            dateFormat="YYYYMMDD"
+            [label]="'* ' + ('newProductExistingSupplier.regulatoryResearch.details.curatorshipValidity' | translate)"
+            [isReadonly]="!(enableEdit$ | async)"
+            [disabledCalendarDays]="selectNonWorkingDays$ | async"
+            [rangeStart]="rangeStart"
+            (fecha)="setDataValidityCuratorships($event, 'FechaCaducidadVigenciaCuraduria')"
+          >
+          </pqf-date-picker>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="families">
+    <div class="title">
+      <label>{{ 'newProductExistingSupplier.regulatoryResearch.details.families' | translate }}</label>
+    </div>
+    <div class="content" [ngClass]="{medicalDevices: false, trainings: false}">
+      <div class="family" *ngIf="true">
+        <label class="subtitle">{{ 'newProductExistingSupplier.regulatoryResearch.details.typeOfProduct' | translate }}</label>
+        <div>
+          <label class="text">{{ (selectBrandFamily$ | async)?.label }}</label>
+        </div>
+      </div>
+      <!--medical-->
+      <div *ngIf="isMedicalDispositive$ | async" class="health-register">
+        <pqf-generic-input
+          [typeValidation]="inputValidators.Number"
+          [label]="'formProduct.general.healthRegister' | translate"
+          [isReadonly]="!(enableEdit$ | async)"
+        ></pqf-generic-input>
+      </div>
+      <div *ngIf="isMedicalDispositive$ | async" class="expiration-health-register">
+        <pqf-date-picker
+          dateFormat="YYYYMMDD"
+          [date]="selectFechaCaducidadRegistroSanitario$ | async"
+          [disabledCalendarDays]="selectNonWorkingDays$ | async"
+          [labelInsidePlaceHolder]="'Hasta el'"
+          [labelInside]="true"
+          [label]="'formProduct.general.expirationHealthRegister' | translate"
+          [rangeStart]="rangeStart"
+          [isReadonly]="!(enableEdit$ | async)"
+          (fecha)="setDataValidityCuratorships($event, 'FechaCaducidadRegistroSanitario')"
+        ></pqf-date-picker>
+      </div>
+      <!--medical-end-->
+      <!--medical-->
+      <div *ngIf="isTraining$ | async" class="model-diffusion">
+        <pqf-drop-down-list
+          [options]="selectcBroadcastMediumList$ | async"
+          [selectedOption]="selectcBroadcastMedium$ | async"
+          (selectedOptionChangeEmitter)="changeValueNode('IdCatMedioDifusion', $event)"
+          [label]="'* ' + ('newProductExistingSupplier.regulatoryResearch.details.broadcastMedium' | translate)"
+          [isReadonly]="!(enableEdit$ | async)"
+        ></pqf-drop-down-list>
+      </div>
+      <div *ngIf="isTraining$ | async" class="duration-event">
+        <pqf-generic-input
+          [value]="(nodeTypeProductDetails$ | async)?.DuracionEvento"
+          [label]="'* ' + ('formProduct.step1.durationOfEvent' | translate)"
+          [isReadonly]="!(enableEdit$ | async)"
+          [maxLength]="10"
+          (valueChangeEmitter)="changeValueNode('DuracionEvento', $event)"
+          [typeValidation]="inputValidators.Int"
+        ></pqf-generic-input>
+      </div>
+      <!--medical-end-->
+      <div *ngIf="isProductStandarOrReactive$ | async" class="classification">
+        <pqf-drop-down-list
+          [selectedOption]="selectCatCatClasification$ | async"
+          [options]="selectCatCatClasificationList$ | async"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.classification' | translate"
+          [isReadonly]="!(enableEdit$ | async)"
+          (selectedOptionChangeEmitter)="changeValueNode('IdCatClasificacionInformativaProducto', $event, true)"
+        ></pqf-drop-down-list>
+      </div>
+      <div *ngIf="isProductStandarOrReactive$ | async" class="phisicalState">
+        <pqf-drop-down-list
+          [options]="selectPhysicalStateList$ | async"
+          [selectedOption]="selectPhysicalState$ | async"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.phisicalState' | translate"
+          [isReadonly]="!(enableEdit$ | async)"
+          (selectedOptionChangeEmitter)="changeValueNode('IdCatEstadoFisico', $event)"
+        ></pqf-drop-down-list>
+      </div>
+      <div *ngIf="isProductStandarOrReactive$ | async" class="use">
+        <pqf-drop-down-list
+          [options]="selectUseStateList$ | async"
+          [selectedOption]="selectUseState$ | async"
+          [label]="'* ' + ('newProductExistingSupplier.regulatoryResearch.details.use' | translate)"
+          [isReadonly]="!(enableEdit$ | async)"
+          (selectedOptionChangeEmitter)="changeValueNode('IdCatUso', $event)"
+        ></pqf-drop-down-list>
+      </div>
+      <div *ngIf="selectValidationStandarAndReactiveBiologic$ | async" class="internationalDeposit">
+        <pqf-drop-down-list
+          [options]="selectDepositaryStateList$ | async"
+          [selectedOption]="selectDepositaryState$ | async"
+          (selectedOptionChangeEmitter)="changeValueNode('IdCatDepositarioInternacional', $event, true)"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.internationalDeposit' | translate"
+          [isReadonly]="!(enableEdit$ | async)"
+        ></pqf-drop-down-list>
+      </div>
+      <div *ngIf="selectValidationStandarAndReactiveChemist$ | async" class="purity">
+        <pqf-generic-input
+          [value]="(nodeTypeProductDetails$ | async)?.Pureza"
+          (valueChangeEmitter)="changeValueNode('Pureza', $event)"
+          [typeValidation]="inputValidators.Percentage"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.purity' | translate"
+          [isReadonly]="!(enableEdit$ | async)"
+          [maxLength]="14"
+          [minLength]="1"
+        ></pqf-generic-input>
+      </div>
+      <div *ngIf="selectValidationStandarAndReactiveChemist$ | async" class="cas">
+        <pqf-generic-input
+          [value]="(nodeTypeProductDetails$ | async)?.CAS"
+          [forceError]="!(selectValidCas$ | async)"
+          (valueChangeEmitter)="changeValueNode('CAS', $event)"
+          [isReadonly]="!(enableEdit$ | async)"
+          [label]="'* ' + ('newProductExistingSupplier.regulatoryResearch.details.cas' | translate)"
+          [isRequired]="true"
+          [typeValidation]="inputValidators.CASNumber"
+        ></pqf-generic-input>
+      </div>
+      <div *ngIf="selectValidationStandarAndReactiveChemist$ | async" class="synonyms">
+        <pqf-generic-input
+          [typeValidation]="inputValidators.AlphaAndSpaces"
+          [value]="(nodeTypeProductDetails$ | async)?.Sinonimos"
+          (valueChangeEmitter)="changeValueNode('Sinonimos', $event)"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.synonyms' | translate"
+          [isReadonly]="!(enableEdit$ | async)"
+          [minLength]="3"
+          [maxLength]="200"
+        ></pqf-generic-input>
+      </div>
+      <div *ngIf="selectValidationStandarAndReactiveChemist$ | async" class="molecularFile">
+        <pqf-generic-input-file
+          [serviceFiles]="
+            (selectProductDetails$ | async).ArchivoEstructuraMolecular
+              ? [(selectProductDetails$ | async).ArchivoEstructuraMolecular]
+              : []
+          "
+          [acceptedExtensions]="'application/pdf,.pdf'"
+          [isActive]="enableEdit$ | async"
+          [isReadonly]="!(enableEdit$ | async)"
+          [fileName]="
+            (selectProductDetails$ | async)?.ArchivoEstructuraMolecular ? (nameFileStructureMolecular$ | async) : null
+          "
+          [idFile]="(selectProductDetails$ | async)?.ArchivoEstructuraMolecular?.IdArchivo"
+          [label]="
+            (!(selectProductOnDetails$ | async)?.TieneCAS && (enableEdit$ | async) ? '* ' : '') +
+            ('newProductExistingSupplier.regulatoryResearch.details.molecularFile' | translate)
+          "
+          (emitExternalFile)="getExternalFile('ArchivoEstructuraMolecular')"
+          (autoEmitFile)="setNewFile($event, 'ArchivoEstructuraMolecular')"
+          (emitFileToDelete)="changeValueNode('IdArchivoEstructuraMolecular', $event)"
+          [onlyOneFile]="true"
+          [isReadonly]="!(enableEdit$ | async)"
+        ></pqf-generic-input-file>
+      </div>
+      <div *ngIf="selectValidationStandarAndReactiveChemist$ | async" class="molecularForm">
+        <pqf-generic-input
+          [typeValidation]="inputValidators.AcceptAll"
+          [value]="(nodeTypeProductDetails$ | async)?.FormulaQuimica"
+          (valueChangeEmitter)="changeValueNode('FormulaQuimica', $event)"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.molecularForm' | translate"
+          [isReadonly]="!(enableEdit$ | async)"
+          [maxLength]="200"
+          [minLength]="3"
+        ></pqf-generic-input>
+      </div>
+      <div *ngIf="isProductStandarOrReactive$ | async" class="presentationType">
+        <pqf-drop-down-list
+          [options]="selectPresentationStateList$ | async"
+          [selectedOption]="selectPresentationState$ | async"
+          (selectedOptionChangeEmitter)="changeValueNode('IdCatTipoPresentacion', $event)"
+          [label]="'* ' + ('newProductExistingSupplier.regulatoryResearch.details.presentationType' | translate)"
+          [isReadonly]="!(enableEdit$ | async)"
+        ></pqf-drop-down-list>
+      </div>
+      <div *ngIf="isProductStandarOrReactive$ | async" class="application">
+        <pqf-drop-down-list
+          [options]="selectAplicationStateList$ | async"
+          [selectedOption]="selectAplicationState$ | async"
+          (selectedOptionChangeEmitter)="changeValueNode('IdCatAplicacion', $event)"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.application' | translate"
+          [isReadonly]="!(enableEdit$ | async)"
+        ></pqf-drop-down-list>
+      </div>
+      <div *ngIf="isProductStandarOrReactive$ | async" class="conveyance">
+        <pqf-drop-down-list
+          [options]="selectcTransportationWayStateList$ | async"
+          [selectedOption]="selectcTransportationWayState$ | async"
+          (selectedOptionChangeEmitter)="changeValueNode('IdCatMedioTransporte', $event)"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.conveyance' | translate"
+          [isReadonly]="!(enableEdit$ | async)"
+        ></pqf-drop-down-list>
+      </div>
+      <div *ngIf="isProductStandarOrReactive$ | async" class="transportationManagement">
+        <pqf-drop-down-list
+          [options]="selectcTransportationManagementStateList$ | async"
+          [selectedOption]="selectcTransportationManagementState$ | async"
+          (selectedOptionChangeEmitter)="changeValueNode('IdCatManejoTransporte', $event)"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.transportationManagement' | translate"
+          [isReadonly]="!(enableEdit$ | async)"
+        ></pqf-drop-down-list>
+      </div>
+      <div *ngIf="isProductStandarOrReactive$ | async" class="handlingStorage">
+        <pqf-drop-down-list
+          [options]="selectcTransportationManagementStateList$ | async"
+          [selectedOption]="selectcTransportationStorageState$ | async"
+          (selectedOptionChangeEmitter)="changeValueNode('IdCatManejoAlmacenaje', $event)"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.handlingStorage' | translate"
+          [isReadonly]="!(enableEdit$ | async)"
+        ></pqf-drop-down-list>
+      </div>
+      <div *ngIf="isProductStandarOrReactive$ | async" class="danger">
+        <pqf-generic-input
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          [value]="(selectProductOnDetails$ | async)?.Peligrosidad"
+          (valueChangeEmitter)="changeValueNode('Peligrosidad', $event, true)"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.danger' | translate"
+          [isReadonly]="!(enableEdit$ | async)"
+          [minLength]="3"
+          [maxLength]="500"
+        ></pqf-generic-input>
+      </div>
+
+      <!-- publicaciones-->
+      <div *ngIf="isPublication$ | async" class="author">
+        <pqf-generic-input
+          [value]="(nodeTypeProductDetails$ | async)?.Autor"
+          (valueChangeEmitter)="changeValueNode('Autor', $event)"
+          [label]="'* ' + ('newProductExistingSupplier.regulatoryResearch.details.author' | translate)"
+          [isReadonly]="!(enableEdit$ | async)"
+          [typeValidation]="inputValidators.AlphaAndSpaces"
+          [maxLength]="200"
+          [minLength]="3"
+        ></pqf-generic-input>
+      </div>
+      <div *ngIf="isPublication$ | async" class="publicationFormat">
+        <pqf-drop-down-list
+          [options]="selectcPublicationFormatList$ | async"
+          [selectedOption]="selectcPublicationFormat$ | async"
+          (selectedOptionChangeEmitter)="changeValueNode('IdCatFormatoPublicacion', $event)"
+          [label]="'* ' + ('newProductExistingSupplier.regulatoryResearch.details.publicationFormat' | translate)"
+          [isReadonly]="!(enableEdit$ | async)"
+        ></pqf-drop-down-list>
+      </div>
+      <div *ngIf="isPublication$ | async" class="isbn">
+        <pqf-generic-input
+          [isReadonly]="!(enableEdit$ | async)"
+          [label]="'ISBN No.'"
+          [value]="(nodeTypeProductDetails$ | async)?.ISBN"
+          (valueChangeEmitter)="changeValueNode('ISBN', $event)"
+          [typeValidation]="inputValidators.NumberAndDashes"
+          [minLength]="1"
+          [maxLength]="200"
+        ></pqf-generic-input>
+      </div>
+      <div *ngIf="isPublication$ | async" class="editorial">
+        <pqf-generic-input
+          [value]="(nodeTypeProductDetails$ | async)?.Editorial"
+          [typeValidation]="inputValidators.AlphaAndSpaces"
+          (valueChangeEmitter)="changeValueNode('Editorial', $event)"
+          [isReadonly]="!(enableEdit$ | async)"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.editorial' | translate"
+          [minLength]="3"
+          [maxLength]="200"
+        ></pqf-generic-input>
+      </div>
+      <div *ngIf="isPublication$ | async" class="edition">
+        <pqf-generic-input
+          [isReadonly]="!(enableEdit$ | async)"
+          [typeValidation]="inputValidators.Alphanumeric"
+          [value]="(nodeTypeProductDetails$ | async)?.Edicion"
+          (valueChangeEmitter)="changeValueNode('Edicion', $event)"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.edition' | translate"
+          [minLength]="3"
+          [maxLength]="200"
+        ></pqf-generic-input>
+      </div>
+      <!-- publicaciones-end-->
+      <!-- capacitaciones-->
+      <div class="col1" *ngIf="false" [ngClass]="{read: !(enableEdit$ | async)}">
+        <div class="family">
+          <label class="subtitle">
+            {{ 'newProductExistingSupplier.regulatoryResearch.details.typeOfProduct' | translate }}
+          </label>
+          <div>
+            <label class="text">{{ 'Estándar · Biológico · Normal' }}</label>
+          </div>
+        </div>
+        <div class="broadcastMedium">
+          <div class="edit" *ngIf="enableEdit$ | async">
+            <pqf-drop-down-list
+              [options]="selectcBroadcastMediumList$ | async"
+              [selectedOption]="selectcBroadcastMedium$ | async"
+              (selectedOptionChangeEmitter)="changeValueNode('IdCatMedioDifusion', $event)"
+              [label]="'newProductExistingSupplier.regulatoryResearch.details.broadcastMedium' | translate"
+              [isReadonly]="!(enableEdit$ | async)"
+            ></pqf-drop-down-list>
+          </div>
+          <div class="read" *ngIf="!(enableEdit$ | async)">
+            <label class="subtitle">
+              {{ 'newProductExistingSupplier.regulatoryResearch.details.broadcastMedium' | translate }}
+            </label>
+            <div>
+              <label class="text">{{ 'En Linea' }}</label>
+            </div>
+          </div>
+        </div>
+        <div class="durationOfEvent">
+          <pqf-generic-input
+            [typeValidation]="inputValidators.Int"
+            [isReadonly]="!(enableEdit$ | async)"
+            [label]="'newProductExistingSupplier.regulatoryResearch.details.durationOfEvent' | translate"
+          ></pqf-generic-input>
+        </div>
+      </div>
+      <div class="col2" *ngIf="false" [ngClass]="{read: !(enableEdit$ | async)}">
+        <div class="initDate">
+          <pqf-generic-input
+            [label]="'newProductExistingSupplier.regulatoryResearch.details.initDate' | translate"
+            [isReadonly]="!(enableEdit$ | async)"
+          ></pqf-generic-input>
+        </div>
+        <div class="notes">
+          <pqf-generic-input
+            [label]="'newProductExistingSupplier.regulatoryResearch.details.notes' | translate"
+            [isReadonly]="!(enableEdit$ | async)"
+          ></pqf-generic-input>
+        </div>
+      </div>
+      <!-- capacitaciones-end-->
+      <div class="notes" *ngIf="!(isPublication$ | async)" [ngClass]="{labware: false}">
+        <pqf-generic-input
+          [value]="(selectProductOnDetails$ | async)?.Nota"
+          (valueChangeEmitter)="changeValueNode('Nota', $event, true)"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.notes' | translate"
+          [isReadonly]="!(enableEdit$ | async)"
+          [minLength]="3"
+          [maxLength]="500"
+        ></pqf-generic-input>
+      </div>
+    </div>
+  </div>
+  <div class="supplements" *ngIf="isPublication$ | async">
+    <div class="title">
+      <label>{{ 'newProductExistingSupplier.regulatoryResearch.details.supplements' | translate }}</label>
+    </div>
+    <div class="content" *ngIf="enableEdit$ | async">
+      <div class="description">
+        <pqf-generic-input
+          [maxLength]="700"
+          [minLength]="3"
+          [isReadonly]="!(enableEdit$ | async)"
+          [value]="(selectSupplementNode$ | async)?.Descripcion"
+          (valueChangeEmitter)="setSuplementary('Descripcion', $event)"
+          [typeValidation]="inputValidators.AlphaAndSpaces"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.description' | translate"
+        >
+        </pqf-generic-input>
+      </div>
+      <div class="isbn">
+        <pqf-generic-input
+          [isReadonly]="!(enableEdit$ | async)"
+          [value]="(selectSupplementNode$ | async)?.ISBN"
+          (valueChangeEmitter)="setSuplementary('ISBN', $event)"
+          [typeValidation]="inputValidators.NumberAndDashes"
+          [label]="'ISBN No.'"
+          [maxLength]="200"
+          [minLength]="1"
+        ></pqf-generic-input>
+      </div>
+      <div class="editorial">
+        <pqf-generic-input
+          [isReadonly]="!(enableEdit$ | async)"
+          [value]="(selectSupplementNode$ | async)?.Editorial"
+          (valueChangeEmitter)="setSuplementary('Editorial', $event)"
+          [typeValidation]="inputValidators.AlphaAndSpaces"
+          [label]="'Editorial'"
+          [maxLength]="200"
+          [minLength]="3"
+        ></pqf-generic-input>
+      </div>
+      <div class="edition">
+        <pqf-generic-input
+          [isReadonly]="!(enableEdit$ | async)"
+          [value]="(selectSupplementNode$ | async)?.Edicion"
+          (valueChangeEmitter)="setSuplementary('Edicion', $event)"
+          [typeValidation]="inputValidators.Alphanumeric"
+          [maxLength]="200"
+          [minLength]="3"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.edition' | translate"
+        ></pqf-generic-input>
+      </div>
+      <div class="btn">
+        <button
+          [disabled]="!(selectValidationSuplemmentaryProduct$ | async)"
+          [ngClass]="(selectValidationSuplemmentaryProduct$ | async) ? 'enable' : 'disable'"
+          (click)="saveSuplementary()"
+          >{{ 'common.accept' | translate }}</button
+        >
+      </div>
+    </div>
+    <div class="second-content">
+      <div class="item" *ngFor="let item of selectSupplementList$ | async; index as i">
+        <label>{{ '#' + (i + 1) + ' - ' + item?.Descripcion + buildSupplementData(item) }}</label>
+        <img *ngIf="enableEdit$ | async" class="selector" src="assets/Images/pqf-close.svg" (click)="removeSupplementary(i)" />
+      </div>
+      <div class="notes" [ngClass]="{labware: false}">
+        <pqf-generic-input
+          [value]="(selectProductOnDetails$ | async)?.Nota"
+          (valueChangeEmitter)="changeValueNode('Nota', $event, true)"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.notes' | translate"
+          [isReadonly]="!(enableEdit$ | async)"
+          [maxLength]="500"
+          [minLength]="3"
+        ></pqf-generic-input>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,84 @@
+<app-pop-up-generic
+  id="strategy"
+  [titleHeader]="'generalSummary.viewTactic' | translate"
+  [width]="'745px'"
+  [height]="(viewType$ | async) === 'iPad' ? '662px' : '805px'"
+  [showClose]="true"
+  (evento)="onClose($event)"
+>
+  <div class="container">
+    <div class="customer">
+      <div class="content">
+        <div class="logo">
+          <img src="assets/Images/clientes/logo_proquifa_hover.svg" />
+        </div>
+        <div class="data">
+          <label class="name">{{ (customer$ | async)?.Nombre }}</label>
+          <div class="strategy">
+            <label>Estrategia {{ (customer$ | async)?.strategy?.strategy }} </label>
+            <label class="quotation">·</label>
+            <label class="quotation">
+              {{
+                (customer$ | async)?.Cotizaciones +
+                  ' ' +
+                  ((customer$ | async)?.Cotizaciones === 1
+                    ? ('quotation.quotation' | translate)
+                    : ('quotation.quotes' | translate))
+              }}
+            </label>
+          </div>
+          <div class="evi">
+            <label class="title">Evi: </label>
+            <label class="name">{{ (customer$ | async)?.UserName }}</label>
+            <label
+              [ngClass]="
+                (customer$ | async)?.HorasCaducidad >= 8 && (customer$ | async)?.HorasCaducidad < 16
+                  ? 'orange'
+                  : (customer$ | async)?.HorasCaducidad < 8
+                  ? 'red'
+                  : 'green'
+              "
+            >
+              · Expira en {{ (customer$ | async)?.HorasCaducidad }} Hrs.
+            </label>
+          </div>
+        </div>
+        <div class="amount">
+          <label class="total">{{ (customer$ | async)?.TotalCotizado | currency }} USD</label>
+          <label class="price">{{ 'totalAmount' | translate }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="tacticsData">
+      <div class="title">
+        <label>{{ 'strategy.details.tactics' | translate }}</label>
+      </div>
+      <div class="list">
+        <div class="item" *ngFor="let tactic of (customer$ | async)?.strategy?.tactics; let i = index">
+          <div class="content-item">
+            <div class="tactic-title">
+              <label>#{{ i + 1 }}</label>
+              <label> · </label>
+              <label class="tactic">{{ tactic.tactic }} </label>
+              <label *ngIf="tactic.subTactic">· </label>
+              <label *ngIf="tactic.subTactic">{{ tactic.subTactic }} </label>
+            </div>
+            <div class="data">
+              <div class="justification">
+                <label class="title">Justificación Evi: </label>
+                <label class="info">{{ tactic.justification }}</label>
+              </div>
+              <div class="justification" *ngIf="tactic.observations">
+                <label class="title">Observaciones Coordinador: </label>
+                <label class="info">{{ tactic.observations }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="total">
+        <label>#{{ (customer$ | async)?.strategy?.tactics?.length }} {{ 'strategy.details.tactics' | translate }}</label>
+      </div>
+    </div>
+  </div>
+</app-pop-up-generic>

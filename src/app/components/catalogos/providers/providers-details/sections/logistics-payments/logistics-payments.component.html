@@ -1,0 +1,330 @@
+<div id="logistics-payments">
+  <div class="content">
+    <div class="logistic">
+      <div class="section-title">
+        <label>{{ 'providerCatalog.logistics' | translate }}</label>
+      </div>
+      <div class="body">
+        <div class="freight">
+          <div class="subtitle">
+            <label class="subtitleText">{{ 'providerCatalog.expressFreight' | translate }}</label>
+          </div>
+          <div class="check">
+            <app-check-box
+              [check]="(logistic$ | async)?.TieneFleteExpress"
+              [enableEdit]="enableEdit$ | async"
+              [enabledIconNoSelected]="true"
+              [labelFontStyle]="
+                (enableEdit$ | async) && (logistic$ | async)?.TieneFleteExpress
+                  ? 'labelRobotoRegularProquifa13'
+                  : 'robotoRegular13'
+              "
+              [label]="'providerCatalog.enableExpressFreight' | translate"
+              (event)="setFreightConfig('TieneFleteExpress', $event)"
+            ></app-check-box>
+          </div>
+          <div class="concept">
+            <app-generic-input
+              [enableEdit]="enableEdit$ | async"
+              [isDisable]="!(logistic$ | async)?.TieneFleteExpress"
+              [label]="'closeOffer.tableLabels.concept' | translate"
+              [maxlength]="180"
+              [typeValidation]="inputValidators.AlphaAndSpaces"
+              [value]="(logistic$ | async)?.ConceptoFleteExpress"
+              [required]="true"
+              (textData)="setFreightConfig('ConceptoFleteExpress', $event)"
+            >
+            </app-generic-input>
+          </div>
+          <div class="legend">
+            <app-generic-input
+              [enableEdit]="enableEdit$ | async"
+              [isDisable]="!(logistic$ | async)?.TieneFleteExpress"
+              [label]="'providerCatalog.legend' | translate"
+              [maxlength]="180"
+              [typeValidation]="inputValidators.AlphaAndSpaces"
+              [value]="(logistic$ | async)?.LeyendaFleteExpress"
+              [width]="'100%'"
+              [required]="true"
+              (textData)="setFreightConfig('LeyendaFleteExpress', $event)"
+            >
+            </app-generic-input>
+          </div>
+          <div class="ammount">
+            <div [ngClass]="!(enableEdit$ | async) ? 'enable' : ''">
+              <app-generic-input
+                [enableEdit]="enableEdit$ | async"
+                [isDisable]="!(logistic$ | async)?.TieneFleteExpress"
+                [label]="'common.amount' | translate"
+                [maxlength]="180"
+                [placeholder]="'$'"
+                [textAlign]="!(enableEdit$ | async) ? 'left' : 'center'"
+                [typeValidation]="inputValidators.DecimalNumber"
+                [value]="
+                  !(enableEdit$ | async)
+                    ? ((logistic$ | async)?.PrecioFleteExpress | currency)
+                    : (logistic$ | async)?.PrecioFleteExpress
+                "
+                [width]="'100%'"
+                [required]="true"
+                (textData)="setFreightConfig('PrecioFleteExpress', $event)"
+              >
+              </app-generic-input>
+            </div>
+            <label class="dls" [ngClass]="(logistic$ | async)?.TieneFleteExpress ? '' : 'disable'">{{ 'DLS' }}</label>
+          </div>
+        </div>
+        <div class="delivery">
+          <div class="subtitle1">
+            <label class="subtitleText">{{ 'providerCatalog.deliveryTime' | translate }}</label>
+          </div>
+          <div class="deliveryTime-item" *ngFor="let route of routeList$ | async; let i = index; trackBy: handleTrackBy">
+            <div class="input">
+              <app-generic-input
+                [label]="route.name"
+                [enableEdit]="enableEdit$ | async"
+                [isDisable]="lodashIsEmpty(route.idSelected) || !(logistic$ | async)?.TieneFleteExpress"
+                [onlyNumbers]="true"
+                [typeValidation]="inputValidators.Number"
+                [value]="route.ValorEsperado.toString()"
+                [required]="true"
+                [maxlength]="3"
+                (textData)="setDeliveryTime('ValorEsperado', $event, i)"
+              >
+              </app-generic-input>
+            </div>
+            <div class="drop">
+              <app-drop-down-list
+                *ngIf="listUnite$ | async; let unites"
+                [activeMinWidth]="false"
+                [disable]="!(logistic$ | async)?.TieneFleteExpress"
+                [enableEdit]="false"
+                [itemSelected]="findSelected(unites, route)"
+                [items]="listUnite$ | async"
+                (valueDropList)="setDeliveryTime('idSelected', $event.value, i)"
+              ></app-drop-down-list>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="payments">
+      <div class="section-title">
+        <label>{{ 'providerCatalog.payments' | translate }}</label>
+      </div>
+      <div class="content">
+        <div class="firstSection">
+          <div class="generals">
+            <div class="paymentConditions">
+              <label>{{ 'providerCatalog.generals' | translate }}</label>
+              <app-drop-down-list
+                [enableEdit]="enableEdit$ | async"
+                [itemSelected]="selectedCondition$ | async"
+                [items]="listCondition$ | async"
+                [label]="'providerCatalog.paymentConditions' | translate"
+                [required]="true"
+                [isSearchable]="(listCondition$ | async)?.length > 5"
+                (valueDropList)="setConditionPayment($event)"
+              ></app-drop-down-list>
+            </div>
+            <div class="creditLine">
+              <div [ngClass]="(enableEdit$ | async) ? '' : 'enable'">
+                <app-generic-input
+                  [enableEdit]="enableEdit$ | async"
+                  [label]="'providerCatalog.creditLine' | translate"
+                  [placeholder]="'$'"
+                  [required]="!(isDisabledLineCredit$ | async)"
+                  [textAlign]="!(enableEdit$ | async) ? 'left' : 'center'"
+                  [typeValidation]="inputValidators.Number"
+                  [maxlength]="10"
+                  [max]="2147483647"
+                  [isDisable]="isDisabledLineCredit$ | async"
+                  [value]="(paymentConfig$ | async)?.LineaCredito"
+                  (textData)="setLineCredit($event)"
+                ></app-generic-input>
+              </div>
+              <label [ngClass]="(paymentConfig$ | async)?.LineaCredito > 0 ? '' : 'disable'">{{ 'DLS' }}</label>
+            </div>
+          </div>
+        </div>
+        <div class="aquaSection" [ngClass]="(enableEdit$ | async) ? '' : 'disableEdit'">
+          <div class="title">
+            <label>{{
+              (enableEdit$ | async)
+                ? ('providerCatalog.addBankAccounts' | translate)
+                : ('providerCatalog.bankAccounts' | translate)
+            }}</label>
+          </div>
+          <div
+            class="form"
+            *ngIf="enableEdit$ | async"
+            [ngClass]="(paymentMethodForm$ | async)?.Clave === paymentsMethods.creditCard ? '' : 'otro'"
+          >
+            <div>
+              <app-drop-down-list
+                [capitalize]="true"
+                [itemSelected]="selectedPaymentMethod$ | async"
+                [items]="catMedioDePago$ | async"
+                [label]="'providerCatalog.accountType' | translate"
+                [showAsterisk]="true"
+                [isSearchable]="(catMedioDePago$ | async)?.length > 5"
+                (valueDropList)="setPaymentMethod($event)"
+              ></app-drop-down-list>
+            </div>
+            <div *ngIf="(paymentMethodForm$ | async)?.Clave !== paymentsMethods.creditCard">
+              <app-drop-down-list
+                [disable]="lodashIsEmpty((paymentMethodForm$ | async)?.MedioDePago)"
+                [itemSelected]="selectedBank$ | async"
+                [items]="listBank$ | async"
+                [label]="'providerCatalog.bank' | translate"
+                [isSearchable]="(listBank$ | async)?.length > 5"
+                [capitalize]="false"
+                [showAsterisk]="true"
+                (valueDropList)="setBank($event)"
+              ></app-drop-down-list>
+            </div>
+            <div *ngIf="(paymentMethodForm$ | async)?.Clave !== paymentsMethods.creditCard">
+              <app-generic-input
+                [label]="
+                  (paymentMethodForm$ | async)?.Clave === paymentsMethods.transferKey
+                    ? 'Clabe Interbancaria'
+                    : (paymentMethodForm$ | async)?.Clave === paymentsMethods.swiftCode
+                    ? 'Código Swift'
+                    : (paymentMethodForm$ | async)?.Clave === paymentsMethods.abaCode
+                    ? 'Código Aba'
+                    : (paymentMethodForm$ | async)?.Clave === paymentsMethods.bankCheck
+                    ? 'No. de Cuenta Destino'
+                    : 'No. de Cuenta'
+                "
+                [placeholder]="
+                  (paymentMethodForm$ | async)?.Clave === paymentsMethods.transferKey
+                    ? 'Ingresa 18 digitos'
+                    : (paymentMethodForm$ | async)?.Clave === paymentsMethods.swiftCode
+                    ? '#'
+                    : (paymentMethodForm$ | async)?.Clave === paymentsMethods.abaCode
+                    ? '#'
+                    : (paymentMethodForm$ | async)?.Clave === paymentsMethods.bankCheck
+                    ? '#'
+                    : 'Ingresa de 8 a 12 digitos'
+                "
+                [maxlength]="
+                  (paymentMethodForm$ | async)?.Clave === paymentsMethods.transferKey
+                    ? 18
+                    : (paymentMethodForm$ | async)?.Clave === paymentsMethods.swiftCode
+                    ? 11
+                    : (paymentMethodForm$ | async)?.Clave === paymentsMethods.abaCode
+                    ? 19
+                    : (paymentMethodForm$ | async)?.Clave === paymentsMethods.bankCheck
+                    ? 12
+                    : 12
+                "
+                [minlength]="
+                  (paymentMethodForm$ | async)?.Clave === paymentsMethods.transferKey
+                    ? 18
+                    : (paymentMethodForm$ | async)?.Clave === paymentsMethods.swiftCode
+                    ? 8
+                    : (paymentMethodForm$ | async)?.Clave === paymentsMethods.abaCode
+                    ? 9
+                    : (paymentMethodForm$ | async)?.Clave === paymentsMethods.bankCheck
+                    ? 10
+                    : 8
+                "
+                [isDisable]="lodashIsEmpty((paymentMethodForm$ | async)?.MedioDePago)"
+                [value]="
+                  (paymentMethodForm$ | async)?.Clave !== paymentsMethods.transferKey
+                    ? (accountForm$ | async)?.DatosBancarios.NumeroDeCuenta
+                    : (accountForm$ | async)?.DatosBancarios.Clabe
+                "
+                [typeValidation]="
+                  (paymentMethodForm$ | async)?.Clave === paymentsMethods.swiftCode
+                    ? inputValidators.AlphaNumberAndDashes
+                    : inputValidators.Number
+                "
+                [showAsterisk]="true"
+                (textData)="
+                  setBankData(selectedAccountType === paymentsMethods.transferKey ? 'Clabe' : 'NumeroDeCuenta', $event)
+                "
+              ></app-generic-input>
+            </div>
+            <div *ngIf="(paymentMethodForm$ | async)?.Clave !== paymentsMethods.creditCard" class="benef">
+              <div class="input">
+                <app-generic-input
+                  [isDisable]="lodashIsEmpty((paymentMethodForm$ | async)?.MedioDePago)"
+                  [label]="'providerCatalog.beneficiary' | translate"
+                  [maxlength]="200"
+                  [showAsterisk]="true"
+                  [typeValidation]="inputValidators.AlphaAndSpaces"
+                  [value]="(accountForm$ | async)?.DatosBancarios.Beneficiario"
+                  (textData)="setBankData('Beneficiario', $event)"
+                ></app-generic-input>
+              </div>
+            </div>
+            <div *ngIf="(paymentMethodForm$ | async)?.Clave === paymentsMethods.transferAccount">
+              <div class="input">
+                <app-generic-input
+                  [isDisable]="lodashIsEmpty((paymentMethodForm$ | async)?.MedioDePago)"
+                  [label]="'indirectPayment.branch' | translate"
+                  [maxlength]="50"
+                  [showAsterisk]="true"
+                  [typeValidation]="inputValidators.Number"
+                  [value]="(accountForm$ | async)?.DatosBancarios.Sucursal"
+                  (textData)="setBankData('Sucursal', $event)"
+                ></app-generic-input>
+              </div>
+            </div>
+            <div class="cards" *ngIf="(paymentMethodForm$ | async)?.Clave === paymentsMethods.creditCard">
+              <app-check-box
+                *ngFor="let card of cardMarkList$ | async"
+                [check]="card.isChecked"
+                [enableEdit]="!checkIfCardExist(card, cardsAdded$ | async)"
+                [labelFontStyle]="card.isChecked ? 'labelRobotoRegularProquifa13' : 'robotoRegular13'"
+                [label]="card.Marca"
+                (event)="setCheckedValue(card.IdCatMarcaTarjeta, $event)"
+              ></app-check-box>
+            </div>
+            <div class="btn">
+              <button
+                [disabled]="!(addAccount$ | async)"
+                [ngClass]="(addAccount$ | async) ? '' : 'disable'"
+                (click)="addAccount()"
+                >{{ 'common.add' | translate }}</button
+              >
+            </div>
+          </div>
+        </div>
+        <div class="accounts">
+          <div class="account-item" *ngFor="let item of accountItem$ | async">
+            <label class="text"
+              ><span class="type">{{ item?.catMedioDePago.MedioDePago }} ·</span>
+              {{
+                item?.catMedioDePago.Clave !== paymentsMethods.creditCard
+                  ? item?.catBanco.Banco
+                  : getCardName(cardMarkList$ | async, item)
+              }}
+              <span class="numbers" *ngIf="item?.catMedioDePago.Clave !== paymentsMethods.creditCard">
+                ·
+                {{
+                  item?.catMedioDePago.Clave === paymentsMethods.transferKey
+                    ? 'Clabe Interbancaria ' + item?.DatosBancarios.Clabe
+                    : item?.catMedioDePago.Clave === paymentsMethods.transferAccount
+                    ? 'No. Cuenta ' + item?.DatosBancarios.NumeroDeCuenta
+                    : item?.catMedioDePago.Clave === paymentsMethods.bankCheck
+                    ? 'No. de cuenta Destino ' + item?.DatosBancarios.NumeroDeCuenta
+                    : item?.catMedioDePago.Clave === paymentsMethods.swiftCode
+                    ? 'Código Swift ' + item?.DatosBancarios.NumeroDeCuenta
+                    : 'Código Aba ' + item?.DatosBancarios.NumeroDeCuenta
+                }}
+              </span>
+              {{ item?.catMedioDePago.Clave !== paymentsMethods.creditCard ? ' · ' + item?.DatosBancarios.Beneficiario : '' }}
+              {{ item?.DatosBancarios?.Sucursal ? ' · ' + item?.DatosBancarios?.Sucursal : '' }}
+            </label>
+            <img *ngIf="enableEdit$ | async" (click)="deleteAccount(item)" src="assets/Images/cerrar.svg" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="requiredMessage">
+    <label>* {{ 'providerCatalog.logisticsValidationMessage' | translate }}</label>
+  </div>
+</div>

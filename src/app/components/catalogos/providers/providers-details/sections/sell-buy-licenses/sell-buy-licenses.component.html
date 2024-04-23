@@ -1,0 +1,207 @@
+<div id="sell-buy-licences">
+  <div class="container-sell-buy">
+    <div class="container-title">
+      <div class="title">
+        <label>{{ 'formProvider.step6.titleSellBuy' | translate }}</label>
+      </div>
+    </div>
+    <div class="sell-buy-content">
+      <div class="drop-list-container">
+        <div class="drop-list-item">
+          <app-drop-down-list
+            [enableEdit]="enableEdit$ | async"
+            [items]="itemBuyCurrency$ | async"
+            [label]="'formProvider.step6.buyCurrency' | translate"
+            [subtitleActive]="false"
+            [title]="'Seleccionar'"
+            [isSearchable]="(itemBuyCurrency$ | async)?.length > 5"
+            [itemSelected]="selectedCatMoneyBuy$ | async"
+            (valueDropList)="setProviderData('IdCatMonedaPagos', $event.value)"
+          >
+          </app-drop-down-list>
+        </div>
+        <div class="drop-list-item">
+          <app-drop-down-list
+            [enableEdit]="enableEdit$ | async"
+            [items]="itemSaleCurrency$ | async"
+            [label]="'formProvider.step6.saleCurrency' | translate"
+            [showAsterisk]="true"
+            [subtitleActive]="false"
+            [isSearchable]="(itemSaleCurrency$ | async)?.length > 5"
+            [title]="'Seleccionar'"
+            [itemSelected]="selectedCatMoneySale$ | async"
+            (valueDropList)="setProviderData('IdCatMonedaVentas', $event.value)"
+          >
+          </app-drop-down-list>
+        </div>
+        <div class="drop-list-item">
+          <app-generic-input
+            [enableEdit]="enableEdit$ | async"
+            [fontSize]=""
+            [isDisable]="(providerData$ | async)?.IdCatMonedaPagos === (providerData$ | async)?.IdCatMonedaVentas"
+            [label]="'formProvider.step6.conversionFactor' | translate"
+            [maxlength]="14"
+            [placeholder]="'$'"
+            [typeValidation]="inputValidators.DecimalNumber"
+            [value]="factorConversion$ | async"
+            (textData)="setProviderData('FactorConversion', $event)"
+          >
+          </app-generic-input>
+        </div>
+        <div class="radios">
+          <div class="head">
+            <label class="label">* {{ 'formProvider.step6.kindOfPurchase' | translate }}</label>
+          </div>
+          <div class="rb">
+            <div *ngIf="((providerData$ | async)?.CompraEnLinea && !(enableEdit$ | async)) || (enableEdit$ | async)">
+              <app-radio-button
+                class="radio-button"
+                [enableEdit]="enableEdit$ | async"
+                [height]="(viewType$ | async) === viewTypes.small ? '17px' : '20px'"
+                [label]="'formProvider.step6.onlinePurchase' | translate"
+                [value]="(providerData$ | async)?.CompraEnLinea"
+                (emitValue)="setProviderData('CompraEnLinea', $event)"
+              ></app-radio-button>
+            </div>
+            <div *ngIf="((providerData$ | async)?.CompraTradicional && !(enableEdit$ | async)) || (enableEdit$ | async)">
+              <app-radio-button
+                class="radio-button"
+                [enableEdit]="enableEdit$ | async"
+                [height]="(viewType$ | async) === viewTypes.small ? '17px' : '20px'"
+                [label]="'formProvider.step6.traditionalPurchase' | translate"
+                [value]="(providerData$ | async)?.CompraTradicional"
+                (emitValue)="setProviderData('CompraTradicional', $event)"
+              ></app-radio-button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="companies-container">
+        <div class="title">
+          <label>* {{ 'formProvider.step6.titleCompanies' | translate }}</label>
+        </div>
+        <div class="company-item" *ngFor="let empresa of listProviderCompanies$ | async; trackBy: handleTrackBy">
+          <div>
+            <app-check-box
+              [check]="empresa.selected"
+              [enableEdit]="enableEdit$ | async"
+              [height]="(viewType$ | async) === viewTypes.small ? '17px' : '20px'"
+              [labelFontStyle]="empresa.selected ? 'labelRobotoRegularProquifa13' : 'robotoRegular13'"
+              [label]="empresa.Alias"
+              (event)="setCompany(empresa, $event)"
+            ></app-check-box>
+          </div>
+          <div>
+            <label [ngClass]="empresa.selected ? 'enable' : ''">{{ 'formProvider.step6.clientLabel' | translate }}</label>
+            <app-generic-input
+              [value]="empresa?.providerCompany?.NumeroCliente"
+              [enableEdit]="enableEdit$ | async"
+              [maxlength]="50"
+              [typeValidation]="inputValidators.Alphanumeric"
+              [width]="'147px'"
+              [style.pointer-events]="empresa.selected ? 'auto' : 'none'"
+              [isDisable]="!empresa.selected"
+              [fontColor]="empresa.selected ? '#008894' : '#424242'"
+              (textData)="setClientNumber(empresa.IdEmpresa, $event)"
+            ></app-generic-input>
+          </div>
+        </div>
+      </div>
+      <div class="fiscal-year-container">
+        <div class="content">
+          <div>
+            <div class="subtitle">
+              <label>{{ 'formProvider.step6.fiscalYear' | translate }}: </label>
+            </div>
+            <div>
+              <app-check-box
+                [backGroundCheckColor]="(enableEdit$ | async) && '#ffffff'"
+                [check]="customizeCheck$ | async"
+                [enableEdit]="enableEdit$ | async"
+                [height]="(viewType$ | async) === viewTypes.small ? '17px' : '20px'"
+                [labelFontStyle]="
+                  (enableEdit$ | async) && (customizeCheck$ | async) ? 'labelRobotoRegularProquifa13' : 'robotoRegular13'
+                "
+                [label]="'formProvider.step6.personalized' | translate"
+                (event)="setCustomizedCheck($event)"
+              ></app-check-box>
+            </div>
+          </div>
+          <div>
+            <div class="subtitle">
+              <label>{{ 'formProvider.step6.initialMonth' | translate }}: </label>
+            </div>
+            <div>
+              <app-drop-down-list
+                [disable]="!(customizeCheck$ | async)"
+                [enableEdit]="enableEdit$ | async"
+                [itemSelected]="mothSelected$ | async"
+                [items]="itemMonths$ | async"
+                [isSearchable]="(itemMonths$ | async)?.length > 5"
+                [placeholder]="'Ninguno'"
+                (valueDropList)="setMoth($event)"
+              >
+              </app-drop-down-list>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="licenses-content">
+    <div class="title">
+      <label>{{ 'formProvider.step6.titleLicenses' | translate }}</label>
+    </div>
+    <div class="content">
+      <div class="licenses-form" *ngIf="enableEdit$ | async">
+        <div>
+          <app-generic-input
+            [label]="'Nombre'"
+            [value]="(licenseForm$ | async)?.Etiqueta"
+            [maxlength]="160"
+            [typeValidation]="inputValidators.AlphaAndSpaces"
+            (textData)="licenseData('Etiqueta', $event)"
+          ></app-generic-input>
+        </div>
+        <div>
+          <app-generic-input
+            [maxlength]="14"
+            [placeholder]="'0'"
+            [textAlign]="'center'"
+            [typeValidation]="inputValidators.Percentage"
+            [value]="(licenseForm$ | async)?.Porcentaje"
+            (textData)="licenseData('Porcentaje', $event)"
+          ></app-generic-input>
+          <label> %</label>
+        </div>
+        <div>
+          <button
+            [disabled]="!(addLicense$ | async)"
+            [ngClass]="(addLicense$ | async) ? '' : 'disable'"
+            (click)="setLicenseForm()"
+            >{{ 'common.add' | translate }}</button
+          >
+        </div>
+      </div>
+      <div class="items-content" *ngIf="(providerLicenses$ | async).length > 0">
+        <div class="item" *ngFor="let license of providerLicenses$ | async">
+          <div class="item-content">
+            <label
+              ><span>{{ license.Etiqueta }} · </span> {{ license.Porcentaje | percent }}
+            </label>
+            <app-check-box
+              [check]="license.Activo"
+              [enableEdit]="enableEdit$ | async"
+              [height]="(viewType$ | async) === viewTypes.small ? '15px' : '18px'"
+              [labelFontStyle]="license.Activo ? 'labelRobotoRegularProquifa13' : 'labelRobotoRegular13'"
+              [label]="'Habilitado'"
+              (event)="editItemChecked(license, $event)"
+            >
+            </app-check-box>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<label class="required-data">* {{ 'providerCatalog.requiredData' | translate }}</label>

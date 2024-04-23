@@ -1,0 +1,72 @@
+<div id="plan-dispatch--details-generateOrder">
+  <div class="importSettings">
+    <div class="title">
+      <label>1 · Ajustes de importación</label>
+    </div>
+    <div class="header">
+      <label
+        >{{ 'planDispatchDetails.importer' | translate }}:
+        <span>{{ (dispatchOrder$ | async)?.EmpresaImportador }}</span>
+      </label>
+      <label
+        >{{ 'planDispatchDetails.exporter' | translate }}: <span>{{ (dispatchOrder$ | async)?.EmpresaExportador }}</span>
+      </label>
+      <label
+        >{{ 'planDispatchDetails.customsBroker' | translate }}:
+        <span>{{ (dispatchOrder$ | async)?.IdAgenteAduanal }}</span>
+      </label>
+      <label
+        >{{ 'planDispatchDetails.border' | translate }}: <span>{{ (dispatchOrder$ | async)?.IdAduana }}</span>
+      </label>
+      <label
+        >{{ 'planDispatchDetails.forHire' | translate }}: <span>{{ (dispatchOrder$ | async)?.Fletera }}</span>
+      </label>
+      <label
+        >{{ 'planDispatchDetails.incoterm' | translate }}: <span>{{ (dispatchOrder$ | async)?.Incoterm }}</span>
+      </label>
+      <label
+        >{{ 'planDispatchDetails.packingList' | translate }}:
+        <span>{{
+          (dispatchOrder$ | async)?.PackingListSimplificado
+            ? 'Simplificado'
+            : (dispatchOrder$ | async)?.PackingListDetallado
+            ? 'Detallado'
+            : (dispatchOrder$ | async)?.PackingListAmbos
+            ? 'Ambos'
+            : 'N/D'
+        }}</span>
+      </label>
+    </div>
+  </div>
+  <div class="body">
+    <app-graphics *ngIf="viewOpen == 'graphic'" (emitChangeView)="handleChangeView($event)"></app-graphics>
+    <app-list *ngIf="viewOpen == 'list'" (emitChangeView)="handleChangeView($event)"></app-list>
+  </div>
+  <div class="footer">
+    <div class="al">
+      <label
+        >AL: <span>{{ 'common.arrivalLists' | translate }}</span></label
+      >
+    </div>
+    <div class="cv">
+      <label
+        >CV:<span> {{ 'planDispatchDetails.commercialValue' | translate }}</span>
+      </label>
+    </div>
+    <div class="fte">
+      <label
+        >FTE: <span>{{ 'common.freight' | translate }} </span></label
+      >
+    </div>
+    <div class="vad">
+      <label
+        >VAD: <span> {{ 'planDispatchDetails.customsValue' | translate }}</span></label
+      >
+    </div>
+    <div class="imp">
+      <label
+        >IMP: <span>{{ 'planDispatchDetails.taxes' | translate }} </span></label
+      >
+    </div>
+  </div>
+</div>

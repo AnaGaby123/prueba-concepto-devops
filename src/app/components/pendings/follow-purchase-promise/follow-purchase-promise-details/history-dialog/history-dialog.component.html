@@ -1,0 +1,45 @@
+<app-pop-up-generic
+  class="pop"
+  [height]="(viewType$ | async) === 'macBookAir' ? '808px' : '680px'"
+  [showClose]="true"
+  [titleHeader]="'followPPurchase.showHistory' | translate | uppercase"
+  [width]="(viewType$ | async) === 'macBookAir' ? '934px' : '780px'"
+  (evento)="onClose($event)"
+>
+  <div class="ng-content">
+    <div class="client">
+      <div class="image">
+        <img src="assets/Images/clientes/logo_proquifa_hover.svg" alt="" />
+      </div>
+      <div class="info">
+        <label>{{ (selectedClient$ | async)?.Alias }} </label>
+        <label
+          ><span>Cot. F0-{{ (selectedClient$ | async)?.Folio }} </span>· {{ (selectedClient$ | async)?.Partidas }}
+          {{
+            (selectedClient$ | async)?.Partidas === 1
+              ? ('followPPurchase.entry' | translate)
+              : ('followPPurchase.entries' | translate)
+          }}</label
+        >
+      </div>
+    </div>
+    <div class="table-container">
+      <div class="table">
+        <div class="item" *ngFor="let item of justifications$ | async; let i = index">
+          <label
+            >#{{ i + 1 }} ·<span> {{ 'followPPurchase.datePurchasePromise' | translate }}: </span
+            >{{ item.FechaPromesaDeCompra | dateFormatSlash }}</label
+          >
+          <div>
+            <label
+              ><span>{{ 'followPPurchase.justification' | translate }}: </span>{{ item.Justificacion }}
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <label>#{{ (justifications$ | async)?.length }} {{ 'followPPurchase.buyPromises' | translate }}</label>
+    </div>
+  </div>
+</app-pop-up-generic>

@@ -1,0 +1,92 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  & > .provider-list-price {
+    @include s.flexColumn;
+    align-items: center;
+
+    & > h4 {
+      @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqGreen);
+      @include s.Novecento-Bold;
+      margin-bottom: 5px;
+
+      &.margin-bottom {
+        margin-bottom: 12px;
+      }
+    }
+
+    & > h5 {
+      @include s.escaledFontFormat(s.$textSize18to24, bold, s.$pqBlack2);
+      @include s.Novecento-Bold;
+      margin-bottom: 3px;
+    }
+
+    & > h6 {
+      @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+      @include s.Novecento-Bold;
+      margin-bottom: 12px;
+    }
+
+    & > .inputs {
+      @include s.flexRowWrap;
+      align-items: flex-start;
+      justify-content: center;
+      width: 100%;
+
+      & > .switch {
+        margin: 5px 20px 0 0;
+      }
+
+      & > label {
+        @include s.escaledFontFormat(s.$textSize17to24, regular, s.$pqBlack2);
+        @include s.Novecento-Bold;
+        margin-top: 3px;
+      }
+
+      & > .check-container {
+        @include s.flexColumn;
+        margin-left: 40px;
+
+        & > .check {
+          margin: 3px 0 6px 0;
+        }
+
+        & > .consolidation-trademarks {
+          @include s.flexRowWrap;
+          margin-left: 26px;
+          gap: 5px;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+            @include s.Roboto-Regular;
+            white-space: pre;
+          }
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .inputs {
+        & > .switch {
+          margin-top: 8px;
+        }
+
+        & > label {
+          margin-top: 6px;
+        }
+
+        & > .check-container {
+          margin-left: 50px;
+
+          & > .check {
+            margin: 6px 0 10px 0;
+          }
+        }
+      }
+    }
+  }
+}

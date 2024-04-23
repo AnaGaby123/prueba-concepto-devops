@@ -1,0 +1,124 @@
+@use 'base' as s;
+
+:host {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  overflow: hidden;
+
+  #payment-conditions {
+    @include s.flexColumn;
+    flex: 1;
+    overflow: auto;
+    overflow: hidden;
+    & > .aqua-info {
+      @include s.flexColumn;
+      background-color: s.$main-proquifa-f;
+      padding: 16px 58px;
+      row-gap: 5px;
+      & > span {
+        @include s.responsive-font-format(
+          $font-family: s.$font-family-roboto_bold,
+          $font-weight: s.$font-weight-bold,
+          $font-size-map: s.$responsive-font-14-16,
+          $color: s.$pqGreen
+        );
+      }
+      & > label {
+        @include s.responsive-font-format($font-size-map: s.$responsive-font-12-14);
+      }
+    }
+    & > .content {
+      display: grid;
+      flex: 1;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, auto) 1fr;
+      overflow: auto;
+      padding-bottom: 15px;
+      & > .title {
+        @include s.flexRow;
+        align-items: center;
+        grid-area: 1 / 2 / 2 / 3;
+        justify-content: center;
+        padding: 10px 0;
+        & > label {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-roboto_bold,
+            $font-weight: s.$font-weight-bold,
+            $font-size-map: s.$responsive-font-16-20
+          );
+          & > span {
+            color: s.$pqGreen;
+            vertical-align: baseline;
+          }
+        }
+      }
+      & > .aqua {
+        background-color: s.$main-proquifa-f;
+        display: grid;
+        grid-column-end: span 3;
+        grid-template-columns: repeat(3, 1fr);
+        padding: 20px 0;
+        & > .controls {
+          @include s.flexRow;
+          flex: 1;
+          column-gap: 60px;
+          grid-area: 1 / 2 / 2 / 3;
+          & > .drop,
+          .input {
+            @include s.flexColumn;
+            row-gap: 4px;
+            & > .title {
+              @include s.responsive-font-format(
+                $font-family: s.$font-family-roboto_bold,
+                $font-weight: s.$font-weight-bold,
+                $font-size-map: s.$responsive-font-12-14
+              );
+              text-wrap: nowrap;
+            }
+          }
+          & > .input {
+            &.disable {
+              & > .title {
+                color: s.$pqGray3;
+              }
+              & > .days {
+                & > .extra-string {
+                  color: s.$pqGray3 !important;
+                }
+              }
+            }
+            & > .days {
+              @include s.flexRow;
+              column-gap: 10px;
+              align-items: center;
+              & > .extra-string {
+                @include s.responsive-font-format(
+                  $font-family: s.$font-family-roboto_bold,
+                  $font-weight: s.$font-weight-bold,
+                  $color: s.$pqGreen
+                );
+                &.red {
+                  color: s.$pqRed;
+                }
+              }
+            }
+          }
+        }
+      }
+      & > .comments {
+        @include s.flexRow;
+        flex: 1;
+        grid-area: 3 / 2 / 4 / 3;
+        padding-top: 20px;
+      }
+    }
+  }
+
+  .without-results {
+    @include s.flexRow;
+    align-items: center;
+    flex: 1;
+    justify-content: center;
+  }
+}

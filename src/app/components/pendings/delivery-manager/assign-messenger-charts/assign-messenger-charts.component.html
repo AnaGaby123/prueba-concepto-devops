@@ -1,0 +1,26 @@
+<div id="assign-messenger-charts">
+  <div class="charts">
+    <div class="messenger">
+      <app-doughnut-chart [title]="'reviewResults.carrier' | translate"></app-doughnut-chart>
+    </div>
+    <div class="segment">
+      <div>
+        <app-doughnut-chart [title]="'priorityConsole.zone' | translate"></app-doughnut-chart>
+      </div>
+      <div>
+        <app-doughnut-chart [title]="'assignMessenger.priorities' | translate"></app-doughnut-chart>
+      </div>
+    </div>
+    <div class="segment">
+      <div>
+        <app-doughnut-chart [title]="'manageBackOrder.events' | translate"></app-doughnut-chart>
+      </div>
+      <div>
+        <app-doughnut-chart [title]="'common.clients' | translate"></app-doughnut-chart>
+      </div>
+    </div>
+  </div>
+  <div class="button">
+    <button>{{ 'common.enter' | translate }}</button>
+  </div>
+</div>

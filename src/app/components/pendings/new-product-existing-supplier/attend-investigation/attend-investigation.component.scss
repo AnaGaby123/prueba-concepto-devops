@@ -1,0 +1,40 @@
+@use 'base' as s;
+
+:host {
+  @include s.generic-main-component-structure;
+
+  #attend-investigation {
+    & > .footer {
+      & > div {
+        & > label {
+          line-height: initial;
+        }
+
+        & > .title {
+          @include s.Roboto-Bold;
+          @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+          white-space: pre;
+        }
+
+        & > label:nth-of-type(2) {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize12to14, normal, s.$pqBlack2);
+        }
+      }
+
+      & > .buttons {
+        @include s.flexRow;
+        flex: 1;
+        justify-content: space-between;
+
+        & > .enable {
+          @include s.pqfButton();
+        }
+
+        & > .disable {
+          @include s.pqfDisableButton();
+        }
+      }
+    }
+  }
+}

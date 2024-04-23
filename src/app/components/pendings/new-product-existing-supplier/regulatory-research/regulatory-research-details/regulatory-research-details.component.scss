@@ -1,0 +1,241 @@
+@use 'base' as s;
+
+:host {
+  @include s.absolute100;
+  @include s.flexColumn;
+  @include s.reset-line-height;
+  overflow: hidden;
+}
+
+#regulatory-research-details {
+  display: grid;
+  flex: 1;
+  grid-template-columns: repeat(12, 1fr);
+  grid-column-gap: 20px;
+  overflow: hidden;
+
+  & > .list {
+    @include s.flexColumn;
+    grid-column-end: span 3;
+
+    & > .filters {
+      @include s.flexColumn;
+      border-bottom: 1px solid s.$dark-proquifa-d;
+      padding: 8px 8px 16px 8px;
+      row-gap: 20px;
+
+      & > .title {
+        & > label {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-roboto_bold,
+            $font-weight: s.$font-weight-bold,
+            $font-size-map: s.$responsive-font-20-20
+          );
+        }
+      }
+
+      & > .options {
+        padding-top: 4px;
+      }
+    }
+
+    & > .list-items {
+      @include s.flexColumn;
+      flex: 1;
+
+      & > virtual-scroller {
+        @include s.absolute100;
+        @include s.fixVirtualScroller;
+
+        ::ng-deep .scrollable-content {
+          scrollbar-gutter: stable;
+
+          & > .item {
+            @include s.flexRow;
+            @include s.cursor-pointer;
+            background-color: s.$dark-proquifa-f;
+            border-bottom: 1px solid s.$dark-proquifa-d;
+
+            &.selected {
+              background-color: s.$main-proquifa-f;
+              border-bottom: 1px solid s.$pqGreen;
+
+              & > .indicator {
+                background-color: s.$pqGreen;
+              }
+            }
+
+            & > .indicator {
+              @include s.flexRow;
+              flex: 0 0 12px;
+            }
+
+            & > .item-content {
+              @include s.flexColumn;
+              flex: 1;
+              padding: 16px 24px;
+              row-gap: 12px;
+              overflow: hidden;
+
+              & > .index {
+                @include s.flexRow;
+                align-items: center;
+
+                & > .number {
+                  @include s.responsive-font-format($font-size-map: s.$responsive-font-16-16);
+                }
+
+                & > .cat {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font-family-roboto_bold,
+                    $font-weight: s.$font-weight-bold,
+                    $font-size-map: s.$responsive-font-20-20
+                  );
+                  @include s.multiLineTextTruncateSinHeight(1, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+                  white-space: pre;
+                }
+
+                & > .product {
+                  @include s.multiLineTextTruncateSinHeight();
+
+                  & > label {
+                    @include s.responsive-font-format(
+                      $font-family: s.$font-family-roboto_bold,
+                      $font-weight: s.$font-weight-bold,
+                      $font-size-map: s.$responsive-font-16-16,
+                      $color: s.$pqGreen
+                    );
+                  }
+                }
+              }
+
+              & > .product {
+                & > label {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font-family-roboto_bold,
+                    $font-weight: s.$font-weight-bold,
+                    $font-size-map: s.$responsive-font-16-16,
+                    $color: s.$pqGreen
+                  );
+                }
+              }
+
+              & > .pieces {
+                @include s.flexColumn;
+
+                & > .black {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font-family-roboto_bold,
+                    $font-weight: s.$font-weight-bold,
+                    $font-size-map: s.$responsive-font-16-16
+                  );
+                }
+
+                & > .blue {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font-family-roboto_bold,
+                    $font-weight: s.$font-weight-bold,
+                    $font-size-map: s.$responsive-font-16-16,
+                    $color: s.$complementario-c
+                  );
+                }
+              }
+
+              & > .date {
+                @include s.flexRow;
+
+                & > label {
+                  @include s.responsive-font-format($font-size-map: s.$responsive-font-14-14);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  & > .content {
+    @include s.flexColumn;
+    flex: 1;
+    grid-column-end: span 9;
+    overflow: hidden;
+    position: relative;
+
+    & > .router {
+      @include s.flexRow;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    & > .footer {
+      @include s.flexRow;
+      border-top: 1px solid s.$dark-proquifa-d;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      padding: 12px 19px 0 19px;
+
+      & > label {
+        @include s.responsive-font-format(
+          $font-family: s.$font-family-roboto_medium,
+          $font-weight: s.$font-weight-medium,
+          $font-size-map: s.$responsive-font-14-14,
+          $color: s.$pqGreen
+        );
+        height: max-content;
+        cursor: pointer;
+        text-decoration: underline;
+      }
+
+      & > .buttons {
+        @include s.flexRow;
+        column-gap: 105px;
+        $max-width-map: (
+          'base': 205px,
+          'macBookAir': 345px,
+        );
+
+        & > .edit {
+          @include s.pqf-button($version: s.$full, $type: s.$secondary, $height: s.$short, $width: s.$md);
+        }
+
+        & > .cancel {
+          @include s.pqf-button($version: s.$empty, $type: s.$secondary, $height: s.$short, $width: s.$md);
+        }
+
+        & > .save {
+          @include s.pqf-button($version: s.$full, $type: s.$primary, $height: s.$short, $width: s.$md);
+        }
+
+        & .btn-disable {
+          @include s.pqf-button($version: s.$full, $type: s.$disable, $height: s.$short, $width: s.$md);
+        }
+      }
+    }
+  }
+
+  @include s.media-query(s.$standard) {
+    grid-template-columns: repeat(10, 1fr);
+    & > .list {
+      & > .filters {
+        padding: 16px;
+      }
+
+      & > .list-items {
+        & > virtual-scroller {
+          ::ng-deep .scrollable-content {
+            & > .item {
+              & > .item-content {
+                padding: 22px 32px;
+                row-gap: 16px;
+              }
+            }
+          }
+        }
+      }
+    }
+    & > .content {
+      grid-column-end: span 7;
+    }
+  }
+}

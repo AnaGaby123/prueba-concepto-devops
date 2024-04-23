@@ -1,0 +1,203 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  $left-container-flex: (
+    'base': 560px,
+    'macBookAir': 680px,
+  );
+  $graphics-padding: (
+    'base': 25px 30px,
+    'macBookAir': 30px 40px,
+  );
+  $graphics-structure: (
+    'top': 1,
+    'bottom': 2,
+  );
+  $graphics-gap: (
+    'base': 35px 20px,
+    'macBookAir': 40px 35px,
+  );
+  // minx que coloca la estructura del DashBoard
+  @include s.pending-dashboard-structure($left-container-flex, $graphics-padding, $graphics-structure, $graphics-gap);
+
+  & > #plan-collection-list {
+    & > .left-container {
+      & > .filters {
+        & > .filter-by-type {
+          flex: 0 0 40%;
+        }
+
+        & > .filter-by-date {
+          flex: 0 0 60%;
+        }
+      }
+
+      & > .list-container {
+        & > virtual-scroller {
+          @include s.absolute100;
+
+          .item {
+            @include s.flexRowNoWrap;
+            border-bottom: 1px solid s.$pqGray2;
+            padding: 15px 0 15px 15px;
+            width: 100%;
+            cursor: pointer;
+
+            & * {
+              cursor: pointer;
+            }
+
+            &:hover {
+              background-color: s.$pqGray2;
+            }
+
+            & > .index {
+              @include s.flexRowNoWrap;
+              @include s.absoluteTop;
+              justify-content: flex-start;
+              padding-left: 10px;
+
+              & > label {
+                @include s.escaledFontFormat(s.$textSize21to28, regular, s.$pqBlack2);
+                @include s.Roboto-Regular;
+                @include s.multiLineTextTruncateSinHeight(1, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+                flex: 1;
+              }
+            }
+            & > .body {
+              @include s.absoluteTop;
+              @include s.flexRowWrap;
+              padding-left: 20px;
+
+              & > .name {
+                @include s.flexRowNoWrap;
+                margin-bottom: 5px;
+                width: 100%;
+
+                & > label {
+                  @include s.escaledFontFormat(s.$textSize21to28, bold, s.$pqGreen);
+                  @include s.Roboto-Bold;
+                  @include s.multiLineTextTruncateSinHeight(1, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+                }
+              }
+
+              & > .classification {
+                @include s.flexRowNoWrap;
+                margin-bottom: 2px;
+                margin-top: 3px;
+                width: 100%;
+
+                & > label {
+                  @include s.Roboto-Bold;
+                  @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+                  @include s.multiLineTextTruncateSinHeight(1, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+                  white-space: pre;
+                }
+              }
+
+              & > .cant {
+                @include s.flexRowNoWrap;
+                width: 100%;
+
+                & > label {
+                  @include s.escaledFontFormat(s.$textSize15to19, normal, s.$pqBlack2);
+                  @include s.Roboto-Regular;
+                  @include s.multiLineTextTruncateSinHeight(1, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+                  white-space: pre;
+                }
+              }
+
+              & > .last-file {
+                @include s.flexRow;
+                flex-wrap: wrap;
+                justify-content: space-between;
+
+                & > .days {
+                  @include s.flexRowNoWrap;
+                  @include s.absoluteCenter;
+                  margin-top: 7px;
+
+                  & > .day {
+                    @include s.escaledFontFormat(s.$textSize14to17, bold, s.$pqGreen);
+                    @include s.Roboto-Bold;
+                    margin-right: 3px;
+                    text-transform: uppercase;
+                  }
+
+                  & > .result {
+                    @include s.escaledFontFormat(s.$textSize14to17, normal, s.$pqBlack2);
+                    @include s.Roboto-Regular;
+                    margin-right: 8px;
+                  }
+                }
+
+                & > .date {
+                  @include s.flexRowNoWrap;
+                  @include s.absoluteCenter;
+                  margin-top: 5px;
+
+                  & > .fee {
+                    @include s.escaledFontFormat(s.$textSize14to17, normal, s.$pqGreen2);
+                    @include s.Roboto-Regular;
+                    margin-right: 5px;
+                  }
+
+                  & > .green {
+                    color: s.$pqGreen2;
+                  }
+
+                  & > .red {
+                    color: s.$pqTextAlert;
+                  }
+                }
+              }
+            }
+
+            & > .arrow {
+              @include s.right-arrow-in-item-list;
+            }
+          }
+        }
+      }
+
+      & > .footer {
+        @include s.flexRow;
+        border-top: 1px solid s.$pqBlack2;
+        justify-content: space-between;
+
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+          @include s.flexRow;
+        }
+      }
+    }
+
+    & > .right-container {
+      & > app-doughnut-chart {
+        grid-column-end: span 2;
+        overflow: hidden;
+      }
+
+      & > app-bar-chart {
+        overflow: hidden;
+      }
+
+      & > .loading {
+        grid-area: 1/1/3/3;
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > #plan-collection-list {
+      & > .left-container {
+        padding: 20px;
+      }
+    }
+  }
+}

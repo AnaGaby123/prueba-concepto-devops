@@ -1,0 +1,58 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  & > .provider-address-container {
+    background-color: rgba(s.$pqGreen, 0.05);
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: auto;
+    grid-column-gap: 20px;
+    grid-row-gap: 24px;
+    padding: 20px;
+
+    & > .title {
+      @include s.escaledFontFormat(s.$textSize15to19, bold, s.$pqBlack2);
+      @include s.Roboto-Bold;
+      grid-column-end: span 8;
+    }
+    & > .input-street {
+      grid-column-end: span 5;
+    }
+    & > .input-country,
+    & > .input-state,
+    & > .input-colony,
+    & > .input-municipality,
+    & > .input-city {
+      grid-column-end: span 2;
+    }
+    & > .search-bar {
+      align-self: flex-end;
+      grid-column-end: span 4;
+    }
+    & > .clean-form-button {
+      align-items: center;
+      display: flex;
+      grid-column-end: span 8;
+      justify-content: flex-end;
+
+      & .enable {
+        $max-width-map: (
+          'base': 300px,
+          'macBookAir': 310px,
+        );
+        @include s.pqfButton($max-width-map: $max-width-map);
+      }
+      & .disabled {
+        $max-width-map: (
+          'base': 300px,
+          'macBookAir': 310px,
+        );
+        @include s.pqfDisableButton($max-width-map: $max-width-map);
+      }
+    }
+  }
+}

@@ -1,0 +1,31 @@
+@use 'base' as s;
+
+:host {
+  @include s.absolute100;
+
+  & > #load-balance-in-favor-container {
+    @include s.absolute100;
+
+    & > .header-bar {
+      width: 100%;
+      height: 50px;
+    }
+
+    & > .outlet {
+      width: 100%;
+      height: calc(100% - 50px);
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > #load-balance-in-favor-container {
+      & > .header-bar {
+        height: 64px;
+      }
+
+      & > .outlet {
+        height: calc(100% - 64px);
+      }
+    }
+  }
+}

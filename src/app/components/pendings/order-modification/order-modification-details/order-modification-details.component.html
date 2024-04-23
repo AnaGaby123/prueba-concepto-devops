@@ -1,0 +1,1475 @@
+<div id="order-modification-details">
+  <div class="title">
+    <label class="black">{{ (customer$ | async)?.TotalPedidos }} pedidos · </label>
+    <div>
+      <img src="assets/Images/icono-sin-incidencia.svg" alt="" />
+      <label class="green">{{ (customer$ | async)?.PedidosSinIncidencias }} Sin Incidencias · </label>
+    </div>
+    <div>
+      <img src="assets/Images/icono-incidencia.svg" alt="" />
+      <label class="red">{{ (customer$ | async)?.PedidosConIncidencias }} con Incidencias</label>
+    </div>
+  </div>
+  <div class="search">
+    <app-hamburger-menu
+      [value]="(filterSelected$ | async).value"
+      [options]="filterList$ | async"
+      (valueEmit)="setFilter($event)"
+    >
+    </app-hamburger-menu>
+
+    <app-search [placeholder]="'# Pedido'" (textSearch)="handleKeySearch($event)"></app-search>
+  </div>
+  <div class="carousel">
+    <app-pqf-card [enableMessage]="true" [options]="selectDataCard$ | async" (handleOptionSelected)="setOrder($event)">
+    </app-pqf-card>
+  </div>
+  <div class="content">
+    <div class="left-container" *ngIf="(dataLoading$ | async) === 3 && !lodashIsEmpty(selectDataCard$ | async)">
+      <div class="fixed">
+        <div class="client-title">
+          <label>#1 · </label>
+          <label class="underline">Pedido · {{ (selectedOrder$ | async)?.NumeroOrdenDeCompra }}</label>
+        </div>
+        <div class="client">
+          <div>
+            <img src="assets/Images/clientes/logo_proquifa_hover.svg" alt="" />
+          </div>
+          <div class="client-info">
+            <div>
+              <label>{{ (purchaseOrderDetails$ | async)?.vCliente?.Nombre }}</label>
+            </div>
+            <label>{{ 'closeOffer.client' | translate }} · {{ (purchaseOrderDetails$ | async)?.vCliente?.NivelIngreso }}</label>
+          </div>
+        </div>
+        <div class="extra-data">
+          <div
+            [ngClass]="{
+              ocean: (purchaseOrderDetails$ | async)?.DireccionClienteDetalle?.EntregaDireccionCliente?.AceptaParciales,
+              red: !(purchaseOrderDetails$ | async)?.DireccionClienteDetalle?.EntregaDireccionCliente?.AceptaParciales
+            }"
+          >
+            <label>{{
+              (purchaseOrderDetails$ | async)?.DireccionClienteDetalle?.EntregaDireccionCliente?.AceptaParciales
+                ? ('checkout.acceptPartials' | translate)
+                : ('checkout.dontAcceptPartials' | translate)
+            }}</label>
+          </div>
+        </div>
+      </div>
+      <div class="scroll">
+        <div class="delivery-data">
+          <div>
+            <label>{{ 'checkout.deliveryData' | translate }}</label>
+          </div>
+          <div class="delivery-data-container">
+            <app-drop-down-list
+              [label]="'checkout.destiny' | translate"
+              [items]="destinies$ | async"
+              [itemSelected]="destinySelected$ | async"
+              (valueDropList)="setDestiny($event)"
+            >
+            </app-drop-down-list>
+            <app-drop-down-list
+              [capitalize]="false"
+              [heightLi]="(viewType$ | async) === 'macBookAir' ? '71px' : '63px'"
+              [height]="(viewType$ | async) === 'macBookAir' ? '71px' : '63px'"
+              [items]="addresses$ | async"
+              [itemSelected]="(purchaseOrderDetails$ | async)?.selectedClientAddresses"
+              [label]="'checkout.address' | translate"
+              [multiline]="'three'"
+              (valueDropList)="selectClientAddress($event)"
+            >
+            </app-drop-down-list>
+            <div class="routes">
+              <div>
+                <label>{{ 'checkout.route' | translate }}: </label>
+                <label>{{ (purchaseOrderDetails$ | async)?.DireccionClienteDetalle?.catRutaEntrega?.RutaEntrega }}</label>
+              </div>
+              <div>
+                <label>{{ 'checkout.zone' | translate }}: </label>
+                <label>{{ (purchaseOrderDetails$ | async)?.DireccionClienteDetalle?.catZona?.Zona }}</label>
+              </div>
+            </div>
+            <div class="green-title">
+              <label (click)="handlePopUps({pop: SCHEDULES_POP, isOpen: true, target: $event.target})">{{
+                'checkout.seeDeliverySchedules' | translate
+              }}</label>
+              <div class="schedules-pop">
+                <app-custom-position-pop-up
+                  *ngIf="popUps.schedules.isOpen"
+                  [popUpPosition]="'bottom-start'"
+                  [target]="popUps.schedules.target"
+                  [minWidth]="'200px'"
+                  [maxWidth]="'400px'"
+                  [minHeight]="'80px'"
+                  [maxHeight]="'200px'"
+                  [closeButton]="false"
+                  [borderRadius]="(viewType$ | async) === 'macBookAir' ? '23px' : '18px'"
+                  (closeEmitter)="
+                    handlePopUps({pop: SCHEDULES_POP, isOpen: false, target: popUps.schedules.target, emit: $event})
+                  "
+                >
+                  <div class="schedules">
+                    <ul>
+                      <li *ngFor="let schedule of schedules$ | async">{{ schedule }}</li>
+                    </ul>
+                  </div>
+                </app-custom-position-pop-up>
+              </div>
+            </div>
+            <div class="black-title">
+              <label>{{ 'checkout.additionalComments' | translate }}</label>
+            </div>
+            <div class="comments" *ngIf="!lodashIsEmpty((purchaseOrderDetails$ | async)?.ComentariosAdicionales)">
+              <div *ngFor="let comment of (purchaseOrderDetails$ | async)?.ComentariosAdicionales; let index = i">
+                <label
+                  ><span>#{{ index + 1 }} </span>· {{ comment.ComentariosAdicionales }}
+                </label>
+              </div>
+            </div>
+            <div class="without-results" *ngIf="lodashIsEmpty((purchaseOrderDetails$ | async)?.ComentariosAdicionales)">
+              <app-without-results [title]="'common.withoutComments' | translate"></app-without-results>
+            </div>
+          </div>
+          <!--<div class='without-results'>
+            <app-without-results [title]="'checkout.withoutDeliveryAddresses' | translate">
+            </app-without-results>
+            <label>{{ 'checkout.linkToClientCatalogs' | translate }}</label>
+          </div>-->
+          <div class="black-title">
+            <label>{{ 'checkout.destinyOfDeliveryNotifications' | translate }}</label>
+            <app-drop-list-contact
+              [options]="contacts$ | async"
+              [minHeight]="38"
+              (emitValue)="addEmail($event)"
+            ></app-drop-list-contact>
+          </div>
+          <div
+            class="addressee-container"
+            *ngIf="!lodashIsEmpty((purchaseOrderDetails$ | async)?.ListaContactoNotificadoEntrega)"
+          >
+            <div *ngFor="let item of (purchaseOrderDetails$ | async)?.ListaContactoNotificadoEntrega">
+              <label>{{ (item.m_Item2?.CorreoElectronico)[0]?.Correo }}</label>
+              <img (click)="deleteEmail(item)" src="assets/Images/cerrar.svg" alt="" />
+            </div>
+          </div>
+          <div
+            class="without-addressees"
+            *ngIf="lodashIsEmpty((purchaseOrderDetails$ | async)?.ListaContactoNotificadoEntrega)"
+          >
+            <app-without-results [title]="'common.withoutAddressees' | translate"></app-without-results>
+          </div>
+          <div class="black-title">
+            <label>{{ 'checkout.deliveryComments' | translate }}:</label>
+          </div>
+          <div>
+            <app-generic-text-area
+              [height]="'93px'"
+              [value]="(purchaseOrderDetails$ | async)?.tpPedido?.ComentariosEntrega"
+              (emitData)="setTPPedidoValue($event, 'ComentariosEntrega')"
+            >
+            </app-generic-text-area>
+          </div>
+        </div>
+        <div class="contact-data">
+          <div>
+            <label>{{ 'closeOffer.contactData' | translate }}</label>
+          </div>
+          <div class="image">
+            <img src="assets/Images/contacto.svg" alt="contact" />
+            <label class="bold">
+              {{ (purchaseOrderDetails$ | async)?.ContactoDetalleObj?.Nombres }}
+              {{ (purchaseOrderDetails$ | async)?.ContactoDetalleObj?.ApellidoPaterno }}
+              {{ (purchaseOrderDetails$ | async)?.ContactoDetalleObj?.ApellidoMaterno }}
+            </label>
+          </div>
+          <div class="image" *ngIf="((purchaseOrderDetails$ | async)?.ContactoDetalleObj?.CorreoElectronico)[0]; let email">
+            <img src="assets/Images/quotation/mail.svg" alt="mail" />
+            <label>{{ email.Correo }}</label>
+          </div>
+          <div class="image" *ngIf="((purchaseOrderDetails$ | async)?.ContactoDetalleObj?.NumeroTelefonico)[0]; let tel">
+            <img src="assets/Images/quotation/phone.svg" alt="phone" />
+            <label>{{ tel.Numero }} </label>
+            <label *ngIf="tel.Extension"> · Ext. {{ tel.Extension }} </label>
+          </div>
+          <div class="data">
+            <label>{{ 'closeOffer.dept' | translate }}: </label>
+            <label>{{ (purchaseOrderDetails$ | async)?.ContactoDetalleObj?.Departamento }}</label>
+          </div>
+          <div class="data">
+            <label>{{ 'closeOffer.position' | translate }}: </label>
+            <label>{{ (purchaseOrderDetails$ | async)?.ContactoDetalleObj?.Puesto }}</label>
+          </div>
+          <div class="data">
+            <label>{{ 'closeOffer.decisionLevel' | translate }}: </label>
+            <label>{{ (purchaseOrderDetails$ | async)?.ContactoDetalleObj?.NivelDecision }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="loading-left" *ngIf="(dataLoading$ | async) === 1">
+      <app-loading></app-loading>
+    </div>
+    <div class="center-container" *ngIf="(dataLoading$ | async) === 3 && !lodashIsEmpty(selectDataCard$ | async)">
+      <div class="title">
+        <label>{{ 'checkout.invoicing' | translate }}</label>
+      </div>
+      <div
+        class="credit"
+        [ngClass]="{
+          red: (purchaseOrderDetails$ | async)?.catCondicionesDePago?.SinCredito,
+          green: !(purchaseOrderDetails$ | async)?.catCondicionesDePago?.SinCredito
+        }"
+      >
+        <label>{{
+          (purchaseOrderDetails$ | async)?.catCondicionesDePago?.SinCredito
+            ? ('checkout.clientWithoutCredit' | translate)
+            : ('checkout.clientWithCredit' | translate)
+        }}</label>
+      </div>
+      <div
+        class="credit"
+        *ngIf="
+          (purchaseOrderDetails$ | async)?.tpPedido?.FacturaPorAdelantado ||
+          (purchaseOrderDetails$ | async)?.tpPedido?.EntregaConRemision
+        "
+        [ngClass]="'ocean'"
+      >
+        <label>{{
+          (purchaseOrderDetails$ | async)?.tpPedido?.FacturaPorAdelantado
+            ? ('checkout.invoiceInAdvance' | translate)
+            : ('checkout.deliveryWithReferral' | translate)
+        }}</label>
+      </div>
+      <div class="data-container">
+        <div class="data">
+          <label>{{ 'checkout.fiscalName' | translate }}</label>
+          <label>{{
+            (purchaseOrderDetails$ | async)?.DatosFacturacionClienteDetallePorDefecto?.DatosFacturacionCliente?.RazonSocial
+          }}</label>
+        </div>
+        <div class="data">
+          <label>{{ 'common.rfc' | translate }}</label>
+          <label>{{
+            (purchaseOrderDetails$ | async)?.DatosFacturacionClienteDetallePorDefecto?.DatosFacturacionCliente?.RFC
+          }}</label>
+        </div>
+        <div class="data">
+          <label>{{ 'common.coin' | translate }}</label>
+          <label>{{ (purchaseOrderDetails$ | async)?.catMoneda?.Moneda }}</label>
+        </div>
+        <div class="data">
+          <label>{{ 'checkout.whoBills' | translate }}</label>
+          <label>{{ (purchaseOrderDetails$ | async)?.EmpresaFactura?.RazonSocial }}</label>
+        </div>
+        <div class="data">
+          <label>{{ 'checkout.cfdiUsage' | translate }}</label>
+          <label
+            *ngIf="(editDataRequest$ | async) && (editDataRequestAuthorized$ | async); else inactiveCfdi"
+            [ngClass]="(editDataRequest$ | async) && (editDataRequestAuthorized$ | async) && 'active'"
+            (click)="handlePopUps({pop: USAGE_POP, isOpen: true, target: $event.target})"
+          >
+            {{ (purchaseOrderDetails$ | async)?.catUsoCFDI?.ClaveUso }}
+            - {{ (purchaseOrderDetails$ | async)?.catUsoCFDI?.Uso }}
+          </label>
+          <ng-template #inactiveCfdi>
+            <label>
+              {{ (purchaseOrderDetails$ | async)?.catUsoCFDI?.ClaveUso }} -
+              {{ (purchaseOrderDetails$ | async)?.catUsoCFDI?.Uso }}
+            </label>
+            <label class="absolute" (click)="openCodePopUp(proceduresTypes.editData)">{{
+              'checkout.editData' | translate
+            }}</label>
+          </ng-template>
+        </div>
+        <div class="data">
+          <label>{{ 'checkout.payMethod' | translate }}</label>
+          <label
+            *ngIf="(editDataRequest$ | async) && (editDataRequestAuthorized$ | async); else inactivePayment"
+            [ngClass]="(editDataRequest$ | async) && (editDataRequestAuthorized$ | async) && 'active'"
+            (click)="handlePopUps({pop: PAYMENT_POP, isOpen: true, target: $event.target})"
+            >{{ (purchaseOrderDetails$ | async)?.catMetodoDePagoCFDI?.MetodoDePagoCFDI }}</label
+          >
+          <ng-template #inactivePayment>
+            <label>
+              {{ (purchaseOrderDetails$ | async)?.catMetodoDePagoCFDI?.MetodoDePagoCFDI }}
+            </label>
+          </ng-template>
+        </div>
+        <div class="data">
+          <label>{{ 'checkout.paymentConditions' | translate }}</label>
+          <label>{{ (purchaseOrderDetails$ | async)?.catCondicionesDePago?.CondicionesDePago }}</label>
+        </div>
+        <div class="data">
+          <label>{{ 'checkout.invoiceComments' | translate }}</label>
+          <app-generic-text-area
+            [enableEdit]="false"
+            [height]="'100%'"
+            [value]="(purchaseOrderDetails$ | async)?.tpPedido?.ComentariosFacturacion"
+          >
+          </app-generic-text-area>
+        </div>
+      </div>
+    </div>
+    <div class="loading-center" *ngIf="(dataLoading$ | async) === 1">
+      <app-loading></app-loading>
+    </div>
+    <div class="right-container">
+      <div class="header">
+        <div *ngIf="!lodashIsEmpty(selectDataCard$ | async)">
+          <div>
+            <label *ngIf="(selectedOrder$ | async)?.IdArchivo"
+              >OC {{ (purchaseOrderDetails$ | async)?.tpPedido?.ReferenciaCliente }}</label
+            >
+            <div class="red" *ngIf="!(selectedOrder$ | async)?.IdArchivo">
+              <label class="title" (click)="handlePopUps({pop: REPLACE_OC_POP, isOpen: true, target: popUps.replaceOc.target})"
+                >SIN OC</label
+              >
+              <div class="tooltip-text">
+                <p>Agregar OC</p>
+              </div>
+            </div>
+            <img
+              src="assets/Images/replace.svg"
+              alt=""
+              *ngIf="(selectedOrder$ | async)?.IdArchivo"
+              (click)="handlePopUps({pop: REPLACE_OC_POP, isOpen: true, target: popUps.replaceOc.target})"
+            />
+            <img
+              class="temp-oc"
+              src="assets/Images/labels/oc_temporal.svg"
+              alt=""
+              *ngIf="!(selectedOrder$ | async)?.IdArchivo"
+            />
+          </div>
+          <label class="total"
+            >VALOR TOTAL
+            {{
+              (selectedOrder$ | async)?.ClaveMoneda === CURRENCY_USD
+                ? ((selectedOrder$ | async)?.TotalUSD | currency: 'USD':'symbol':'1.2-2')
+                : ((selectedOrder$ | async)?.TotalMXN | currency: 'USD':'symbol':'1.2-2')
+            }}
+            {{ (selectedOrder$ | async)?.ClaveMoneda }}
+            <span>· {{ (selectedOrder$ | async)?.Productos }} {{ 'common.products' | translate }}</span>
+          </label>
+        </div>
+        <!--        TODO: SE QUITO LA FUNCIONALIDAD DE AGREGAR FLETES (SUJETO A CAMBIOS)-->
+        <!--        <div *ngIf="!lodash.isEmpty(selectDataCard$ | async)">-->
+        <!--          <button [ngClass]="'active'" (click)="openFreight(true)">{{-->
+        <!--            (selectedPurchaseOrder$ | async)?.IdFlete === null-->
+        <!--              ? ('orderModification.addFreight' | translate)-->
+        <!--              : ('quotation.details.editFreight' | translate)-->
+        <!--          }}</button>-->
+        <!--        </div>-->
+      </div>
+      <div class="table-container">
+        <div class="table">
+          <div class="header">
+            <div class="check-column"></div>
+            <div class="number-column">
+              <label>#</label>
+            </div>
+            <div class="incidence-column"></div>
+            <div class="type-column"></div>
+            <div class="cat-column" *ngIf="(viewType$ | async) === 'macBookAir'">
+              <label class="textUpperCase">#{{ 'closeOffer.tableLabels.catalogNumber' | translate }}</label>
+            </div>
+            <div class="concept-column">
+              <label>{{ 'closeOffer.tableLabels.concept' | translate }}</label>
+            </div>
+            <div class="days-column">
+              <label>{{ 'closeOffer.tableLabels.tee' | translate }} </label>
+              <label>{{ 'closeOffer.tableLabels.days' | translate }}</label>
+            </div>
+            <div class="pieces-column">
+              <label>{{ 'closeOffer.tableLabels.quantity' | translate }}</label>
+              <label>{{ 'closeOffer.tableLabels.pieces' | translate }}</label>
+            </div>
+            <div class="cat-price-column">
+              <label>{{ 'closeOffer.tableLabels.unitPrice' | translate }}</label>
+            </div>
+            <div class="subtotal-column">
+              <label>{{ 'closeOffer.tableLabels.subtotal' | translate }}</label>
+            </div>
+            <div class="iva-column">
+              <label>{{ 'closeOffer.tableLabels.iva' | translate }}</label>
+            </div>
+            <div class="total-column">
+              <label>{{ 'closeOffer.tableLabels.total' | translate }}</label>
+            </div>
+            <div class="percentage-column"></div>
+            <div class="status-column"></div>
+            <div class="comments-column"></div>
+            <div class="delete-column"></div>
+          </div>
+          <div class="body">
+            <virtual-scroller
+              *ngIf="(itemsLoading$ | async) === 3 && !lodashIsEmpty(items$ | async)"
+              [items]="items$ | async"
+              (vsUpdate)="items = $event"
+              [bufferAmount]="0"
+              [enableUnequalChildrenSizes]="true"
+            >
+              <div
+                class="item"
+                *ngFor="let item of items; trackBy: handleTrackByItem"
+                (click)="handlePopUps({pop: SEE_ENTRY_POP, isOpen: true, target: null, item: item})"
+              >
+                <div class="top">
+                  <div class="check-column">
+                    <app-check-box
+                      [check]="item.isSelected"
+                      (click)="handleStopEvents($event)"
+                      (event)="setCheckValue($event, item)"
+                    >
+                    </app-check-box>
+                  </div>
+                  <div class="number-column">
+                    <label>{{ item.Numero }}</label>
+                  </div>
+                  <div class="incidence-column">
+                    <img src="assets/Images/icono-incidencia.svg" alt="" *ngIf="item.ConIncidencias" />
+                  </div>
+                  <div class="type-column" [ngSwitch]="item.TipoPartidaTramitacion">
+                    <img *ngSwitchCase="'Ahorro'" src="assets/Images/pre-processing/ahorro.svg" alt="" />
+                    <img *ngSwitchCase="'Alternativa'" src="assets/Images/pre-processing/alternativas.svg" alt="" />
+                    <img *ngSwitchCase="'Complementaria'" src="assets/Images/pre-processing/complementarias.svg" alt="" />
+                    <img *ngSwitchCase="'Original'" src="assets/Images/pre-processing/originales.svg" alt="" />
+                    <img *ngSwitchCase="'Promocion'" src="assets/Images/pre-processing/promocion.svg" alt="" />
+                    <img *ngSwitchCase="'Programada'" src="assets/Images/pre-processing/promocion.svg" alt="" />
+                  </div>
+                  <div class="cat-column" *ngIf="(viewType$ | async) === 'macBookAir'">
+                    <label>{{ item.Catalogo }}</label>
+                  </div>
+                  <div class="concept-column">
+                    <div class="name">
+                      <label
+                        ><span *ngIf="(viewType$ | async) !== 'macBookAir'">#CAT · {{ item.Catalogo }} · </span
+                        >{{ item.Descripcion }}
+                      </label>
+                    </div>
+                    <div class="other-data">
+                      <label class="brand">{{ item.NombreMarca }} </label>
+                      <label
+                        *ngIf="item.TieneCotizacion"
+                        [ngClass]="{
+                          'current-quotation': item.Vigente,
+                          'expiring-quotation': !item.Vigente
+                        }"
+                        (click)="
+                          openLinked(
+                            item.CotizacionVinculada > 1 ? LINKED_POP : VIEW_FILE,
+                            true,
+                            $event.target,
+                            null,
+                            item,
+                            $event
+                          )
+                        "
+                        >· {{ item.CotizacionVinculada }} Cot.
+                        {{
+                          item.CotizacionVinculada === 1
+                            ? ('checkout.linkedQuotation' | translate)
+                            : ('checkout.linkedQuotations' | translate)
+                        }}
+                        ·
+                        <span>{{ item.Vigente ? ('checkout.current' | translate) : ('checkout.expiring' | translate) }}</span>
+                      </label>
+                      <label class="in-contract" *ngIf="item.TieneContrato">{{ 'preProcessing.inContract' | translate }}</label>
+                    </div>
+                  </div>
+                  <div class="days-column">
+                    <label>{{ item.FechaEstimadaEntrega | dateFormatSlashShort }}</label>
+                    <label [ngClass]="'blue'" *ngIf="item.Programada">{{ 'checkout.programmingSingle' | translate }}</label>
+                    <label [ngClass]="'red'" *ngIf="!item.Programada && item.TieneFleteExpress">{{
+                      'checkout.expressFreight' | translate
+                    }}</label>
+                    <label [ngClass]="'green'" *ngIf="!item.Programada && !item.TieneFleteExpress">{{
+                      'checkout.regular' | translate
+                    }}</label>
+                  </div>
+                  <div class="pieces-column">
+                    <label>{{ item.NumeroDePiezas }}</label>
+                  </div>
+                  <div class="cat-price-column" [ngClass]="item.DeCatalogo && 'catalog'">
+                    <label
+                      >{{ item.PrecioUnitario | currency: (selectedOrder$ | async)?.ClaveMoneda:'symbol-narrow':'1.2-2' }}
+                      {{ (selectedOrder$ | async)?.ClaveMoneda }}</label
+                    >
+                    <label *ngIf="item.DeCatalogo">{{ 'checkout.catalogPrice' | translate }}</label>
+                  </div>
+                  <div class="subtotal-column">
+                    <label
+                      >{{
+                        item.PrecioUnitario * item.NumeroDePiezas
+                          | currency: (selectedOrder$ | async)?.ClaveMoneda:'symbol-narrow':'1.2-2'
+                      }}
+                      {{ (selectedOrder$ | async)?.ClaveMoneda }}</label
+                    >
+                  </div>
+                  <div class="iva-column">
+                    <label
+                      >{{ item.MontoIVA | currency: (selectedOrder$ | async)?.ClaveMoneda:'symbol-narrow':'1.2-2' }}
+                      {{ (selectedOrder$ | async)?.ClaveMoneda }}</label
+                    >
+                  </div>
+                  <div class="total-column">
+                    <label
+                      >{{ item.Monto | currency: (selectedOrder$ | async)?.ClaveMoneda:'symbol-narrow':'1.2-2' }}
+                      {{ (selectedOrder$ | async)?.ClaveMoneda }}</label
+                    >
+                  </div>
+                  <div class="percentage-column tooltip">
+                    <img [src]="'assets/Images/quotation/price_up.svg'" alt="" />
+                    <label>{{ item.PorcentajeSobrePrecioLista * 100 | currency: 'USD':'':'1.0-0' }}%</label>
+                    <div class="tooltip-text">
+                      <p>{{ 'closeOffer.tooltipUp' | translate }}</p>
+                    </div>
+                  </div>
+                  <div class="status-column">
+                    <label
+                      [ngClass]="{
+                        'olive-dark': item.EstadoPartida === 'En inspección',
+                        blue: item.EstadoPartida === 'Pedido',
+                        ocean: item.EstadoPartida === 'Compra',
+                        green: item.EstadoPartida === 'Entregado',
+                        purple: item.EstadoPartida === 'Por Embalar',
+                        gold: item.EstadoPartida === 'En Transito'
+                      }"
+                      >{{ item.EstadoPartida }}</label
+                    >
+                  </div>
+                  <div class="comments-column">
+                    <img
+                      [src]="
+                        item.NotasModificacion ? 'assets/Images/close-offer/comments-ocean.svg' : 'assets/Images/new_note.svg'
+                      "
+                      alt=""
+                      (click)="handleAuxOpenPops($event, {pop: SEE_NOTES_POP, isOpen: true, item: item})"
+                    />
+                  </div>
+                  <div class="delete-column">
+                    <img
+                      *ngIf="(validatorForCancel$ | async) && (items$ | async).length > 1; else blockCanceItem"
+                      src="assets/Images/red_x.svg"
+                      alt=""
+                      class="active"
+                      (click)="
+                        handleAuxOpenPops($event, {
+                          pop: DELETE_ITEM_POP,
+                          isOpen: true,
+                          item: item,
+                          procedureType: proceduresTypes.cancelItem
+                        })
+                      "
+                    />
+                    <ng-template #blockCanceItem>
+                      <img src="assets/Images/gray_x.svg" alt="" (click)="handleStopEvents($event)" />
+                    </ng-template>
+                  </div>
+                </div>
+              </div>
+            </virtual-scroller>
+            <div class="loading" *ngIf="(itemsLoading$ | async) === 1">
+              <app-loading></app-loading>
+            </div>
+            <div class="loading" *ngIf="(itemsLoading$ | async) !== 1 && lodashIsEmpty(items$ | async)">
+              <app-without-results></app-without-results>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="totals">
+        <div>
+          <label>{{ 'common.subtotal' | translate }}:</label>
+          <label>{{ 'common.tax' | translate }}:</label>
+          <label class="total">{{ 'common.total' | translate }}:</label>
+        </div>
+        <div>
+          <label
+            >{{ (selectedOrder$ | async)?.Subtotal | currency: 'USD':'symbol':'1.2-2' }}
+            {{ (selectedOrder$ | async)?.ClaveMoneda }}</label
+          >
+          <label
+            >{{ (selectedOrder$ | async)?.TotalIVA | currency: 'USD':'symbol':'1.2-2' }}
+            {{ (selectedOrder$ | async)?.ClaveMoneda }}</label
+          >
+          <label class="total"
+            >{{
+              (selectedOrder$ | async)?.ClaveMoneda === CURRENCY_MXN
+                ? ((selectedOrder$ | async)?.TotalMXN | currency: 'USD':'symbol':'1.2-2')
+                : ((selectedOrder$ | async)?.TotalUSD | currency: 'USD':'symbol':'1.2-2')
+            }}
+            {{ (selectedOrder$ | async)?.ClaveMoneda }}</label
+          >
+        </div>
+      </div>
+      <div class="files-actions">
+        <div class="files">
+          <!--<div class="oc">
+            <div class="inputs">
+              <app-check-box></app-check-box>
+              <label [ngClass]="'active'">{{ 'orderModification.addOc' | translate }}</label>
+              <app-generic-input-file
+                [acceptedExtensions]="'application/pdf,.pdf,.jpeg,.jpg,.png'"
+                [placeholder]="'.Pdf, png, jpg'"
+                [showAddSelectedFile]="true"
+                (autoEmitFile)="handleAutoEmit($event)"
+                (manualEmitFile)="handleManualEmit($event)"
+              ></app-generic-input-file>
+            </div>
+            <div class="files-added">
+              <div class="file">
+                <label>#1 · OC · 07_mi_pedido_de_octubre07_mi_pedido_de_octubre.pdf</label>
+                <img src="assets/Images/cerrar.svg" alt="" />
+                <div class="tooltip-text">
+                  <p>07_mi_pedido_de_octubre07_mi_pedido_de_octubre.pdf</p>
+                </div>
+              </div>
+            </div>
+          </div>-->
+          <div class="additional">
+            <div class="inputs">
+              <app-check-box
+                [check]="(selectedOrder$ | async)?.allowAddFiles"
+                (event)="setAllowAddFiles($event)"
+                [disabled]="lodashIsEmpty(selectDataCard$ | async)"
+              ></app-check-box>
+              <label [ngClass]="(selectedOrder$ | async)?.allowAddFiles ? 'active' : 'disabled'">{{
+                'orderModification.additionalDoc' | translate
+              }}</label>
+              <app-generic-input-file
+                [acceptedExtensions]="'application/pdf,.pdf,.jpeg,.jpg,.png'"
+                [disabled]="!(selectedOrder$ | async)?.allowAddFiles"
+                [placeholder]="'.Pdf, png, jpg'"
+                [showAddSelectedFile]="true"
+                (manualEmitFile)="handleManualEmit($event)"
+              ></app-generic-input-file>
+            </div>
+            <div class="files-added">
+              <div class="file" *ngFor="let file of additionalFiles$ | async; let i = index">
+                <label>#{{ i + 1 }} · {{ file.file.name | onlyFileNamePdf }}</label>
+                <img src="assets/Images/cerrar.svg" alt="" (click)="removeFile(file.file.name)" />
+                <div class="tooltip-text">
+                  <p>{{ file.file.name | onlyFileNamePdf }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="comments">
+          <app-generic-input
+            [font]="'Roboto-Bold'"
+            [label]="'* Notas'"
+            [value]="(selectedOrder$ | async)?.notes"
+            (textData)="setNotes($event)"
+            [isDisable]="lodashIsEmpty(selectDataCard$ | async)"
+          ></app-generic-input>
+          <app-drop-down-list
+            [label]="'* Proceso'"
+            [items]="catProcess$ | async"
+            [optionsPosition]="'top'"
+            [itemSelected]="processSelected$ | async"
+            (valueDropList)="setProcess($event)"
+            [disable]="lodashIsEmpty(selectDataCard$ | async)"
+          >
+          </app-drop-down-list>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="buttons">
+    <div>
+      <!--      DOCS: SE ELIMINÓ EL BOTÓN PARA CANCELAR PEDIDO, PARA VOLVER A ACTIVARLO SOLO HAY QUE DESCOMENTARLO -->
+      <!--      <button-->
+      <!--        [disabled]="!(validatorForCancel$ | async)"-->
+      <!--        [ngClass]="(validatorForCancel$ | async) ? 'active-red' : 'disabled-red'"-->
+      <!--        (click)="handlePopUps({pop: DELETE_ORDER_ALERT_POP, isOpen: true, target: null})"-->
+      <!--        >{{ 'orderModification.cancelOrder' | translate }}</button-->
+      <!--      >-->
+    </div>
+    <div>
+      <button
+        [disabled]="!(validatorForSegmentOrder$ | async)"
+        [ngClass]="(validatorForSegmentOrder$ | async) ? 'active-yellow' : 'disabled-yellow'"
+        (click)="handlePopUps({pop: SEGMENT_ALERT_POP, isOpen: true, target: null})"
+        >{{ 'orderModification.segmentOrder' | translate }}</button
+      >
+      <button
+        class="margin-left"
+        [disabled]="!(isActiveFinalizeButton$ | async)"
+        [ngClass]="(isActiveFinalizeButton$ | async) ? 'active-green' : 'disabled-green'"
+        (click)="handlePopUps({pop: FINALIZE_ALERT_POP, isOpen: true, target: null})"
+        >{{ 'common.finish' | translate }}</button
+      >
+    </div>
+  </div>
+  <footer>
+    <div>
+      <img src="assets/Images/pre-processing/originales.svg" alt="" />
+      <label>{{ 'preProcessing.typeOfItem.originals' | translate }}</label>
+    </div>
+    <div>
+      <img src="assets/Images/pre-processing/alternativas.svg" alt="" />
+      <label>{{ 'preProcessing.typeOfItem.alternatives' | translate }}</label>
+    </div>
+    <div>
+      <img src="assets/Images/pre-processing/complementarias.svg" alt="" />
+      <label>{{ 'preProcessing.typeOfItem.complementary' | translate }}</label>
+    </div>
+    <div>
+      <img src="assets/Images/pre-processing/promocion.svg" alt="" />
+      <label>{{ 'preProcessing.typeOfItem.promotion' | translate }}</label>
+    </div>
+    <div>
+      <img src="assets/Images/pre-processing/ahorro.svg" alt="" />
+      <label>{{ 'preProcessing.typeOfItem.saving' | translate }}</label>
+    </div>
+    <div>
+      <img class="size13" src="assets/Images/replace.svg" alt="" />
+      <label>{{ 'orderModification.replaceOc' | translate }}</label>
+    </div>
+    <div>
+      <img src="assets/Images/icono-sin-incidencia.svg" alt="" />
+      <label>{{ 'orderModification.orderWithoutIncidents' | translate }}</label>
+    </div>
+    <div>
+      <img src="assets/Images/icono-incidencia.svg" alt="" />
+      <label>{{ 'orderModification.orderWithIncidents' | translate }}</label>
+    </div>
+    <div>
+      <img class="size18" src="assets/Images/new_note.svg" alt="" />
+      <label>{{ 'orderModification.addNote' | translate }}</label>
+    </div>
+    <div>
+      <img class="size14" src="assets/Images/close-offer/comments-ocean.svg" alt="" />
+      <label>{{ 'orderModification.seeNote' | translate }}</label>
+    </div>
+  </footer>
+</div>
+<div class="pop-up-usage">
+  <app-custom-position-pop-up
+    *ngIf="popUps.usage.isOpen"
+    [borderColor]="'#d8d9dd'"
+    [borderRadius]="'0'"
+    [closeButton]="false"
+    [floatingSize]="1"
+    [maxHeight]="'150px'"
+    [maxWidth]="'350px'"
+    [minHeight]="'auto'"
+    [minWidth]="'auto'"
+    [padding]="'0'"
+    [popUpPosition]="'bottom-center'"
+    [target]="popUps.usage.target"
+    (closeEmitter)="handlePopUps({pop: USAGE_POP, isOpen: false, target: popUps.usage.target, emit: $event})"
+  >
+    <div class="usage-container">
+      <div
+        *ngFor="let usage of usageOptions$ | async"
+        [ngClass]="usage.IdCatUsoCFDI === (purchaseOrderDetails$ | async)?.catUsoCFDI?.IdCatUsoCFDI && 'active'"
+      >
+        <label (click)="selectUsage(usage, USAGE_POP)">{{ usage.ClaveUso }} · {{ usage.Uso }}</label>
+      </div>
+    </div>
+  </app-custom-position-pop-up>
+</div>
+<div class="pop-up-payment-method">
+  <app-custom-position-pop-up
+    *ngIf="popUps.payment.isOpen"
+    [borderColor]="'#d8d9dd'"
+    [borderRadius]="'0'"
+    [closeButton]="false"
+    [floatingSize]="1"
+    [maxHeight]="'150px'"
+    [maxWidth]="'410px'"
+    [minHeight]="'auto'"
+    [minWidth]="'auto'"
+    [padding]="'0'"
+    [popUpPosition]="'bottom-center'"
+    [target]="popUps.payment.target"
+    (closeEmitter)="handlePopUps({pop: PAYMENT_POP, isOpen: false, target: popUps.payment.target, emit: $event})"
+  >
+    <div class="usage-container">
+      <div
+        *ngFor="let method of paymentMethodOptions$ | async"
+        [ngClass]="
+          method.IdCatMetodoDePagoCFDI === (purchaseOrderDetails$ | async)?.catMetodoDePagoCFDI?.IdCatMetodoDePagoCFDI &&
+          'active'
+        "
+      >
+        <label (click)="selectUsage(method, PAYMENT_POP)">{{ method.MetodoDePagoCFDI }}</label>
+      </div>
+    </div>
+  </app-custom-position-pop-up>
+</div>
+<app-pop-up-generic
+  class="pop-replace-oc"
+  *ngIf="popUps.replaceOc.isOpen"
+  [activeButtons]="true"
+  [activeBtn]="!!(selectedOrder$ | async)?.ocFile"
+  [height]="'474px'"
+  [width]="'620px'"
+  (evento)="handlePopUps({pop: REPLACE_OC_POP, isOpen: false, target: null, emit: $event})"
+>
+  <div class="pop-replace-oc">
+    <img src="assets/Images/alerta.svg" alt="" />
+    <label class="ocean" *ngIf="(purchaseOrderDetails$ | async)?.tpPedido?.IdArchivo"
+      >{{ 'orderModification.replaceOcMessagePart1' | translate }}
+      <span>OC-{{ (purchaseOrderDetails$ | async)?.tpPedido?.ReferenciaCliente }}</span>
+      {{ 'orderModification.replaceOcMessagePart2' | translate }}
+      <span>{{ (purchaseOrderDetails$ | async)?.vCliente?.Nombre }}</span></label
+    >
+    <label class="ocean" *ngIf="!(purchaseOrderDetails$ | async)?.tpPedido?.IdArchivo"
+      ><span>{{ (purchaseOrderDetails$ | async)?.vCliente?.Nombre }}</span>
+      {{ 'orderModification.dontHasOc' | translate }}</label
+    >
+    <label class="black" *ngIf="!(purchaseOrderDetails$ | async)?.tpPedido?.IdArchivo">{{
+      'orderModification.wishAddOne' | translate
+    }}</label>
+    <div>
+      <div>
+        <label>{{ 'orderModification.ocNumber' | translate }}</label>
+        <app-generic-input
+          class="input"
+          [value]="(purchaseOrderDetails$ | async)?.tpPedido?.ReferenciaCliente"
+          (textData)="setReferenciaCliente($event)"
+        ></app-generic-input>
+      </div>
+      <div>
+        <label>{{ 'orderModification.newOc' | translate }}</label>
+        <app-generic-input-file
+          [acceptedExtensions]="'application/pdf,.pdf,.jpeg,.jpg,.png'"
+          [placeholder]="'.Pdf, png, jpg'"
+          [file]="(selectedOrder$ | async)?.ocFile?.file"
+          (autoEmitFile)="handleAutoEmit($event)"
+        ></app-generic-input-file>
+      </div>
+    </div>
+  </div>
+</app-pop-up-generic>
+<app-pop-up-generic
+  class="pop-delete-entry"
+  *ngIf="popUps.deleteItem.isOpen"
+  [activeButtons]="true"
+  [height]="(viewType$ | async) === 'macBookAir' ? '540px' : '500px'"
+  [width]="(viewType$ | async) === 'macBookAir' ? '620px' : '570px'"
+  (evento)="handlePopUps({pop: DELETE_ITEM_POP, isOpen: false, emit: $event, target: null, item: popUps.deleteItem.item})"
+>
+  <div class="pop-delete-entry">
+    <img src="assets/Images/alerta.svg" alt="" />
+    <!--<label class="ocean"
+      >{{ 'orderModification.replaceOcMessagePart1' | translate }} <span>OC-03985473</span>
+      {{ 'orderModification.replaceOcMessagePart2' | translate }} <span>Laboratorios Sanfer</span></label
+    >-->
+    <label class="ocean">{{ 'orderModification.toCancelEntry' | translate }}</label>
+    <label class="black">{{ 'orderModification.isNecessaryNextPoints' | translate }}</label>
+    <div class="ocean-bg">
+      <label>{{ 'orderModification.itIsSalable' | translate }}</label>
+      <label>{{ 'orderModification.generateExtraCost' | translate }}</label>
+    </div>
+    <div class="red">
+      <label class="red">{{ 'orderModification.cancelPiecesGoingToStock' | translate }}</label>
+    </div>
+  </div>
+</app-pop-up-generic>
+<app-pop-up-generic
+  class="pop-delete-entry"
+  *ngIf="popUps.deleteOrderAlert.isOpen"
+  [activeButtons]="true"
+  [height]="(viewType$ | async) === 'macBookAir' ? '540px' : '500px'"
+  [width]="(viewType$ | async) === 'macBookAir' ? '620px' : '570px'"
+  (evento)="
+    handlePopUps({pop: DELETE_ORDER_ALERT_POP, isOpen: false, target: null, emit: $event, item: popUps.deleteOrderAlert.item})
+  "
+>
+  <div class="pop-delete-entry">
+    <img src="assets/Images/alerta.svg" alt="" />
+    <label class="ocean">{{ 'orderModification.toCancelOrder' | translate }}</label>
+    <label class="black">{{ 'orderModification.isNecessaryNextPoints' | translate }}</label>
+    <div class="ocean-bg">
+      <label>{{ 'orderModification.itIsSalable' | translate }}</label>
+      <label>{{ 'orderModification.generateExtraCost' | translate }}</label>
+    </div>
+    <div class="red">
+      <label class="red">{{ 'orderModification.cancelPiecesGoingToStock' | translate }}</label>
+    </div>
+  </div>
+</app-pop-up-generic>
+<app-pop-up-generic
+  class="code-pop-up"
+  *ngIf="popUps.code.isOpen"
+  [titleHeader]="(procedureType$ | async) === proceduresTypes.editData ? 'Validar Ajustes' : 'Cancelar partida'"
+  [activeButtons]="true"
+  [rightButtonLabel]="
+    !(existAnyRequest$ | async) || ((selectCodeIsFill$ | async) && (codeRequest$ | async)?.Autorizado) ? 'Aceptar' : 'Reenviar'
+  "
+  [activeBtn]="true"
+  [width]="(viewType$ | async) === 'macBookAir' ? '785px' : '745px'"
+  [height]="(viewType$ | async) === 'macBookAir' ? '685px' : '660px'"
+  (evento)="onCloseCodePopUp($event)"
+>
+  <div class="container">
+    <div class="header">
+      <div class="image">
+        <img src="assets/Images/clientes/logo_proquifa_hover.svg" alt="" />
+      </div>
+      <div class="client-data">
+        <label>{{
+          (purchaseOrderDetails$ | async)?.DatosFacturacionClienteDetallePorDefecto.DatosFacturacionCliente.RazonSocial
+        }}</label>
+        <label>{{
+          !(selectedOrder$ | async)?.IdArchivo
+            ? 'SIN OC'
+            : (selectedOrder$ | async)?.OcTemporal
+            ? 'OC-TEMPORAL'
+            : 'OC-' + (selectedOrder$ | async)?.NumeroOrdenDeCompra
+        }}</label>
+        <label>
+          {{ 'quotation.details.paymentConditions' | translate }} ·
+          {{ (purchaseOrderDetails$ | async)?.catCondicionesDePago.CondicionesDePago }}</label
+        >
+      </div>
+    </div>
+    <div class="resume" *ngIf="popUps.code.item; let item; else: noItem">
+      <label class="bold">{{ item.Descripcion }}</label>
+      <label class="regular"
+        >{{ item.NumeroDePiezas }}
+        {{ item.NumeroDePiezas === 1 ? ('common.piece' | translate) : ('common.pieces' | translate) }} ·
+        {{ 'common.total' | translate }}
+        {{ item.Monto | currency: (selectedOrder$ | async)?.ClaveMoneda:'symbol-narrow':'1.2-2' }}
+        {{ (selectedOrder$ | async)?.ClaveMoneda }}</label
+      >
+    </div>
+    <ng-template #noItem>
+      <div class="resume">
+        <label class="bold">{{ 'checkout.editInvoiceInfo' | translate }}</label>
+      </div>
+    </ng-template>
+
+    <div class="code">
+      <ng-container [ngSwitch]="procedureType$ | async">
+        <!--TODO: Tipo EDITAR DATOS-->
+        <ng-container *ngSwitchCase="proceduresTypes.editData">
+          <!--TODO: NO tiene request-->
+          <ng-container *ngIf="!(editDataRequest$ | async); else hasRequest">
+            <label>
+              {{ 'checkout.validityCodeMessageEditData' | translate }} <br />
+              <span>{{ 'checkout.validityCodeMessagePart2' | translate }}</span>
+            </label>
+            <label>
+              {{ 'checkout.generateCodeQuestion' | translate }}
+            </label>
+          </ng-container>
+          <!--TODO: Tiene request-->
+          <ng-template #hasRequest>
+            <label>
+              {{ 'checkout.codeSent' | translate }} <br />
+              <span>valdemar.farina@ryndem.mx</span>
+            </label>
+            <label class="enter-digits">
+              {{ 'checkout.enterDigits' | translate }}
+            </label>
+          </ng-template>
+        </ng-container>
+
+        <!--TODO: Tipo CANCELAR PARTIDA-->
+        <ng-container *ngSwitchCase="proceduresTypes.cancelItem">
+          <!--TODO: NO tiene request-->
+          <ng-container
+            *ngIf="
+              !(cancelItemRequest$ | async) ||
+                ((cancelItemRequest$ | async) &&
+                  (codeRequest$ | async)?.IdTPPartidaPedido !== popUps.deleteItem.item.IdTPPartidaPedido);
+              else hasRequest
+            "
+          >
+            <label>
+              {{ 'orderModification.toCancelEntry' | translate }} <br />
+              <span>{{ 'orderModification.validityCodeMessagePart2' | translate }}</span>
+            </label>
+            <label>
+              {{ 'orderModification.generateCodeQuestion' | translate }}
+            </label>
+          </ng-container>
+          <!--TODO: Tiene request-->
+          <ng-template #hasRequest>
+            <label>
+              {{ 'orderModification.codeSent' | translate }} <br />
+              <span>valdemar.farina@ryndem.mx</span>
+            </label>
+            <label class="enter-digits">
+              {{ 'orderModification.enterDigits' | translate }}
+            </label>
+          </ng-template>
+        </ng-container>
+      </ng-container>
+    </div>
+
+    <div
+      class="inputs"
+      *ngIf="
+        !lodashIsEmpty(codeRequest$) &&
+        (procedureType$ | async) === (codeRequest$ | async).TipoTramite &&
+        (((codeRequest$ | async).TipoTramite === proceduresTypes.cancelItem &&
+          (codeRequest$ | async)?.IdTPPartidaPedido === popUps.deleteItem.item.IdTPPartidaPedido) ||
+          (codeRequest$ | async).TipoTramite === proceduresTypes.editData)
+      "
+      [ngClass]="(shaked$ | async) ? 'shaked' : ''"
+    >
+      <div>
+        <input
+          placeholder=""
+          #codeInputs
+          [autofocus]="selectCodeIsEmpty$ | async"
+          [value]="(code$ | async)[0]"
+          (keyup)="handleValidateNumber(CODE_POP, $event, 0)"
+        />
+        <input placeholder="" #codeInputs [value]="(code$ | async)[1]" (keyup)="handleValidateNumber(CODE_POP, $event, 1)" />
+        <input placeholder="" #codeInputs [value]="(code$ | async)[2]" (keyup)="handleValidateNumber(CODE_POP, $event, 2)" />
+        <input placeholder="" #codeInputs [value]="(code$ | async)[3]" (keyup)="handleValidateNumber(CODE_POP, $event, 3)" />
+      </div>
+    </div>
+  </div>
+</app-pop-up-generic>
+<app-pop-up-generic
+  class="codes-pop-up"
+  *ngIf="popUps.twoCodes.isOpen"
+  [titleHeader]="'Cancelar Pedido'"
+  [activeButtons]="true"
+  [rightButtonLabel]="
+    !(cancelOrderRequest$ | async) || ((selectCodeIsFill$ | async) && (codeRequest$ | async)?.Autorizado)
+      ? 'Aceptar'
+      : 'Reenviar'
+  "
+  [activeBtn]="true"
+  [width]="(viewType$ | async) === 'macBookAir' ? '785px' : '745px'"
+  [height]="(viewType$ | async) === 'macBookAir' ? '685px' : '660px'"
+  (evento)="onCloseTwoCodesPopUp($event)"
+>
+  <div class="container">
+    <div class="header">
+      <div class="image">
+        <img src="assets/Images/clientes/logo_proquifa_hover.svg" alt="" />
+      </div>
+      <div class="client-data">
+        <label>{{
+          (purchaseOrderDetails$ | async)?.DatosFacturacionClienteDetallePorDefecto.DatosFacturacionCliente.RazonSocial
+        }}</label>
+        <label>{{
+          !(selectedOrder$ | async)?.IdArchivo
+            ? 'SIN OC'
+            : (selectedOrder$ | async)?.OcTemporal
+            ? 'OC-TEMPORAL'
+            : 'OC-' + (selectedOrder$ | async)?.NumeroOrdenDeCompra
+        }}</label>
+        <label>
+          {{ 'quotation.details.paymentConditions' | translate }} ·
+          {{ (purchaseOrderDetails$ | async)?.catCondicionesDePago.CondicionesDePago }}</label
+        >
+      </div>
+    </div>
+    <div class="resume">
+      <label class="bold">{{ 'common.order' | translate }} OC-{{ (selectedOrder$ | async)?.NumeroOrdenDeCompra }}</label>
+      <label class="regular"
+        >{{ (items$ | async).length }} {{ 'common.items' | translate }} · {{ 'common.total' | translate }}
+        {{
+          (selectedOrder$ | async)?.ClaveMoneda === CURRENCY_USD
+            ? ((selectedOrder$ | async)?.TotalUSD | currency: 'USD':'symbol':'1.2-2')
+            : ((selectedOrder$ | async)?.TotalMXN | currency: 'USD':'symbol':'1.2-2')
+        }}
+        {{ (selectedOrder$ | async)?.ClaveMoneda }}</label
+      >
+    </div>
+    <div class="code">
+      <!--TODO: Tipo CANCELAR PEDIDO-->
+      <!--TODO: NO tiene request-->
+      <ng-container *ngIf="!(cancelOrderRequest$ | async); else hasRequest">
+        <label>
+          {{ 'orderModification.toCancelOrder' | translate }} <br />
+          <span>{{ 'orderModification.validityCodeMessage2Part2' | translate }}</span>
+        </label>
+        <label>
+          {{ 'orderModification.generateCodesQuestion' | translate }}
+        </label>
+      </ng-container>
+      <!--TODO: Tiene request-->
+      <ng-template #hasRequest>
+        <label>
+          {{ 'orderModification.codeSent' | translate }} <br />
+          <span>ventas@ejemplo.com.mx, finanzas@ejemplo.com.mx</span>
+        </label>
+        <label class="enter-digits">
+          {{
+            (firstCodePassed$ | async)
+              ? ('orderModification.enterDirectorDigits' | translate)
+              : ('orderModification.enterEsacDigits' | translate)
+          }}
+        </label>
+      </ng-template>
+    </div>
+    <div class="inputs" *ngIf="cancelOrderRequest$ | async" [ngClass]="(shaked$ | async) ? 'shaked' : ''">
+      <div>
+        <input
+          placeholder=""
+          #twoCodesInputs
+          [autofocus]="selectCodeIsEmpty$ | async"
+          [value]="(code$ | async)[0]"
+          (keyup)="handleValidateNumber(TWO_CODE_POP, $event, 0)"
+        />
+        <input
+          placeholder=""
+          #twoCodesInputs
+          [value]="(code$ | async)[1]"
+          (keyup)="handleValidateNumber(TWO_CODE_POP, $event, 1)"
+        />
+        <input
+          placeholder=""
+          #twoCodesInputs
+          [value]="(code$ | async)[2]"
+          (keyup)="handleValidateNumber(TWO_CODE_POP, $event, 2)"
+        />
+        <input
+          placeholder=""
+          #twoCodesInputs
+          [value]="(code$ | async)[3]"
+          (keyup)="handleValidateNumber(TWO_CODE_POP, $event, 3)"
+        />
+      </div>
+    </div>
+    <div class="feedback" *ngIf="firstCodePassed$ | async">
+      <label>{{ 'orderModification.onePassedCodeEnterNext' | translate }}</label>
+    </div>
+  </div>
+</app-pop-up-generic>
+<app-pop-up-generic
+  class="see-entry-pop-up"
+  *ngIf="popUps.seeEntry.isOpen"
+  [height]="(viewType$ | async) === 'macBookAir' ? '735px' : '660px'"
+  [showClose]="true"
+  [titleHeader]="popUps.seeEntry.item.ConIncidencias > 0 ? 'Ver partida · Con incidencia' : 'Ver partida · Sin incidencia'"
+  [width]="(viewType$ | async) === 'macBookAir' ? '930px' : '840px'"
+  (evento)="handlePopUps({pop: SEE_ENTRY_POP, isOpen: false, target: null, emit: $event})"
+>
+  <div class="container">
+    <div class="header">
+      <div class="image">
+        <img src="assets/Images/clientes/logo_proquifa_hover.svg" alt="" />
+      </div>
+      <div class="header-data">
+        <div class="cat">
+          <img src="assets/Images/clientes/logo_proquifa_hover.svg" alt="" />
+          <label
+            ><span>{{ 'common.catalogNumber' | translate }} · {{ itemSelected.Catalogo }}</span> ·
+            {{ 'common.order' | translate }} {{ (selectedOrder$ | async).NumeroOrdenDeCompra }}</label
+          >
+        </div>
+        <label class="description">
+          <div class="image" [ngSwitch]="itemSelected.TipoPartidaTramitacion">
+            <img *ngSwitchCase="'Ahorro'" src="assets/Images/pre-processing/ahorro.svg" alt="" />
+            <img *ngSwitchCase="'Alternativa'" src="assets/Images/pre-processing/alternativas.svg" alt="" />
+            <img *ngSwitchCase="'Complementaria'" src="assets/Images/pre-processing/complementarias.svg" alt="" />
+            <img *ngSwitchCase="'Original'" src="assets/Images/pre-processing/originales.svg" alt="" />
+            <img *ngSwitchCase="'Promocion'" src="assets/Images/pre-processing/promocion.svg" alt="" />
+            <img *ngSwitchCase="'Programada'" src="assets/Images/pre-processing/promocion.svg" alt="" />
+          </div>
+          · {{ itemSelected.Descripcion }}
+        </label>
+        <label class="family"
+          >{{ itemSelected.Tipo }} · {{ itemSelected.Subtipo }} <span>· {{ itemSelected.Control }}</span></label
+        >
+        <div class="other-data">
+          <div>
+            <label>{{ 'orderModification.presentation' | translate }}: </label>
+            <label class="ocean">{{ itemSelected.vProducto.Presentacion }}</label>
+          </div>
+          <div>
+            <label>{{ 'common.tee' | translate }}: </label>
+            <label class="ocean"
+              >{{ itemSelected.FechaEstimadaEntrega | dateFormatSlashShort }} ·
+              <span [ngClass]="'blue'" *ngIf="itemSelected.Programada">
+                {{ 'checkout.programmingSingle' | translate }}
+              </span>
+              <span [ngClass]="'red'" *ngIf="!itemSelected.Programada && itemSelected.TieneFleteExpress">
+                {{ 'checkout.expressFreight' | translate }}
+              </span>
+              <span [ngClass]="'green'" *ngIf="!itemSelected.Programada && !itemSelected.TieneFleteExpress">
+                {{ 'checkout.regular' | translate }}
+              </span>
+            </label>
+          </div>
+          <div>
+            <label>{{ 'common.brand' | translate }}: </label>
+            <label class="ocean">{{ itemSelected.NombreMarca }}</label>
+          </div>
+        </div>
+      </div>
+      <div class="status">
+        <label class="label">{{ 'orderModification.state' | translate }}</label>
+        <label class="value" [ngClass]="'blue'">{{ 'common.order' | translate }}</label>
+      </div>
+    </div>
+    <div class="totals">
+      <div>
+        <label>{{ 'common.pieces' | translate }}</label>
+        <label class="ocean">{{ itemSelected.NumeroDePiezas }}</label>
+      </div>
+      <div>
+        <label>{{ 'common.unitPrice' | translate }}</label>
+        <label
+          >{{ itemSelected.PrecioUnitario | currency: (selectedOrder$ | async)?.ClaveMoneda:'symbol-narrow':'1.2-2' }}
+          {{ (selectedOrder$ | async)?.ClaveMoneda }}</label
+        >
+      </div>
+      <div>
+        <label>{{ 'common.subtotal' | translate }}</label>
+        <label class="ocean">
+          {{
+            itemSelected.PrecioUnitario * itemSelected.NumeroDePiezas
+              | currency: (selectedOrder$ | async)?.ClaveMoneda:'symbol-narrow':'1.2-2'
+          }}
+          {{ (selectedOrder$ | async)?.ClaveMoneda }}
+        </label>
+      </div>
+      <div>
+        <label>{{ 'common.tax' | translate }}</label>
+        <label
+          >{{ itemSelected.MontoIVA | currency: (selectedOrder$ | async)?.ClaveMoneda:'symbol-narrow':'1.2-2' }}
+          {{ (selectedOrder$ | async)?.ClaveMoneda }}</label
+        >
+      </div>
+      <div>
+        <label>{{ 'common.total' | translate }}</label>
+        {{ itemSelected.Monto | currency: (selectedOrder$ | async)?.ClaveMoneda:'symbol-narrow':'1.2-2' }}
+        {{ (selectedOrder$ | async)?.ClaveMoneda }}
+      </div>
+      <div class="percentage-column">
+        <div class="tooltip">
+          <img [src]="'assets/Images/quotation/price_up.svg'" alt="" />
+          <label
+            >{{
+              itemSelected.PorcentajeSobrePrecioLista * 100 | currency: (selectedOrder$ | async)?.ClaveMoneda:'':'1.0-0'
+            }}%</label
+          >
+          <div class="tooltip-text">
+            <p>{{ 'closeOffer.tooltipUp' | translate }}</p>
+            <!--<p>{{ 'closeOffer.tooltipDown' | translate }}</p>-->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="notes" *ngIf="itemSelected.NotasModificacion">
+      <label>{{ 'orderModification.entryNotes' | translate }}</label>
+      <label>
+        {{ itemSelected.NotasModificacion }}
+      </label>
+    </div>
+    <div class="incidence" [ngClass]="popUps.seeEntry.item.ConIncidencias > 0 ? 'with' : 'without'">
+      <div *ngIf="popUps.seeEntry.item.ConIncidencias > 0">
+        <img src="assets/Images/icono-incidencia.svg" alt="" />
+        <label>{{ 'orderModification.incidences' | translate }}</label>
+      </div>
+      <div *ngIf="popUps.seeEntry.item.ConIncidencias === 0">
+        <img src="assets/Images/icono-sin-incidencia.svg" alt="" />
+        <label>{{ 'orderModification.withOutIncidences' | translate }}</label>
+      </div>
+      <label *ngIf="popUps.seeEntry.item.ConIncidencias > 0">
+        {{ itemSelected.ppPartidaPedidoDetalle.ppIncidenciaPartida.Comentarios }}
+      </label>
+    </div>
+  </div>
+</app-pop-up-generic>
+<app-pop-up-generic
+  class="see-notes-pop-up"
+  *ngIf="popUpNotesIsOpen$ | async"
+  [activeButtons]="true"
+  [activeBtn]="isDisableButtonAddNotes()"
+  [height]="(viewType$ | async) === 'macBookAir' ? '735px' : '660px'"
+  [titleHeader]="mgsPopUpSeeNotes"
+  [width]="(viewType$ | async) === 'macBookAir' ? '930px' : '840px'"
+  (evento)="handlePopUps({pop: SEE_NOTES_POP, isOpen: false, target: null, emit: $event})"
+>
+  <div class="container">
+    <div class="header">
+      <div class="image">
+        <img src="assets/Images/clientes/logo_proquifa_hover.svg" alt="" />
+      </div>
+      <div class="header-data">
+        <div class="cat">
+          <img src="assets/Images/clientes/logo_proquifa_hover.svg" alt="" />
+          <label
+            ><span>{{ 'common.catalogNumber' | translate }} · {{ itemSelected.Catalogo }}</span> ·
+            {{ 'common.order' | translate }} {{ (selectedOrder$ | async).NumeroOrdenDeCompra }}</label
+          >
+        </div>
+        <label class="description">
+          <div class="image" [ngSwitch]="itemSelected.TipoPartidaTramitacion">
+            <img *ngSwitchCase="'Ahorro'" src="assets/Images/pre-processing/ahorro.svg" alt="" />
+            <img *ngSwitchCase="'Alternativa'" src="assets/Images/pre-processing/alternativas.svg" alt="" />
+            <img *ngSwitchCase="'Complementaria'" src="assets/Images/pre-processing/complementarias.svg" alt="" />
+            <img *ngSwitchCase="'Original'" src="assets/Images/pre-processing/originales.svg" alt="" />
+            <img *ngSwitchCase="'Promocion'" src="assets/Images/pre-processing/promocion.svg" alt="" />
+            <img *ngSwitchCase="'Programada'" src="assets/Images/pre-processing/promocion.svg" alt="" />
+          </div>
+          · {{ itemSelected.Descripcion }}
+        </label>
+        <label class="family"
+          >{{ itemSelected.Tipo }} · {{ itemSelected.Subtipo }} <span>· {{ itemSelected.Control }}</span></label
+        >
+        <div class="other-data">
+          <div>
+            <label>{{ 'orderModification.presentation' | translate }}: </label>
+            <label class="ocean">{{ itemSelected.vProducto.Presentacion }}</label>
+          </div>
+          <div>
+            <label>{{ 'common.tee' | translate }}: </label>
+            <label class="ocean"
+              >{{ itemSelected.FechaEstimadaEntrega | dateFormatSlashShort }} ·
+              <span [ngClass]="'blue'" *ngIf="itemSelected.Programada">
+                {{ 'checkout.programmingSingle' | translate }}
+              </span>
+              <span [ngClass]="'red'" *ngIf="!itemSelected.Programada && itemSelected.TieneFleteExpress">
+                {{ 'checkout.expressFreight' | translate }}
+              </span>
+              <span [ngClass]="'green'" *ngIf="!itemSelected.Programada && !itemSelected.TieneFleteExpress">
+                {{ 'checkout.regular' | translate }}
+              </span>
+            </label>
+          </div>
+          <div>
+            <label>{{ 'common.brand' | translate }}: </label>
+            <label class="ocean">{{ itemSelected.NombreMarca }}</label>
+          </div>
+        </div>
+      </div>
+      <div class="status">
+        <label class="label">{{ 'orderModification.state' | translate }}</label>
+        <label class="value" [ngClass]="'blue'">{{ 'common.order' | translate }}</label>
+      </div>
+    </div>
+    <div class="totals">
+      <div>
+        <label>{{ 'common.pieces' | translate }}</label>
+        <label class="ocean">{{ itemSelected.NumeroDePiezas }}</label>
+      </div>
+      <div>
+        <label>{{ 'common.unitPrice' | translate }}</label>
+        <label
+          >{{ itemSelected.PrecioUnitario | currency: (selectedOrder$ | async)?.ClaveMoneda:'symbol-narrow':'1.2-2' }}
+          {{ (selectedOrder$ | async)?.ClaveMoneda }}</label
+        >
+      </div>
+      <div>
+        <label>{{ 'common.subtotal' | translate }}</label>
+        <label class="ocean">
+          {{
+            itemSelected.PrecioUnitario * itemSelected.NumeroDePiezas
+              | currency: (selectedOrder$ | async)?.ClaveMoneda:'symbol-narrow':'1.2-2'
+          }}
+          {{ (selectedOrder$ | async)?.ClaveMoneda }}
+        </label>
+      </div>
+      <div>
+        <label>{{ 'common.tax' | translate }}</label>
+        <label
+          >{{ itemSelected.MontoIVA | currency: (selectedOrder$ | async)?.ClaveMoneda:'symbol-narrow':'1.2-2' }}
+          {{ (selectedOrder$ | async)?.ClaveMoneda }}</label
+        >
+      </div>
+      <div>
+        <label>{{ 'common.total' | translate }}</label>
+        <!--<label class="ocean bold">$134.00 PENDIENTES</label>-->
+        <label class="ocean bold">
+          {{ itemSelected.Monto | currency: (selectedOrder$ | async)?.ClaveMoneda:'symbol-narrow':'1.2-2' }}
+          {{ (selectedOrder$ | async)?.ClaveMoneda }}
+        </label>
+      </div>
+      <div class="percentage-column">
+        <div class="tooltip">
+          <img [src]="'assets/Images/quotation/price_up.svg'" alt="" />
+          <label
+            >{{
+              itemSelected.PorcentajeSobrePrecioLista * 100 | currency: (selectedOrder$ | async)?.ClaveMoneda:'':'1.0-0'
+            }}%</label
+          >
+          <div class="tooltip-text">
+            <p>{{ 'closeOffer.tooltipUp' | translate }}</p>
+            <!--<p>{{ 'closeOffer.tooltipDown' | translate }}</p>-->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="notes">
+      <label>*{{ 'orderModification.notes' | translate }}</label>
+      <app-generic-text-area
+        [height]="(viewType$ | async) === 'macBookAir' ? '140px' : '120px'"
+        [value]="itemSelected.notes"
+        (emitData)="saveNotes($event)"
+      >
+      </app-generic-text-area>
+    </div>
+    <div class="process">
+      <label>*{{ 'orderModification.process' | translate }}</label>
+      <app-drop-down-list
+        [items]="catProcess$ | async"
+        [activeMinWidth]="false"
+        [itemSelected]="processSelected"
+        (valueDropList)="saveProcessSelected($event)"
+      >
+      </app-drop-down-list>
+    </div>
+  </div>
+</app-pop-up-generic>
+<app-pop-up-alert
+  *ngIf="popUps.segmentAlert.isOpen"
+  textInitial=""
+  textInter="¿Estás seguro que deseas segmentar pedido  {{
+    (selectedOrder$ | async)?.NumeroOrdenDeCompra
+  }}  de Laboratorios Sanfer?"
+  textFinal="Seleccionaste {{ (selectedItems$ | async).length }} Partidas de {{ (items$ | async).length }}"
+  (confirmacion)="handlePopUps({pop: SEGMENT_ALERT_POP, isOpen: false, target: null, emit: $event})"
+></app-pop-up-alert>
+<app-pop-up-alert
+  *ngIf="popUps.finalizeAlert.isOpen"
+  textInitial="¿Estás seguro que has realizado las modificaciones correspondientes al"
+  textInter="pedido {{ 435896356 }}?"
+  textFinal=""
+  (confirmacion)="handlePopUps({pop: FINALIZE_ALERT_POP, isOpen: false, target: null, emit: $event})"
+></app-pop-up-alert>
+<!--
+<app-freight-configurator *ngIf="activeFreight$ | async" (emit)="popFreight($event)"> </app-freight-configurator>
+-->
+<!--TODO: REVISAR SI SE QUITA O SE QUEDA-->
+<!--<div class="linked-items-pop">
+  <app-custom-position-pop-up
+    *ngIf="popUps.linked.isOpen"
+    [minWidth]="'160px'"
+    [maxWidth]="'160px'"
+    [minHeight]="'60px'"
+    [maxHeight]="'82px'"
+    [popUpPosition]="'bottom-center'"
+    [backgroundColor]="'#33333c'"
+    [target]="popUps.linked.target"
+    [borderColor]="'#33333c'"
+    [borderRadius]="'solid 0.5px #c8c8c9'"
+    [triangleBackgroundColor]="'#33333c'"
+    [closeButton]="false"
+    (closeEmitter)="handlePopUps({pop: LINKED_POP, isOpen: false, target: popUps.linked.target})"
+  >
+    <div class="linked-items">
+      <ul>
+        <li *ngFor="let quote of (quotesLinked$ | async)?.quotesLinked; let i = index"
+          ><label (click)="openLinkedFile(quote.IdArchivoPDF, quote.Folio)"> {{ i + 1 + '.- FO-' + quote.Folio }} </label>
+        </li>
+      </ul>
+    </div>
+  </app-custom-position-pop-up>
+</div>-->
+<pqf-draggable-modal
+  *ngIf="openPDF$ | async"
+  [isLoading]="isLoadingViewFile$ | async"
+  (closeModal)="handlePopUps({pop: VIEW_FILE, isOpen: false, target: popUps.viewFile.target})"
+  [titleHeader]="(invoice$ | async) !== null ? (invoice$ | async) : ''"
+>
+  <app-upload-view-file [datasFile]="{path: base64$ | async, titulo: ''}" *ngIf="isPdf"></app-upload-view-file>
+</pqf-draggable-modal>

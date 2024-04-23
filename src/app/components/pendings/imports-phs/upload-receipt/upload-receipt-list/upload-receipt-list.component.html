@@ -1,0 +1,61 @@
+<div class="dashboard-container" id="upload-receipt-list-container">
+  <div class="left-container">
+    <label class="title">{{ 'loadMissing.customBroker' | translate }}</label>
+    <div class="filters">
+      <div class="filter-by-type">
+        <app-hamburger-menu
+          [options]="optionsOrder$ | async"
+          [value]="(selectedOrder$ | async).value"
+          (valueEmit)="setFilter($event)"
+        ></app-hamburger-menu>
+      </div>
+      <div class="filter-search">
+        <app-search [placeholder]="'loadMissing.customBroker' | translate"></app-search>
+      </div>
+    </div>
+    <div class="list-container">
+      <virtual-scroller>
+        <div class="provider">
+          <div class="index">
+            <label>{{ '#' + 1 }}</label>
+          </div>
+          <div class="details">
+            <div class="name">
+              <label>{{ 'Nombre de Proveedor XY' }}</label>
+            </div>
+            <div class="amount">
+              <label> 1 Acuse de recibido · 6 Proveedores</label>
+            </div>
+            <div class="oc">
+              <label>{{ 250 + ' ' + (1 === 1 ? ('common.pza' | translate) : ('common.pzas' | translate)) }}</label>
+              <label>·</label>
+              <label>{{ (0 | currency: 'USD':'symbol-narrow':'2.2-4') + ' USD' }}</label>
+            </div>
+          </div>
+          <div class="row">
+            <img alt="" src="assets/Images/arrows/arrow_right.svg" />
+          </div>
+        </div>
+      </virtual-scroller>
+      <div class="without-results" *ngIf="false">
+        <app-without-results></app-without-results>
+      </div>
+      <div class="loader" *ngIf="false">
+        <app-loading></app-loading>
+      </div>
+    </div>
+    <div class="footer">
+      <label>{{ '#' + (0 | number: '1.0-0') }}</label>
+      <label>{{ 5 + ' Acuses de Recibido' }}</label>
+      <label>{{ 660 + ' ' + (1 === 1 ? ('common.piece' | translate) : ('common.pieces' | translate)) }}</label>
+      <label>{{ ('common.totalAmount' | translate) + (0 | currency: 'USD':'symbol-narrow':'2.2-4') + ' USD' }}</label>
+    </div>
+  </div>
+  <div class="right-container">
+    <ng-container *ngIf="true">
+      <app-doughnut-chart [title]="'loadMissing.customersBroker' | translate"></app-doughnut-chart>
+      <app-doughnut-chart [title]="'loadMissing.providers' | translate"></app-doughnut-chart>
+    </ng-container>
+    <app-loading class="loading" *ngIf="false"></app-loading>
+  </div>
+</div>

@@ -1,0 +1,104 @@
+<div *ngIf="isCollapse" class="collapse">
+  <div class="info">
+    <label class="client-title">{{ 'common.client' | translate }} </label>
+    <label class="data-contact">{{ typeContact }}</label>
+  </div>
+  <img [src]="imgArrow" alt="client-img" (click)="collapseInfo()" [ngClass]="{reverse: isNotCollapsed}" />
+</div>
+<div
+  class="client-contact-container"
+  [ngClass]="{
+    show: isCollapse && isNotCollapsed,
+    hide: isCollapse && !isNotCollapsed,
+    isCollapse: isCollapse
+  }"
+>
+  <div class="client-data-container" [ngClass]="{'padding-top-16': isCollapse || !showTitles}">
+    <div *ngIf="!isCollapse && showTitles" class="client-title">
+      <label>{{ 'common.client' | translate }} </label>
+    </div>
+    <div class="client-info">
+      <div class="image-client">
+        <img #imageElement [src]="contact?.image" (error)="errorImage(imageElement)" />
+      </div>
+      <div class="client-name">
+        <label>{{ contact?.clientName || 'N/D' }} </label>
+        <div class="segmentation">
+          <img
+            [alt]="contact?.incomeLevel"
+            [src]="
+              contact?.incomeLevel
+                ? 'assets/Images/clientes/niveles-ingreso/' + incomeLevelHelper(contact?.incomeLevel) + '.svg'
+                : 'assets/Images/clientes/niveles-ingreso/bajo.svg'
+            "
+          />
+          <img
+            [alt]="contact?.category"
+            [src]="
+              contact?.category
+                ? 'assets/Images/clientes/categorias/' + lodashTolower(contact?.category) + '.svg'
+                : 'assets/Images/clientes/categorias/rest.svg'
+            "
+          />
+        </div>
+        <div class="config-address" *ngIf="showConfigAddress">
+          <label
+            >{{ 'common.partials' | translate }}: <span>{{ contact?.acceptsPartial ? 'Si' : 'No' }}</span></label
+          >
+          <label *ngIf="contact?.showSendGuide"
+            >{{ 'common.sendGuide' | translate }}: <span>{{ contact?.sendGuide ? 'Si' : 'No' }}</span></label
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="contact-data-container" [ngClass]="{'padding-top-16': isCollapse || !showTitles}">
+    <div *ngIf="!isCollapse && showTitles" class="title-contact">
+      <label>{{ typeContact }}</label>
+    </div>
+    <div class="provider-contact-content">
+      <div class="column-one">
+        <div class="provider-contact">
+          <div>
+            <img alt="client" src="assets/Images/quotation/client.svg" />
+            <label>{{ contact?.contactName || 'N/D' }}</label>
+          </div>
+          <div>
+            <img alt="email" src="assets/Images/quotation/mail.svg" />
+            <label>{{ contact?.mail || 'N/D' }}</label>
+          </div>
+          <div>
+            <img alt="phone" src="assets/Images/quotation/phone.svg" />
+            <label
+              >{{ contact?.telephoneNumber || 'N/D' }} {{ ' · Ext. ' + (contact?.telephoneNumberExtension || ' N/D') }}
+            </label>
+          </div>
+        </div>
+        <div class="assigned-esac">
+          <label>{{ ('processPurchase.details.assignedEsac' | translate) + ':' }} </label>
+          <label>{{ contact?.assignedEsacName || 'N/D' }}</label>
+        </div>
+      </div>
+
+      <div class="column-two">
+        <div>
+          <label>{{ ('processPurchase.details.position' | translate) + ': ' }}</label>
+          <label>{{ contact?.position || 'N/D' }}</label>
+        </div>
+        <div>
+          <label>{{ ('processPurchase.details.department' | translate) + ': ' }}</label>
+          <label>{{ contact?.department || 'N/D' }}</label>
+        </div>
+        <div>
+          <label>{{ ('processPurchase.details.decisionLevel' | translate) + ': ' }}</label>
+          <label>{{ contact?.decisionLevel || 'N/D' }}</label>
+        </div>
+        <div>
+          <label [ngClass]="contact?.hasCredit ? 'with-credit' : 'without-credit'"
+            >{{ contact?.hasCredit ? ('common.clientWithCredit' | translate) : ('common.clientWithoutCredit' | translate) }}
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

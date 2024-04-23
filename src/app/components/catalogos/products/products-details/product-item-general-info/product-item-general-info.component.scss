@@ -1,0 +1,401 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+  @include s.flexColumn;
+
+  & > .productContainer {
+    display: grid;
+    grid-template-columns: 74px 1fr auto;
+    grid-column-gap: 20px;
+    padding: 0 20px;
+    background-color: rgba(s.$pqGreen, 0.05);
+
+    & > .imageProduct {
+      @include s.flexRow;
+      @include s.absoluteCenter;
+
+      & > img {
+        max-height: 74px;
+        max-width: 100%;
+      }
+    }
+
+    & .informationProduct {
+      @include s.flexColumn;
+      flex: 1 1 auto;
+      margin: 30px 0;
+
+      & > .CAT {
+        @include s.flexRowNoWrap;
+        align-items: center;
+        margin-bottom: 11px;
+
+        & > .image {
+          @include s.flexRow;
+          margin-right: 5px;
+
+          & > img {
+            height: 14px;
+            vertical-align: baseline;
+          }
+        }
+
+        & > .img-label {
+          margin-left: 5px;
+          height: 15px;
+        }
+
+        & > span {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_roboto,
+            $font-weight: s.$font-weight-bold,
+            $font-size-map: s.$responsive-font-15-15,
+            $color: s.$dark-proquifa
+          );
+        }
+      }
+
+      & > .information {
+        @include s.flexRowWrap;
+        @include s.multiLineTextTruncateSinHeight($lineHeight: 1.2);
+        margin-bottom: 11px;
+
+        & > span {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_roboto,
+            $font-weight: s.$font_weight_regular,
+            $font-size-map: s.$responsive-font-14-14,
+            $color: s.$dark-proquifa
+          );
+        }
+      }
+
+      & > .standarReference {
+        @include s.flexRowNoWrap;
+
+        & > label {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_roboto,
+            $font-weight: s.$font_weight_bold,
+            $font-size-map: s.$responsive-font-14-14,
+            $color: s.$main-proquifa
+          );
+
+          & > span {
+            color: s.$pqOrange2;
+            vertical-align: baseline;
+          }
+
+          & > .author {
+            @include s.responsive-font-format(
+              $font-family: s.$font_family_roboto,
+              $font-weight: s.$font_weight_bold,
+              $font-size-map: s.$responsive-font-14-14,
+              $color: s.$dark-proquifa
+            );
+          }
+        }
+      }
+
+      & > .descriptionContent {
+        @include s.flexRowWrap;
+        margin-top: 6px;
+
+        & > div {
+          margin-right: 30px;
+
+          & > label {
+            @include s.Roboto-Regular;
+            @include s.escaledFontFormat(s.$textSize13to16, regular, s.$textGray);
+
+            & > span {
+              @include s.Roboto-Bold;
+              color: s.$pqGreen;
+              vertical-align: baseline;
+            }
+          }
+        }
+      }
+
+      & > .descriptions {
+        margin-top: 11px;
+
+        & > .logistica-publicaciones {
+          display: grid;
+          grid-template-columns: 1fr;
+          grid-template-rows: repeat(2, auto);
+          grid-row-gap: 10px;
+
+          & > div {
+            @include s.flexRowNoWrap;
+
+            & > label {
+              @include s.responsive-font-format(
+                $font-family: s.$font_family_roboto,
+                $font-weight: s.$font_weight_regular,
+                $font-size-map: s.$responsive-font-14-14,
+                $color: s.$dark-proquifa-d
+              );
+
+              & > .green {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_roboto,
+                  $font-weight: s.$font-weight-bold,
+                  $font-size-map: s.$responsive-font-14-14,
+                  $color: s.$main-proquifa
+                );
+              }
+
+              & > .black {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_roboto,
+                  $font-weight: s.$font-weight-bold,
+                  $font-size-map: s.$responsive-font-14-14,
+                  $color: s.$dark-proquifa
+                );
+              }
+            }
+          }
+        }
+
+        & > .logistica-estandar-biologico {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(220px, auto));
+          grid-template-rows: repeat(2, auto);
+          grid-row-gap: 10px;
+          grid-column-gap: 15px;
+
+          & > div {
+            @include s.flexRowNoWrap;
+
+            & > label {
+              @include s.responsive-font-format(
+                $font-family: s.$font_family_roboto,
+                $font-weight: s.$font_weight_regular,
+                $font-size-map: s.$responsive-font-14-14,
+                $color: s.$dark-proquifa-d
+              );
+
+              & > .green {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_roboto,
+                  $font-weight: s.$font-weight-bold,
+                  $font-size-map: s.$responsive-font-14-14,
+                  $color: s.$main-proquifa
+                );
+              }
+
+              & > .black {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_roboto,
+                  $font-weight: s.$font-weight-bold,
+                  $font-size-map: s.$responsive-font-14-14,
+                  $color: s.$dark-proquifa
+                );
+              }
+            }
+          }
+        }
+
+        & > .logistica-labware {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(220px, auto));
+          grid-template-rows: repeat(2, auto);
+          grid-row-gap: 10px;
+          grid-column-gap: 15px;
+
+          & > div {
+            @include s.flexRowNoWrap;
+
+            & > label {
+              @include s.responsive-font-format(
+                $font-family: s.$font_family_roboto,
+                $font-weight: s.$font_weight_regular,
+                $font-size-map: s.$responsive-font-14-14,
+                $color: s.$dark-proquifa-d
+              );
+
+              & > .green {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_roboto,
+                  $font-weight: s.$font-weight-bold,
+                  $font-size-map: s.$responsive-font-14-14,
+                  $color: s.$main-proquifa
+                );
+              }
+
+              & > .black {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_roboto,
+                  $font-weight: s.$font-weight-bold,
+                  $font-size-map: s.$responsive-font-14-14,
+                  $color: s.$dark-proquifa
+                );
+              }
+            }
+          }
+        }
+
+        & > .logistica-capacitaciones {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(220px, auto));
+          grid-template-rows: repeat(2, auto);
+          grid-row-gap: 11px;
+          grid-column-gap: 15px;
+
+          & > div {
+            @include s.flexRowNoWrap;
+
+            & > label {
+              @include s.responsive-font-format(
+                $font-family: s.$font_family_roboto,
+                $font-weight: s.$font_weight_regular,
+                $font-size-map: s.$responsive-font-14-14,
+                $color: s.$dark-proquifa-d
+              );
+
+              & > .green {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_roboto,
+                  $font-weight: s.$font-weight-bold,
+                  $font-size-map: s.$responsive-font-14-14,
+                  $color: s.$main-proquifa
+                );
+              }
+
+              & > .black {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_roboto,
+                  $font-weight: s.$font-weight-bold,
+                  $font-size-map: s.$responsive-font-14-14,
+                  $color: s.$dark-proquifa
+                );
+              }
+            }
+          }
+
+          & > .dif {
+            grid-column-end: span 2;
+          }
+        }
+      }
+    }
+
+    & > .certificated {
+      @include s.flexRow;
+      align-items: center;
+      justify-content: center;
+
+      & > div {
+        & > img {
+          width: 12px;
+        }
+
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+          cursor: pointer;
+          padding-left: 5px;
+          text-decoration-line: underline;
+        }
+      }
+    }
+
+    & > .priceUnity {
+      @include s.flexColumn;
+      align-items: center;
+      justify-content: center;
+
+      & > div {
+        @include s.flexColumn;
+        justify-content: flex-end;
+
+        & > .mount {
+          @include s.Roboto-Bold;
+          @include s.escaledFontFormat(s.$textSize30to35, bold, s.$pqGreen);
+          display: flex;
+          justify-content: flex-end;
+          margin: 3px 0;
+        }
+
+        & > .mountTitle {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$textGray);
+          display: flex;
+          justify-content: flex-end;
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      grid-column-gap: 30px;
+      padding: 0 40px;
+      /*      grid-template-columns: 0.2fr auto 0.3fr;*/
+      & > .imageProduct {
+        & > img {
+          max-width: 100%;
+        }
+      }
+      & .informationProduct {
+        @include s.flexColumn;
+        flex: 1 1 auto;
+        /*        margin: 50px 0;*/
+        & > .CAT {
+          & > .image {
+            margin-right: 7px;
+
+            & > img {
+              height: 15px;
+              width: 15px;
+            }
+          }
+
+          & > .img-label {
+            height: 18px;
+          }
+        }
+
+        & > .information {
+          /*          max-width: 700px;*/
+        }
+
+        & > .standarReference {
+          margin-top: 6px;
+        }
+
+        & > .descriptionContent {
+          margin-top: 6px;
+
+          & > div {
+            margin-right: 30px;
+          }
+        }
+
+        & > .descriptionUse {
+          margin-top: 6px;
+
+          & > div {
+            margin-right: 30px;
+          }
+        }
+      }
+      & > .certificated {
+        & > div {
+          & > img {
+            width: 12px;
+          }
+
+          & > label {
+            cursor: pointer;
+            padding-left: 5px;
+          }
+        }
+      }
+    }
+  }
+}

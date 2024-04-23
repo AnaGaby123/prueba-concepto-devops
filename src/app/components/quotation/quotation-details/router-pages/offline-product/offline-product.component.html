@@ -1,0 +1,135 @@
+<section>
+  <label class="title">{{ 'quotation.details.section.offlineProduct.title' | translate }}</label>
+  <div class="form" *ngIf="(data$ | async) || {}; let product">
+    <div class="first-content">
+      <div class="mark">
+        <app-drop-down-list
+          class="column-end"
+          [fontSize]="(viewType$ | async) === 'macBookAir' ? '18px' : '13px'"
+          [itemSelected]="typeBrandSelected$ | async"
+          [subtitleActive]="false"
+          [enableEdit]="false"
+          [capitalize]="false"
+          [label]="'* ' + ('quotation.details.brand' | translate)"
+        >
+        </app-drop-down-list>
+      </div>
+      <div class="type-family">
+        <div>
+          <app-drop-down-list
+            class="column-end"
+            [fontSize]="(viewType$ | async) === 'macBookAir' ? '18px' : '13px'"
+            [items]="listTypeFamily$ | async"
+            [itemSelected]="typeFamilySelected$ | async"
+            [required]="true"
+            [subtitleActive]="false"
+            [isSearchable]="(listTypeFamily$ | async)?.length > 5"
+            [capitalize]="false"
+            [label]="'quotation.details.section.offlineProduct.typeFamily' | translate"
+            [font]="'Roboto-Bold'"
+            (valueDropList)="setTypeFamily($event)"
+          >
+          </app-drop-down-list>
+        </div>
+        <label class="provider-name">{{ (nameProvider$ | async)?.NombreProveedor }}</label>
+        <label class="alert-message">{{ 'quotation.investigationDetail.messageWithoutFamilies' | translate }}</label>
+      </div>
+      <div>
+        <app-generic-input
+          [fontSize]="(viewType$ | async) === 'macBookAir' ? '18px' : '13px'"
+          [isDisable]="isOfflineProduct$ | async"
+          [label]="'quotation.details.section.offlineProduct.cat' | translate"
+          [required]="true"
+          [maxlength]="100"
+          [minlength]="3"
+          [value]="(cotInvestigation$ | async)?.Catalogo"
+          [typeValidation]="validators.AlphaAndSpacesAndNumbers"
+          (textData)="setCatalog($event)"
+        >
+        </app-generic-input>
+      </div>
+      <div>
+        <app-generic-input
+          [textAlign]="'center'"
+          [fontSize]="(viewType$ | async) === 'macBookAir' ? '18px' : '13px'"
+          [isDisable]="isOfflineProduct$ | async"
+          [label]="'quotation.details.section.offlineProduct.count' | translate"
+          [required]="true"
+          [typeValidation]="validators.AlphaAndSpacesAndNumbers"
+          (textData)="setQuantity($event)"
+        >
+        </app-generic-input>
+      </div>
+      <div>
+        <app-drop-down-list
+          [label]="'quotation.details.section.offlineProduct.unite' | translate"
+          [subtitleActive]="false"
+          [required]="true"
+          [capitalize]="false"
+          [items]="selectCatUnit$ | async"
+          [disable]="isOfflineProduct$ | async"
+          [itemSelected]="catUnitSelected$ | async"
+          [isSearchable]="(selectCatUnit$ | async)?.length > 5"
+          (valueDropList)="setUnit($event)"
+          [fontSize]="(viewType$ | async) === 'macBookAir' ? '18px' : '13px'"
+        >
+        </app-drop-down-list>
+      </div>
+    </div>
+    <div class="second-content">
+      <div class="text-pieces-quotation">
+        <app-generic-input
+          [fontSize]="(viewType$ | async) === 'macBookAir' ? '18px' : '13px'"
+          [isDisable]="isOfflineProduct$ | async"
+          [label]="'quotation.details.section.offlineProduct.pieceQuotation' | translate"
+          [required]="true"
+          [onlyNumbers]="true"
+          [typeValidation]="validators.Number"
+          (textData)="setPieces(+$event)"
+        >
+        </app-generic-input>
+      </div>
+      <div class="text-content-product">
+        <app-generic-text-area
+          (emitData)="setNameProduct($event)"
+          [fontColor]="'#424242'"
+          [fontSize]="(viewType$ | async) === 'macBookAir' ? '18px' : '13px'"
+          [height]="(viewType$ | async) === 'macBookAir' ? '68px' : '68px'"
+          [required]="true"
+          [maxlength]="700"
+          [title]="'quotation.details.section.offlineProduct.nameProduct' | translate"
+          [value]="product.cotPartidaCotizacionInvestigacion.Descripcion"
+        >
+        </app-generic-text-area>
+      </div>
+      <div class="text-content-notes">
+        <app-generic-text-area
+          class="text-content"
+          [title]="'quotation.details.section.offlineProduct.noteInv' | translate"
+          [height]="(viewType$ | async) === 'macBookAir' ? '157px' : '157px'"
+          [required]="true"
+          [value]="product.cotPartidaCotizacionInvestigacionComentario.Comentario"
+          (emitData)="setNote($event)"
+          [fontSize]="(viewType$ | async) === 'macBookAir' ? '18px' : '13px'"
+          [fontColor]="'#424242'"
+        >
+        </app-generic-text-area>
+      </div>
+    </div>
+    <div class="data-legends">
+      <label>* {{ 'quotation.details.section.offlineProduct.requiredField' | translate }}</label>
+    </div>
+  </div>
+  <div class="buttons">
+    <button class="buttonActive" (click)="returnView()">
+      {{ 'common.cancel' | translate }}
+    </button>
+    <button
+      [disabled]="!(isActiveAdd$ | async)"
+      [ngClass]="(isActiveAdd$ | async) ? 'buttonActive' : 'buttonDisable'"
+      (click)="saveProduct()"
+    >
+      {{ 'quotation.details.section.offlineProduct.investigate' | translate }}
+    </button>
+  </div>
+</section>

@@ -1,0 +1,59 @@
+<div class="provider-commercial-info-container">
+  <label class="title">Comerciales</label>
+  <app-check-box
+    class="check"
+    [check]="(providerData$ | async)?.ColocarPhs"
+    [enableEdit]="enableEdit$ | async"
+    [enabledIconNoSelected]="true"
+    [labelFontStyle]="(providerData$ | async)?.ColocarPhs ? 'labelRobotoRegularProquifa13' : 'robotoRegular13'"
+    [label]="'formProvider.step1.placeInPHS' | translate"
+    [readOnlyCheckImage]="!(enableEdit$ | async) ? 'assets/Images/check-empty-green-light.svg' : 'assets/Images/check.svg'"
+    (event)="generalDataHandler($event, FIELD_PLACE_IN_PHS, FIELD_CHECK_BOX, DATA_MODEL_TYPE_PROVIDER)"
+  ></app-check-box>
+  <app-generic-input
+    class="input"
+    [enableEdit]="enableEdit$ | async"
+    [forceActiveErrors]="(providerData$ | async)?.ObjetivoCrecimientoDeseado > 1"
+    [label]="('formProvider.step1.desiredObjective' | translate) + ' %'"
+    [max]="100"
+    [min]="0"
+    [typeValidation]="inputValidators.Percentage"
+    [value]="(providerData$ | async)?.ObjetivoCrecimientoDeseado"
+    [required]="true"
+    (textData)="handlePercentageInput($event, FIELD_DESIRED_OBJECTIVE, FIELD_INPUT, DATA_MODEL_TYPE_PROVIDER)"
+  ></app-generic-input>
+  <app-generic-input
+    class="input"
+    [enableEdit]="enableEdit$ | async"
+    [forceActiveErrors]="(providerData$ | async)?.ObjetivoCrecimientoDeseado > 1"
+    [label]="('formProvider.step1.fundamentalObjective' | translate) + ' %'"
+    [max]="100"
+    [min]="0"
+    [typeValidation]="inputValidators.Percentage"
+    [value]="(providerData$ | async)?.ObjetivoCrecimientoFundamental"
+    [required]="true"
+    (textData)="handlePercentageInput($event, FIELD_FUNDAMENTAL_OBJECTIVE, FIELD_INPUT, DATA_MODEL_TYPE_PROVIDER)"
+  ></app-generic-input>
+  <app-drop-down-list
+    class="input"
+    [enableEdit]="enableEdit$ | async"
+    [items]="itemCatBuyerCustomer$ | async"
+    [label]="'formProvider.step1.buyer' | translate"
+    [subtitleActive]="false"
+    [title]="'Seleccionar'"
+    [itemSelected]="selectedCatCustomerBuy$ | async"
+    [isSearchable]="(itemCatBuyerCustomer$ | async)?.length > 5"
+    (valueDropList)="generalDataHandler($event, FIELD_BUYER, FIELD_DROP_LIST, DATA_MODEL_TYPE_PROVIDER)"
+  ></app-drop-down-list>
+  <app-drop-down-list
+    class="input"
+    [enableEdit]="enableEdit$ | async"
+    [items]="itemCatPayerCustomer$ | async"
+    [isSearchable]="(itemCatPayerCustomer$ | async)?.length > 5"
+    [label]="'formProvider.step1.payer' | translate"
+    [subtitleActive]="false"
+    [title]="'Seleccionar'"
+    [itemSelected]="selectedCatCustomerPay$ | async"
+    (valueDropList)="generalDataHandler($event, FIELD_PAYER, FIELD_DROP_LIST, DATA_MODEL_TYPE_PROVIDER)"
+  ></app-drop-down-list>
+</div>

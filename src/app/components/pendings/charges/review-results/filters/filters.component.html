@@ -1,0 +1,62 @@
+<section id="filters" [ngClass]="isShow ? 'show' : 'hide'">
+  <div class="data-filters">
+    <div>
+      <div class="title">
+        <div class="text">
+          <label>controlar</label>
+          <label>resultados de revisión</label>
+        </div>
+      </div>
+      <div class="content">
+        <div>
+          <div class="title">
+            <label>{{ 'common.client' | translate }}</label>
+          </div>
+          <div>
+            <app-drop-down-list
+              [items]="dropCustomer$ | async"
+              [itemSelected]="selectedCustomer$ | async"
+              [isSearchable]="true"
+              (valueDropList)="setItemFilter($event, 'selectedCustomer')"
+            >
+            </app-drop-down-list>
+          </div>
+        </div>
+        <div>
+          <div class="title">
+            <label>{{ 'reviewResults.reviews' | translate }}</label>
+          </div>
+          <div>
+            <app-drop-down-list
+              [items]="dropReviews$ | async"
+              [itemSelected]="selectedReview$ | async"
+              (valueDropList)="setItemFilter($event, 'selectedReview')"
+            >
+            </app-drop-down-list>
+          </div>
+        </div>
+        <div>
+          <div class="title">
+            <label>{{ 'reviewResults.carrier' | translate }}</label>
+          </div>
+          <div>
+            <app-drop-down-list
+              [items]="dropMessenger$ | async"
+              [itemSelected]="selectedMessenger$ | async"
+              (valueDropList)="setItemFilter($event, 'selectedMessenger')"
+            >
+            </app-drop-down-list>
+          </div>
+        </div>
+        <div>
+          <div class="recharge" (click)="filter()">
+            <img src="assets/Images/recharge.svg" alt="" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="arrow">
+    <img alt="arrow" src="assets/Images/arrows/flecha_cuadro.svg" [ngClass]="{reverse: !isShow}" (click)="showFilters()" />
+  </div>
+</section>

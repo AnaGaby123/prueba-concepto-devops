@@ -1,0 +1,358 @@
+<div id="attend-review-payment-details">
+  <div class="top-container">
+    <div class="left-container">
+      <label class="title">{{ 'common.invoices' | translate }}</label>
+      <div class="filters">
+        <div class="hambuger">
+          <app-hamburger-menu></app-hamburger-menu>
+        </div>
+        <div class="search">
+          <app-search [placeholder]="'# de Factura'"></app-search>
+        </div>
+      </div>
+      <div class="list-container">
+        <virtual-scroller>
+          <div class="item-oc">
+            <div class="indicator" [ngClass]="'selected'"></div>
+            <div class="info">
+              <label class="bold"
+                >#{{ 1 }} · <span>{{ 'F0-20943857 ' }}</span> · {{ 'attendReviewPayment.payment' | translate }}</label
+              >
+              <label>{{ 'common.totalValue' | translate }} · {{ 10500 | currency }} USD</label>
+              <label class="dates"
+                ><span class="gray">{{ 'attendReviewPayment.paymentDate' | translate }}: {{ '30 / Junio / 2021' }}</span></label
+              >
+            </div>
+            <div class="image">
+              <img src="assets/Images/labels/directos.svg" alt="" />
+            </div>
+          </div>
+        </virtual-scroller>
+      </div>
+      <div class="totals">
+        <label>#{{ 5 }} {{ 'common.invoices' | translate }}</label>
+        <label>{{ 'common.totalAmount' | translate }}: {{ 10500 | currency }} USD</label>
+      </div>
+    </div>
+    <div class="right-container">
+      <label class="title"
+        ><span class="ocean">#{{ 1 }} · FO-{{ 20943856 }} · </span> {{ 'common.totalAmount' | translate }}
+        {{ 10500 | currency }} USD <img src="assets/Images/labels/directos.svg" alt=""
+      /></label>
+      <div class="header-container">
+        <div class="header">
+          <div class="provider-container">
+            <div class="client-title">
+              <label>{{ 'common.client' | translate }}</label>
+            </div>
+            <div class="provider">
+              <div>
+                <img src="assets/Images/clientes/logo_proquifa_hover.svg" alt="" />
+              </div>
+              <div class="provider-info">
+                <div>
+                  <label
+                    ><span>{{ 'Usp nombre de Proveedor' }}</span></label
+                  >
+                </div>
+                <label>{{ 'common.client' | translate }} AA+</label>
+              </div>
+            </div>
+          </div>
+          <div class="contactInformation">
+            <div class="box1">
+              <div class="title">
+                <label>Datos de contacto</label>
+              </div>
+              <div class="name">
+                <img src="assets/Images/contacto.svg" alt="" />
+                <label> {{ 'José Ramón Ruiz Fernández' }}</label>
+              </div>
+              <div class="mail">
+                <img src="assets/Images/quotation/mail.svg" alt="" />
+                <label> {{ 'jose.ruiz@empresa.com' }}</label>
+              </div>
+              <div class="phone">
+                <img src="assets/Images/quotation/phone.svg" alt="" />
+                <label> {{ '01(55) 364 74 85 · Ext. 1245' }} </label>
+              </div>
+            </div>
+            <div class="box2">
+              <div class="dept">
+                <label><span>Depto: </span> {{ 'attendReviewPayment.purchases' | translate }}</label>
+              </div>
+              <div class="position">
+                <label
+                  ><span>{{ 'attendReviewPayment.position' | translate }}: </span> {{ 'Administrativo' }}</label
+                >
+              </div>
+              <div class="level">
+                <label
+                  ><span>{{ 'attendReviewPayment.decisionLevel' | translate }}: </span> {{ 'Bajo' }}</label
+                >
+              </div>
+            </div>
+            <div class="box3">
+              <div class="jobDescription">
+                <label
+                  ><span>{{ 'attendReviewPayment.jobDescription' | translate }}: </span> {{ 'Comprador' }}</label
+                >
+              </div>
+              <div class="position">
+                <label
+                  ><span>{{ 'attendReviewPayment.assignedEsac' | translate }}: </span> {{ 'BArias' }}</label
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="center-container">
+        <div class="left">
+          <app-upload-view-file></app-upload-view-file>
+        </div>
+        <div class="right">
+          <div class="rightContent">
+            <label class="title">{{ 'attendReviewPayment.paymentDetails' | translate }}</label>
+            <div class="opacity">
+              <label class="title"
+                ><span>{{ 'attendReviewPayment.paymentType' | translate }}: </span
+                >{{ 'attendReviewPayment.payment' | translate }}</label
+              >
+            </div>
+            <div class="content1">
+              <div class="transmitter">
+                <div class="title">
+                  <label>{{ 'attendReviewPayment.transmitter' | translate }}</label>
+                </div>
+                <label
+                  >{{ 'Radio movil dipsa, sa de cv' }}<span>{{ ' · RFC: XXX000000000' }}</span></label
+                >
+              </div>
+              <div class="receiver">
+                <div class="title">
+                  <label>{{ 'attendReviewPayment.receiver' | translate }}</label>
+                </div>
+                <label
+                  >{{ 'Proveedora químico farmaceutica' }}<span>{{ '· RFC PQF000000000' }}</span></label
+                >
+              </div>
+            </div>
+            <div class="content2">
+              <div class="wayToPay">
+                <div class="title">
+                  <label>{{ 'attendReviewPayment.wayToPay' | translate }}</label>
+                </div>
+                <label>{{ 'Transferencia' }}</label>
+              </div>
+              <div class="paymentMethod">
+                <div class="title">
+                  <label>{{ 'attendReviewPayment.paymentMethod' | translate }}</label>
+                </div>
+                <label>{{ 'PPD · Pago en Parcialidades o Diferido' }}</label>
+              </div>
+            </div>
+            <div class="content3">
+              <div class="title">
+                <label>{{ 'attendReviewPayment.description' | translate }}</label>
+              </div>
+              <div class="text">
+                <label>{{ 'Renta de Auto , ejemplo de descripción que podría ser demasiado extensa ' }}</label>
+              </div>
+            </div>
+            <div class="content4">
+              <div class="activity">
+                <div class="title">
+                  <label>{{ 'attendReviewPayment.activity' | translate }}</label>
+                </div>
+                <label>{{ 'Administrativo' }}</label>
+              </div>
+              <div class="typeOfCost">
+                <div class="title">
+                  <label>{{ 'attendReviewPayment.typeOfCost' | translate }}</label>
+                </div>
+                <label>{{ 'Gastos Administración' }}</label>
+              </div>
+              <div class="area">
+                <div class="title">
+                  <label>{{ 'attendReviewPayment.area' | translate }}</label>
+                </div>
+                <label>{{ 'Finanzas' }}</label>
+              </div>
+            </div>
+            <div class="content5">
+              <div class="accountingAccount">
+                <div class="title">
+                  <label>{{ 'attendReviewPayment.accountingAccount' | translate }}</label>
+                </div>
+                <label>{{ 'Renta Automovil' }}</label>
+              </div>
+              <div class="sector">
+                <div class="title">
+                  <label>{{ 'attendReviewPayment.sector' | translate }}</label>
+                </div>
+                <label>{{ 'Sector A' }}</label>
+              </div>
+              <div class="budget">
+                <div class="title">
+                  <label>{{ 'attendReviewPayment.budget' | translate }}</label>
+                </div>
+                <label>{{ 'Fuera' }}</label>
+              </div>
+            </div>
+            <div class="content6">
+              <div class="additional">
+                <div class="title">
+                  <label>{{ 'attendReviewPayment.additionalDocumentation' | translate }}</label>
+                </div>
+                <div class="files-container">
+                  <div class="file">
+                    <label>{{ '#1 · Archivo.pdf' }}</label></div
+                  >
+                  <div class="file">
+                    <label>{{ '#2 · Archivo.pdf' }}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="xml">
+                <label>XML</label>
+                <div class="xmlContainer">
+                  <div>
+                    <label>{{ '346ytrytfbnxfghawertbnuigomphmjhbfrwehdrr.xml' }}</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="paymentDetails">
+              <div class="title">
+                <label>{{ 'attendReviewPayment.paymentDetails' | translate }}</label>
+              </div>
+              <div class="opacity">
+                <div class="color">
+                  <label>· SPEI</label>
+                </div>
+                <div>
+                  <label
+                    ><span>{{ 'attendReviewPayment.interbankClabe' | translate }} · </span>{{ '123456789123456789' }}
+                  </label>
+                </div>
+                <div>
+                  <label
+                    ><span>{{ 'attendReviewPayment.bank' | translate }} · </span>{{ 'HSBC' }}</label
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="paymentSettings">
+              <div class="title">
+                <label>{{ 'attendReviewPayment.paymentSettings' | translate }}</label>
+              </div>
+              <div class="opacity">
+                <div>
+                  <label>*{{ 'attendReviewPayment.bank' | translate }}</label>
+                  <app-drop-down-list></app-drop-down-list>
+                </div>
+              </div>
+            </div>
+            <div class="programming">
+              <div class="title">
+                <label>{{ 'attendReviewPayment.programming' | translate }}</label>
+              </div>
+              <div class="opacity">
+                <div>
+                  <div class="title">
+                    <label
+                      ><span>{{ 'attendReviewPayment.amountPlayable' | translate }}</span></label
+                    >
+                  </div>
+                  <div class="content">
+                    <label>{{ 12000 | currency: '':'symbol':'1.2-2' }} {{ 'MXN' }}</label>
+                  </div>
+                </div>
+                <div>
+                  <div class="title">
+                    <label
+                      ><span>{{ 'attendReviewPayment.desiredPaymentDate' | translate }}</span></label
+                    >
+                  </div>
+                  <div class="content">
+                    <label>{{ '30/Junio/2021' }}</label>
+                  </div>
+                </div>
+                <div>
+                  <div class="title">
+                    <label
+                      ><span>*{{ 'attendReviewPayment.scheduledPaymentDate' | translate }}</span></label
+                    >
+                  </div>
+                  <div class="content">
+                    <app-date-picker
+                      class="picker"
+                      [color]="false"
+                      [disabledCalendarDays]="selectNonWorkingDays$ | async"
+                      [position]="'top'"
+                    >
+                    </app-date-picker>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="fixed">
+            <button [ngClass]="'active-yellow'" (click)="comments()">{{
+              'attendReviewPayment.manageNonPayment' | translate
+            }}</button>
+            <button [ngClass]="'active-green-small'">{{ 'attendReviewPayment.validate' | translate }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-pop-up-generic
+  *ngIf="commentsOpen == true"
+  [titleHeader]="'common.comments' | translate"
+  [width]="(viewType$ | async) === 'macBookAir' ? '864px' : '620px'"
+  [height]="(viewType$ | async) === 'macBookAir' ? '720px' : '561px'"
+>
+  <div class="pop-up-content">
+    <div class="top">
+      <div class="image">
+        <img src="assets/Images/clientes/logo_proquifa_hover.svg" alt="" />
+      </div>
+      <div class="details">
+        <div class="name">
+          <label>{{ 'NOMBRE DE PROVEEDOR' }}</label>
+        </div>
+        <div class="invoice">
+          <label
+            ><span>{{ 'common.invoice' | translate }} {{ '02039284' }} </span>· {{ 'Prepago' }}</label
+          >
+        </div>
+        <div class="date">
+          <label>{{ 'attendReviewPayment.paymentDate' | translate }}: {{ '30/Junio/2021' }}</label>
+        </div>
+      </div>
+      <div class="amount">
+        <div class="number">
+          <label>{{ 1700 | currency: 'MXN':'symbol-narrow':'1.2-2' }} {{ 'MXN' }}</label>
+        </div>
+        <div class="text">
+          <label>{{ 'common.amount' | translate }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="center">
+      <label>{{ 'attendReviewPayment.reasons' | translate }}</label>
+      <app-generic-text-area
+        [width]="(viewType$ | async) === 'macBookAir' ? '820px' : '580px'"
+        [height]="(viewType$ | async) === 'macBookAir' ? '301px' : '180px'"
+      >
+      </app-generic-text-area>
+    </div>
+    <div class="bottom">
+      <button (click)="comments()">{{ 'common.cancel' | translate }}</button>
+      <button>{{ 'common.accept' | translate }}</button>
+    </div>
+  </div>
+</app-pop-up-generic>

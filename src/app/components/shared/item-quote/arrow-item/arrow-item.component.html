@@ -1,0 +1,8 @@
+<div class="arrow-container" *ngIf="columnArrow?.isSelected === true || columnArrow?.isSelected === false">
+  <img
+    #imageElement
+    alt="arrow"
+    src="assets/Images/quotation/arrow_default.svg"
+    [ngClass]="columnArrow.isSelected ? 'open' : 'close'"
+  />
+</div>

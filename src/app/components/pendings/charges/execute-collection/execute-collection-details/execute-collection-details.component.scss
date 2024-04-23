@@ -1,0 +1,427 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  #execute-collection-details {
+    @include s.absolute100;
+    @include s.flexColumn;
+    overflow: hidden;
+
+    & > .content-container {
+      @include s.flexRowNoWrap;
+      flex: 1 1 auto;
+      overflow: hidden;
+      $slide-flex-basis: 350px;
+      $slide-flex-basis-open: 640px;
+
+      & > .arrow {
+        @include s.default-transition;
+        left: $slide-flex-basis-open;
+        height: 21px;
+        position: absolute;
+        top: 50%;
+        width: 16px;
+
+        & > img {
+          @include s.default-transition;
+          @include s.absolute100;
+          cursor: pointer;
+          transform: scaleX(-1);
+        }
+
+        &.close {
+          left: $slide-flex-basis;
+
+          & > img {
+            transform: scaleX(1);
+          }
+        }
+      }
+
+      & > .payments-container {
+        @include s.flexColumn;
+        @include s.default-transition;
+        flex: 0 0 $slide-flex-basis;
+        position: relative;
+        padding: 15px 20px 0 20px;
+
+        & > .content {
+          @include s.flexColumn;
+          flex: 1 0 auto;
+
+          & > .container-filters {
+            border-bottom: 1px solid s.$pqBlack2;
+
+            & > .hamburger-menu {
+            }
+
+            & > .app-search {
+              padding: 10px 0;
+            }
+          }
+
+          & > label:nth-of-type(1) {
+            @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+            @include s.Novecento-Bold;
+            padding-bottom: 12px;
+          }
+
+          & > .container-content {
+            @include s.flexColumn;
+            height: 100%;
+
+            & #all-cards {
+              height: 100%;
+            }
+
+            & > virtual-scroller {
+              & * {
+                cursor: pointer;
+              }
+
+              & .card:hover {
+                background-color: s.$pqGray;
+              }
+
+              & .active {
+                background-color: s.$pqGray;
+                border-left: 8px solid s.$pqGreen !important;
+              }
+
+              & .card {
+                @include s.flexColumn;
+                padding: 15px 0;
+                border-left: 8px solid transparent;
+                border-bottom: 1px solid s.$pqGray2;
+
+                & > .card-body {
+                  @include s.flexRowNoWrap;
+                  @include s.absolute100;
+                  padding-left: 10px;
+                  justify-content: space-between;
+
+                  & > .column-one {
+                    @include s.flexColumn;
+
+                    & > .div {
+                      @include s.flexRowNoWrap;
+                      @include s.absoluteTop;
+                      @include s.absolute100;
+                      box-sizing: border-box;
+                      justify-content: flex-start;
+                    }
+
+                    & > .line-one {
+                      padding-bottom: 9px;
+
+                      & > label {
+                        @include s.escaledFontFormat(s.$textSize16to20, bold, s.$pqBlack2);
+                        @include s.Roboto-Bold;
+                        margin-top: 2px;
+                      }
+
+                      & > label:nth-of-type(2) {
+                        padding-left: 4px;
+                      }
+                    }
+
+                    & > .line-two {
+                      & > label {
+                        @include s.escaledFontFormat(s.$textSize14to17, normal, s.$pqTextGris);
+                        @include s.Roboto-Regular;
+                        margin-top: 2px;
+                      }
+                    }
+                  }
+
+                  & > .column-two {
+                    @include s.flexColumn;
+                    align-items: center;
+                    padding-right: 20px;
+                  }
+                }
+              }
+            }
+
+            & > .is-loading,
+            .without-results {
+              @include s.flexRowNoWrap;
+              @include s.absoluteCenter;
+              @include s.absolute100;
+            }
+          }
+        }
+
+        & > .footer {
+          @include s.flexRowNoWrap;
+          flex: 0 0 55px;
+          justify-content: center;
+          border-top: 1px solid s.$pqBlack2;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize12to14, normal, s.$pqBlack2);
+            @include s.Roboto-Regular;
+            padding-top: 10px;
+          }
+        }
+      }
+
+      & > .requirement-container {
+        @include s.default-transition;
+        @include s.flexColumn;
+        background-color: s.$pqGray2;
+        flex: 0 0 290px;
+        overflow: hidden;
+
+        &.close {
+          border-right: 1px solid s.$pqGray2;
+          flex: 0 1 0;
+        }
+
+        & > .slide {
+          @include s.flexColumn;
+          flex: 1 0 100%;
+          overflow-x: hidden;
+          padding: 15px 20px 0 20px;
+          width: 290px;
+
+          & > .title {
+            @include s.flexColumn;
+            border-bottom: 1px solid s.$pqBlack2;
+            flex: 0 0 auto;
+            padding-bottom: 12px;
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+              @include s.Novecento-Bold;
+            }
+          }
+
+          & > .content {
+            @include s.flexColumn;
+            flex: 1 1 auto;
+            padding: 27px 0;
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize16to21, bold, s.$pqGreen);
+              @include s.Roboto-Bold;
+              flex: 0 0 auto;
+              margin-bottom: 2px;
+            }
+
+            & > pre {
+              @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+              @include s.Roboto-Regular;
+              flex: 1 1 auto;
+              white-space: pre-line;
+            }
+          }
+
+          & > .files-container {
+            @include s.flexColumn;
+            border-top: 1px solid s.$pqBlack2;
+            flex: 0 0 56px;
+            padding: 12px 0;
+
+            & > .files {
+              @include s.flexColumn;
+              overflow-y: auto;
+
+              & > .file {
+                @include s.flexRowNoWrap;
+                align-items: center;
+                margin: 5px 0;
+
+                & > label:nth-of-type(1) {
+                  @include s.escaledFontFormat(s.$textSize12to16, bold, s.$pqGreen);
+                  @include s.Novecento-Bold;
+                  flex-shrink: 0;
+                  text-align: end;
+                  width: 16px;
+                }
+
+                & > img {
+                  flex-shrink: 0;
+                  height: 21px;
+                  margin: 0 8px;
+                  width: 18px;
+                }
+
+                & > label:nth-of-type(2) {
+                  @include s.escaledFontFormat(s.$textSize13to18, bold, s.$pqBlack2);
+                  @include s.Roboto-Bold;
+                  @include s.truncateText();
+                  cursor: pointer;
+
+                  &:hover {
+                    text-decoration: underline;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      & > .current-component-container {
+        @include s.flexColumn;
+        flex: 1 1 auto;
+        overflow: hidden;
+        padding: 15px 0;
+
+        &.rebillPadding {
+          padding-bottom: 0;
+        }
+
+        & > .header {
+          @include s.flexColumn;
+          border-bottom: 1px solid s.$pqBlack2;
+          flex: 0 0 auto;
+          margin: 0 20px;
+          padding-bottom: 12px;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqGreen);
+            @include s.Novecento-Bold;
+          }
+        }
+
+        & > .component {
+          flex: 1 1 auto;
+        }
+
+        & > app-execute-payment {
+          box-sizing: border-box;
+        }
+
+        & > .footer {
+          @include s.flexRowNoWrapReverse;
+          align-items: center;
+          border-top: 1px solid s.$pqBlack2;
+          justify-content: space-between;
+          margin: 0 20px;
+          padding-top: 15px;
+
+          & > .btn-manage-payment {
+            &.active {
+              @include s.pqButton(150px, 250px, 25px, 30px, s.$pqGreen);
+            }
+
+            &.disabled {
+              @include s.pqButtonDisable(150px, 250px, 25px, 30px);
+            }
+          }
+
+          & > .btn-cancel-payment {
+            @include s.pqButton(150px, 250px, 25px, 30px, s.$pqGreen);
+          }
+
+          & > .btn-pay {
+            @include s.pqButton(150px, 250px, 25px, 30px, s.$pqGreen2);
+          }
+        }
+      }
+    }
+
+    & > footer {
+      @include s.flexRowNoWrap;
+      @include s.absoluteCenter;
+      width: 100%;
+      flex: 0 0 54px;
+      border-top: 2px solid s.$pqBlack;
+      box-sizing: border-box;
+
+      & > div:nth-of-type(1) {
+        @include s.flexRowNoWrap;
+        @include s.absoluteCenter;
+        @include s.absolute100;
+        box-sizing: border-box;
+        padding-right: 16px;
+        padding-left: 16px;
+        justify-content: center;
+
+        & > div {
+          @include s.flexRowNoWrap;
+          @include s.absoluteCenter;
+          width: auto;
+          padding-left: 10px;
+          padding-right: 10px;
+
+          & > label:nth-of-type(1) {
+            @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+            @include s.Roboto-Bold;
+            margin-right: 4px;
+          }
+
+          & > label:nth-of-type(2),
+          .text {
+            @include s.escaledFontFormat(s.$textSize12to14, normal, s.$pqBlack2);
+            @include s.Roboto-Regular;
+          }
+
+          & > img {
+            margin-right: 5px;
+            height: 17px;
+          }
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #execute-collection-details {
+      & > .content-container {
+        & > .payments-container {
+          padding-top: 20px;
+
+          & > .container-filters {
+            & > .app-search {
+              padding: 15px 0;
+            }
+          }
+
+          & > .content {
+            & > label:nth-of-type(1) {
+              padding-bottom: 15px;
+            }
+          }
+
+          & > .footer {
+            flex: 0 0 71px;
+          }
+        }
+
+        & > .requirement-container {
+          & > .slide {
+            padding-top: 20px;
+
+            & > .title {
+              padding-bottom: 15px;
+            }
+
+            & > .files-container {
+              flex: 0 0 71px;
+            }
+          }
+        }
+
+        & > .current-component-container {
+          padding: 20px 0;
+
+          & > .header {
+            padding-bottom: 15px;
+          }
+
+          & > .footer {
+            padding-top: 20px;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,212 @@
+<div id="contracts-list">
+  <div class="principal">
+    <div class="sectionList">
+      <div class="datosLista">
+        <div class="title">
+          <label class="textUpperCase">
+            {{ 'formClient.step5.contracts' | translate }}
+          </label>
+        </div>
+        <div class="botonera">
+          <app-tabs
+            [options]="selectTabFilters$ | async"
+            [tapSelected]="selectedTabFilter$ | async"
+            (onSelectOption)="filterSelected($event)"
+          >
+          </app-tabs>
+        </div>
+        <div>
+          <app-search [placeholder]="itemSearch" (textSearch)="handleKeySearch($event)" [searchTerm]="searchTerm$ | async">
+          </app-search>
+        </div>
+      </div>
+      <div class="spacioListas">
+        <div class="listaCont">
+          <div *ngIf="contractsList$ | async; let listContract" class="spaceList">
+            <div *ngIf="listContract.length > 0 && (selectApiStatus$ | async) === 3" class="lista">
+              <div
+                *ngFor="let item of listContract; let i = index"
+                class="contactItem"
+                [ngClass]="item.isSelected ? 'divActive' : null"
+                (click)="selectedContract(item)"
+              >
+                <div class="contactItemBar"></div>
+                <div class="datosContract">
+                  <div class="infoContract">
+                    <div>
+                      <label>#{{ i + 1 }} · </label>
+                      <pre> {{ 'formClient.step5.contract' | translate }} {{ item.Folio }}</pre>
+                    </div>
+                    <div>
+                      <label> {{ 'formClient.step5.validity' | translate }} {{ item.FechaFin | dateFormatDot }} </label>
+                    </div>
+                    <div>
+                      <span>
+                        {{ item?.NumMarcas }}
+                        {{
+                          item?.NumMarcas === 1
+                            ? ('offerAdjustment.details.mark' | translate)
+                            : ('offerAdjustment.details.marks' | translate)
+                        }}
+                        {{
+                          item?.NumMarcas === 1
+                            ? ('offerAdjustment.details.include' | translate)
+                            : ('offerAdjustment.details.includes' | translate)
+                        }}
+                      </span>
+                    </div>
+                  </div>
+                  <div class="estatus">
+                    <label [ngClass]="item?.Estatus">
+                      {{ item?.Estatus }}
+                    </label>
+                  </div>
+                  <div class="estatus">
+                    <img
+                      *ngIf="item?.Estatus === 'Guardado' && (enableEdit$ | async)"
+                      src="assets/Images/lapiz.svg"
+                      alt="Editar contrato"
+                      (click)="selectedContract(item, true, 'edit')"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="listContract.length === 0 && (selectApiStatus$ | async) === 3" class="listaVacia">
+              <app-without-results [title]="(contractsListIsEmpty$ | async) ? 'NO HAS AGREGADO CONTRATOS' : 'Sin resultados'">
+              </app-without-results>
+            </div>
+            <div class="loader" *ngIf="(selectApiStatus$ | async) === 1">
+              <app-loading></app-loading>
+            </div>
+          </div>
+          <div class="totales">
+            <div>
+              <label class="text">
+                #{{ listContract.length | number: '1.0-0' }}
+                {{
+                  listContract.length === 1
+                    ? ('formClient.step5.contract' | translate)
+                    : ('formClient.step5.contracts' | translate)
+                }}
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="boton">
+          <button
+            [ngClass]="(enableEdit$ | async) || !(editMode$ | async) ? 'btnActive' : 'btnBlock'"
+            [disabled]="!(enableEdit$ | async) && (editMode$ | async)"
+            (click)="setDetails(true)"
+          >
+            {{ 'common.add' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="(selectedContract$ | async) || {}; let itemSelected" class="informacion">
+      <div class="generalInfoContract">
+        <div class="info">
+          <div class="title">
+            <label>{{ 'formClient.step5.information' | translate }}</label>
+          </div>
+          <div class="contractInfoData" *ngIf="listContract.length > 0">
+            <label>
+              #{{ this.indexSelected + 1 }} ·
+              <span class="aqua">{{ 'formClient.step5.contract' | translate }} {{ itemSelected?.Folio }} · </span>
+              <span class="black">{{ 'common.year' | translate }} {{ getYear(itemSelected?.FechaInicioTipoDate) }} · </span>
+              <span
+                [ngClass]="{
+                  active: itemSelected?.Estatus === 'Activo',
+                  saved: itemSelected?.Estatus === 'Guardado',
+                  expired: itemSelected?.Estatus === 'Expirado',
+                  canceled: itemSelected?.Estatus === 'Cancelado'
+                }"
+                >{{ itemSelected?.Estatus }}</span
+              >
+            </label>
+          </div>
+        </div>
+        <div
+          class="btn"
+          *ngIf="(itemSelected?.Estatus === 'Activo' || itemSelected?.Estatus === 'Guardado') && listContract.length > 0"
+        >
+          <button [ngClass]="(enableEdit$ | async) ? 'btnActive' : 'btnBlock'" (click)="activePopCancel(itemSelected)">
+            {{ 'formClient.step5.cancelContract' | translate }}
+          </button>
+        </div>
+      </div>
+      <div *ngIf="listContract.length > 0" class="datosContrato">
+        <div class="datos">
+          <div>
+            <div>
+              <label>
+                {{ 'formClient.step5.contractValidity' | translate }}
+              </label>
+            </div>
+            <div>
+              <label *ngIf="itemSelected?.FechaInicio && itemSelected?.FechaFin">
+                {{ itemSelected?.FechaInicio | dateFormatDot }} - {{ itemSelected?.FechaFin | dateFormatDot }}
+              </label>
+            </div>
+          </div>
+          <div>
+            <div>
+              <label>
+                {{ 'formClient.step5.paymentConditions' | translate }}
+              </label>
+            </div>
+            <div>
+              <label>
+                {{ itemSelected?.CondicionesDePago }}
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="marcas">
+          <div>
+            <label class="subTitle">
+              {{ 'formClient.step5.includedBranches' | translate }}
+            </label>
+          </div>
+          <div class="sectionBrand">
+            <div *ngFor="let marca of itemSelected?.contractBrands">
+              <div style="width: 100%;">
+                <label
+                  ><span>·</span> <span>{{ marca.NombreMarca }}</span></label
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="fileContract">
+          <p>{{ 'common.document' | translate }}</p>
+          <div *ngIf="itemSelected?.UrlContrato !== null" class="withFile">
+            <app-upload-view-file [datasFile]="{path: itemSelected?.UrlContrato, titulo: ''}" [activePadding]="false">
+            </app-upload-view-file>
+          </div>
+          <div *ngIf="itemSelected?.UrlContrato === null && (contractStatus$ | async) !== 1" class="withoutFile">
+            <app-without-results [title]="'Sin Contrato'"></app-without-results>
+          </div>
+        </div>
+      </div>
+      <div class="loading" *ngIf="(contractStatus$ | async) === 1">
+        <div class="loadingContainer">
+          <div class="load-circle">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-pop-up-alert
+  *ngIf="activePopCancelC"
+  [textInitial]="'¿Estas seguro de '"
+  [textInter]="'cancelar contrato'"
+  [textFinal]="(dataCliente$ | async) + ' ?'"
+  (confirmacion)="cancelContract($event)"
+>
+</app-pop-up-alert>

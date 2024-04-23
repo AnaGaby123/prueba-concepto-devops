@@ -1,0 +1,96 @@
+<div id="list-clients-container">
+  <div class="title">
+    <div *ngIf="(userData$ | async)?.NombreCliente !== 'ND'">
+      <label class="client">
+        <span>#{{ (userData$ | async)?.Index }} · {{ (userData$ | async)?.NombreCliente }}</span>
+      </label>
+      <label class="strategy">
+        <span>·</span>
+        <span>{{ 'ESTRATEGIA ' + (currentStrategy$ | async) }}</span>
+      </label>
+      <label class="pending"> </label>
+      <label class="quotations">
+        <span>·</span>
+        <span>{{
+          (totalQuotes$ | async) +
+            ' ' +
+            ((totalQuotes$ | async) === 1 ? ('dailyMeeting.quotation' | translate) : ('dailyMeeting.quotations' | translate))
+        }}</span>
+      </label>
+      <label class="amount">
+        <span>·</span>
+        <span
+          >{{ 'dailyMeeting.details.totalClosing' | translate }}
+          {{ totalUsdQuotes$ | async | currency: 'USD':'symbol-narrow':'1.2-2' }} USD</span
+        >
+      </label>
+    </div>
+    <!--TODO: REVISAR SI AÚN SE NECESITA-->
+    <!--    <div *ngIf="(userData$ | async)?.NombreCliente !== 'ND'">
+      <label
+        [ngClass]="{
+          'message-red': (userData$ | async)?.HorasCaducidadMasReciente <= 4,
+          'message-yellow':
+            (userData$ | async)?.HorasCaducidadMasReciente >= 5 && (userData$ | async)?.HorasCaducidadMasReciente <= 8,
+          'message-green': (userData$ | async)?.HorasCaducidadMasReciente > 8
+        }"
+      >
+        {{
+          ('dailyMeeting.details.expiresIn' | translate) +
+            ' ' +
+            ((userData$ | async)?.HorasCaducidadMasReciente === null ? 'NA' : (userData$ | async)?.HorasCaducidadMasReciente) +
+            ((userData$ | async)?.HorasCaducidadMasReciente === 1 ? ' Hr.' : ' Hrs.')
+        }}
+      </label>
+    </div>-->
+  </div>
+  <div class="list">
+    <app-pqf-card
+      class="cards"
+      [enableMessage]="true"
+      [options]="cardOptions$ | async"
+      [withoutOptionsMessage]="'common.withoutQuotations' | translate"
+      (handleOptionSelected)="handleOptionSelected($event)"
+    ></app-pqf-card>
+  </div>
+  <div class="bar-percentage">
+    <div>
+      <div>
+        <label
+          >#{{ (currentQuotation$ | async)?.index + ' · ' }}
+          <span (click)="downloadQuotation()">{{ (currentQuotation$ | async)?.Folio }}</span>
+        </label>
+        <label
+          >{{
+            ' · ' +
+              ('dailyMeeting.valueTotalClosing' | translate) +
+              ' ' +
+              (((currentQuotation$ | async)?.TotalCotizado ? (currentQuotation$ | async)?.TotalCotizado : 0)
+                | currency: (currency$ | async):'symbol-narrow':'1.2-2')
+          }}
+          {{ currency$ | async }}</label
+        >
+      </div>
+      <app-percentage-bar [items]="percentageBarTotal$ | async"></app-percentage-bar>
+    </div>
+  </div>
+  <div class="change-options">
+    <!--    FIXME: SE COMENTÓ POR QUE SOLO UNA TAB ESTABA DEFINIDA-->
+    <!--    <div class="tabs">
+      <app-tabs
+        [options]="tabOptions$ | async"
+        [tapSelected]="tabSelected$ | async"
+        (onSelectOption)="onSelectOption($event)"
+      ></app-tabs>
+    </div>-->
+    <div class="option">
+      <app-offer *ngIf="(tabSelected$ | async)?.label === 'Oferta'"></app-offer>
+      <!--<app-relation *ngIf="tabSelected.label === 'Relación'"></app-relation>-->
+      <app-under-construction *ngIf="(tabSelected$ | async)?.label === 'Relación'"></app-under-construction>
+      <!--<app-contact *ngIf="tabSelected.label === 'Contacto'"></app-contact>-->
+      <app-under-construction *ngIf="(tabSelected$ | async)?.label === 'Contacto'"></app-under-construction>
+      <!--<app-smart-business *ngIf="tabSelected.label === 'Smart Business'"></app-smart-business>-->
+      <app-under-construction *ngIf="(tabSelected$ | async)?.label === 'Smart Business'"></app-under-construction>
+    </div>
+  </div>
+</div>

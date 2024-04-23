@@ -1,0 +1,43 @@
+<div class="expenses">
+  <h4>{{ 'formProvider.step8.subtitles.expenses' | translate }}</h4>
+  <div class="grid">
+    <div class="input-container">
+      <label>{{ 'formProvider.step8.inputs.consularization' | translate }}</label>
+      <label class="green"
+        >{{
+          (actualConfiguration?.ConfiguracionPrecioProveedor?.PrecioConsularizacion
+            | currency: 'USD':'symbol-narrow':'1.2-2') || 'N/D'
+        }}
+        USD
+      </label>
+    </div>
+    <div class="input-container">
+      <label>{{ 'formProvider.step8.inputs.docDelivery' | translate }}</label>
+      <label class="green"
+        >{{
+          (actualConfiguration?.ConfiguracionPrecioProveedor?.PrecioEnvioDeDocumentos
+            | currency: 'USD':'symbol-narrow':'1.2-2') || 'N/D'
+        }}
+        USD
+      </label>
+    </div>
+    <div class="input-container">
+      <label>{{ 'formProvider.step8.inputs.permission' | translate }}</label>
+      <label class="green"
+        >{{
+          (actualConfiguration?.ConfiguracionPrecioProveedor?.PrecioPermiso | currency: 'USD':'symbol-narrow':'1.2-2') || 'N/D'
+        }}
+        USD
+      </label>
+    </div>
+    <div class="input-container">
+      <label>{{ 'formProvider.step8.inputs.freightAd' | translate }}</label>
+      <label class="green"
+        >{{
+          (actualConfiguration?.ConfiguracionPrecioProveedor?.PrecioFleteAD | currency: 'USD':'symbol-narrow':'1.2-2') || 'N/D'
+        }}
+        USD
+      </label>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,64 @@
+@use 'base' as s;
+
+:host {
+  @include s.generic-main-component-structure;
+
+  #secure-shipment {
+    & > .footer {
+      & > div {
+        gap: 3px;
+
+        & > img {
+          @include s.imageLabel;
+        }
+
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize12to14, normal, s.$pqBlack2);
+          line-height: initial;
+        }
+
+        & > .label-dark {
+          @include s.Roboto-Bold;
+          @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack);
+        }
+
+        & > .estimated-delivery-date-out-of-time {
+          color: s.$pqRed;
+        }
+
+        & > .estimated-delivery-date-on-time {
+          color: s.$pqGreen2;
+        }
+      }
+
+      & > .bath {
+        gap: 5px;
+
+        & > .previous-bath {
+          @include s.pqCircle(11px, s.$orange2);
+        }
+
+        & > .valid-bath {
+          @include s.pqCircle(11px, s.$pqGreen2);
+        }
+
+        & > label {
+          @include s.Roboto-Regular;
+        }
+      }
+
+      & > .tooltip {
+        @include s.tooltip(auto, auto, auto, 150px, $trianglePosition: 'top');
+
+        & > .tooltip-text {
+          min-width: max-content !important;
+
+          & > p {
+            width: 100% !important;
+          }
+        }
+      }
+    }
+  }
+}

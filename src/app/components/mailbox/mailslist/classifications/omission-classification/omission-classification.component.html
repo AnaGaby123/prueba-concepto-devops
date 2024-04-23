@@ -1,0 +1,981 @@
+<div class="classification-elements">
+  <!--  DOCS: Pago-->
+  <div class="element wallet">
+    <div [ngClass]="classifications[0]?.IsSelected ? 'active' : ''" class="container-clasification">
+      <div>
+        <app-check-box
+          (event)="selectClasification(classifications[0]?.IdCatClasificacionCorreoRecibido, $event)"
+          [check]="classifications[0]?.IsSelected"
+          [disabled]="(defaultClassifIsSelected | async) || (blockClassificationsEdition$ | async)"
+          [label]="classifications[0]?.ClasificacionCorreoRecibido"
+          [backGroundCheckColor]="'#ffffff'"
+          [labelFontStyle]="
+            (defaultClassifIsSelected | async) || (blockClassificationsEdition$ | async)
+              ? 'robotoRegular15Disabled'
+              : !classifications[0]?.IsSelected
+              ? 'robotoRegular15'
+              : 'robotoBoldProquifa15'
+          "
+        >
+        </app-check-box>
+      </div>
+      <div>
+        <img
+          *ngIf="!classifications[0]?.ArchivoTemp"
+          alt=""
+          [src]="
+            classifications[0]?.IsSelected && functionAnalistaDeCuentasPorCobrar && !(blockClassificationsEdition$ | async)
+              ? 'assets/Images/subir_archivo.svg'
+              : 'assets/Images/subir_archivo_disabled.svg'
+          "
+          [style.pointer-events]="
+            classifications[0]?.IsSelected && !(blockClassificationsEdition$ | async) && functionAnalistaDeCuentasPorCobrar
+              ? 'auto'
+              : 'none'
+          "
+        />
+        <input
+          type="file"
+          accept="image/*,application/pdf,.html,.htm"
+          class="uploadC"
+          #inputFilePago
+          [style.display]="!classifications[0]?.ArchivoTemp ? '' : 'none'"
+          [disabled]="
+            !classifications[0]?.IsSelected || !functionAnalistaDeCuentasPorCobrar || (blockClassificationsEdition$ | async)
+          "
+          [style.pointer-events]="
+            classifications[0]?.IsSelected && !(blockClassificationsEdition$ | async) && functionAnalistaDeCuentasPorCobrar
+              ? 'auto'
+              : 'none'
+          "
+          (change)="selectFile(classifications[0]?.IdCatClasificacionCorreoRecibido, $event)"
+        />
+      </div>
+      <div class="fileAdded" *ngIf="classifications[0]?.ArchivoTemp">
+        <label (click)="seeDocument(classifications[0]?.ArchivoTemp)">{{ classifications[0]?.ArchivoTemp.name }}</label>
+        <img
+          (click)="quitTempFile(classifications[0]?.IdCatClasificacionCorreoRecibido, inputFilePago)"
+          src="assets/Images/cerrar.svg"
+          alt=""
+        />
+        <div class="tooltip-text">
+          <p>{{ classifications[0]?.ArchivoTemp.name }}</p>
+        </div>
+      </div>
+      <div class="classification">
+        <app-drop-down-list
+          [items]="classifications[0]?.CatClasificacionCorreoRecibidoReferencia"
+          [subtitleActive]="false"
+          [disable]="true"
+          [activeMinWidth]="false"
+          [itemSelected]="classifications[0]?.CatClasificacionCorreoRecibidoReferenciaTemp"
+          (valueDropList)="
+            setCatClasificacionCorreoRecibidoReferenciaTemp(classifications[0]?.IdCatClasificacionCorreoRecibido, $event)
+          "
+        >
+        </app-drop-down-list>
+      </div>
+      <div class="subtotal">
+        <app-generic-input
+          [labelInsidePlaceHolderLeft]="'Subtotal:'"
+          [typeValidation]="inputValidators.DecimalNumber"
+          [textAlign]="'center'"
+          [isDisable]="
+            (defaultClassifIsSelected | async) ||
+            (blockClassificationsEdition$ | async) ||
+            !classifications[0]?.IsSelected ||
+            !functionAnalistaDeCuentasPorCobrar
+          "
+          [style.pointer-events]="
+            classifications[0]?.IsSelected && !(blockClassificationsEdition$ | async) && functionAnalistaDeCuentasPorCobrar
+              ? 'auto'
+              : 'none'
+          "
+          [value]="classifications[0]?.Subtotal"
+          [placeholder]="'$'"
+          [fontSize]="'12px'"
+          (textData)="setClassificationTempTotal(classifications[0]?.IdCatClasificacionCorreoRecibido, $event)"
+        >
+        </app-generic-input>
+      </div>
+      <div class="Iva">
+        <app-generic-input
+          [label]="'IVA'"
+          [labelTextAlign]="'right'"
+          [textAlign]="'right'"
+          [enableEdit]="false"
+          [typeValidation]="inputValidators.Number"
+          [isDisable]="
+            (defaultClassifIsSelected | async) ||
+            (blockClassificationsEdition$ | async) ||
+            !classifications[0]?.IsSelected ||
+            !functionAnalistaDeCuentasPorCobrar
+          "
+          [fontColor]="
+            (defaultClassifIsSelected | async) ||
+            (blockClassificationsEdition$ | async) ||
+            !classifications[0]?.IsSelected ||
+            !functionAnalistaDeCuentasPorCobrar
+              ? '#c2c3c9'
+              : ''
+          "
+          [value]="classifications[0]?.Iva | currency: 'USD':'symbol-narrow':'0.2-4'"
+        >
+        </app-generic-input>
+      </div>
+      <div class="total">
+        <app-generic-input
+          [label]="'Total'"
+          [labelTextAlign]="'right'"
+          [textAlign]="'right'"
+          [enableEdit]="false"
+          [fontColor]="
+            (defaultClassifIsSelected | async) ||
+            (blockClassificationsEdition$ | async) ||
+            !classifications[0]?.IsSelected ||
+            !functionAnalistaDeCuentasPorCobrar
+              ? '#c2c3c9'
+              : '#008894'
+          "
+          [typeValidation]="inputValidators.Number"
+          [value]="classifications[0]?.Total | currency: 'USD':'symbol-narrow':'0.2-4'"
+          [font]="'Roboto-Bold'"
+          [isDisable]="
+            (defaultClassifIsSelected | async) ||
+            (blockClassificationsEdition$ | async) ||
+            !classifications[0]?.IsSelected ||
+            !functionAnalistaDeCuentasPorCobrar
+          "
+        >
+        </app-generic-input>
+      </div>
+      <div class="comments">
+        <app-generic-input
+          [value]="classifications[0]?.ComentariosTemp"
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          [style.pointer-events]="
+            classifications[0]?.IsSelected && !(blockClassificationsEdition$ | async) && functionAnalistaDeCuentasPorCobrar
+              ? 'auto'
+              : 'none'
+          "
+          (textData)="setClassificationTempComments(classifications[0]?.IdCatClasificacionCorreoRecibido, $event)"
+          [placeholder]="viewType === 'macBookAir' ? ('common.enterHere' | translate) : ('common.comments' | translate)"
+          [isDisable]="
+            (defaultClassifIsSelected | async) ||
+            (blockClassificationsEdition$ | async) ||
+            !classifications[0]?.IsSelected ||
+            !functionAnalistaDeCuentasPorCobrar
+          "
+          [maxlength]="maxLengthInput"
+        >
+        </app-generic-input>
+      </div>
+      <div class="saveButton">
+        <button
+          class="button"
+          (click)="
+            saveClassificationReferenceSelec(
+              classifications[0]?.CatClasificacionCorreoRecibidoReferenciaTemp.value,
+              classifications[0]?.IdCatClasificacionCorreoRecibido,
+              classifications[0]?.CatClasificacionCorreoRecibidoReferenciaTemp.subtitle,
+              classifications[0]?.ComentariosReferenciasTemp,
+              classifications[0]?.ComentariosTemp,
+              classifications[0]?.Total,
+              classifications[0]?.Iva,
+              classifications[0]?.Subtotal
+            )
+          "
+          [ngClass]="selectValidationButtonFirstClassification$ | async"
+          [disabled]="selectValidationDisabledButtonFirstClassification$ | async"
+          >{{ 'common.add' | translate }}</button
+        >
+      </div>
+    </div>
+    <div class="bottom-clasifications" *ngIf="classifications[0]?.IsSelected">
+      <div class="content">
+        <div class="invoice-item" *ngFor="let comment of classifications[0].CorreoRecibidoClienteReferencia; let i = index">
+          <label
+            ><span class="regular-blue">#{{ i + 1 }} · </span>
+            <span *ngIf="comment.Archivo" class="regular-underline" (click)="seeDocument(comment.Archivo)"
+              >{{ comment.Archivo.name }}
+            </span>
+            <span class="regular-blue"> · {{ comment.PrefijoComentario }}</span>
+            <span class="bold"> · Subtotal: </span>
+
+            {{ (comment.Subtotal | currency: 'USD':'symbol-narrow':'1.2-2') + ' USD' }}
+            <span class="bold"> · IVA: </span>
+
+            {{ (comment.Iva | currency: 'USD':'symbol-narrow':'1.2-2') + ' USD' }}
+            <span class="bold"> · Total: </span>
+            <span class="bold-blue">{{ (comment.Total | currency: 'USD':'symbol-narrow':'1.2-2') + ' USD' }}</span>
+            · {{ comment.Comentario }}
+          </label>
+          <img
+            (click)="quitClassificationReference(classifications[0]?.IdCatClasificacionCorreoRecibido, i)"
+            src="assets/Images/cerrar.svg"
+            alt=""
+          />
+        </div>
+      </div>
+      <div [ngClass]="classifications[0]?.ErrorDeCartera ? 'red' : ''" class="wallet-error">
+        <app-check-box
+          [check]="classifications[0]?.ErrorDeCartera"
+          [disabled]="
+            (defaultClassifIsSelected | async) || (blockClassificationsEdition$ | async) || !functionAnalistaDeCuentasPorCobrar
+          "
+          (event)="selectErrorCartera(classifications[0].IdCatClasificacionCorreoRecibido, $event)"
+          [label]="'Error de Cartera'"
+          [backGroundCheckColor]="'#ffffff'"
+          [labelFontStyle]="
+            (blockClassificationsEdition$ | async) || !functionAnalistaDeCuentasPorCobrar
+              ? 'robotoRegular15Disabled'
+              : classifications[0]?.ErrorDeCartera
+              ? 'robotoRegular15Red'
+              : 'robotoRegular15'
+          "
+        >
+        </app-check-box>
+        <app-drop-down-list
+          [capitalize]="false"
+          [items]="selectUsersWalletError$ | async"
+          [itemSelected]="classifications[0]?.UsuarioErrorCarteraSelect"
+          [disable]="!classifications[0]?.ErrorDeCartera"
+          (valueDropList)="selectUserWalletError(classifications[0].IdCatClasificacionCorreoRecibido, $event)"
+        >
+        </app-drop-down-list>
+      </div>
+    </div>
+  </div>
+  <!--  DOCS: Pedido-->
+  <div class="element wallet">
+    <div [ngClass]="classifications[1]?.IsSelected ? 'active' : ''" class="container-clasification">
+      <div>
+        <app-check-box
+          (event)="selectClasification(classifications[1]?.IdCatClasificacionCorreoRecibido, $event)"
+          [check]="classifications[1]?.IsSelected"
+          [backGroundCheckColor]="'#ffffff'"
+          [disabled]="(defaultClassifIsSelected | async) || (blockClassificationsEdition$ | async)"
+          [label]="classifications[1]?.ClasificacionCorreoRecibido"
+          [labelFontStyle]="
+            (defaultClassifIsSelected | async) || (blockClassificationsEdition$ | async)
+              ? 'robotoRegular15Disabled'
+              : !classifications[1]?.IsSelected
+              ? 'robotoRegular15'
+              : 'robotoBoldProquifa15'
+          "
+        >
+        </app-check-box>
+      </div>
+      <div>
+        <img
+          *ngIf="!classifications[1]?.ArchivoTempName"
+          alt=""
+          [src]="
+            classifications[1]?.IsSelected &&
+            lodashToLower(lodashDeburr(classifications[1]?.CatClasificacionCorreoRecibidoReferenciaTemp.label)) !==
+              ID_CAT_SIN_OC &&
+            (functionESAC || functionCoordinadorDeServicioAlCliente) &&
+            !(currentClient$ | async)?.TramitarConOrdenDeCompraInterna &&
+            !(blockClassificationsEdition$ | async)
+              ? 'assets/Images/subir_archivo.svg'
+              : 'assets/Images/subir_archivo_disabled.svg'
+          "
+          [style.pointer-events]="
+            classifications[1]?.IsSelected &&
+            !(blockClassificationsEdition$ | async) &&
+            (functionESAC || functionCoordinadorDeServicioAlCliente) &&
+            !(currentClient$ | async)?.TramitarConOrdenDeCompraInterna
+              ? 'auto'
+              : 'none'
+          "
+        />
+        <input
+          type="file"
+          accept="image/*,application/pdf,.html,.htm"
+          class="uploadC"
+          #inputFilePedido
+          [style.display]="!classifications[1]?.ArchivoTempName ? '' : 'none'"
+          [disabled]="
+            !classifications[1]?.IsSelected ||
+            lodashToLower(lodashDeburr(classifications[1]?.CatClasificacionCorreoRecibidoReferenciaTemp?.label)) ===
+              ID_CAT_SIN_OC ||
+            (!functionESAC && !functionCoordinadorDeServicioAlCliente) ||
+            (blockClassificationsEdition$ | async) ||
+            classifications[1]?.ArchivoTempName ||
+            (currentClient$ | async)?.TramitarConOrdenDeCompraInterna
+          "
+          [style.pointer-events]="
+            classifications[1]?.IsSelected &&
+            !(blockClassificationsEdition$ | async) &&
+            (functionESAC || functionCoordinadorDeServicioAlCliente) &&
+            !(currentClient$ | async)?.TramitarConOrdenDeCompraInterna
+              ? 'auto'
+              : 'none'
+          "
+          (change)="selectFile(classifications[1]?.IdCatClasificacionCorreoRecibido, $event, true)"
+        />
+      </div>
+      <div class="fileAdded" *ngIf="classifications[1]?.ArchivoTempName">
+        <label (click)="seeDocument(classifications[1]?.ArchivoTemp)">{{ classifications[1]?.ArchivoTempName }}</label>
+        <img
+          (click)="quitTempFile(classifications[1]?.IdCatClasificacionCorreoRecibido, inputFilePedido)"
+          src="assets/Images/cerrar.svg"
+          alt=""
+        />
+        <div class="tooltip-text">
+          <p>{{
+            classifications.length > 1 && classifications[1].ArchivoTempName ? classifications[1]?.ArchivoTempName : ''
+          }}</p>
+        </div>
+      </div>
+      <div class="classification">
+        <app-drop-down-list
+          [items]="classifications[1]?.CatClasificacionCorreoRecibidoReferencia"
+          [subtitleActive]="false"
+          [disable]="
+            !classifications[1]?.IsSelected ||
+            classifications[1].ArchivoTempName !== '' ||
+            (!functionESAC && !functionCoordinadorDeServicioAlCliente) ||
+            (blockClassificationsEdition$ | async) ||
+            (currentClient$ | async)?.TramitarConOrdenDeCompraInterna
+          "
+          [activeMinWidth]="false"
+          [itemSelected]="classifications[1]?.CatClasificacionCorreoRecibidoReferenciaTemp"
+          (valueDropList)="
+            setCatClasificacionCorreoRecibidoReferenciaTemp(classifications[1]?.IdCatClasificacionCorreoRecibido, $event)
+          "
+        >
+        </app-drop-down-list>
+      </div>
+      <div class="ocNumber">
+        <app-generic-input
+          [typeValidation]="inputValidators.AlphaNumberAndDashesAndSlashAndComa"
+          [value]="classifications[1]?.ComentariosReferenciasTemp"
+          [style.pointer-events]="
+            classifications[1]?.IsSelected &&
+            lodashToLower(lodashDeburr(classifications[1]?.CatClasificacionCorreoRecibidoReferenciaTemp?.label)) ===
+              ID_CAT_OC_CLIENTE &&
+            !(blockClassificationsEdition$ | async)
+              ? 'auto'
+              : 'none'
+          "
+          [fontColor]="
+            (defaultClassifIsSelected | async) || (blockClassificationsEdition$ | async) || !classifications[1]?.IsSelected
+              ? '#c2c3c9'
+              : '#008894'
+          "
+          (textData)="setClassificationReferenceComments(classifications[1]?.IdCatClasificacionCorreoRecibido, $event)"
+          [placeholder]="'# Referencia'"
+          [textAlign]="'center'"
+          [forceActiveErrors]="alreadyExistReference$ | async"
+        >
+        </app-generic-input>
+      </div>
+      <div class="subtotal">
+        <app-generic-input
+          [labelInsidePlaceHolderLeft]="'Subtotal:'"
+          [typeValidation]="inputValidators.DecimalNumber"
+          [textAlign]="'center'"
+          [isDisable]="
+            (defaultClassifIsSelected | async) ||
+            (blockClassificationsEdition$ | async) ||
+            !classifications[1]?.IsSelected ||
+            (!functionESAC && !functionCoordinadorDeServicioAlCliente)
+          "
+          [style.pointer-events]="
+            classifications[1]?.IsSelected &&
+            !(blockClassificationsEdition$ | async) &&
+            (functionESAC || functionCoordinadorDeServicioAlCliente)
+              ? 'auto'
+              : 'none'
+          "
+          [value]="classifications[1].Subtotal"
+          [placeholder]="'$'"
+          [fontSize]="'12px'"
+          (textData)="setClassificationTempTotal(classifications[1]?.IdCatClasificacionCorreoRecibido, $event)"
+        >
+        </app-generic-input>
+      </div>
+      <div class="Iva">
+        <app-generic-input
+          [label]="'IVA'"
+          [labelTextAlign]="'right'"
+          [textAlign]="'right'"
+          [enableEdit]="false"
+          [typeValidation]="inputValidators.Number"
+          [isDisable]="
+            (defaultClassifIsSelected | async) ||
+            (blockClassificationsEdition$ | async) ||
+            !classifications[1]?.IsSelected ||
+            (!functionESAC && !functionCoordinadorDeServicioAlCliente)
+          "
+          [fontColor]="
+            (defaultClassifIsSelected | async) ||
+            (blockClassificationsEdition$ | async) ||
+            !classifications[1]?.IsSelected ||
+            (!functionESAC && !functionCoordinadorDeServicioAlCliente)
+              ? '#c2c3c9'
+              : ''
+          "
+          [value]="classifications[1]?.Iva | currency: 'USD':'symbol-narrow':'0.2-4'"
+        >
+        </app-generic-input>
+      </div>
+      <div class="total">
+        <app-generic-input
+          [label]="'Total'"
+          [labelTextAlign]="'right'"
+          [textAlign]="'right'"
+          [enableEdit]="false"
+          [isDisable]="
+            (defaultClassifIsSelected | async) ||
+            (blockClassificationsEdition$ | async) ||
+            !classifications[1]?.IsSelected ||
+            (!functionESAC && !functionCoordinadorDeServicioAlCliente)
+          "
+          [fontColor]="
+            (defaultClassifIsSelected | async) ||
+            (blockClassificationsEdition$ | async) ||
+            !classifications[1]?.IsSelected ||
+            (!functionESAC && !functionCoordinadorDeServicioAlCliente)
+              ? '#c2c3c9'
+              : '#008894'
+          "
+          [typeValidation]="inputValidators.Number"
+          [font]="'Roboto-Bold'"
+          [value]="classifications[1]?.Total | currency: 'USD':'symbol-narrow':'0.2-4'"
+        >
+        </app-generic-input>
+      </div>
+      <div class="comments">
+        <app-generic-input
+          [value]="classifications[1]?.ComentariosTemp"
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          [style.pointer-events]="
+            classifications[1]?.IsSelected &&
+            !(blockClassificationsEdition$ | async) &&
+            (functionESAC || functionCoordinadorDeServicioAlCliente)
+              ? 'auto'
+              : 'none'
+          "
+          (textData)="setClassificationTempComments(classifications[1]?.IdCatClasificacionCorreoRecibido, $event)"
+          [placeholder]="viewType === 'macBookAir' ? ('common.enterHere' | translate) : ('common.comments' | translate)"
+          [isDisable]="
+            (defaultClassifIsSelected | async) ||
+            (blockClassificationsEdition$ | async) ||
+            !classifications[1]?.IsSelected ||
+            (!functionESAC && !functionCoordinadorDeServicioAlCliente)
+          "
+          [maxlength]="maxLengthInput"
+        >
+        </app-generic-input>
+      </div>
+      <div class="saveButton">
+        <button
+          class="button"
+          (click)="
+            saveClassificationReferenceSelec(
+              classifications[1]?.CatClasificacionCorreoRecibidoReferenciaTemp.value,
+              classifications[1]?.IdCatClasificacionCorreoRecibido,
+              classifications[1]?.CatClasificacionCorreoRecibidoReferenciaTemp.subtitle,
+              classifications[1]?.ComentariosReferenciasTemp,
+              classifications[1]?.ComentariosTemp,
+              classifications[1]?.Total,
+              classifications[1]?.Iva,
+              classifications[1]?.Subtotal,
+              classifications[1]?.IdArchivo
+            )
+          "
+          [ngClass]="selectValidationButtonSecondClassification$ | async"
+          [disabled]="selectValidationDisabledButtonSecondClassification$ | async"
+          >{{ 'common.add' | translate }}</button
+        >
+      </div>
+    </div>
+    <div class="bottom-clasifications" *ngIf="classifications[1]?.IsSelected">
+      <div class="content">
+        <div class="invoice-item" *ngFor="let comment of classifications[1].CorreoRecibidoClienteReferencia; let i = index">
+          <label
+            ><span class="regular-blue">#{{ i + 1 }}· </span>
+            <span *ngIf="comment.ArchivoNombre" class="regular-underline" (click)="seeDocument(comment.Archivo)"
+              >{{ comment.ArchivoNombre }}
+            </span>
+            <span class="regular-red" *ngIf="comment.PrefijoComentario !== 'OC'">{{ comment.PrefijoComentario }}</span>
+            <span class="regular-blue" *ngIf="comment.PrefijoComentario === 'OC'"> · {{ comment.PrefijoComentario }}</span>
+            <span class="regular-blue">{{ comment.Referencia }}</span>
+            <span class="bold">· Subtotal: </span>
+
+            {{ (comment.Subtotal | currency: 'USD':'symbol-narrow':'1.2-2') + ' USD' }}
+            <span class="bold">· IVA: </span>
+
+            {{ (comment.Iva | currency: 'USD':'symbol-narrow':'1.2-2') + ' USD' }}
+            <span class="bold"> · Total: </span>
+            <span class="bold-blue">{{ (comment.Total | currency: 'USD':'symbol-narrow':'1.2-2') + ' USD' }}</span> ·
+            {{ comment.Comentario }}
+          </label>
+          <img
+            (click)="
+              quitClassificationReference(classifications[1]?.IdCatClasificacionCorreoRecibido, i, comment.IdArchivo, comment)
+            "
+            src="assets/Images/cerrar.svg"
+          />
+        </div>
+      </div>
+      <div [ngClass]="classifications[1]?.ErrorDeCartera ? 'red' : ''" class="wallet-error">
+        <app-check-box
+          [check]="classifications[1]?.ErrorDeCartera"
+          [disabled]="
+            (defaultClassifIsSelected | async) ||
+            (blockClassificationsEdition$ | async) ||
+            (!functionESAC && !functionCoordinadorDeServicioAlCliente)
+          "
+          (event)="selectErrorCartera(classifications[1].IdCatClasificacionCorreoRecibido, $event)"
+          [label]="'Error de Cartera'"
+          [backGroundCheckColor]="'#ffffff'"
+          [labelFontStyle]="
+            (blockClassificationsEdition$ | async) || (!functionESAC && !functionCoordinadorDeServicioAlCliente)
+              ? 'robotoRegular15Disabled'
+              : classifications[1]?.ErrorDeCartera
+              ? 'robotoRegular15Red'
+              : 'robotoRegular15'
+          "
+        >
+        </app-check-box>
+        <app-drop-down-list
+          [items]="selectUsersWalletError$ | async"
+          [capitalize]="false"
+          [itemSelected]="classifications[1]?.UsuarioErrorCarteraSelect"
+          [disable]="!classifications[1]?.ErrorDeCartera"
+          (valueDropList)="selectUserWalletError(classifications[1].IdCatClasificacionCorreoRecibido, $event)"
+        >
+        </app-drop-down-list>
+      </div>
+    </div>
+  </div>
+  <!--  DOCS: Requisicion-->
+  <div class="element without-radios wallet">
+    <div [ngClass]="classifications[2]?.IsSelected ? 'active' : ''" class="top">
+      <div class="left">
+        <app-check-box
+          (event)="selectClasification(classifications[2].IdCatClasificacionCorreoRecibido, $event)"
+          [check]="classifications[2]?.IsSelected"
+          [disabled]="(defaultClassifIsSelected | async) || (blockClassificationsEdition$ | async)"
+          [label]="classifications[2]?.ClasificacionCorreoRecibido"
+          [backGroundCheckColor]="'#ffffff'"
+          [labelFontStyle]="
+            (defaultClassifIsSelected | async) || (blockClassificationsEdition$ | async)
+              ? 'robotoRegular15Disabled'
+              : !classifications[2]?.IsSelected
+              ? 'robotoRegular15'
+              : 'robotoBoldProquifa15'
+          "
+        >
+        </app-check-box>
+        <div class="upload-file">
+          <img
+            *ngIf="!classifications[2]?.ArchivoTemp"
+            alt=""
+            [src]="
+              classifications[2]?.IsSelected && functionEVI && !(blockClassificationsEdition$ | async)
+                ? 'assets/Images/subir_archivo.svg'
+                : 'assets/Images/subir_archivo_disabled.svg'
+            "
+            [style.pointer-events]="
+              classifications[2]?.IsSelected && !(blockClassificationsEdition$ | async) && functionEVI ? 'auto' : 'none'
+            "
+          />
+          <input
+            type="file"
+            accept="image/*,application/pdf,.html,.htm"
+            class="uploadC"
+            #inputFileReq
+            [disabled]="!classifications[2]?.IsSelected || !functionEVI || (blockClassificationsEdition$ | async)"
+            (change)="selectFile(classifications[2]?.IdCatClasificacionCorreoRecibido, $event)"
+            [style.pointer-events]="
+              classifications[2]?.IsSelected && !(blockClassificationsEdition$ | async) && functionEVI ? 'auto' : 'none'
+            "
+          />
+        </div>
+        <div *ngIf="classifications[2]?.ArchivoTemp" class="file-name tooltip">
+          <label (click)="seeDocument(classifications[2]?.ArchivoTemp)">{{ classifications[2]?.ArchivoTemp.name }}</label>
+          <img
+            (click)="quitTempFile(classifications[2]?.IdCatClasificacionCorreoRecibido, inputFileReq)"
+            src="assets/Images/cerrar.svg"
+          />
+          <div class="tooltip-text">
+            <p>{{ classifications[2]?.ArchivoTemp.name }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="right">
+        <app-generic-input
+          [value]="classifications[2]?.ComentariosTemp"
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          [style.pointer-events]="
+            classifications[2]?.IsSelected && !(blockClassificationsEdition$ | async) && functionEVI ? 'auto' : 'none'
+          "
+          (textData)="setClassificationTempComments(classifications[2]?.IdCatClasificacionCorreoRecibido, $event)"
+          [placeholder]="viewType === 'macBookAir' ? ('common.enterHere' | translate) : ('common.comments' | translate)"
+          [isDisable]="
+            (defaultClassifIsSelected | async) ||
+            (blockClassificationsEdition$ | async) ||
+            !classifications[2]?.IsSelected ||
+            !functionEVI
+          "
+          [maxlength]="maxLengthInput"
+        >
+        </app-generic-input>
+        <button
+          class="button"
+          (click)="
+            saveClassificationComments(classifications[2]?.IdCatClasificacionCorreoRecibido, classifications[2].ComentariosTemp)
+          "
+          [ngClass]="selectValidationButtonThirdClassification$ | async"
+          [disabled]="selectValidationDisabledButtonThirdClassification$ | async"
+          >{{ 'common.add' | translate }}</button
+        >
+      </div>
+    </div>
+    <div
+      *ngIf="classifications[2]?.IsSelected"
+      [style.padding]="
+        classifications[2].CorreoRecibidoComentarios && classifications[2].CorreoRecibidoComentarios.length > 0
+          ? '9px 0 0 0'
+          : '0'
+      "
+      class="bottom"
+    >
+      <div class="invoices">
+        <div *ngFor="let comment of classifications[2].CorreoRecibidoComentarios; let i = index" class="invoice">
+          <span>#{{ i + 1 }} · </span>
+          <span *ngIf="comment.Archivo" (click)="seeDocument(comment.Archivo)"
+            ><a title="{{ comment.Archivo.name }}" class="ancle">{{ comment.Archivo.name }}</a> ·
+          </span>
+          <span>{{ classifications[2].PrefijoComentario }} </span>
+          <label class="label">· {{ comment.Comentario }}</label>
+          <img
+            (click)="quitClassificationComments(classifications[2]?.IdCatClasificacionCorreoRecibido, i)"
+            src="assets/Images/cerrar.svg"
+          />
+        </div>
+      </div>
+      <div [ngClass]="classifications[2]?.ErrorDeCartera ? 'red' : ''" class="wallet-error">
+        <app-check-box
+          [check]="classifications[2]?.ErrorDeCartera"
+          [disabled]="(defaultClassifIsSelected | async) || (blockClassificationsEdition$ | async) || !functionEVI"
+          (event)="selectErrorCartera(classifications[2].IdCatClasificacionCorreoRecibido, $event)"
+          [label]="'Error de Cartera'"
+          [backGroundCheckColor]="'#ffffff'"
+          [labelFontStyle]="
+            (blockClassificationsEdition$ | async) || !functionEVI
+              ? 'robotoRegular15Disabled'
+              : classifications[2]?.ErrorDeCartera
+              ? 'robotoRegular15Red'
+              : 'robotoRegular15'
+          "
+        >
+        </app-check-box>
+        <app-drop-down-list
+          [capitalize]="false"
+          [items]="selectUsersWalletError$ | async"
+          [itemSelected]="classifications[2]?.UsuarioErrorCarteraSelect"
+          [disable]="!classifications[2]?.ErrorDeCartera"
+          (valueDropList)="selectUserWalletError(classifications[2].IdCatClasificacionCorreoRecibido, $event)"
+        >
+        </app-drop-down-list>
+      </div>
+    </div>
+  </div>
+  <!--  DOCS: Solicitud de información-->
+  <div class="element without-radios">
+    <div [ngClass]="classifications[3]?.IsSelected ? 'active' : ''" class="top">
+      <div class="left">
+        <app-check-box
+          (event)="selectClasification(classifications[3].IdCatClasificacionCorreoRecibido, $event)"
+          [check]="classifications[3]?.IsSelected"
+          [disabled]="
+            (defaultClassifIsSelected | async) || (blockClassificationsEdition$ | async) || functionAnalistaDeCuentasPorCobrar
+          "
+          [label]="classifications[3]?.ClasificacionCorreoRecibido"
+          [backGroundCheckColor]="'#ffffff'"
+          [labelFontStyle]="
+            (defaultClassifIsSelected | async) || (blockClassificationsEdition$ | async)
+              ? 'robotoRegular15Disabled'
+              : !classifications[3]?.IsSelected
+              ? 'robotoRegular15'
+              : 'robotoBoldProquifa15'
+          "
+        >
+        </app-check-box>
+      </div>
+      <div class="right">
+        <app-generic-input
+          [value]="classifications[3]?.ComentariosTemp"
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          [style.pointer-events]="
+            classifications[3]?.IsSelected && !(blockClassificationsEdition$ | async) && !functionAnalistaDeCuentasPorCobrar
+              ? 'auto'
+              : 'none'
+          "
+          (textData)="setClassificationTempComments(classifications[3]?.IdCatClasificacionCorreoRecibido, $event)"
+          [placeholder]="viewType === 'macBookAir' ? ('common.enterHere' | translate) : ('common.comments' | translate)"
+          [isDisable]="
+            (defaultClassifIsSelected | async) ||
+            (blockClassificationsEdition$ | async) ||
+            !classifications[3]?.IsSelected ||
+            functionAnalistaDeCuentasPorCobrar
+          "
+          [maxlength]="maxLengthInput"
+        >
+        </app-generic-input>
+        <button
+          class="button"
+          (click)="
+            saveClassificationComments(classifications[3]?.IdCatClasificacionCorreoRecibido, classifications[3].ComentariosTemp)
+          "
+          [ngClass]="selectValidationButtonFourthClassification$ | async"
+          [disabled]="selectValidationDisabledButtonFourthClassification$ | async"
+          >{{ 'common.add' | translate }}</button
+        >
+      </div>
+    </div>
+    <div
+      *ngIf="
+        classifications[3]?.IsSelected &&
+        classifications[3].CorreoRecibidoComentarios &&
+        classifications[3].CorreoRecibidoComentarios.length > 0
+      "
+      class="bottom"
+    >
+      <div *ngFor="let comment of classifications[3].CorreoRecibidoComentarios; let i = index" class="invoice">
+        <span>#{{ i + 1 }} · {{ classifications[3].PrefijoComentario }} </span>
+        <label class="label">· {{ comment.Comentario }}</label>
+        <img
+          alt="{{ 'common.close' | translate }}"
+          (click)="quitClassificationComments(classifications[3]?.IdCatClasificacionCorreoRecibido, i)"
+          src="assets/Images/cerrar.svg"
+        />
+      </div>
+    </div>
+  </div>
+  <!--  DOCS: Queja-->
+  <div class="element without-radios">
+    <div [ngClass]="classifications[4]?.IsSelected ? 'active' : ''" class="top">
+      <div class="left">
+        <app-check-box
+          (event)="selectClasification(classifications[4].IdCatClasificacionCorreoRecibido, $event)"
+          [check]="classifications[4]?.IsSelected"
+          [disabled]="
+            (defaultClassifIsSelected | async) || (blockClassificationsEdition$ | async) || functionAnalistaDeCuentasPorCobrar
+          "
+          [label]="classifications[4]?.ClasificacionCorreoRecibido"
+          [backGroundCheckColor]="'#ffffff'"
+          [labelFontStyle]="
+            (defaultClassifIsSelected | async) || (blockClassificationsEdition$ | async)
+              ? 'robotoRegular15Disabled'
+              : !classifications[4]?.IsSelected
+              ? 'robotoRegular15'
+              : 'robotoBoldProquifa15'
+          "
+        >
+        </app-check-box>
+      </div>
+      <div class="right">
+        <app-generic-input
+          [value]="classifications[4]?.ComentariosTemp"
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          [style.pointer-events]="
+            classifications[4]?.IsSelected && !(blockClassificationsEdition$ | async) && !functionAnalistaDeCuentasPorCobrar
+              ? 'auto'
+              : 'none'
+          "
+          (textData)="setClassificationTempComments(classifications[4]?.IdCatClasificacionCorreoRecibido, $event)"
+          [placeholder]="viewType === 'macBookAir' ? ('common.enterHere' | translate) : ('common.comments' | translate)"
+          [isDisable]="
+            (defaultClassifIsSelected | async) ||
+            (blockClassificationsEdition$ | async) ||
+            !classifications[4]?.IsSelected ||
+            functionAnalistaDeCuentasPorCobrar
+          "
+          [maxlength]="maxLengthInput"
+        >
+        </app-generic-input>
+        <button
+          class="button"
+          (click)="
+            saveClassificationComments(classifications[4]?.IdCatClasificacionCorreoRecibido, classifications[4].ComentariosTemp)
+          "
+          [ngClass]="selectValidationButtonFiveClassification$ | async"
+          [disabled]="selectValidationDisabledButtonFiveClassification$ | async"
+          >{{ 'common.add' | translate }}</button
+        >
+      </div>
+    </div>
+    <div
+      class="bottom"
+      *ngIf="
+        classifications[4]?.IsSelected &&
+        classifications[4].CorreoRecibidoComentarios &&
+        classifications[4].CorreoRecibidoComentarios.length > 0
+      "
+    >
+      <div *ngFor="let comment of classifications[4].CorreoRecibidoComentarios; let i = index" class="invoice">
+        <span>#{{ i + 1 }} · {{ classifications[4].PrefijoComentario }} </span>
+        <label class="label">· {{ comment.Comentario }}</label>
+        <img
+          src="assets/Images/cerrar.svg"
+          alt="{{ 'common.close' | translate }}"
+          (click)="quitClassificationComments(classifications[4]?.IdCatClasificacionCorreoRecibido, i)"
+        />
+      </div>
+    </div>
+  </div>
+  <!--  DOCS: Sugerencia-->
+  <div class="element without-radios">
+    <div [ngClass]="classifications[5]?.IsSelected ? 'active' : ''" class="top">
+      <div class="left">
+        <app-check-box
+          (event)="selectClasification(classifications[5].IdCatClasificacionCorreoRecibido, $event)"
+          [check]="classifications[5]?.IsSelected"
+          [disabled]="
+            (defaultClassifIsSelected | async) || (blockClassificationsEdition$ | async) || functionAnalistaDeCuentasPorCobrar
+          "
+          [label]="classifications[5]?.ClasificacionCorreoRecibido"
+          [backGroundCheckColor]="'#ffffff'"
+          [labelFontStyle]="
+            (defaultClassifIsSelected | async) || (blockClassificationsEdition$ | async)
+              ? 'robotoRegular15Disabled'
+              : !classifications[5]?.IsSelected
+              ? 'robotoRegular15'
+              : 'robotoBoldProquifa15'
+          "
+        >
+        </app-check-box>
+      </div>
+      <div class="right">
+        <app-generic-input
+          [value]="classifications[5]?.ComentariosTemp"
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          [style.pointer-events]="
+            classifications[5]?.IsSelected && !(blockClassificationsEdition$ | async) && !functionAnalistaDeCuentasPorCobrar
+              ? 'auto'
+              : 'none'
+          "
+          (textData)="setClassificationTempComments(classifications[5]?.IdCatClasificacionCorreoRecibido, $event)"
+          [placeholder]="viewType === 'macBookAir' ? ('common.enterHere' | translate) : ('common.comments' | translate)"
+          [isDisable]="
+            (defaultClassifIsSelected | async) ||
+            (blockClassificationsEdition$ | async) ||
+            !classifications[5]?.IsSelected ||
+            functionAnalistaDeCuentasPorCobrar
+          "
+          [maxlength]="maxLengthInput"
+        >
+        </app-generic-input>
+        <button
+          class="button"
+          (click)="
+            saveClassificationComments(classifications[5]?.IdCatClasificacionCorreoRecibido, classifications[5].ComentariosTemp)
+          "
+          [ngClass]="selectValidationButtonSixClassification$ | async"
+          [disabled]="selectValidationDisabledButtonSixClassification$ | async"
+          >{{ 'common.add' | translate }}</button
+        >
+      </div>
+    </div>
+    <div
+      class="bottom"
+      *ngIf="
+        classifications[5]?.IsSelected &&
+        classifications[5].CorreoRecibidoComentarios &&
+        classifications[5].CorreoRecibidoComentarios.length > 0
+      "
+    >
+      <div *ngFor="let comment of classifications[5].CorreoRecibidoComentarios; let i = index" class="invoice">
+        <span>#{{ i + 1 }} · {{ classifications[5].PrefijoComentario }} </span>
+        <label class="label">· {{ comment.Comentario }}</label>
+        <img
+          src="assets/Images/cerrar.svg"
+          alt="{{ 'common.close' | translate }}"
+          (click)="quitClassificationComments(classifications[5]?.IdCatClasificacionCorreoRecibido, i)"
+        />
+      </div>
+    </div>
+  </div>
+  <!--  DOCS: Otro-->
+  <div class="element default-classif">
+    <div [ngClass]="classifications[6]?.IsSelected ? 'active' : ''" class="top">
+      <div class="left">
+        <app-check-box
+          (event)="selectClasification(classifications[6].IdCatClasificacionCorreoRecibido, $event, true)"
+          [check]="classifications[6]?.IsSelected"
+          [label]="classifications[6]?.ClasificacionCorreoRecibido"
+          [backGroundCheckColor]="'#ffffff'"
+          [secondaryLabel]="'(Está opción deshabilitará todas las clasificaciones)'"
+          [secondaryLabelFontStyle]="'robotoRegular10'"
+          [labelFontStyle]="(blockClassificationsEdition$ | async) ? 'robotoRegular15Disabled' : 'robotoRegular15'"
+        >
+        </app-check-box>
+      </div>
+      <div class="right">
+        <app-generic-input
+          [value]="classifications[6]?.ComentariosTemp"
+          [style.pointer-events]="
+            classifications[6]?.IsSelected &&
+            !(blockClassificationsEdition$ | async) &&
+            (functionESAC || functionCoordinadorDeServicioAlCliente)
+              ? 'auto'
+              : 'none'
+          "
+          (textData)="setClassificationTempComments(classifications[6]?.IdCatClasificacionCorreoRecibido, $event)"
+          (blurTextData)="
+            saveClassificationComments(
+              classifications[6]?.IdCatClasificacionCorreoRecibido,
+              classifications[6].ComentariosTemp,
+              true
+            )
+          "
+          [isDisable]="
+            !(defaultClassifIsSelected | async) ||
+            (blockClassificationsEdition$ | async) ||
+            !classifications[6]?.IsSelected ||
+            !functionESAC ||
+            !functionCoordinadorDeServicioAlCliente
+          "
+          [placeholder]="viewType === 'macBookAir' ? ('common.enterHere' | translate) : ('common.comments' | translate)"
+          [maxlength]="maxLengthInput"
+        >
+        </app-generic-input>
+      </div>
+    </div>
+  </div>
+</div>
+<pqf-generic-pop-up
+  *ngIf="showDeleteMailPop$ | async"
+  [isActivePrimaryButton]="true"
+  [isFull]="true"
+  [isShowClose]="false"
+  [height]="'440px'"
+  [textPrimaryButton]="'delete' | translate"
+  (event)="handleDeleteMailPopEvent($event)"
+>
+  <div id="deleteMailPop">
+    <div class="alert">
+      <div class="icon">
+        <img src="assets/Images/alerta.svg" />
+      </div>
+      <label>{{ 'email.deleteAlert' | translate }}</label>
+    </div>
+    <div class="message">
+      <div class="check">
+        <app-check-box [check]="spamCheckActive" (event)="spamCheckActive = $event"></app-check-box>
+      </div>
+      <div class="checkMessage">
+        <label>{{ 'email.checkMessage' | translate }}</label>
+      </div>
+      <div class="infoMessage">
+        <label>{{ 'email.infoMessage' | translate }}</label>
+      </div>
+    </div>
+  </div>
+</pqf-generic-pop-up>

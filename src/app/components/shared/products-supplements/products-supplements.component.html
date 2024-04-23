@@ -1,0 +1,19 @@
+<div class="supplements">
+  <label class="subtitle"
+    >{{ vProductsSupplements?.length }}
+    {{
+      vProductsSupplements?.length === 1
+        ? ('quotation.details.section.detailsProducts.supplement' | translate)
+        : ('quotation.details.section.detailsProducts.supplements' | translate)
+    }}</label
+  >
+  <div class="supplements-content">
+    <div class="supplement" *ngFor="let supplement of vProductsSupplements; let i = index">
+      <label
+        ><span>{{ '#' + (i + 1) + ' · ' + supplement.Descripcion }}</span>
+        {{ supplement.ISBN ? ' · ISBN ' + supplement.ISBN : '' }}{{ supplement.Editorial ? ' · ' + supplement.Editorial : ''
+        }}{{ supplement.Edicion ? ' · ' + supplement.Edicion : '' }}
+      </label>
+    </div>
+  </div>
+</div>

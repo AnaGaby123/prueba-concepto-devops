@@ -1,0 +1,98 @@
+@use 'base' as s;
+
+#pop-file-content {
+  @include s.flexColumn;
+  flex: 1;
+  height: 100%;
+  padding: 0 108px;
+  row-gap: 24px;
+
+  & > .message {
+    @include s.flexRow;
+    justify-content: center;
+    padding: 0 70px;
+
+    & > label {
+      @include s.responsive-font-format(
+        $font-family: s.$font-family-roboto_bold,
+        $font-weight: s.$font-weight-bold,
+        $font-size-map: s.$responsive-font-20-20
+      );
+      text-align: center;
+    }
+  }
+
+  & > .content {
+    @include s.flexRow;
+    flex: 1;
+    column-gap: 40px;
+    overflow: hidden;
+    padding-bottom: 2px;
+
+    & > .files {
+      @include s.flexColumn;
+      flex: 1;
+      row-gap: 16px;
+      overflow: hidden;
+
+      & > .item {
+        @include s.flexRow;
+        align-items: center;
+        column-gap: 16px;
+
+        & > .index {
+          @include s.responsive-font-format($font-size-map: s.$responsive-font-16-16);
+          width: 28px;
+        }
+
+        & > .file {
+          @include s.flexRow;
+          align-items: center;
+          background-color: s.$main-proquifa-f;
+          border: 1px solid s.$pqGreen;
+          border-radius: 100px;
+          column-gap: 9px;
+          width: 199px;
+          padding: 2px 8px;
+
+          & > label {
+            @include s.responsive-font-format($font-size-map: s.$responsive-font-16-16, $color: s.$pqGreen);
+            @include s.text-ellipsis-one-line;
+            width: 100%;
+          }
+
+          & > img {
+            cursor: pointer;
+          }
+        }
+
+        & > .download {
+          @include s.flexRow;
+          align-items: center;
+          column-gap: 16px;
+
+          & > label {
+            @include s.responsive-font-format(
+              $font-family: s.$font-family-roboto_medium,
+              $font-weight: s.$font-weight-medium,
+              $font-size-map: s.$responsive-font-14-14,
+              $color: s.$pqGreen
+            );
+            cursor: pointer;
+            text-decoration: underline;
+
+            &.disable {
+              color: s.$dark-proquifa-d;
+            }
+          }
+        }
+      }
+    }
+
+    & > .arrows {
+      @include s.flexColumn;
+      justify-content: space-between;
+      padding: 64px 16px;
+    }
+  }
+}

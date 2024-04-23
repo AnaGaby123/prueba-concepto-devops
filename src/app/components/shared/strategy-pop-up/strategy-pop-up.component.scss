@@ -1,0 +1,68 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  position: fixed;
+  z-index: 10;
+  transition: all 0.4s ease-in;
+
+  & > .container {
+    @include s.flexColumn;
+    flex: 1;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 18px;
+    border: solid 1px s.$pqGreen;
+    background-color: s.$pqWhite;
+    position: relative;
+    box-shadow: 0 0 10px 6px rgba(216, 217, 221, 0.5);
+    z-index: 2;
+
+    & > .close-button {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      cursor: pointer;
+    }
+
+    & > .content {
+      display: flex;
+      flex-direction: row;
+      flex: 1;
+      overflow: hidden;
+    }
+  }
+
+  & > .triangle {
+    border-bottom: solid 1px s.$pqGreen;
+    border-right: solid 1px s.$pqGreen;
+    width: 14px;
+    height: 14px;
+    position: absolute;
+    background-color: s.$pqWhite;
+    z-index: 3;
+  }
+
+  & > .down {
+    transform: rotate(45deg);
+  }
+
+  & > .left {
+    transform: rotate(135deg);
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > .container {
+      & > .close-button {
+        /*right: 35px;
+        top: 35px;*/
+        /*height: 25px;
+        width: 25px;*/
+      }
+    }
+  }
+}

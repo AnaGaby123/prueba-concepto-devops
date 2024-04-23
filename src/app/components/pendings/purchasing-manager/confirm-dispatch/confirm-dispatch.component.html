@@ -1,0 +1,28 @@
+<div class="component-container" id="confirm-dispatch-container">
+  <div class="header">
+    <app-header-bar [activeBack]="isInDetailsView$ | async" [title]="title$ | async" (goBack)="goBack()"></app-header-bar>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="footer" *ngIf="!(isInDetailsView$ | async)">
+    <ng-container>
+      <div>
+        <img alt="programming" src="assets/Images/labels/programada.svg" />
+        <label>{{ 'registerConfirmation.scheduledDelivery' | translate }}</label>
+      </div>
+      <div>
+        <img alt="only" src="assets/Images/labels/unica.svg" />
+        <label>{{ 'registerConfirmation.singleDelivery' | translate }}</label>
+      </div>
+      <div>
+        <label class="label">FEE:</label>
+        <label>{{ 'confirmDispatch.estimatedDelivery' | translate }}</label>
+      </div>
+      <div>
+        <label class="label">OC:</label>
+        <label>{{ 'confirmDispatch.purchaseOrder' | translate }}</label>
+      </div>
+    </ng-container>
+  </div>
+</div>

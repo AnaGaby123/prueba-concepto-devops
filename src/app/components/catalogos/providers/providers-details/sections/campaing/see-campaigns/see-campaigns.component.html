@@ -1,0 +1,266 @@
+<div class="container">
+  <div class="left-container">
+    <label class="title">{{ 'formProvider.step3.titleCampaing' | translate }}</label>
+    <div class="tabs">
+      <app-tabs
+        class="tabs"
+        [options]="campaignTabOptions$ | async"
+        [tapSelected]="selectedCampaignTabOption$ | async"
+        (onSelectOption)="selectedTabOptionChange($event)"
+      ></app-tabs>
+    </div>
+    <app-search
+      class="search-bar"
+      [placeholder]="searchConfiguration"
+      [searchTerm]="searchTermCampaign$ | async"
+      (textSearch)="handleKeySearch($event)"
+    ></app-search>
+    <div class="campaign-list">
+      <virtual-scroller
+        class="list-container"
+        *ngIf="(apiStatusCampaign$ | async) === 3 && (campaignList$ | async)?.Results?.length > 0"
+        [items]="(campaignList$ | async)?.Results"
+        (vsUpdate)="campaignList = $event"
+        (vsEnd)="fetchMoreCampaigns($event)"
+      >
+        <div
+          class="items"
+          *ngFor="let item of campaignList; let i = index"
+          [ngClass]="item.isSelected ? 'items-background' : ''"
+          (click)="campaignIndexSelectedHandler(item.IdCampana)"
+        >
+          <div class="item-content">
+            <div class="indicator" [ngClass]="item.isSelected ? 'selected' : ''"></div>
+            <div class="text">
+              <label class="multiLineTruncateTwo"
+                >#{{ i + 1 + ' · ' + (item.TipoCampana ? item.TipoCampana : 'N/D') + ' · ' }}
+                <span>{{ item.Nombre }}</span></label
+              >
+              <label
+                >{{ 'providerCatalog.validity' | translate }}
+                {{ (item.FechaInicio | dateFormatSlashShort) + ' · ' + (item.FechaFin | dateFormatSlashShort) }}</label
+              >
+              <label
+                >{{ 'providerCatalog.commission' | translate }}
+                {{
+                  item.Porcentaje
+                    ? (item.ValorComisionPorcentaje | pqfPercentageTransform)
+                    : (item.ValorComisionDinero | currency: 'USD':'symbol-narrow':'1.2-2') + ' USD'
+                }}</label
+              >
+            </div>
+          </div>
+          <div class="status" [ngClass]="item.Activo ? 'active' : 'inactive'">
+            <label>{{ item.Activo ? 'Activa' : 'Inactiva' }}</label>
+          </div>
+          <div
+            class="actions"
+            *ngIf="(selectedCampaignTabOption$ | async)?.id === '1'"
+            [ngClass]="((modeEdit$ | async) && (enableEdit$ | async)) || !(modeEdit$ | async) ? '' : 'disable'"
+          >
+            <img
+              (click)="editCampaignHandler($event, item)"
+              [src]="
+                ((modeEdit$ | async) && (enableEdit$ | async)) || !(modeEdit$ | async)
+                  ? 'assets/Images/lapiz.svg'
+                  : 'assets/Images/lapiz_gris.svg'
+              "
+            />
+          </div>
+          <div
+            class="actions"
+            *ngIf="(selectedCampaignTabOption$ | async)?.id === '1'"
+            (click)="deleteCampaignHandler(item, $event)"
+            [ngClass]="((modeEdit$ | async) && (enableEdit$ | async)) || !(modeEdit$ | async) ? '' : 'disable'"
+          >
+            <img
+              [src]="
+                ((modeEdit$ | async) && (enableEdit$ | async)) || !(modeEdit$ | async)
+                  ? 'assets/Images/eliminar.svg'
+                  : 'assets/Images/eliminar-disable.svg'
+              "
+            />
+          </div>
+        </div>
+      </virtual-scroller>
+      <div class="without-results" *ngIf="(apiStatusCampaign$ | async) === 3 && (campaignList$ | async)?.Results?.length === 0">
+        <app-without-results [title]="'common.withoutResults' | translate"></app-without-results>
+      </div>
+      <div class="loader" *ngIf="(apiStatusCampaign$ | async) === 1">
+        <app-loading *ngIf="(selectQueryInfo$ | async).apiStatus === 1"></app-loading>
+      </div>
+    </div>
+    <div class="campaign-list-footer">
+      <label class="total"
+        >#{{ (campaignList$ | async)?.Results?.length }}
+        {{
+          (campaignList$ | async)?.Results?.length === 1 ? ('common.campaign' | translate) : ('common.campaigns' | translate)
+        }}</label
+      >
+      <button
+        class="btn"
+        [disabled]="(modeEdit$ | async) && !(enableEdit$ | async)"
+        [ngClass]="(modeEdit$ | async) && !(enableEdit$ | async) ? 'disable' : 'enable'"
+        (click)="addCampaingHandler()"
+        >{{ 'common.add' | translate }}</button
+      >
+    </div>
+  </div>
+  <div class="right-container">
+    <label class="title">{{ 'providerCatalog.campaignDetail' | translate }}</label>
+    <div
+      class="without-results"
+      *ngIf="lodashIsEmpty(selectedCampaign$ | async) || (campaignList$ | async)?.Results?.length === 0"
+    >
+      <app-without-results [title]="'providerCatalog.selectCampaignMessage' | translate"></app-without-results>
+    </div>
+    <div
+      class="campaign-details-middle"
+      *ngIf="!lodashIsEmpty(selectedCampaign$ | async) && (campaignList$ | async)?.Results?.length > 0"
+    >
+      <label class="campaing-title"
+        >#{{ (selectedCampaign$ | async)?.Index }} · {{ (selectedCampaign$ | async)?.TipoCampana }} ·
+        <span>{{ (selectedCampaign$ | async)?.Nombre }}</span>
+      </label>
+      <div class="campaigns-details-middle-data">
+        <div>
+          <label>{{ 'providerCatalog.campaignName' | translate }}</label>
+          <label>{{ (selectedCampaign$ | async)?.Nombre }}</label>
+        </div>
+        <div>
+          <label>{{ 'providerCatalog.validity' | translate }}</label>
+          <label
+            >{{ (selectedCampaign$ | async)?.FechaInicio | dateFormatSlash }} ·
+            {{ (selectedCampaign$ | async)?.FechaFin | dateFormatSlash }}
+          </label>
+        </div>
+        <div>
+          <label>{{ 'providerCatalog.commission' | translate }}</label>
+          <label>{{
+            (selectedCampaign$ | async)?.Porcentaje
+              ? ((selectedCampaign$ | async)?.ValorComisionPorcentaje | pqfPercentageTransform)
+              : ((selectedCampaign$ | async)?.ValorComisionDinero | currency: 'USD':'symbol-narrow':'1.2-2') + ' USD'
+          }}</label>
+        </div>
+        <div>
+          <label>{{ 'providerCatalog.target' | translate }}</label>
+          <label>{{ (selectedCampaign$ | async)?.Objetivo }}</label>
+        </div>
+      </div>
+      <label class="campaing-title">{{ (selectedCampaign$ | async)?.TipoCampana }} </label>
+      <div class="campaign-details-items">
+        <virtual-scroller
+          class="list"
+          *ngIf="(apiStatusItemsRelated$ | async) !== 1 && (campaignList$ | async)?.Results?.length > 0"
+          [items]="itemsRelated$ | async"
+          (vsUpdate)="relatedItems = $event"
+        >
+          <div
+            class="items-product"
+            *ngFor="let item of relatedItems"
+            [ngSwitch]="(selectedCampaign$ | async)?.TipoCampana"
+            [hidden]="(apiStatusItemsRelated$ | async) === 1"
+          >
+            <div class="content" *ngSwitchCase="'Producto'">
+              <label class="name"
+                >{{ item?.Catalogo ?? 'N/D'}} {{ ' · ' + (item?.Descripcion ?? 'N/D')}}
+                {{ ' · ' + (item?.NombreMarca ?? 'N/D') }}</label
+              >
+              <label class="family"
+                >{{ item?.Tipo === 'N/A' ? '' : (item?.Tipo ?? 'N/D') }}
+                {{ item?.Subtipo === 'N/A' ? '' : ' · ' + (item?.Subtipo ?? 'N/D') }}
+                {{ item?.Control === 'N/A' ? '' : ' · ' + (item?.Control ?? 'N/D') }}</label
+              >
+            </div>
+            <div class="content" *ngSwitchCase="'Agrupador por característica'">
+              <label class="name">{{ item?.AgrupadorCaracteristica ?? 'N/D' }}</label>
+              <label class="family">{{ item?.Tipo ?? 'N/D'}} · {{ item?.Subtipo ?? 'N/D'}} · {{ item?.Control ?? 'N/D'}}</label>
+              <label class="total-products"
+                >{{ item?.Productos ?? 'N/D'}}
+                {{ item?.Productos === 1 ? ('common.product' | translate) : ('common.products' | translate) }}</label
+              >
+            </div>
+            <div class="content" *ngSwitchCase="'Marca'">
+              <label class="name"> {{ item?.Nombre ?? 'N/D'}} </label>
+              <div class="types">
+                <label *ngIf="item?.Estandares > 0"
+                  >{{ 'providerCatalog.standard' | translate }} : {{ item?.Estandares ?? 'N/D'}}
+                </label>
+                <label *ngIf="item?.Reactivos > 0">
+                  · {{ 'providerCatalog.reagents' | translate }} : {{ item?.Reactivos ?? 'N/D'}}
+                </label>
+                <label *ngIf="item?.Capacitaciones > 0">
+                  · {{ 'providerCatalog.trainings' | translate }}: {{ item?.Capacitaciones ?? 'N/D'}}
+                </label>
+                <label *ngIf="item?.Labware > 0"> · Labware: {{ item?.Labware ?? 'N/D'}}</label>
+                <label *ngIf="item?.Publicaciones > 0">
+                  · {{ 'providerCatalog.publications' | translate }}: {{ item?.Publicaciones }}</label
+                >
+                <!--DOCS: Faltaba dispositivo médico por el momento lo coloqué así-->
+                <label *ngIf="item?.DispositivoMedico > 0">
+                  · {{ 'providerCatalog.medicalDevices' | translate }}: {{ item?.DispositivoMedico }}</label
+                >
+              </div>
+              <label class="total-products"
+                >{{ item?.TotalProductos ?? 'N/D'}}
+                {{ item?.TotalProductos === 1 ? ('common.product' | translate) : ('common.products' | translate) }}</label
+              >
+            </div>
+            <div class="content" *ngSwitchDefault>
+              <label class="name">{{ item?.NombreProveedor ?? 'N/D' }}</label>
+              <label class="family"
+                >{{ item?.Tipo === 'N/A' ? '' : (item?.Tipo ?? 'N/D') }}
+                {{ item?.Subtipo === 'N/A' ? '' : ' · ' + (item?.Subtipo ?? 'N/D') }}
+                {{ item?.Control === 'N/A' ? '' : ' · ' + (item?.Control ?? 'N/D') }}</label
+              >
+              <label class="total-products"
+                >{{ item?.Productos ?? 'N/D' }}
+                {{ item?.Productos === 1 ? ('common.product' | translate) : ('common.products' | translate) }}</label
+              >
+            </div>
+          </div>
+        </virtual-scroller>
+        <div class="loading" *ngIf="(apiStatusItemsRelated$ | async) === 1">
+          <app-loading></app-loading>
+        </div>
+        <div
+          class="without-results"
+          *ngIf="(apiStatusItemsRelated$ | async) !== 1 && (campaignList$ | async).Results?.length === 0"
+        >
+          <app-without-results></app-without-results>
+        </div>
+      </div>
+      <div class="campaign-list-footer" *ngIf="(campaignList$ | async).Results?.length > 0">
+        <label *ngIf="(selectedCampaign$ | async)?.TipoCampana === 'Producto'"
+          >#{{ (itemsRelated$ | async)?.length }}
+          {{ (itemsRelated$ | async)?.length === 1 ? ('common.product' | translate) : ('common.products' | translate) }}</label
+        >
+        <label *ngIf="(selectedCampaign$ | async)?.TipoCampana === 'Agrupador por característica'"
+          >#{{ (itemsRelated$ | async)?.length }}
+          {{
+            (itemsRelated$ | async)?.length === 1
+              ? ('formProvider.classification.grouper' | translate)
+              : ('formProvider.classification.groupers' | translate)
+          }}
+          · {{ itemsRelatedProductsSum$ | async }}
+          {{ productsSum === 1 ? ('common.product' | translate) : ('common.products' | translate) }}</label
+        >
+        <label
+          *ngIf="
+            (selectedCampaign$ | async)?.TipoCampana === 'Familia' || (selectedCampaign$ | async)?.TipoCampana === 'Proveedor'
+          "
+          >#{{ (itemsRelated$ | async)?.length }}
+          {{ (itemsRelated$ | async)?.length === 1 ? ('common.family' | translate) : ('common.families' | translate) }}
+          · {{ itemsRelatedProductsSum$ | async }}
+          {{ productsSum === 1 ? ('common.product' | translate) : ('common.products' | translate) }}</label
+        >
+        <label *ngIf="(selectedCampaign$ | async)?.TipoCampana === 'Marca'"
+          >#{{ (itemsRelated$ | async)?.length }}
+          {{ (itemsRelated$ | async)?.length === 1 ? ('common.brand' | translate) : ('common.brands' | translate) }}
+          · {{ itemsRelatedProductsSum$ | async }}
+          {{ productsSum === 1 ? ('common.product' | translate) : ('common.products' | translate) }}</label
+        >
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+<div class="trademark-offer-container">
+  <app-options-bar
+    class="tabs"
+    [heightBar]="(viewType$ | async) === viewTypes.small ? '8px' : '10px'"
+    [options]="trademarkPageBarOptions$ | async"
+    [showArrows]="false"
+    (handleOptionSelected)="handleOptionSelected($event)"
+  ></app-options-bar>
+  <app-trademark class="router-content" *ngIf="isInTrademarkPage$ | async; else appOffer"></app-trademark>
+  <ng-template #appOffer>
+    <app-offer class="router-content"></app-offer>
+  </ng-template>
+  <app-pop-up-generic
+    class="cancel-pop-up"
+    *ngIf="alertPop$ | async"
+    [activeBtn]="true"
+    [activeButtons]="true"
+    [height]="(viewType$ | async) === viewTypes.small ? '300px' : '360px'"
+    [rightButtonLabel]="'Aceptar'"
+    [width]="(viewType$ | async) === viewTypes.small ? '500px' : '620px'"
+    (evento)="handleClosePop($event)"
+  >
+    <div class="container">
+      <img alt="alert" src="assets/Images/alerta.svg" />
+      <div>
+        <label>{{ 'formProvider.step8.continueWithoutChangesConfigurationMessage' | translate }}</label>
+      </div>
+    </div>
+  </app-pop-up-generic>
+</div>

@@ -1,0 +1,96 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+.pop-container {
+  @include s.flexColumn;
+  flex: 1;
+
+  & > .message {
+    @include s.flexColumn;
+    align-items: flex-start;
+    background-color: rgb(s.$pqGreen, 0.05);
+    padding: 20px;
+
+    & > label {
+      text-align: start;
+    }
+
+    & > label:nth-of-type(1) {
+      @include s.Roboto-Bold;
+      @include s.escaledFontFormat(s.$textSize11to13, bold, s.$pqBlack2);
+      margin-bottom: 6px;
+    }
+
+    & > label:nth-of-type(2) {
+      @include s.Roboto-Regular;
+      @include s.escaledFontFormat(s.$textSize11to13, regular, s.$pqBlack2);
+    }
+  }
+
+  & > .email-content-data {
+    @include s.flexColumn;
+    flex: 1;
+    justify-content: space-between;
+    padding: 20px 20px 0 20px;
+
+    & > .product-information-container {
+      @include s.flexColumn;
+
+      & > .total {
+        display: flex;
+
+        & > label {
+          @include s.Roboto-Bold;
+          @include s.escaledFontFormat(s.$textSize11to13, bold, s.$pqBlack2);
+        }
+      }
+
+      & > .product-information {
+        @include s.flexColumn;
+        flex: 1;
+        gap: 10px;
+        max-height: 95px;
+        overflow-y: auto;
+        padding-top: 10px;
+
+        & div {
+          @include s.flexRowWrap;
+          flex: 1;
+
+          & > label {
+            @include s.Roboto-Regular;
+            @include s.escaledFontFormat(s.$textSize11to13, regular, s.$pqBlack2);
+            @include s.multiLineTextTruncateSinHeight($lineHeight: 1.3);
+            text-align: initial;
+
+            & > .regular-text {
+              @include s.Roboto-Regular;
+              color: s.$pqBlack2;
+            }
+
+            & > .bold-text {
+              @include s.Roboto-Bold;
+            }
+
+            & > .green-text {
+              color: s.$pqGreen;
+              vertical-align: baseline;
+            }
+          }
+        }
+      }
+    }
+
+    & > .notes {
+      margin-top: 15px;
+
+      & > label {
+        @include s.Roboto-Regular;
+        @include s.escaledFontFormat(s.$textSize11to13, regular, s.$pqBlack2);
+      }
+    }
+  }
+}

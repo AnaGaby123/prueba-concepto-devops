@@ -1,0 +1,25 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  width: 100%;
+  & > .checks-container {
+    @include s.flexRow;
+    column-gap: 20px;
+    width: 100%;
+    & > img {
+      cursor: pointer;
+      width: 25px;
+      height: 25px;
+      &.img-opacity {
+        opacity: 0.2;
+      }
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}

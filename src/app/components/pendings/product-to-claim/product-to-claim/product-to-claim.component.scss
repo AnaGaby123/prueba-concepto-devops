@@ -1,0 +1,26 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.generic-main-component-structure;
+
+  & > #product-to-claim-container {
+    & > .footer {
+      & > div {
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+          padding: 0 20px;
+          vertical-align: baseline;
+
+          & > span {
+            @include s.Roboto-Bold;
+          }
+        }
+      }
+    }
+  }
+}

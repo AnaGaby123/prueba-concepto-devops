@@ -1,0 +1,8 @@
+<div id="review-results">
+  <div class="filters">
+    <app-filters [isShow]="requestIsShow" (handleIsShow)="handleRequest()"></app-filters>
+  </div>
+  <div class="data" [ngClass]="{show: requestIsShow}">
+    <app-client-list></app-client-list>
+  </div>
+</div>

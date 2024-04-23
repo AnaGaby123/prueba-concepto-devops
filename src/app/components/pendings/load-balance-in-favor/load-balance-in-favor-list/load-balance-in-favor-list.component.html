@@ -1,0 +1,104 @@
+<div id="load-balance-in-favor-list">
+  <div class="top-content">
+    <div class="title">
+      <label>{{ 'loadBalanceInFavor.companies' | translate }}</label>
+    </div>
+    <div class="tabs">
+      <app-tabs
+        [options]="tabs$ | async"
+        [tapSelected]="tabSelected$ | async"
+        (onSelectOption)="changeTabSelected($event)"
+      ></app-tabs>
+    </div>
+    <div class="filters">
+      <div class="hamburger">
+        <app-hamburger-menu
+          [options]="options$ | async"
+          [value]="(optionsSelected$ | async).value"
+          (valueEmit)="selectFilter($event)"
+        ></app-hamburger-menu>
+      </div>
+      <div class="drop">
+        <label>Proveedor</label>
+        <app-drop-down-list
+          [items]="providers$ | async"
+          [itemSelected]="providerSelected$ | async"
+          (valueDropList)="changeProviderSelected($event)"
+        >
+        </app-drop-down-list>
+      </div>
+      <div class="search">
+        <app-search
+          placeholder="Folio, Serie"
+          [searchTerm]="searchTerm$ | async"
+          (textSearch)="handleKeySearch($event)"
+        ></app-search>
+      </div>
+    </div>
+  </div>
+  <div class="table">
+    <div class="header">
+      <div class="index">
+        <label>#</label>
+      </div>
+      <div class="company">
+        <label>{{ 'loadBalanceInFavor.company' | translate }}</label>
+      </div>
+      <div class="provider">
+        <label>{{ 'loadBalanceInFavor.provider' | translate }}</label>
+      </div>
+      <div class="date">
+        <label>{{ 'loadBalanceInFavor.date' | translate }}</label>
+      </div>
+      <div class="documentFolio">
+        <label>{{ 'loadBalanceInFavor.documentFolio' | translate }}</label>
+      </div>
+      <div class="cfdi">
+        <label>{{ 'loadBalanceInFavor.serieCFDI' | translate }}</label>
+      </div>
+      <div class="amount">
+        <label>{{ 'loadBalanceInFavor.amount' | translate }}</label>
+      </div>
+      <div class="delete"></div>
+    </div>
+    <div class="body">
+      <virtual-scroller>
+        <div class="item">
+          <div class="principal">
+            <div class="index">
+              <label>{{ 1 }}</label>
+            </div>
+            <div class="company">
+              <label>{{ 'Proveedora' }}</label>
+            </div>
+            <div class="provider">
+              <label>{{ 'BP' }}</label>
+            </div>
+            <div class="date">
+              <label>{{ '02/Febrero/2022' }}</label>
+            </div>
+            <div class="documentFolio">
+              <label>{{ '1244344' }}</label>
+            </div>
+            <div class="cfdi">
+              <label>{{ 'No Aplica' }}</label>
+            </div>
+            <div class="amount">
+              <label>{{ '100000' }}</label></div
+            >
+            <div class="delete">
+              <img src="assets/Images/eliminar.svg" alt="delete" />
+            </div>
+          </div>
+        </div>
+      </virtual-scroller>
+    </div>
+  </div>
+  <footer>
+    <div>
+      <button [ngClass]="true ? 'add' : 'add-disable'" [disabled]="false" (click)="add()">
+        {{ 'common.add' | translate }}
+      </button>
+    </div>
+  </footer>
+</div>

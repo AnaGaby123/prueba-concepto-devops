@@ -1,0 +1,75 @@
+@use 'base' as s;
+
+:host {
+  @include s.absolute100;
+
+  * {
+    box-sizing: border-box;
+  }
+
+  #warehouse-details {
+    @include s.absolute100;
+    @include s.flexColumn;
+    overflow: hidden;
+
+    & > .router-container {
+      @include s.flexColumn;
+      flex: 1 1 auto;
+    }
+
+    & > .footer {
+      @include s.flexRowNoWrap;
+      @include s.absoluteCenter;
+      border-top: 2px solid s.$pqBlack2;
+      flex: 0 0 50px;
+
+      & > .Ambiente,
+      & > .Congelación,
+      & > .Prioridad1,
+      & > .Prioridad2,
+      & > .Prioridad3,
+      & > .Refrigeración {
+        @include s.flexRow;
+        @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+        @include s.Roboto-Regular;
+        flex: 0 1 auto;
+        align-self: center;
+        justify-content: center;
+        align-items: center;
+        margin-left: 0.7%;
+        margin-right: 0.7%;
+
+        & > .p1,
+        & > .p2,
+        & > .p3 {
+          @include s.Roboto-Bold;
+          margin-right: 10px;
+        }
+
+        & > .p1 {
+          color: s.$redPriority;
+        }
+
+        & > .p2 {
+          color: #eeb253;
+        }
+
+        & > .p3 {
+          color: #63b236;
+        }
+
+        & > img {
+          margin-right: 4px;
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #warehouse-details {
+      & > .footer {
+        flex: 0 0 55px;
+      }
+    }
+  }
+}

@@ -1,0 +1,36 @@
+<app-pop-up-generic
+  id="order-confirmation-dialog"
+  [activeButtons]="true"
+  [width]="'620px'"
+  [height]="'545px'"
+  (evento)="onClose($event)"
+>
+  <div class="container">
+    <div class="header">
+      <img src="assets/Images/alerta.svg" alt="Alerta" />
+    </div>
+    <div class="resume">
+      <label> ¿{{ 'validateAdjustment.insuranceToProcess' | translate }} </label>
+      <label> la OC-{{ (orderSelected$ | async)?.OrdenDeCompra }} de {{ (client$ | async).Nombre }} </label>
+      <label> {{ 'validateAdjustment.withFollowingData' | translate }}? </label>
+    </div>
+    <div class="totals">
+      <label>
+        {{ (entriesTotals$ | async).validate }}
+        {{
+          (entriesTotals$ | async).validate === 1
+            ? ('validateAdjustment.orderProcess' | translate)
+            : ('validateAdjustment.ordersProcess' | translate)
+        }}
+      </label>
+      <label>
+        {{ (entriesTotals$ | async).invalidate }}
+        {{
+          (entriesTotals$ | async).invalidate === 1
+            ? ('validateAdjustment.orderNotProcess' | translate)
+            : ('validateAdjustment.ordersNotProcess' | translate)
+        }}</label
+      >
+    </div>
+  </div>
+</app-pop-up-generic>

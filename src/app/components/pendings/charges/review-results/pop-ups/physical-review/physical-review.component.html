@@ -1,0 +1,235 @@
+<app-pop-up-generic [width]="width" [height]="height" [titleHeader]="'reviewResults.seePhysicalReview' | translate">
+  <div class="container">
+    <div class="type-review">
+      <label>{{
+        (reviewCustomer$ | async).Reprogramada
+          ? ('reviewResults.rescheduled' | translate)
+          : (reviewCustomer$ | async).Realizada
+          ? ('reviewResults.execute' | translate)
+          : ('reviewResults.outOfTime' | translate)
+      }}</label>
+      <label *ngIf="(reviewCustomer$ | async).Realizada">·</label>
+      <label>{{
+        (reviewCustomer$ | async).FueraDeTiempo ? ('reviewResults.outOfTime' | translate) : ('reviewResults.inTime' | translate)
+      }}</label>
+    </div>
+    <div class="data">
+      <div class="review">
+        <div class="data-customer">
+          <div class="customer">
+            <img alt="Logo" src="assets/Images/clientes/logo_proquifa_default.svg" />
+          </div>
+          <div class="customer">
+            <div>
+              <label class="name">{{ (reviewCustomer$ | async).NombreCliente }}</label>
+            </div>
+            <div>
+              <label class="invoice">{{
+                ('common.invoice' | translate) + ' ' + (reviewCustomer$ | async).NumeroFactura
+              }}</label>
+              <label class="invoice">·</label>
+              <label class="invoice order">P.I {{ (reviewCustomer$ | async).NumeroOrdenDeCompra }}</label>
+            </div>
+            <div>
+              <label class="schedule">{{
+                ('reviewResults.scheduledCollection' | translate) +
+                  ' ' +
+                  ((reviewCustomer$ | async).FechaProgramacionCobro
+                    ? ((reviewCustomer$ | async).FechaProgramacionCobro | dateFormatSlashShort)
+                    : 'N/D')
+              }}</label>
+            </div>
+          </div>
+        </div>
+        <div class="amount">
+          <label class="amount">{{ (reviewCustomer$ | async).MontoTotal | currency: 'USD':'symbol':'1.2-2' }}</label>
+          <label>{{ 'common.totalValue' | translate }}</label>
+        </div>
+      </div>
+      <div class="tabs">
+        <app-tabs [options]="tabs" [tapSelected]="selectedTab" (onSelectOption)="setTab($event)"></app-tabs>
+      </div>
+      <div class="content">
+        <div class="general-data" *ngIf="selectedTab.id === '1'">
+          <div class="address">
+            <div class="address-data">
+              <div class="info">
+                <div>
+                  <label>{{ 'formProvider.step1.country' | translate }}</label>
+                </div>
+                <div>
+                  <label class="text">{{ (reviewCustomer$ | async)?.addressCustomer?.catPais?.NombreEspanol }}</label>
+                </div>
+              </div>
+              <div class="info">
+                <div>
+                  <label>{{ 'formProvider.step1.state' | translate }}</label>
+                </div>
+                <div>
+                  <label class="text">{{ (reviewCustomer$ | async)?.addressCustomer?.Direccion?.Estado }}</label>
+                </div>
+              </div>
+              <div class="info">
+                <div>
+                  <label>{{ 'Calle, Número y Colonia' }}</label>
+                </div>
+                <div>
+                  <label class="text">
+                    {{
+                      (reviewCustomer$ | async)?.addressCustomer?.Direccion?.Calle +
+                        ' ' +
+                        ((reviewCustomer$ | async)?.addressCustomer?.Direccion?.NumeroExterior
+                          ? '#' + (reviewCustomer$ | async)?.addressCustomer?.Direccion?.NumeroExterior
+                          : 'S/N') +
+                        ((reviewCustomer$ | async)?.addressCustomer?.Direccion?.Colonia
+                          ? ' Colonia ' + (reviewCustomer$ | async)?.addressCustomer?.Direccion?.Colonia
+                          : '')
+                    }}
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="delegation">
+              <label class="title">{{ ('reviewResults.delegation' | translate) + ':' }}</label>
+              <label>{{ (reviewCustomer$ | async)?.addressCustomer?.Direccion?.Municipio }}</label>
+            </div>
+          </div>
+          <div class="info">
+            <div>
+              <div class="title">
+                <label>{{ 'reviewResults.criterion' | translate }}</label>
+              </div>
+              <div class="data">
+                <div class="content">
+                  <div>
+                    <label class="title">{{ 'reviewResults.priority' | translate }}</label>
+                  </div>
+                  <div>
+                    <label>{{ 'reviewResults.priority' | translate }}</label>
+                  </div>
+                </div>
+                <div class="content">
+                  <div>
+                    <label class="title">{{ 'uploadInvoice.origin' | translate }}</label>
+                  </div>
+                  <div>
+                    <label>{{ (reviewCustomer$ | async).NombreUsuarioOrigen }}</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="title">
+                <label>{{ 'reviewResults.messengerEvidence' | translate }}</label>
+              </div>
+              <div class="message" *ngIf="(reviewCustomer$ | async)?.evidenceMessenger?.length === 0">
+                <app-without-results [title]="'common.notAvailable' | translate"></app-without-results>
+              </div>
+              <div class="images" *ngIf="(reviewCustomer$ | async)?.evidenceMessenger?.length > 0">
+                <div *ngFor="let evidence of (reviewCustomer$ | async).evidenceMessenger">
+                  <div (click)="download(evidence)">
+                    <label>{{ evidence.FileKey | onlyFileNamePdf }}</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="info">
+            <div>
+              <div class="title">
+                <label>{{ 'reviewResults.executionData' | translate }}</label>
+              </div>
+              <div class="data">
+                <div class="content">
+                  <div>
+                    <label class="title">{{ 'reviewResults.revisionDateReal' | translate }}</label>
+                  </div>
+                  <div>
+                    <label>{{ (reviewCustomer$ | async).FechaRealRevision | dateFormatSlashShort }}</label>
+                  </div>
+                </div>
+                <div class="content">
+                  <div>
+                    <label class="title">{{ 'reviewResults.carrier' | translate }}</label>
+                  </div>
+                  <div>
+                    <label>{{ (reviewCustomer$ | async).NombreUsuarioDestino }}</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="title">
+                <label>{{ 'reviewResults.evidenceUnderReview' | translate }}</label>
+              </div>
+              <div class="message" *ngIf="(reviewCustomer$ | async)?.evidenceMessenger?.length === 0">
+                <app-without-results [title]="'common.notAvailable' | translate"></app-without-results>
+              </div>
+              <div class="images" *ngIf="(reviewCustomer$ | async)?.evidenceMessenger?.length > 0">
+                <div *ngFor="let evidence of (reviewCustomer$ | async).evidenceMessenger">
+                  <div>
+                    <label>{{ evidence.FileKey | onlyFileNamePdf }}</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="payment">
+            <div class="date">
+              <div>
+                <label>{{ ('reviewResults.scheduledCollection' | translate) + ':' }}</label>
+              </div>
+              <div class="date-data">
+                <app-date-picker
+                  dateFormat="YYYYMMDD"
+                  [color]="false"
+                  [disabledCalendarDays]="selectNonWorkingDays$ | async"
+                  [date]="(reviewCustomer$ | async)?.dateFormat ? (reviewCustomer$ | async)?.dateFormat : null"
+                  (fecha)="setDate($event)"
+                >
+                </app-date-picker>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="schedule" *ngIf="selectedTab.id === '2'">
+          <div class="list">
+            <div class="item" *ngFor="let incidence of (reviewCustomer$ | async)?.incidences; let i = index">
+              <label>#{{ i + 1 }}</label>
+              <label>·</label>
+              <label class="pqf">Mensajero</label>
+              <label class="pqf">·</label>
+              <label> {{ incidence.FechaRegistro | dateFormatSlashShort }}</label>
+              <label>·</label>
+              <label>Comentarios:</label>
+              <label class="comment">{{ incidence.ComentariosAdicionales }}</label>
+            </div>
+          </div>
+          <div class="totals">
+            <label
+              >#{{
+                ((reviewCustomer$ | async)?.incidences ? (reviewCustomer$ | async)?.incidences.length : 0) +
+                  ' ' +
+                  ((reviewCustomer$ | async)?.incidences.length === 1
+                    ? ('reviewResults.incidence' | translate)
+                    : ('reviewResults.incidences' | translate))
+              }}</label
+            >
+          </div>
+        </div>
+      </div>
+      <div class="buttons">
+        <button class="button" (click)="closePop(false)">
+          {{ 'common.cancel' | translate }}
+        </button>
+        <button
+          (click)="closePop(true)"
+          [disabled]="!(reviewCustomer$ | async)?.dateFormat"
+          [ngClass]="(reviewCustomer$ | async)?.dateFormat ? 'button' : 'disabled'"
+        >
+          {{ 'reviewResults.publish' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</app-pop-up-generic>

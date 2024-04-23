@@ -1,0 +1,265 @@
+<app-pop-up-generic [titleHeader]="'notProcessed.reconfigureFreight' | translate" width="1200px" height="884px">
+  <div class="container">
+    <div class="preprocess-order">
+      <div>
+        <label>#{{ (order$ | async)?.Index + 1 || 0 }}</label>
+        <label>·</label>
+        <label>OC</label>
+        <label>·</label>
+        <label>{{ (order$ | async)?.OrdenDeCompra || 'N/D' }}</label>
+        <label class="pqf">·</label>
+        <label class="pqf">
+          {{
+            ((total$ | async) || 0) +
+              ' ' +
+              ((total$ | async) === 1 ? ('preProcessing.item' | translate) : ('preProcessing.items' | translate))
+          }}
+        </label>
+        <label class="pqf">·</label>
+        <label>
+          {{
+            ('quotation.details.totalValue' | translate) +
+              ' ' +
+              ((order$ | async)?.ValorTotal || 0 | currency: (currency$ | async):'symbol-narrow':'1.2-2')
+          }}
+          {{ currency$ | async }}
+        </label>
+      </div>
+    </div>
+    <div class="client-container">
+      <app-clients-contact [contact]="clientContactData$ | async" [showConfigAddress]="true"></app-clients-contact>
+    </div>
+    <div class="table-container">
+      <div
+        class="content"
+        *ngIf="(displayRowsConfig$ | async)?.length > 0 && (apiStatus$ | async) === 3 && !(hasBeenReconfigureFreight$ | async)"
+      >
+        <div class="header">
+          <app-header-internal-sales-item
+            *ngIf="
+              (displayColumnsConfig$ | async) &&
+              (displayRowsConfig$ | async)?.length > 0 &&
+              (apiStatus$ | async) === 3 &&
+              !(hasBeenReconfigureFreight$ | async)
+            "
+            [internalSalesItem]="displayColumnsConfig$ | async"
+          >
+          </app-header-internal-sales-item>
+        </div>
+        <div class="header-separator"></div>
+        <div
+          *ngIf="
+            (displayRowsConfig$ | async)?.length > 0 && (apiStatus$ | async) === 3 && !(hasBeenReconfigureFreight$ | async)
+          "
+          class="list"
+        >
+          <div class="list-for" *ngFor="let item of displayRowsConfig$ | async; let index = index; trackBy: handleTrackBy">
+            <app-internal-sales-item [internalSalesItem]="item">
+              <!--          (valueEmitter)="handleReusableItem($event)"-->
+            </app-internal-sales-item>
+            <div class="incidence" *ngIf="item?.data?.Validada === false || item?.data?.hasInheritIncidences">
+              <div class="content">
+                <div>
+                  <label> {{ 'preProcessing.inconsistencies' | translate }}: </label>
+                </div>
+                <div>
+                  <app-check-box
+                    [label]="'Catálogo'"
+                    [backGroundCheckColor]="'#ffffff'"
+                    [enableEdit]="false"
+                    [check]="item?.data?.ppIncidenciaPartida.Catalogo"
+                  >
+                  </app-check-box>
+                  <app-check-box
+                    [label]="'Descripción'"
+                    [backGroundCheckColor]="'#ffffff'"
+                    [enableEdit]="false"
+                    [check]="item?.data?.ppIncidenciaPartida?.Descripcion"
+                  >
+                  </app-check-box>
+                  <app-check-box
+                    [label]="'Presentación'"
+                    [backGroundCheckColor]="'#ffffff'"
+                    [enableEdit]="false"
+                    [check]="item?.data?.ppIncidenciaPartida?.Presentacion"
+                  >
+                  </app-check-box>
+                  <app-check-box
+                    [label]="'Marca'"
+                    [backGroundCheckColor]="'#ffffff'"
+                    [enableEdit]="false"
+                    [check]="item?.data?.ppIncidenciaPartida?.Marca"
+                  >
+                  </app-check-box>
+                  <app-check-box
+                    [label]="'TEE'"
+                    [backGroundCheckColor]="'#ffffff'"
+                    [enableEdit]="false"
+                    [check]="item?.data?.ppIncidenciaPartida?.TiempoEstimadoEntrega"
+                  >
+                  </app-check-box>
+                  <app-check-box
+                    [label]="'Precio Unitario'"
+                    [backGroundCheckColor]="'#ffffff'"
+                    [enableEdit]="false"
+                    [check]="item?.data?.ppIncidenciaPartida?.PrecioUnitario"
+                  >
+                  </app-check-box>
+                  <app-check-box
+                    [label]="'Precio consistente con IVA'"
+                    [backGroundCheckColor]="'#ffffff'"
+                    [enableEdit]="false"
+                    [check]="item?.data?.ppIncidenciaPartida?.IVA"
+                  >
+                  </app-check-box>
+                </div>
+                <div>
+                  <label>
+                    {{ 'common.comments' | translate }}
+                  </label>
+                  <app-generic-input
+                    [isDisable]="true"
+                    [value]="item?.data?.ppIncidenciaPartida?.Comentarios"
+                    [typeValidation]="inputTypes.AlphaAndSpacesAndNumbers"
+                  >
+                  </app-generic-input>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="hasBeenReconfigureFreight$ | async" class="content">
+        <div class="header">
+          <app-header-internal-sales-item
+            *ngIf="hasBeenReconfigureFreight$ | async"
+            [internalSalesItem]="(displayRowsReconfigureFreight$ | async)?.[0]"
+          >
+          </app-header-internal-sales-item>
+        </div>
+        <div class="header-separator"></div>
+        <div *ngIf="hasBeenReconfigureFreight$ | async" class="list">
+          <div
+            class="list-for"
+            *ngFor="let item of displayRowsReconfigureFreight$ | async; let index = index; trackBy: handleTrackBy"
+          >
+            <app-internal-sales-item [internalSalesItem]="item"> </app-internal-sales-item>
+          </div>
+        </div>
+      </div>
+
+      <div class="without-results" *ngIf="(items$ | async)?.length === 0 && (apiStatus$ | async) === 3">
+        <app-without-results [title]="'NO SE ENCONTRÓ INFORMACIÓN'"></app-without-results>
+      </div>
+      <div class="loader" *ngIf="(apiStatus$ | async) === 1">
+        <app-loading></app-loading>
+      </div>
+    </div>
+    <div class="totals" *ngIf="(apiStatus$ | async) === 3 && (items$ | async)?.length > 0">
+      <div class="date">
+        <div>
+          <!--          <label> * {{ 'notProcessed.fea' | translate }} </label>-->
+          <app-date-picker
+            dateFormat="YYYYMMDD"
+            [date]="estimatedAdjustmentDate$ | async"
+            [label]="'*' + ('notProcessed.fea' | translate)"
+            [rangeStart]="rangeStart"
+            [disabledCalendarDays]="selectNonWorkingDays$ | async"
+            (fecha)="handleDate($event)"
+          ></app-date-picker>
+        </div>
+      </div>
+      <div class="total-purchases">
+        <div class="purchases">
+          <label>
+            {{
+              (items$ | async).length +
+                ' ' +
+                ((items$ | async).length === 1 ? ('preProcessing.item' | translate) : ('preProcessing.items' | translate))
+            }}
+          </label>
+        </div>
+      </div>
+      <div class="total-section">
+        <div class="labels">
+          <label class="subtotal">{{ 'preProcessing.tableLabels.subtotal' | translate }}: </label>
+          <label class="iva"> {{ 'preProcessing.tableLabels.iva' | translate }}: </label>
+          <label class="total text-bold"> {{ 'preProcessing.tableLabels.total' | translate }}: </label>
+        </div>
+        <div class="totals-container">
+          <label class="subtotal">
+            {{
+              ((orderTotalAmount$ | async)?.subTotal ? (orderTotalAmount$ | async)?.subTotal : 0)
+                | currency: (currency$ | async):'symbol-narrow':'1.2-2'
+            }}
+            {{ currency$ | async }}
+          </label>
+          <label class="iva">
+            {{
+              ((orderTotalAmount$ | async)?.totalTax ? (orderTotalAmount$ | async)?.totalTax : 0)
+                | currency: (currency$ | async):'symbol-narrow':'1.2-2'
+            }}
+            {{ currency$ | async }}
+          </label>
+          <label class="total">
+            {{
+              ((orderTotalAmount$ | async)?.totalPriceQuotation ? (orderTotalAmount$ | async)?.totalPriceQuotation : 0)
+                | currency: (currency$ | async):'symbol-narrow':'1.2-2'
+            }}
+            {{ currency$ | async }}
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="configuration">
+      <app-check-box
+        [label]="'notProcessed.applyExpressFlight' | translate"
+        [check]="orderSelectedApplyExpressFlight$ | async"
+        (event)="setData('AplicaFleteExpress', $event)"
+        fontColor="#008894"
+        fontSize="13px"
+      ></app-check-box>
+      <app-check-box
+        [label]="'notProcessed.itemizedFreight' | translate"
+        [secondaryLabel]="'(' + ('notProcessed.itemizedFreightMessage' | translate) + ')'"
+        [secondaryLabelFontStyle]="'robotoRegularRegularBlack11'"
+        [check]="orderSelectedItemizedFreight$ | async"
+        [disabled]="true"
+        (event)="setData('FleteDesglosado', $event)"
+        fontColor="#008894"
+        fontSize="13px"
+      ></app-check-box>
+      <div
+        class="delivery-type"
+        *ngIf="
+          (selectOrderSelected$ | async)?.DireccionEntrega?.AceptaParciales &&
+          !(selectOrderSelected$ | async)?.DireccionEntrega?.EsMensajeriaInterna
+        "
+      >
+        <label>{{ 'notProcessed.deliveryType' | translate }}:</label>
+        <app-pqf-toggle-switch
+          [options]="deliveryType$ | async"
+          [selectedOption]="deliveryTypeSelected$ | async"
+          (selectedOptionChange)="handleDeliveryType($event)"
+        ></app-pqf-toggle-switch>
+      </div>
+      <div>
+        <button class="btn-calculate-prices" (click)="onClose(true, true)">{{
+          'notProcessed.calculatePrices' | translate
+        }}</button>
+      </div>
+    </div>
+
+    <div class="footer">
+      <label>{{ 'notProcessed.orderSubmissionInstructions' | translate }}</label>
+      <button class="cancel" (click)="onClose(false)">{{ 'notProcessed.cancel' | translate }}</button>
+      <button
+        [disabled]="!(isValidQuotation$ | async)"
+        [class]="(isValidQuotation$ | async) ? 'accept' : 'accept-disabled'"
+        (click)="onClose(true)"
+      >
+        {{ 'notProcessed.generateQuote' | translate }}
+      </button>
+    </div>
+  </div>
+</app-pop-up-generic>

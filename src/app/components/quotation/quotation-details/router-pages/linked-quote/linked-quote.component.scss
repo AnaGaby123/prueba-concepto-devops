@@ -1,0 +1,73 @@
+@use 'base' as s;
+
+:host {
+  width: 100%;
+  height: 100%;
+}
+
+.principal {
+  @include s.flexColumn;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 0 20px 20px 20px;
+
+  & > .header {
+    width: 100%;
+    height: 59px;
+    z-index: 1;
+    border-bottom: 1px solid s.$pqBlack2;
+    @include s.flexRow;
+    align-items: center;
+
+    & > .title {
+      @include s.flexRow;
+
+      & > label:nth-of-type(1) {
+        $textSize: (
+          'base': 20px,
+          'macBookAir': 24px,
+        );
+        @include s.escaledFontFormat($textSize, regular, s.$pqBlack2);
+        @include s.Novecento-Bold;
+        text-transform: uppercase;
+      }
+    }
+
+    & > .folio {
+      margin-left: 10px;
+
+      & > label:nth-of-type(1) {
+        width: 100%;
+        $textSize: (
+          'base': 20px,
+          'macBookAir': 24px,
+        );
+        @include s.escaledFontFormat($textSize, regular, s.$pqGreen);
+        @include s.Novecento-Bold;
+      }
+    }
+  }
+
+  & > .document {
+    @include s.flexRow;
+    height: calc(100% - 95px);
+    width: 100%;
+    box-sizing: border-box;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  & > .buttons {
+    @include s.flexRow;
+    justify-content: space-between;
+    width: 100%;
+    height: 50px;
+    box-sizing: border-box;
+    align-items: flex-end;
+
+    & > button {
+      @include s.pqButton();
+    }
+  }
+}

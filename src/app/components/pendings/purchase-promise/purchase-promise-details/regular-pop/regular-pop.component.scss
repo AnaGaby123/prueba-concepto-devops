@@ -1,0 +1,261 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+.regular-pop {
+  ::ng-deep .modal {
+    background: none;
+
+    & > .modal-content {
+      transition: none;
+    }
+  }
+  & .content {
+    @include s.flexColumn;
+    flex: 1;
+
+    & > .body {
+      @include s.flexColumn;
+      flex: 1;
+      padding: 18px 30px 0 30px;
+
+      & > .item-info {
+        @include s.flexColumn;
+        margin-bottom: 18px;
+        & > .title {
+          @include s.flexRow;
+          justify-content: flex-start;
+          align-items: center;
+          border-bottom: 1px solid s.$pqBlack2;
+          padding-bottom: 8px;
+          column-gap: 25px;
+
+          & > .purchase {
+            width: 100%;
+            display: flex;
+
+            & > label {
+              @include s.Novecento-Bold;
+              @include s.escaledFontFormat(s.$textSize16to18, bold, s.$pqBlack2);
+            }
+          }
+
+          & > .addenda-title {
+            width: 100%;
+            display: flex;
+
+            & > label {
+              @include s.Roboto;
+              @include s.escaledFontFormat(s.$textSize16to18, bold, s.$main-proquifa);
+            }
+          }
+        }
+
+        & > .content-purchase {
+          @include s.flexRow;
+          padding: 18px 0;
+          column-gap: 25px;
+          & > .info {
+            width: 100%;
+          }
+
+          & > .addenda {
+            @include s.flexColumn;
+            width: 100%;
+            grid-column-gap: 30px;
+            grid-row-gap: 15px;
+            padding-left: 25px;
+            border-left: s.$pqGray2 1px solid;
+          }
+        }
+        & > .dates-trainings {
+          @include s.responsive-font-format(
+            $color: s.$textGray,
+            $font-family: s.$font-family-roboto_regular,
+            $font-size-map: s.$responsive-font-17-17,
+            $font-weight: s.$font-weight-regular
+          );
+          text-align: left;
+          margin-bottom: 18px;
+          & > .black {
+            color: s.$pqBlack2;
+            vertical-align: baseline;
+          }
+          & span:last-child {
+            overflow: hidden;
+          }
+        }
+      }
+
+      & > .config-info {
+        @include s.flexColumn;
+        flex: 1;
+
+        & > .title {
+          @include s.flexRow;
+          justify-content: flex-start;
+          align-items: center;
+          border-bottom: 1px solid s.$pqBlack2;
+          padding-bottom: 8px;
+
+          & > label {
+            @include s.Novecento-Bold;
+            @include s.escaledFontFormat(s.$textSize16to18, bold, s.$pqBlack2);
+          }
+        }
+
+        & > .config-content {
+          @include s.flexColumn;
+          flex: 1;
+
+          & > .delivery-restrictions {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 10px 0 24px 0;
+            row-gap: 5px;
+            white-space: pre-wrap;
+            & > label {
+              @include s.responsive-font-format(
+                $color: s.$pqBlack2,
+                $font-family: s.$font-family_roboto,
+                $font-size-map: s.$responsive-font-17-17,
+                $font-weight: s.$font-weight_regular
+              );
+              & > span {
+                @include s.responsive-font-format(
+                  $color: s.$pqBlack2,
+                  $font-family: s.$font-family-roboto_bold,
+                  $font-size-map: s.$responsive-font-17-17,
+                  $font-weight: s.$font-weight-bold
+                );
+              }
+            }
+
+            & > .temporal {
+              @include s.flexRow;
+              justify-content: flex-start;
+
+              & > label {
+                @include s.responsive-font-format(
+                  $color: s.$pqBlack2,
+                  $font-family: s.$font-family-roboto_bold,
+                  $font-size-map: s.$responsive-font-17-17,
+                  $font-weight: s.$font-weight-bold
+                );
+                text-align: start;
+                & > span {
+                  padding-left: 3px;
+                  @include s.responsive-font-format(
+                    $color: s.$pqBlack2,
+                    $font-family: s.$font_family_roboto,
+                    $font-size-map: s.$responsive-font-17-17,
+                    $font-weight: s.$font_weight_regular
+                  );
+                }
+              }
+            }
+            & > .tooltip {
+              @include s.tooltip();
+
+              & > .tooltip-text {
+                align-items: center;
+              }
+            }
+          }
+
+          & > .regularData {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            grid-column-gap: 40px;
+            flex: 1;
+
+            & > .date {
+              @include s.flexColumn;
+              flex: 1;
+              min-width: 250px;
+
+              & > .check {
+                margin: 15px 0;
+              }
+              & > label {
+                text-align: start;
+                @include s.responsive-font-format(
+                  $color: s.$success,
+                  $font-family: s.$font-family_roboto,
+                  $font-size-map: s.$responsive-font-16-16,
+                  $font-weight: s.$font-weight_regular
+                );
+              }
+            }
+
+            & > .comments {
+              @include s.flexRow;
+              flex: 1;
+            }
+          }
+
+          & > .freightData {
+            @include s.flexColumn;
+            margin-bottom: 18px;
+
+            & > .aqua {
+              @include s.flexRow;
+              align-items: center;
+              background-color: rgba(s.$pqGreen, 0.05);
+              justify-content: flex-start;
+              padding: 18px 30px;
+              margin: 0 -30px;
+
+              & > label {
+                & > span {
+                  @include s.escaledFontFormat(s.$textSize15to17, bold, s.$pqBlack2);
+                  @include s.Roboto-Bold;
+                }
+
+                & > .green {
+                  @include s.escaledFontFormat(s.$textSize15to17, regular, s.$pqGreen2);
+                  @include s.Roboto-Regular;
+                }
+
+                & > .proquifa {
+                  @include s.escaledFontFormat(s.$textSize15to17, regular, s.$pqGreen);
+                  @include s.Roboto-Regular;
+                }
+
+                & > .black {
+                  @include s.escaledFontFormat(s.$textSize15to17, regular, s.$pqBlack2);
+                  @include s.Roboto-Regular;
+                }
+              }
+            }
+
+            & > .justification {
+              @include s.flexColumn;
+              align-items: flex-start;
+              margin: 10px 0;
+
+              & > .title {
+                margin: 5px 0;
+
+                & > label {
+                  @include s.Roboto-Bold;
+                  @include s.escaledFontFormat(s.$textSize15to17, bold, s.$pqBlack2);
+                }
+              }
+
+              & > .comments {
+                & > label {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize15to17, regular, s.$pqBlack2);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,57 @@
+@use 'base' as s;
+
+.principalHome {
+  width: 100%;
+  height: 100%;
+  @include s.flexColumn;
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.title {
+  @include s.flexRow;
+  justify-content: flex-end;
+  box-sizing: border-box;
+  width: 100%;
+
+  & > label {
+    font-family: s.$font-family_roboto_bold;
+    font-size: 20px;
+    width: 100%;
+  }
+}
+
+.sections {
+  @include s.flexRow;
+  overflow: auto;
+
+  & > div {
+    @include s.flexRow;
+    box-sizing: border-box;
+    padding: 10px 10px 10px 0;
+
+    & > div {
+      cursor: pointer;
+      @include s.flexColumn;
+      background: #363636;
+      justify-content: center;
+      width: 114px;
+      height: 114px;
+
+      & > div:nth-child(1) {
+        @include s.flexRowWrap;
+        justify-content: center;
+
+        & > label {
+          cursor: pointer;
+          color: #ffffff;
+          font-size: 12px;
+          display: flex;
+          flex: 0;
+          justify-content: center;
+          font-family: s.$font-family_novecento_bold;
+        }
+      }
+    }
+  }
+}

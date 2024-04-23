@@ -1,0 +1,26 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+#filter-customs-agents {
+  & > .drop {
+    padding-bottom: 18px;
+    width: 380px;
+  }
+
+  & > .search {
+    width: 380px;
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > .drop {
+      padding-bottom: 22px;
+      width: 400px;
+    }
+    & > .search {
+      width: 400px;
+    }
+  }
+}

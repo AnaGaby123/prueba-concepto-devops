@@ -1,0 +1,48 @@
+@import 'base.scss';
+
+.cancel-pop-up {
+  ::ng-deep .modal {
+    background: none;
+
+    & > .modal-content {
+      transition: none;
+    }
+  }
+
+  & .container {
+    @include flexColumn;
+    align-items: center;
+    padding: 20px 0;
+    overflow-y: auto;
+
+    & > img {
+      @include default-transition();
+      @include height-scaled-image($warning-pop-image-map);
+      margin-bottom: 20px;
+    }
+
+    & > div {
+      @include flexColumn;
+      gap: 10px;
+      padding: 0 40px;
+
+      & > label {
+        @include responsive-font-format(
+          $color: $pqBlack2,
+          $font-family: $font_family_roboto_regular,
+          $font-weight: $font_weight_regular,
+          $font-size-map: $responsive-font-26-26
+        );
+      }
+
+      & > .green-text {
+        @include responsive-font-format(
+          $color: $pqGreen,
+          $font-family: $font_family_roboto_bold,
+          $font-weight: $font-weight_bold,
+          $font-size-map: $responsive-font-26-26
+        );
+      }
+    }
+  }
+}

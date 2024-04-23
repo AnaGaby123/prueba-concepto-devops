@@ -1,0 +1,108 @@
+<section id="orders-sections">
+  <div class="container">
+    <div class="content">
+      <div class="title">
+        <label>{{ 'preProcessing.purchaseOrders' | translate }}</label>
+      </div>
+      <div class="filter">
+        <div>
+          <app-hamburger-menu
+            [options]="filter$ | async"
+            [value]="(filterSelected$ | async).value"
+            (valueEmit)="selectedOrder($event)"
+          >
+          </app-hamburger-menu>
+        </div>
+        <div>
+          <app-search [placeholder]="'search' | translate" (textSearch)="handleKeySearch($event)"></app-search>
+        </div>
+      </div>
+      <div class="list-container">
+        <virtual-scroller
+          class="list"
+          *ngIf="(itemsOrder$ | async)?.length > 0 && (statusOrderList | async) === 3"
+          [items]="itemsOrder$ | async"
+          (vsUpdate)="purchaseOrders = $event"
+        >
+          <div
+            class="item"
+            *ngFor="let oc of itemsOrder$ | async; let i = index; trackBy: handleTrackBy"
+            [ngClass]="oc?.IdPPPedido === (orderSelected$ | async)?.IdPPPedido ? 'div-active' : ''"
+            (click)="selectedPurchase(oc)"
+          >
+            <div
+              class="indicator"
+              [ngClass]="{'active-indicator': oc?.IdPPPedido === (orderSelected$ | async)?.IdPPPedido}"
+            ></div>
+            <div>
+              <div class="info">
+                <div class="oc">
+                  <label
+                    >#{{ i + 1 }} ·
+                    <span [ngClass]="!oc?.IdArchivo ? 'red' : ''">{{
+                      oc?.IdArchivo ? 'OC - ' + oc?.OrdenDeCompra : 'SIN OC'
+                    }}</span></label
+                  >
+                </div>
+                <div class="value">
+                  <label>Valor Total {{ oc?.ValorTotal | currency }} {{ oc?.catMoneda?.ClaveMoneda }}</label>
+                </div>
+                <div class="classification">
+                  <div>
+                    <img alt="original" src="assets/Images/pre-processing/originales.svg" />
+                    <label>{{ (oc?.TipoPartidasCotizacion)?.[0]?.Total }}</label>
+                  </div>
+                  <div>
+                    <img alt="" src="assets/Images/pre-processing/alternativas.svg" />
+                    <label>{{ (oc?.TipoPartidasCotizacion)?.[1]?.Total }}</label>
+                  </div>
+                  <div>
+                    <img alt="" src="assets/Images/pre-processing/complementarias.svg" />
+                    <label>{{ (oc?.TipoPartidasCotizacion)?.[4]?.Total }}</label>
+                  </div>
+                  <div>
+                    <img alt="" src="assets/Images/pre-processing/promocion.svg" />
+                    <label>{{ (oc?.TipoPartidasCotizacion)?.[2]?.Total }}</label>
+                  </div>
+                  <div>
+                    <img alt="saving" src="assets/Images/pre-processing/ahorro.svg" />
+                    <label>{{ (oc?.TipoPartidasCotizacion)?.[3]?.Total }}</label>
+                  </div>
+                </div>
+                <div class="reception">
+                  <label>Recepción: {{ oc?.FechaRegistro | dateFormatSlash }}</label>
+                </div>
+              </div>
+              <div class="type">
+                <img
+                  alt=""
+                  [src]="
+                    oc?.ConOrdenDeCompra
+                      ? 'assets/Images/pre-processing/con_orden.svg'
+                      : 'assets/Images/pre-processing/sin_orden.svg'
+                  "
+                />
+              </div>
+            </div>
+          </div>
+        </virtual-scroller>
+        <div class="without-results" *ngIf="(itemsOrder$ | async)?.length === 0 && (statusOrderList | async) === 3">
+          <app-without-results [title]="'common.withoutInformation' | translate"></app-without-results>
+        </div>
+        <div class="loading" *ngIf="(statusOrderList | async) === 1">
+          <app-loading></app-loading>
+        </div>
+        <div class="total">
+          <label
+            >#{{ (itemsOrder$ | async)?.length }}
+            {{
+              (itemsOrder$ | async)?.length === 1
+                ? ('validateAdjustment.order' | translate)
+                : ('validateAdjustment.orders' | translate)
+            }}</label
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

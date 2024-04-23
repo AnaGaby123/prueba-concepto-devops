@@ -1,0 +1,343 @@
+@use 'base' as s;
+
+:host {
+  width: 100%;
+  height: 100%;
+
+  & > #plan-dispatch-details-dashboard {
+    width: 100%;
+    height: 100%;
+
+    & > .main-content {
+      @include s.flexColumn;
+      height: 100%;
+      width: 100%;
+
+      & > .container {
+        display: flex;
+        flex: 1;
+        overflow: hidden;
+
+        & > .dashboard {
+          @include s.flexColumn;
+          box-sizing: border-box;
+          flex: 1;
+
+          & > .header {
+            flex: 0 0 auto;
+            padding: 15px 20px 0 20px;
+
+            & > .title {
+              @include s.flexRow;
+              justify-content: space-between;
+              border-bottom: 1px solid s.$pqBlack2;
+              padding-bottom: 10px;
+
+              & > label {
+                @include s.escaledFontFormat(s.$textSize20to24, bold, s.$pqBlack2);
+                @include s.Novecento-Bold;
+              }
+
+              & > button {
+                @include s.pqButton($min-width: 143px, $max-width: 185px, $baseColor: s.$pqGreen2);
+              }
+            }
+          }
+
+          & > .body {
+            flex: 1 1 auto;
+            overflow: hidden;
+            padding: 20px;
+
+            & > .virtual-scroller {
+              @include s.absolute100;
+
+              &::ng-deep > .scrollable-content {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
+
+                & > .card {
+                  cursor: pointer;
+                  padding: 25px 18px;
+                  position: relative;
+
+                  & * {
+                    cursor: pointer;
+                  }
+
+                  & > .image {
+                    align-items: center;
+                    border-bottom: 1px solid s.$pqGray2;
+                    display: flex;
+                    justify-content: center;
+                    height: 140px;
+                    margin-bottom: 17px;
+                    padding-bottom: 20px;
+                    text-align: center;
+
+                    & > img {
+                      max-width: 90%;
+                      width: 100px;
+                    }
+                  }
+
+                  & > .card-header {
+                    & > .content1 {
+                      margin-bottom: 3px;
+
+                      & > label {
+                        @include s.escaledFontFormat(s.$textSize21to28, bold, s.$pqBlack2);
+                        @include s.Roboto-Bold;
+
+                        & > span {
+                          color: s.$pqGreen;
+                          vertical-align: baseline;
+                        }
+                      }
+                    }
+
+                    & > .content2 {
+                      margin-bottom: 17px;
+
+                      & > label {
+                        @include s.escaledFontFormat(s.$textSize17to24, regular, s.$pqBlack2);
+                        @include s.Roboto-Regular;
+
+                        & > span {
+                          color: s.$pqTextAlert;
+                        }
+                      }
+                    }
+                  }
+
+                  & > .card-content {
+                    @include s.flexColumn;
+                    flex: 1;
+                    margin-bottom: 12px;
+
+                    & > div {
+                      display: grid;
+                      grid-template-columns: repeat(3, 1fr);
+                      margin-bottom: 13px;
+
+                      & > div {
+                        @include s.flexColumn;
+
+                        & > label {
+                          @include s.escaledFontFormat(s.$textSize13to17, bold, s.$pqBlack2);
+                          @include s.Roboto-Bold;
+
+                          &:last-of-type {
+                            @include s.Roboto-Regular;
+                          }
+                        }
+                      }
+                    }
+                  }
+
+                  & > .card-footer {
+                    @include s.flexRow;
+                    justify-content: space-between;
+
+                    & > .left {
+                      & > img {
+                        height: 23px;
+                      }
+                    }
+
+                    & > .center {
+                      @include s.flexRow;
+                      justify-content: space-between;
+                      width: 120px;
+                      align-items: center;
+
+                      & > .green-text {
+                        & > label {
+                          @include s.escaledFontFormat(s.$textSize15to20, regular, s.$pqGreen2);
+                          @include s.Roboto-Regular;
+                          margin-right: 5px;
+                        }
+
+                        & > img {
+                          height: 16px;
+                        }
+                      }
+
+                      & > .red-text {
+                        & > label {
+                          @include s.escaledFontFormat(s.$textSize15to20, regular, s.$pqTextAlert);
+                          @include s.Roboto-Regular;
+                          margin-right: 5px;
+                        }
+
+                        & > img {
+                          height: 16px;
+                        }
+                      }
+                    }
+
+                    & > .right {
+                      & > img {
+                        height: 23px;
+                      }
+                    }
+                  }
+
+                  & > .rightSeparator {
+                    @include s.flexRow;
+                    width: 1px;
+                    height: 100%;
+                    background: linear-gradient(to top, #ffffff 2%, #bcbcbc 72%, #ffffff 95%) 100%;
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                  }
+
+                  & > .leftSeparator {
+                    @include s.flexRow;
+                    width: 1px;
+                    height: 100%;
+                    background: linear-gradient(to top, #ffffff 2%, #bcbcbc 72%, #ffffff 95%) 100%;
+                    position: absolute;
+                    left: -1px;
+                    top: 0;
+                  }
+
+                  & > .downSeparator {
+                    @include s.flexRow;
+                    width: 100%;
+                    height: 1px;
+                    background: linear-gradient(to left, #ffffff 2%, #bcbcbc 72%, #ffffff 95%) 100%;
+                    position: absolute;
+                    left: 0;
+                    bottom: 0;
+                  }
+                }
+              }
+            }
+
+            & > .loading {
+              @include s.absolute100;
+              display: grid;
+              place-items: center;
+            }
+          }
+        }
+      }
+
+      & > footer {
+        @include s.flexRowNoWrap;
+        @include s.absoluteCenter;
+        width: 100%;
+        height: 54px;
+        border-top: 2px solid s.$pqBlack;
+        box-sizing: border-box;
+
+        & > div:nth-of-type(1) {
+          @include s.flexRowNoWrap;
+          @include s.absoluteCenter;
+          width: 100%;
+          height: 100%;
+          max-width: 70%;
+          min-width: 60%;
+          justify-content: space-between;
+
+          & > div {
+            @include s.flexRowNoWrap;
+            @include s.absoluteCenter;
+
+            & > img {
+              height: 19px;
+              margin-right: 7px;
+
+              &.small {
+                height: 16px;
+              }
+            }
+
+            & > label:nth-of-type(1) {
+              @include s.escaledFontFormat(s.$textSize12to14, normal, s.$pqBlack2);
+              @include s.Roboto-Regular;
+              line-height: 1;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > #plan-dispatch-details-dashboard {
+      & > .main-content {
+        & > .container {
+          & > .dashboard {
+            & > .header {
+              padding: 20px 20px 0 20px;
+            }
+
+            & > .body {
+              grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+
+              & > .card {
+                padding: 28px 20px;
+
+                & > .image {
+                  height: 180px;
+                  margin-bottom: 20px;
+                }
+
+                & > .card-header {
+                  & > .content1 {
+                    margin-bottom: 6px;
+                  }
+
+                  & > .content2 {
+                    margin-bottom: 20px;
+                  }
+                }
+
+                & > .card-content {
+                  margin-bottom: 15px;
+
+                  & > div {
+                    margin-bottom: 16px;
+                  }
+                }
+
+                & > .card-footer {
+                  & > .left {
+                    & > img {
+                      height: 26px;
+                    }
+                  }
+
+                  & > .center {
+                    width: 135px;
+
+                    & > .green-text {
+                      & > img {
+                        height: 19px;
+                      }
+                    }
+
+                    & > .red-text {
+                      & > img {
+                        height: 19px;
+                      }
+                    }
+                  }
+
+                  & > .right {
+                    & > img {
+                      height: 26px;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

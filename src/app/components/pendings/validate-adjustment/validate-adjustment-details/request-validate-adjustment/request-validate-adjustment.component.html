@@ -1,0 +1,46 @@
+<section id="request-validate" [ngClass]="isOpen ? 'show' : 'hide'">
+  <div class="container">
+    <div class="content">
+      <div class="info" [style.height]="'calc(100% - ' + files.scrollHeight + 'px)'">
+        <div class="title">
+          <label>{{ 'quotation.details.titleRequest' | translate }}</label>
+        </div>
+        <div class="folio">
+          <label [ngClass]="!(orderSelected$ | async)?.IdArchivo ? 'red' : ''">{{
+            (orderSelected$ | async)?.IdArchivo ? (orderSelected$ | async)?.OrdenDeCompra : 'SIN OC'
+          }}</label>
+          <label>{{ (mailData$ | async)?.CorreoRecibido?.CorreoEmisor }}</label>
+        </div>
+        <div class="message">
+          <label *ngIf="(mailData$ | async)?.CorreoRecibido">{{ (mailData$ | async)?.CorreoRecibido?.Asunto }}</label>
+          <div class="without-results" *ngIf="!(mailData$ | async) && (statusIssueAndItem$ | async) === 3">
+            <app-without-results [title]="'common.withoutInformation' | translate"></app-without-results>
+          </div>
+        </div>
+      </div>
+      <div #files class="files">
+        <div *ngFor="let mail of (mailData$ | async)?.Archivo; let i = index" (click)="viewFile(mail)">
+          <div>
+            <label>{{ i + 1 }}</label>
+            <img alt="file" src="assets/Images/quotation/file.svg" />
+            <label>{{ mail.FileKey | onlyFileNamePdf }}</label>
+          </div>
+        </div>
+      </div>
+      <div class="under-construction" *ngIf="(statusIssueAndItem$ | async) === 1">
+        <div>
+          <div class="loadingContainer">
+            <div class="load-circle">
+              <div class="line"></div>
+              <div class="line"></div>
+              <div class="line"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="arrow">
+    <img alt="arrow" src="assets/Images/arrows/flecha_cuadro.svg" [ngClass]="{reverse: !isOpen}" (click)="onClick()" />
+  </div>
+</section>

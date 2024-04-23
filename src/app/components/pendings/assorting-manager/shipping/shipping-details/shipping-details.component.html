@@ -1,0 +1,278 @@
+<div id="shipping-details-container">
+  <div class="main">
+    <div class="packing-list-info">
+      <label class="title">INFORMACIÓN PACKING LIST</label>
+      <label class="info">{{ 'EL COLEGIO DE LA FRONTERA SUR' }}</label>
+      <label class="info"> {{ 'BELLANIRA NAVARRO/COMPRAS' }} </label>
+      <div class="location">
+        <img src="assets/Images/ubicacion.svg" />
+        <label> {{ 'Foraneo' }} · {{ 'Fedex' }}</label>
+      </div>
+    </div>
+    <div class="working-progress">
+      <label class="title">PROGRESO DE {{ 'TRABAJO DE RUTA' | uppercase }}</label>
+      <div class="data">
+        <div class="message">
+          <label>{{ 'Acelera el ritmo de Tabajo, para que logres el objetivo.' }}</label>
+        </div>
+        <div class="hour">
+          <img src="assets/Images/reloj.svg" />
+          <label>{{ '18:00' }}</label>
+        </div>
+      </div>
+
+      <div class="progress-bar">
+        <label>3 Packing List (restantes)</label>
+        <div class="bar"></div>
+      </div>
+      <div class="totals">
+        <label>
+          0 Piezas
+        </label>
+        <label> {{ '5' }} piezas </label>
+      </div>
+    </div>
+    <div class="packing-priority">
+      <label class="title">{{ 'PRIORIDAD DE EMBALAJE' | uppercase }}</label>
+      <div class="priorities">
+        <div class="p1">
+          <label class="title">Prioridad 1</label>
+          <label class="info">Por trabajar: 2 P · List</label>
+          <label class="info">Tiempo estimado de trabajo: 1 min</label>
+        </div>
+        <div class="p2">
+          <label class="title">P2</label>
+          <label class="info">PI: 2 P · List</label>
+          <label class="info">TEI: 1 min</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="shipping-data">
+    <div class="destiny">
+      <div class="form">
+        <div class="subtituloPeque">Destino</div>
+        <div class="rowFormulario">
+          <div class="datosForm">
+            <div class="estiloLabelData">País:</div>
+            <div class="estiloLabelsContacto">{{ 'MEXICO' }}</div>
+          </div>
+          <div class="datosForm">
+            <div class="estiloLabelData">Estado:</div>
+            <div class="estiloLabelsContacto">{{ 'CHIAPAS' }}</div>
+          </div>
+          <div class="datosForm">
+            <div class="estiloLabelData">Calle / Nº / Colonia:</div>
+            <div class="estiloLabelsContacto">{{ 'CARRETERA ANTIGUO AEROPUERTO KM. 2.5 COL. CENTRO' }}</div>
+          </div>
+        </div>
+        <div class="rowFormulario">
+          <div class="datosForm">
+            <div class="estiloLabelData">Delegación / Municipio:</div>
+            <div class="estiloLabelsContacto">{{ 'TAPACHULA' }}</div>
+          </div>
+          <div class="datosForm">
+            <div class="estiloLabelData">C.P:</div>
+            <div class="estiloLabelsContacto">{{ '30700' }}</div>
+          </div>
+          <div class="datosForm">
+            <div class="estiloLabelData">Ruta:</div>
+            <div class="estiloLabelsContacto">{{ 'Foraneo' }}</div>
+          </div>
+          <div class="datosForm">
+            <div class="estiloLabelData">Mensajeria:</div>
+            <app-drop-down-list></app-drop-down-list>
+          </div>
+        </div>
+      </div>
+      <div class="shipping-comment">
+        <div class="text-area">
+          <label class="subtituloPeque">Comentario de envío</label>
+          <div>
+            <div class="estiloLabelData">
+              <app-generic-text-area class="comentariosText"></app-generic-text-area>
+            </div>
+          </div>
+          <!--<div>
+            <div>
+              <div class="contenedorComentario">
+                <label>SIN COMENTARIOS</label>
+              </div>
+            </div>
+          </div>-->
+        </div>
+        <div class="inputs">
+          <label class="subtituloPeque">Datos del paquete</label>
+          <div class="datosPaq">
+            <div>
+              <label class="estiloLabelData">Peso:</label>
+              <app-generic-input class="input"></app-generic-input>
+              <label class="estiloLabelData">kg</label>
+            </div>
+            <div>
+              <label class="estiloLabelData">Longitud:</label>
+              <app-generic-input class="input"></app-generic-input>
+              <label class="estiloLabelData">cm</label>
+            </div>
+
+            <div>
+              <label class="estiloLabelData">Altura:</label>
+              <app-generic-input class="input"></app-generic-input>
+              <label class="estiloLabelData">cm</label>
+            </div>
+
+            <div style="position: relative; z-index: 1;">
+              <label class="estiloLabelData">Ancho:</label>
+              <app-generic-input class="input"></app-generic-input>
+              <label class="estiloLabelData">cm</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="contact">
+      <div class="contacto">
+        <div>
+          <label class="subtituloPeque"> Contacto</label>
+          <div class="rowFormulario">
+            <div class="datosForm">
+              <div class="estiloLabelData">Nombre:</div>
+              <div class="estiloLabelsContacto">{{ 'BELLANIRA NAVARRO' }}</div>
+            </div>
+            <div class="datosForm">
+              <div class="estiloLabelData">Puesto:</div>
+              <div class="estiloLabelsContacto">{{ 'COMPRAS' }}</div>
+            </div>
+          </div>
+          <div class="rowFormulario">
+            <div class="datosForm">
+              <div class="estiloLabelData">Departamento:</div>
+              <div class="estiloLabelsContacto">{{ 'COMPRAS' }}</div>
+            </div>
+            <div class="datosForm">
+              <label class="estiloLabelData">Tel:</label>
+              <div class="estiloLabelsContacto">{{ '962 105 00 42' }}</div>
+            </div>
+            <div class="datosForm">
+              <label class="estiloLabelData">Email:</label>
+              <div class="estiloLabelsContacto">{{ 'bellanira.navarro@ecosur.mx' }}</div>
+            </div>
+          </div>
+        </div>
+        <div style="padding-top: 15px;">
+          <label class="subtituloPeque">Registro de envío</label>
+          <div class="archivo">
+            <div class="datosForm">
+              <label class="estiloLabelData" style="min-width: 140px;"> Guía de envío:</label>
+              <!--Falta código por agregar-->
+            </div>
+            <div class="datosForm">
+              <label class="estiloLabelData"> Guía de envío escaneada:</label>
+              <div id="EstiloCargarArchivo">
+                <!--Falta código por agregar-->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="packing-list">
+    <div class="content">
+      <label class="encabezadoLista">PACKING LIST</label>
+      <div class="container-content">
+        <virtual-scroller>
+          <div class="card active" (click)="setSelectedPackingList('1')">
+            <div class="card-body">
+              <label class="numPacking_list">
+                #{{ 1 }}· <span class="nombrePacking_list"> {{ 'PL-122921-6220' }} </span></label
+              >
+              <label class="piezasPacking_llist"> {{ 4 }} {{ 'Piezas' }}</label>
+              <div>
+                <label class="p1"> P1 · {{ 0 }} </label>
+                <label class="p2"> P2 · {{ 1 }} </label>
+                <label class="p3"> P3 · {{ 2 }} </label>
+              </div>
+            </div>
+          </div>
+          <div class="card" (click)="setSelectedPackingList('2')">
+            <div class="card-body">
+              <label class="numPacking_list">
+                #{{ 1 }}· <span class="nombrePacking_list"> {{ 'PL-122921-6220' }} </span></label
+              >
+              <label class="piezasPacking_llist"> {{ 4 }} {{ 'Piezas' }}</label>
+              <div>
+                <label class="p1"> P1 · {{ 0 }} </label>
+                <label class="p2"> P2 · {{ 1 }} </label>
+                <label class="p3"> P3 · {{ 2 }} </label>
+              </div>
+            </div>
+          </div>
+        </virtual-scroller>
+      </div>
+      <div class="totals">
+        <label>Total: 1 Packing List</label>
+      </div>
+    </div>
+    <div class="second-section">
+      <div class="escanearCodigos">
+        <div class="tituloColectar">
+          <span class="tituloColectarElem"> COLECTAR ELEMENTO </span>
+          <span class="estiloNombreSeleccioncliente"> {{ 'PL-122921-6220' }}</span>
+        </div>
+        <!-- div de tipos de elementos -->
+        <div class="elementosItems">
+          <textarea type="text" name="firstname" autofocus="focus" #textarea class="textArea"></textarea>
+          <div class="seccionUno" [attr.id]="'div0'">
+            <div class="contenedorTarjeta">
+              <div class="imagenTarjeta">
+                <label class="estiloTipoElemento">DOCUMENTACIÓN</label>
+                <img class="img" src="assets/Images/bolsa_doc.svg" />
+                <div class="divColectarElementos">
+                  <label class="labelcolectarElementos">{{ 'PL-122921-6220' }}</label>
+                  <label class="labelcolectarElementos">Sobre</label>
+                  <label class="labelcolectarElementos"></label>
+                </div>
+              </div>
+              <div class="escanear">
+                <div class="imgEscanear">
+                  <img src="assets/Images/codigo_gris.svg" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="seccionUno" class="seccionUno">
+            <div class="contenedorTarjeta">
+              <div class="imagenTarjeta">
+                <label class="estiloTipoElemento"> {{ 'TRANSITO' }} </label>
+                <img class="img" src="assets/Images/hielera_refri.svg" />
+                <div class="divColectarElementos">
+                  <label class="labelcolectarElementos">{{ 'PL-122921-6220' }}</label>
+                  <label class="labelcolectarElementos">Sobre</label>
+                  <label class="labelcolectarElementos">4 piezas</label>
+                </div>
+              </div>
+              <div class="escanear">
+                <div class="imgEscanear">
+                  <img src="assets/Images/codigo_gris.svg" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- prueba-->
+      </div>
+      <div class="button">
+        <button class="active">FINALIZAR</button>
+      </div>
+    </div>
+  </div>
+  <footer class="footer">
+    <div class="Prioridad1"><label class="p1">P1</label> Prioridad 1</div>
+    <div class="Prioridad2"><label class="p2">P2</label> Prioridad 2</div>
+    <div class="Prioridad3"><label class="p3">P3</label> Prioridad 3</div>
+    <div class="Ambiente"><img class="img" src="assets/Images/ambiente.svg" /> Ambiente</div>
+    <div class="Congelación"><img class="img" src="assets/Images/congelacion.svg" /> Congelación</div>
+    <div class="Refrigeración"><img class="img" src="assets/Images/refrigeracion.svg" /> Refrigeración</div>
+  </footer>
+</div>

@@ -1,0 +1,11 @@
+<div class="component-container" id="upload-receipt-container">
+  <div class="header">
+    <app-header-bar [activeBack]="isDetails$ | async" [title]="title$ | async"></app-header-bar>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="footer" *ngIf="!(isDetails$ | async)">
+    <ng-container></ng-container>
+  </div>
+</div>

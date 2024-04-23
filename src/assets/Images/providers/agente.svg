@@ -1,0 +1,75 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='50.23' height='51.89' viewBox='0 0 50.23 51.89'>
+  <defs>
+    <style>.cls-1, .cls-2 {
+      fill: none;
+    }
+
+    .cls-2 {
+      clip-rule: evenodd;
+    }
+
+    .cls-3 {
+      clip-path: url(#clip-path);
+    }
+
+    .cls-4 {
+      clip-path: url(#clip-path-2);
+    }
+
+    .cls-5 {
+      fill: #424242;
+    }
+
+    .cls-6 {
+      clip-path: url(#clip-path-3);
+    }
+
+    .cls-7 {
+      clip-path: url(#clip-path-5);
+    }
+
+    .cls-8 {
+      clip-path: url(#clip-path-7);
+    }</style>
+    <clipPath id='clip-path' transform='translate(5 5)'>
+      <rect class='cls-1' y='8.64' width='6.77' height='3.64' />
+    </clipPath>
+    <clipPath id='clip-path-2' transform='translate(5 5)'>
+      <rect class='cls-1' x='-933' y='-605.98' width='2560' height='1875' />
+    </clipPath>
+    <clipPath id='clip-path-3' transform='translate(5 5)'>
+      <rect class='cls-1' y='16.95' width='6.77' height='3.64' />
+    </clipPath>
+    <clipPath id='clip-path-5' transform='translate(5 5)'>
+      <rect class='cls-1' x='0.07' y='25.31' width='6.77' height='3.64' />
+    </clipPath>
+    <clipPath id='clip-path-7' transform='translate(5 5)'>
+      <path class='cls-2'
+            d='M40.23,12.66v-10h-4V0H2.6V5.89H8.78V32.18H2.6v9.71H36.18v-7h4v-10h-4V23.76h4v-10h-4V12.66ZM22.08,2.84a4.5,4.5,0,0,1,4.56,4.45,4.55,4.55,0,0,1-9.1,0A4.49,4.49,0,0,1,22.08,2.84ZM14.2,32.6H29.73V31.47H14.2Zm0-4.35H29.73V27.13H14.2Zm0-4.43H29.73V22.69H14.2Zm.06-5.12a8,8,0,0,1,4.28-7.06,5.38,5.38,0,0,0,3,1.3l-1,.9,1.55,4.56,1.48-4.5-1-1a5.41,5.41,0,0,0,3-1.3,8,8,0,0,1,4.28,7.06Z' />
+    </clipPath>
+  </defs>
+  <g id='Layer_2' data-name='Layer 2'>
+    <g id='Layer_1-2' data-name='Layer 1'>
+      <g class='cls-3'>
+        <g class='cls-4'>
+          <rect class='cls-5' y='8.64' width='16.77' height='13.64' />
+        </g>
+      </g>
+      <g class='cls-6'>
+        <g class='cls-4'>
+          <rect class='cls-5' y='16.95' width='16.77' height='13.64' />
+        </g>
+      </g>
+      <g class='cls-7'>
+        <g class='cls-4'>
+          <rect class='cls-5' x='0.07' y='25.31' width='16.77' height='13.64' />
+        </g>
+      </g>
+      <g class='cls-8'>
+        <g class='cls-4'>
+          <rect class='cls-5' x='2.6' width='47.63' height='51.89' />
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

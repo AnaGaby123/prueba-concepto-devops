@@ -1,0 +1,105 @@
+{
+  "common": {
+    "add": "Agregar",
+    "edit": "Editar",
+    "cancel": "Cancel",
+    "save": "Guardar",
+    "finish": "Finalizar",
+    "accept": "Aceptar",
+    "enterHere": "Type Here",
+    "piece": "Piece",
+    "pieces": "Pieces"
+  },
+  "login": {
+    "password": "Contraseña",
+    "user": "Usuario",
+    "Version": "Versión 1.10000.0923",
+    "enter": "Ingresar",
+    "forgotPassword": "¿Olvidaste tu contraseña?"
+  },
+  "menu": {
+    "option_1": "Pendientes",
+    "option_2": "Mejoras",
+    "option_3": "Incidente",
+    "option_4": "Solicitud",
+    "option_5": "Gestión",
+    "option_6": "Catálogos",
+    "option_7": "Configuración",
+    "option_8": "Mailbox"
+  },
+  "formClient": {
+    "addClient": "Agregar cliente",
+    "generateContract": "Generar contrato",
+    "step1": {
+      "enabledClient": "Cliente Habilitado",
+      "disabledClient": "Cliente deshabilitado",
+      "enableClient": "Habilitar cliente",
+      "new": "Nuevo",
+      "creationDate": "Fecha de Registro",
+      "alias": "Alias",
+      "name": "Nombre",
+      "role": "Rol",
+      "importance": "Importancia",
+      "sector": "Sector",
+      "industry": "Industria",
+      "fundamentalObjective": "Objetivo",
+      "desiredObjective": "Objetivo Deseado",
+      "authorizedThirdParty": "Tercero Autorizado",
+      "contacts": "Contactos"
+    }
+  },
+  "formProvider": {
+    "addProvider": "Agregar proveedor",
+    "step1": {
+      "enabledProvider": "Proveedor Habilitado",
+      "new": "Nuevo",
+      "creationDate": "Fecha de Registro",
+      "rol": "Rol",
+      "extendedDescription": "Descripción Ampliada",
+      "observations": "Observaciones"
+    }
+  },
+  "adressSection": {
+    "adress": "DIRECCIONES"
+  },
+  "quotation": {
+    "requisitions": "Requisiciones",
+    "statusQuotation": "Cotización",
+    "statusNew": "Cotizaciones Nuevas",
+    "statusSaved": "Cotizaciones Guardadas",
+    "statusSent": "Cotizaciones Enviadas"
+  },
+  "strategy": {
+    "quotations": " Cotizaciones",
+    "statusQuotation": " Cotización",
+    "pendings": "Cotizaciones Confirmadas",
+    "confirms": "Cotizaciones Pendientes",
+    "details": {
+      "content": "Cliente",
+      "contentContract": "Con contrato",
+      "request": "Requerimientos",
+      "classification": "Clasificación",
+      "client": "Cliente"
+    }
+  },
+  "attendInvestigation": {
+    "attendInvestigationDetail": {
+      "notes": "Notes",
+      "messageToProvider": "Please quote for the following items providing price, availability and sales restrictions if applicable. If not currently available, when will it be available?",
+      "selectedProducts": "Selected products",
+      "selectedProduct": "Selected product",
+      "mailHeader": "Dear Provider",
+      "sendEmailToProvider": "Send e-mail to provider"
+    }
+  },
+  "email": {
+    "additionalComments": "Additional Comments",
+    "deleteAlert": "Are you sure to delete this email?",
+    "checkMessage": "You also want to mark this contact as spam?",
+    "infoMessage": "If you mark this contact as spam, you will not receive any more emails from them. \nPlease note that this action is irreversible.",
+    "contact": "Contact",
+    "subject": "Subject",
+    "send": "Send",
+    "youHaveSentAnEmailTo": "You have sent an email to"
+  }
+}

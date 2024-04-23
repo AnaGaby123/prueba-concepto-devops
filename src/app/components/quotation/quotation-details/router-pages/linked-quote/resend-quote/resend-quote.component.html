@@ -1,0 +1,78 @@
+<app-pop-up-generic [width]="width" [height]="height" [titleHeader]="titleHeader">
+  <div class="container">
+    <div class="content">
+      <div class="email-info">
+        <div>
+          <label>{{ 'quotation.details.contact' | translate }}:</label>
+        </div>
+        <div>
+          <div class="contacts">
+            <div>
+              <div class="item-contact">
+                <!--                <label>{{ (email?.labels)[2]?.label }}</label>-->
+                <input
+                  #inputElement
+                  [ngClass]="{error: activeError}"
+                  type="text"
+                  [(ngModel)]="currentEmail"
+                  (keypress)="onKeyPress($event)"
+                  (ngModelChange)="validate($event)"
+                  (blur)="onBlur()"
+                  (keyup.enter)="onEnter()"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="email-info cc">
+        <div>
+          <label>CC:</label>
+        </div>
+        <div>
+          <div class="carbon-copy">
+            <app-multiple-emails-input
+              [emails]="dataMail.carbonCopy"
+              (getEmails)="addCarbonCopy($event)"
+              (deleteItem)="deletedItem($event)"
+            ></app-multiple-emails-input>
+          </div>
+        </div>
+        <div class="contacts-drop">
+          <app-drop-list-contact [options]="contacts" (emitValue)="addEmail($event)" [minHeight]="90"></app-drop-list-contact>
+        </div>
+      </div>
+      <div class="email-info">
+        <div>
+          <label>{{ 'quotation.details.subject' | translate }}:</label>
+        </div>
+        <div>
+          <div class="subject">
+            <input type="text" [value]="dataMail?.subject" [disabled]="!activeSaveSubject" />
+          </div>
+        </div>
+      </div>
+      <div class="comments">
+        <app-generic-text-area
+          [enableBorder]="true"
+          [fontSize]="(viewType$ | async) === 'macBookAir' ? '16px' : '14px'"
+          [height]="'100%'"
+          [placeholder]="'email.additionalComments' | translate"
+          [maxlength]="maxLengthTextArea"
+          (emitData)="addComments($event)"
+        >
+        </app-generic-text-area>
+      </div>
+    </div>
+    <div class="buttons-container">
+      <button class="btn-enable" (click)="emitBtn(false)">{{ 'common.cancel' | translate }}</button>
+      <button
+        [disabled]="!dataMail.subject || !dataMail.additionalComments || activeError"
+        [ngClass]="dataMail.subject && dataMail.additionalComments && !activeError ? 'btn-enable' : 'btn-disable'"
+        (click)="emitBtn(true)"
+      >
+        {{ 'common.send' | translate }}
+      </button>
+    </div>
+  </div>
+</app-pop-up-generic>

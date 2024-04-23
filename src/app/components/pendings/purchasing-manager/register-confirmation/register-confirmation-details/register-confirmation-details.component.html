@@ -1,0 +1,699 @@
+<div id="register-confirmation-details-container">
+  <div class="content">
+    <div class="left-container">
+      <div class="title">
+        <label
+          >{{ (families$ | async).length }}
+          {{ (families$ | async).length === 1 ? ('common.family' | translate) : ('common.families' | translate) }}</label
+        >
+      </div>
+      <div class="cards">
+        <app-pqf-card
+          [applySameMargin]="true"
+          [options]="families$ | async"
+          (handleOptionSelected)="selectFamily($event)"
+        ></app-pqf-card>
+      </div>
+      <div class="tabs">
+        <app-tabs
+          [options]="tabOptions$ | async"
+          [tapSelected]="selectedTabOption$ | async"
+          (onSelectOption)="selectTab($event)"
+        ></app-tabs>
+      </div>
+      <div class="search">
+        <label>{{ 'registerConfirmation.ocs' | translate }}</label>
+        <app-search
+          class="search"
+          [searchTerm]="(selectedFamily$ | async)?.searchTerm"
+          [placeholder]="'common.purchaseOrder' | translate"
+          (textSearch)="handleSearchTerm($event)"
+        ></app-search>
+      </div>
+      <div class="list-container">
+        <virtual-scroller
+          class="virtual"
+          [items]="(selectedFamily$ | async)?.purchaseOrders"
+          (vsUpdate)="orders = $event"
+          *ngIf="(detailsNode$ | async)?.ordersStatus === 3 && !lodashIsEmpty((selectedFamily$ | async)?.purchaseOrders)"
+        >
+          <div
+            class="item"
+            [ngClass]="item.isSelected && 'active'"
+            *ngFor="let item of orders; trackBy: handleTrackBy"
+            (click)="selectOrder(item)"
+          >
+            <div class="select" *ngIf="item.isSelected"></div>
+            <div class="left">
+              <label
+                ># {{ item.Index + 1 }} · <span>{{ item.NumeroOrdenDeCompra }} · </span
+                >{{ item.TotalUSD | currency: item.ClaveMoneda:'symbol-narrow':'1.2-2' }}</label
+              >
+              <label
+                >{{ item.NumeroDePiezas }}
+                {{ item.NumeroDePiezas === 1 ? ('common.pza' | translate) : ('common.pzas' | translate) }} ·
+                {{ item.Productos }}
+                {{ item.Productos === 1 ? ('common.product' | translate) : ('common.products' | translate) }}</label
+              >
+              <div class="labels">
+                <ng-container *ngIf="item.PartidasProgramadas">
+                  <img src="assets/Images/labels/programada.svg" alt="" />
+                  <label class="green">{{ item.PartidasProgramadas }} · </label>
+                </ng-container>
+                <ng-container *ngIf="item.PartidasUnicasNoProgramadas">
+                  <img src="assets/Images/labels/unica.svg" alt="" />
+                  <label class="blue">{{ item.PartidasUnicasNoProgramadas }} · </label>
+                </ng-container>
+                <ng-container *ngIf="item.PartidasFleteExpress">
+                  <img src="assets/Images/labels/flete_express.svg" alt="" />
+                  <label class="red">{{ item.PartidasFleteExpress }} · </label>
+                </ng-container>
+                <ng-container *ngIf="item.PartidasFleteNormal">
+                  <img src="assets/Images/labels/flete_normal.svg" alt="" />
+                  <label class="ocean">{{ item.PartidasFleteNormal }}</label>
+                </ng-container>
+              </div>
+            </div>
+            <div class="right">
+              <label class="ocean" *ngIf="item.AMasDe3Dias">{{ 'registerConfirmation.threeMoreDays' | translate }}</label>
+              <label class="ocean" *ngIf="item.A3Dia">{{ 'registerConfirmation.threeDays' | translate }}</label>
+              <label class="ocean" *ngIf="item.A2Dias">{{ 'registerConfirmation.twoDays' | translate }}</label>
+              <label class="ocean" *ngIf="item.A1Dia">{{ 'registerConfirmation.oneDay' | translate }}</label>
+              <label class="fee" [ngClass]="{green: true}"
+                >{{ 'FEE+: ' }}{{ item.FechaEstimadaEntrega | dateFormatSlashShort }}</label
+              >
+            </div>
+          </div>
+        </virtual-scroller>
+        <div class="loading" *ngIf="(detailsNode$ | async)?.ordersStatus === 1">
+          <app-loading></app-loading>
+        </div>
+        <div
+          class="loading"
+          *ngIf="(detailsNode$ | async)?.ordersStatus !== 1 && lodashIsEmpty((selectedFamily$ | async)?.purchaseOrders)"
+        >
+          <app-without-results></app-without-results>
+        </div>
+      </div>
+      <div class="totals">
+        <label>#{{ (listTotals$ | async)?.number }}</label>
+        <label>{{ (listTotals$ | async)?.pieces }} {{ 'common.pieces' | translate }}</label>
+        <label>{{ (listTotals$ | async)?.products }} {{ 'common.products' | translate }}</label>
+        <label
+          >{{ 'common.totalAmount' | translate }}
+          {{ (listTotals$ | async)?.amount | currency: 'USD':'symbol-narrow':'1.2-2' }} USD</label
+        >
+      </div>
+    </div>
+    <div class="right-container">
+      <div class="title">
+        <label
+          >#{{ (selectedOrder$ | async)?.Index + 1 }} ·
+          <span>OC-{{ (selectedOrder$ | async)?.NumeroOrdenDeCompra }} · </span>
+          <span class="ocean" *ngIf="(selectedOrder$ | async)?.AMasDe3Dias">{{
+            'registerConfirmation.threeMoreDays' | translate
+          }}</span>
+          <span class="ocean" *ngIf="(selectedOrder$ | async)?.A3Dia">{{ 'registerConfirmation.threeDays' | translate }}</span>
+          <span class="ocean" *ngIf="(selectedOrder$ | async)?.A2Dias">{{ 'registerConfirmation.twoDays' | translate }}</span>
+          <span class="ocean" *ngIf="(selectedOrder$ | async)?.A1Dia">{{ 'registerConfirmation.oneDay' | translate }}</span>
+        </label>
+      </div>
+
+      <div class="dataRightContainer">
+        <div class="data">
+          <div class="client">
+            <app-provider-contacts
+              [showAdditionalData]="false"
+              [contactList]="selectContactsProvidersDropList$ | async"
+              [selectedContact]="providerContactSelected$ | async"
+              (emitResponse)="setContactSelectedProvider($event)"
+              [sizeGeneralData]="'500px'"
+            ></app-provider-contacts>
+          </div>
+          <div class="inputs" *ngIf="!lodashIsEmpty(selectedOrder$ | async)">
+            <app-drop-down-list
+              [enableEdit]="!(selectedOrder$ | async)?.Confirmada"
+              [font]="'Roboto-Bold'"
+              [label]="'registerConfirmation.paymentMedia' | translate"
+              [items]="paymentMedia$ | async"
+              [itemSelected]="(selectedOrder$ | async)?.selectedPaymentMedia"
+              (valueDropList)="setOrderFieldValue('selectedPaymentMedia', $event)"
+            ></app-drop-down-list>
+            <app-generic-input
+              [enableEdit]="!(selectedOrder$ | async)?.Confirmada"
+              [label]="'registerConfirmation.whoConfirmsName' | translate"
+              [labelFont]="'Roboto-Bold'"
+              [value]="(selectedOrder$ | async)?.NombreConfirmacion"
+              (textData)="setOrderFieldValue('NombreConfirmacion', $event)"
+            ></app-generic-input>
+            <app-drop-down-list
+              [enableEdit]="!(selectedOrder$ | async)?.Confirmada"
+              [font]="'Roboto-Bold'"
+              [label]="'registerConfirmation.conditions' | translate"
+              [items]="paymentConditions$ | async"
+              [itemSelected]="(selectedOrder$ | async)?.selectedPaymentConditions"
+              (valueDropList)="setOrderFieldValue('selectedPaymentConditions', $event)"
+            ></app-drop-down-list>
+            <app-generic-input
+              [enableEdit]="!(selectedOrder$ | async)?.Confirmada"
+              [label]="'registerConfirmation.referenceNumber' | translate"
+              [labelFont]="'Roboto-Bold'"
+              [value]="(selectedOrder$ | async)?.NumeroReferencia"
+              (textData)="setOrderFieldValue('NumeroReferencia', $event)"
+            ></app-generic-input>
+          </div>
+        </div>
+        <div class="table-container">
+          <div class="table">
+            <div class="header">
+              <div class="number">
+                <label>#</label>
+              </div>
+              <div class="description">
+                <label>{{ 'registerConfirmation.name' | translate }}</label>
+              </div>
+              <div class="client">
+                <label>{{ 'common.client' | translate }}</label>
+              </div>
+              <div class="fea">
+                <label
+                  >{{ 'registerConfirmation.fea' | translate }} <br />
+                  {{ 'registerConfirmation.firstStore' | translate }}
+                </label>
+              </div>
+              <div class="cancel">
+                <label>{{ 'common.cancel' | translate }}</label>
+              </div>
+              <div class="back-order">
+                <label>{{ 'registerConfirmation.backOrder' | translate }}</label>
+              </div>
+              <div class="impact">
+                <!--<app-check-box class="check" [isMulticolor]="true" [checkColor]="'dark-orange'"></app-check-box>-->
+                <label>{{ 'registerConfirmation.withImpact' | translate }}</label>
+              </div>
+              <div class="without-impact">
+                <app-check-box
+                  class="check"
+                  [disabled]="!(noItemsConfigured$ | async)"
+                  [isMulticolor]="true"
+                  [checkColor]="'dark-green'"
+                  (event)="handleOpenPop('date')"
+                ></app-check-box>
+                <label>{{ 'registerConfirmation.withOutImpact' | translate }}</label>
+              </div>
+            </div>
+            <div class="body">
+              <virtual-scroller
+                *ngIf="(detailsNode$ | async)?.itemsStatus === 3 && !lodashIsEmpty((selectedOrder$ | async)?.items)"
+                [enableUnequalChildrenSizes]="true"
+              >
+                <ng-container *ngFor="let array of (selectedOrder$ | async)?.items; let i = index; trackBy: handleTrackByArray">
+                  <div class="item" *ngFor="let item of array; let k = index; trackBy: handleTrackByItem">
+                    <div class="top">
+                      <div class="number">
+                        <label [ngClass]="k === 0 && 'bold'">{{ item.NumberToSave }}</label>
+                      </div>
+                      <div class="description">
+                        <div class="label">
+                          <label>{{ item.Descripcion }}</label>
+                          <div class="tooltip-text">
+                            <p>{{ item.Descripcion }}</p>
+                          </div>
+                        </div>
+                        <div class="images">
+                          <img *ngIf="item.PartidaProgramada; else unique" src="assets/Images/labels/programada.svg" alt="" />
+                          <ng-template #unique>
+                            <img src="assets/Images/labels/unica.svg" alt="" />
+                          </ng-template>
+                          <img *ngIf="item.FleteExpress; else normal" src="assets/Images/labels/flete_express.svg" alt="" />
+                          <ng-template #normal>
+                            <img src="assets/Images/labels/flete_normal.svg" alt="" />
+                          </ng-template>
+                          <label
+                            >{{ item.tempNumeroDePiezas }}
+                            {{ item.tempNumeroDePiezas === 1 ? ('common.pza' | translate) : ('common.pzas' | translate) }}
+                            ·
+                          </label>
+                          <div class="price">
+                            <div class="tooltip">
+                              <div>
+                                <label (click)="handleOpenPop('cost', i, item)"
+                                  >{{ item.tempPrecioLista | currency: 'USD' }} ·
+                                </label>
+                              </div>
+                              <div class="tooltip-text">
+                                <p>{{ 'checkOcNotArrived.details.priceModified' | translate }}</p>
+                              </div>
+                            </div>
+                          </div>
+                          <label>CT {{ item.tempTotalPartida | currency: 'USD':'symbol-narrow':'1.2-2' }}</label>
+                        </div>
+                      </div>
+                      <div class="client">
+                        <label>{{ item.NombreCliente }}</label>
+                        <label class="ocean">{{ item.FolioPedidoInterno }}</label>
+                        <label [ngClass]="{red: true}">FEE: {{ item.FechaEstimadaEntregaPedido | dateFormatSlashShort }}</label>
+                      </div>
+                      <div class="fea">
+                        <label
+                          >{{ item.EmpresaEmbarque ? item.EmpresaEmbarque.Prefijo : 'NA' }}
+                          <span>{{
+                            item.tempFechaEstimadaDeArribo ? (item.tempFechaEstimadaDeArribo | dateFormatSlashShort) : 'ND'
+                          }}</span></label
+                        >
+                      </div>
+                      <div
+                        class="cancel red"
+                        [ngSwitch]="item.cancelStatus"
+                        [ngClass]="item.cancelStatus"
+                        (click)="
+                          item.cancelStatus === STATUS.default
+                            ? changeItemStatusActive(i, item, typesOfConfig.cancel, 'active')
+                            : item.cancelStatus === STATUS.confirmed
+                            ? changeItemStatusActive(i, item, typesOfConfig.cancel, 'confirmed')
+                            : null
+                        "
+                      >
+                        <ng-container *ngSwitchCase="'default'">
+                          <app-check-box
+                            class="check"
+                            [isMulticolor]="true"
+                            [checkColor]="'dark-red'"
+                            [check]="item.cancelStatus === STATUS.active"
+                          ></app-check-box>
+                          <label>{{ 'common.cancel' | translate }}</label>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'confirmed'">
+                          <img class="image" src="assets/Images/fill-white.svg" />
+                          <label>{{ 'common.edit' | translate }}</label>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'active'">
+                          <app-check-box
+                            class="check"
+                            [isMulticolor]="true"
+                            [checkColor]="'dark-red'"
+                            [check]="true"
+                          ></app-check-box>
+                          <label>{{ 'common.edit' | translate }}</label>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'opacity'">
+                          <label (click)="restoreConfig(i, k)">{{ 'registerConfirmation.restore' | translate }}</label>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'disabled'">
+                          <label>{{ 'registerConfirmation.restore' | translate }}</label>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'disabled-default'">
+                          <app-check-box
+                            class="check"
+                            [isMulticolor]="true"
+                            [checkColor]="'dark-red'"
+                            [disabled]="true"
+                          ></app-check-box>
+                          <label>{{ 'common.cancel' | translate }}</label>
+                        </ng-container>
+                      </div>
+                      <div
+                        class="back-order purple"
+                        [ngSwitch]="item.backOrderStatus"
+                        [ngClass]="item.backOrderStatus"
+                        (click)="
+                          item.backOrderStatus === STATUS.default
+                            ? changeItemStatusActive(i, item, typesOfConfig.backOrder, 'active')
+                            : item.backOrderStatus === STATUS.confirmed
+                            ? changeItemStatusActive(i, item, typesOfConfig.backOrder, 'confirmed')
+                            : null
+                        "
+                      >
+                        <ng-container *ngSwitchCase="'default'">
+                          <app-check-box
+                            class="check"
+                            [isMulticolor]="true"
+                            [checkColor]="'purple'"
+                            [check]="item.backOrderStatus === STATUS.active"
+                          ></app-check-box>
+                          <label>{{ 'registerConfirmation.backOrder' | translate }}</label>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'confirmed'">
+                          <img class="image" src="assets/Images/fill-white.svg" />
+                          <label>{{ 'common.edit' | translate }}</label>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'active'">
+                          <app-check-box
+                            class="check"
+                            [isMulticolor]="true"
+                            [checkColor]="'purple'"
+                            [check]="true"
+                          ></app-check-box>
+                          <label>{{ 'common.edit' | translate }}</label>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'opacity'">
+                          <label (click)="restoreConfig(i, k)">{{ 'registerConfirmation.restore' | translate }}</label>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'disabled'">
+                          <label>{{ 'registerConfirmation.restore' | translate }}</label>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'disabled-default'">
+                          <app-check-box
+                            class="check"
+                            [isMulticolor]="true"
+                            [checkColor]="'purple'"
+                            [disabled]="true"
+                          ></app-check-box>
+                          <label>{{ 'registerConfirmation.backOrder' | translate }}</label>
+                        </ng-container>
+                      </div>
+                      <div
+                        class="impact dark-orange"
+                        [ngSwitch]="item.impactStatus"
+                        [ngClass]="item.impactStatus"
+                        (click)="
+                          item.impactStatus === STATUS.default
+                            ? changeItemStatusActive(i, item, typesOfConfig.impact, 'active')
+                            : item.impactStatus === STATUS.confirmed
+                            ? changeItemStatusActive(i, item, typesOfConfig.impact, 'confirmed')
+                            : null
+                        "
+                      >
+                        <ng-container *ngSwitchCase="'default'">
+                          <app-check-box
+                            class="check"
+                            [isMulticolor]="true"
+                            [checkColor]="'dark-orange'"
+                            [check]="item.impactStatus === STATUS.active"
+                          ></app-check-box>
+                          <label>{{ 'registerConfirmation.impact' | translate }}</label>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'confirmed'">
+                          <img class="image" src="assets/Images/fill-white.svg" />
+                          <label>{{ 'common.edit' | translate }}</label>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'active'">
+                          <app-check-box
+                            class="check"
+                            [isMulticolor]="true"
+                            [checkColor]="'dark-orange'"
+                            [check]="true"
+                          ></app-check-box>
+                          <label>{{ 'common.edit' | translate }}</label>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'opacity'">
+                          <label (click)="restoreConfig(i, k)">{{ 'registerConfirmation.restore' | translate }}</label>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'disabled'">
+                          <label>{{ 'registerConfirmation.restore' | translate }}</label>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'disabled-default'">
+                          <app-check-box
+                            class="check"
+                            [isMulticolor]="true"
+                            [checkColor]="'dark-orange'"
+                            [disabled]="true"
+                          ></app-check-box>
+                          <label>{{ 'registerConfirmation.impact' | translate }}</label>
+                        </ng-container>
+                      </div>
+                      <div
+                        class="without-impact dark-green"
+                        [ngSwitch]="item.withoutImpactStatus"
+                        [ngClass]="item.withoutImpactStatus"
+                        (click)="
+                          item.withoutImpactStatus === STATUS.default
+                            ? changeItemStatusActive(i, item, typesOfConfig.withoutImpact, 'active')
+                            : item.withoutImpactStatus === STATUS.confirmed
+                            ? changeItemStatusActive(i, item, typesOfConfig.withoutImpact, 'confirmed')
+                            : null
+                        "
+                      >
+                        <ng-container *ngSwitchCase="'default'">
+                          <app-check-box
+                            class="check"
+                            [isMulticolor]="true"
+                            [checkColor]="'dark-green'"
+                            [check]="item.withoutImpactStatus === STATUS.active"
+                          ></app-check-box>
+                          <label>{{ 'registerConfirmation.withOutImpact' | translate }}</label>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'confirmed'">
+                          <img class="image" src="assets/Images/fill-white.svg" />
+                          <label>{{ 'common.edit' | translate }}</label>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'active'">
+                          <app-check-box
+                            class="check"
+                            [isMulticolor]="true"
+                            [checkColor]="'dark-green'"
+                            [check]="true"
+                          ></app-check-box>
+                          <label>{{ 'common.edit' | translate }}</label>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'opacity'">
+                          <label (click)="restoreConfig(i, k)">{{ 'registerConfirmation.restore' | translate }}</label>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'disabled'">
+                          <label>{{ 'registerConfirmation.restore' | translate }}</label>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'disabled-default'">
+                          <app-check-box
+                            class="check"
+                            [isMulticolor]="true"
+                            [checkColor]="'dark-green'"
+                            [disabled]="true"
+                          ></app-check-box>
+                          <label>{{ 'registerConfirmation.withOutImpact' | translate }}</label>
+                        </ng-container>
+                      </div>
+                    </div>
+                    <div class="bottom">
+                      <app-cancel-form
+                        *ngIf="
+                          item.configIsOpen && (item.cancelStatus === STATUS.active || item.cancelStatus === STATUS.confirmed)
+                        "
+                        [arrayLength]="array.length"
+                        [isTheLastIndex]="k === array.length - 1"
+                        [item]="item"
+                        [mainIndex]="i"
+                        [saveValidator]="saveValidator$ | async"
+                        [viewType]="viewType$ | async"
+                        (cancelPressed)="changeItemStatusCancel(i, item, typesOfConfig.cancel)"
+                        (deletePressed)="deleteItemConfiguration(i, item, typesOfConfig.cancel)"
+                        (acceptPressed)="saveItemConfiguration(i, item, typesOfConfig.cancel)"
+                      ></app-cancel-form>
+                      <app-back-order-form
+                        *ngIf="
+                          item.configIsOpen &&
+                          (item.backOrderStatus === STATUS.active || item.backOrderStatus === STATUS.confirmed)
+                        "
+                        [arrayLength]="array.length"
+                        [isTheLastIndex]="k === array.length - 1"
+                        [item]="item"
+                        [mainIndex]="i"
+                        [saveValidator]="saveValidator$ | async"
+                        [viewType]="viewType$ | async"
+                        (cancelPressed)="changeItemStatusCancel(i, item, typesOfConfig.backOrder)"
+                        (deletePressed)="deleteItemConfiguration(i, item, typesOfConfig.backOrder)"
+                        (acceptPressed)="saveItemConfiguration(i, item, typesOfConfig.backOrder)"
+                      ></app-back-order-form>
+                      <app-impact-form
+                        *ngIf="
+                          item.configIsOpen && (item.impactStatus === STATUS.active || item.impactStatus === STATUS.confirmed)
+                        "
+                        [arrayLength]="array.length"
+                        [isTheLastIndex]="k === array.length - 1"
+                        [item]="item"
+                        [mainIndex]="i"
+                        [saveValidator]="saveValidator$ | async"
+                        [viewType]="viewType$ | async"
+                        (cancelPressed)="changeItemStatusCancel(i, item, typesOfConfig.impact)"
+                        (deletePressed)="deleteItemConfiguration(i, item, typesOfConfig.impact)"
+                        (acceptPressed)="saveItemConfiguration(i, item, typesOfConfig.impact)"
+                      ></app-impact-form>
+                      <app-without-impact-form
+                        *ngIf="
+                          item.configIsOpen &&
+                          (item.withoutImpactStatus === STATUS.active || item.withoutImpactStatus === STATUS.confirmed)
+                        "
+                        [arrayLength]="array.length"
+                        [isTheLastIndex]="k === array.length - 1"
+                        [item]="item"
+                        [mainIndex]="i"
+                        [saveValidator]="saveValidator$ | async"
+                        [viewType]="viewType$ | async"
+                        (cancelPressed)="changeItemStatusCancel(i, item, typesOfConfig.withoutImpact)"
+                        (deletePressed)="deleteItemConfiguration(i, item, typesOfConfig.withoutImpact)"
+                        (acceptPressed)="saveItemConfiguration(i, item, typesOfConfig.withoutImpact)"
+                      ></app-without-impact-form>
+                    </div>
+                  </div>
+                </ng-container>
+              </virtual-scroller>
+              <div class="loading" *ngIf="(detailsNode$ | async)?.itemsStatus === 1">
+                <app-loading></app-loading>
+              </div>
+              <div
+                class="loading"
+                *ngIf="(detailsNode$ | async)?.itemsStatus !== 1 && lodashIsEmpty((selectedOrder$ | async)?.items)"
+              >
+                <app-without-results></app-without-results>
+              </div>
+            </div>
+            <div class="footer">
+              <div class="number">
+                <label *ngIf="!lodashIsEmpty((selectedOrder$ | async)?.items)"
+                  >#{{ (selectedOrder$ | async)?.items.length }}</label
+                >
+              </div>
+              <div class="description">
+                <label
+                  >{{ (selectedOrder$ | async)?.NumeroDePiezas }}
+                  {{
+                    (selectedOrder$ | async)?.NumeroDePiezas === 1 ? ('common.pza' | translate) : ('common.pzas' | translate)
+                  }}</label
+                >
+                <label
+                  >{{ 'common.totalAmount' | translate }}
+                  {{ (selectedOrder$ | async)?.TotalUSD | currency: 'USD':'symbol-narrow':'1.2-2' }}</label
+                >
+              </div>
+              <div class="client">
+                <label class="ocean"
+                  >{{ (selectedOrder$ | async)?.Clientes }}
+                  {{
+                    (selectedOrder$ | async)?.Clientes === 1 ? ('common.client' | translate) : ('common.clients' | translate)
+                  }}</label
+                >
+              </div>
+              <div class="fea"></div>
+              <div class="cancel">
+                <label class="red">{{ (configTotals$ | async)?.cancel }}</label>
+              </div>
+              <div class="back-order">
+                <label class="purple">{{ (configTotals$ | async)?.backOrder }}</label>
+              </div>
+              <div class="impact">
+                <label class="orange">{{ (configTotals$ | async)?.impact }}</label>
+              </div>
+              <div class="without-impact">
+                <label class="dark-green">{{ (configTotals$ | async)?.withoutImpact }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="buttons">
+        <button
+          [disabled]="!(registerValidator$ | async)"
+          [ngClass]="(registerValidator$ | async) ? 'active' : 'disabled'"
+          (click)="handleAlertOpenPop()"
+          >{{ 'common.register' | translate }}</button
+        >
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div>
+      <img src="assets/Images/labels/programada.svg" alt="" />
+      <label>{{ 'registerConfirmation.scheduledDelivery' | translate }}</label>
+    </div>
+    <div>
+      <img src="assets/Images/labels/unica.svg" alt="" />
+      <label>{{ 'registerConfirmation.singleDelivery' | translate }}</label>
+    </div>
+    <div>
+      <label>CU: </label>
+      <label>{{ 'registerConfirmation.unitCost' | translate }}</label>
+    </div>
+    <div>
+      <label>CT: </label>
+      <label>{{ 'registerConfirmation.totalCost' | translate }}</label>
+    </div>
+    <div>
+      <label class="red">FEE: </label>
+      <label>{{ 'registerConfirmation.estimatedDeliveryDateOutOfTime' | translate }}</label>
+    </div>
+    <div>
+      <label class="yellow">FEE: </label>
+      <label>{{ 'registerConfirmation.estimatedExpressDeliveryDate' | translate }}</label>
+    </div>
+    <div>
+      <label class="green">FEE: </label>
+      <label>{{ 'registerConfirmation.estimatedDeliveryDateOnTime' | translate }}</label>
+    </div>
+  </footer>
+</div>
+<app-pop-up-generic
+  *ngIf="popIsOpen"
+  [activeButtons]="true"
+  [activeBtn]="newPrice"
+  [width]="(viewType$ | async) === 'macBookAir' ? '620px' : '550px'"
+  [height]="(viewType$ | async) === 'macBookAir' ? '561px' : '490px'"
+  [titleHeader]="'uploadInvoice.modifyCost' | translate"
+  (evento)="handleClosePop('cost', $event)"
+>
+  <div class="pop-modify-cost">
+    <img src="assets/Images/alerta.svg" alt="" />
+    <label class="black">{{ 'uploadInvoice.isGoingToModifyCost' | translate }}</label>
+    <label class="ocean">{{ modifiedItem?.Descripcion }}</label>
+    <div class="bg ocean">
+      <label>{{ 'uploadInvoice.modificationScope' | translate }}:</label>
+      <label class="pqf">OC</label>
+      <!--<app-toggle-switch></app-toggle-switch>-->
+    </div>
+    <div class="cost">
+      <div>
+        <label
+          >{{ 'uploadInvoice.actualCost' | translate }}:
+          <span>{{ modifiedItem?.tempPrecioLista | currency }} {{ 'common.dollars' | translate }}</span></label
+        >
+      </div>
+      <div>
+        <label class="red">{{ 'uploadInvoice.newCost' | translate }}: </label>
+        <app-generic-input
+          [placeholder]="'$'"
+          [textAlign]="'center'"
+          [typeValidation]="inputValidators.DecimalNumber"
+          [width]="'120px'"
+          (textData)="newPrice = $event"
+        ></app-generic-input>
+      </div>
+    </div>
+  </div>
+</app-pop-up-generic>
+<app-pop-up-generic
+  *ngIf="popWithoutImpactIsOpen"
+  [activeButtons]="true"
+  [activeBtn]="!!FechaEstimadaArribo"
+  [width]="(viewType$ | async) === 'macBookAir' ? '620px' : '550px'"
+  [height]="(viewType$ | async) === 'macBookAir' ? '561px' : '490px'"
+  [titleHeader]="'registerConfirmation.available' | translate"
+  (evento)="handleClosePop('date', $event)"
+>
+  <div class="pop-config-all">
+    <img src="assets/Images/alerta.svg" alt="" />
+    <label class="black"
+      >{{ 'uploadInvoice.isGoingToConfigAllItems' | translate }}
+      <span>{{ (selectedOrder$ | async)?.NumeroOrdenDeCompra }}</span> {{ 'uploadInvoice.likeAvailable' | translate }}
+    </label>
+    <div class="bg green" *ngIf="firstItem$ | async; let item">
+      <label class="green">{{
+        ('registerConfirmation.fea' | translate) + ' ' + (item.EmpresaEmbarque ? item.EmpresaEmbarque.Prefijo : 'NA')
+      }}</label>
+      <app-date-picker
+        class="date-picker"
+        dateFormat="YYYYMMDD"
+        [color]="false"
+        [disabled]="false"
+        [disabledCalendarDays]="selectNonWorkingDays$ | async"
+        [date]="FechaEstimadaArriboDate"
+        [rangeEnd]="feaRangeEnd"
+        (fecha)="handleDate($event)"
+      ></app-date-picker>
+    </div>
+  </div>
+</app-pop-up-generic>
+<app-alert
+  *ngIf="popAlertIsOpen"
+  [activarBoton]="true"
+  [alertaTxt]="'¿Registrar confirmación de la OC ' + (selectedOrder$ | async)?.NumeroOrdenDeCompra + '?'"
+  (confirmacion)="handleAlertOpenPop($event)"
+>
+</app-alert>

@@ -1,0 +1,90 @@
+<div class="dashboard-container" id="load-missing-list">
+  <div class="left-container">
+    <label class="title">{{ 'loadMissing.customBroker' | translate }}</label>
+    <div class="filters">
+      <div class="filter-by-search">
+        <app-search
+          [placeholder]="'loadMissing.customBroker' | translate"
+          [searchTerm]="''"
+          (textSearch)="handleKeySearch($event)"
+        >
+        </app-search>
+      </div>
+    </div>
+    <div class="list-container">
+      <virtual-scroller
+        *ngIf="agents.length > 0"
+        [items]="agents"
+        (vsUpdate)="listAgentsScrollItems = $event"
+        (vsEnd)="fetchMore($event)"
+      >
+        <div class="client" *ngFor="let provider of listAgentsScrollItems" (click)="setAgent(provider)">
+          <div class="index">
+            <label>{{ '#' + provider.Index }}</label>
+          </div>
+          <div>
+            <div class="name">
+              <label>{{ provider.nombre }}</label>
+            </div>
+            <div class="classification">
+              <label
+                >{{ provider.ordenes }}
+                {{ provider.ordenes === 1 ? ('loadMissing.order' | translate) : ('loadMissing.orders' | translate) }}</label
+              >
+              <label>·</label>
+              <label
+                >{{ provider.proveedores }}
+                {{
+                  provider.proveedores === 1 ? ('loadMissing.provider' | translate) : ('loadMissing.providers' | translate)
+                }}</label
+              >
+            </div>
+            <div class="states">
+              <label
+                >{{ provider.certificados }}
+                {{
+                  provider.certificados === 1
+                    ? ('loadMissing.certificate' | translate)
+                    : ('loadMissing.certificates' | translate)
+                }}</label
+              >
+              <label>·</label>
+              <label
+                >{{ provider.cartas }}
+                {{
+                  provider.cartas === 1 ? ('loadMissing.usageLetter' | translate) : ('loadMissing.usageLetters' | translate)
+                }}</label
+              >
+            </div>
+          </div>
+          <div class="arrow">
+            <img alt="arrow" src="assets/Images/quotation/arrow_default.svg" />
+          </div>
+        </div>
+      </virtual-scroller>
+      <div class="without-results" *ngIf="agents.length === 0">
+        <app-without-results></app-without-results>
+      </div>
+      <div class="loader" *ngIf="false">
+        <app-loading></app-loading>
+      </div>
+    </div>
+    <div class="footer">
+      <label>{{ '#' + (1 | number: '1.0-0') }}</label>
+      <!--<label>{{((2 | number:'1.0-0') + (((3) === 1 ? ' Producto' : ' Productos')))}}</label>-->
+      <label>{{ 12 | number: '1.0-0' }} {{ 'OD' }}</label>
+      <label>{{ 20 | number: '1.0-0' }} {{ 'Proveedores' }}</label>
+      <label>{{ 9 | number: '1.0-0' }} {{ 'Certificados' }}</label>
+      <label>{{ 'Monto Total ' + 10000 }}</label>
+    </div>
+  </div>
+  <div class="right-container">
+    <ng-container *ngIf="true">
+      <app-doughnut-chart [title]="'loadMissing.customersBroker' | translate" [typeChart]="1" [titleDetails]="'Totales'">
+      </app-doughnut-chart>
+      <app-doughnut-chart [title]="'loadMissing.documents' | translate" [typeChart]="1" [titleDetails]="'Totales'">
+      </app-doughnut-chart>
+    </ng-container>
+    <app-loading class="loading" *ngIf="false"></app-loading>
+  </div>
+</div>

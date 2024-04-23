@@ -1,0 +1,34 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100();
+
+  #quotation-details-container {
+    @include s.absolute100();
+    @include s.flexRowNoWrap();
+
+    & > .general-data-quotation-content {
+      @include s.flexRow();
+      border-right: 1px solid s.$pqGray2;
+    }
+
+    & > .request-quotation-content {
+      @include s.flexRow();
+    }
+
+    & > .quotations {
+      @include s.flexRow();
+      flex: 1 1 auto;
+      overflow: hidden;
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #quotation-details-container {
+    }
+  }
+}

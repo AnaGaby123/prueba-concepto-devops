@@ -1,0 +1,8 @@
+@use 'base' as s;
+
+:host {
+  @include s.generic-main-component-structure;
+
+  #declare-transit-arrival-container {
+  }
+}

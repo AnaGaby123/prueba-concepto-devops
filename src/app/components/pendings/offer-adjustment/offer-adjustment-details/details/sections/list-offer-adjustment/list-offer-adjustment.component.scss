@@ -1,0 +1,307 @@
+@use 'base' as s;
+* {
+  box-sizing: border-box;
+}
+:host {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+
+  #list-clients-container {
+    @include s.flexColumn;
+    width: 100%;
+    flex: 1;
+    overflow: hidden;
+
+    & > .title {
+      @include s.flexColumn;
+      justify-content: flex-start;
+      padding-bottom: 10px;
+      width: 100%;
+
+      & > .percentage-bar-container {
+        @include s.flexColumn;
+        height: 80px;
+        & > label {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-novecento_bold,
+            $font-weight: s.$font-weight-bold,
+            $font-size-map: s.$responsive-font-17-21
+          );
+          padding-bottom: 11px;
+        }
+      }
+
+      & > .quotations-container {
+        @include s.flexRow;
+        align-items: center;
+        margin-left: 0 !important;
+
+        & > .client {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-novecento_bold,
+            $font-weight: s.$font-weight-bold,
+            $font-size-map: s.$responsive-font-17-21
+          );
+        }
+
+        & > .quotations {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-novecento_bold,
+            $font-weight: s.$font-weight-bold,
+            $font-size-map: s.$responsive-font-17-21,
+            $color: s.$pqGreen
+          );
+        }
+
+        & > .pending {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-novecento_bold,
+            $font-weight: s.$font-weight-bold,
+            $font-size-map: s.$responsive-font-17-21
+          );
+          & > span {
+            white-space: pre;
+          }
+        }
+
+        & > .amount {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-novecento_bold,
+            $font-weight: s.$font-weight-bold,
+            $font-size-map: s.$responsive-font-17-21,
+            $color: s.$pqGreen
+          );
+          margin-left: 8px;
+
+          & > span:nth-of-type(1) {
+            margin-right: 8px;
+          }
+        }
+      }
+    }
+    & > .list {
+      width: 100%;
+      padding-bottom: 10px;
+    }
+    & > .content {
+      @include s.flexColumn;
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+      & > .bar-percentage {
+        @include s.flexRowNoWrap;
+        justify-content: space-between;
+        align-items: flex-end;
+
+        & > div:nth-of-type(1) {
+          @include s.flexColumn;
+          width: 100%;
+
+          & > div {
+            padding-bottom: 10px;
+
+            & > label:nth-of-type(1),
+            label:nth-of-type(2),
+            label:nth-of-type(3) {
+              @include s.responsive-font-format(
+                $font-family: s.$font-family-novecento_bold,
+                $font-weight: s.$font-weight-bold,
+                $font-size-map: s.$responsive-font-17-21,
+                $color: s.$pqGreen
+              );
+              padding-left: 5px;
+            }
+
+            & > label:nth-of-type(2) {
+              text-decoration: underline;
+            }
+
+            & > label:nth-of-type(4) {
+              @include s.responsive-font-format(
+                $font-family: s.$font-family-novecento_bold,
+                $font-weight: s.$font-weight-bold,
+                $font-size-map: s.$responsive-font-17-21
+              );
+            }
+
+            & > img:nth-of-type(1) {
+              width: 19px;
+              height: 21px;
+              padding-left: 12px;
+              margin-bottom: 4px;
+            }
+          }
+
+          & > app-custom-position-pop-up {
+            & .bars {
+              @include s.flexRowNoWrap;
+              justify-content: space-between;
+              align-items: flex-end;
+              width: 100%;
+              padding: 20px 30px 20px 30px;
+              box-sizing: border-box;
+
+              & > div:nth-of-type(1) {
+                @include s.flexColumn;
+                width: 59%;
+
+                & > div {
+                  padding-bottom: 14px;
+
+                  & > label:nth-of-type(1) {
+                    @include s.responsive-font-format(
+                      $font-family: s.$font-family-novecento_bold,
+                      $font-weight: s.$font-weight-bold,
+                      $font-size-map: s.$responsive-font-17-21,
+                      $color: s.$pqGreen
+                    );
+                  }
+
+                  & > label:nth-of-type(2) {
+                    @include s.responsive-font-format(
+                      $font-family: s.$font-family-novecento_bold,
+                      $font-weight: s.$font-weight-bold,
+                      $font-size-map: s.$responsive-font-17-21
+                    );
+                  }
+                }
+              }
+
+              & > div:nth-of-type(2) {
+                width: 39%;
+              }
+            }
+          }
+        }
+      }
+      & > .change-options {
+        @include s.flexColumn;
+        flex: 1;
+        width: 100%;
+        overflow: auto;
+
+        & > .option {
+          @include s.flexColumn;
+          border-top: solid 1px s.$pqBlack2;
+          flex: 1;
+          overflow: hidden;
+          padding-top: 15px;
+
+          & > label {
+            @include s.responsive-font-format(
+              $font-family: s.$font-family-novecento_bold,
+              $font-weight: s.$font-weight-bold,
+              $font-size-map: s.$responsive-font-17-21
+            );
+          }
+
+          & > .navigation-section {
+            @include s.flexColumn;
+            flex: 1;
+            overflow: hidden;
+
+            & > app-without-results {
+              height: 100%;
+              display: flex;
+              align-items: center;
+            }
+          }
+
+          & > .without-results {
+            @include s.flexColumn;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+          }
+        }
+      }
+    }
+    & > .buttons {
+      @include s.flexRow;
+      align-items: center;
+      border-top: 1px solid;
+      height: 33px;
+      justify-content: space-between;
+      padding: 5px 20px 0;
+      & > .reject {
+        @include s.pqButton(185px, 265px, auto, auto, s.$pqAlert);
+      }
+      & > .validate {
+        @include s.pqButton();
+      }
+    }
+  }
+  #reject-pop-up {
+    & .container {
+      @include s.flexColumn;
+      width: 100%;
+      height: 100%;
+      justify-content: flex-start;
+
+      & * {
+        box-sizing: border-box;
+      }
+
+      & > .file-one {
+        align-items: center;
+        justify-content: center;
+        padding-top: 50px;
+        padding-bottom: 30px;
+
+        & > img {
+          width: 60px;
+          height: 60px;
+        }
+      }
+
+      & > .file-two {
+        padding-bottom: 65px;
+
+        & > p:nth-of-type(1) {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-roboto_regular,
+            $font-weight: s.$font-weight-regular,
+            $font-size-map: s.$responsive-font-17-21
+          );
+        }
+
+        & > span:nth-of-type(1) {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-roboto_regular,
+            $font-weight: s.$font-weight-regular,
+            $font-size-map: s.$responsive-font-17-21,
+            $color: s.$pqGreen
+          );
+        }
+      }
+
+      & > .file-three {
+        @include s.flexColumn;
+        height: 130px;
+        background-color: s.$pqFondo;
+
+        & > .container {
+          @include s.flexColumn;
+          padding: 0 80px;
+          align-items: flex-start;
+          justify-content: center;
+
+          & > label:nth-of-type(1) {
+            @include s.responsive-font-format(
+              $font-family: s.$font-family-novecento_bold,
+              $font-weight: s.$font-weight-bold,
+              $font-size-map: s.$responsive-font-15-18,
+              $color: s.$pqGreen
+            );
+            padding-bottom: 5px;
+          }
+
+          & > div:nth-of-type(1) {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}

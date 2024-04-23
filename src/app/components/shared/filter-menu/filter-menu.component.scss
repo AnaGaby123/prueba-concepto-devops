@@ -1,0 +1,185 @@
+@use 'base' as s;
+
+.menu {
+  width: 100%;
+  display: flex;
+
+  .filter-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 14%;
+    text-align: center;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    position: relative;
+
+    &.selected {
+      background-color: #eceef0;
+
+      & > .filter-label {
+        color: #008894;
+      }
+    }
+
+    .filter-label {
+      $textSize: (
+        'base': 13px,
+        'macBookAir': 15px,
+      );
+      @include s.escaledFontFormat($textSize, bold, #424242);
+      @include s.Novecento-Bold;
+      padding: 0 5px 8px;
+    }
+
+    .total-label {
+      @include s.Novecento;
+      position: absolute;
+      top: 3px;
+      right: 5px;
+      font-weight: bold;
+      font-size: 11px;
+    }
+
+    .total-value {
+      @include s.Novecento;
+      position: absolute;
+      top: 21%;
+      right: 5px;
+      color: s.$pqGreen;
+      font-weight: bold;
+      font-size: 11px;
+    }
+  }
+}
+
+.menu {
+  .filter-item:focus {
+    background: red;
+  }
+}
+
+.filter-item.not-selected:hover {
+  > .dropbtn {
+    display: none;
+  }
+
+  > .dropbtnHover {
+    display: block;
+  }
+}
+
+.dropbtn {
+  color: white;
+  padding: 16px 16px 8px 16px;
+  font-size: 16px;
+  border: none;
+  width: 40px;
+  height: 30px;
+}
+
+.dropbtnHover {
+  color: white;
+  padding: 16px 16px 8px 16px;
+  font-size: 16px;
+  border: none;
+  width: 40px;
+  height: 30px;
+  display: none;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f3f9fa;
+  width: 100%;
+  overflow: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 2;
+  top: 100%;
+  left: 0;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  color: s.$pqGreen5;
+}
+
+.animationZoom {
+  animation: animatezoom 0.2s;
+}
+
+@keyframes animatezoom {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.aniamtionTop {
+  position: absolute;
+  animation: animatetop 0.3s;
+}
+
+@keyframes animatetop {
+  from {
+    top: 0;
+    opacity: 0;
+  }
+  to {
+    top: 100%;
+    opacity: 1;
+  }
+}
+
+.aniamtionTopitems {
+  position: relative;
+  animation: animatetop2 0.5s;
+}
+
+@keyframes animatetop2 {
+  from {
+    top: -60px;
+    opacity: 0;
+  }
+  to {
+    top: 0px;
+    opacity: 1;
+  }
+}
+
+.dropdown a:hover {
+  background-color: #ddd;
+}
+
+.show {
+  display: block;
+  max-height: 350px;
+}
+
+@media (max-width: 1408px) and (max-height: 924px) {
+  .menu {
+    width: 100%;
+    display: flex;
+
+    .filter-item {
+      font-size: 13px;
+    }
+  }
+}

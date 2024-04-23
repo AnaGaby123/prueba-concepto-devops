@@ -1,0 +1,99 @@
+<div class="checks-container">
+  <div *ngIf="columnChecksTypeAdjustment?.showCheckBoxBlueFollowing && !columnChecksTypeAdjustment?.showAddQuotation">
+    <label class="following" *ngIf="columnChecksTypeAdjustment?.areChecksBoxHeader">{{
+      'closeOffer.tableLabels.tracing' | translate
+    }}</label>
+    <app-check-box
+      #checkBoxComponentFollowing
+      [ngClass]="columnChecksTypeAdjustment?.isDisableCheckBoxBlueFollowing ? 'disable' : ''"
+      [disabled]="columnChecksTypeAdjustment?.isDisableCheckBoxBlueFollowing"
+      [check]="columnChecksTypeAdjustment?.valueCheckBoxBlueFollowing"
+      [isMulticolor]="true"
+      [checkColor]="'ocean'"
+      (click)="stopEvents($event)"
+      (event)="
+        handleClick(
+          checkBoxComponentFollowing,
+          $event,
+          columnChecksTypeAdjustment?.areChecksBoxHeader
+            ? nameActionsInternalSalesItem?.CheckBoxFollowingHeaderAction
+            : nameActionsInternalSalesItem?.CheckBoxFollowingItemAction
+        )
+      "
+    ></app-check-box
+  ></div>
+  <div *ngIf="columnChecksTypeAdjustment?.showCheckBoxYellowAdjustmentOffer && !columnChecksTypeAdjustment?.showAddQuotation">
+    <label class="adjustment-offer" *ngIf="columnChecksTypeAdjustment?.areChecksBoxHeader">{{
+      'closeOffer.tableLabels.offerAdjustment' | translate
+    }}</label>
+    <app-check-box
+      [ngClass]="columnChecksTypeAdjustment?.isDisableCheckBoxYellowAdjustmentOffer ? 'disable' : ''"
+      #checkBoxComponentAdjustmentOffer
+      [disabled]="columnChecksTypeAdjustment?.isDisableCheckBoxYellowAdjustmentOffer"
+      [check]="columnChecksTypeAdjustment?.valueCheckBoxYellowAdjustmentOffer"
+      [isMulticolor]="true"
+      [checkColor]="'yellow'"
+      (click)="stopEvents($event)"
+      (event)="
+        handleClick(
+          checkBoxComponentAdjustmentOffer,
+          $event,
+          columnChecksTypeAdjustment?.areChecksBoxHeader
+            ? nameActionsInternalSalesItem?.CheckBoxAdjustmentOfferHeaderAction
+            : nameActionsInternalSalesItem?.CheckBoxAdjustmentOfferItemAction
+        )
+      "
+    ></app-check-box
+  ></div>
+  <div *ngIf="columnChecksTypeAdjustment?.showCheckBoxGreenPurchasePromise && !columnChecksTypeAdjustment?.showAddQuotation">
+    <label class="purchase-promise" *ngIf="columnChecksTypeAdjustment?.areChecksBoxHeader">{{
+      'preProcessing.purchasePromise' | translate
+    }}</label>
+    <app-check-box
+      #checkBoxComponentPurchasePromise
+      [disabled]="columnChecksTypeAdjustment?.isDisableCheckBoxGreenPurchasePromise"
+      [check]="columnChecksTypeAdjustment?.valueCheckBoxGreenPurchasePromise"
+      [isMulticolor]="true"
+      [checkColor]="'green'"
+      (click)="stopEvents($event)"
+      (event)="
+        handleClick(
+          checkBoxComponentPurchasePromise,
+          $event,
+          columnChecksTypeAdjustment?.areChecksBoxHeader
+            ? nameActionsInternalSalesItem?.CheckBoxPurchasePromiseHeaderAction
+            : nameActionsInternalSalesItem?.CheckBoxPurchasePromiseItemAction
+        )
+      "
+    ></app-check-box
+  ></div>
+  <div *ngIf="columnChecksTypeAdjustment?.showCheckBoxRedCancel && !columnChecksTypeAdjustment?.showAddQuotation">
+    <label class="cancel" *ngIf="columnChecksTypeAdjustment?.areChecksBoxHeader">{{
+      'closeOffer.tableLabels.cancellation' | translate
+    }}</label>
+    <app-check-box
+      #checkBoxComponentCancel
+      [disabled]="columnChecksTypeAdjustment?.isDisableCheckBoxRedCancel"
+      [check]="columnChecksTypeAdjustment?.valueCheckBoxRedCancel"
+      [isMulticolor]="true"
+      [checkColor]="'red'"
+      (click)="stopEvents($event)"
+      (event)="
+        handleClick(
+          checkBoxComponentCancel,
+          $event,
+          columnChecksTypeAdjustment?.areChecksBoxHeader
+            ? nameActionsInternalSalesItem?.CheckBoxCancelHeaderAction
+            : nameActionsInternalSalesItem?.CheckBoxCancelItemAction
+        )
+      "
+    ></app-check-box
+  ></div>
+  <label
+    class="label-add"
+    *ngIf="columnChecksTypeAdjustment?.showAddQuotation"
+    #labelElement
+    (click)="handleClick(labelElement, true, nameActionsInternalSalesItem?.AddItemToQuotationAction)"
+    >{{ 'closeOffer.tableLabels.addToQuotation' | translate }}</label
+  >
+</div>

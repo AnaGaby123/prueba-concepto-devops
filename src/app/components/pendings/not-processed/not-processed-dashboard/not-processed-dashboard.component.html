@@ -1,0 +1,129 @@
+<div class="dashboard-container" id="not-processed-list-container">
+  <div class="left-container">
+    <label class="title textUpperCase">{{ 'notProcessed.clients' | translate }}</label>
+    <div class="tabs">
+      <app-tabs
+        [options]="tabOptions$ | async"
+        [tapSelected]="selectedTabOption$ | async"
+        (onSelectOption)="setTabOptionSelected($event)"
+      >
+      </app-tabs>
+    </div>
+    <div class="filters">
+      <div class="filter-by-type">
+        <app-hamburger-menu
+          [options]="burgerOptions$ | async"
+          [title]="(selectedBurgerOption$ | async).label"
+          [value]="(selectedBurgerOption$ | async).value"
+          (valueEmit)="setBurgerOption($event)"
+        >
+        </app-hamburger-menu>
+      </div>
+      <div class="filter-by-date">
+        <app-date-range (emitValues)="setDateRange($event)"></app-date-range>
+      </div>
+    </div>
+    <div class="search-bar">
+      <app-search
+        [imageFill]="'#008894'"
+        [isSearchByType]="true"
+        [placeholder]="'Texto'"
+        [typeSelected]="selectedSearchType$ | async"
+        [typesOfSearch]="searchTypes$ | async"
+        [searchTerm]="searchTerm$ | async"
+        (handleTypeSelected)="setSearchType($event)"
+        (textSearch)="handleOCSearch($event)"
+      >
+      </app-search>
+    </div>
+    <div class="list-container">
+      <virtual-scroller
+        *ngIf="!lodashIsEmptty(clients$ | async) && (apiStatus$ | async) === 3"
+        class="virtual-list"
+        [items]="clients$ | async"
+        (vsUpdate)="listClient = $event"
+      >
+        <div class="item" *ngFor="let item of listClient; let i = index" (click)="selectedClient(item)">
+          <div class="number">
+            <label>#{{ item.Index }}</label>
+          </div>
+          <div class="content">
+            <label class="title">{{ item?.Nombre }}</label>
+            <div class="totals">
+              <label
+                *ngIf="
+                  ((selectedTabOption$ | async)?.id === '1' || (selectedTabOption$ | async)?.id === '2') &&
+                  item?.ConOrdenDeCompratrue > 0
+                "
+                >{{ item?.ConOrdenDeCompratrue }} OC
+              </label>
+              <label class="sin-oc" *ngIf="(selectedTabOption$ | async)?.id === '1' || (selectedTabOption$ | async)?.id === '3'"
+                >{{ (selectedTabOption$ | async)?.id === '1' && item?.SinOrdenDeCompratrue > 0 ? ' · ' : ''
+                }}{{ item?.SinOrdenDeCompratrue > 0 ? item?.SinOrdenDeCompratrue + ' SIN OC' : '' }}
+              </label>
+              <label>· VT {{ item.TotalUSD | currency: 'USD':'symbol-narrow':'1.2-2' }} USD</label>
+            </div>
+            <div class="feas">
+              <label class="fea-green" *ngIf="item.FEAATiempo > 0">{{ item.FEAATiempo }} FEA</label>
+              <label class="fea-yellow" *ngIf="item.FEAPorVencer > 0 && item.FEAATiempo > 0"> · </label>
+              <label class="fea-yellow" *ngIf="item.FEAPorVencer > 0">{{ item.FEAPorVencer }} FEA</label>
+              <label class="fea-red" *ngIf="item.FEAFueraDeTiempo > 0 && (item.FEAATiempo > 0 || item.FEAPorVencer > 0)">
+                ·
+              </label>
+              <label class="fea-red" *ngIf="item.FEAFueraDeTiempo > 0">{{ item.FEAFueraDeTiempo }} FEA</label>
+              <label
+                class="fea-red"
+                *ngIf="item.SinFEA > 0 && (item.FEAATiempo > 0 || item.FEAPorVencer > 0 || item.FEAFueraDeTiempo > 0)"
+              >
+                ·
+              </label>
+              <label class="fea-purple" *ngIf="item.SinFEA > 0">{{ item.SinFEA }} SIN FEA</label>
+            </div>
+            <label class="entries">{{
+              item?.NumeroPartidasTotal +
+                ' ' +
+                (item?.NumeroPartidasTotal > 1 ? ('preProcessing.items' | translate) : ('preProcessing.item' | translate))
+            }}</label>
+          </div>
+          <div class="arrow">
+            <img alt="arrow" src="assets/Images/arrows/arrow_right.svg" />
+          </div>
+        </div>
+      </virtual-scroller>
+      <div class="without-results" *ngIf="lodashIsEmptty(clients$ | async) && (apiStatus$ | async) === 3">
+        <app-without-results [title]="'common.withoutResults' | translate"></app-without-results>
+      </div>
+      <div class="loader" *ngIf="(apiStatus$ | async) === 1">
+        <app-loading></app-loading>
+      </div>
+    </div>
+    <div class="footer">
+      <label>#{{ (clients$ | async)?.length }}</label>
+      <label>
+        {{ purchaseOrdersTotal$ | async }}
+        {{ (purchaseOrdersTotal$ | async) === 1 ? ('common.item' | translate) : ('common.items' | translate) }}
+      </label>
+      <label>
+        {{ 'notProcessed.totalValue' | translate }}
+        {{ totalValue$ | async | currency: 'USD':'symbol-narrow':'1.2-2' }} USD
+      </label>
+    </div>
+  </div>
+  <div class="right-container">
+    <ng-container *ngIf="(apiStatus$ | async) === 3">
+      <app-doughnut-chart
+        [data]="doughnutChartData$ | async"
+        [optionDetails]="doughnutChartOptionDetails$ | async"
+        [optionDetailsHover]="doughnutChartOptionDetailsHover$ | async"
+        [maxWidth]="'850px'"
+        [titleDetails]="'totals' | translate"
+        [title]="'preProcessing.clients' | translate"
+        [typeChart]="1"
+      >
+      </app-doughnut-chart>
+      <app-bar-chart [maxWidth]="'850px'" [title]="'notProcessed.feas' | translate" [values]="barChart$ | async">
+      </app-bar-chart>
+    </ng-container>
+    <app-loading class="loading" *ngIf="(apiStatus$ | async) === 1"></app-loading>
+  </div>
+</div>

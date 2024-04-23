@@ -1,0 +1,68 @@
+<section tabindex="0" (blur)="closeCombo($event)">
+  <div class="date-range-container" (click)="openMenu()">
+    <div (click)="cancel($event)">
+      <img alt="arrow" height="22px" [src]="textDate ? 'assets/Images/cerrar_fecha.svg' : 'assets/Images/calendar-ocean.svg'" />
+    </div>
+    <div>
+      <label class="title" *ngIf="!textDate">Buscar por rango de fechas</label>
+      <label class="title" *ngIf="textDate"
+        ><span class="titlePqf">Del</span> {{ initialDateFormat }} <span class="titlePqf">Hasta</span>
+        {{ finalDateFormat }}</label
+      >
+    </div>
+  </div>
+  <section
+    class="submenu"
+    id="submenu"
+    #submenuOptions
+    [ngClass]="isOpen ? '' : 'close'"
+    [style.height.px]="isOpen ? submenuOptions.scrollHeight : 0"
+    [style.overflow]="isOpen ? 'unset' : 'hidden'"
+    [style]="absoluteStyle"
+  >
+    <div class="dates-container">
+      <div class="calendar-first-date">
+        <div>
+          <label class="textSubTitle">Del</label>
+        </div>
+        <div class="calendar">
+          <app-date-picker
+            [color]="false"
+            [dateFormat]="'YYYYMMDD'"
+            [date]="value.startDate"
+            [disabledCalendarDays]="selectNonWorkingDays$ | async"
+            [imageAdd]="false"
+            (dateOriginal)="handleDateOriginal($event, 'startDate')"
+            (fechaFormat)="initialDateFormat = $event"
+          >
+          </app-date-picker>
+        </div>
+      </div>
+      <div class="calendar-second-date">
+        <div>
+          <label class="textSubTitle">Hasta</label>
+        </div>
+        <div class="calendar">
+          <app-date-picker
+            [color]="false"
+            [dateFormat]="'YYYYMMDD'"
+            [date]="value.endDate"
+            [disabledCalendarDays]="selectNonWorkingDays$ | async"
+            [imageAdd]="false"
+            (dateOriginal)="handleDateOriginal($event, 'endDate')"
+            (fechaFormat)="finalDateFormat = $event"
+          >
+          </app-date-picker>
+        </div>
+      </div>
+      <div class="button-container">
+        <div
+          [ngClass]="value.startDate && value.endDate && value.endDate >= value.startDate ? 'button' : 'buttonDisable'"
+          (click)="emitFilter({startDate: value.startDate, endDate: value.endDate})"
+        >
+          <label>APLICAR</label>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>

@@ -1,0 +1,13 @@
+import {
+  QueryResultConfiguracionPrecioProveedor,
+  QueryResultConfiguracionPrecioProveedorFamilia,
+  QueryResultConfiguracionPrecioUtilidadCategoriaProveedor,
+  QueryResultConfiguracionProveedorFamiliaGeneral,
+} from 'api-catalogos';
+
+export interface GeneralConfiguration {
+  ConfiguracionProveedorFamiliaGeneral: QueryResultConfiguracionProveedorFamiliaGeneral;
+  ConfiguracionPrecioProveedorFamilia: QueryResultConfiguracionPrecioProveedorFamilia;
+  ConfiguracionPrecioProveedor: QueryResultConfiguracionPrecioProveedor;
+  ConfiguracionPrecioUtilidadCategoriaProveedor: QueryResultConfiguracionPrecioUtilidadCategoriaProveedor;
+}

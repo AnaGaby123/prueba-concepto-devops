@@ -1,0 +1,28 @@
+<div [ngClass]="isOpen ? 'show' : 'hide'" id="request-quotation-container">
+  <div class="content">
+    <div class="info">
+      <div class="title">
+        <label>{{ 'quotation.details.titleRequest' | translate }}</label>
+      </div>
+      <label class="folio">FO-{{ (clientInfo$ | async)?.folio }}</label>
+      <label class="sender">{{ (mailData$ | async)?.CorreoRecibido?.CorreoEmisor }}</label>
+      <label class="subject">{{ (mailData$ | async)?.CorreoRecibido?.Asunto }}</label>
+      <div class="message">
+        <label>{{ (mailData$ | async)?.CorreoRecibidoContenido?.Contenido }}</label>
+      </div>
+    </div>
+    <div #files id="files" class="files">
+      <div class="file" *ngFor="let mail of (mailData$ | async)?.Archivo; let i = index">
+        <label class="index">{{ i + 1 }}</label>
+        <img alt="file" src="assets/Images/quotation/file.svg" />
+        <label class="btn" (click)="viewFile(mail)">{{ mail.FileKey | onlyFileNamePdf }}</label>
+      </div>
+    </div>
+    <div class="under-construction" *ngIf="status$ | async">
+      <app-loading></app-loading>
+    </div>
+  </div>
+</div>
+<div class="arrow" [style.right]="!isOpen ? '-16px' : '0'">
+  <img alt="arrow" src="assets/Images/arrows/flecha_cuadro.svg" [ngClass]="{reverse: !isOpen}" (click)="onClick()" />
+</div>

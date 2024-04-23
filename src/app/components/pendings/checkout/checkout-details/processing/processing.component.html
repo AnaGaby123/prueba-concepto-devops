@@ -1,0 +1,438 @@
+<div id="checkout-processing-container">
+  <div class="top-container">
+    <div class="carousel">
+      <div>
+        <label>{{ purchaseOrderTotal$ | async }} {{ 'checkout.purchaseOrders' | translate }} </label>
+      </div>
+      <app-pqf-card [options]="purchaseOrders$ | async" (handleOptionSelected)="selectPurchaseOrder($event)"></app-pqf-card>
+    </div>
+    <div class="center">
+      <div class="left-container">
+        <div class="quote-info">
+          <label class="number" [ngClass]="(purchaseOrder$ | async)?.OcInterna && 'orange'"
+            >#{{ (purchaseOrder$ | async)?.index + 1 }} ·
+          </label>
+          <label class="folio editable" *ngIf="purchaseOrder$ | async; let purchaseOrder"
+            ><span (click)="downLoadFile(purchaseOrder.IdArchivo)">{{ (purchaseOrder$ | async)?.NumeroOrdenDeCompra }}</span>
+            <img class="edit" src="assets/Images/edit_pencil.svg" (click)="referencePopOpen = true" #reference />
+            <app-custom-position-pop-up
+              *ngIf="referencePopOpen"
+              [popUpPosition]="'bottom-center'"
+              [closeButton]="false"
+              [target]="reference"
+              [backgroundColor]="'#424242'"
+              [borderColor]="'#424242'"
+              [triangleBackgroundColor]="'#424242'"
+              [borderRadius]="'6px'"
+              [padding]="'16px'"
+            >
+              <app-reference-form-edit
+                [reference]="purchaseOrder.NumeroOrdenDeCompra"
+                (handleAction)="handleReferenceAction($event)"
+              ></app-reference-form-edit>
+            </app-custom-position-pop-up>
+          </label>
+          <label *ngIf="(purchaseOrder$ | async)?.OcInterna" class="folio orange"> OC INTERNA </label>
+          <label *ngIf="(purchaseOrder$ | async)?.SinOC" class="folio red"> SIN OC </label>
+          <label class="total">
+            · VT
+            {{ (purchaseOrder$ | async)?.Total | currency: (purchaseOrder$ | async)?.ClaveMoneda:'symbol-narrow':'1.2-2' }}
+            {{ (purchaseOrder$ | async)?.ClaveMoneda }}</label
+          >
+          <label class="products"> · {{ (purchaseOrder$ | async)?.Productos }} {{ 'common.products' | translate }} </label>
+        </div>
+        <div class="table-container">
+          <div class="container">
+            <app-header-internal-sales-item
+              class="header"
+              [internalSalesItem]="itemForReusableHeaderTable$ | async"
+            ></app-header-internal-sales-item>
+            <virtual-scroller
+              *ngIf="
+                (entriesListApiStatus$ | async) === API_REQUEST_STATUS_SUCCEEDED && (itemsForSalesItem$ | async)?.length > 0
+              "
+              [items]="itemsForSalesItem$ | async"
+              [bufferAmount]="24"
+              [enableUnequalChildrenSizes]="true"
+              (vsUpdate)="items2 = $event"
+            >
+              <app-internal-sales-item
+                *ngFor="let item of items2; trackBy: itemTrackBy"
+                [internalSalesItem]="item"
+                (valueEmitter)="globalItemEventsHandler($event)"
+              ></app-internal-sales-item>
+            </virtual-scroller>
+            <div class="loading" *ngIf="(entriesListApiStatus$ | async) === API_REQUEST_STATUS_LOADING">
+              <app-loading></app-loading>
+            </div>
+            <div
+              class="no-results"
+              *ngIf="
+                (entriesListApiStatus$ | async) === API_REQUEST_STATUS_SUCCEEDED && (itemsForSalesItem$ | async)?.length === 0
+              "
+            >
+              <app-without-results></app-without-results>
+            </div>
+          </div>
+        </div>
+        <div class="totals-container">
+          <!-- DOCS: Se elimina porque no hay forma de calcular la capacidad de entrega.
+                Se deja para posteriores desarrollos-->
+          <!--<div class="pop-container">
+            <label>{{ 'checkout.states' | translate }}</label>
+            <div class="ocean">
+              <label>{{ 'checkout.deliveryCapacity' | translate }}</label>
+              <div>
+                <img class="default" src="assets/Images/strategy/see-more.svg" alt="" />
+              </div>
+            </div>
+          </div>-->
+          <div class="entries">
+            <label
+              >{{ (items$ | async)?.length || 0 }}
+              {{ (items$ | async)?.length === 1 ? ('checkout.item' | translate) : ('checkout.items' | translate) }}</label
+            >
+          </div>
+          <div class="totals">
+            <div class="subtotal">
+              <label>{{ 'common.subtotal' | translate }}:</label>
+              <label
+                >{{
+                  (purchaseOrder$ | async)?.purchaseOrderDetails?.Subtotal
+                    | currency: (purchaseOrder$ | async)?.ClaveMoneda:'symbol-narrow':'1.2-2'
+                }}
+                {{ (purchaseOrder$ | async)?.ClaveMoneda }}</label
+              >
+            </div>
+            <div class="iva">
+              <label>{{ 'common.tax' | translate }}:</label>
+              <label
+                >{{
+                  (purchaseOrder$ | async)?.purchaseOrderDetails?.TotalIVA
+                    | currency: (purchaseOrder$ | async)?.ClaveMoneda:'symbol-narrow':'1.2-2'
+                }}
+                {{ (purchaseOrder$ | async)?.ClaveMoneda }}</label
+              >
+            </div>
+            <div class="total">
+              <label>{{ 'common.total' | translate }}:</label>
+              <label
+                >{{
+                  (purchaseOrder$ | async)?.purchaseOrderDetails?.Total
+                    | currency: (purchaseOrder$ | async)?.ClaveMoneda:'symbol-narrow':'1.2-2'
+                }}
+                {{ (purchaseOrder$ | async)?.ClaveMoneda }}</label
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="right-container" *ngIf="(purchaseOrderDetails$ | async)?.apiStatus === 3">
+        <div class="title">
+          <div class="text">
+            <label>{{ 'checkout.orderInvoice' | translate }}</label>
+            <label class="separator" *ngIf="(purchaseOrderDetails$ | async)?.catCondicionesDePago?.SinCredito"> · </label>
+            <label *ngIf="(purchaseOrderDetails$ | async)?.catCondicionesDePago?.SinCredito">{{
+              'checkout.proforma' | translate
+            }}</label>
+          </div>
+          <div class="image" *ngIf="(purchaseOrder$ | async)?.purchaseOrderDetails.OcInternaPediente">
+            <img src="assets/Images/labels/pendientePorAprobar.svg" />
+          </div>
+        </div>
+        <div
+          class="credit"
+          [ngClass]="{
+            red: (purchaseOrderDetails$ | async)?.catCondicionesDePago?.SinCredito,
+            green: !(purchaseOrderDetails$ | async)?.catCondicionesDePago?.SinCredito
+          }"
+        >
+          <label>{{
+            (purchaseOrderDetails$ | async)?.catCondicionesDePago?.SinCredito
+              ? ('checkout.clientWithoutCredit' | translate)
+              : ('checkout.clientWithCredit' | translate)
+          }}</label>
+        </div>
+        <div class="data-container">
+          <div class="data">
+            <label>{{ 'checkout.businessName' | translate }}</label>
+            <label>{{
+              (purchaseOrderDetails$ | async)?.DatosFacturacionClienteDetallePorDefecto?.DatosFacturacionCliente.RazonSocial
+            }}</label>
+          </div>
+          <div class="data-two-columns">
+            <div>
+              <label class="bold">{{ 'common.rfc' | translate }}</label>
+              <label class="regular">{{
+                (purchaseOrderDetails$ | async)?.DatosFacturacionClienteDetallePorDefecto?.DatosFacturacionCliente.RFC
+              }}</label>
+            </div>
+            <div>
+              <label class="bold">{{ 'common.coin' | translate }}</label>
+              <label class="regular">{{
+                (purchaseOrderDetails$ | async)?.DatosFacturacionClienteDetallePorDefecto?.DatosFacturacionCliente?.catMoneda
+                  ?.Moneda
+              }}</label>
+            </div>
+          </div>
+          <div class="data">
+            <label class="title">{{ 'checkout.whoBills' | translate }}</label>
+            <label class="info">{{ (purchaseOrderDetails$ | async)?.EmpresaFactura?.RazonSocial }}</label>
+          </div>
+          <div class="data" *ngIf="(tpPedido$ | async)?.AplicaAddendaCorreo">
+            <label class="addenda-active" (click)="openAddendaModal()">Addenda</label>
+            <div
+              class="addenda-info"
+              *ngIf="(tpPedido$ | async)?.AddendaCorreoElectronico && (tpPedido$ | async)?.AddendaObservaciones"
+            >
+              <div class="info">
+                <label class="title">{{ 'common.mail' | translate }}:</label>
+                <label class="description">{{ (tpPedido$ | async)?.AddendaCorreoElectronico }}</label>
+              </div>
+              <div class="info">
+                <label class="title">{{ 'process.observations' | translate }}:</label>
+                <label class="description">{{ (tpPedido$ | async)?.AddendaObservaciones }}</label>
+              </div>
+            </div>
+          </div>
+          <div class="data">
+            <label>{{ 'checkout.cfdiUsage' | translate }}</label>
+            <label
+              *ngIf="isCodeValid$ | async; else inactiveCfdi"
+              [ngClass]="(isCodeValid$ | async) && 'active'"
+              (click)="handlePopUp(USAGE_POP, true, $event.target)"
+            >
+              {{ (purchaseOrderDetails$ | async)?.catUsoCFDI?.ClaveUso }} -
+              {{ (purchaseOrderDetails$ | async)?.catUsoCFDI?.Uso }}
+            </label>
+            <ng-template #inactiveCfdi>
+              <label>
+                {{ (purchaseOrderDetails$ | async)?.catUsoCFDI?.ClaveUso }} -
+                {{ (purchaseOrderDetails$ | async)?.catUsoCFDI?.Uso }}
+              </label>
+              <label class="absolute" (click)="openCodePopUp(proceduresTypes.editData)">{{
+                'checkout.editData' | translate
+              }}</label>
+            </ng-template>
+          </div>
+          <div class="data">
+            <label>{{ 'checkout.payMethod' | translate }}</label>
+            <label
+              *ngIf="isCodeValid$ | async; else inactivePayment"
+              [ngClass]="(isCodeValid$ | async) && 'active'"
+              (click)="handlePopUp(PAYMENT_POP, true, $event.target)"
+              >{{ (purchaseOrderDetails$ | async)?.catMetodoDePagoCFDI?.MetodoDePagoCFDI }}</label
+            >
+            <ng-template #inactivePayment>
+              <label>
+                {{ (purchaseOrderDetails$ | async)?.catMetodoDePagoCFDI?.MetodoDePagoCFDI }}
+              </label>
+            </ng-template>
+          </div>
+          <div class="data">
+            <label>{{ 'checkout.paymentConditions' | translate }}</label>
+            <label>{{ (purchaseOrderDetails$ | async)?.catCondicionesDePago?.CondicionesDePago }}</label>
+          </div>
+        </div>
+        <!--        DOCS: Revisar si se integrará en versiones posteriores-->
+        <!--        <div class="check" *ngIf="(purchaseOrderDetails$ | async)?.catCondicionesDePago?.SinCredito">
+          <app-check-box
+            [check]="(purchaseOrderDetails$ | async)?.tpPedido?.FacturaPorAdelantado"
+            [label]="'checkout.invoiceInAdvance' | translate"
+            [labelFontStyle]="'robotoRegular13'"
+            (event)="setTPPedidoValue($event, 'FacturaPorAdelantado')"
+          >
+          </app-check-box>
+        </div>-->
+        <div class="radios" *ngIf="!(purchaseOrderDetails$ | async)?.catCondicionesDePago?.SinCredito">
+          <!--        DOCS: Revisar si se integrará en versiones posteriores-->
+          <!--          <app-radio-button
+            [activeLocalState]="false"
+            [value]="(purchaseOrderDetails$ | async)?.tpPedido?.FacturaPorAdelantado"
+            [height]="'20px'"
+            [label]="'checkout.invoiceInAdvance' | translate"
+            (click)="setTPPedidoValue(true, 'FacturaPorAdelantado')"
+          >
+          </app-radio-button>-->
+          <app-radio-button
+            [value]="(purchaseOrderDetails$ | async)?.tpPedido?.EntregaConRemision"
+            [height]="'20px'"
+            [label]="'checkout.deliveryWithReferral' | translate"
+            (click)="setTPPedidoValue(true, 'EntregaConRemision')"
+          >
+          </app-radio-button>
+        </div>
+        <div class="text-area">
+          <label>{{ 'checkout.invoiceComments' | translate }}</label>
+          <app-generic-text-area
+            [height]="'100%'"
+            [value]="(purchaseOrderDetails$ | async)?.tpPedido?.ComentariosFacturacion"
+            (emitData)="setTPPedidoValue($event, 'ComentariosFacturacion')"
+          >
+          </app-generic-text-area>
+        </div>
+        <div class="button">
+          <label *ngIf="totalControlledEntries$ | async" (click)="downloadExistenceLetter()"
+            >{{ 'checkout.existenceLetter' | translate }}
+          </label>
+          <button
+            *ngIf="!(selectResumeMode$ | async)"
+            [ngClass]="(checkoutValidator$ | async) ? 'active' : 'disabled'"
+            [disabled]="!(checkoutValidator$ | async)"
+            (click)="handleNavigateToResume()"
+            >{{ 'checkout.checkout' | translate }}</button
+          >
+        </div>
+      </div>
+      <div class="loading" *ngIf="(purchaseOrderDetails$ | async)?.apiStatus === 1">
+        <app-loading></app-loading>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div>
+      <label>OC: </label>
+      <label>{{ 'checkout.purchaseOrder' | translate }}</label>
+    </div>
+    <div>
+      <img src="assets/Images/pre-processing/originales.svg" alt="" />
+      <label>{{ 'preProcessing.typeOfItem.originals' | translate }}</label>
+    </div>
+    <div>
+      <img src="assets/Images/pre-processing/alternativas.svg" alt="" />
+      <label>{{ 'preProcessing.typeOfItem.alternatives' | translate }}</label>
+    </div>
+    <div>
+      <img src="assets/Images/pre-processing/complementarias.svg" alt="" />
+      <label>{{ 'preProcessing.typeOfItem.complementary' | translate }}</label>
+    </div>
+    <div>
+      <img src="assets/Images/pre-processing/promocion.svg" alt="" />
+      <label>{{ 'preProcessing.typeOfItem.scheduled' | translate }}</label>
+    </div>
+  </footer>
+  <div class="pop-up-see-more">
+    <app-custom-position-pop-up
+      *ngIf="popUps.seeMore.isOpen"
+      [popUpPosition]="'top-center'"
+      [target]="popUps.seeMore.target"
+      [minWidth]="(viewType$ | async) === 'macBookAir' ? '577px' : '431px'"
+      [minHeight]="(viewType$ | async) === 'macBookAir' ? '537px' : '390px'"
+      [maxWidth]="(viewType$ | async) === 'macBookAir' ? '577px' : '431px'"
+      [maxHeight]="(viewType$ | async) === 'macBookAir' ? '537px' : '390px'"
+      [closeButtonSize]="(viewType$ | async) === 'macBookAir' ? '25px' : '20px'"
+      [closeButtonSeparation]="(viewType$ | async) === 'macBookAir' ? '40px' : '22px'"
+      [borderRadius]="(viewType$ | async) === 'macBookAir' ? '23px' : '18px'"
+      (closeEmitter)="handlePopUp(SEE_MORE_POP, false, popUps.seeMore.target)"
+    >
+    </app-custom-position-pop-up>
+  </div>
+  <div class="pop-up-usage">
+    <app-custom-position-pop-up
+      *ngIf="popUps.usage.isOpen"
+      [borderColor]="'#d8d9dd'"
+      [borderRadius]="'0'"
+      [closeButton]="false"
+      [floatingSize]="1"
+      [maxHeight]="'150px'"
+      [maxWidth]="'350px'"
+      [minHeight]="'auto'"
+      [minWidth]="'auto'"
+      [padding]="'0'"
+      [popUpPosition]="'bottom-center'"
+      [target]="popUps.usage.target"
+      (closeEmitter)="handlePopUp(USAGE_POP, false, popUps.usage.target)"
+    >
+      <div class="usage-container">
+        <div
+          *ngFor="let usage of usageOptions$ | async"
+          [ngClass]="usage.IdCatUsoCFDI === (purchaseOrderDetails$ | async)?.catUsoCFDI?.IdCatUsoCFDI && 'active'"
+        >
+          <label (click)="selectUsage(usage, USAGE_POP)">{{ usage.ClaveUso }} · {{ usage.Uso }}</label>
+        </div>
+      </div>
+    </app-custom-position-pop-up>
+  </div>
+  <div class="pop-up-payment-method">
+    <app-custom-position-pop-up
+      *ngIf="popUps.payment.isOpen"
+      [borderColor]="'#d8d9dd'"
+      [borderRadius]="'0'"
+      [closeButton]="false"
+      [floatingSize]="1"
+      [maxHeight]="'150px'"
+      [maxWidth]="'410px'"
+      [minHeight]="'auto'"
+      [minWidth]="'auto'"
+      [padding]="'0'"
+      [popUpPosition]="'bottom-center'"
+      [target]="popUps.payment.target"
+      (closeEmitter)="handlePopUp(PAYMENT_POP, false, popUps.payment.target)"
+    >
+      <div class="usage-container">
+        <div
+          *ngFor="let method of paymentMethodOptions$ | async"
+          [ngClass]="
+            method.IdCatMetodoDePagoCFDI === (purchaseOrderDetails$ | async)?.catMetodoDePagoCFDI?.IdCatMetodoDePagoCFDI &&
+            'active'
+          "
+        >
+          <label (click)="selectUsage(method, PAYMENT_POP)">{{ method.MetodoDePagoCFDI }}</label>
+        </div>
+      </div>
+    </app-custom-position-pop-up>
+  </div>
+</div>
+<app-pop-up-alert
+  *ngIf="popUps.defaulter.isOpen"
+  [textInitial]="(customer$ | async).Nombre + ' es un cliente moroso'"
+  [textInter]="'¿Deseas continuar el trámite?'"
+  [textFinal]="''"
+  (confirmacion)="openCodePopUp(proceduresTypes.delinquentCustomer)"
+></app-pop-up-alert>
+<!--TODO: REVISAR SI SE QUITA O SE QUEDA-->
+<!--<div class="linked-items-pop">
+  <app-custom-position-pop-up
+    *ngIf="tooltip"
+    [minWidth]="'160px'"
+    [maxWidth]="'160px'"
+    [minHeight]="'60px'"
+    [maxHeight]="(viewType$ | async) === 'macBookAir' ? '95px' : '85px'"
+    [popUpPosition]="'bottom-center'"
+    [backgroundColor]="'#33333c'"
+    [target]="popUps.linked.target"
+    [borderColor]="'#33333c'"
+    [borderRadius]="'solid 0.5px #c8c8c9'"
+    [triangleBackgroundColor]="'#33333c'"
+    [closeButton]="false"
+    (closeEmitter)="openLinked('tooltip', false, $event, null, null)"
+  >
+    <div class="linked-items">
+      <ul>
+        <li *ngFor="let quote of (quotesLinked$ | async)?.quotesLinked; let i = index">
+          <label (click)="openLinkedFile(quote.IdArchivoPDF, quote.Folio)">{{ i + 1 + '.- FO-' + quote.Folio }}</label>
+        </li>
+      </ul>
+    </div>
+  </app-custom-position-pop-up>
+</div>-->
+<!--<app-draggable-modal
+  *ngIf="viewFile"
+  [titleHeader]="
+    fileSelected !== null
+      ? (fileSelected.FileKey | onlyFileNamePdf)
+      : fileName !== null
+      ? fileName
+      : (invoice$ | async) !== null
+      ? (invoice$ | async)
+      : ''
+  "
+  (closeModal)="openLinked('PDF', false, $event, null, null)"
+  [isLoading]="viewFileLoading$ | async"
+>
+  <app-upload-view-file
+    *ngIf="isPdf && (base64$ | async)"
+    [datasFile]="{path: base64$ | async, titulo: ''}"
+  ></app-upload-view-file>
+</app-draggable-modal>-->
+<app-addenda-pop-up *ngIf="isAddendaPopUpOpen$ | async"></app-addenda-pop-up>

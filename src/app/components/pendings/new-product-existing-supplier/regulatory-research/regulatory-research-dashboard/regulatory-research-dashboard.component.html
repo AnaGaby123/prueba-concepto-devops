@@ -1,0 +1,87 @@
+<div id="regulatory-research-dashboard">
+  <div class="list">
+    <div class="filters">
+      <div class="title">
+        <label>{{ 'common.providers' | translate }}</label>
+      </div>
+      <div class="search">
+        <pqf-search [searchTerm]="searchTerm$ | async" (textSearch)="handleKeySearch($event)"></pqf-search>
+      </div>
+      <div class="options">
+        <pqf-filter-options
+          [filterText]="('filters.orderBy' | translate) + ': '"
+          [flexDirection]="'column'"
+          [options]="filterOptions$ | async"
+          [rowGap]="'8px'"
+          [onlyOneOption]="true"
+          (selectedOptionEmitter)="setFilterSelected($event)"
+        ></pqf-filter-options>
+      </div>
+    </div>
+    <div class="list-items">
+      <virtual-scroller
+        *ngIf="!lodashIsEmpty(items$ | async) && (apiStatus$ | async) === 3"
+        [items]="items$ | async"
+        (vsUpdate)="listItems = $event"
+      >
+        <div class="item" *ngFor="let item of listItems; let i = index" (click)="setItem(item)">
+          <div class="index">
+            <label>#{{ i + 1 }}</label>
+          </div>
+          <div class="info">
+            <div class="content1">
+              <div class="name">
+                <label>{{ item.NombreProveedor }}</label>
+              </div>
+              <div class="products">
+                <label
+                  >{{ item.EstadoInvestigacionEnRatificacion }}
+                  {{
+                    item.EstadoInvestigacionEnRatificacion === 1
+                      ? ('common.product' | translate)
+                      : ('common.products' | translate)
+                  }}</label
+                >
+              </div>
+            </div>
+            <div class="content2">
+              <div class="quotations">
+                <label
+                  >{{ item.IdCotCotizacion }}
+                  {{ item.IdCotCotizacion === 1 ? ('common.quotation' | translate) : ('common.quotations' | translate) }}</label
+                >
+              </div>
+              <div class="date">
+                <label>{{ 'Fecha de recepción' }}: </label>
+                <label [ngClass]="'wrap'">{{ ' + ' + (item.FechaRegistro | dateFormatSlash) }}</label>
+              </div>
+            </div>
+          </div>
+          <div class="arrow">
+            <img src="assets/Images/arrows/arrow-dashboard-item.svg" />
+          </div>
+        </div>
+      </virtual-scroller>
+      <div class="loader" *ngIf="(apiStatus$ | async) === 1">
+        <app-loading></app-loading>
+      </div>
+      <div class="without-results" *ngIf="lodashIsEmpty(items$ | async) && (apiStatus$ | async) === 3">
+        <app-without-results></app-without-results>
+      </div>
+    </div>
+  </div>
+  <div class="dashboard">
+    <div class="chart" *ngIf="!lodashIsEmpty(items$ | async) && (apiStatus$ | async) === 3">
+      <app-doughnut-chart
+        [title]="'common.providers' | translate"
+        [data]="donutChartData$ | async"
+        [optionDetails]="donutChartDetails$ | async"
+        [optionDetailsHover]="doughnutDataDetailsHover$ | async"
+        [titleDetails]="'totals' | translate"
+      ></app-doughnut-chart>
+    </div>
+    <div class="loader" *ngIf="(apiStatus$ | async) === 1">
+      <app-loading></app-loading>
+    </div>
+  </div>
+</div>

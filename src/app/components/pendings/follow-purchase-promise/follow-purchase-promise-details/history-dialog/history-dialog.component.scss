@@ -1,0 +1,145 @@
+@use 'base' as s;
+
+.pop {
+  ::ng-deep .modal {
+    background: none;
+
+    & > .modal-content {
+      transition: none;
+    }
+  }
+  & .ng-content {
+    @include s.flexColumn;
+    height: 100%;
+    overflow: hidden;
+    width: 100%;
+
+    & > .client {
+      @include s.flexRow;
+      align-items: center;
+      background-color: rgba(s.$pqGreen, 0.04);
+      flex: 0 0 130px;
+      margin-bottom: 20px;
+      overflow: hidden;
+      padding: 20px;
+
+      & > .image {
+        height: 100%;
+        min-width: 150px;
+
+        & > img {
+          max-height: 100%;
+          max-width: 100%;
+        }
+      }
+
+      & > .info {
+        @include s.flexColumn;
+        align-items: flex-start;
+
+        & > label:first-of-type {
+          @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqGreen);
+          @include s.Novecento-Bold;
+          margin-bottom: 5px;
+        }
+
+        & > label:last-of-type {
+          @include s.escaledFontFormat(s.$textSize14to18, regular, s.$pqBlack2);
+          @include s.Roboto-Regular;
+
+          & > span {
+            color: s.$pqGreen;
+            white-space: pre;
+          }
+        }
+      }
+    }
+
+    & > .table-container {
+      @include s.flexColumn;
+      border-bottom: 1px solid s.$pqBlack2;
+      border-top: 1px solid s.$pqBlack2;
+      flex: 1 1 auto;
+      margin: 0 25px;
+
+      & > .table {
+        @include s.flexColumn;
+        flex: 1;
+        overflow: auto;
+
+        & > .item {
+          @include s.default-transition;
+          @include s.flexColumn;
+          align-items: flex-start;
+          border-bottom: 1px solid s.$pqGray2;
+          padding: 12px;
+
+          &:hover {
+            background-color: s.$pqGray2;
+          }
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+            @include s.Roboto-Bold;
+            margin-bottom: 4px;
+
+            & > span {
+              color: s.$pqGreen;
+              white-space: pre;
+            }
+          }
+
+          & > div {
+            @include s.multiLineTextTruncateSinHeight($lineHeight: 1.1em);
+            text-align: start;
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+              @include s.Roboto-Regular;
+
+              & > span {
+                @include s.Roboto-Bold;
+                white-space: pre;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    & > .footer {
+      flex: 0 0 60px;
+      margin: 0 25px;
+      padding-top: 6px;
+
+      & > label {
+        @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+        @include s.Roboto-Regular;
+        margin: 0 auto;
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .client {
+        flex: 0 0 152px;
+        margin-bottom: 25px;
+      }
+
+      & > .table-container {
+        margin: 0 25px;
+
+        & > .table {
+          & > .item {
+            padding: 15px;
+          }
+        }
+      }
+
+      & > .footer {
+        flex: 0 0 75px;
+        margin: 0 30px;
+        padding-top: 6px;
+      }
+    }
+  }
+}

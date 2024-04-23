@@ -1,0 +1,102 @@
+<div class="dashboard-container" id="register-dispatch-list-container">
+  <div class="left-container">
+    <label class="title">{{ 'loadMissing.customersBroker' | translate }}</label>
+    <div class="filters">
+      <div class="filter-by-menu">
+        <app-hamburger-menu
+          (valueEmit)="setOption($event)"
+          [options]="options$ | async"
+          [value]="(selectedOption$ | async).value"
+        >
+        </app-hamburger-menu>
+      </div>
+      <div class="filter-by-search">
+        <app-search [placeholder]="'Agente aduanal, Orden de despacho'" (textSearch)="handleSearchTerm($event)"></app-search>
+      </div>
+    </div>
+    <div class="list-container">
+      <virtual-scroller
+        *ngIf="!(isLoadingList$ | async) && (list$ | async)?.length > 0"
+        [items]="list$ | async"
+        (vsUpdate)="listScroll = $event"
+        (vsEnd)="fetchMore($event)"
+      >
+        <div class="item-card" *ngFor="let custom of listScroll" (click)="setAgent(custom)">
+          <div class="item-card-index">
+            <label>#{{ custom.Index }}</label>
+          </div>
+          <div class="item-card-custom-broker">
+            <div class="custom-broker">
+              <label>{{ custom.NombreLegalAgenteAduanal }}</label>
+            </div>
+            <div class="od-custom-brokers">
+              <label>{{ custom.OrdenesDespacho }} OD · {{ custom.Proveedores + ' ' + ('common.providers' | translate) }}</label>
+            </div>
+            <div class="cant-price">
+              <label
+                >{{ custom.Piezas }} {{ 'common.pzas' | translate }} ·
+                {{ custom.MontoTotalUSD | currency: 'USD':'symbol':'1.2-2' }}</label
+              >
+            </div>
+            <div class="states">
+              <div>
+                <img alt="quotes" src="assets/Images/labels/fuera-de-tiempo.svg" />
+                <div class="red"
+                  ><label>{{ custom.FueraDeTiempo }} ·</label></div
+                >
+              </div>
+              <div>
+                <img alt="quotes" src="assets/Images/labels/en-tiempo.svg" />
+                <div class="green"
+                  ><label>{{ custom.ATiempo }}</label></div
+                >
+              </div>
+            </div>
+          </div>
+          <div class="item-card-button">
+            <img alt="" src="assets/Images/arrows/arrow_right.svg" />
+          </div>
+        </div>
+      </virtual-scroller>
+      <div class="without-results" *ngIf="(list$ | async)?.length === 0 && !(isLoadingList$ | async)">
+        <app-without-results></app-without-results>
+      </div>
+      <div class="loader" *ngIf="isLoadingList$ | async">
+        <app-loading></app-loading>
+      </div>
+    </div>
+    <div class="footer">
+      <label>#{{ totalsList$ | async }}</label>
+      <label>{{ (totals$ | async)?.OrdenesDespacho }} OD</label>
+      <label>{{ (totals$ | async)?.Piezas }} {{ 'common.pieces' | translate }}</label>
+      <label>{{ (totals$ | async)?.Proveedores }} {{ 'common.providers' | translate }}</label>
+      <label
+        >{{ 'registerDispatch.totalCustomsValue' | translate }}:
+        {{ (totals$ | async)?.ValorTotalAduana | currency: 'USD':'symbol':'1.2-2' }}</label
+      >
+    </div>
+  </div>
+  <div class="right-container">
+    <ng-container *ngIf="true">
+      <app-doughnut-chart
+        *ngIf="!(isLoadingList$ | async)"
+        [data]="dataBarChart$ | async"
+        [optionDetailsHover]="dataDoughnutDetailsHover$ | async"
+        [optionDetails]="dataDoughnutDetails$ | async"
+        [titleDetails]="'donutChart.titleTotals' | translate"
+        [title]="'common.providers' | translate"
+        [typeChart]="1"
+      >
+      </app-doughnut-chart>
+      <app-bar-chart
+        *ngIf="!(isLoadingList$ | async)"
+        [fontColorBottom]="'#008894'"
+        [textDataLabel]="'Partidas'"
+        [title]="'registerConfirmation.deliveryTrafficLight' | translate"
+        [values]="dataBarChart$ | async"
+      >
+      </app-bar-chart>
+    </ng-container>
+    <app-loading class="loading" *ngIf="isLoadingList$ | async"></app-loading>
+  </div>
+</div>

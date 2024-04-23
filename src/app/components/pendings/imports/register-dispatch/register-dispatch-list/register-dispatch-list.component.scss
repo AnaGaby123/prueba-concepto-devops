@@ -1,0 +1,220 @@
+@use 'base' as s;
+
+:host {
+  $left-container-flex: (
+    'base': 580px,
+    'macBookAir': 680px,
+  );
+  $graphics-padding: (
+    'base': 10px 60px,
+    'macBookAir': 30px 40px,
+  );
+  $graphics-structure: (
+    'top': 1,
+    'bottom': 1,
+  );
+  $graphics-gap: (
+    'base': 25px 0,
+    'macBookAir': 40px 0,
+  );
+  @include s.pending-dashboard-structure($left-container-flex, $graphics-padding, $graphics-structure, $graphics-gap);
+
+  & > #register-dispatch-list-container {
+    & > .left-container {
+      & > .filters {
+        & > div:nth-of-type(1) {
+          width: 40%;
+        }
+
+        & > div:nth-of-type(2) {
+          width: 60%;
+        }
+
+        & > div {
+          @include s.flexRow;
+          align-items: center;
+          justify-content: center;
+          width: 50%;
+        }
+      }
+
+      & > .list-container {
+        & > virtual-scroller {
+          width: 100%;
+          height: 100%;
+
+          & .item-card {
+            @include s.flexRow;
+            width: 100%;
+            border-bottom: 1px solid s.$pqGray2;
+            cursor: pointer;
+            flex-wrap: nowrap;
+            padding: 15px;
+
+            & * {
+              cursor: pointer;
+            }
+
+            &:hover {
+              background-color: s.$pqGray2;
+            }
+
+            & > .item-card-index {
+              & > label {
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormat(s.$textSize21to28, regular, s.$pqBlack2);
+                padding-right: 32px;
+              }
+            }
+
+            & > .item-card-custom-broker {
+              @include s.flexColumn;
+
+              width: 100%;
+              flex: 1;
+              flex-wrap: nowrap;
+
+              & > .custom-broker {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormat(s.$textSize21to28, bold, s.$pqGreen);
+              }
+
+              & > .od-custom-brokers {
+                @include s.Roboto-Bold;
+                margin-top: 3px;
+                @include s.responsive_layout('macBookAir') {
+                  margin-top: 5px;
+                }
+
+                & > label {
+                  @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+                }
+              }
+
+              & > .cant-price {
+                @include s.Roboto-Regular;
+                margin-top: 3px;
+                @include s.responsive_layout('macBookAir') {
+                  margin-top: 5px;
+                }
+
+                & > label {
+                  @include s.escaledFontFormat(s.$textSize15to20, regular, s.$pqBlack2);
+                }
+              }
+
+              & > .states {
+                @include s.flexRowNoWrap;
+                @include s.absoluteCenter;
+
+                padding-top: 5px;
+                width: 100%;
+                justify-content: flex-start;
+                @include s.responsive_layout('macBookAir') {
+                  padding-top: 7px;
+                }
+
+                & > div:nth-of-type(1) {
+                  margin-left: 0 !important;
+                }
+
+                & > div {
+                  @include s.flexRowNoWrap;
+                  @include s.absoluteCenter;
+                  width: auto;
+                  margin-left: 7px;
+
+                  & > img:nth-of-type(1) {
+                    width: auto;
+                    height: 16px;
+                    margin-right: 7px;
+                  }
+
+                  & > .red {
+                    & > label {
+                      @include s.escaledFontFormat(s.$textSize15to19, normal, s.$pqDanger);
+                      @include s.Roboto-Regular;
+                    }
+                  }
+
+                  & > .yellow {
+                    & > label {
+                      @include s.escaledFontFormat(s.$textSize15to19, normal, s.$urgent);
+                      @include s.Roboto-Regular;
+                    }
+                  }
+
+                  & > .green {
+                    & > label {
+                      @include s.escaledFontFormat(s.$textSize15to19, normal, s.$pqGreen2);
+                      @include s.Roboto-Regular;
+                    }
+                  }
+                }
+              }
+            }
+
+            & > .item-card-button {
+              @include s.flexRow;
+              align-items: center;
+              justify-content: center;
+              width: 40px;
+
+              & > img {
+                height: 22px;
+              }
+
+              @include s.responsive_layout('macBookAir') {
+                width: 50px;
+                & > img {
+                  height: 27px;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      & > .footer {
+        @include s.flexRow;
+        border-top: 1px solid s.$pqBlack2;
+        justify-content: space-between;
+
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+          @include s.flexRow;
+        }
+      }
+    }
+
+    & > .right-container {
+      & > app-doughnut-chart {
+        grid-column-end: span 2;
+        overflow: hidden;
+      }
+
+      & > app-bar-chart {
+        overflow: hidden;
+      }
+
+      & > .loading {
+        grid-area: 2/1/2/2;
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > #register-dispatch-list-container {
+      & > .left-container {
+        & > .list-container {
+          & > virtual-scroller {
+            & .item-card {
+              padding: 20px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

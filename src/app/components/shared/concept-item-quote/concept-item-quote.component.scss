@@ -1,0 +1,205 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  & > .concept-column {
+    @include s.flexColumn;
+    flex: 1;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    & > .cat-product {
+      & > .index {
+        @include s.responsive-font-format(
+          $font-size-map: s.$responsive-font-13-13,
+          $font-family: s.$font_family_roboto_bold,
+          $font-weight: s.$font_weight_bold,
+          $color: s.$pqBlack2
+        );
+      }
+
+      & > .img-label {
+        height: 17px;
+        margin-right: 4px;
+      }
+
+      & > .img-brand {
+        height: 17px;
+        margin-right: 4px;
+      }
+
+      & > .cat {
+        @include s.responsive-font-format(
+          $font-size-map: s.$responsive-font-13-13,
+          $font-family: s.$font_family_roboto_bold,
+          $font-weight: s.$font_weight_bold,
+          $color: s.$main-proquifa
+        );
+      }
+    }
+
+    & > .product-description {
+      @include s.multiLineTextTruncateSinHeight(3, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+      @include s.responsive-font-format(
+        $font-size-map: s.$responsive-font-12-12,
+        $font-family: s.$font_family_roboto_light,
+        $font-weight: s.$font_weight_light
+      );
+    }
+
+    & > .details-family {
+      @include s.flexRow;
+
+      & > .product-family {
+        @include s.responsive-font-format(
+          $font-size-map: s.$responsive-font-11-13,
+          $font-family: s.$font_family_roboto_bold,
+          $font-weight: s.$font_weight_bold,
+          $color: s.$main-proquifa
+        );
+      }
+
+      & > .controlled {
+        @include s.responsive-font-format(
+          $font-size-map: s.$responsive-font-11-13,
+          $font-family: s.$font_family_roboto_bold,
+          $font-weight: s.$font_weight_bold,
+          $color: s.$pqOrange2
+        );
+        white-space: break-spaces;
+      }
+
+      & > .publications-author {
+        @include s.responsive-font-format(
+          $font-size-map: s.$responsive-font-11-13,
+          $font-family: s.$font_family_roboto_bold,
+          $font-weight: s.$font_weight_bold,
+          $color: s.$pqBlack2
+        );
+      }
+
+      white-space: break-spaces;
+    }
+
+    & > .date-container {
+      @include s.flexRow;
+
+      & > .validation {
+        @include s.responsive-font-format(
+          $font-size-map: s.$responsive-font-11-13,
+          $font-family: s.$font_family_roboto_bold,
+          $font-weight: s.$font_weight_bold,
+          $color: s.$main-proquifa
+        );
+      }
+
+      & > .date {
+        @include s.responsive-font-format(
+          $font-size-map: s.$responsive-font-11-13,
+          $font-family: s.$font_family_roboto_bold,
+          $font-weight: s.$font_weight_bold,
+          $color: s.$success
+        );
+        white-space: pre-wrap;
+      }
+    }
+
+    & > .dates-trainings {
+      @include s.flexRow;
+
+      & > label {
+        @include s.responsive-font-format(
+          $font-size-map: s.$responsive-font-10-12-b,
+          $font-family: s.$font_family_roboto_bold,
+          $font-weight: s.$font_weight_bold,
+          $color: s.$pqBlack2
+        );
+      }
+
+      & > label:nth-of-type(1) {
+        min-width: 95px;
+      }
+    }
+
+    & > .rate-conversion-container {
+      @include s.flexRow;
+      align-items: center;
+      column-gap: 8px;
+
+      & > .rate-conversion {
+        @include s.responsive-font-format(
+          $font-size-map: s.$responsive-font-11-13,
+          $font-family: s.$font_family_roboto_regular,
+          $font-weight: s.$font_weight_regular,
+          $color: s.$main-proquifa
+        );
+        text-decoration: underline;
+      }
+
+      & img {
+        width: 24px;
+      }
+    }
+
+    & > .alternate-complementary-container {
+      & > .alternate {
+        @include s.responsive-font-format(
+          $font-size-map: s.$responsive-font-11-13,
+          $font-family: s.$font_family_roboto_regular,
+          $font-weight: s.$font_weight_regular,
+          $color: s.$etiqueta-a
+        );
+      }
+
+      & > .complementary {
+        @include s.responsive-font-format(
+          $font-size-map: s.$responsive-font-11-13,
+          $font-family: s.$font_family_roboto_regular,
+          $font-weight: s.$font_weight_regular,
+          $color: s.$main-proquifa
+        );
+      }
+    }
+
+    & > .quotations-linked {
+      @include s.responsive-font-format(
+        $font-size-map: s.$responsive-font-11-13,
+        $font-family: s.$font_family_roboto_regular,
+        $font-weight: s.$font_weight_regular,
+        $color: s.$success
+      );
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    & > .without-quote {
+      @include s.responsive-font-format(
+        $font-size-map: s.$responsive-font-11-13,
+        $font-family: s.$font_family_roboto_regular,
+        $font-weight: s.$font_weight_regular,
+        $color: s.$etiqueta-a
+      );
+    }
+
+    & > .express {
+      @include s.responsive-font-format(
+        $font-size-map: s.$responsive-font-11-13,
+        $font-family: s.$font_family_roboto_regular,
+        $font-weight: s.$font_weight_regular,
+        $color: s.$alert-c
+      );
+    }
+
+    & > .more-info {
+      @include s.responsive-font-format(
+        $font-size-map: s.$responsive-font-11-13,
+        $font-family: s.$font_family_roboto_regular_italic,
+        $font-weight: s.$font_weight_regular,
+        $color: s.$main-proquifa
+      );
+    }
+  }
+}

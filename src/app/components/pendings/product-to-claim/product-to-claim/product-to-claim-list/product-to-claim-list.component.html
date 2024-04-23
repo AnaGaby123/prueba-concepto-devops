@@ -1,0 +1,63 @@
+<div class="dashboard-container" id="product-to-claim-list">
+  <div class="left-container">
+    <label class="title">{{ 'common.providers' | translate }}</label>
+    <div class="filters">
+      <div class="hamburger">
+        <app-hamburger-menu
+          [options]="filterOptions$ | async"
+          [value]="(filterSelected$ | async).value"
+          (valueEmit)="setFilter($event)"
+        ></app-hamburger-menu>
+      </div>
+      <div class="search">
+        <app-search
+          placeholder="{{ 'common.provider' | translate }}"
+          [searchTerm]="searchTerm$ | async"
+          (textSearch)="handleKeySearch($event)"
+        ></app-search>
+      </div>
+    </div>
+    <div class="list-container">
+      <virtual-scroller>
+        <div class="item" (click)="itemSelected()">
+          <div class="index">
+            <label>#{{ 1 }}</label>
+          </div>
+          <div class="item-content">
+            <div class="provider">
+              <label>{{ 'COLE PARMER' }}</label>
+            </div>
+            <div class="oc">
+              <label>{{ '1 OC · 2 Productos' }}</label>
+            </div>
+            <div class="date">
+              <label>{{ 'quarantineManager.inspectionDate' | translate }}: {{ '12/01/2022' }}</label>
+            </div>
+          </div>
+          <div class="arrow">
+            <img alt="" src="assets/Images/arrows/arrow_right.svg" />
+          </div>
+        </div>
+      </virtual-scroller>
+      <div class="without-results" *ngIf="false">
+        <app-without-results></app-without-results>
+      </div>
+      <div class="loader" *ngIf="false">
+        <app-loading></app-loading>
+      </div>
+    </div>
+    <div class="footer">
+      <label>#{{ 9 }}</label>
+      <label>{{ 9 }} {{ 'common.providers' | translate }}</label>
+      <label>{{ 12 }} OC</label>
+      <label>{{ 14 }} {{ 'common.products' | translate }}</label>
+    </div>
+  </div>
+  <div class="right-container">
+    <ng-container *ngIf="true">
+      <app-doughnut-chart [title]="'common.providers' | translate"></app-doughnut-chart>
+      <app-bar-chart [title]="'quarantineManager.typeOfProducts' | translate"></app-bar-chart>
+    </ng-container>
+    <app-loading class="loading" *ngIf="false"></app-loading>
+  </div>
+</div>

@@ -1,0 +1,459 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+
+  #adjustments-summary {
+    @include s.flexColumn;
+    flex: 1;
+    overflow: hidden;
+
+    & > .container-blue {
+      @include s.flexRowNoWrap;
+      width: 100%;
+      height: 75px;
+      align-items: center;
+      background-color: s.$pqFondo;
+      box-sizing: border-box;
+      justify-content: center;
+      padding: 6px 22px;
+
+      & > .column-one {
+        @include s.flexRowNoWrap;
+
+        & > label:nth-of-type(1) {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-roboto_bold,
+            $font-weight: s.$font-weight-bold,
+            $font-size-map: s.$responsive-font-17-21
+          );
+          padding-right: 5px;
+        }
+
+        & > label:nth-of-type(2) {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-roboto_bold,
+            $font-weight: s.$font-weight-bold,
+            $font-size-map: s.$responsive-font-17-21,
+            $color: s.$pqGreen
+          );
+        }
+      }
+
+      & > .column-two {
+        @include s.flexRowNoWrap;
+        padding-left: 20%;
+
+        & > label:nth-of-type(1) {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-roboto_bold,
+            $font-weight: s.$font-weight-bold,
+            $font-size-map: s.$responsive-font-17-21
+          );
+          padding-right: 5px;
+        }
+
+        & > .green {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-roboto_bold,
+            $font-weight: s.$font-weight-bold,
+            $font-size-map: s.$responsive-font-17-21,
+            $color: s.$pqGreen
+          );
+          padding-right: 5px;
+        }
+
+        & > .red {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-roboto_bold,
+            $font-weight: s.$font-weight-bold,
+            $font-size-map: s.$responsive-font-17-21,
+            $color: s.$pqRed
+          );
+          padding-right: 5px;
+        }
+
+        & > label:nth-of-type(3) {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-roboto_bold,
+            $font-weight: s.$font-weight-bold,
+            $font-size-map: s.$responsive-font-17-21,
+            $color: s.$pqRed
+          );
+        }
+      }
+    }
+    & > .content {
+      @include s.flexColumn;
+      padding-top: 15px;
+      row-gap: 15px;
+      flex: 1;
+      overflow: auto;
+      & > .provider-list,
+      .items-list {
+        & > label {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-novecento_bold,
+            $font-weight: s.$font-weight-bold,
+            $font-size-map: s.$responsive-font-14-16
+          );
+        }
+      }
+
+      & > .provider-list {
+        @include s.flexColumn;
+        row-gap: 15px;
+        min-height: 120px;
+        max-height: 50%;
+        min-width: 1600px;
+        & > .container-cards {
+          @include s.flexColumn;
+          flex: 1;
+          max-height: 50%;
+          overflow: hidden;
+          & > div {
+            @include s.flexColumn;
+            flex: 1;
+            overflow: auto;
+            .card-container {
+              @include s.flexColumn;
+              width: 100%;
+              & > .expressFreight {
+                @include s.flexRowNoWrap;
+                @include s.absoluteCenter;
+                box-sizing: border-box;
+                border: 1px solid s.$pqGray2;
+                justify-content: flex-start;
+                height: 54px;
+                margin: 3px 0 0;
+                padding: 5px 30px;
+                width: 100%;
+                &.selected {
+                  background-color: s.$pqGray2;
+                }
+                & > .first-column {
+                  @include s.flexRowNoWrap;
+                  align-items: center;
+                  justify-content: flex-start;
+                  flex: 1;
+                  & > .column-check-box {
+                    width: 80px;
+
+                    & > img:nth-of-type(1) {
+                      padding-right: 15px;
+                    }
+
+                    & > img {
+                      &.img-opacity {
+                        opacity: 0.2;
+                      }
+
+                      &:hover {
+                        opacity: 1;
+                      }
+                    }
+                  }
+
+                  & > .column-mark {
+                    width: auto;
+
+                    & > img:nth-of-type(1) {
+                      width: 22px;
+                      height: 22px;
+                      padding-right: 10px;
+                    }
+
+                    & > label:nth-of-type(1) {
+                      $textSize: (
+                        'base': 12px,
+                        'macBookAir': 15px,
+                      );
+                      @include s.escaledFontFormat($textSize, regular, s.$pqBlack2);
+                      @include s.Roboto-Regular;
+                      padding-right: 5px;
+                    }
+
+                    & > label:nth-of-type(2) {
+                      $textSize: (
+                        'base': 12px,
+                        'macBookAir': 15px,
+                      );
+                      @include s.escaledFontFormat($textSize, regular, s.$pqGreen);
+                      @include s.Roboto-Regular;
+                    }
+                  }
+
+                  & > .column-items {
+                    @include s.flexRowWrap;
+                    @include s.absoluteCenter;
+                    box-sizing: border-box;
+                    min-width: max-content;
+
+                    & > label {
+                      $textSize: (
+                        'base': 12px,
+                        'macBookAir': 15px,
+                      );
+                      @include s.escaledFontFormat($textSize, regular, s.$pqBlack2);
+                      @include s.Roboto-Regular;
+                    }
+
+                    & > img {
+                      width: auto;
+                      height: 15px;
+                      padding-right: 5px;
+                      padding-left: 10px;
+                    }
+                  }
+                }
+                & > .third-column {
+                  @include s.flexRowNoWrap;
+                  flex: 0 0 auto;
+                  column-gap: 20px;
+                  & > .column-info {
+                    @include s.flexRowNoWrap;
+                    align-items: center;
+                    & > .normal {
+                      @include s.escaledFontFormat(s.$textSize13to15, regular, s.$pqBlack2);
+                      @include s.Roboto-Regular;
+                      white-space: pre;
+                    }
+
+                    & > .freight {
+                      @include s.escaledFontFormat(s.$textSize13to15, regular, s.$pqGreen);
+                      @include s.Roboto-Regular;
+                      text-decoration: underline;
+                      & > .green {
+                        color: s.$pqGreen2;
+                        vertical-align: baseline;
+                      }
+                      & > .black {
+                        color: s.$pqBlack2;
+                        vertical-align: baseline;
+                      }
+                      &.disable {
+                        color: s.$pqBlack2;
+                        * {
+                          color: s.$pqBlack2;
+                        }
+                      }
+                    }
+
+                    & > div:nth-of-type(1) {
+                      @include s.flexRowNoWrap;
+                      align-items: center;
+                      position: relative;
+                      * {
+                        cursor: pointer;
+                      }
+
+                      & > .info {
+                        @include s.flexRowNoWrap;
+                        border-bottom: 0.5px solid s.$pqGreen;
+
+                        & > label:nth-of-type(1) {
+                          $textSize: (
+                            'base': 12px,
+                            'macBookAir': 15px,
+                          );
+                          @include s.escaledFontFormat($textSize, regular, s.$pqGreen);
+                          @include s.Roboto-Regular;
+                          padding-right: 5px;
+                        }
+
+                        & > label:nth-of-type(2) {
+                          $textSize: (
+                            'base': 12px,
+                            'macBookAir': 15px,
+                          );
+                          @include s.escaledFontFormat($textSize, regular, s.$pqGreen2);
+                          @include s.Roboto-Regular;
+                          padding-right: 5px;
+                        }
+
+                        & > label:nth-of-type(3) {
+                          $textSize: (
+                            'base': 12px,
+                            'macBookAir': 15px,
+                          );
+                          @include s.escaledFontFormat($textSize, regular, s.$pqBlack2);
+                          @include s.Roboto-Regular;
+                        }
+                      }
+
+                      & > .add-freight {
+                        @include s.flexRowNoWrap;
+                        border-bottom: 0.5px solid s.$pqGreen;
+
+                        & > label:nth-of-type(1) {
+                          $textSize: (
+                            'base': 12px,
+                            'macBookAir': 15px,
+                          );
+                          @include s.escaledFontFormat($textSize, regular, s.$pqGreen);
+                          @include s.Roboto-Regular;
+                          margin: 0 2px;
+                        }
+                      }
+
+                      & > .pop-up-freight-express {
+                        width: 490px;
+                        height: 250px;
+                        box-shadow: 0 2px 10px 0 rgb(216 217 221 / 50%);
+                        background-color: #fff;
+                        box-sizing: border-box;
+                        position: absolute;
+                        top: calc(100% + 12px);
+                        right: 244px;
+                        z-index: 1;
+                        transform: translate(50%, 0);
+
+                        & > .container-freight-express {
+                          @include s.flexColumn;
+                          background-color: s.$pqWhite;
+                          border: solid 1px #d8d9dd;
+                          height: calc(250px - 35px);
+                          padding: 20px;
+
+                          & > .line-one {
+                            @include s.flexRowNoWrap;
+                            align-items: center;
+                            padding-bottom: 5px;
+
+                            & > app-check-box {
+                              padding-right: 10px;
+                            }
+
+                            & > label:nth-of-type(1) {
+                              @include s.escaledFontFormat(s.$textSize14to20, bold, s.$pqGreen);
+                              @include s.Novecento-Bold;
+                            }
+                          }
+
+                          & > .line-two {
+                            @include s.flexRowNoWrap;
+                            padding-bottom: 20px;
+
+                            & > app-drop-down-list:nth-of-type(1) {
+                              width: 80%;
+                              padding-right: 10px;
+                            }
+
+                            & > app-drop-down-list:nth-of-type(2) {
+                              width: 20%;
+                            }
+                          }
+
+                          & > .line-three {
+                            @include s.flexColumn;
+                            height: 100%;
+
+                            & > label:nth-of-type(1) {
+                              @include s.escaledFontFormat(s.$textSize12to13, regular, s.$pqBlack2);
+                              @include s.Roboto-Regular;
+                              padding-bottom: 10px;
+                            }
+
+                            & > textarea {
+                              width: 100%;
+                              height: 100%;
+                              box-sizing: border-box;
+                              padding: 10px;
+                            }
+                          }
+                        }
+
+                        & > .button {
+                          width: 100%;
+                          height: 35px;
+                          cursor: pointer;
+
+                          & > button {
+                            border-radius: 0 !important;
+                          }
+
+                          & > .btn-active-accept {
+                            @include s.pqButton(100%, 100%, 35px, 35px);
+                          }
+
+                          & > .btn-disable-accept {
+                            @include s.pqButtonDisable(100%, 100%, 35px, 35px);
+                            cursor: default;
+                          }
+                        }
+
+                        & > .triangle {
+                          border-bottom-width: 1px;
+                          border-bottom-style: solid;
+                          border-right-width: 1px;
+                          border-right-style: solid;
+                          width: 14px;
+                          height: 14px;
+                          position: absolute;
+                          background-color: #ffffff;
+                          border-bottom-color: #d8d9dd;
+                          border-right-color: #d8d9dd;
+                          z-index: 3;
+                          inset: -7px auto auto calc(75% - 8px);
+                          transform: rotate(-135deg);
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      & > .items-list {
+        @include s.flexColumn;
+        flex: 1;
+        row-gap: 15px;
+        & > .table-container {
+          @include s.flexRow;
+          flex: 1;
+          min-width: 1600px;
+
+          & > virtual-scroller {
+            overflow: hidden;
+            @include s.fixVirtualScroller();
+
+            ::ng-deep .scrollable-content {
+              overflow: auto;
+
+              & > .header {
+                flex: 0 0 auto;
+                position: sticky;
+                top: 0;
+                z-index: 6;
+              }
+
+              & > .header-separator {
+                position: sticky;
+                top: 47px;
+                left: 0;
+                border-bottom: 1px solid s.$dark-proquifa;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.headerTitle {
+  @include s.Roboto-Regular;
+  @include s.escaledFontFormat(s.$textSize11to13, regular, s.$pqBlack2);
+  text-align: center;
+}

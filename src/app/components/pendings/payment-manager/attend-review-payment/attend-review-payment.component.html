@@ -1,0 +1,16 @@
+<div class="component-container" id="attend-review-payment-container">
+  <div class="header">
+    <app-header-bar [activeBack]="isDetails$ | async" [title]="'ATENDER REVISIÓN'" (goBack)="redirect()"></app-header-bar>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="footer" *ngIf="!(isDetails$ | async)">
+    <ng-container>
+      <div>
+        <label class="label-dark">{{ 'attendReview.paymentDate' | translate }}:</label>
+        <label>{{ 'attendReview.earliestPaymentDate' | translate }}</label>
+      </div>
+    </ng-container>
+  </div>
+</div>

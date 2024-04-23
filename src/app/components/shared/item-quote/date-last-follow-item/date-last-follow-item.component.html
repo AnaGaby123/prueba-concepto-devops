@@ -1,0 +1,21 @@
+<div class="label-container">
+  <img alt="" src="assets/Images/close-offer/warning.svg" *ngIf="columnDateLastFollow?.expiredTracking" />
+  <label
+    #labelElement
+    [id]="columnDateLastFollow?.elementIdComment ? columnDateLastFollow.elementIdComment : 'label'"
+    [ngClass]="
+      columnDateLastFollow?.expiredTracking && columnDateLastFollow?.isSelected
+        ? 'expired-selected'
+        : !columnDateLastFollow?.expiredTracking && columnDateLastFollow?.isSelected
+        ? 'normal-selected'
+        : columnDateLastFollow?.expiredTracking
+        ? 'expired'
+        : 'normal'
+    "
+    *ngIf="columnDateLastFollow?.date"
+    (click)="
+      handleClick($event, labelElement, !columnDateLastFollow?.isSelected, nameActionsInternalSalesItem.DateLastFollowingAction)
+    "
+    >{{ columnDateLastFollow?.date | dateFormatSlashShortNumbers }}</label
+  >
+</div>

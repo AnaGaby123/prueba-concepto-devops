@@ -1,0 +1,237 @@
+<div id="follow-purchase-promise-details-container">
+  <div class="header">
+    <div class="client-container">
+      <div class="client-title">
+        <label class="textUpperCase">{{ 'common.client' | translate }}</label>
+      </div>
+      <div class="client">
+        <div>
+          <img src="assets/Images/clientes/logo_proquifa_hover.svg" alt="" />
+        </div>
+        <div class="client-info">
+          <label class="client-alias">{{ (selectedClient$ | async).Alias }}</label>
+          <label class="client-level">{{ 'common.client' | translate }} · {{ (selectedClient$ | async).NivelIngreso }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="contact-data">
+      <div class="title">
+        <label>{{ 'purchasePromise.contactData' | translate }}</label>
+      </div>
+      <div class="data">
+        <div class="first">
+          <div class="row">
+            <img src="assets/Images/contacto.svg" alt="" />
+            <label class="bold">{{
+              buildContactName(
+                (contact$ | async)?.Nombres,
+                (contact$ | async)?.ApellidoPaterno,
+                (contact$ | async)?.ApellidoMaterno
+              )
+            }}</label>
+          </div>
+          <div class="row">
+            <img src="assets/Images/quotation/mail.svg" alt="" />
+            <label>{{ (contact$ | async)?.Email?.Correo || 'N/D' }}</label>
+          </div>
+          <div class="row">
+            <img src="assets/Images/quotation/phone.svg" alt="" />
+            <label
+              >{{ (contact$ | async)?.Phone1?.Numero || 'N/D'
+              }}<span *ngIf="(contact$ | async)?.Phone1?.Extension">
+                · Ext. {{ (contact$ | async)?.Phone1?.Extension }}</span
+              ></label
+            >
+          </div>
+        </div>
+        <div class="second">
+          <div class="row">
+            <label class="bold">{{ 'followPPurchase.department' | translate }}: </label>
+            <label>{{ (contact$ | async)?.Departamento || 'N/D' }}</label>
+          </div>
+          <div class="row">
+            <label class="bold">{{ 'followPPurchase.position' | translate }}: </label>
+            <label>{{ (contact$ | async)?.Puesto || 'N/D' }}</label>
+          </div>
+          <div class="row">
+            <label class="bold">{{ 'followPPurchase.decisionLevel' | translate }}: </label>
+            <label>{{ (contact$ | async)?.NivelDecision || 'N/D' }}</label>
+          </div>
+        </div>
+        <div class="third">
+          <div class="row">
+            <label class="bold">{{ 'followPPurchase.assignedUser' | translate }}: </label>
+            <label>{{ (selectedClient$ | async)?.Esac || 'N/D' }}</label>
+          </div>
+          <div class="row">
+            <label class="green">{{ 'followPPurchase.clientWithCredit' | translate }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="progress-bar">
+      <div>
+        <label>{{ 'followPPurchase.vs' | translate }}</label>
+        <label>
+          · {{ 'followPPurchase.effectivenessRate' | translate }} {{ percentage$ | async | currency: 'USD':'':'1.0-2' }}%</label
+        >
+      </div>
+      <div class="details">
+        <div class="bar">
+          <app-progress-bar [percentage]="percentage$ | async" [color]="'#008894'"> </app-progress-bar>
+        </div>
+        <div class="left">
+          <label
+            >{{ 'followPPurchase.amountBilled' | translate }}
+            {{ (selectedClient$ | async).TotalFacturadoUSD | currency: 'USD':'symbol':'1.0-2' }} USD
+          </label>
+          <label>{{ 'followPPurchase.untilThe' | translate }} {{ currentDate | dateFormatSlash }}</label>
+        </div>
+        <div class="right">
+          <label>{{ (selectedClient$ | async).ObjetivoCrecimientoFundamental | currency: 'USD':'symbol':'1.0-2' }} USD </label>
+          <label>{{ 'followPPurchase.annualSaleTarget' | translate }} · {{ currentYear }}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="title" [ngClass]="'without-border'">
+    <label class="ocean underline" *ngIf="selectIDArchivo$ | async; let archivo" (click)="openFile(archivo)"
+      >F0-{{ (selectedClient$ | async).Folio }}
+    </label>
+    <label class="ocean">· </label>
+    <label>{{ 'followPPurchase.datePurchasePromise' | translate }}</label>
+    <label [ngClass]="(selectedClient$ | async)?.ATiempo ? 'green' : 'red'">
+      · {{ (selectedClient$ | async).FechaPromesaDeCompra | dateFormatSlash }}</label
+    >
+  </div>
+  <div class="search">
+    <div>
+      <div class="text">
+        <label>{{ 'followPPurchase.entriesWithPurchasePromise' | translate }}</label>
+      </div>
+    </div>
+    <div class="app-search">
+      <app-search
+        [imageFill]="'#008894'"
+        [isSearchByType]="true"
+        [searchTerm]="searchTerm$ | async"
+        [typeSelected]="selectedSearchOption$ | async"
+        [typesOfSearch]="searchOptions$ | async"
+        (handleTypeSelected)="setSearchOption($event)"
+        (textSearch)="handleSearchTerm($event)"
+      ></app-search>
+    </div>
+  </div>
+  <div class="table-container">
+    <virtual-scroller
+      *ngIf="(entriesApiStatus$ | async) === 3 && !lodashIsEmpty(selectInternalSalesItem$ | async)"
+      [bufferAmount]="24"
+      [enableUnequalChildrenSizes]="true"
+      [items]="selectInternalSalesItem$ | async"
+      (vsUpdate)="itemsInternal = $event"
+    >
+      <app-header-internal-sales-item
+        class="header"
+        [internalSalesItem]="selectHeaderInternalSalesItem$ | async"
+        (valueEmitter)="globalHeaderItemEventsHandler($event)"
+      ></app-header-internal-sales-item>
+      <div class="header-separator"></div>
+      <app-internal-sales-item
+        *ngFor="let item of itemsInternal; trackBy: handleTrackByItem"
+        [internalSalesItem]="item"
+        (valueEmitter)="globalItemEventsHandler($event)"
+      ></app-internal-sales-item>
+    </virtual-scroller>
+    <div class="loading" *ngIf="(entriesApiStatus$ | async) === 1">
+      <app-loading></app-loading>
+    </div>
+    <div class="loading" *ngIf="(entriesApiStatus$ | async) !== 1 && lodashIsEmpty(items$ | async)">
+      <app-without-results></app-without-results>
+    </div>
+  </div>
+  <div class="actions" [ngClass]="(validatorForFooter$ | async) ? 'active' : 'disabled'">
+    <label>{{ (checkedItems$ | async).length }}</label>
+    <label>|</label>
+    <div class="next-tracing">
+      <div>
+        <app-check-box
+          [disabled]="!(validatorForFooter$ | async)"
+          [check]="promiseCheck$ | async"
+          (event)="handleCheckPromise($event)"
+        ></app-check-box>
+        <label [ngClass]="(validatorForFooter$ | async) && (promiseCheck$ | async) ? 'active' : 'disabled'">{{
+          'followPPurchase.buyPromise' | translate
+        }}</label>
+      </div>
+      <app-date-picker
+        [dateFormat]="'YYYYMMDD'"
+        [color]="false"
+        [disabled]="!(validatorForFooter$ | async) || !(promiseCheck$ | async)"
+        [disabledCalendarDays]="selectNonWorkingDays$ | async"
+        [date]="purchasePromiseDate$ | async"
+        [position]="'top'"
+        [rangeStart]="rangeStart"
+        (fecha)="handleDate($event)"
+      ></app-date-picker>
+    </div>
+    <div class="reason">
+      <label>* {{ 'followPPurchase.justification' | translate }}</label>
+      <app-generic-input
+        [value]="promiseJustification$ | async"
+        [isDisable]="!(validatorForFooter$ | async)"
+        [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+        (textData)="setJustification($event)"
+      ></app-generic-input>
+    </div>
+    <div class="button">
+      <button
+        class="big"
+        [ngClass]="(validatorDateButton$ | async) ? 'active' : 'disabled'"
+        [disabled]="!(validatorDateButton$ | async)"
+        (click)="sendToPurchasePromise()"
+        >{{ 'followPPurchase.sendNewDate' | translate }}
+      </button>
+      <!--<button
+        class="small"
+        [ngClass]="(validatorForNoOcButton$ | async) ? 'active' : 'disabled'"
+        [disabled]="!(validatorForNoOcButton$ | async)"
+        (click)="handleAlertPop()"
+        >{{ 'followPPurchase.sendWithoutOc' | translate }}
+      </button>-->
+    </div>
+  </div>
+  <footer>
+    <div>
+      <label>OC: </label>
+      <label>{{ 'followPPurchase.purchaseOrder' | translate }}</label>
+    </div>
+    <div>
+      <img src="assets/Images/pre-processing/originales.svg" alt="" />
+      <label>{{ 'preProcessing.typeOfItem.originals' | translate }}</label>
+    </div>
+    <div>
+      <img src="assets/Images/pre-processing/alternativas.svg" alt="" />
+      <label>{{ 'preProcessing.typeOfItem.alternatives' | translate }}</label>
+    </div>
+    <div>
+      <img src="assets/Images/pre-processing/complementarias.svg" alt="" />
+      <label>{{ 'preProcessing.typeOfItem.complementary' | translate }}</label>
+    </div>
+    <div>
+      <img src="assets/Images/pre-processing/promocion.svg" alt="" />
+      <label>{{ 'preProcessing.typeOfItem.promotion' | translate }}</label>
+    </div>
+    <div>
+      <img src="assets/Images/pre-processing/ahorro.svg" alt="" />
+      <label>{{ 'preProcessing.typeOfItem.saving' | translate }}</label>
+    </div>
+  </footer>
+</div>
+<app-pop-up-alert
+  *ngIf="alertPopIsOpen"
+  [highlightColor]="'#cc4757'"
+  [textFinal]="' las partidas seleccionadas?'"
+  [textInitial]="'¿Estás seguro que deseas '"
+  [textInter]="'Enviar Sin OC'"
+  (confirmacion)="handleAlertPop($event)"
+></app-pop-up-alert>

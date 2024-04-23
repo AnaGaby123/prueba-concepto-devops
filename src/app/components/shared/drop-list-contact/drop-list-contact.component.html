@@ -1,0 +1,31 @@
+<section>
+  <div class="menu" id="container" tabindex="0" (blur)="closeGlobal()">
+    <div>
+      <img alt="" [src]="icon" (click)="openOptions()" />
+    </div>
+    <section class="section" id="section" [style.height.px]="isOpen ? options.length * minHeight + 5 : 0">
+      <div>
+        <ul
+          class="list"
+          [style.min-height]="minHeight + 'px'"
+          *ngFor="let option of options"
+          [ngClass]="{itemSelect: option.isSelected}"
+          (click)="selectOption(option, $event)"
+        >
+          <div>
+            <div>
+              <div style="width: 20px; height: 20px;">
+                <app-check-box [height]="'15px'" [check]="option.isSelected"></app-check-box>
+              </div>
+            </div>
+            <div>
+              <div *ngFor="let label of option.labels">
+                <label [style.color]="label.color ? label.color : '#242424'">{{ label.label }}</label>
+              </div>
+            </div>
+          </div>
+        </ul>
+      </div>
+    </section>
+  </div>
+</section>

@@ -1,0 +1,108 @@
+<div class="containerSecurity">
+  <div class="firstSection">
+    <app-agents-list></app-agents-list>
+  </div>
+  <div class="secondSection">
+    <div>
+      <app-bar-activities
+        [options]="tabsStepsContainer$ | async"
+        [selectedOption]="actualStep$ | async"
+        [enableLeftArrow]="true"
+        [enableRightArrow]="validatorArrow$ | async"
+        (handleOptionSelected)="setStep($event)"
+      ></app-bar-activities>
+      <app-security-guard-register *ngIf="(actualStep$ | async) === 0"></app-security-guard-register>
+      <app-security-guard-waybills *ngIf="(actualStep$ | async) === 1"></app-security-guard-waybills>
+    </div>
+    <div class="button-entry" *ngIf="(actualStep$ | async) === 0">
+      <button
+        *ngIf="(actualStep$ | async) === 0"
+        [ngClass]="(validator$ | async) ? 'btn-link-to' : 'btn-link-to-disable'"
+        [disabled]="!(validator$ | async)"
+        (click)="saveVisit(true)"
+      >
+        {{ 'ENTRADA' }}
+      </button>
+    </div>
+    <div class="footer-step-2" *ngIf="(actualStep$ | async) === 1">
+      <div class="waybillsContainer">
+        <span class="waybills">
+          #{{
+            (selectTotalGuides$ | async) === 1
+              ? (selectTotalGuides$ | async) + ' Guía de Embarque'
+              : (selectTotalGuides$ | async) + ' Guías de Embarque'
+          }}
+        </span>
+      </div>
+      <div class="buttonsContainer">
+        <button
+          *ngIf="(actualStep$ | async) === 1"
+          [ngClass]="(validator$ | async) ? 'btn-link-to-incidence' : 'btn-link-to-disable'"
+          [disabled]="!(validator$ | async)"
+          (click)="showIncidencePop()"
+        >
+          {{ 'CON INCIDENCIA' }}
+        </button>
+        <button
+          *ngIf="(actualStep$ | async) === 1"
+          [ngClass]="(validator$ | async) ? 'btn-link-to' : 'btn-link-to-disable'"
+          [disabled]="!(validator$ | async)"
+          (click)="saveVisit(true)"
+        >
+          {{ 'ENTRADA' }}
+        </button>
+      </div>
+    </div>
+    <div class="pop-up-remove-product" *ngIf="showingPopIncidence">
+      <app-pop-up-generic
+        [activeButtons]="true"
+        [width]="(viewType$ | async) === 'macBookAir' ? '800px' : '700px'"
+        [height]="(viewType$ | async) === 'macBookAir' ? '825px' : '725px'"
+        [titleHeader]="'REGISTRAR VISITA CON INCIDENCIA'"
+        [activeBtn]="!lodashIsEmpty(incidenceMessage$ | async)"
+        [color]="'#cc435e'"
+        (evento)="saveVisit($event)"
+      >
+        <div class="pop-modify-cost">
+          <img src="assets/Images/alerta-rojo.svg" alt="" />
+          <label class="text"
+            >¿Desea registrar visita con incidencia<span>
+              {{
+                (selectGuideLabel$ | async)
+                  ? 'de la Guía ' + (selectGuideNumber$ | async)
+                  : 'del pedimento ' + (selectGuideNumber$ | async)
+              }}</span
+            ></label
+          >
+          <div class="bg">
+            <label>{{ 'COMENTARIOS' }}:</label>
+            <div class="justification">
+              <app-generic-text-area
+                [height]="(viewType$ | async) === 'iPad' ? '285px' : '314px'"
+                [width]="(viewType$ | async) === 'iPad' ? '640px' : '740px'"
+                [value]="incidenceMessage$ | async"
+                (emitData)="setComment($event)"
+              ></app-generic-text-area>
+            </div>
+          </div>
+        </div>
+      </app-pop-up-generic>
+    </div>
+  </div>
+  <app-pop-up-generic
+    class="cancel-pop"
+    *ngIf="errorPop$ | async"
+    [activeButtons]="true"
+    [width]="(viewType$ | async) === 'macBookAir' ? '600px' : '490px'"
+    [height]="(viewType$ | async) === 'macBookAir' ? '350px' : '290px'"
+    (evento)="cancelPopEvent($event)"
+  >
+    <div class="container">
+      <img src="assets/Images/alerta.svg" alt="alert" />
+      <div>
+        <label>{{ 'formProduct.general.titleModal' | translate }}</label>
+      </div>
+      <div></div>
+    </div>
+  </app-pop-up-generic>
+</div>

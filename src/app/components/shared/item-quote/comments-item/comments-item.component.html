@@ -1,0 +1,15 @@
+<div class="comments-container">
+  <div class="img-container" *ngIf="columnComments?.color || columnComments?.elementIdComment">
+    <img
+      #imageElement
+      alt="comments"
+      [id]="columnComments?.elementIdComment ? columnComments?.elementIdComment : 'img'"
+      [src]="
+        columnComments?.color
+          ? 'assets/Images/close-offer/comments-' + columnComments?.color + '.svg'
+          : 'assets/Images/close-offer/comments-ocean.svg'
+      "
+      (click)="handleClick($event, imageElement, true, nameActionsInternalSalesItem?.CommentsAction)"
+    />
+  </div>
+</div>

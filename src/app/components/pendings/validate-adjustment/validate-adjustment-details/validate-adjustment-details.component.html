@@ -1,0 +1,44 @@
+<section id="validate-adjustment-details">
+  <div class="purchase-order">
+    <app-order-purchase></app-order-purchase>
+  </div>
+  <div class="request-validate-adjustment">
+    <app-request-validate-adjustment [isOpen]="requestIsOpen" (handleIsOpen)="handleRequest()">
+    </app-request-validate-adjustment>
+  </div>
+  <div class="item-list">
+    <app-list-quoted-item></app-list-quoted-item>
+  </div>
+</section>
+<footer>
+  <div>
+    <div>
+      <label>OC:</label>
+      <label>{{ 'preProcessing.purchaseOrder' | translate }}</label>
+    </div>
+    <div>
+      <label>VT:</label>
+      <label>{{ 'common.totalValue' | translate }}</label>
+    </div>
+    <div>
+      <img src="assets/Images/pre-processing/originales.svg" />
+      <p class="text">{{ 'preProcessing.typeOfItem.original' | translate }}</p>
+    </div>
+    <div>
+      <img src="assets/Images/pre-processing/alternativas.svg" />
+      <p class="text">{{ 'preProcessing.typeOfItem.alternatives' | translate }}</p>
+    </div>
+    <div>
+      <img src="assets/Images/pre-processing/complementarias.svg" />
+      <p class="text">{{ 'preProcessing.typeOfItem.complementary' | translate }}</p>
+    </div>
+    <div>
+      <img src="assets/Images/pre-processing/promocion.svg" />
+      <p class="text">{{ 'preProcessing.typeOfItem.promotion' | translate }}</p>
+    </div>
+    <div>
+      <img src="assets/Images/pre-processing/ahorro.svg" />
+      <p class="text">{{ 'preProcessing.typeOfItem.saving' | translate }}</p>
+    </div>
+  </div>
+</footer>

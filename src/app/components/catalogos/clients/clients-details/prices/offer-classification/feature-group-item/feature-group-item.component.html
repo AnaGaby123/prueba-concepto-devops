@@ -1,0 +1,32 @@
+<div
+  class="product-item"
+  [ngClass]="classification?.isSelected ? 'selected' : ''"
+  (click)="handleSelectedClassificationChange()"
+>
+  <div class="select-indicator"></div>
+  <div class="item-content">
+    <label class="title">
+      #{{ classification?.Index }} ·
+      <span>
+        {{ classification?.TotalProductos }}
+      </span>
+      {{ classification?.TotalProductos === 1 ? ('common.product' | translate) : ('common.products' | translate) }}
+    </label>
+    <label class="subtitle">
+      {{ classification?.Descripcion }}
+    </label>
+    <div class="marker" *ngIf="classification.NivelConfiguracionProductoCliente === 'AgrupadorCaracteristica'">
+      <img
+        alt=""
+        [src]="
+          classification.Temporal === true
+            ? 'assets/Images/reloj.svg'
+            : classification.Temporal === false
+            ? 'assets/Images/clientes/enfoque.svg'
+            : ''
+        "
+      />
+      <label *ngIf="classification.Temporal"> 2:00 Hrs.</label>
+    </div>
+  </div>
+</div>

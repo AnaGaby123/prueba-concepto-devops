@@ -1,0 +1,200 @@
+@use 'base' as s;
+
+:host {
+  @include s.flexColumn;
+  @include s.absolute100;
+
+  #list-clients-container {
+    @include s.flexColumn;
+    box-sizing: border-box;
+    flex: 0 0 100%;
+    overflow: hidden;
+
+    & > .title {
+      @include s.flexRowNoWrap;
+      width: 100%;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 10px 20px;
+      box-sizing: border-box;
+
+      & > div:nth-of-type(1) {
+        @include s.flexRowWrap;
+        width: calc(100% - 220px);
+        margin-left: 0 !important;
+
+        & > .client {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_novecento_bold,
+            $font-weight: s.$font_weight_bold,
+            $font-size-map: s.$responsive-font-17-21
+          );
+          min-width: max-content;
+        }
+
+        & > .strategy {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_novecento_bold,
+            $font-weight: s.$font_weight_bold,
+            $font-size-map: s.$responsive-font-17-21,
+            $color: s.$pqGreen
+          );
+          min-width: max-content;
+          margin-left: 8px;
+
+          & > span:nth-of-type(1) {
+            margin-right: 8px;
+          }
+        }
+
+        & > .quotations {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_novecento_bold,
+            $font-weight: s.$font_weight_bold,
+            $font-size-map: s.$responsive-font-17-21
+          );
+          margin-left: 8px;
+          min-width: max-content;
+
+          & > span:nth-of-type(1) {
+            margin-right: 8px;
+          }
+        }
+
+        & > .amount {
+          @include s.escaledFontFormat(s.$textSize20to24, bold, s.$pqGreen);
+          @include s.Novecento-Bold;
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_novecento_bold,
+            $font-weight: s.$font_weight_bold,
+            $font-size-map: s.$responsive-font-17-21,
+            $color: s.$pqGreen
+          );
+          margin-left: 8px;
+
+          & > span:nth-of-type(1) {
+            margin-right: 8px;
+          }
+        }
+      }
+
+      & > div:nth-of-type(2) {
+        @include s.flexRowNoWrap;
+        width: 255px;
+        align-items: flex-end;
+        align-content: flex-end;
+        justify-content: flex-end;
+
+        & > .message-red {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_novecento_bold,
+            $font-weight: s.$font_weight_bold,
+            $font-size-map: s.$responsive-font-17-21,
+            $color: s.$pqRed
+          );
+        }
+
+        & > .message-green {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_novecento_bold,
+            $font-weight: s.$font_weight_bold,
+            $font-size-map: s.$responsive-font-17-21,
+            $color: s.$pqGreen2
+          );
+        }
+
+        & > .message-yellow {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_novecento_bold,
+            $font-weight: s.$font_weight_bold,
+            $font-size-map: s.$responsive-font-17-21,
+            $color: #e29d2a
+          );
+        }
+      }
+    }
+
+    & > .list {
+      width: 100%;
+      box-sizing: border-box;
+      padding-bottom: 13px;
+    }
+
+    & > .bar-percentage {
+      @include s.flexRowNoWrap;
+      justify-content: space-between;
+      align-items: flex-end;
+      width: 100%;
+      padding: 0 17px 17px 0;
+      box-sizing: border-box;
+
+      & > div:nth-of-type(1) {
+        @include s.flexColumn;
+        flex: 1;
+
+        & > div {
+          @include s.flexRowWrap;
+          padding-bottom: 14px;
+
+          & > label:nth-of-type(1) {
+            @include s.responsive-font-format(
+              $font-family: s.$font_family_novecento_bold,
+              $font-weight: s.$font_weight_bold,
+              $font-size-map: s.$responsive-font-17-21,
+              $color: s.$pqGreen
+            );
+            white-space: initial;
+            & > span {
+              cursor: pointer;
+              text-decoration: underline;
+              vertical-align: baseline;
+            }
+          }
+
+          & > label:nth-of-type(2) {
+            @include s.responsive-font-format(
+              $font-family: s.$font_family_novecento_bold,
+              $font-weight: s.$font_weight_bold,
+              $font-size-map: s.$responsive-font-17-21
+            );
+          }
+        }
+      }
+    }
+
+    & > .change-options {
+      @include s.flexColumn;
+      padding: 0 17px 17px 0;
+      flex: 1;
+      width: 100%;
+      overflow: hidden;
+      box-sizing: border-box;
+
+      & > .tabs {
+        margin-bottom: 20px;
+      }
+
+      & > .option {
+        flex: 1;
+        overflow: hidden;
+      }
+    }
+  }
+
+  @include s.media-query(s.$standard) {
+    #list-clients-container {
+      padding-top: 15px;
+
+      & > .title {
+        & > div {
+          margin-left: 10px;
+
+          & > img:nth-of-type(1) {
+            height: 19px;
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+  }
+}

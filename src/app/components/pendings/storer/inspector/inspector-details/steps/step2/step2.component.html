@@ -1,0 +1,270 @@
+<div id="inspector-step2">
+  <div class="content">
+    <div class="left">
+      <div class="title">
+        <label>{{ 'inspector.itemLevelInspection' | translate }}</label>
+      </div>
+      <div *ngIf="true" class="left-section">
+        <div class="description">
+          <div class="header">
+            <div>
+              <label>{{ 'common.description' | translate }}</label>
+            </div>
+          </div>
+          <div class="content">
+            <div>
+              <app-drop-down-list
+                [label]="'formProduct.step2.presentation' | translate"
+                [font]="'Roboto-Medium'"
+                [enableEdit]="false"
+              ></app-drop-down-list>
+            </div>
+            <div>
+              <app-drop-down-list
+                [label]="'declareArrival.lot' | translate"
+                [font]="'Roboto-Medium'"
+                [enableEdit]="false"
+              ></app-drop-down-list>
+            </div>
+            <div>
+              <div class="drop1">
+                <app-drop-down-list
+                  [label]="'quotation.details.product.expiration' | translate"
+                  [font]="'Roboto-Medium'"
+                  [enableEdit]="false"
+                ></app-drop-down-list>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="handling">
+          <div class="header">
+            <div>
+              <label>{{ 'inspector.handling' | translate }}</label>
+            </div>
+          </div>
+          <div class="content">
+            <div>
+              <app-drop-down-list
+                [label]="'inspector.storage' | translate"
+                [font]="'Roboto-Medium'"
+                [enableEdit]="false"
+              ></app-drop-down-list>
+            </div>
+            <div>
+              <app-drop-down-list
+                [label]="'inspector.transportation' | translate"
+                [font]="'Roboto-Medium'"
+                [enableEdit]="false"
+              ></app-drop-down-list>
+            </div>
+            <div></div>
+          </div>
+        </div>
+        <div class="documentation">
+          <div class="header">
+            <label [ngClass]="'label-disable'">{{ 'inspector.applyDocumentation' | translate }}</label>
+          </div>
+          <div class="content">
+            <div class="input1">
+              <label class="title">{{ 'formProduct.step2.certificate' | translate }}</label>
+              <div class="document">
+                <img src="assets/Images/document.svg" />
+                <label>{{ 'Certificado.hfg' }}</label>
+              </div>
+            </div>
+            <div class="input2">
+              <label class="title">{{ 'inspector.safetySheet' | translate }}</label>
+              <div class="document">
+                <img src="assets/Images/document.svg" />
+                <label>{{ 'Hoja_de_Seguridad.hfg' }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="false" class="left-section-alone">
+        <div class="description-alone">
+          <div class="header">
+            <label>{{ 'common.description' | translate }}</label>
+          </div>
+          <div class="content">
+            <div class="input1">
+              <app-generic-input
+                [label]="'declareArrival.edition' | translate"
+                [labelFont]="'Roboto-Medium'"
+                [enableEdit]="false"
+              ></app-generic-input>
+            </div>
+            <div class="input2">
+              <app-drop-down-list
+                [label]="'inspector.idiom' | translate"
+                [font]="'Roboto-Medium'"
+                [enableEdit]="false"
+              ></app-drop-down-list>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="header">
+        <label>{{ 'inspector.inspected2' | translate }} {{ 190 + '/' + 200 }} {{ 'common.pieces' | translate }}</label>
+        <img src="assets/Images/caja-vacia.svg" />
+      </div>
+      <div class="video-container" (keypress)="loop($event)">
+        <video autoplay id="videoElement" #video></video>
+        <div class="leftTop"></div>
+        <div class="rightTop"></div>
+        <div class="leftBot"></div>
+        <div class="rightBot"></div>
+      </div>
+      <div class="footer">
+        <label
+          ><span class="green">* {{ 'inspector.dispatchable' | translate }}: </span>
+          {{ 'inspector.dispatchableMessage' | translate }}
+        </label>
+        <label
+          ><span class="red">** {{ 'inspector.incidence' | translate }}: </span>
+          {{ 'inspector.incidenceMessage' | translate }}
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+<app-pop-up-generic
+  class="missing-pieces"
+  *ngIf="false"
+  [activeBtn]="true"
+  [activeButtons]="true"
+  [height]="(viewType$ | async) === 'macBookAir' ? '385px' : '330px'"
+  [width]="(viewType$ | async) === 'macBookAir' ? '685px' : '590px'"
+>
+  <div class="container">
+    <div class="message">
+      <label>¿{{ 'inspector.missingPiecesMessage2' | translate }} {{ 3 + ('common.pieces' | translate) }}?</label>
+    </div>
+    <div class="colors">
+      <label class="green">{{ 'common.pieces' | translate }} {{ 'inspector.expectedPieces' | translate }} : {{ 150 }}</label>
+      <label class="red">{{ 'common.pieces' | translate }} {{ 'inspector.inspected' | translate }}: {{ 147 }}</label>
+    </div>
+  </div>
+</app-pop-up-generic>
+<app-pop-up-generic
+  class="pop-tabs"
+  *ngIf="false"
+  [activeBtn]="true"
+  [activeButtons]="true"
+  [height]="(viewType$ | async) === 'macBookAir' ? '790px' : '700px'"
+  [width]="(viewType$ | async) === 'macBookAir' ? '1250px' : '1050px'"
+>
+  <div class="container">
+    <div class="tabs">
+      <app-tabs
+        [options]="(step2State$ | async)?.popTabOptions"
+        [tapSelected]="(step2State$ | async)?.popTabSelected"
+        (onSelectOption)="setTab($event)"
+      ></app-tabs>
+    </div>
+    <div class="content">
+      <app-edit-batch *ngIf="(selectedTab$ | async)?.id === 1"></app-edit-batch>
+      <app-non-shippable-part *ngIf="(selectedTab$ | async)?.id === 2"></app-non-shippable-part>
+    </div>
+  </div>
+</app-pop-up-generic>
+<app-pop-up-generic
+  *ngIf="false"
+  class="non-shippable-part"
+  [titleHeader]="'inspector.nonShippablePart' | translate"
+  [activeBtn]="true"
+  [activeButtons]="true"
+  [height]="(viewType$ | async) === 'macBookAir' ? '690px' : '600px'"
+  [width]="(viewType$ | async) === 'macBookAir' ? '1250px' : '1050px'"
+>
+  <div class="container">
+    <div class="checks">
+      <div class="left">
+        <div>
+          <app-check-box
+            [spanText]="'closeOffer.tableLabels.catalog' | translate"
+            [label]="'attendReviewPayment.description' | translate"
+            [labelFontStyle]="'labelRobotoRegularProquifa13'"
+          ></app-check-box>
+        </div>
+        <div>
+          <app-check-box
+            [spanText]="'attendReviewPayment.description' | translate"
+            [label]="'Sertraline Hydrochloride (100mg) USP'"
+            [labelFontStyle]="'labelRobotoRegularProquifa13'"
+          ></app-check-box>
+        </div>
+        <div>
+          <app-check-box
+            [spanText]="'declareArrival.edition' | translate"
+            [label]="'2017'"
+            [labelFontStyle]="'labelRobotoRegularProquifa13'"
+          ></app-check-box>
+        </div>
+      </div>
+      <div class="right">
+        <div>
+          <app-check-box
+            [spanText]="'inspector.idiom' | translate"
+            [label]="'Inglés'"
+            [labelFontStyle]="'labelRobotoRegularProquifa13'"
+          ></app-check-box>
+        </div>
+        <div>
+          <app-check-box
+            [spanText]="'inspector.physicallyConformable' | translate"
+            [label]="'Etiqueta legible, Sellada, No roto'"
+            [labelFontStyle]="'labelRobotoRegularProquifa13'"
+          ></app-check-box>
+        </div>
+      </div>
+    </div>
+    <div class="data">
+      <div class="report">
+        <div class="title">
+          <label>{{ 'inspector.rejectionReport' | translate }}</label>
+        </div>
+        <app-generic-text-area [height]="'100%'"></app-generic-text-area>
+      </div>
+      <div class="uploadphotos">
+        <div class="title">
+          <label
+            >{{ 'inspector.uploadPhotos' | translate }} <span>({{ 'inspector.mandatory2' | translate }})</span></label
+          >
+        </div>
+        <div class="content">
+          <div>
+            <app-generic-input-file [placeholder]="'Frente'" [showSeeSelectedFile]="false"></app-generic-input-file>
+          </div>
+          <div>
+            <app-generic-input-file [placeholder]="'Arriba'"></app-generic-input-file>
+          </div>
+          <div>
+            <app-generic-input-file [placeholder]="'Abajo'"></app-generic-input-file>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-pop-up-generic>
+<app-pop-up-generic
+  *ngIf="false"
+  class="inspectFinish"
+  [height]="(viewType$ | async) === 'macBookAir' ? '400px' : '340px'"
+  [width]="(viewType$ | async) === 'macBookAir' ? '600px' : '500px'"
+>
+  <div class="container">
+    <div class="message">
+      <label
+        >{{ 'Se han concluido las piezas por Inspeccionar,' }} <span>{{ 'continua con la etapa de Almacenar.' }}</span></label
+      >
+    </div>
+    <div class="btn-content">
+      <button>{{ 'common.accept' | translate }}</button>
+    </div>
+  </div>
+</app-pop-up-generic>

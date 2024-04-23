@@ -1,0 +1,38 @@
+<div class="brand-list">
+  <div class="general-container-list">
+    <div class="filters">
+      <app-filters></app-filters>
+    </div>
+    <div class="list-container">
+      <div class="table-container" *ngIf="!lodashIsEmpty(listBrands$ | async)">
+        <virtual-scroller [items]="listBrands$ | async" (vsUpdate)="scrollItems = $event" (vsEnd)="fetchMoreBrands($event)">
+          <pqf-generic-grid-item
+            *ngFor="let brand of scrollItems; let i = index; trackBy: handleTrackBy"
+            class="grid-item"
+            [item]="buildItem(brand)"
+            (emitValue)="setBrand(brand)"
+          ></pqf-generic-grid-item>
+        </virtual-scroller>
+      </div>
+
+      <div class="loading-container" *ngIf="(apiStatus$ | async) === 1 && !lodashIsEmpty(listBrands$ | async)">
+        <app-loading></app-loading>
+      </div>
+      <div class="loading" *ngIf="(apiStatus$ | async) === 1 && lodashIsEmpty(listBrands$ | async)">
+        <app-loading></app-loading>
+      </div>
+      <div class="loading" *ngIf="(apiStatus$ | async) !== 1 && lodashIsEmpty(listBrands$ | async)">
+        <app-without-results></app-without-results>
+      </div>
+    </div>
+    <div class="totals">
+      <label
+        >#{{ totalBrands$ | async }}
+        {{ (totalBrands$ | async) !== 1 ? ('common.brands' | translate) : ('common.brand' | translate) }}</label
+      >
+    </div>
+  </div>
+  <div class="footer">
+    <button (click)="handleNewBrand()">{{ 'common.add' | translate }}</button>
+  </div>
+</div>

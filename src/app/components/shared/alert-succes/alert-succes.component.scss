@@ -1,0 +1,105 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  & > .w3-container {
+    & > .modal {
+      @include s.absolute100;
+      @include s.gridCenter;
+      z-index: 1000;
+      position: fixed;
+      left: 0;
+      top: 0;
+      background: rgba(255, 255, 255, 0.9);
+
+      & > .modal-content {
+        @include s.flexColumn;
+        background-color: white;
+        border-radius: 21px;
+        border: 1px solid s.$pqGreen;
+        overflow: hidden;
+
+        & > .header {
+          @include s.gridCenter;
+          flex: 0 0 52px;
+          height: 52px;
+          background-color: s.$pqGreen;
+          border-radius: 19px 19px 0px 0px;
+
+          h1 {
+            @include s.Novecento-Bold;
+            @include s.escaledFontFormat(s.$textSize26to29, bold, s.$pqWhite);
+            text-align: center;
+          }
+        }
+
+        & > .contenido {
+          flex: 1 1 auto;
+          @include s.flexColumn;
+          align-items: center;
+          justify-content: center;
+          padding-bottom: 20px;
+
+          & > img {
+            @include s.default-transition();
+            @include s.height-scaled-image(s.$warning-pop-image-map);
+            margin-bottom: 20px;
+          }
+
+          & > .alertaTxt {
+            @include s.flexColumn;
+            width: 100%;
+            flex: 0 1 auto;
+            padding: 0 40px;
+
+            & > div {
+              @include s.flexRow;
+              @include s.absoluteCenter;
+              margin-bottom: 5px;
+
+              p {
+                @include s.escaledFontFormat(s.$textSize26to29, regular, s.$pqBlack2);
+                @include s.Roboto-Regular;
+                margin-right: 4px;
+                text-align: center;
+                line-height: 1.3;
+
+                span {
+                  @include s.Roboto-Bold;
+                  color: s.$pqGreen;
+                  vertical-align: baseline;
+                }
+              }
+            }
+
+            & > p {
+              @include s.escaledFontFormat(s.$textSize26to29, regular, s.$pqBlack2);
+              @include s.Roboto-Regular;
+              margin-right: 4px;
+              text-align: center;
+            }
+          }
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .modal {
+        & > .modal-content {
+          & > .contenido {
+            & > img {
+              margin-bottom: 25px;
+            }
+
+            & > .alertaTxt {
+              padding: 0 45px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

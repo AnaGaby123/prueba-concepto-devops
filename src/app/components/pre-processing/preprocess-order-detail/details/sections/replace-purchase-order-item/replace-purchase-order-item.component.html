@@ -1,0 +1,303 @@
+<!--<section id="principal">
+  <div class="title">
+    <div>
+      <label>{{ 'preProcessing.replaceOrderItem' | translate }}</label>
+      <label class="pqf">·</label>
+      <label class="pqf">OC</label>
+      <label class="pqf">·</label>
+      <label class="pqf">{{ (order$ | async).OrdenDeCompra }}</label>
+    </div>
+  </div>
+  <div class="itemData">
+    <div class="subTitle">
+      <label>{{ 'preProcessing.itemToReplace' | translate }}</label>
+    </div>
+    <div class="data-item">
+      <div class="content-description">
+        <div class="cat">
+          <label>
+            <span>{{ '#' + ('common.catalogNumber' | translate) }} · {{ (itemReplace$ | async)?.vProducto?.Catalogo }} </span>
+            <img
+              [src]="
+                (itemReplace$ | async)?.vPartidaCotizacion?.TipoPartidaCotizacion === 'Original'
+                  ? 'assets/Images/pre-processing/originales.svg'
+                  : (itemReplace$ | async)?.vPartidaCotizacion?.TipoPartidaCotizacion === 'Alternativa'
+                  ? 'assets/Images/pre-processing/alternativas.svg'
+                  : (itemReplace$ | async)?.vPartidaCotizacion?.TipoPartidaCotizacion === 'Ahorro'
+                  ? 'assets/Images/pre-processing/ahorro.svg'
+                  : (itemReplace$ | async)?.vPartidaCotizacion?.TipoPartidaCotizacion === 'Complementaria'
+                  ? 'assets/Images/pre-processing/complementarias.svg'
+                  : (itemReplace$ | async)?.vPartidaCotizacion?.TipoPartidaCotizacion === 'Promoción'
+                  ? 'assets/Images/pre-processing/promocion.svg'
+                  : 'assets/Images/pre-processing/originales.svg'
+              "
+            />
+            {{ (itemReplace$ | async)?.vProducto?.Descripcion }}</label
+          >
+        </div>
+        <div class="trademark">
+          <label>{{ (itemReplace$ | async)?.vProducto?.NombreMarca }}</label>
+          <label
+            *ngIf="(itemReplace$ | async)?.vPartidaCotizacion"
+            [ngClass]="{
+              'current-quotation': (itemReplace$ | async).validity === 'Vigente',
+              'expiring-quotation': (itemReplace$ | async).validity === 'Por Expirar',
+              'expired-quotation': (itemReplace$ | async).validity === 'Expirada'
+            }"
+            >{{ 'asdaskdjhas' }}</label
+          >
+        </div>
+      </div>
+      <div class="tee">
+        <div>
+          <label>{{ ('closeOffer.tableLabels.tee' | translate) + ('closeOffer.tableLabels.days' | translate) }}</label>
+        </div>
+        <div>
+          <label>
+            {{
+              (itemReplace$ | async)?.ValorConfiguracionTiempoEntrega &&
+              !(itemReplace$ | async)?.ValorConfiguracionTiempoEntrega.EsIntervalo
+                ? (itemReplace$ | async)?.ValorConfiguracionTiempoEntrega.ValorEsperado
+                : (itemReplace$ | async)?.ValorConfiguracionTiempoEntrega.ValorMaximoIntervalo -
+                  (itemReplace$ | async)?.ValorConfiguracionTiempoEntrega.ValorMaximoIntervalo
+            }}
+            {{
+              (itemReplace$ | async)?.catUnidadTiempo
+                ? (itemReplace$ | async)?.catUnidadTiempo.UnidadTiempo
+                : ('preProcessing.days' | translate)
+            }}</label
+          >
+        </div>
+      </div>
+      <div class="count">
+        <div>
+          <label>{{ 'quotation.details.qty' | translate }}</label>
+        </div>
+        <div>
+          <label>{{ (itemReplace$ | async)?.NumeroDePiezas }}</label>
+        </div>
+      </div>
+      <div class="priceUnit">
+        <div>
+          <label>{{ 'closeOffer.tableLabels.unitPrice' | translate }}</label>
+        </div>
+        <div>
+          <label>
+            {{ (itemReplace$ | async)?.PrecioUnitario | currency }}
+            {{ selectCurrencyLabel$ | async }}
+          </label>
+        </div>
+      </div>
+      <div class="subTotal">
+        <div>
+          <label>{{ 'preProcessing.tableLabels.subtotal' | translate }}</label>
+        </div>
+        <div>
+          <label>
+            {{ (itemReplace$ | async)?.Subtotal | currency }}
+            {{ selectCurrencyLabel$ | async }}
+          </label>
+        </div>
+      </div>
+      <div class="iva">
+        <div>
+          <label>
+            {{ 'preProcessing.tableLabels.iva' | translate }}
+          </label>
+        </div>
+        <div>
+          <label>
+            {{ (itemReplace$ | async)?.IVA | currency }}
+            {{ selectCurrencyLabel$ | async }}
+          </label>
+        </div>
+      </div>
+      <div class="total">
+        <div>
+          <label>
+            {{ 'preProcessing.tableLabels.total' | translate }}
+          </label>
+        </div>
+        <div class="value">
+          <div>
+            <label>
+              {{ (itemReplace$ | async)?.Total | currency }}
+              {{ selectCurrencyLabel$ | async }}
+            </label>
+          </div>
+          <div class="percent">
+            <div class="percentage-column">
+              <img
+                alt="Porcentaje"
+                [src]="
+                  (itemReplace$ | async)?.isNegative
+                    ? 'assets/Images/quotation/price_down.svg'
+                    : 'assets/Images/quotation/price_up.svg'
+                "
+              />
+              <label *ngIf="(itemReplace$ | async)?.isNegative">-</label>
+              <label>{{ (itemReplace$ | async)?.percentage.toFixed(2) }}%</label>
+            </div>
+            <div class="tooltip-text">
+              <p *ngIf="!(itemReplace$ | async)?.isNegative">{{ 'Arriba del Precio de Lista' }}</p>
+              <p *ngIf="(itemReplace$ | async)?.isNegative">{{ 'Abajo del Precio de Lista' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="search">
+    <div>
+      <app-search
+        [imageFill]="'#008894'"
+        [borderColor]="'#008894'"
+        [placeholder]="'Buscar'"
+        [searchTerm]="termSearch$ | async"
+        [resultItems]="optionsListSearch$ | async"
+        [itemSelected]="itemSelected$ | async"
+        [activeRefresh]="true"
+        [isExpandable]="true"
+        [isLoading]="loading$ | async"
+        [isSearchByType]="true"
+        [typesOfSearch]="searchTypes$ | async"
+        [typeSelected]="typeFilterSelected$ | async"
+        (textSearch)="handleKeySearch($event)"
+        (handleSearchTermSelected)="handleSearchTermSelected($event)"
+        (handleItemSelected)="handleOption($event)"
+        (handleClearSearchTerm)="clearSearch()"
+        (handleTypeSelected)="typeOfSearch($event)"
+      >
+      </app-search>
+    </div>
+  </div>
+  <div class="quotes">
+    <app-card
+      [enableMessage]="true"
+      [options]="optionsCard$ | async"
+      [height]="'136px'"
+      [itemWidth]="'180px'"
+      (handleOptionSelected)="selectedQuote($event)"
+    >
+    </app-card>
+  </div>
+  <div class="items">
+    <div class="title">
+      <label>{{ 'preProcessing.items' | translate }}</label>
+    </div>
+    <div class="section-list">
+      <div class="container-list">
+        <div class="header">
+          <div class="select"></div>
+          <div class="index">
+            <label>#</label>
+          </div>
+          <div class="typeItem"></div>
+          <div class="cat">
+            <label>{{ '#' + ('common.catalogNumber' | translate) }}</label>
+          </div>
+          <div class="concept">
+            <label>{{ 'quotation.details.concept' | translate }}</label>
+          </div>
+          <div class="trademark">
+            <label>{{ 'quotation.details.brand' | translate }}</label>
+          </div>
+          <div class="tee">
+            <label>{{ ('closeOffer.tableLabels.tee' | translate) + ('closeOffer.tableLabels.days' | translate) }}</label>
+          </div>
+          <div class="amount">
+            <label>{{ 'quotation.details.qty' | translate }}</label>
+          </div>
+          <div class="price">
+            <label>{{ 'closeOffer.tableLabels.cotPrice' | translate }}</label>
+          </div>
+          <div class="value">
+            <label>{{ 'process.totalValue' | translate }}</label>
+          </div>
+          <div class="status"></div>
+        </div>
+        <div class="list">
+          <div *ngIf="(listOfItem$ | async).length > 0">
+            <virtual-scroller [items]="listOfItem$ | async" (vsUpdate)="listItem = $event">
+              <div *ngFor="let item of listItem; let i = index" class="items">
+                <div>
+                  <div class="select">
+                    <app-radio-button [value]="item.isSelected" [height]="'20px'" (emitValue)="itemSelected($event, item)">
+                    </app-radio-button>
+                  </div>
+                  <div class="index">
+                    <label>{{ i + 1 }}</label>
+                  </div>
+                  <div class="typeItem">
+                    <img src="assets/Images/pre-processing/originales.svg" *ngIf="item.TipoPartidaCotizacion === original" />
+                    <img src="assets/Images/pre-processing/ahorro.svg" *ngIf="item.TipoPartidaCotizacion === saving" />
+                    <img
+                      src="assets/Images/pre-processing/complementarias.svg"
+                      *ngIf="item.TipoPartidaCotizacion === complementary"
+                    />
+                    <img
+                      src="assets/Images/pre-processing/alternativas.svg"
+                      *ngIf="item.TipoPartidaCotizacion === alternative"
+                    />
+                    <img src="assets/Images/pre-processing/alternativas.svg" *ngIf="item.TipoPartidaCotizacion === promotion" />
+                  </div>
+                  <div class="cat">
+                    <label>{{ item.Catalogo }}</label>
+                  </div>
+                  <div class="concept">
+                    <label>{{ item.Descripcion }}</label>
+                  </div>
+                  <div class="trademark">
+                    <label>{{ item.NombreMarca }}</label>
+                  </div>
+                  <div class="tee">
+                    <label>{{ item.TiempoEntrega }}</label>
+                  </div>
+                  <div class="amount">
+                    <label>{{ item.NumeroDePiezas }}</label>
+                  </div>
+                  <div class="price">
+                    <label>{{
+                      (item.PrecioCotizadoUnitarioConvertido | currency) + ' ' + (selectCurrencyLabel$ | async)
+                    }}</label>
+                  </div>
+                  <div class="value">
+                    <label>{{ (item.PrecioCotizadoSubtotal | currency) + ' ' + (selectCurrencyLabel$ | async) }}</label>
+                  </div>
+                  <div class="status">
+                    <label>{{ item.label ? item.label : 'Pendiente' }}</label>
+                  </div>
+                </div>
+              </div>
+            </virtual-scroller>
+          </div>
+          <div class="without-results" *ngIf="(listOfItem$ | async)?.length === 0">
+            <app-without-results
+              [title]="
+                (listOfItem$ | async)?.length === 0 && lodash.isEmpty(productToSearch$ | async)
+                  ? 'Utiliza el buscador para habilitar esta sección'
+                  : ''
+              "
+            ></app-without-results>
+          </div>
+        </div>
+        <div class="total">
+          <label
+            >{{ '#' + (listOfItem$ | async)?.length + ' ' }}
+            {{ (listOfItem$ | async).length === 1 ? ('common.item' | translate) : ('preProcessing.items' | translate) }}</label
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="buttons">
+    <div>
+      <div class="cancel" (click)="returnList()">
+        <label>{{ 'common.cancel' | translate }}</label>
+      </div>
+      <div [ngClass]="(activeReplace$ | async) ? 'add' : 'addDisabled'" (click)="replaceItem()">
+        <label>{{ 'common.replace' | translate }}</label>
+      </div>
+    </div>
+  </div>
+</section>-->

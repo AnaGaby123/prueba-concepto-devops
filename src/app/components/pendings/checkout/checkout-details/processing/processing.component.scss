@@ -1,0 +1,764 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.flexColumn;
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+  & > #checkout-processing-container {
+    @include s.flexColumn;
+    flex: 1;
+    overflow: hidden;
+    & > .top-container {
+      @include s.flexColumn;
+      flex: 1;
+      overflow: hidden;
+      & > .carousel {
+        flex: 0 0 auto;
+
+        & > div {
+          padding: 15px 15px 5px 15px;
+          & > label {
+            @include s.responsive-font-format(
+              $font-family: s.$font-family-novecento_bold,
+              $font-weight: s.$font-weight-bold,
+              $font-size-map: s.$responsive-font-17-21
+            );
+          }
+        }
+      }
+      & > .center {
+        @include s.flexRow;
+        flex: 1;
+        margin-top: -10px;
+        overflow: hidden;
+        & > .left-container {
+          @include s.flexColumn;
+          flex: 1;
+          overflow: hidden;
+          padding: 20px 15px 15px 15px;
+
+          & > .quote-info {
+            @include s.flexRow;
+
+            & > .number,
+            & > .total {
+              @include s.responsive-font-format(
+                $font-family: s.$font-family-novecento_bold,
+                $font-weight: s.$font-weight-bold,
+                $font-size-map: s.$responsive-font-17-21
+              );
+              white-space: pre;
+
+              &.orange {
+                color: s.$yellowMustard;
+              }
+            }
+
+            & > .folio,
+            & > .products {
+              @include s.responsive-font-format(
+                $font-family: s.$font-family-novecento_bold,
+                $font-weight: s.$font-weight-bold,
+                $font-size-map: s.$responsive-font-17-21,
+                $color: s.$pqGreen
+              );
+              white-space: pre;
+              & > span {
+                @include s.responsive-font-format(
+                  $font-family: s.$font-family-novecento_bold,
+                  $font-weight: s.$font-weight-bold,
+                  $font-size-map: s.$responsive-font-17-21,
+                  $color: s.$pqGreen
+                );
+                white-space: pre;
+              }
+
+              &.orange {
+                color: s.$yellowMustard;
+                cursor: default;
+                text-decoration: none;
+              }
+
+              &.red {
+                color: s.$pqRed;
+                cursor: default;
+                text-decoration: none;
+              }
+              & > .edit {
+                cursor: pointer;
+                height: 18px;
+                vertical-align: baseline;
+              }
+            }
+          }
+
+          & > .table-container {
+            @include s.flexColumn;
+            overflow-x: auto;
+            flex: 1;
+
+            & > .container {
+              @include s.flexColumn;
+              min-width: 1750px;
+              height: 100%;
+              flex: 1;
+              & > .header {
+                border-bottom: 1px solid s.$pqBlack;
+              }
+
+              & > virtual-scroller {
+                @include s.fixVirtualScroller();
+                @include s.absolute100;
+                overflow-x: hidden;
+                ::ng-deep .scrollable-content {
+                  @include s.flexColumn;
+                }
+              }
+              & > .no-results,
+              & > .loading {
+                @include s.absoluteCenter;
+                @include s.flexColumn;
+                flex: 1 1 100%;
+                overflow: hidden;
+                width: 100%;
+              }
+            }
+          }
+
+          & > .totals-container {
+            @include s.flexRow;
+            border-top: 1px solid;
+            justify-content: flex-end;
+            padding: 5px 20px 0 0;
+            column-gap: 50px;
+
+            & > .pop-container {
+              @include s.flexColumn;
+              align-items: center;
+              justify-content: flex-end;
+
+              & > label {
+                @include s.responsive-font-format(
+                  $font-family: s.$font-family-roboto_bold,
+                  $font-weight: s.$font-weight-bold,
+                  $font-size-map: s.$responsive-font-15-18
+                );
+                margin-bottom: 3px;
+              }
+
+              & > .ocean {
+                @include s.flexRow;
+                @include s.absoluteCenter;
+                background-color: rgba(s.$pqGreen, 0.08);
+                padding: 8px 40px;
+
+                & > label {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font-family-roboto_bold,
+                    $font-weight: s.$font-weight-bold,
+                    $font-size-map: s.$responsive-font-16-20,
+                    $color: s.$pqGreen
+                  );
+                  margin-right: 10px;
+                }
+
+                & > div {
+                  cursor: default;
+                  height: 17px;
+                  width: 70px;
+
+                  & > img {
+                    height: 17px;
+                    opacity: 0.5;
+                    pointer-events: none;
+                    width: 70px;
+                  }
+
+                  & > .hover {
+                    display: none;
+                  }
+                }
+              }
+            }
+
+            & > .entries {
+              margin-right: 50px;
+
+              & > label {
+                @include s.responsive-font-format(
+                  $font-family: s.$font-family-roboto_regular,
+                  $font-weight: s.$font-weight-regular,
+                  $font-size-map: s.$responsive-font-12-14
+                );
+              }
+            }
+
+            & > .totals {
+              & > div {
+                @include s.flexRow;
+                justify-content: space-between;
+                margin-bottom: 4px;
+
+                & > label {
+                  @include s.default-transition;
+                }
+
+                & > label:nth-of-type(1) {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font-family-roboto_regular,
+                    $font-weight: s.$font-weight-regular,
+                    $font-size-map: s.$responsive-font-12-14
+                  );
+                }
+
+                & > label:nth-of-type(2) {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font-family-roboto_regular,
+                    $font-weight: s.$font-weight-regular,
+                    $font-size-map: s.$responsive-font-12-14,
+                    $color: s.$pqGreen
+                  );
+                  width: 120px;
+                  text-align: end;
+                }
+              }
+
+              & > .total {
+                & > label:nth-of-type(1) {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font-family-roboto_bold,
+                    $font-weight: s.$font-weight-bold,
+                    $font-size-map: s.$responsive-font-16-20
+                  );
+                }
+
+                & > label:nth-of-type(2) {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font-family-roboto_bold,
+                    $font-weight: s.$font-weight-bold,
+                    $font-size-map: s.$responsive-font-16-20,
+                    $color: s.$pqGreen2
+                  );
+                }
+              }
+            }
+          }
+        }
+        & > .right-container {
+          @include s.default-transition;
+          @include s.flexColumn;
+          background-color: s.$pqGray2;
+          flex: 0 0 305px;
+          overflow-y: auto;
+          overflow-x: hidden;
+          padding: 20px;
+          & > .title {
+            @include s.flexRow;
+            align-items: center;
+            column-gap: 10px;
+            margin-bottom: 10px;
+            justify-content: center;
+            & > .text {
+              @include s.flexRow;
+              align-items: center;
+
+              & > .separator {
+                white-space: pre;
+              }
+
+              & > label {
+                @include s.responsive-font-format(
+                  $font-family: s.$font-family-roboto_bold,
+                  $font-weight: s.$font-weight-bold,
+                  $font-size-map: s.$responsive-font-17-21,
+                  $color: s.$pqGreen
+                );
+                text-align: center;
+                margin-bottom: 4px;
+              }
+
+              & > label:nth-of-type(1) {
+                color: s.$pqBlack2;
+              }
+            }
+            & > .image {
+              @include s.flexRow;
+            }
+          }
+
+          & > .credit {
+            @include s.flexColumn;
+            @include s.absoluteCenter;
+            flex-shrink: 0;
+            height: 30px;
+            margin-bottom: 10px;
+            & > label {
+              @include s.responsive-font-format(
+                $font-family: s.$font-family-roboto_bold,
+                $font-weight: s.$font-weight-bold,
+                $font-size-map: s.$responsive-font-14-16,
+                $color: s.$pqGreen2
+              );
+            }
+            &.red {
+              background-color: rgba(s.$redBackground, 0.78);
+
+              & > label {
+                color: s.$redAlert;
+              }
+            }
+            &.green {
+              background-color: rgba(s.$pqGreen2, 0.1);
+            }
+          }
+          & > .data-container {
+            @include s.flexColumn;
+            row-gap: 10px;
+            & > .data-two-columns {
+              @include s.flexRowWrap;
+              flex: 1;
+              & > div {
+                @include s.flexColumn;
+                flex: 1;
+                & > .bold {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font-family-roboto_bold,
+                    $font-weight: s.$font-weight-bold,
+                    $font-size-map: s.$responsive-font-14-16
+                  );
+                }
+                & > .regular {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font-family-roboto_regular,
+                    $font-weight: s.$font-weight-regular,
+                    $font-size-map: s.$responsive-font-14-16
+                  );
+                }
+              }
+            }
+            & > .data {
+              @include s.flexColumn;
+              flex: 1;
+              position: relative;
+
+              &:nth-of-type(2) {
+                flex-basis: 70%;
+              }
+              &:nth-of-type(3) {
+                flex-basis: 30%;
+              }
+              & > label {
+                @include s.default-transition;
+                @include s.responsive-font-format(
+                  $font-family: s.$font-family-roboto_regular,
+                  $font-weight: s.$font-weight-regular,
+                  $font-size-map: s.$responsive-font-14-16
+                );
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
+                display: -webkit-box;
+                overflow: hidden;
+                text-align: start;
+                text-overflow: ellipsis;
+                &.active {
+                  @include s.default-transition;
+                  cursor: pointer;
+                  text-decoration: underline;
+
+                  &:hover {
+                    @include s.Roboto-Bold;
+                  }
+                }
+
+                &.addenda-active {
+                  @include s.responsive-font-format(
+                    $color: s.$main-proquifa,
+                    $font-family: s.$font_family_roboto,
+                    $font-size-map: s.$responsive-font-14-16,
+                    $font-weight: s.$font-weight_bold
+                  );
+                  cursor: pointer;
+                  text-decoration: underline;
+                }
+              }
+
+              & > label:nth-of-type(1) {
+                @include s.Roboto-Bold;
+                margin-bottom: 2px;
+              }
+
+              & > .absolute {
+                @include s.default-transition;
+                @include s.escaledFontFormat(s.$textSize11to13, regular, s.$pqBlack2);
+                @include s.Roboto-Medium;
+                @include s.responsive-font-format(
+                  $font-family: s.$font-family-roboto_regular,
+                  $font-weight: s.$font-weight-medium,
+                  $font-size-map: s.$responsive-font-14-16,
+                  $color: s.$pqWhite
+                );
+                background-color: s.$pqGreen;
+                border-radius: 6px;
+                cursor: pointer;
+                padding: 2px 5px;
+                position: absolute;
+                right: 0;
+                top: 0;
+
+                &:hover {
+                  opacity: 0.7;
+                }
+              }
+
+              & > .addenda-info {
+                @include s.flexColumn;
+                gap: 8px;
+                margin-top: 2px;
+                & > .info {
+                  @include s.flexColumn;
+                  gap: 2px;
+                  & > .title {
+                    @include s.responsive-font-format(
+                      $color: s.$pqBlack2,
+                      $font-family: s.$font-family-roboto_bold,
+                      $font-size-map: s.$responsive-font-14-14,
+                      $font-weight: s.$font-weight-bold
+                    );
+                  }
+
+                  & > .description {
+                    @include s.responsive-font-format(
+                      $color: s.$pqBlack2,
+                      $font-family: s.$font-family-roboto,
+                      $font-size-map: s.$responsive-font-14-16,
+                      $font-weight: s.$font-weight-medium
+                    );
+                  }
+                }
+              }
+            }
+
+            & > .data-row {
+              @include s.flexRow;
+              align-items: center;
+              justify-content: space-between;
+              width: 100%;
+
+              & > .column1 {
+                @include s.flexColumn;
+
+                & > .title {
+                  @include s.responsive-font-format(
+                    $color: s.$dark-proquifa,
+                    $font-family: s.$font_family_roboto,
+                    $font-size-map: s.$responsive-font-14-16,
+                    $font-weight: s.$font-weight_bold
+                  );
+                }
+
+                & > .info {
+                  @include s.responsive-font-format(
+                    $color: s.$dark-proquifa,
+                    $font-family: s.$font_family_roboto,
+                    $font-size-map: s.$responsive-font-14-16,
+                    $font-weight: s.$font-weight_regular
+                  );
+                }
+              }
+            }
+          }
+
+          & > .check {
+            @include s.flexColumn;
+            margin-bottom: 20px;
+          }
+
+          & > .radios {
+            @include s.flexColumn;
+            margin-bottom: 7px;
+
+            & > app-radio-button {
+              padding: 10px 0;
+            }
+          }
+
+          & > .text-area {
+            @include s.flexColumn;
+            flex: 1;
+
+            & > label {
+              @include s.responsive-font-format(
+                $font-family: s.$font-family-roboto_bold,
+                $font-weight: s.$font-weight-bold,
+                $font-size-map: s.$responsive-font-14-16
+              );
+              margin-bottom: 3px;
+            }
+
+            & > app-generic-text-area {
+              flex: 1;
+              max-height: 200px;
+            }
+          }
+
+          & > .button {
+            @include s.flexColumn;
+            align-items: center;
+            padding-top: 20px;
+            gap: 40px;
+            & > label {
+              @include s.responsive-font-format(
+                $font-family: s.$font-family-roboto_bold,
+                $font-weight: s.$font_family_roboto_regular,
+                $font-size-map: s.$responsive-font-14-16
+              );
+              text-decoration: underline;
+              text-align: center;
+              cursor: pointer;
+            }
+
+            & > button {
+              &.active {
+                @include s.pqButton($min-width: 160px, $max-width: 250px, $baseColor: s.$pqGreen2);
+              }
+
+              &.disabled {
+                @include s.pqButtonDisable($min-width: 160px, $max-width: 250px);
+              }
+            }
+          }
+        }
+
+        & > .loading {
+          @include s.flexColumn;
+          @include s.absoluteCenter;
+          background-color: s.$pqGray2;
+          flex: 0 0 270px;
+          height: 100%;
+          overflow: hidden;
+          padding: 20px;
+          width: 270px;
+        }
+      }
+    }
+
+    & > footer {
+      @include s.absoluteCenter;
+      @include s.flexRow;
+      border-top: 1px solid s.$pqBlack2;
+      flex: 0 0 49px;
+
+      & > div {
+        @include s.absoluteCenter;
+        @include s.flexRow;
+        margin-right: 18px;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+          @include s.Roboto-Regular;
+        }
+
+        & > label:first-child {
+          @include s.Roboto-Bold;
+          margin-right: 4px;
+        }
+
+        & > img {
+          height: 16px;
+          margin-right: 4px;
+          width: 16px;
+        }
+      }
+
+      & > div:last-child {
+        margin-right: 0;
+      }
+    }
+
+    & > .pop-up-usage,
+    & > .pop-up-payment-method {
+      & ::ng-deep {
+        & .usage-container {
+          @include s.flexColumn;
+          padding: 9px 0 3px 0;
+
+          & > div {
+            @include s.default-transition($duration: 0.2s);
+            @include s.flexColumn;
+            cursor: pointer;
+            padding: 0 15px;
+
+            &:hover,
+            &.active {
+              background-color: s.$pqGray2;
+
+              & > label {
+                @include s.Roboto-Medium;
+              }
+            }
+
+            & > label {
+              @include s.default-transition($duration: 0.2s);
+              @include s.escaledFontFormat(s.$textSize12to13, regular, s.$pqBlack2);
+              @include s.Roboto-Regular;
+              border-bottom: 1px solid s.$pqGray2;
+              cursor: pointer;
+              padding: 6px 0;
+
+              &:last-of-type {
+                border-bottom: none;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    @include s.media-query(s.$standard) {
+      & > .top-container {
+        & > .center {
+          & > .left-container {
+            & > .totals-container {
+              padding: 7px 20px 0 0;
+
+              & > .pop-container {
+                & > label {
+                  margin-bottom: 5px;
+                }
+
+                & > .ocean {
+                  & > label {
+                    margin-right: 18px;
+                  }
+
+                  & > div {
+                    height: 22px;
+                    width: 86px;
+
+                    & > img {
+                      height: 22px;
+                      width: 86px;
+                    }
+                  }
+                }
+              }
+
+              & > .totals {
+                & > div {
+                  margin-bottom: 8px;
+
+                  & > label:nth-of-type(2) {
+                    width: 190px;
+                  }
+                }
+              }
+            }
+          }
+
+          & > .right-container {
+            flex: 0 0 389px;
+
+            & > .title {
+              @include s.absoluteCenter;
+              @include s.flexRow;
+              margin-bottom: 15px;
+
+              & > label:nth-of-type(1) {
+                margin-bottom: 0;
+              }
+            }
+
+            & > .credit {
+              height: 40px;
+              margin-bottom: 15px;
+            }
+
+            & > .check {
+              margin-bottom: 38px;
+            }
+
+            & > .radios {
+              margin-bottom: 3px;
+            }
+
+            & > .button {
+              padding: 30px 20px 0 20px;
+            }
+          }
+        }
+      }
+
+      & > footer {
+        flex: 0 0 56px;
+
+        & > div {
+          & > div {
+            margin-right: 27px;
+
+            & > img {
+              height: 17px;
+              margin-right: 6px;
+              width: 17px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.folio {
+  text-decoration: underline;
+  cursor: pointer;
+  &.editable {
+    text-decoration: none;
+    cursor: default;
+    & > span {
+      text-decoration: underline;
+      cursor: pointer;
+      margin-right: 5px;
+      vertical-align: baseline;
+    }
+  }
+}
+
+.linked-items-pop {
+  & > app-custom-position-pop-up {
+    transition: all 0.4s ease-in-out;
+  }
+
+  & ::ng-deep {
+    & .linked-items {
+      overflow: auto;
+      padding: 5px 3px;
+
+      & > ul {
+        & > li {
+          @include s.escaledFontFormat(s.$textSize12to13, regular, s.$pqWhite);
+          @include s.Roboto-Regular;
+          margin-bottom: 5px;
+          text-align: center;
+          white-space: pre-wrap;
+
+          &:hover {
+            cursor: pointer;
+            text-decoration: underline;
+          }
+
+          @include s.responsive_layout('macBookAir') {
+            margin-bottom: 8px;
+          }
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+}

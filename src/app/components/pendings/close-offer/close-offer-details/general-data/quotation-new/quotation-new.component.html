@@ -1,0 +1,271 @@
+<section id="quotation-new-container">
+  <div class="header-options">
+    <label>{{ 'closeOffer.entries' | translate }}</label>
+    <app-search
+      [isSearchByType]="true"
+      [imageFill]="'#008894'"
+      [searchTerm]="searchTerm$ | async"
+      [typesOfSearch]="searchOptions$ | async"
+      [typeSelected]="selectedSearchOption$ | async"
+      (handleTypeSelected)="setSearchOption($event, 'selectedDefaultSearchOption')"
+      (textSearch)="handleKeySearch($event)"
+    ></app-search>
+    <button
+      class="see-resume"
+      *ngIf="!(seeResumeActive$ | async)"
+      [disabled]="!(validatorSeeConfiguredButton$ | async)"
+      [ngClass]="(validatorSeeConfiguredButton$ | async) ? 'active' : 'disabled'"
+      (click)="setSeeResume(true)"
+      >{{ 'closeOffer.seeResume' | translate }} ({{ (configuredEntries$ | async) ?? 0 }})
+    </button>
+    <button class="back active" *ngIf="seeResumeActive$ | async" (click)="setSeeResume(false)">{{
+      'common.back' | translate
+    }}</button>
+  </div>
+  <div class="table-container">
+    <virtual-scroller
+      *ngIf="(entriesApiStatus$ | async) !== 1 && !lodashIsEmpty(internalSalesItem$ | async)"
+      [enableUnequalChildrenSizes]="true"
+      [bufferAmount]="24"
+      [items]="internalSalesItem$ | async"
+      (vsUpdate)="itemsQuotation = $event"
+    >
+      <div class="header">
+        <app-header-internal-sales-item
+          [internalSalesItem]="selectHeaderInternalSalesItem$ | async"
+          (valueEmitter)="globalHeaderItemEventsHandler($event)"
+        ></app-header-internal-sales-item>
+      </div>
+      <div class="header-separator"></div>
+      <div class="item">
+        <app-internal-sales-item
+          *ngFor="let item of internalSalesItem$ | async; let i = index; trackBy: handleTrackByItemBy"
+          [internalSalesItem]="item"
+          (valueEmitter)="globalItemEventsHandler($event)"
+        ></app-internal-sales-item>
+      </div>
+    </virtual-scroller>
+    <div class="loading" *ngIf="(entriesApiStatus$ | async) === 1">
+      <app-loading></app-loading>
+    </div>
+    <div class="loading" *ngIf="(entriesApiStatus$ | async) !== 1 && lodashIsEmpty(internalSalesItem$ | async)">
+      <app-without-results></app-without-results>
+    </div>
+  </div>
+  <div
+    class="footer-adjustment"
+    *ngIf="
+      (seeResumeActive$ | async) && (selectedQuotationStatus$ | async)?.EstadoCotizacion === ESTADOS_COTIZACION.enviada;
+      else tableFooter
+    "
+  >
+    <div class="content">
+      <app-check-box
+        [label]="'closeOffer.adjustPaymentConditions' | translate"
+        [check]="(resumeData$ | async)?.paymentConditionsIsSelected"
+        [fontBold]="true"
+        fontColor="#008894"
+        (event)="handleCheckAdjustment($event, 'paymentConditionsIsSelected')"
+      ></app-check-box>
+      <div class="inputs">
+        <app-drop-down-list
+          class="payment-conditions"
+          [activeMinWidth]="false"
+          [disable]="!(resumeData$ | async)?.paymentConditionsIsSelected"
+          [itemSelected]="selectedPaymentConditions$ | async"
+          [items]="paymentsConditions$ | async"
+          [isSearchable]="(paymentsConditions$ | async)?.length > 5"
+          [font]="'Roboto-Bold'"
+          [label]="'closeOffer.changePaymentConditions' | translate"
+          [optionsPosition]="'top'"
+          (valueDropList)="setPaymentCondition($event)"
+        ></app-drop-down-list>
+
+        <app-generic-input
+          class="additional-days"
+          [isDisable]="!(resumeData$ | async)?.paymentConditionsIsSelected"
+          [label]="'closeOffer.additionalDays' | translate"
+          [placeholder]="'0'"
+          [textAlign]="'center'"
+          [labelFont]="'Roboto-Bold'"
+          [typeValidation]="inputValidators.Number"
+          [value]="(resumeData$ | async)?.additionalDays"
+          (textData)="setAdditionalDays($event)"
+        ></app-generic-input>
+
+        <app-generic-input
+          [label]="'closeOffer.justification' | translate"
+          [isDisable]="!(resumeData$ | async)?.paymentConditionsIsSelected"
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          [value]="(resumeData$ | async)?.adjustmentJustification"
+          (textData)="setJustification($event, 'adjustment')"
+        ></app-generic-input>
+      </div>
+    </div>
+    <div class="buttons">
+      <button
+        *ngIf="!(seeResumeActive$ | async)"
+        [disabled]="!(validatorForResumeButton$ | async)"
+        [ngClass]="(validatorForResumeButton$ | async) ? 'active' : 'disabled'"
+        (click)="navigateToResume()"
+        >{{ 'closeOffer.toResume' | translate }}</button
+      >
+      <button
+        *ngIf="seeResumeActive$ | async"
+        [disabled]="!(validatorAcceptProcessButton$ | async)"
+        [ngClass]="(validatorAcceptProcessButton$ | async) ? 'active-green' : 'disabled'"
+        (click)="changeQuoteStatus()"
+        >{{ 'common.accept' | translate }}</button
+      >
+      <div class="resend-button">
+        <button class="active" (click)="handleModalIsOpenSendQuotation(true)">{{
+          'common.resendQuotation' | translate
+        }}</button>
+      </div>
+    </div>
+  </div>
+  <ng-template #tableFooter>
+    <div class="table-footer">
+      <div>
+        <label
+          >{{ (internalSalesItem$ | async)?.length }}
+          {{
+            (selectDifferentBrand$ | async) === 1 ? ('closeOffer.entries' | translate) : ('closeOffer.entry' | translate)
+          }}</label
+        >
+      </div>
+      <div>
+        <label
+          >{{ selectDifferentBrand$ | async }}
+          {{ (selectDifferentBrand$ | async) === 1 ? ('common.brand' | translate) : ('common.brands' | translate) }}</label
+        >
+      </div>
+      <div class="button">
+        <button
+          *ngIf="!(seeResumeActive$ | async)"
+          [disabled]="!(validatorForResumeButton$ | async)"
+          [ngClass]="(validatorForResumeButton$ | async) ? 'active' : 'disabled'"
+          (click)="navigateToResume()"
+          >{{ 'closeOffer.toResume' | translate }}</button
+        >
+        <button
+          *ngIf="seeResumeActive$ | async"
+          [disabled]="!(validatorAcceptProcessButton$ | async)"
+          [ngClass]="(validatorAcceptProcessButton$ | async) ? 'active-green' : 'disabled'"
+          (click)="changeQuoteStatus()"
+          >{{ 'common.accept' | translate }}</button
+        >
+      </div>
+    </div>
+    <div class="button">
+      <button class="active" (click)="handleModalIsOpenSendQuotation(true)">{{ 'common.resendQuotation' | translate }}</button>
+    </div>
+  </ng-template>
+</section>
+
+<div *ngFor="let item of items$ | async; trackBy: handleTrackByItemByxx; let i = index">
+  <div
+    class="custom-pop-up"
+    *ngIf="item?.commentsPop?.isOpen && item?.commentsPop?.isInRange"
+    [style.z-index]="item?.commentsPop?.zIndex"
+  >
+    <app-custom-position-pop-up
+      *ngIf="item?.commentsPop?.isOpen"
+      [minWidth]="(viewType$ | async) === 'macBookAir' ? '630px' : '470px'"
+      [minHeight]="'140px'"
+      [maxWidth]="(viewType$ | async) === 'macBookAir' ? '630px' : '470px'"
+      [maxHeight]="(viewType$ | async) === 'macBookAir' ? '136px' : '110px'"
+      [closeButtonSize]="(viewType$ | async) === 'macBookAir' ? '20px' : '18px'"
+      [closeButtonSeparation]="(viewType$ | async) === 'macBookAir' ? '20px' : '18px'"
+      [target]="getElement(item?.commentsPop?.elementId)"
+      [popUpPosition]="item?.commentsPop?.position"
+      (closeEmitter)="handlePopUp(item, 'commentsPop', false)"
+    >
+      <div class="pop-ng-content">
+        <label
+          class="title"
+          [ngClass]="{
+            ocean: item.Seguimiento,
+            yellow: item.AjusteDeOferta,
+            green: item.PromesaDeCompra,
+            red: item.Cancelacion
+          }"
+          >{{
+            item.Seguimiento
+              ? ('closeOffer.nextTracingComplete' | translate)
+              : item.AjusteDeOferta
+              ? ('closeOffer.offerAdjustment' | translate)
+              : item.PromesaDeCompra
+              ? ('closeOffer.buyPromise' | translate)
+              : ('closeOffer.cancel' | translate)
+          }}</label
+        >
+        <div class="subtitle">
+          <label *ngIf="item.Seguimiento"
+            >{{ item.ListaCotPartidaCotizacionSeguimiento[0].FechaProximoSeguimiento | dateFormatSlash }} ·
+            {{ getFollowReason(item.ListaCotPartidaCotizacionSeguimiento[0].IdCatMotivoSeguimientoCotizacion) | async }}</label
+          >
+          <label class="ocean" *ngIf="item.AjusteDeOferta && item.ajOfFleteExpressCotizacion && !item.ajOfPrecioCotizacion"
+            >Flete express: {{ item.cotCotizacionFleteExpress.Proveedor.Nombre }} ·
+            <span class="green"
+              >{{
+                item.ajOfFleteExpressCotizacion.PrecioFleteExpress
+                  | currency: (quote$ | async)?.claveMoneda:'symbol-narrow':'1.2-2'
+              }}
+              {{ (quote$ | async)?.claveMoneda }} ·
+            </span>
+            <span class="black"
+              >{{
+                item.ajOfFleteExpressCotizacion.PorcentajeProquifa
+                  | currency: (quote$ | async)?.claveMoneda:'symbol-narrow':'1.2-2'
+              }}% PQF</span
+            >
+          </label>
+          <label *ngIf="item.ajOfValorConfiguracionTiempoEntregaCotizacion && !item.ajOfFleteExpressCotizacion">
+            -2 Dias: TEE ·
+            <span class="green"> {{ item.ajOfValorConfiguracionTiempoEntregaCotizacion.TiempoEstimadoEntrega }} Dias</span>
+          </label>
+          <label *ngIf="item.ajOfPrecioCotizacion">
+            Precio:
+            {{
+              item.ajOfPrecioCotizacion.PrecioUnitarioPactado | currency: (quote$ | async)?.claveMoneda:'symbol-narrow':'1.2-2'
+            }}
+            {{ (quote$ | async)?.claveMoneda }}
+          </label>
+          <label *ngIf="item.PromesaDeCompra"
+            >{{ 'closeOffer.buyDate' | translate }}:
+            {{ item.cotPromesaDeCompraPartida.FechaPromesaDeCompra | dateFormatSlash }}</label
+          >
+          <label *ngIf="item.Cancelacion"
+            >{{ 'closeOffer.reason' | translate }} ·
+            {{ getCancelReason(item.cotCancelacionPartidaCotizacion.IdCatMotivoCancelacionPartidaCotizacion) | async }}</label
+          >
+        </div>
+
+        <label class="content" *ngIf="item.AjusteDeOferta && item.ajOfPrecioCotizacion">
+          <span>{{ 'closeOffer.justification' | translate }}: </span>
+          {{ item.ajOfPrecioCotizacion.Comentarios }}
+        </label>
+        <label
+          class="content"
+          *ngIf="item.AjusteDeOferta && item.ajOfValorConfiguracionTiempoEntregaCotizacion && !item.ajOfFleteExpressCotizacion"
+        >
+          <span>{{ 'closeOffer.justification' | translate }}: </span>
+          {{ item.ajOfValorConfiguracionTiempoEntregaCotizacion.Comentarios }}
+        </label>
+        <label class="content" *ngIf="item.AjusteDeOferta && item.ajOfFleteExpressCotizacion && !item.ajOfPrecioCotizacion">
+          <span>{{ 'closeOffer.justification' | translate }}: </span>
+          {{ item.ajOfFleteExpressCotizacion.Comentarios }}
+        </label>
+        <label class="content" *ngIf="item.PromesaDeCompra">
+          <span>{{ 'closeOffer.justification' | translate }}: </span>
+          {{ item.cotPromesaDeCompraPartida.Justificacion }}
+        </label>
+        <label class="content" *ngIf="item.Cancelacion">
+          <span>{{ 'closeOffer.justification' | translate }}: </span>
+          {{ item.cotCancelacionPartidaCotizacion.Observaciones }}
+        </label>
+      </div>
+    </app-custom-position-pop-up>
+  </div>
+</div>

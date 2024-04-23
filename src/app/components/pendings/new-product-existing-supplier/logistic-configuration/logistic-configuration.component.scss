@@ -1,0 +1,24 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+  @include s.flexColumn;
+  @include s.reset-line-height;
+  overflow: hidden;
+}
+
+#logistic-configuration-container {
+  @include s.flexColumn;
+  flex: 1;
+  overflow: hidden;
+
+  & > .outlet {
+    @include s.flexColumn;
+    flex: 1;
+    overflow: hidden;
+  }
+}

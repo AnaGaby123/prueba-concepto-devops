@@ -1,0 +1,38 @@
+@use 'base' as s;
+
+:host {
+  * {
+    @include s.reset-line-height;
+    @include s.default-transition();
+  }
+
+  .brand-filters {
+    display: grid;
+    grid-column-gap: 20px;
+    grid-template-columns: repeat(10, 1fr);
+
+    & > .filter1 {
+      @include s.flexRow;
+      align-items: center;
+      grid-column-end: span 5;
+    }
+
+    & > .filter2 {
+      @include s.flexRow;
+      flex: 1;
+      grid-column-end: span 4;
+    }
+  }
+
+  @include s.media-query('standard') {
+    & > .brand-filters {
+      & > .filter1 {
+        grid-column-end: span 6;
+      }
+
+      & > .filter2 {
+        grid-column-end: span 3;
+      }
+    }
+  }
+}

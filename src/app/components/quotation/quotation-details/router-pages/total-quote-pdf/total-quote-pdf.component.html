@@ -1,0 +1,124 @@
+<div id="linked-quote-pdf">
+  <div
+    class="files-container"
+    #filesContainer
+    (scroll)="onScroll()"
+    *ngIf="
+      (typeQuotation$ | async)?.labelKey !== TOTAL_QUOTATION
+        ? (selectBase64FileStatus$ | async) === apiSuccess && (selectBase64FileInvestigationStatus$ | async) === apiSuccess
+        : (selectBase64FileStatus$ | async) === apiSuccess
+    "
+  >
+    <div class="file-container">
+      <div class="title">
+        <label class="title-main"> {{ 'quotation.quotation' | translate }} </label>
+        <label class="ocean"> · FO-{{ (selectedQuotation$ | async)?.Folio }}</label>
+        <label
+          [ngClass]="{
+            sent: (selectedQuotationStatus$ | async)?.EstadoCotizacion === catQuotationState.Enviada,
+            saved:
+              (selectedQuotationStatus$ | async)?.EstadoCotizacion === catQuotationState.Guardada &&
+              !(selectedQuotation$ | async)?.CotizacionDeInvestigacion &&
+              !(selectedQuotation$ | async)?.EnviadaConInvestigacion,
+            investigation:
+              ((selectedQuotation$ | async)?.CotizacionDeInvestigacion ||
+                (selectedQuotation$ | async)?.EnviadaConInvestigacion) &&
+              !(selectedQuotation$ | async)?.InvestigacionesFinalizadas,
+            'investigation-finish':
+              ((selectedQuotation$ | async)?.CotizacionDeInvestigacion ||
+                (selectedQuotation$ | async)?.EnviadaConInvestigacion) &&
+              (selectedQuotation$ | async)?.InvestigacionesFinalizadas
+          }"
+        >
+          ·
+          {{
+            (selectedQuotationStatus$ | async)?.EstadoCotizacion === catQuotationState.Enviada ||
+            ((selectedQuotationStatus$ | async)?.EstadoCotizacion === catQuotationState.Guardada &&
+              !(selectedQuotation$ | async)?.CotizacionDeInvestigacion &&
+              !(selectedQuotation$ | async)?.EnviadaConInvestigacion) ||
+            ((selectedQuotationStatus$ | async)?.EstadoCotizacion === catQuotationState.Nueva &&
+              !(selectedQuotation$ | async)?.CotizacionDeInvestigacion &&
+              !(selectedQuotation$ | async)?.EnviadaConInvestigacion)
+              ? (selectedQuotationStatus$ | async)?.EstadoCotizacion
+              : ((selectedQuotation$ | async)?.CotizacionDeInvestigacion ||
+                  (selectedQuotation$ | async)?.EnviadaConInvestigacion) &&
+                !(selectedQuotation$ | async)?.InvestigacionesFinalizadas
+              ? ('quotation.quotationWithProductsInvestigation' | translate)
+              : ('quotation.quotationInvestigationFinish' | translate)
+          }}</label
+        >
+      </div>
+      <div class="content-file">
+        <app-upload-view-file [datasFile]="{path: selectBase64File$ | async, titulo: ''}"></app-upload-view-file>
+      </div>
+    </div>
+    <div
+      class="file-container"
+      *ngIf="(selectBase64FileInvestigation$ | async) && (typeQuotation$ | async)?.labelKey !== TOTAL_QUOTATION"
+    >
+      <div class="title">
+        <label class="title-main" *ngIf="!(selectIsLinkedQuote$ | async)">{{
+          'quotation.details.totalQuotation' | translate
+        }}</label>
+        <label class="ocean">
+          ·
+          {{
+            (folionvestigation$ | async)
+              ? 'FO-' + (folionvestigation$ | async)
+              : ('quotation.details.notAvailableFolio' | translate)
+          }}</label
+        >
+        <label class="title-main investigation"> · {{ 'quotation.details.withInvestigationProducts' | translate }}</label>
+      </div>
+      <div class="content-file">
+        <app-upload-view-file [datasFile]="{path: selectBase64FileInvestigation$ | async, titulo: ''}"></app-upload-view-file>
+      </div>
+    </div>
+  </div>
+  <div
+    class="loading-container"
+    *ngIf="
+      (typeQuotation$ | async)?.labelKey !== TOTAL_QUOTATION
+        ? (selectBase64FileStatus$ | async) === apiLoading || (selectBase64FileInvestigationStatus$ | async) === apiLoading
+        : (selectBase64FileStatus$ | async) === apiLoading
+    "
+  >
+    <app-loading></app-loading>
+  </div>
+  <div
+    class="loading-container"
+    *ngIf="
+      (typeQuotation$ | async)?.labelKey !== TOTAL_QUOTATION
+        ? (selectBase64FileStatus$ | async) === apiFailed || (selectBase64FileInvestigationStatus$ | async) === apiFailed
+        : (selectBase64FileStatus$ | async) === apiFailed
+    "
+  >
+    <app-without-results [title]="'Ocurrio un error en la obtención del pdf'"></app-without-results>
+  </div>
+
+  <div class="content-buttons">
+    <button class="active" (click)="onReturnView()">{{ 'common.back' | translate }}</button>
+    <button
+      [ngClass]="
+        ((selectedQuotationStatus$ | async)?.EstadoCotizacion === catQuotationState.Enviada &&
+          (typeQuotation$ | async)?.labelKey === TOTAL_QUOTATION &&
+          (selectBase64File$ | async) &&
+          !(selectedQuotation$ | async)?.CotizacionDeInvestigacion &&
+          !(selectedQuotation$ | async)?.EnviadaConInvestigacion) ||
+        ((typeQuotation$ | async)?.labelKey === TOTAL_QUOTATION &&
+          (selectBase64File$ | async) &&
+          ((selectedQuotation$ | async)?.CotizacionDeInvestigacion || (selectedQuotation$ | async)?.EnviadaConInvestigacion)) ||
+        ((typeQuotation$ | async)?.labelKey === PARTIAL_QUOTATION &&
+          (selectBase64File$ | async) &&
+          (selectBase64FileInvestigation$ | async) &&
+          (selectedQuotationStatus$ | async)?.EstadoCotizacion === catQuotationState.Enviada &&
+          value &&
+          (selectBase64FileInvestigationStatus$ | async))
+          ? 'active'
+          : 'disabled'
+      "
+      (click)="handleModalIsOpenSendQuotation()"
+      >{{ 'common.resend' | translate }}</button
+    >
+  </div>
+</div>

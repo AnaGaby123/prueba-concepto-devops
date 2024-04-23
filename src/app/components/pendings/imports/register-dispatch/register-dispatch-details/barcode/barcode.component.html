@@ -1,0 +1,11 @@
+<div id="barcode-container">
+  <input #barcodeInput type="text" [(ngModel)]="barcode" (keyup)="handleBarcode($event)" />
+  <div class="code" (click)="focusInput()">
+    <img src="assets/Images/barcode.svg" alt="barcode" />
+  </div>
+  <div class="texts" (click)="focusInput()">
+    <label>{{ 'registerDispatch.readPetitionOfThe' | translate }}</label>
+    <label>{{ 'OD-' }}{{ '1618-1001269' }}</label>
+  </div>
+  <button class="active" (click)="goBack()">{{ 'common.cancel' | translate }}</button>
+</div>

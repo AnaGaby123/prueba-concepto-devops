@@ -1,0 +1,23 @@
+<div class="delivery-image" [style.background-color]="image?.base64 && !isLoading ? '#f2f3f4' : ''">
+  <img
+    alt=""
+    [src]="image?.base64 || 'assets/Images/contacto.svg'"
+    [style.height]="image?.base64 ? '100%' : (viewType$ | async) === 'macBookAir' ? '190px' : '150px'"
+    class="image-delivery-default"
+    *ngIf="!isLoading"
+  />
+
+  <app-loading *ngIf="isLoading"></app-loading>
+  <div *ngIf="showAddImage && !isLoading">
+    <label for="deliveryPhoto">
+      <img alt="" [src]="'assets/Images/group.svg'" />
+    </label>
+    <input multiple type="file" accept=".jpg,.png" id="deliveryPhoto" (change)="addImage($event)" />
+  </div>
+  <div *ngIf="showDeleteImage && image?.base64 && !isLoading">
+    <label for="deliveryPhotoClean">
+      <img alt="" [src]="'assets/Images/deleteImage.svg'" />
+    </label>
+    <input type="button" id="deliveryPhotoClean" (click)="deleteImage()" />
+  </div>
+</div>

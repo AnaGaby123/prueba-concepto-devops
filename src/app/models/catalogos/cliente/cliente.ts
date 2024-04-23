@@ -1,0 +1,44 @@
+import {Persona} from '../persona/persona';
+import {Direccion} from '@appModels/catalogos/direccion/direccion';
+
+export class Cliente {
+  Activo: boolean;
+  AreaCorporativo: boolean;
+  PaginaContrato: string;
+  FechaRegistro: string;
+  FechaUltimaActualizacion: string;
+  IdCatCorporativo: string;
+  IdCatIndustria: string;
+  IdCatMedioDePago: string;
+  IdCatNivelIngreso: string;
+  IdCatRolCliente: string;
+  IdCatImportanciaCliente: string;
+  NombreCatImportanciaCliente: string;
+  IdCatSector: string;
+  NombreCatSector: string;
+  IdCliente: string;
+  Importancia: string;
+  Industria: string;
+  MedioDePago: string;
+  NivelIngreso: string;
+  Nombre: string;
+  NombreCatRolCliente: string;
+  NombreCorporativo: string;
+  ObjetivoCrecimientoDeseado: number;
+  ObjetivoCrecimientoFundamental: number;
+  Pagina: string;
+  PortalFactura: string;
+  Sector: string;
+  Vendedor: string;
+  Alias: string;
+  IdUxFaseWizard: string;
+  EsTerceroAutorizado: boolean;
+  IdConfiguracionPagos: string;
+  terceroAutorizado: boolean;
+  Rol: string;
+  Contrato: string;
+  listPersonaContacto: Persona[];
+  listaDir: Direccion[] = [];
+  datosEntrega: any[];
+  segmentacionOferta: any[] = [];
+}

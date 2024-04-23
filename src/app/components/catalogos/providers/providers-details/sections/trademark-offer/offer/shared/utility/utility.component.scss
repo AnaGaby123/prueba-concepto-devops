@@ -1,0 +1,66 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  & > .utility {
+    @include s.flexColumn;
+
+    & > .grid-inputs {
+      display: grid;
+      grid-template-areas:
+        'area1 area2 area3 area4 area5'
+        'area6 area7 area8 area9 area10';
+      grid-gap: 15px 15px;
+      justify-items: flex-start;
+
+      & > .input-container {
+        @include s.flexRow;
+        align-items: center;
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        width: 100px;
+
+        & > .input {
+          flex: 0 0 50px;
+          margin: 0 7px;
+        }
+
+        & > label,
+        & > span {
+          @include s.Roboto-Bold;
+          @include s.escaledFontFormat(s.$textSize12to16, bold, s.$pqBlack2);
+        }
+
+        & label {
+          text-align: end;
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .grid-inputs {
+        & > .input-container {
+          width: 125px;
+
+          & > .input {
+            flex: 0 0 60px;
+            margin: 0 9px;
+          }
+
+          &.area9 {
+            grid-area: area9;
+          }
+
+          &.area10 {
+            grid-area: area10;
+          }
+        }
+      }
+    }
+  }
+}

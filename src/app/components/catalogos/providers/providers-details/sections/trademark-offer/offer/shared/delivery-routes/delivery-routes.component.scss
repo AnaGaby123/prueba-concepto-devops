@@ -1,0 +1,151 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  & > .routes-container {
+    display: grid;
+    grid-gap: 3px;
+    grid-template-areas:
+      'ocean gray1 red1'
+      'ocean gray1 red1'
+      'ocean gray1 red2'
+      'ocean gray2 red2'
+      'ocean gray2 red3'
+      'ocean gray2 red3';
+    grid-template-columns: repeat(3, 1fr);
+    width: 500px;
+
+    & > .routes-item {
+      @include s.flexColumn;
+      padding: 0 15px;
+      justify-content: center;
+      cursor: pointer;
+      transition: background-color 0.3s ease-in-out;
+
+      & * {
+        cursor: pointer;
+      }
+
+      & label {
+        color: s.$pqWhite;
+        display: block;
+        text-align: center;
+        text-transform: uppercase;
+        width: 100%;
+      }
+
+      & > div {
+        @include s.flexColumn;
+        padding: 13px 0;
+        justify-content: center;
+
+        & > .item-title {
+          @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqWhite);
+          @include s.Novecento-Bold;
+        }
+
+        & > .item-text {
+          @include s.escaledFontFormat(s.$textSize10to12, regular, s.$pqWhite);
+          @include s.Novecento;
+        }
+      }
+
+      & > div:first-child {
+        border-bottom: 1px solid s.$pqGray2;
+      }
+
+      &.item-1 {
+        padding: 10px 15px;
+        background: s.$pqGreen;
+
+        &:hover,
+        &.selected-route {
+          background-color: s.$pqGreenHover;
+        }
+
+        & > div {
+          flex: 1 1 auto;
+        }
+
+        & > div:first-child {
+          border-bottom: 1px solid s.$pqGray2;
+          flex: 0 0 auto;
+        }
+
+        & > div:last-child {
+          border-top: 1px solid s.$pqGray2;
+          flex: 0 0 auto;
+        }
+      }
+
+      &.item-2,
+      &.item-3 {
+        background: s.$pqBlack2;
+
+        &:hover,
+        &.selected-route {
+          background-color: s.$pqBlack;
+        }
+      }
+
+      &.item-4,
+      &.item-5,
+      &.item-6 {
+        padding: 5px 15px;
+        background: s.$darkRed;
+
+        &:hover,
+        &.selected-route {
+          background-color: s.$darkRedHover;
+        }
+
+        & > div {
+          padding: 10px 0;
+        }
+      }
+
+      &.item-1 {
+        grid-area: ocean;
+      }
+
+      &.item-2 {
+        grid-area: gray1;
+      }
+
+      &.item-3 {
+        grid-area: gray2;
+      }
+
+      &.item-4 {
+        grid-area: red1;
+      }
+
+      &.item-5 {
+        grid-area: red2;
+      }
+
+      &.item-6 {
+        grid-area: red3;
+      }
+
+      &.selected-route {
+        -webkit-box-shadow: 0 0 34px -5px rgba(0, 0, 0, 0.75);
+        -moz-box-shadow: 0 0 34px -5px rgba(0, 0, 0, 0.75);
+        box-shadow: 0 0 34px -5px rgba(0, 0, 0, 0.75);
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      width: 560px;
+
+      & > .routes-item {
+        &.item-4 {
+          padding: 10px 15px;
+        }
+      }
+    }
+  }
+}

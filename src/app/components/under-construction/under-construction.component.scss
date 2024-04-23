@@ -1,0 +1,13 @@
+@use 'base' as s;
+
+:host {
+  width: 100%;
+  height: 100%;
+
+  .under-construction-container {
+    @include s.flexColumn;
+    @include s.absoluteCenter;
+    width: 100%;
+    height: 100%;
+  }
+}

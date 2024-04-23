@@ -1,0 +1,952 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  #collection-monitoring-list-container {
+    @include s.absolute100;
+    @include s.flexColumn;
+
+    & > section {
+      @include s.flexRow;
+      @include s.absolute100;
+
+      & > .payments {
+        & > .filters {
+          @include s.flexRowWrap;
+          background-color: s.$pqGray2;
+          height: 100%;
+          position: relative;
+          width: auto;
+
+          &.hide {
+            animation-name: hideContent;
+            animation-duration: 1s;
+            animation-fill-mode: forwards;
+            transition: 1s ease-in-out;
+          }
+
+          &.show {
+            animation-name: showContent;
+            animation-duration: 0.7s;
+            animation-fill-mode: forwards;
+          }
+
+          & > .data-filters {
+            @include s.absolute100;
+            @include s.flexRow;
+            overflow: hidden;
+
+            & > div {
+              @include s.absolute100;
+              @include s.flexColumn;
+              min-width: 370px;
+
+              & > .title {
+                @include s.flexRow;
+                box-sizing: border-box;
+                border-bottom: 1px solid #d8d9dd;
+                justify-content: center;
+                max-height: 100px;
+                margin: 33px 20px 20px 20px;
+
+                & > .text {
+                  @include s.flexColumn;
+                  align-items: center;
+                  width: 100%;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize20to25, bold, s.$pqBlack2);
+                    @include s.Novecento-Demibold;
+                    margin-bottom: 20px;
+                  }
+                }
+              }
+
+              & > .dateFilter {
+                @include s.flexRowNoWrap;
+                margin-top: 10px;
+
+                & > .picker {
+                  margin: 0 10px 0 20px;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize16to18, '', s.$pqBlack2);
+                    @include s.Roboto-Bold;
+                    margin-bottom: 10px;
+                  }
+
+                  & > .date-picker {
+                    height: 25px;
+                  }
+                }
+
+                & > .pickerFrom {
+                  margin: 0 20px 0 10px;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize16to18, '', s.$pqBlack2);
+                    @include s.Roboto-Bold;
+                    margin-bottom: 10px;
+                  }
+
+                  & > .date-picker {
+                    height: 25px;
+                  }
+                }
+              }
+
+              & > .content {
+                @include s.flexColumn;
+                height: calc(100% - 123px);
+
+                & > div {
+                  @include s.flexColumn;
+                  box-sizing: border-box;
+                  padding: 65px 20px 0;
+                  width: 100%;
+
+                  & > .title {
+                    @include s.flexRow;
+                    padding-bottom: 5px;
+
+                    & > label {
+                      @include s.escaledFontFormat(s.$textSize16to18, '', s.$pqBlack2);
+                      @include s.Roboto-Bold;
+                      margin-bottom: 10px;
+                    }
+                  }
+
+                  & > .recharge {
+                    @include s.flexRow;
+                    @include s.absoluteCenter;
+                    border-radius: 25px;
+                    background-color: s.$pqBlack2;
+                    cursor: pointer;
+                    height: 35px;
+                    width: 100%;
+
+                    & > img {
+                      height: 17px;
+                    }
+                  }
+
+                  & > .recharge:hover {
+                    background-color: s.$recharge;
+                  }
+                }
+              }
+            }
+          }
+
+          & > .arrow {
+            margin-left: 10px;
+            position: absolute;
+            right: 0;
+            top: calc(50% + 75px);
+            z-index: 3;
+
+            & > img {
+              height: 21px;
+              cursor: pointer;
+              opacity: 1;
+              transform: scaleX(1);
+              transition: transform 0.8s ease-in-out;
+
+              &:hover {
+                opacity: 0.8;
+              }
+            }
+
+            & > .reverse {
+              transform: scaleX(-1);
+            }
+          }
+        }
+      }
+
+      & > .monitoring {
+        @include s.flexColumn;
+        padding: 25px 20px 0 20px;
+        flex: 1 1 auto;
+        overflow: hidden;
+
+        & > .tabs {
+          @include s.flexColumn;
+          flex: 0 0 53px;
+          padding-bottom: 20px;
+
+          & > app-tabs {
+            height: 100%;
+          }
+        }
+
+        & > .filters {
+          @include s.flexColumn;
+
+          & > .title {
+            @include s.flexRow;
+            justify-content: space-between;
+
+            & > .title {
+              @include s.flexRow;
+
+              & > label {
+                @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+                @include s.Novecento-Bold;
+              }
+            }
+
+            & > .week-filter {
+              @include s.flexRow;
+              height: 25px;
+
+              & > .left,
+              & > .right {
+                @include s.flexRow;
+                @include s.absoluteCenter;
+                background-color: s.$pqGreen;
+                cursor: pointer;
+                height: 100%;
+                padding: 6px;
+                width: 30px;
+
+                & * {
+                  cursor: pointer;
+                }
+
+                & > img {
+                  height: 100%;
+                }
+              }
+
+              & > .left {
+                & > img {
+                  transform: rotate(180deg);
+                }
+              }
+
+              & > .center {
+                @include s.flexRow;
+                @include s.absoluteCenter;
+                background-color: s.$pqGreen;
+                cursor: pointer;
+                height: 100%;
+                margin: 0 5px;
+                width: 85px;
+
+                & * {
+                  cursor: pointer;
+                }
+
+                & > label {
+                  @include s.Novecento-Bold;
+                  @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqWhite);
+                }
+              }
+            }
+          }
+
+          & > .elements {
+            @include s.flexRow;
+            justify-content: space-between;
+
+            & > div {
+              padding: 20px 0;
+            }
+          }
+        }
+
+        & > .data {
+          flex: 1;
+          @include s.flexRow;
+          overflow: auto;
+          height: 100%;
+
+          & > div {
+            @include s.absolute100;
+            @include s.flexColumn;
+            min-width: 1755px;
+
+            & > .header {
+              @include s.flexRow;
+              border-bottom: 1px solid s.$pqBlack2;
+              flex: 0 0 50px;
+
+              & > div {
+                @include s.flexRow;
+                @include s.absoluteCenter;
+                flex: 1 0 347px;
+
+                & > div {
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize16to18, bold, s.$pqBlack2);
+                    @include s.Novecento-Bold;
+                  }
+                }
+
+                & > .active {
+                  background-color: s.$pqGreen;
+                  border-radius: 16px;
+                  padding: 3px 15px;
+
+                  & > label {
+                    color: s.$pqWhite;
+                  }
+                }
+              }
+            }
+
+            & > .list {
+              @include s.flexRow;
+              flex: 1;
+              overflow: hidden;
+              height: 100%;
+              padding-top: 8px;
+
+              & > .day-list {
+                @include s.flexColumn;
+                flex: 1 0 347px;
+                height: 100%;
+                border-right: 1px solid s.$pqGray2;
+                padding: 10px 0;
+
+                & > .item-list {
+                  @include s.flexColumn;
+                  flex: 1 1 auto;
+                  overflow: hidden;
+
+                  & > virtual-scroller {
+                    @include s.absolute100;
+
+                    & .item {
+                      @include s.flexColumn;
+                      @include s.default-transition;
+                      cursor: pointer;
+                      height: 157px;
+                      padding: 0 15px;
+
+                      & * {
+                        cursor: pointer;
+                      }
+
+                      &:hover {
+                        background-color: s.$pqGray2;
+                      }
+
+                      & > .content-item {
+                        @include s.flexRow;
+                        height: 100%;
+                        border-bottom: 1px solid s.$pqGray2;
+                        padding: 18px 0;
+
+                        & > .index {
+                          @include s.flexRow;
+                          flex: 0 0 45px;
+
+                          & > label {
+                            @include s.escaledFontFormat(s.$textSize21to26, '', s.$pqBlack2);
+                            @include s.Roboto-Regular;
+                          }
+                        }
+
+                        & > .info {
+                          @include s.flexColumn;
+                          flex: 1 1 auto;
+                          width: 100%;
+
+                          & > div {
+                            margin-bottom: 5px;
+                          }
+
+                          & > .customer {
+                            @include s.flexRow;
+                            justify-content: space-between;
+
+                            & > label {
+                              @include s.escaledFontFormat(s.$textSize21to26, '', s.$pqGreen);
+                              @include s.Roboto-Bold;
+                            }
+                          }
+
+                          & > .date {
+                            @include s.flexRow;
+
+                            & > label {
+                              @include s.escaledFontFormat(s.$textSize20to23, '', s.$pqBlack2);
+                              @include s.Roboto-Bold;
+
+                              &.green {
+                                color: s.$pqGreen2;
+                              }
+
+                              &.red {
+                                color: s.$pqRed2;
+                              }
+
+                              &.yellow {
+                                color: s.$yellowWarning;
+                              }
+                            }
+                          }
+
+                          & > .charged {
+                            @include s.flexRow;
+
+                            & > label {
+                              @include s.escaledFontFormat(s.$textSize17to21, '', s.$pqBlack2);
+                              @include s.Roboto-Regular;
+                            }
+                          }
+
+                          & > .charges {
+                            @include s.flexRow;
+
+                            & > label {
+                              @include s.escaledFontFormat(s.$textSize14to17, '', s.$pqTextGris);
+                              @include s.Roboto-Regular;
+                            }
+                          }
+
+                          & > .image {
+                            @include s.flexRow;
+                            margin-bottom: 0;
+
+                            & > img {
+                              height: 18px;
+                            }
+                          }
+                        }
+
+                        & > .image {
+                          @include s.flexRow;
+                          align-items: flex-start;
+                          flex: 0 0 45px;
+                          justify-content: center;
+
+                          & > img {
+                            width: 19px;
+                          }
+                        }
+                      }
+                    }
+                  }
+
+                  & > .without-results {
+                    @include s.flexRow;
+                    align-items: center;
+                    flex: 1;
+                  }
+                }
+
+                & > .totals {
+                  @include s.flexRow;
+                  flex: 0 0 44px;
+                  padding: 0 10px;
+
+                  & > .totals-content {
+                    @include s.flexRow;
+                    justify-content: space-between;
+                    width: 100%;
+                    border-top: 1px solid s.$pqBlack2;
+
+                    & > div {
+                      @include s.flexRow;
+                      padding: 10px 0;
+
+                      & > label {
+                        @include s.escaledFontFormat(s.$textSize12to14, '', s.$pqBlack2);
+                        @include s.Roboto-Regular;
+                      }
+                    }
+                  }
+                }
+              }
+
+              & > .not-border {
+                border-right: initial !important;
+              }
+            }
+
+            & > .loader {
+              @include s.flexRow;
+              align-items: center;
+              flex: 1;
+            }
+          }
+        }
+
+        & > .datamonth {
+          @include s.flexRow;
+          flex: 1;
+          overflow: hidden;
+          height: 100%;
+
+          & > .container-month {
+            @include s.flexColumn;
+            flex: 0 0 100%;
+            overflow: hidden;
+
+            & > .header {
+              @include s.Novecento-Bold;
+              border-bottom: 2px solid s.$pqBlack;
+              flex: 0 0 auto;
+              justify-content: space-between;
+              padding-bottom: 15px;
+
+              & > span {
+                @include s.escaledFontFormat(s.$textSize15to21, bold, s.$pqBlack2);
+                @include s.Novecento-Bold;
+              }
+            }
+
+            & > .table-container {
+              @include s.flexColumn;
+              flex: 1 1 100%;
+              overflow-x: auto;
+              overflow-y: hidden;
+
+              & > .table {
+                @include s.flexColumn;
+                flex: 1 1 auto;
+                min-width: 1000px;
+                width: 100%;
+
+                & > .header-table {
+                  @include s.flexRowNoWrap;
+                  border-bottom: 1px solid s.$pqBlack2;
+                  flex-shrink: 0;
+                  min-width: 1000px;
+                  padding: 10px 5px 0 0;
+
+                  & > div {
+                    @include s.flexRow;
+                    padding: 14px 4px 5px 0;
+                    width: 100%;
+
+                    & > span {
+                      @include s.escaledFontFormat(s.$textSize11to13, '', s.$pqBlack2);
+                      @include s.Roboto-Bold;
+
+                      &:hover {
+                        cursor: default;
+                      }
+                    }
+                  }
+
+                  & > .number {
+                    flex: 0 0 120px;
+                    justify-content: center;
+                  }
+
+                  & > .day-payment {
+                    flex: 1 0 20px;
+                  }
+
+                  & > .pay {
+                    flex: 0 0 60px;
+                    justify-content: flex-end;
+                  }
+
+                  & > .client {
+                    flex: 3 0 100px;
+                  }
+
+                  & > .to-pay {
+                    flex: 1 0 100px;
+                    justify-content: flex-end;
+                  }
+
+                  & > .status {
+                    flex: 1 0 100px;
+                    padding-top: 10px;
+                    justify-content: center;
+                  }
+                }
+
+                & > .body {
+                  @include s.flexColumn;
+                  flex: 1 1 100%;
+                  min-width: 1000px;
+                  overflow-y: hidden;
+
+                  & > virtual-scroller {
+                    @include s.absolute100;
+
+                    ::ng-deep .scrollable-content {
+                      max-width: 100%;
+
+                      & > .item {
+                        @include s.flexRow;
+                        border-bottom: solid 1px s.$pqGray2;
+                        justify-content: space-between;
+
+                        &:hover {
+                          background-color: s.$pqGray2;
+                        }
+
+                        & > div {
+                          @include s.flexRow;
+                          align-items: center;
+                          padding: 14px 4px 14px 0;
+                          width: 100%;
+
+                          & > span {
+                            @include s.escaledFontFormat(s.$textSize14to18, '', s.$pqBlack2);
+                            @include s.Roboto-Regular;
+                          }
+                        }
+
+                        & > .number {
+                          flex: 0 0 120px;
+                          justify-content: center;
+                        }
+
+                        & > .day-payment {
+                          flex: 1 0 20px;
+
+                          & > .green {
+                            @include s.escaledFontFormat(s.$textSize14to18, '', s.$pqGreen2);
+                          }
+
+                          & > .red {
+                            @include s.escaledFontFormat(s.$textSize14to18, '', s.$pqRed2);
+                          }
+
+                          & > .yellow {
+                            @include s.escaledFontFormat(s.$textSize14to18, '', s.$yellowWarning);
+                          }
+                        }
+
+                        & > .pay {
+                          flex: 0 0 60px;
+                          justify-content: flex-end;
+                          padding-right: 24px;
+
+                          & > img {
+                            height: 19px;
+                          }
+                        }
+
+                        & > .client {
+                          align-items: flex-start;
+                          flex: 3 0 100px;
+                          flex-direction: column;
+
+                          & > .payment {
+                            @include s.escaledFontFormat(s.$textSize13to17, regular, s.$pqTextGris);
+                            @include s.Roboto-Regular;
+                            margin-top: 4px;
+                          }
+                        }
+
+                        & > .to-pay {
+                          flex: 1 0 100px;
+                          justify-content: flex-end;
+                        }
+
+                        & > .status {
+                          flex: 1 0 100px;
+                          justify-content: center;
+
+                          & > img {
+                            height: 15px;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+
+            & > .footer {
+              align-self: flex-end;
+              border-top: 1px solid s.$pqBlack;
+              flex: 0 0 auto;
+              justify-content: space-between;
+              padding: 7px 0 15px 0;
+              text-align: center;
+              width: 100%;
+
+              & > span {
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormat(s.$textSize14to18, normal, s.$pqBlack2);
+                padding-top: 5px;
+              }
+            }
+          }
+        }
+
+        & > .loader {
+          @include s.flexRow;
+          align-items: center;
+          flex: 1;
+        }
+      }
+    }
+
+    & > footer {
+      @include s.generic-main-component-footer;
+
+      & > div {
+        & > img {
+          height: 19px;
+          margin-right: 5px;
+        }
+
+        & > .label-dark {
+          @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+          @include s.Roboto-Bold;
+          padding-right: 3px;
+        }
+
+        & > .label-normal {
+          @include s.escaledFontFormat(s.$textSize12to14, normal, s.$pqBlack2);
+          @include s.Roboto-Regular;
+          vertical-align: baseline;
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #collection-monitoring-list-container {
+      & > section {
+        & > .payments {
+          & > .filters {
+            margin-bottom: 15px;
+
+            &.hide {
+              animation-name: hideContentBig;
+            }
+
+            &.show {
+              animation-name: showContentBig;
+            }
+
+            & > .data-filters {
+              & > div {
+                min-width: 385px;
+
+                & > .dateFilter {
+                  & > .picker {
+                    & > .date-picker {
+                      height: 30px;
+                    }
+                  }
+
+                  & > .pickerFrom {
+                    & > .date-picker {
+                      height: 30px;
+                    }
+                  }
+                }
+
+                & > .content {
+                  & > div {
+                    & > .recharge {
+                      height: 50px;
+
+                      & > img {
+                        height: 20px;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+
+            & > .arrow {
+              height: 30px;
+
+              & > img {
+                height: 30px;
+              }
+            }
+          }
+        }
+
+        & > .monitoring {
+          & > .data {
+            & > div {
+              min-width: 1950px;
+
+              & > .header {
+                & > div {
+                  flex: 1 0 390px;
+                }
+              }
+
+              & > .list {
+                & > .day-list {
+                  flex: 1 0 390px;
+
+                  & > .item-list {
+                    & > virtual-scroller {
+                      & .item {
+                        height: 190px;
+
+                        & > .content-item {
+                          padding: 22px 0;
+
+                          & > .index {
+                            flex: 0 0 50px;
+                          }
+
+                          & > .info {
+                            & > div {
+                              margin-bottom: 7px;
+                            }
+
+                            & > .image {
+                              & > img {
+                                height: 20px;
+                              }
+                            }
+                          }
+
+                          & > .image {
+                            flex: 0 0 50px;
+
+                            & > img {
+                              width: 24px;
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          & > .datamonth {
+            & > .container-month {
+              & > .table-container {
+                & > .table {
+                  min-width: 1000px;
+
+                  & > .header-table {
+                    min-width: 1000px;
+
+                    & > .number {
+                      flex: 0 0 83px;
+                      justify-content: center;
+                    }
+
+                    & > .day-payment {
+                      flex: 1 0 50px;
+                    }
+
+                    & > .pay {
+                      flex: 0 0 80px;
+                    }
+
+                    & > .client {
+                      flex: 2 0 250px;
+                    }
+
+                    & > .to-pay {
+                      flex: 1 0 70px;
+                    }
+
+                    & > .status {
+                      flex: 1 0 110px;
+                      padding-top: 10px;
+                    }
+                  }
+
+                  & > .body {
+                    min-width: 1000px;
+
+                    & > virtual-scroller {
+                      ::ng-deep .scrollable-content {
+                        & > .item {
+                          & > .number {
+                            flex: 0 0 83px;
+                            justify-content: center;
+                          }
+
+                          & > .day-payment {
+                            flex: 1 0 50px;
+                          }
+
+                          & > .pay {
+                            flex: 0 0 80px;
+
+                            & > img {
+                              height: 23px;
+                            }
+                          }
+
+                          & > .client {
+                            flex: 2 0 250px;
+                          }
+
+                          & > .to-pay {
+                            flex: 1 0 70px;
+                          }
+
+                          & > .status {
+                            flex: 1 0 110px;
+                            padding-top: 10px;
+
+                            & > img {
+                              height: 20px;
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      & > footer {
+        height: 55px;
+      }
+    }
+  }
+  @keyframes hideContent {
+    from {
+      width: 370px;
+    }
+    to {
+      width: 0;
+    }
+  }
+  @keyframes showContent {
+    from {
+      width: 0;
+    }
+    to {
+      width: 370px;
+    }
+  }
+  @keyframes hideContentBig {
+    from {
+      width: 385px;
+    }
+    to {
+      width: 0;
+    }
+  }
+  @keyframes showContentBig {
+    from {
+      width: 0;
+    }
+    to {
+      width: 385px;
+    }
+  }
+}

@@ -1,0 +1,196 @@
+<div id="regulation-and-restrictions">
+  <div class="general-data">
+    <div class="title">
+      <label>{{ 'newProductExistingSupplier.regulatoryResearch.details.generalData' | translate }}</label>
+    </div>
+    <div class="content" [ngClass]="{standardChemical: false, biologicStandard: false, labware: true}">
+      <div class="regulatoryResearch">
+        <pqf-drop-down-list
+          [options]="selectCatClassificationList$ | async"
+          [selectedOption]="selectCatClassification$ | async"
+          (selectedOptionChangeEmitter)="changeValueNode('IdCatClasificacionRegulatoria', $event)"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.regulatoryResearch' | translate"
+        ></pqf-drop-down-list>
+      </div>
+      <div class="tariffFraction">
+        <pqf-generic-input
+          [maxLength]="10"
+          [minLength]="10"
+          [typeValidation]="inputValidators.Number"
+          [value]="(nodeProduct$ | async)?.FraccionArancelaria"
+          (valueChangeEmitter)="changeValueNode('FraccionArancelaria', $event, true)"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.tariffFraction' | translate"
+        ></pqf-generic-input>
+      </div>
+      <div class="importFraction">
+        <pqf-generic-input
+          [maxLength]="10"
+          [minLength]="10"
+          [typeValidation]="inputValidators.Number"
+          [value]="(nodeProduct$ | async)?.FraccionImportacion"
+          (valueChangeEmitter)="changeValueNode('FraccionImportacion', $event, true)"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.importFraction' | translate"
+        ></pqf-generic-input>
+      </div>
+      <div class="regulatoryNotes">
+        <pqf-generic-input
+          [maxLength]="500"
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          [value]="(nodeTypeProductDetails$ | async)?.NotasRegulatoriasALaImportacion"
+          (valueChangeEmitter)="changeValueNode('NotasRegulatoriasALaImportacion', $event)"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.regulatoryNotes' | translate"
+        ></pqf-generic-input>
+      </div>
+      <div class="sanitaryRegistrationNumber" *ngIf="isLabware$ | async">
+        <pqf-generic-input
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.sanitaryRegistrationNumber' | translate"
+          [maxLength]="50"
+          [typeValidation]="inputValidators.Number"
+          [value]="(nodeTypeProductDetails$ | async)?.NumeroDeRegistroSanitario"
+          (valueChangeEmitter)="changeValueNode('NumeroDeRegistroSanitario', $event)"
+        ></pqf-generic-input>
+      </div>
+      <div class="sanitaryRegistrationExpiration" *ngIf="isLabware$ | async">
+        <pqf-date-picker
+          [dateFormat]="'YYYYMMDD'"
+          [date]="sanitaryDate$ | async"
+          [label]="'formProduct.step2.expirationOfSanitaryRegistration' | translate"
+          (fecha)="setDate($event)"
+        ></pqf-date-picker>
+      </div>
+    </div>
+  </div>
+  <div class="psychotropics" *ngIf="!(isLabware$ | async)">
+    <div class="title">
+      <label>{{ 'newProductExistingSupplier.regulatoryResearch.details.psychotropicsLeave' | translate }}</label>
+    </div>
+    <div class="content" [ngClass]="{standardChemical: true, biologicStandard: true}">
+      <div class="availabilityLetter">
+        <pqf-generic-input-file
+          [acceptedExtensions]="'application/pdf'"
+          [fileName]="
+            (nodeTypeProductDetails$ | async)?.ArchivoEstructuraMolecular ? (nameFileArchiveLetterAvailble$ | async) : null
+          "
+          [idFile]="(productDetails$ | async)?.IdArchivoCartaDeDisponibilidad"
+          [placeholder]="'.Pdf'"
+          (emitExternalFile)="getExternalFile('ArchivoCartaDeDisponibilidad')"
+          (emitFileToDelete)="deleteValueNodeFile('ArchivoCartaDeDisponibilidad')"
+          (autoEmitFile)="setNewFile($event, 'ArchivoCartaDeDisponibilidad')"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.availabilityLetter' | translate"
+        ></pqf-generic-input-file>
+      </div>
+      <div class="useLetter">
+        <pqf-generic-input-file
+          [acceptedExtensions]="'application/pdf'"
+          [fileName]="
+            (productDetails$ | async)?.ArchivoCartaDeUso ? (productDetails$ | async)?.ArchivoCartaDeUso?.FileKey : null
+          "
+          [idFile]="(productDetails$ | async)?.IdArchivoCartaDeUso"
+          [placeholder]="'.Pdf'"
+          (emitExternalFile)="getExternalFile('ArchivoCartaDeUso')"
+          (emitFileToDelete)="deleteValueNodeFile('ArchivoCartaDeUso')"
+          (autoEmitFile)="setNewFile($event, 'ArchivoCartaDeUso')"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.useLetter' | translate"
+        ></pqf-generic-input-file>
+      </div>
+      <div class="acquisitionPermit">
+        <pqf-generic-input-file
+          [acceptedExtensions]="'application/pdf'"
+          [fileName]="
+            (productDetails$ | async)?.ArchivoPermisoDeAdquisicionEnPlaza
+              ? (productDetails$ | async)?.ArchivoPermisoDeAdquisicionEnPlaza?.FileKey
+              : null
+          "
+          [idFile]="(productDetails$ | async)?.IdArchivoPermisoDeAdquisicionEnPlaza"
+          [placeholder]="'.Pdf'"
+          (emitExternalFile)="getExternalFile('ArchivoPermisoDeAdquisicionEnPlaza')"
+          (emitFileToDelete)="deleteValueNodeFile('ArchivoPermisoDeAdquisicionEnPlaza')"
+          (autoEmitFile)="setNewFile($event, 'ArchivoPermisoDeAdquisicionEnPlaza')"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.acquisitionPermit' | translate"
+        ></pqf-generic-input-file>
+      </div>
+      <div class="importLicence">
+        <pqf-generic-input-file
+          [acceptedExtensions]="'application/pdf'"
+          [fileName]="
+            (productDetails$ | async)?.ArchivoPermisoDeImprotacion
+              ? (productDetails$ | async)?.ArchivoPermisoDeImprotacion?.FileKey
+              : null
+          "
+          [idFile]="(productDetails$ | async)?.IdArchivoPermisoDeImprotacion"
+          [placeholder]="'.Pdf'"
+          (emitExternalFile)="getExternalFile('ArchivoPermisoDeImprotacion')"
+          (emitFileToDelete)="deleteValueNodeFile('ArchivoPermisoDeImprotacion')"
+          (autoEmitFile)="setNewFile($event, 'ArchivoPermisoDeImprotacion')"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.importLicence' | translate"
+        ></pqf-generic-input-file>
+      </div>
+    </div>
+  </div>
+  <div class="generals" *ngIf="!(isLabware$ | async)">
+    <div class="title">
+      <label>{{ 'newProductExistingSupplier.regulatoryResearch.details.generalPermissions' | translate }}</label>
+    </div>
+    <div class="content" [ngClass]="{standardChemical: true, biologicStandard: true}">
+      <div class="chemicalAdvisory">
+        <pqf-generic-input-file
+          [acceptedExtensions]="'application/pdf'"
+          [fileName]="
+            (productDetails$ | async)?.ArchivoAvisoDeQuimicosEsenciales
+              ? (productDetails$ | async)?.ArchivoAvisoDeQuimicosEsenciales?.FileKey
+              : null
+          "
+          [idFile]="(productDetails$ | async)?.IdArchivoAvisoDeQuimicosEsenciales"
+          [placeholder]="'.Pdf'"
+          (emitExternalFile)="getExternalFile('ArchivoAvisoDeQuimicosEsenciales')"
+          (autoEmitFile)="setNewFile($event, 'ArchivoAvisoDeQuimicosEsenciales')"
+          (emitFileToDelete)="deleteValueNodeFile('ArchivoAvisoDeQuimicosEsenciales')"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.chemicalAdvisory' | translate"
+        ></pqf-generic-input-file>
+      </div>
+      <div class="animalHealth">
+        <pqf-generic-input-file
+          [acceptedExtensions]="'application/pdf'"
+          [fileName]="
+            (productDetails$ | async)?.ArchivoZoosanitarios ? (productDetails$ | async)?.ArchivoZoosanitarios?.FileKey : null
+          "
+          [idFile]="(productDetails$ | async)?.IdArchivoZoosanitarios"
+          [placeholder]="'.Pdf'"
+          (autoEmitFile)="setNewFile($event, 'ArchivoZoosanitarios')"
+          (emitExternalFile)="getExternalFile('ArchivoZoosanitarios')"
+          (emitFileToDelete)="deleteValueNodeFile('ArchivoZoosanitarios')"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.animalHealth' | translate"
+        ></pqf-generic-input-file>
+      </div>
+      <div class="Cicoplafest">
+        <pqf-generic-input-file
+          [acceptedExtensions]="'application/pdf'"
+          [fileName]="
+            (productDetails$ | async)?.ArchivoCicoplafest ? (productDetails$ | async)?.ArchivoCicoplafest?.FileKey : null
+          "
+          [idFile]="(productDetails$ | async)?.IdArchivoCicoplafest"
+          [placeholder]="'.Pdf'"
+          (autoEmitFile)="setNewFile($event, 'ArchivoCicoplafest')"
+          (emitExternalFile)="getExternalFile('ArchivoCicoplafest')"
+          (emitFileToDelete)="deleteValueNodeFile('ArchivoCicoplafest')"
+          [label]="'Cicoplafest' | translate"
+        ></pqf-generic-input-file>
+      </div>
+      <div class="others">
+        <pqf-generic-input-file
+          [acceptedExtensions]="'application/pdf'"
+          [fileName]="
+            (productDetails$ | async)?.ArchivoOtroPermiso ? (productDetails$ | async)?.ArchivoOtroPermiso?.FileKey : null
+          "
+          [idFile]="(productDetails$ | async)?.IdArchivoOtroPermiso"
+          [label]="'formProduct.step2.others' | translate"
+          [placeholder]="'.Pdf'"
+          (autoEmitFile)="setNewFile($event, 'ArchivoOtroPermiso')"
+          (emitExternalFile)="getExternalFile('ArchivoOtroPermiso')"
+          (emitFileToDelete)="deleteValueNodeFile('ArchivoOtroPermiso')"
+          [label]="'newProductExistingSupplier.regulatoryResearch.details.others' | translate"
+        ></pqf-generic-input-file>
+      </div>
+    </div>
+  </div>
+</div>

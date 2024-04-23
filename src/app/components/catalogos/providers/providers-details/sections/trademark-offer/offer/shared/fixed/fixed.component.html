@@ -1,0 +1,57 @@
+<div class="fixed">
+  <div class="container">
+    <h4>FIJOS</h4>
+    <div class="flex">
+      <div class="input-container">
+        <label>{{ 'formProvider.step8.inputs.fixedCost' | translate }}</label>
+        <app-generic-input
+          class="input"
+          [enableEdit]="enableEdit"
+          [maxlength]="14"
+          [placeholder]="'0'"
+          [textAlign]="'center'"
+          [typeValidation]="inputValidators.Percentage"
+          [value]="actualConfiguration?.ConfiguracionPrecioProveedor?.FactorDeCostoFijo"
+          (textData)="handleInputChange($event, fields.FactorDeCostoFijo)"
+        >
+        </app-generic-input>
+        <span>%</span>
+      </div>
+    </div>
+  </div>
+  <div class="container" *ngIf="!isMexican">
+    <h4>INTERFACTURACIONES</h4>
+    <div class="flex">
+      <div class="input-container">
+        <label>Frente Comercial</label>
+        <app-generic-input
+          class="input"
+          [enableEdit]="enableEdit"
+          [maxlength]="14"
+          [placeholder]="'0'"
+          [textAlign]="'center'"
+          [typeValidation]="inputValidators.Percentage"
+          [value]="actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.ComisionFrenteComercial"
+          (textData)="handleInputChange($event, fields.ComisionFrenteComercial)"
+        >
+        </app-generic-input>
+        <span>%</span>
+      </div>
+      <div class="input-container">
+        <label>Pharma</label>
+        <app-generic-input
+          class="input"
+          [enableEdit]="enableEdit"
+          [maxlength]="14"
+          [placeholder]="'0'"
+          [textAlign]="'center'"
+          [typeValidation]="inputValidators.Percentage"
+          [value]="actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.ComisionPharma"
+          (textData)="handleInputChange($event, fields.ComisionPharma)"
+        >
+        </app-generic-input>
+        <span>%</span>
+      </div>
+    </div>
+  </div>
+</div>

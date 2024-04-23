@@ -1,0 +1,70 @@
+<div id="fingerprint-scan">
+  <div class="container-component">
+    <div class="column-one">
+      <div class="column-container">
+        <div class="labels">
+          <div>
+            <label>{{ 'registerArrival.details.enterSecurityCode' | translate }}</label>
+            <label>{{ 'registerArrival.details.securityGuard' | translate }}</label>
+          </div>
+          <div class="inputs" [ngClass]="(shakedSecurityGuard$ | async) ? 'shaked' : ''">
+            <div>
+              <input
+                #inputSC1
+                [autofocus]="codeIsEmptySecurityGuard$ | async"
+                [value]="(codeSecurityGuard$ | async)[0]"
+                (keyup)="handleValidateNumber($event, 'securityGuard', 0)"
+              />
+              <input
+                #inputSC2
+                [value]="(codeSecurityGuard$ | async)[1]"
+                (keyup)="handleValidateNumber($event, 'securityGuard', 1)"
+              />
+              <input
+                #inputSC3
+                [value]="(codeSecurityGuard$ | async)[2]"
+                (keyup)="handleValidateNumber($event, 'securityGuard', 2)"
+              />
+              <input
+                #inputSC4
+                [value]="(codeSecurityGuard$ | async)[3]"
+                (keyup)="handleValidateNumber($event, 'securityGuard', 3)"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="icon">
+          <img *ngIf="isValidCodeSecurityGuard$ | async" src="assets/Images/circle-check.svg" alt="check" />
+          <img *ngIf="shakedSecurityGuard$ | async" class="cross" src="assets/Images/circle-cross-out.svg" alt="cross-out" />
+        </div>
+      </div>
+    </div>
+    <div class="column-two">
+      <div class="column-container">
+        <div class="labels">
+          <div>
+            <label>{{ 'registerArrival.details.enterSecurityCode' | translate }}</label>
+            <label>{{ 'registerArrival.details.buyer' | translate }}</label>
+          </div>
+          <div class="inputs" [ngClass]="(shakedBuyer$ | async) ? 'shaked' : ''">
+            <div>
+              <input
+                #inputB1
+                [autofocus]="true"
+                [value]="(codeBuyer$ | async)[0]"
+                (keyup)="handleValidateNumber($event, 'buyer', 0)"
+              />
+              <input #inputB2 [value]="(codeBuyer$ | async)[1]" (keyup)="handleValidateNumber($event, 'buyer', 1)" />
+              <input #inputB3 [value]="(codeBuyer$ | async)[2]" (keyup)="handleValidateNumber($event, 'buyer', 2)" />
+              <input #inputB4 [value]="(codeBuyer$ | async)[3]" (keyup)="handleValidateNumber($event, 'buyer', 3)" />
+            </div>
+          </div>
+        </div>
+        <div class="icon" *ngIf="true">
+          <img *ngIf="isValidCodeBuyer$ | async" src="assets/Images/circle-check.svg" alt="check" />
+          <img *ngIf="shakedBuyer$ | async" class="cross" src="assets/Images/circle-cross-out.svg" alt="cross-out" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

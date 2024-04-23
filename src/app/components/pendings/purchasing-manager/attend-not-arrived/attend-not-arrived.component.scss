@@ -1,0 +1,29 @@
+@use 'base' as s;
+
+:host {
+  @include s.generic-main-component-structure;
+
+  #attend-not-arrived {
+    & > .footer {
+      & > div {
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+
+          & > span {
+            @include s.Roboto-Bold;
+            vertical-align: baseline;
+
+            &.red {
+              color: s.$pqTextAlert;
+            }
+
+            &.green {
+              color: s.$pqGreen2;
+            }
+          }
+        }
+      }
+    }
+  }
+}

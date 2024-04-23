@@ -1,0 +1,235 @@
+@use 'base' as s;
+
+* {
+  @include s.default-transition($duration: 0.2s);
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.flexColumn;
+  @include s.reset-line-height;
+  overflow: hidden;
+  flex: 1;
+
+  & > .input-file-container {
+    @include s.flexColumn;
+    row-gap: 8px;
+
+    & > .label-container {
+      & > label {
+        @include s.multiLineTextTruncateSinHeight(1, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+        @include s.responsive_font-format($font-size-map: s.$responsive-font-16-16, $color: s.$pqBlack2);
+        height: 20px;
+
+        &.readOnly {
+          font-family: s.$font_family_roboto_bold;
+          font-weight: s.$font-weight-bold;
+        }
+      }
+    }
+
+    & > .input-container {
+      @include s.flexRowNoWrap;
+      align-items: center;
+      border: 1px solid s.$pqBlack2;
+      border-radius: 4px;
+      flex: 1;
+      overflow: hidden;
+
+      & > .box {
+        @include s.flexRow;
+        align-items: center;
+        flex: 1;
+        padding: 8px 16px;
+
+        & > label {
+          @include s.responsive_font-format($font-size-map: s.$responsive-font-16-16, $color: s.$pqBlack2);
+          @include s.text-ellipsis-one-line;
+          @include s.flexRow;
+          align-items: center;
+
+          & > .file {
+            margin-right: 9px;
+            max-height: 16px;
+            max-width: 13px;
+            overflow: hidden;
+          }
+
+          & > .name-file {
+            max-width: 132px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            vertical-align: baseline;
+          }
+
+          &.placeholder {
+            @include s.responsive_font-format($font-size-map: s.$responsive-font-16-16, $color: s.$dark-proquifa-d);
+          }
+
+          &.placeholder-error {
+            @include s.responsive-font-format($font-size-map: s.$responsive-font-16-16, $color: s.$pqAlert);
+          }
+
+          &.file-selected {
+            @include s.responsive_font-format($font-size-map: s.$responsive-font-16-16, $color: s.$pqGreen);
+          }
+
+          & > .close {
+            cursor: pointer;
+            margin-left: 12px;
+          }
+        }
+
+        & > .someFiles {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-roboto_medium,
+            $font-weight: s.$font-weight-medium,
+            $font-size-map: s.$responsive-font-14-14,
+            $color: s.$pqGreen
+          );
+          cursor: pointer;
+          text-decoration: underline;
+
+          &:hover {
+            color: s.$main-proquifa-c;
+          }
+        }
+      }
+
+      & > .button {
+        background-color: s.$pqGreen;
+        border-radius: 4px 0 0 4px;
+        max-height: 36px;
+
+        * {
+          cursor: pointer;
+        }
+
+        &:hover {
+          background-color: s.$main-proquifa-c;
+        }
+
+        & > .input-file {
+          @include s.flexRowNoWrap;
+          align-items: center;
+          justify-content: center;
+          max-height: 36px;
+          overflow: hidden;
+          padding: 10px 30px;
+
+          & > input {
+            display: none;
+          }
+
+          & > img {
+            height: 16px;
+            width: 16px;
+          }
+
+          & > span {
+            @include s.responsive-font-format(
+              $font-family: s.$font-family-roboto_bold,
+              $font-weight: s.$font-weight-bold,
+              $font-size-map: s.$responsive-font-16-16,
+              $color: s.$pqWhite
+            );
+            overflow: hidden;
+          }
+        }
+
+        &.notEmpty {
+          border-radius: 4px;
+
+          & > label {
+            outline: none;
+            transition: all 0.5s ease-in;
+            width: 76px;
+            column-gap: 0;
+
+            & > span {
+              transition: 0.8s linear;
+              width: 0%;
+            }
+          }
+
+          & > label:hover {
+            transition: all 0.2s ease-in;
+
+            & > span {
+              opacity: 1;
+              transition: 0.8s linear;
+            }
+          }
+
+          & > label:hover,
+          & > label:not(:last-child) {
+            column-gap: 12px;
+            width: 153px;
+            transition: all 0.5s ease-in-out;
+
+            & > span {
+              width: 100%;
+            }
+          }
+        }
+      }
+
+      &.disabled {
+        border: 1px solid s.$dark-proquifa-d;
+
+        & > .box {
+          background-color: s.$dark-proquifa-e;
+        }
+
+        & > .button {
+          border-radius: 0;
+          background-color: s.$dark-proquifa-e;
+
+          * {
+            cursor: default;
+          }
+        }
+      }
+
+      &.readOnly {
+        border: none !important;
+      }
+
+      &.oneFile {
+        border: none !important;
+
+        & > .box {
+          column-gap: 16px;
+          padding: 6px 0 6px 4px;
+
+          & > label {
+            @include s.text-ellipsis-one-line;
+            background-color: s.$main-proquifa-f;
+            border-radius: 100px;
+            border: 1px solid s.$pqGreen;
+            color: s.$pqGreen;
+            max-width: 200px;
+            padding: 2px 12px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
+
+        & > .button {
+          & > .input-file {
+            padding: 8px 30px;
+          }
+        }
+      }
+
+      &.someFiles {
+        border: none;
+      }
+
+      &.error {
+        border: 1px solid s.$pqAlert;
+      }
+    }
+  }
+}

@@ -1,0 +1,54 @@
+@use 'base' as s;
+
+app-pop-up-generic {
+  ::ng-deep .modal {
+    background: none;
+
+    & > .modal-content {
+      transition: none;
+    }
+  }
+
+  .general-content {
+    margin: 0px 40px;
+
+    .content-img {
+      @include s.flexRow;
+      align-items: center;
+      justify-content: center;
+
+      .alert-img {
+        width: 58px;
+        height: 58px;
+      }
+
+      margin-bottom: 29px;
+    }
+
+    .product-details {
+      @include s.flexColumn;
+      margin-bottom: 30px;
+
+      .product {
+        @include s.escaledFontFormat(s.$textSize21to26, bold, s.$pqBlack2);
+        @include s.Roboto-Regular();
+      }
+
+      .name-product {
+        @include s.escaledFontFormat(s.$textSize21to26, bold, s.$pqGreen);
+        @include s.multiLineTextTruncate(2, bold, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+        @include s.Roboto-Bold();
+      }
+
+      .available {
+        @include s.escaledFontFormat(s.$textSize21to26, bold, s.$pqBlack2);
+        @include s.Roboto-Regular();
+      }
+    }
+
+    .question {
+      @include s.escaledFontFormat(s.$textSize21to26, bold, s.$pqBlack2);
+      @include s.Roboto-Bold();
+    }
+  }
+}

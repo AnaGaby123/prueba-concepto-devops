@@ -1,0 +1,190 @@
+<div id="logistic-configuration-routes-times">
+  <label class="title">
+    {{ (route$ | async)?.catRutaEntrega.RutaEntrega }}:
+    {{ 'newProductExistingSupplier.logisticConfiguration.times.timesInWorkingDays' | translate }}
+  </label>
+  <label class="requested-fields">
+    * {{ 'newProductExistingSupplier.logisticConfiguration.times.requiredFields' | translate }}
+  </label>
+  <div class="scrollable-content">
+    <div class="row">
+      <div class="column">
+        <div>
+          <div>
+            <pqf-generic-input
+              [isActive]="true"
+              [isAlignColumn]="false"
+              [isRequired]="true"
+              [label]="'* ' + ('newProductExistingSupplier.logisticConfiguration.times.purchaseOrder' | translate) + ':'"
+              [placeholder]="'000'"
+              [typeValidation]="inputValidators.Number"
+              [type]="'number'"
+              [value]="(route$ | async)?.DiasPedidoACompra"
+              [width]="'100px'"
+              (valueChangeEmitter)="handleLogisticTimeChange($event, fields.DiasPedidoACompra)"
+            >
+            </pqf-generic-input>
+          </div>
+        </div>
+        <div *ngIf="!isMexican">
+          <div>
+            <pqf-generic-input
+              [isActive]="true"
+              [isAlignColumn]="false"
+              [isRequired]="true"
+              [label]="'* ' + ('newProductExistingSupplier.logisticConfiguration.times.pharmaConsolidation' | translate) + ':'"
+              [placeholder]="'000'"
+              [typeValidation]="inputValidators.Number"
+              [type]="'number'"
+              [value]="(route$ | async)?.DiasConsolidacionPharma"
+              [width]="'100px'"
+              (valueChangeEmitter)="handleLogisticTimeChange($event, fields.DiasConsolidacionPharma)"
+            >
+            </pqf-generic-input>
+          </div>
+        </div>
+        <div>
+          <div>
+            <pqf-generic-input
+              [isActive]="true"
+              [isAlignColumn]="false"
+              [isRequired]="true"
+              [label]="'* ' + ('newProductExistingSupplier.logisticConfiguration.times.inspectionWarehouse' | translate) + ':'"
+              [placeholder]="'000'"
+              [typeValidation]="inputValidators.Number"
+              [type]="'number'"
+              [value]="(route$ | async)?.DiasAlmacenAInspeccion"
+              [width]="'100px'"
+              (valueChangeEmitter)="handleLogisticTimeChange($event, fields.DiasAlmacenAInspeccion)"
+            >
+            </pqf-generic-input>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div>
+          <div>
+            <pqf-generic-input
+              [isActive]="(route$ | async)?.DiasPedidoACompra !== null || !(route$ | async)?.DiasCompraAEmbarque !== null"
+              [isAlignColumn]="false"
+              [isRequired]="true"
+              [label]="'* ' + ('newProductExistingSupplier.logisticConfiguration.times.purchaseOnShipment' | translate) + ':'"
+              [placeholder]="'000'"
+              [typeValidation]="inputValidators.Number"
+              [type]="'number'"
+              [value]="(route$ | async)?.DiasCompraAEmbarque"
+              [width]="'100px'"
+              (valueChangeEmitter)="handleLogisticTimeChange($event, fields.DiasCompraAEmbarque)"
+            >
+            </pqf-generic-input>
+          </div>
+        </div>
+        <div>
+          <div>
+            <pqf-generic-input
+              [isActive]="true"
+              [isAlignColumn]="false"
+              [isRequired]="true"
+              [label]="
+                '* ' +
+                (!isMexican
+                  ? ('newProductExistingSupplier.logisticConfiguration.times.arrivalImportation' | translate)
+                  : ('newProductExistingSupplier.logisticConfiguration.times.arrivalWarehouse' | translate)) +
+                ':'
+              "
+              [placeholder]="'000'"
+              [typeValidation]="inputValidators.Number"
+              [type]="'number'"
+              [value]="(route$ | async)?.DiasArriboAImportacion"
+              [width]="'100px'"
+              (valueChangeEmitter)="handleLogisticTimeChange($event, fields.DiasArriboAImportacion)"
+            >
+            </pqf-generic-input>
+          </div>
+        </div>
+        <div *ngIf="!isMexican">
+          <div>
+            <pqf-generic-input
+              [isActive]="true"
+              [isAlignColumn]="false"
+              [isRequired]="true"
+              [label]="'* ' + ('newProductExistingSupplier.logisticConfiguration.times.packingInspection' | translate) + ':'"
+              [placeholder]="'000'"
+              [typeValidation]="inputValidators.Number"
+              [type]="'number'"
+              [value]="(route$ | async)?.DiasInspeccionAEmbalaje"
+              [width]="'100px'"
+              (valueChangeEmitter)="handleLogisticTimeChange($event, fields.DiasInspeccionAEmbalaje)"
+            >
+            </pqf-generic-input>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div>
+          <div>
+            <pqf-generic-input
+              [isActive]="true"
+              [isAlignColumn]="false"
+              [isRequired]="true"
+              [label]="'* ' + ('newProductExistingSupplier.logisticConfiguration.times.arrivalBoarding' | translate) + ':'"
+              [placeholder]="'000'"
+              [typeValidation]="inputValidators.Number"
+              [type]="'number'"
+              [value]="(route$ | async)?.DiasEmbarqueAArribo"
+              [width]="'100px'"
+              (valueChangeEmitter)="handleLogisticTimeChange($event, fields.DiasEmbarqueAArribo)"
+            >
+            </pqf-generic-input>
+          </div>
+        </div>
+        <div>
+          <div *ngIf="!isMexican">
+            <pqf-generic-input
+              [isActive]="true"
+              [isAlignColumn]="false"
+              [isRequired]="true"
+              [label]="'* ' + ('newProductExistingSupplier.logisticConfiguration.times.importToWarehouse' | translate) + ':'"
+              [placeholder]="'000'"
+              [typeValidation]="inputValidators.Number"
+              [type]="'number'"
+              [value]="(route$ | async)?.DiasImportacionAAlmacen"
+              [width]="'100px'"
+              (valueChangeEmitter)="handleLogisticTimeChange($event, fields.DiasImportacionAAlmacen)"
+            >
+            </pqf-generic-input>
+          </div>
+          <div *ngIf="isMexican">
+            <pqf-generic-input
+              [isActive]="true"
+              [isAlignColumn]="false"
+              [isRequired]="true"
+              [label]="'* ' + ('newProductExistingSupplier.logisticConfiguration.times.packingInspection' | translate) + ':'"
+              [placeholder]="'000'"
+              [typeValidation]="inputValidators.Number"
+              [type]="'number'"
+              [value]="(route$ | async)?.DiasInspeccionAEmbalaje"
+              [width]="'100px'"
+              (valueChangeEmitter)="handleLogisticTimeChange($event, fields.DiasInspeccionAEmbalaje)"
+            >
+            </pqf-generic-input>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="times">
+      <div class="right-container">
+        <label class="logistic-time">
+          {{ 'newProductExistingSupplier.logisticConfiguration.times.logisticTime' | translate }}:
+          {{ (sumLogisticTimes$ | async)?.timeLogistics }}
+          {{ (sumLogisticTimes$ | async)?.timeLogistics === 1 ? 'Día' : 'Días' }}
+        </label>
+        <label class="commercial-time">
+          {{ 'newProductExistingSupplier.logisticConfiguration.times.commercialTime' | translate }}:
+          {{ (sumLogisticTimes$ | async)?.timeCommerce }}
+          {{ (sumLogisticTimes$ | async)?.timeCommerce === 1 ? 'Día' : 'Días' }}
+        </label>
+      </div>
+    </div>
+  </div>
+</div>

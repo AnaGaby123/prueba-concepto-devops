@@ -1,0 +1,119 @@
+<div
+  class="genericInput"
+  [ngClass]="{genericInputDanger: (activeErrors || forceActiveErrors) && enableEdit && !isDisable}"
+  [style.text-align]="labelTextAlign"
+  [style.width]="width"
+  [formGroup]="formGroup"
+>
+  <div *ngIf="label" class="label-container" [ngClass]="{notEditing: !enableEdit}">
+    <img
+      *ngIf="required && showAsterisk && enableEdit"
+      alt=""
+      [src]="
+        isDisable
+          ? 'assets/Images/gray-asterisk.svg'
+          : !activeErrors && !forceActiveErrors
+          ? 'assets/Images/asterisco.svg'
+          : 'assets/Images/asterisco_red.svg'
+      "
+    />
+    <div>
+      <label
+        id="input-label"
+        [style.font-family]="!enableEdit && labelFont === 'Roboto-Regular' ? 'Roboto-Bold' : labelFont"
+        [style.color]="isDisable ? labelDisableFontColor : labelFontColor"
+        >{{ label }}</label
+      >
+    </div>
+  </div>
+  <div
+    class="container-input"
+    [ngClass]="{notEditing: !enableEdit}"
+    [style.border-color]="isDisable ? disableBorderColor : borderColor"
+    [style.justify-content]="textAlign === 'left' ? 'flex-start' : textAlign === 'center' ? ' center' : 'flex-end'"
+  >
+    <label
+      #alertTarget
+      *ngIf="!enableEdit"
+      [style.width]="
+        labelInsidePlaceHolderRight || labelInsidePlaceHolderLeft || extraString || activeAlertErrors ? 'auto' : ''
+      "
+      [ngClass]="truncateText ? 'textTruncate' : ''"
+      [style.text-align]="textAlign"
+      [style.color]="activeAlertErrors ? colors[alertErrorColor] : fontColor"
+      [style.font-family]="font === 'Roboto-Regular' ? 'Roboto-Regular' : font"
+    >
+      {{
+        this.genericInput.value !== undefined && this.genericInput.value !== null && this.genericInput.value !== ''
+          ? this.genericInput.value
+          : 'N/D'
+      }}
+    </label>
+    <!--DOCS: Se quita font-size dinámico ya que se definieron las medidas de 13px -> 16px como estandar para el input-->
+    <!--[style.font-size]="fontSize"-->
+    <label
+      *ngIf="labelInsidePlaceHolderLeft && enableEdit"
+      class="inside-label-left"
+      [ngClass]="isDisable ? 'inside-label-disable' : ''"
+      >{{ labelInsidePlaceHolderLeft }}</label
+    >
+    <input
+      *ngIf="enableEdit"
+      #inputElement
+      (keypress)="handleKeyPressEvent($event)"
+      (beforeinput)="handleBeforeInputEvent($event)"
+      (compositionstart)="handleCompositionEvent($event)"
+      (compositionend)="handleCompositionEvent($event)"
+      (compositionupdate)="handleCompositionEvent($event)"
+      (paste)="handlePasteEvent($event)"
+      (ngModelChange)="handleNgModelChange($event)"
+      (blur)="handleOnBlurEvent()"
+      [style.font-family]="font"
+      [style.text-align]="textAlign"
+      [style.color]="isDisable ? disableFontColor : activeAlertErrors ? '#e26a56' : fontColor"
+      [style.padding]="padding"
+      [style.cursor]="isDisable ? 'default' : ''"
+      type="text"
+      min="{{ typeValidation === 'number' ? min : null }}"
+      max="{{ typeValidation === 'number' ? max : null }}"
+      maxlength="{{ maxlength }} "
+      minlength="{{ minlength }}"
+      formControlName="genericInput"
+      [placeholder]="placeholder"
+      [required]="required"
+      [readOnly]="isDisable"
+      pattern="{{ minlength }}"
+    />
+    <label
+      *ngIf="labelInsidePlaceHolderRight && enableEdit"
+      class="inside-label-right"
+      [ngClass]="isDisable ? 'inside-label-disable' : ''"
+      >{{ labelInsidePlaceHolderRight }}</label
+    >
+    <div
+      *ngIf="enableEdit && activeArrows && typeValidation === 'number'"
+      class="arrows"
+      [ngClass]="{disable: isDisable}"
+      [style.padding-right]="arrowsPaddingRight"
+    >
+      <img
+        class="arrowUp"
+        alt=""
+        [src]="isDisable ? srcImageArrowDisable : srcImageArrow"
+        (click)="!isDisable && onIncrement()"
+      />
+      <img
+        class="arrowDown"
+        alt=""
+        [src]="isDisable ? srcImageArrowDisable : srcImageArrow"
+        (click)="!isDisable && onDecrement()"
+      />
+    </div>
+    <div class="extraString" *ngIf="extraString && !enableEdit">
+      <label [ngClass]="extraStringStyleFont">{{ extraString }}</label>
+    </div>
+  </div>
+  <div class="alertError" *ngIf="activeAlertErrors && enableEdit">
+    <label>{{ alertErrorMessage }}</label>
+  </div>
+</div>

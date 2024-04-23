@@ -1,0 +1,71 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  width: 100%;
+  & > .label-container {
+    @include s.flexColumn;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    row-gap: 1px;
+
+    & > label {
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    & > .normal {
+      @include s.responsive-font-format(
+        $font-family: s.$font_family_roboto,
+        $font-weight: s.$font_weight_regular,
+        $font-size-map: s.$responsive-font-14-14,
+        $color: s.$pqBlack2
+      );
+      &:hover {
+        @include s.responsive-font-format(
+          $font-family: s.$font_family_roboto_bold,
+          $font-weight: s.$font_weight_bold,
+          $font-size-map: s.$responsive-font-14-14,
+          $color: s.$pqBlack2
+        );
+      }
+    }
+    & > .expired {
+      @include s.responsive-font-format(
+        $font-family: s.$font_family_roboto,
+        $font-weight: s.$font_weight_regular,
+        $font-size-map: s.$responsive-font-14-14,
+        $color: s.$etiqueta-a
+      );
+      &:hover {
+        @include s.responsive-font-format(
+          $font-family: s.$font_family_roboto_bold,
+          $font-weight: s.$font_weight_bold,
+          $font-size-map: s.$responsive-font-14-14,
+          $color: s.$etiqueta-a
+        );
+      }
+    }
+
+    & > .expired-selected {
+      @include s.responsive-font-format(
+        $font-family: s.$font_family_roboto_bold,
+        $font-weight: s.$font_weight_bold,
+        $font-size-map: s.$responsive-font-14-14,
+        $color: s.$etiqueta-a
+      );
+    }
+    & > .normal-selected {
+      @include s.responsive-font-format(
+        $font-family: s.$font_family_roboto_bold,
+        $font-weight: s.$font_weight_bold,
+        $font-size-map: s.$responsive-font-14-14,
+        $color: s.$pqBlack2
+      );
+    }
+  }
+}

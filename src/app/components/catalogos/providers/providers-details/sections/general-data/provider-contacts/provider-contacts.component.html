@@ -1,0 +1,22 @@
+<div class="provider-contacts-container">
+  <div class="title">
+    <label>{{ 'formProvider.step1.contacts' | translate }}</label>
+  </div>
+  <div class="contacts-list">
+    <virtual-scroller class="virtual-scroller" [items]="contactList$ | async" (vsUpdate)="contactListScroll = $event">
+      <app-contact-item
+        *ngFor="let contact of contactListScroll; let i = index; trackBy: handleTrackByContact"
+        [contact]="buildContact(contact)"
+        [enableEdit]="enableEdit$ | async"
+        (clickOnContact)="handleClickOnContact($event.contactId, i)"
+        (disableContact)="handleDisableContact($event)"
+      ></app-contact-item>
+      <app-contact-item
+        *ngIf="enableEdit$ | async"
+        [contact]="null"
+        [enableEdit]="enableEdit$ | async"
+        (clickOnPlus)="handleClickOnContact()"
+      ></app-contact-item>
+    </virtual-scroller>
+  </div>
+</div>

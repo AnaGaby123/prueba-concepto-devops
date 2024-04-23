@@ -1,0 +1,697 @@
+@use 'base' as s;
+
+:host {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  #delivery-time {
+    @include s.flexColumn;
+    flex: 1;
+    overflow: hidden;
+    & > .notes-container {
+      @include s.flexColumn;
+      box-sizing: border-box;
+      height: 70px;
+      background-color: s.$pqFondo;
+      justify-content: center;
+      padding: 0 30px;
+      width: 100%;
+
+      & > .with-freight {
+        @include s.flexRowNoWrap;
+        width: 100%;
+
+        & > div {
+          @include s.flexColumn;
+          row-gap: 6px;
+          width: 100%;
+
+          & > .radio-buttons-content {
+            @include s.flexRowNoWrap;
+            column-gap: 60px;
+            & > div:nth-of-type(1) {
+              margin-right: 6px;
+            }
+
+            & > div:nth-of-type(2) {
+              margin-left: 6px;
+            }
+          }
+        }
+      }
+    }
+    & > .subtitle {
+      @include s.responsive-font-format(
+        $font-family: s.$font-family-novecento_bold,
+        $font-weight: s.$font-weight-bold,
+        $font-size-map: s.$responsive-font-15-18
+      );
+      padding-top: 15px;
+      padding-bottom: 15px;
+      text-transform: uppercase;
+    }
+    & > .table-container {
+      @include s.flexRow;
+      flex: 1;
+      & > virtual-scroller {
+        overflow: hidden;
+        @include s.fixVirtualScroller();
+        ::ng-deep .scrollable-content {
+          overflow: auto;
+          & > .header {
+            flex: 0 0 auto;
+            position: sticky;
+            top: 0;
+            z-index: 6;
+          }
+          & > .header-separator {
+            position: sticky;
+            top: 47px;
+            left: 0;
+            border-bottom: 1px solid s.$dark-proquifa;
+          }
+          & > .card-container {
+            @include s.flexColumn;
+            width: 100%;
+            & > .card {
+              @include s.flexRowWrap;
+              @include s.absoluteCenter;
+              align-content: flex-start;
+              align-items: flex-start;
+              box-sizing: border-box;
+              height: auto;
+              margin-bottom: 3px;
+
+              & > .expressFreight {
+                @include s.flexRowNoWrap;
+                @include s.absoluteCenter;
+                box-sizing: border-box;
+                border: 1px solid s.$pqGray2;
+                justify-content: flex-start;
+                height: 54px;
+                margin: 3px 0 0;
+                padding: 5px 30px;
+                width: 100%;
+
+                &:hover {
+                  background-color: s.$pqGray2;
+                }
+                &.selected {
+                  background-color: s.$pqGray2;
+                }
+                & > .first-column {
+                  @include s.flexRowNoWrap;
+                  align-items: center;
+                  justify-content: flex-start;
+                  flex: 1;
+                  & > .column-check-box {
+                    width: 80px;
+
+                    & > img:nth-of-type(1) {
+                      padding-right: 15px;
+                    }
+
+                    & > img {
+                      &.img-opacity {
+                        opacity: 0.2;
+                      }
+
+                      &:hover {
+                        opacity: 1;
+                      }
+                    }
+                  }
+
+                  & > .column-mark {
+                    width: auto;
+
+                    & > img:nth-of-type(1) {
+                      width: 22px;
+                      height: 22px;
+                      padding-right: 10px;
+                    }
+
+                    & > label:nth-of-type(1) {
+                      $textSize: (
+                        'base': 12px,
+                        'macBookAir': 15px,
+                      );
+                      @include s.escaledFontFormat($textSize, regular, s.$pqBlack2);
+                      @include s.Roboto-Regular;
+                      padding-right: 5px;
+                    }
+
+                    & > label:nth-of-type(2) {
+                      $textSize: (
+                        'base': 12px,
+                        'macBookAir': 15px,
+                      );
+                      @include s.escaledFontFormat($textSize, regular, s.$pqGreen);
+                      @include s.Roboto-Regular;
+                    }
+                  }
+
+                  & > .column-items {
+                    @include s.flexRowWrap;
+                    @include s.absoluteCenter;
+                    box-sizing: border-box;
+                    min-width: max-content;
+
+                    & > label {
+                      $textSize: (
+                        'base': 12px,
+                        'macBookAir': 15px,
+                      );
+                      @include s.escaledFontFormat($textSize, regular, s.$pqBlack2);
+                      @include s.Roboto-Regular;
+                    }
+
+                    & > img {
+                      width: 15px;
+                      height: 15px;
+                      padding-right: 5px;
+                      padding-left: 10px;
+                    }
+                  }
+                }
+                & > .third-column {
+                  @include s.flexRowNoWrap;
+                  flex: 0 0 auto;
+                  column-gap: 20px;
+                  & > .column-info {
+                    @include s.flexRowNoWrap;
+                    align-items: center;
+                    & > .normal {
+                      @include s.escaledFontFormat(s.$textSize13to15, regular, s.$pqBlack2);
+                      @include s.Roboto-Regular;
+                      white-space: pre;
+                    }
+
+                    & > .freight {
+                      @include s.escaledFontFormat(s.$textSize13to15, regular, s.$pqGreen);
+                      @include s.Roboto-Regular;
+                      text-decoration: underline;
+                      cursor: pointer;
+                      & > .green {
+                        color: s.$pqGreen2;
+                        vertical-align: baseline;
+                      }
+                      & > .black {
+                        color: s.$pqBlack2;
+                        vertical-align: baseline;
+                      }
+                      &.disable {
+                        color: s.$pqBlack2;
+                        * {
+                          color: s.$pqBlack2;
+                        }
+                      }
+                    }
+
+                    & > div:nth-of-type(1) {
+                      @include s.flexRowNoWrap;
+                      align-items: center;
+                      position: relative;
+                      * {
+                        cursor: pointer;
+                      }
+
+                      & > .info {
+                        @include s.flexRowNoWrap;
+                        border-bottom: 0.5px solid s.$pqGreen;
+
+                        & > label:nth-of-type(1) {
+                          $textSize: (
+                            'base': 12px,
+                            'macBookAir': 15px,
+                          );
+                          @include s.escaledFontFormat($textSize, regular, s.$pqGreen);
+                          @include s.Roboto-Regular;
+                          padding-right: 5px;
+                        }
+
+                        & > label:nth-of-type(2) {
+                          $textSize: (
+                            'base': 12px,
+                            'macBookAir': 15px,
+                          );
+                          @include s.escaledFontFormat($textSize, regular, s.$pqGreen2);
+                          @include s.Roboto-Regular;
+                          padding-right: 5px;
+                        }
+
+                        & > label:nth-of-type(3) {
+                          $textSize: (
+                            'base': 12px,
+                            'macBookAir': 15px,
+                          );
+                          @include s.escaledFontFormat($textSize, regular, s.$pqBlack2);
+                          @include s.Roboto-Regular;
+                        }
+                      }
+
+                      & > .add-freight {
+                        @include s.flexRowNoWrap;
+                        border-bottom: 0.5px solid s.$pqGreen;
+
+                        & > label:nth-of-type(1) {
+                          $textSize: (
+                            'base': 12px,
+                            'macBookAir': 15px,
+                          );
+                          @include s.escaledFontFormat($textSize, regular, s.$pqGreen);
+                          @include s.Roboto-Regular;
+                          margin: 0 2px;
+                        }
+                      }
+
+                      & > .pop-up-freight-express {
+                        width: 490px;
+                        height: 250px;
+                        box-shadow: 0 2px 10px 0 rgb(216 217 221 / 50%);
+                        background-color: #fff;
+                        box-sizing: border-box;
+                        position: absolute;
+                        top: calc(100% + 12px);
+                        right: 244px;
+                        z-index: 1;
+                        transform: translate(50%, 0);
+
+                        & > .container-freight-express {
+                          @include s.flexColumn;
+                          background-color: s.$pqWhite;
+                          border: solid 1px #d8d9dd;
+                          height: calc(250px - 35px);
+                          padding: 20px;
+
+                          & > .line-one {
+                            @include s.flexRowNoWrap;
+                            align-items: center;
+                            padding-bottom: 5px;
+
+                            & > app-check-box {
+                              padding-right: 10px;
+                            }
+
+                            & > label:nth-of-type(1) {
+                              @include s.escaledFontFormat(s.$textSize14to20, bold, s.$pqGreen);
+                              @include s.Novecento-Bold;
+                            }
+                          }
+
+                          & > .line-two {
+                            @include s.flexRowNoWrap;
+                            padding-bottom: 20px;
+
+                            & > app-drop-down-list:nth-of-type(1) {
+                              width: 80%;
+                              padding-right: 10px;
+                            }
+
+                            & > app-drop-down-list:nth-of-type(2) {
+                              width: 20%;
+                            }
+                          }
+
+                          & > .line-three {
+                            @include s.flexColumn;
+                            height: 100%;
+
+                            & > label:nth-of-type(1) {
+                              @include s.escaledFontFormat(s.$textSize12to13, regular, s.$pqBlack2);
+                              @include s.Roboto-Regular;
+                              padding-bottom: 10px;
+                            }
+
+                            & > textarea {
+                              width: 100%;
+                              height: 100%;
+                              box-sizing: border-box;
+                              padding: 10px;
+                            }
+                          }
+                        }
+
+                        & > .button {
+                          width: 100%;
+                          height: 35px;
+                          cursor: pointer;
+
+                          & > button {
+                            border-radius: 0 !important;
+                          }
+
+                          & > .btn-active-accept {
+                            @include s.pqButton(100%, 100%, 35px, 35px);
+                          }
+
+                          & > .btn-disable-accept {
+                            @include s.pqButtonDisable(100%, 100%, 35px, 35px);
+                            cursor: default;
+                          }
+                        }
+
+                        & > .triangle {
+                          border-bottom-width: 1px;
+                          border-bottom-style: solid;
+                          border-right-width: 1px;
+                          border-right-style: solid;
+                          width: 14px;
+                          height: 14px;
+                          position: absolute;
+                          background-color: #ffffff;
+                          border-bottom-color: #d8d9dd;
+                          border-right-color: #d8d9dd;
+                          z-index: 3;
+                          inset: -7px auto auto calc(75% - 8px);
+                          transform: rotate(-135deg);
+                        }
+                      }
+                    }
+                  }
+
+                  & > .column-dialog {
+                    @include s.flexRowWrap;
+                    @include s.absoluteCenter;
+                    width: 50px;
+                    position: relative;
+
+                    & > div:nth-of-type(1) {
+                      width: 25px;
+
+                      & > img:nth-of-type(1) {
+                        cursor: pointer;
+                        width: 25px;
+                      }
+                    }
+
+                    & > .first-element {
+                      top: calc(50% - 24px) !important;
+                    }
+
+                    & > .container-justification {
+                      width: 630px;
+                      height: 70px;
+                      border-radius: 18px;
+                      box-shadow: 0 2px 10px 0 rgb(216 217 221 / 50%);
+                      border: solid 1px #008894;
+                      background-color: #fff;
+                      box-sizing: border-box;
+                      position: absolute;
+                      top: calc(50% - 34px);
+                      right: calc(100% + 10px);
+                      z-index: 1;
+
+                      & > div:nth-of-type(1) {
+                        width: 100%;
+                        height: 100%;
+                        position: relative;
+
+                        & > div:nth-of-type(1) {
+                          @include s.flexRowWrap;
+                          box-sizing: border-box;
+                          height: calc(100% - 20px);
+                          margin: 10px 10px 10px 10px;
+                          overflow-x: hidden;
+                          overflow-y: auto;
+                          width: calc(100% - 20px);
+
+                          & > label {
+                            @include s.escaledFontFormat(s.$textSize12to13, regular, s.$pqGreen);
+                            @include s.Roboto-Regular;
+
+                            & > span:nth-of-type(1) {
+                              color: s.$pqGreen;
+                              padding-right: 2px;
+                            }
+
+                            & > span:nth-of-type(2) {
+                              color: s.$pqBlack2;
+                              padding-left: 2px;
+                            }
+                          }
+                        }
+
+                        & > .triangle {
+                          border-bottom-width: 1px;
+                          border-bottom-style: solid;
+                          border-right-width: 1px;
+                          border-right-style: solid;
+                          width: 14px;
+                          height: 14px;
+                          position: absolute;
+                          background-color: #ffffff;
+                          border-bottom-color: s.$pqGreen;
+                          border-right-color: s.$pqGreen;
+                          top: calc(50% - 35px);
+                          z-index: 3;
+                          inset: calc(50% - 18px) auto auto calc(100% - 7px);
+                          transform: rotate(-45deg);
+                        }
+                      }
+                    }
+                  }
+
+                  & > .column-deploy {
+                    @include s.flexRow;
+                    @include s.absoluteCenter;
+                    width: 28px;
+                    justify-content: flex-end;
+
+                    & > img {
+                      cursor: pointer;
+                      width: 28px;
+
+                      &.rotate {
+                        transform: rotate(-180deg);
+                      }
+                    }
+                  }
+                }
+              }
+              & > .table-container {
+                @include s.flexColumn;
+                flex: 1 1 100%;
+                background: #eceef0;
+                box-sizing: border-box;
+                margin: -5px 0 0;
+                overflow-y: hidden;
+                padding: 20px;
+
+                & > .table {
+                  @include s.flexColumn;
+                  flex: 1 0 100%;
+                  & > .header-color {
+                    border-bottom: 1px solid s.$pqBlack2;
+                  }
+                  & > .body {
+                    @include s.flexColumn;
+                    flex: 1 1 100%;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    & > .without-results {
+      @include s.flexRow;
+      align-items: center;
+      flex: 1;
+    }
+  }
+
+  #pop-up-justification {
+    & .content {
+      @include s.flexColumn;
+      row-gap: 10px;
+      & > .title {
+        @include s.flexRow;
+        align-items: center;
+        & > label {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-novecento_bold,
+            $font-weight: s.$font-weight-bold,
+            $font-size-map: s.$responsive-font-14-16,
+            $color: s.$pqGreen
+          );
+        }
+      }
+      & > .container-justification {
+        @include s.flexRowWrap;
+        align-items: center;
+        overflow: auto;
+        & > label {
+          padding-bottom: 3px;
+        }
+        & > label:nth-of-type(1) {
+          @include s.escaledFontFormat(s.$textSize12to13, regular, s.$pqGreen);
+          @include s.Roboto-Regular;
+          padding-right: 5px;
+        }
+
+        & > label:nth-of-type(2) {
+          @include s.escaledFontFormat(s.$textSize12to13, regular, s.$pqBlack2);
+          @include s.Roboto-Regular;
+          line-height: 1.4;
+        }
+      }
+    }
+  }
+
+  #pop-up-freight-express {
+    & .container-freigth-express {
+      @include s.flexColumn;
+      padding: 20px;
+      height: calc(250px - 35px);
+
+      & > .line-one {
+        @include s.flexRowNoWrap;
+        align-items: center;
+        padding-bottom: 5px;
+
+        & > app-check-box {
+          padding-right: 10px;
+        }
+
+        & > label:nth-of-type(1) {
+          @include s.escaledFontFormat(s.$textSize14to20, bold, s.$pqGreen);
+          @include s.Novecento-Bold;
+        }
+      }
+
+      & > .line-two {
+        @include s.flexRowNoWrap;
+        padding-bottom: 20px;
+        & > .provider {
+          @include s.flexRow;
+          align-items: center;
+          flex: 1;
+          & > .pqf,
+          .green {
+            @include s.escaledFontFormat(s.$textSize13to15, regular, s.$pqGreen);
+            @include s.Roboto-Regular;
+            @include s.default-transition();
+            &.disable {
+              color: s.$pqGray !important;
+            }
+          }
+          & > .green {
+            color: s.$pqGreen2;
+            white-space: pre;
+          }
+        }
+        & > app-drop-down-list:nth-of-type(2) {
+          width: 20%;
+        }
+      }
+
+      & > .line-three {
+        @include s.flexColumn;
+        height: 100%;
+
+        & > label:nth-of-type(1) {
+          @include s.escaledFontFormat(s.$textSize12to13, regular, s.$pqBlack2);
+          @include s.Roboto-Regular;
+          padding-bottom: 10px;
+        }
+
+        & > .comments {
+          @include s.flexRow;
+          flex: 1;
+        }
+      }
+    }
+    & .button {
+      width: 100%;
+      height: 35px;
+
+      & > button {
+        border-radius: 0 !important;
+      }
+
+      & > .btn-active-accept {
+        @include s.pqButton(100%, 100%, 35px, 35px);
+      }
+
+      & > .btn-disable-accept {
+        @include s.pqButtonDisable(100%, 100%, 35px, 35px);
+        cursor: default;
+      }
+    }
+  }
+
+  /*  @include s.responsive_layout('macBookAir') {
+    #delivery-time {
+      & > .table-container {
+        & > .container-cards {
+          & > div:nth-of-type(1) {
+            .card-container {
+              & > .card {
+                & > .top {
+                  & > .first-column {
+                    & > .column-check-box {
+                      width: 90px;
+
+                      & > img:nth-of-type(1) {
+                        padding-right: 20px;
+                      }
+                    }
+
+                    & > .column-mark {
+                      // width: 260px;
+                    }
+
+                    & > .column-items {
+                      & > img {
+                        width: 17px;
+                        height: 17px;
+                        padding-right: 5px;
+                        padding-left: 20px;
+                      }
+                    }
+                  }
+                }
+                & > .incidence {
+                  & > .content {
+                    & > label {
+                      s.$textSize: (
+                        'base': 13px,
+                        'macBookAir': 14px,
+                      );
+                      @include s.escaledFontFormat(s.$textSize, bold, s.$pqBlack2);
+                      @include s.Roboto-Bold;
+                      margin-right: 5px;
+                      width: 150px;
+                    }
+
+                    & > app-generic-input {
+                      width: calc(100% - 325px);
+                    }
+
+                    & > button {
+                      &.btn-active {
+                        @include s.pqButton(105px, 155px);
+                      }
+
+                      &.btn-disabled {
+                        @include s.pqButtonDisable(105px, 155px);
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }*/
+}
+
+.headerTitle {
+  @include s.Roboto-Regular;
+  @include s.escaledFontFormat(s.$textSize11to13, regular, s.$pqBlack2);
+  text-align: center;
+}

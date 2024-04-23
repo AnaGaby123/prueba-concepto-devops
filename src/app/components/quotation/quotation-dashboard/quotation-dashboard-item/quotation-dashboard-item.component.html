@@ -1,0 +1,44 @@
+<div class="item">
+  <div class="number">
+    <label>{{ '#' + item.Index }}</label>
+  </div>
+  <div class="content">
+    <div class="name">
+      <label>{{ item.Nombre }}</label>
+    </div>
+    <div class="classification">
+      <label> {{ 'formClient.step1.segmentation' | translate }}: </label>
+      <img [src]="getLevel(item?.NivelIngreso)" />
+      <img [src]="getCategoryImage(item?.Categoria)" />
+    </div>
+    <div class="states">
+      <div class="content">
+        <img alt="quotes" src="assets/Images/quotation/quotes.svg" />
+        <label
+          >{{ item.Total }}
+          {{ item.Total === 1 ? ('quotation.quotation' | translate) : ('quotation.quotes' | translate) }}</label
+        >
+        <label *ngIf="item.EstadoCotizacionNueva > 0 || item.EstadoCotizacionGuardada > 0 || item.EstadoCotizacionEnviada > 0"
+          >·</label
+        >
+      </div>
+      <div *ngIf="item.EstadoCotizacionNueva > 0">
+        <img alt="new" src="assets/Images/quotation/new.svg" />
+        <label class="new">{{ item.EstadoCotizacionNueva }}</label>
+        <label class="new" *ngIf="item.EstadoCotizacionGuardada > 0 || item.EstadoCotizacionEnviada > 0">·</label>
+      </div>
+      <div *ngIf="item.EstadoCotizacionGuardada > 0">
+        <img alt="saved" src="assets/Images/quotation/saved.svg" />
+        <label class="saved">{{ item.EstadoCotizacionGuardada }}</label>
+        <label class="saved" *ngIf="item.EstadoCotizacionEnviada > 0">·</label>
+      </div>
+      <div *ngIf="item.EstadoCotizacionEnviada > 0">
+        <img alt="sent" src="assets/Images/quotation/sent.svg" />
+        <label class="sent">{{ item.EstadoCotizacionEnviada }}</label>
+      </div>
+    </div>
+  </div>
+  <div class="arrow">
+    <img alt="arrow" src="assets/Images/arrows/arrow_right.svg" />
+  </div>
+</div>

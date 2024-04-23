@@ -1,0 +1,119 @@
+@use 'base' as s;
+
+:host {
+  & * {
+    box-sizing: border-box;
+  }
+
+  & > .alphabet-filter-container {
+    width: min-content;
+
+    & > .container {
+      @include s.flexColumn;
+
+      & > .label {
+        @include s.flexRowNoWrap;
+        align-items: center;
+        cursor: pointer;
+
+        & * {
+          cursor: pointer;
+        }
+
+        & > label {
+          color: s.$pqBlack2;
+          margin-right: 3px;
+        }
+
+        & > img {
+          height: 7px;
+          transition: transform 0.3s ease-in-out;
+
+          &.open {
+            transform: scaleY(-1);
+          }
+        }
+      }
+
+      & > .relative {
+        position: relative;
+
+        & > .absolute {
+          background-color: s.$pqWhite;
+          border-radius: 1px;
+          box-shadow: 0 0 10px -3px rgba(s.$pqBlack2, 0.3);
+          column-gap: 7px;
+          display: grid;
+          grid-template-columns: repeat(7, 18px);
+          grid-template-rows: 18px;
+          padding: 10px;
+          position: absolute;
+          row-gap: 5px;
+          z-index: 2;
+
+          & > div {
+            @include s.flexRow;
+            @include s.absoluteCenter;
+            @include s.default-transition($duration: 0.2s);
+            cursor: pointer;
+            height: 18px;
+
+            & * {
+              cursor: pointer;
+            }
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize10to11, light, s.$pqBlack2);
+              @include s.Roboto-Light;
+            }
+
+            &:hover {
+              background-color: s.$pqGray2;
+            }
+
+            &.selected {
+              background-color: s.$pqGreen;
+
+              & > label {
+                color: s.$pqWhite;
+              }
+            }
+          }
+
+          & > .all {
+            border-radius: 5px;
+            grid-column-start: 1;
+            grid-column-end: 3;
+          }
+
+          & > .item {
+            border-radius: 50%;
+          }
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > .alphabet-filter-container {
+      & > .container {
+        & > .label {
+          & > img {
+            height: 9px;
+          }
+        }
+
+        & > .relative {
+          & > .absolute {
+            grid-template-columns: repeat(7, 20px);
+            grid-template-rows: 20px;
+
+            & > div {
+              height: 20px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,143 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  height: 100%;
+
+  & > section {
+    @include s.absolute100;
+    @include s.flexColumn;
+    position: relative;
+
+    &:focus {
+      @include s.focusDisable;
+    }
+
+    & > .date-range-container {
+      @include s.flexRow;
+      align-items: center;
+      gap: 15px;
+      justify-content: flex-end;
+
+      :hover {
+        cursor: pointer;
+      }
+
+      & > div {
+        @include s.flexRow;
+
+        & > img {
+          height: 25px;
+        }
+
+        & > .title {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize16to18, regular, s.$pqBlack2);
+          line-height: normal;
+
+          & > .titlePqf {
+            color: s.$pqGreen;
+            line-height: normal;
+            padding: 0 2px;
+            vertical-align: baseline;
+          }
+        }
+      }
+    }
+
+    & > .submenu {
+      @include s.flexRow;
+      position: absolute;
+      top: 40px;
+      transition: 0.5s;
+      width: 315px;
+      z-index: 3;
+
+      & > .dates-container {
+        @include s.flexColumn;
+        background-color: s.$pqWhite;
+        border: 1px solid s.$boxShadow;
+        box-shadow: 0 2px 10px 0 s.$boxShadow;
+        gap: 15px;
+        height: max-content;
+        padding: 15px;
+        width: 100%;
+
+        & > .calendar-first-date,
+        & > .calendar-second-date {
+          & > div {
+            @include s.flexColumn;
+
+            & > .textSubTitle {
+              @include s.Roboto-Light;
+              @include s.escaledFontFormat(s.$textSize13to15, '', s.$pqBlack2);
+            }
+          }
+
+          & > .calendar {
+            @include s.flexRow;
+            padding-top: 5px;
+            position: relative;
+          }
+        }
+
+        & > .button-container {
+          @include s.flexRowNoWrap;
+
+          & > .button {
+            @include s.button(30px, 283px, s.$pqWhite, s.$pqGreen);
+          }
+
+          & > .buttonDisable {
+            @include s.button(30px, 283px);
+            pointer-events: none;
+          }
+        }
+      }
+    }
+
+    & > .close {
+      overflow: hidden;
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > section {
+      & > .date-range-container {
+        gap: 20px;
+
+        & > div {
+          & > img {
+            height: 30px;
+          }
+
+          & > .title {
+            & > .titlePqf {
+              padding: 0 3px;
+            }
+          }
+        }
+      }
+
+      & > .submenu {
+        top: 45px;
+        width: 325px;
+
+        & > .dates-container {
+          gap: 20px;
+          padding: 20px;
+
+          & > .calendar-first-date,
+          & > .calendar-second-date {
+            & > .calendar {
+              padding-top: 7px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

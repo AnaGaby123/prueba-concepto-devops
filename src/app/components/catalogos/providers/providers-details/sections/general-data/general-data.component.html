@@ -1,0 +1,17 @@
+<div class="container">
+  <div class="container-data" [ngClass]="(editMode$ | async) && 'padding-top'">
+    <ng-container>
+      <app-provider-general-data class="general-data"></app-provider-general-data>
+      <app-provider-address class="address"></app-provider-address>
+      <app-provider-commercial-info class="commercial-info"></app-provider-commercial-info>
+      <label>* Datos obligatorios</label>
+    </ng-container>
+  </div>
+  <ng-container>
+    <app-provider-contacts-catalogs class="contact-container"></app-provider-contacts-catalogs>
+  </ng-container>
+  <div class="message">
+    <label class="required-data">*Al menos agrega un contacto para avanzar</label>
+  </div>
+</div>
+<app-alert *ngIf="activeAlert" [alertaTxt]="textAlert" [activarBoton]="true" (confirmacion)="closeAlert($event)"></app-alert>

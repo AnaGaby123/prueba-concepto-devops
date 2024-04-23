@@ -1,0 +1,124 @@
+@import 'base.scss';
+
+:host {
+  @include absolute100;
+  @include flexRow;
+  @include reset-line-height;
+  align-items: center;
+  background-color: rgb($pqBlack2, 0.7);
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 7;
+
+  #pop-up-container {
+    ::ng-deep .modal {
+      background: none;
+
+      & > .modal-content {
+        transition: none;
+      }
+    }
+
+    @include flexColumn;
+    width: 725px;
+
+    & > .header-pop-up {
+      @include flexRow;
+      align-items: center;
+      background-color: $pqGreen;
+      border-radius: 16px 16px 0 0;
+      height: 56px;
+      justify-content: center;
+
+      & > label {
+        @include responsive_font-format(
+          $font-family: $font_family_roboto_bold,
+          $font-size-map: $responsive-font-24-24,
+          $color: $dark-proquifa-f
+        );
+      }
+    }
+
+    & > .body-pop-up {
+      @include flexColumn;
+      align-items: center;
+      background-color: $dark-proquifa-f;
+      padding: 28px 0 40px 0;
+      border-radius: 0 0 16px 16px;
+
+      & > img {
+        height: 72px;
+        margin-bottom: 28px;
+        width: 72px;
+      }
+
+      & > .content {
+        @include flexColumn;
+        align-items: center;
+        padding: 0 24px;
+        width: 100%;
+
+        & > label {
+          @include responsive_font-format($font-family: $font_family_roboto_bold, $font-size-map: $responsive-font-20-20);
+          text-align: center;
+        }
+
+        & > .secondary-text {
+          margin-top: 24px;
+        }
+
+        & > .buttons-container {
+          @include flexRow;
+          gap: 126px;
+          margin-top: 44px;
+
+          & > .secondary-button-sm {
+            @include pqf-button($version: $empty, $type: $secondary, $height: $short, $width: $sm);
+          }
+
+          & > .secondary-button-md {
+            @include pqf-button($version: $empty, $type: $secondary, $height: $short, $width: $md);
+          }
+
+          & > .secondary-button-lg {
+            @include pqf-button($version: $empty, $type: $secondary, $height: $short, $width: $lg);
+          }
+
+          & > .secondary-button-xl {
+            @include pqf-button($version: $empty, $type: $secondary, $height: $short, $width: $xl);
+          }
+
+          & > .primary-button-sm {
+            @include pqf-button($version: $full, $type: $primary, $height: $short, $width: $sm);
+          }
+
+          & > .primary-button-md {
+            @include pqf-button($version: $full, $type: $primary, $height: $short, $width: $md);
+          }
+
+          & > .primary-button-lg {
+            @include pqf-button($version: $full, $type: $primary, $height: $short, $width: $lg);
+          }
+
+          & > .primary-button-xl {
+            @include pqf-button($version: $full, $type: $primary, $height: $short, $width: $xl);
+          }
+        }
+
+        &.warning {
+          & > label {
+            color: $pqBlack2;
+          }
+        }
+
+        &.success {
+          & > label {
+            color: $pqGreen2;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,46 @@
+<div class="pop-container">
+  <div class="message">
+    <label>{{ data?.contentTitle }}:</label>
+    <label>{{ data?.contentDescription }}</label>
+  </div>
+  <div class="email-content-data">
+    <div class="product-information-container">
+      <div class="total">
+        <label
+          >{{ (productsChecked$ | async)?.length }}
+          {{
+            (productsChecked$ | async)?.length === 1
+              ? ('attendInvestigation.attendInvestigationDetail.selectedProduct' | translate)
+              : ('attendInvestigation.attendInvestigationDetail.selectedProducts' | translate)
+          }}:
+        </label>
+      </div>
+      <div class="product-information">
+        <div *ngFor="let product of productsChecked$ | async; let i = index">
+          <label>
+            <span class="bold-text">#{{ i + 1 }} </span>
+            <span *ngIf="product.Catalogo" class="green">· CAT #{{ product.Catalogo }} · </span>
+            {{ product.Descripcion }}
+            <span class="green-text">
+              · {{ product.piezas }}
+              {{ product.piezas === 1 ? ('common.piece' | translate) : ('common.pieces' | translate) }}
+            </span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="notes">
+      <app-generic-text-area
+        [enableBorder]="true"
+        [title]="'attendInvestigation.attendInvestigationDetail.notes' | translate"
+        [titleFontFamily]="'Roboto-Bold'"
+        [height]="(viewType$ | async) === viewTypes.small ? '70px' : '80px'"
+        [placeholder]="'common.enterHere' | translate"
+        [borderColor]="'#FFFFFF'"
+        [minlength]="3"
+        [required]="true"
+        (emitData)="setNotes($event)"
+      ></app-generic-text-area>
+    </div>
+  </div>
+</div>

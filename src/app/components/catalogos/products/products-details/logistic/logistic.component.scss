@@ -1,0 +1,390 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  #products-logistic {
+    @include s.flexColumn;
+    @include s.absolute100;
+    overflow: hidden;
+
+    & > .product-content {
+      @include s.flexColumn;
+      margin-bottom: 20px;
+
+      & > .title {
+        @include s.flexRow;
+        margin-bottom: 10px;
+
+        & > label {
+          @include s.Novecento-Bold;
+          @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+        }
+      }
+
+      & > .product-item-info {
+        @include s.flexRow;
+      }
+    }
+
+    & > .general-data-content {
+      @include s.flexColumn;
+      flex: 1;
+
+      & > .title {
+        @include s.flexRow;
+        padding-bottom: 5px;
+        border-bottom: 1px solid s.$pqBlack2;
+
+        & > label {
+          @include s.Novecento-Bold;
+          @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+        }
+      }
+
+      & > .body {
+        display: grid;
+        grid-template-columns: repeat(3, 2fr);
+        grid-template-rows: repeat(3, auto);
+        grid-column-gap: 15px;
+        grid-row-gap: 30px;
+        margin-top: 20px;
+
+        & > .custom-agent {
+          @include s.flexColumn;
+          overflow: hidden;
+
+          & > .title {
+            @include s.flexRow;
+            margin: 5px 0;
+
+            & > label {
+              @include s.Roboto-Bold;
+              @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+            }
+          }
+
+          & > .text {
+            @include s.flexRow;
+            flex-wrap: wrap;
+
+            & > div {
+              @include s.flexRow;
+              flex-wrap: nowrap;
+
+              & > label {
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                white-space: pre;
+
+                & > span {
+                  @include s.Roboto-Bold-Italic;
+                  color: s.$pqGreen;
+                  vertical-align: baseline;
+                }
+              }
+            }
+          }
+        }
+
+        & > .two {
+          display: grid;
+          grid-template-columns: auto auto;
+          grid-column-gap: 20px;
+
+          & > .logic-route {
+            @include s.flexColumn;
+          }
+
+          & > .sending-time {
+            @include s.flexColumn;
+          }
+        }
+
+        & > .documents {
+          @include s.flexColumn;
+
+          & > .title {
+            margin-bottom: 15px;
+
+            & > label {
+              @include s.Novecento-Bold;
+              @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+            }
+          }
+
+          & > .content {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-column-gap: 20px;
+          }
+        }
+
+        & > .datasheet {
+          @include s.flexRow;
+          align-items: flex-end;
+        }
+
+        & > .radios-input {
+          @include s.flexColumn;
+          justify-content: flex-end;
+
+          & > .radios {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            grid-column-gap: 10px;
+            margin: 3px 0;
+          }
+
+          & > .item {
+            @include s.flexRow;
+            background-color: rgb(0, 136, 148, 0.05);
+            border-radius: 15px;
+            margin: 0 5px;
+            padding: 5px 15px;
+
+            & > .text {
+              @include s.flexRow;
+              align-items: center;
+              flex: 1 1 auto;
+
+              & > label {
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen);
+                text-decoration: underline;
+              }
+            }
+
+            & > .close {
+              & > img {
+                height: 12px;
+              }
+            }
+          }
+        }
+
+        & > .others {
+          align-items: flex-start;
+          display: grid;
+          grid-template-columns: 1fr auto;
+          grid-column-gap: 15px;
+
+          & > .file-item {
+            @include s.flexColumn;
+            height: 100%;
+            justify-content: flex-start;
+
+            & > .title {
+              margin-bottom: 3px;
+
+              & > label {
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+              }
+            }
+
+            & > .item {
+              @include s.flexRow;
+              background-color: rgb(0, 136, 148, 0.05);
+              border-radius: 15px;
+              margin: 0 5px;
+              padding: 5px 15px;
+
+              & > .text {
+                @include s.flexRow;
+                align-items: center;
+                flex: 1 1 auto;
+
+                & > label {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen);
+                  text-decoration: underline;
+                }
+              }
+
+              & > .close {
+                & > img {
+                  height: 12px;
+                }
+              }
+            }
+          }
+
+          & > .btn {
+            margin-top: 22px;
+
+            & > button {
+              @include s.pqButton();
+            }
+          }
+        }
+
+        & > .otherFiles {
+          @include s.flexRow;
+          align-items: flex-start;
+          grid-column-end: span 2;
+          flex-wrap: wrap;
+          padding-top: 5px;
+
+          & > .subtitle {
+            margin-top: 22px;
+            margin-right: 10px;
+
+            & > .text {
+              @include s.flexRow;
+              align-items: flex-start;
+              flex: 0 0 auto;
+
+              & > label {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+              }
+            }
+          }
+
+          & > .items {
+            @include s.flexRow;
+            align-items: flex-end;
+            flex-wrap: wrap;
+
+            & > .file {
+              @include s.flexRow;
+              background-color: rgb(0, 136, 148, 0.05);
+              flex: 0 0 auto;
+              margin: 15px 5px 0;
+              padding: 5px 10px;
+              border-radius: 15px;
+
+              & > .content {
+                & > label {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize13to15, regular, s.$pqGreen);
+
+                  & > span {
+                    text-decoration: underline;
+                    vertical-align: baseline;
+                  }
+                }
+              }
+
+              & > .close {
+                margin-left: 10px;
+
+                & > img {
+                  height: 13px;
+                }
+              }
+            }
+          }
+
+          & > .without-results {
+            @include s.flexRow;
+            align-items: flex-end;
+            height: 100%;
+            padding: 6px;
+
+            & > label {
+              @include s.Novecento-Bold;
+              @include s.escaledFontFormat(s.$textSize20to23, bold, s.$pqGray3);
+            }
+          }
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .product-content {
+        margin-bottom: 25px;
+
+        & > .title {
+          margin-bottom: 15px;
+        }
+      }
+      & > .general-data-content {
+        & > .title {
+          @include s.flexRow;
+          padding-bottom: 10px;
+        }
+
+        & > .body {
+          display: grid;
+          grid-column-gap: 20px;
+          grid-row-gap: 40px;
+          margin-top: 25px;
+
+          & > .two {
+            grid-column-gap: 25px;
+          }
+
+          & > .documents {
+            & > .title {
+              margin-bottom: 20px;
+            }
+
+            & > .content {
+              grid-column-gap: 25px;
+            }
+          }
+
+          & > .radios-input {
+            & > .radios {
+              grid-column-gap: 15px;
+            }
+          }
+
+          & > .others {
+            grid-column-gap: 20px;
+
+            & > .file-item {
+              & > .title {
+                margin-bottom: 3px;
+              }
+
+              & > .item {
+                border-radius: 20px;
+                flex: 1;
+                margin: 0 5px;
+                padding: 5px 15px;
+
+                & > .close {
+                  & > img {
+                    height: 15px;
+                  }
+                }
+              }
+            }
+          }
+
+          & > .otherFiles {
+            padding-top: 5px;
+
+            & > .subtitle {
+              margin-top: 22px;
+              margin-right: 10px;
+            }
+
+            & > .items {
+              & > .file {
+                margin: 15px 5px 0;
+                padding: 5px 10px;
+                border-radius: 15px;
+
+                & > .close {
+                  margin-left: 15px;
+
+                  & > img {
+                    height: 15px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

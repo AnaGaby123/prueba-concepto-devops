@@ -1,0 +1,104 @@
+<div id="list-quotes-container">
+  <div class="bar-progressive">
+    <label
+      >{{ 'strategy.details.vs' | translate }}
+      <span>· {{ ('strategy.details.rateOfEffectiveness' | translate) + ' ' + (totalPercentage$ | async) + '%' }}</span>
+    </label>
+    <div class="details">
+      <div>
+        <app-progress-bar [percentage]="totalPercentage$ | async"></app-progress-bar>
+      </div>
+      <div>
+        <label>{{
+          ('strategy.details.amountUsed' | translate) +
+            ' ' +
+            (totalCharged$ | async | currency: 'USD':'symbol-narrow':'1.2-2') +
+            ' USD'
+        }}</label>
+        <label>{{ ('strategy.details.untilThe' | translate) + ' ' + (currentDate | dateFormatSlash) }}</label>
+      </div>
+      <div>
+        <label>{{
+          (totalFundamentalObjective$ | async | currency: 'USD':'symbol-narrow':'1.2-2') + ' ' + (currency$ | async)
+        }}</label>
+        <label>{{ 'strategy.details.annualSaleTarget' | translate }} · {{ currentYear }}</label>
+      </div>
+    </div>
+  </div>
+  <div class="title">
+    <label class="quotations">
+      {{
+        (totalQuoted$ | async) +
+          ' ' +
+          ((totalQuoted$ | async) === 1 ? ('strategy.quotation' | translate) : ('strategy.quotations' | translate))
+      }}
+      <span class="pending" *ngIf="(totalPending$ | async) > 0">
+        · {{ totalPending$ | async }}
+        {{ (totalPending$ | async) === 1 ? ('Pendiente' | uppercase) : ('Pendientes' | uppercase) }}</span
+      >
+      <span class="error" *ngIf="(totalError$ | async) > 0">
+        · {{ totalError$ | async }} {{ (totalError$ | async) === 1 ? ('Error' | uppercase) : ('Errores' | uppercase) }}</span
+      >
+      <span class="total">
+        · {{ 'strategy.details.totalClosing' | translate }}
+        {{ (totalAmountQuotes$ | async | currency: 'USD':'symbol-narrow':'1.2-2') + ' ' + 'USD' }}</span
+      >
+    </label>
+  </div>
+  <div class="list">
+    <app-pqf-card
+      [enableMessage]="true"
+      [options]="cardOptions$ | async"
+      [withoutOptionsMessage]="'Sin cotizaciones'"
+      (handleOptionSelected)="handleOptionSelected($event)"
+    ></app-pqf-card>
+  </div>
+  <div class="bar-percentage-container" #barPercentageTotal>
+    <div class="bar-percentage">
+      <div class="value-total">
+        <label>
+          {{ '#' + (selectedQuotation$ | async)?.Index }} ·
+          <span (click)="downloadQuotation()"> {{ (selectedQuotation$ | async)?.Folio }}</span> ·
+          <span
+            >{{ 'strategy.details.valueTotalClosing' | translate }}
+            {{ (selectedQuotation$ | async)?.TotalCotizado | currency: (currency$ | async):'symbol-narrow':'1.2-2' }}
+            {{ currency$ | async }}</span
+          >
+        </label>
+      </div>
+      <!-- DOCS: Se quita temporalmente efectividad evi ya que no hay datos para llenarlo -->
+      <!--<div>
+        <label
+          >Efectividad Evi: <span> {{ (selectedQuotation$ | async)?.UsuarioTramita | uppercase }}</span>
+        </label>
+        <div>
+          <app-percentage-stars class="center"></app-percentage-stars>
+          <label>0%</label>
+        </div>
+      </div>-->
+    </div>
+    <div>
+      <div>
+        <app-percentage-bar [items]="percentageBarTotal$ | async"></app-percentage-bar>
+      </div>
+    </div>
+  </div>
+  <div class="change-options">
+    <div class="tabs">
+      <app-tabs
+        [options]="tabOptions$ | async"
+        [tapSelected]="tabSelected$ | async"
+        (onSelectOption)="onSelectOption($event)"
+      ></app-tabs>
+    </div>
+    <div class="option">
+      <app-offer *ngIf="(tabSelected$ | async)?.label === 'Oferta'"></app-offer>
+      <!--<app-relation *ngIf="tabSelected.label === 'Relación'"></app-relation>-->
+      <app-under-construction *ngIf="(tabSelected$ | async)?.label === 'Relación'"></app-under-construction>
+      <!--<app-contact *ngIf="tabSelected.label === 'Contacto'"></app-contact>-->
+      <app-under-construction *ngIf="(tabSelected$ | async)?.label === 'Contacto'"></app-under-construction>
+      <!--<app-smart-business *ngIf="tabSelected.label === 'Smart Business'"></app-smart-business>-->
+      <app-under-construction *ngIf="(tabSelected$ | async)?.label === 'Smart Business'"></app-under-construction>
+    </div>
+  </div>
+</div>

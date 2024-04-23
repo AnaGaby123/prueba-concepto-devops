@@ -1,0 +1,833 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+#collection-monitoring-details {
+  @include s.flexColumn;
+  @include s.absolute100;
+
+  & > section {
+    @include s.flexColumn;
+    @include s.absolute100;
+    flex: 1;
+    padding: 20px;
+    overflow: hidden;
+
+    & > .title {
+      @include s.flexRow;
+      justify-content: space-between;
+      border-bottom: 1px solid s.$pqBlack2;
+
+      & > div {
+        padding-bottom: 10px;
+        @include s.flexRow;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+          @include s.Novecento-Bold;
+        }
+      }
+    }
+
+    & > .header-container {
+      @include s.flexColumn;
+      border-bottom: 1px solid s.$pqBlack2;
+
+      & > .header {
+        @include s.flexRow;
+        flex: 0 0 auto;
+        min-width: 835px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        padding: 15px 0;
+
+        & > div {
+          margin-right: 25px;
+        }
+
+        & > div:last-of-type {
+          margin-right: 0;
+        }
+
+        & > .client-container {
+          @include s.flexColumn;
+          flex: 0 1 350px;
+
+          & > .client-title {
+            @include s.flexRowNoWrap;
+            justify-content: flex-start;
+            margin-bottom: 10px;
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize15to21, bold, s.$pqBlack2);
+              @include s.Novecento-Bold;
+            }
+          }
+
+          & > .client {
+            @include s.flexRowNoWrap;
+
+            & > div:nth-of-type(1) {
+              @include s.flexColumn;
+              @include s.absoluteCenter;
+              flex: 0 0 122px;
+              height: 70px;
+              padding-right: 18px;
+
+              & > img {
+                max-height: 100%;
+                max-width: 100%;
+              }
+            }
+
+            & > .client-info {
+              @include s.flexColumn;
+              flex: 1;
+              justify-content: center;
+
+              & > div {
+                @include s.multiLineTextTruncateSinHeight($lineHeight: 1.1em);
+                margin-bottom: 4px;
+                max-width: 240px;
+
+                & > label {
+                  @include s.escaledFontFormat(s.$textSize16to21, bold, s.$pqGreen);
+                  @include s.Roboto-Bold;
+                }
+              }
+
+              & > label {
+                @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                @include s.Roboto-Regular;
+              }
+            }
+          }
+        }
+
+        & > .contact-data {
+          @include s.flexColumn;
+          flex: 1 1 auto;
+
+          & > .title {
+            @include s.flexColumn;
+            margin-bottom: 12px;
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqGreen);
+              @include s.Roboto-Bold;
+            }
+          }
+
+          & > .data {
+            @include s.flexRow;
+            justify-content: space-between;
+
+            & > div {
+              @include s.flexColumn;
+              margin-right: 50px;
+
+              &:last-of-type {
+                margin-right: 0;
+              }
+
+              & > .row {
+                @include s.flexRowNoWrap;
+                align-items: center;
+                height: 18px;
+                margin-bottom: 5px;
+
+                & > .image {
+                  @include s.absoluteCenter;
+                  @include s.flexColumn;
+                  height: 18px;
+                  margin-right: 5px;
+                  width: 18px;
+
+                  & > img {
+                    max-height: 100%;
+                    max-width: 100%;
+                  }
+                }
+
+                & > label {
+                  @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                  @include s.Roboto-Regular;
+                  white-space: pre-wrap;
+
+                  &.bold {
+                    @include s.Roboto-Bold;
+                  }
+
+                  &.green {
+                    @include s.escaledFontFormat(s.$textSize14to18, bold, s.$pqGreen2);
+                    @include s.Roboto-Bold;
+                  }
+
+                  &.red {
+                    @include s.escaledFontFormat(s.$textSize14to18, bold, s.$pqRed);
+                    @include s.Roboto-Bold;
+                  }
+                }
+
+                & > .subtitle {
+                  @include s.escaledFontFormat(s.$textSize11to12, '', s.$pqBlack2);
+                  @include s.Roboto-Bold;
+                }
+
+                & > .title {
+                  @include s.escaledFontFormat(s.$textSize11to12, '', s.$pqBlack2);
+                  @include s.Roboto-Bold;
+                }
+
+                & > .pqf {
+                  @include s.escaledFontFormat(s.$textSize15to21, regular, s.$pqGreen);
+                  @include s.Roboto-Black;
+                  white-space: pre-wrap;
+                }
+              }
+            }
+
+            & > .credit-limit {
+              align-items: flex-end;
+
+              & > .row {
+                height: auto;
+                margin-bottom: 0;
+
+                & > .pqf {
+                  margin-bottom: 5px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    & > .tabs-data {
+      @include s.flexColumn;
+      padding: 10px 0;
+
+      & > .title {
+        @include s.flexRow;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+          @include s.Novecento-Bold;
+        }
+      }
+
+      & > .tabs {
+        @include s.flexRow;
+        flex: 0 0 50px;
+        padding-top: 10px;
+      }
+    }
+
+    & > .filters {
+      @include s.flexRow;
+      justify-content: space-between;
+      margin-bottom: 10px;
+
+      & > .drop-list {
+        @include s.flexRow;
+        flex: 0 0 100%;
+        flex-wrap: wrap;
+
+        & > div {
+          flex: 0 0 198px;
+          padding-right: 10px;
+          padding-top: 10px;
+        }
+
+        & > .range-date {
+          @include s.flexRow;
+          align-items: flex-end;
+          flex: 0 0 auto;
+          margin-right: 10px;
+          padding-bottom: 5px;
+
+          & > div > label {
+            @include s.escaledFontFormat(s.$textSize13to16, '', s.$pqBlack2);
+            @include s.Roboto-Regular;
+          }
+        }
+
+        & > .search {
+          @include s.flexRow;
+          flex: 1 0 474px;
+          align-items: flex-end;
+          justify-content: flex-end;
+          padding-top: 10px;
+
+          & > app-search {
+            width: 474px;
+          }
+        }
+      }
+    }
+
+    & > .chart {
+      @include s.flexColumn;
+      padding: 10px 0;
+
+      & > div {
+        @include s.flexRow;
+      }
+
+      & > .title-bar {
+        & > label {
+          @include s.escaledFontFormat(s.$textSize18to21, '', s.$pqBlack2);
+          @include s.Novecento-Bold;
+        }
+      }
+
+      & > .bar {
+        padding: 5px 0;
+      }
+    }
+
+    & > .table-container {
+      @include s.table-container;
+
+      & > .table {
+        @include s.table($min-width: 1600px);
+
+        & > .head {
+          @include s.table-header($min-width: 1600px);
+          padding-right: 5px;
+
+          & > div {
+            @include s.flexRow;
+            box-sizing: border-box;
+            padding: 6px 4px;
+            width: 100%;
+
+            & > p:nth-of-type(1) {
+              @include s.escaledFontFormat(s.$textSize11to13, '', s.$pqBlack2);
+              @include s.Roboto-Regular;
+              letter-spacing: 0;
+              text-align: center;
+
+              &:hover {
+                cursor: default;
+              }
+            }
+          }
+
+          & > .index {
+            flex: 0 0 32px;
+            justify-content: center;
+          }
+
+          & > .company {
+            flex: 1 0 80px;
+          }
+
+          & > .uuid {
+            flex: 2 0 100px;
+          }
+
+          & > .invoice {
+            flex: 1 0 80px;
+          }
+
+          & > .pi {
+            flex: 1 0 90px;
+          }
+
+          & > .payment-conditions {
+            flex: 1 0 80px;
+          }
+
+          & > .date {
+            flex: 1 0 125px;
+          }
+
+          & > .receipt {
+            flex: 1 0 105px;
+          }
+
+          & > .payment-method {
+            flex: 1 0 100px;
+          }
+
+          & > .drc {
+            flex: 1 0 60px;
+            justify-content: center;
+          }
+
+          & > .mec {
+            flex: 1 0 120px;
+            justify-content: flex-end;
+          }
+
+          & > .in-time {
+            flex: 1 0 100px;
+            justify-content: center;
+          }
+
+          & > .img {
+            flex: 0 0 35px;
+            justify-content: center;
+          }
+        }
+
+        & > .body {
+          @include s.table-body($min-width: 1600px);
+          overflow-y: hidden;
+
+          & > virtual-scroller {
+            @include s.absolute100;
+
+            ::ng-deep .scrollable-content {
+              & > .item {
+                @include s.flexRow;
+                border-bottom: solid 1px s.$pqGray2;
+                box-sizing: border-box;
+                justify-content: space-between;
+
+                & > div {
+                  @include s.flexRow;
+                  align-items: center;
+                  box-sizing: border-box;
+                  padding: 10px 4px;
+                  width: 100%;
+                }
+
+                & > .index {
+                  flex: 0 0 32px;
+                  justify-content: center;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize10to13, '', s.$pqBlack2);
+                    @include s.Roboto-Bold;
+                  }
+                }
+
+                & > .company {
+                  flex: 1 0 80px;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize10to13, '', s.$pqGreen);
+                    @include s.Roboto-Bold;
+                  }
+                }
+
+                & > .uuid {
+                  flex: 2 0 100px;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize12to14, '', s.$pqBlack2);
+                    @include s.Roboto-Regular;
+                  }
+                }
+
+                & > .invoice {
+                  flex: 1 0 80px;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize12to14, '', s.$pqGreen);
+                    @include s.Roboto-Regular;
+                    text-decoration: underline;
+                  }
+
+                  & > .no-monitoring {
+                    color: s.$pqGreen2 !important;
+                  }
+                }
+
+                & > .pi {
+                  flex: 1 0 90px;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize12to14, '', s.$pqBlack2);
+                    @include s.Roboto-Regular;
+                    text-decoration: underline;
+                  }
+                }
+
+                & > .payment-conditions {
+                  flex: 1 0 80px;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize12to14, '', s.$pqGreen);
+                    @include s.Roboto-Regular;
+                  }
+                }
+
+                & > .date {
+                  align-items: flex-start;
+                  flex: 1 0 125px;
+                  flex-direction: column;
+                  justify-content: center;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize12to14, '', s.$pqBlack2);
+                    @include s.Roboto-Regular;
+
+                    &.ocean {
+                      color: s.$pqGreen;
+                    }
+
+                    &.green {
+                      color: s.$pqGreen2;
+                    }
+
+                    &.underline {
+                      text-decoration: underline;
+                    }
+                  }
+
+                  & > .date-picker {
+                  }
+
+                  & > .small {
+                    @include s.Roboto-Bold;
+                    color: s.$pqGreen;
+                    font-size: 9px;
+                    margin: 2px 0 0 3px;
+                  }
+                }
+
+                & > .receipt {
+                  flex: 1 0 105px;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize12to14, '', s.$pqBlack2);
+                    @include s.Roboto-Regular;
+                  }
+                }
+
+                & > .payment-method {
+                  flex: 1 0 100px;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize12to14, '', s.$pqGreen);
+                    @include s.Roboto-Regular;
+                  }
+                }
+
+                & > .drc {
+                  flex: 1 0 60px;
+                  justify-content: center;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize12to14, '', s.$pqBlack2);
+                    @include s.Roboto-Regular;
+                  }
+                }
+
+                & > .mec {
+                  flex: 1 0 120px;
+                  justify-content: flex-end;
+
+                  & > label {
+                    @include s.escaledFontFormat(s.$textSize12to14, '', s.$pqGreen);
+                    @include s.Roboto-Bold;
+                  }
+                }
+
+                & > .in-time {
+                  flex: 1 0 100px;
+                  justify-content: center;
+
+                  & > img {
+                    cursor: pointer;
+                    height: 15px;
+                  }
+                }
+
+                & > .img {
+                  flex: 0 0 35px;
+                  justify-content: center;
+
+                  & > img {
+                    cursor: pointer;
+                    height: 15px;
+                  }
+                }
+              }
+            }
+          }
+
+          & > .loading,
+          & > .without-results {
+            @include s.flexRowNoWrap;
+            @include s.absoluteCenter;
+            flex: 1 1 auto;
+          }
+        }
+      }
+    }
+
+    & > .totals {
+      @include s.flexRowNoWrap;
+      width: 100%;
+      box-sizing: border-box;
+      margin-bottom: 15px;
+      padding: 7px 20px;
+      justify-content: space-between;
+
+      & > div {
+        @include s.flexRow;
+        @include s.absoluteCenter;
+        width: calc(100% / 3);
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize12to14, '', s.$pqBlack2);
+          @include s.Roboto-Regular;
+        }
+
+        & > .amounts {
+          @include s.flexRow;
+          align-items: center;
+          justify-content: flex-end;
+          width: 50%;
+
+          & > .total-collection {
+            @include s.escaledFontFormat(s.$textSize12to14, '', s.$pqBlack2);
+            @include s.Roboto-Regular;
+          }
+
+          & > .totalInvoice {
+            @include s.Roboto-Bold;
+            @include s.escaledFontFormat(s.$textSize13to14, '', s.$pqGreen);
+          }
+
+          & > img {
+            cursor: pointer;
+            margin-right: 13px;
+            height: 22px;
+          }
+        }
+      }
+    }
+
+    & > .btn {
+      @include s.flexRow;
+      justify-content: flex-end;
+
+      & > .disabled {
+        @include s.pqButtonDisable();
+      }
+
+      & > .enabled {
+        @include s.pqButton();
+      }
+    }
+  }
+
+  & > footer {
+    @include s.flexRowNoWrap;
+    align-items: center;
+    border-top: 2px solid s.$pqBlack2;
+    flex: 0 0 50px;
+    overflow-x: auto;
+
+    & > div {
+      @include s.flexRow;
+      @include s.absoluteCenter;
+      flex: 1 1 auto;
+      min-width: 1700px;
+      padding: 0 30px;
+
+      & > div {
+        @include s.flexRow;
+        @include s.absoluteCenter;
+        margin-right: 18px;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+          @include s.Roboto-Regular;
+        }
+
+        & > label:first-child {
+          @include s.Roboto-Bold;
+          margin-right: 4px;
+        }
+
+        & > img {
+          width: 16px;
+          height: 16px;
+          margin-right: 4px;
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > section {
+      & > .title {
+        & > div {
+          padding-bottom: 15px;
+        }
+      }
+
+      & > .table-container {
+        & > .table {
+          min-width: 1900px;
+
+          & > .head {
+            min-width: 1900px;
+
+            & > .index {
+              flex: 0 0 35px;
+            }
+
+            & > .company {
+              flex: 1 0 90px;
+            }
+
+            & > .uuid {
+              flex: 2 0 125px;
+            }
+
+            & > .invoice {
+              flex: 1 0 90px;
+            }
+
+            & > .pi {
+              flex: 1 0 100px;
+            }
+
+            & > .payment-conditions {
+              flex: 1 0 90px;
+            }
+
+            & > .date {
+              flex: 1 0 155px;
+            }
+
+            & > .receipt {
+              flex: 1 0 115px;
+            }
+
+            & > .payment-method {
+              flex: 1 0 110px;
+            }
+
+            & > .drc {
+              flex: 1 0 65px;
+            }
+
+            & > .mec {
+              flex: 1 0 150px;
+            }
+
+            & > .in-time {
+              flex: 1 0 110px;
+            }
+
+            & > .img {
+              flex: 0 0 42px;
+            }
+          }
+
+          & > .body {
+            min-width: 1900px;
+
+            & > virtual-scroller {
+              ::ng-deep .scrollable-content {
+                & > .item {
+                  & > .index {
+                    flex: 0 0 35px;
+                  }
+
+                  & > .company {
+                    flex: 1 0 90px;
+                  }
+
+                  & > .uuid {
+                    flex: 2 0 125px;
+                  }
+
+                  & > .invoice {
+                    flex: 1 0 90px;
+                  }
+
+                  & > .pi {
+                    flex: 1 0 100px;
+                  }
+
+                  & > .payment-conditions {
+                    flex: 1 0 90px;
+                  }
+
+                  & > .date {
+                    flex: 1 0 155px;
+                  }
+
+                  & > .receipt {
+                    flex: 1 0 115px;
+                  }
+
+                  & > .payment-method {
+                    flex: 1 0 110px;
+                  }
+
+                  & > .drc {
+                    flex: 1 0 65px;
+                  }
+
+                  & > .mec {
+                    flex: 1 0 150px;
+                  }
+
+                  & > .in-time {
+                    flex: 1 0 110px;
+
+                    & > img {
+                      height: 20px;
+                    }
+                  }
+
+                  & > .img {
+                    flex: 0 0 42px;
+
+                    & > img {
+                      height: 20px;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      & > .totals {
+        padding: 8px 20px;
+
+        & > div {
+          & > .amounts {
+            & > img {
+              height: 23px;
+              margin-right: 15px;
+            }
+          }
+        }
+      }
+    }
+
+    & > footer {
+      height: 55px;
+
+      & > div {
+        min-width: 2025px;
+
+        & > div {
+          margin-right: 27px;
+
+          & > img {
+            width: 17px;
+            height: 17px;
+            margin-right: 6px;
+          }
+        }
+      }
+    }
+  }
+}

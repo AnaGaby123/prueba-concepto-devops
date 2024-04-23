@@ -1,0 +1,293 @@
+<div id="strategy-details-container">
+  <section>
+    <div class="general-data-strategy-content">
+      <app-general-data-strategy [isOpen]="generalDataIsOpen" (handleIsOpen)="handleGeneralData()"></app-general-data-strategy>
+    </div>
+    <div class="content">
+      <section>
+        <div class="quotations" [ngClass]="{closeOptions: !generalDataIsOpen, openOptions: generalDataIsOpen}">
+          <router-outlet></router-outlet>
+        </div>
+        <div class="quotation-strategy-content">
+          <section>
+            <div class="content">
+              <div class="info">
+                <div class="title">
+                  <label>{{ 'strategy.details.strategy' | translate }}</label>
+                </div>
+                <div class="folio">
+                  <label>{{ 'strategy.details.amountTotalClose' | translate }}</label>
+                  <label>{{ (totalAmountQuotes$ | async | currency: 'USD':'symbol-narrow':'1.2-2') + ' USD' }}</label>
+                </div>
+                <div class="drop-list">
+                  <label>{{ 'strategy.details.strategy' | translate }}</label>
+                  <app-drop-down-list
+                    [activeMinWidth]="true"
+                    [itemSelected]="itemSelected$ | async"
+                    [items]="optionsListQuotationStrategy$ | async"
+                    [required]="true"
+                    [showAsterisk]="false"
+                    [subtitleActive]="false"
+                    [title]="'Seleccionar'"
+                    (valueDropList)="changeQuotationStrategy($event)"
+                  >
+                  </app-drop-down-list>
+                </div>
+                <div class="message" *ngIf="!!(itemSelected$ | async)?.label">
+                  <label>
+                    <span>{{ 'strategy.details.objective' | translate }}</span>
+                    <span>·</span>
+                    <span *ngIf="(itemSelected$ | async)?.label === quotationStrategyOffensive">{{
+                      'strategy.details.offensiveObjective' | translate
+                    }}</span>
+                    <span *ngIf="(itemSelected$ | async)?.label === quotationStrategyBalanced">{{
+                      'strategy.details.balancedObjective' | translate
+                    }}</span>
+                    <span *ngIf="(itemSelected$ | async)?.label === quotationStrategyDefensive">{{
+                      'strategy.details.defensiveObjective' | translate
+                    }}</span>
+                  </label>
+                  <label>
+                    <span>{{ 'strategy.details.tactic' | translate }}</span>
+                    <span>·</span>
+                    <span *ngIf="(itemSelected$ | async)?.label === quotationStrategyOffensive">{{
+                      'strategy.details.offensiveTactics' | translate
+                    }}</span>
+                    <span *ngIf="(itemSelected$ | async)?.label === quotationStrategyBalanced">{{
+                      'strategy.details.balancedTactics' | translate
+                    }}</span>
+                    <span *ngIf="(itemSelected$ | async)?.label === quotationStrategyDefensive">{{
+                      'strategy.details.defensiveTactics' | translate
+                    }}</span>
+                  </label>
+                </div>
+                <div class="section-check">
+                  <div class="title">
+                    <label>{{ 'strategy.details.tactics' | translate }}</label>
+                  </div>
+                  <div class="option" *ngFor="let tactic of listQuotationStrategyTactic$ | async; trackBy: handleTrackByTactic">
+                    <div #addJustificationTactic>
+                      <app-check-box
+                        [check]="tactic.isSelected"
+                        [enableEdit]="true"
+                        [labelFontStyle]="tactic.isSelected ? 'robotoBoldProquifa13' : 'robotoRegular13'"
+                        [fontColor]="'#008894'"
+                        [backGroundCheckColor]="'#fff'"
+                        [label]="tactic.Tactica"
+                        (event)="changeQuotationStrategyTactic($event, tactic, addJustificationTactic)"
+                      ></app-check-box>
+                      <div class="justification-content" (click)="handleStopEvents($event)">
+                        <p
+                          #editJustification
+                          *ngIf="
+                            tactic.Tactica === quotationStrategyTactic1 &&
+                            tactic.isSelected &&
+                            tactic.listSubTactic.length > 0 &&
+                            tactic.listSubTactic[0].ajOfQuotationStrategyTactic.Justificacion !== ''
+                          "
+                          (click)="
+                            tactic.isSelected
+                              ? changeQuotationStrategyTactic(tactic.isSelected, tactic, editJustification)
+                              : null
+                          "
+                        >
+                          {{ 'strategy.details.editJustification' | translate }}
+                        </p>
+                      </div>
+                    </div>
+                    <div *ngIf="tactic.Tactica !== quotationStrategyTactic1" (click)="handleStopEvents($event)">
+                      <div
+                        #addJustificationSubTactic
+                        *ngFor="let subTactic of tactic.listSubTactic; trackBy: handleTrackBySubTactic"
+                      >
+                        <app-radio-button
+                          *ngIf="!tactic.PermiteMultiplesSubtacticas"
+                          [activeLocalState]="false"
+                          [isMulticolor]="true"
+                          [radioColor]="'white'"
+                          [disabled]="!tactic.isSelected"
+                          [height]="(viewType$ | async) === 'macBookAir' ? '20px' : '17px'"
+                          [labelFontStyle]="
+                            !tactic.isSelected
+                              ? 'labelRobotoRegularDisable13'
+                              : subTactic.isSelected
+                              ? 'labelRobotoBoldProquifa13'
+                              : 'defaultLabel'
+                          "
+                          [label]="subTactic.Subtactica"
+                          [value]="subTactic.isSelected"
+                          (emitValue)="
+                            changeQuotationStrategySubTactic(
+                              $event,
+                              subTactic,
+                              tactic.PermiteMultiplesSubtacticas,
+                              addJustificationSubTactic
+                            )
+                          "
+                        ></app-radio-button>
+                        <app-check-box
+                          *ngIf="tactic.PermiteMultiplesSubtacticas"
+                          [check]="subTactic.isSelected"
+                          [disabled]="!tactic.isSelected"
+                          [enableEdit]="true"
+                          [fontColor]="'#008894'"
+                          [backGroundCheckColor]="'#fff'"
+                          [labelFontStyle]="
+                            !tactic.isSelected
+                              ? 'labelRobotoRegularDisable13'
+                              : subTactic.isSelected
+                              ? 'robotoBoldProquifa13'
+                              : 'robotoRegular13'
+                          "
+                          [label]="subTactic.Subtactica"
+                          (event)="
+                            changeQuotationStrategySubTactic(
+                              $event,
+                              subTactic,
+                              tactic.PermiteMultiplesSubtacticas,
+                              addJustificationSubTactic
+                            )
+                          "
+                        ></app-check-box>
+                        <div class="justification-content" (click)="handleStopEvents($event)">
+                          <p
+                            #editJustification
+                            *ngIf="subTactic.ajOfQuotationStrategyTactic.Justificacion !== ''"
+                            (click)="
+                              tactic.isSelected && subTactic.ajOfQuotationStrategyTactic.Justificacion !== ''
+                                ? changeQuotationStrategySubTactic(
+                                    subTactic.isSelected,
+                                    subTactic,
+                                    tactic.PermiteMultiplesSubtacticas,
+                                    editJustification
+                                  )
+                                : null
+                            "
+                          >
+                            {{ 'strategy.details.editJustification' | translate }}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="button-save">
+                  <button
+                    [disabled]="!(isValidStrategy$ | async)"
+                    [ngClass]="(isValidStrategy$ | async) ? 'enable' : 'disable'"
+                    (click)="saveStrategy()"
+                    >Establecer
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+          <div class="is-loading" *ngIf="isLoadingQuotationStrategy$ | async">
+            <app-loading></app-loading>
+          </div>
+        </div>
+      </section>
+      <footer>
+        <div>
+          <div>
+            <img alt="original" src="assets/Images/pre-processing/originales.svg" />
+            <label>{{ 'strategy.originalItem' | translate }}</label>
+          </div>
+          <div>
+            <img alt="alternative" src="assets/Images/pre-processing/alternativas.svg" />
+            <label>{{ 'strategy.alternativeItem' | translate }}</label>
+          </div>
+          <div>
+            <img alt="complementary" src="assets/Images/pre-processing/complementarias.svg" />
+            <label>{{ 'strategy.complementItem' | translate }}</label>
+          </div>
+          <div>
+            <img alt="promotion" src="assets/Images/pre-processing/promocion.svg" />
+            <label>{{ 'strategy.promotionItem' | translate }}</label>
+          </div>
+          <div>
+            <img alt="save" src="assets/Images/pre-processing/ahorro.svg" />
+            <label>{{ 'strategy.saveItem' | translate }}</label>
+          </div>
+          <div>
+            <label class="label-bold">{{ 'dailyMeeting.TEE' | translate }}</label>
+            <label>{{ 'dailyMeeting.timeOfDelivery' | translate }}</label>
+          </div>
+          <div>
+            <label class="label-bold">{{ 'dailyMeeting.FEE' | translate }}</label>
+            <label>{{ 'dailyMeeting.deliveryDate' | translate }}</label>
+          </div>
+          <div>
+            <label class="label-bold">{{ 'dailyMeeting.FRE' | translate }}</label>
+            <label>{{ 'dailyMeeting.deliveryDateReal' | translate }}</label>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </section>
+
+  <!--  <div-->
+  <!--    class="justification"-->
+  <!--    *ngIf="modalIsOpenJustification"-->
+  <!--    (click)="handleStopEvents($event)"-->
+  <!--    [style.top]="dataPopUpConversion.top"-->
+  <!--    [style.left]="dataPopUpConversion.left"-->
+  <!--  >-->
+  <!--    <div>-->
+  <!--      <h3>{{ isSelectedText ? 'Editar Justificación' : 'Justificación' }}</h3>-->
+  <!--    </div>-->
+  <!--    <div>-->
+  <!--      <textarea placeholder="Escribe Aquí" [(ngModel)]="textJustification"></textarea>-->
+  <!--    </div>-->
+  <!--    <div>-->
+  <!--      <button class="enable" (click)="handleCloseModal()">{{ 'common.cancel' | translate }}</button>-->
+  <!--      <button-->
+  <!--        [ngClass]="textJustification !== '' ? 'enable' : 'disable'"-->
+  <!--        [disabled]="textJustification === ''"-->
+  <!--        (click)="setJustificationQuotationStrategy()"-->
+  <!--        >{{ 'common.accept' | translate }}</button-->
+  <!--      >-->
+  <!--    </div>-->
+  <!--  </div>-->
+</div>
+
+<div class="justification-and-observation-container">
+  <app-custom-position-pop-up
+    *ngIf="modalIsOpenJustification"
+    [closeButton]="false"
+    [floatingSize]="0"
+    [maxHeight]="viewType === 'macBookAir' ? '316px' : '300px'"
+    [maxWidth]="viewType === 'macBookAir' ? '630px' : '470px'"
+    [minHeight]="viewType === 'macBookAir' ? '316px' : '300px'"
+    [minWidth]="viewType === 'macBookAir' ? '630px' : '470px'"
+    [padding]="'0'"
+    [popUpPosition]="'left-center'"
+    [target]="popUpPercentageBarsTarget"
+  >
+    <div class="content">
+      <div class="body">
+        <section class="section2">
+          <div class="title">
+            <h3>{{ isSelectedText ? 'Editar Justificación' : 'Justificación' }}</h3>
+          </div>
+          <div class="observation">
+            <app-generic-text-area
+              [height]="'100%'"
+              (emitData)="handleObservation($event)"
+              [value]="textJustification"
+            ></app-generic-text-area>
+          </div>
+        </section>
+      </div>
+      <div class="footer">
+        <button class="enable" (click)="handleCloseModal()">{{ 'common.cancel' | translate }}</button>
+        <button
+          [disabled]="textJustification === ''"
+          [ngClass]="textJustification !== '' ? 'enable' : 'disable'"
+          (click)="setJustificationQuotationStrategy()"
+          >{{ 'common.accept' | translate }}</button
+        >
+      </div>
+    </div>
+  </app-custom-position-pop-up>
+</div>

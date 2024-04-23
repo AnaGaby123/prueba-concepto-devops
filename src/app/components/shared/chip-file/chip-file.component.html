@@ -1,0 +1,7 @@
+<div id="chip-file">
+  <div class="chip" *ngFor="let chip of chipsFiles; let i = index">
+    <label>#{{ i + 1 }} ·</label>
+    <label>{{ chip.name }}</label>
+    <img src="assets/Images/cerrar.svg" alt="delete" (click)="deleteFile(chip, i)" />
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<div id="process-container">
+  <div class="header">
+    <app-header-bar
+      [title]="title$ | async"
+      [name]="(isInDetailsView$ | async) ? (client$ | async)?.Nombre : ''"
+      (goBack)="goBack()"
+      [activeBack]="isInDetailsView$ | async"
+    >
+    </app-header-bar>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+</div>

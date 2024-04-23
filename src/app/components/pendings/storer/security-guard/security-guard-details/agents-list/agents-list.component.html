@@ -1,0 +1,62 @@
+<div class="agents-list">
+  <div class="appTabsContainer">
+    <app-tabs
+      [options]="tabsSteps$ | async"
+      [tapSelected]="tabSelected$ | async"
+      (onSelectOption)="onSelectOption($event)"
+      [ngClass]="(actualStep$ | async) === 1 ? 'disable-list' : ''"
+    ></app-tabs>
+  </div>
+  <div class="appSearchContainer">
+    <app-search
+      [searchTerm]="searchTerm$ | async"
+      [placeholder]="'Buscar...'"
+      (textSearch)="handleKeySearch($event)"
+      [ngClass]="(actualStep$ | async) === 1 ? 'disable-list' : ''"
+    ></app-search>
+  </div>
+  <div class="left-container">
+    <div class="orders-list-container">
+      <virtual-scroller
+        class="virtual-list"
+        [items]="agentList$ | async"
+        *ngIf="!lodashIsEmpty(agentList$ | async)"
+        (vsUpdate)="scrollItems = $event"
+        (vsEnd)="fetchMore($event)"
+      >
+        <div
+          class="item"
+          *ngFor="let item of scrollItems; let i = index; trackBy: handleTrackBy"
+          (click)="selectedItem(item)"
+          [ngClass]="[
+            item.IdSegVisitaVisitante === (selectItemCustomAgentList$ | async)?.IdSegVisitaVisitante ? 'active' : '',
+            (actualStep$ | async) === 1 ? 'disable-list' : ''
+          ]"
+        >
+          <div class="indicator"></div>
+          <div class="content">
+            <div class="title">
+              <label
+                >#{{ item.Index }} ·
+                <span>{{ item.segVisitante.NombreCompleto ? item.segVisitante.NombreCompleto : 'N/D' }}</span>
+              </label>
+            </div>
+            <label class="subtitle"
+              >FEA+:
+              {{ item.FechaHoraAproximadaDeArribo ? (item.FechaHoraAproximadaDeArribo | dateFormatSlashShortWithHour) : 'N/D' }}
+            </label>
+            <label class="black-info">Entrega de Paqueteria</label>
+          </div>
+        </div>
+      </virtual-scroller>
+      <app-loading *ngIf="(lodashIsEmpty(agentList$ | async) && apiStatus$ | async) === 1"></app-loading>
+      <app-without-results *ngIf="lodashIsEmpty(agentList$ | async) && (apiStatus$ | async) === 3"></app-without-results>
+    </div>
+    <div class="charger">
+      <app-loading *ngIf="!lodashIsEmpty(agentList$ | async) && (apiStatus$ | async) === 1"></app-loading>
+    </div>
+  </div>
+  <div class="visitsContainer">
+    <span class="visits"> #{{ totalVisits$ | async }} Visitas </span>
+  </div>
+</div>

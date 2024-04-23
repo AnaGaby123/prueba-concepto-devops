@@ -1,0 +1,562 @@
+<div id="rebill">
+  <div class="progress-bar">
+    <div>
+      <label>{{ 'rebill.creditLine' | translate }}</label>
+    </div>
+    <div class="details">
+      <div class="bar">
+        <app-progress-bar [percentage]="75" [color]="'#008894'"></app-progress-bar>
+      </div>
+      <div class="left">
+        <label>{{ 'closeOffer.usedAmount' | translate }} {{ 50000 | currency: 'USD':'symbol-narrow':'1.0-2' }} USD </label>
+        <label>{{ ('closeOffer.untilThe' | translate) + '16 DE MARZO DEL 2021' }}</label>
+      </div>
+      <div class="right">
+        <label>{{ 60000 | currency: 'USD':'symbol-narrow':'1.0-2' }} USD </label>
+        <label>{{ 'rebill.creditLimit' | translate }}</label>
+      </div>
+    </div>
+  </div>
+  <div class="rebill-body">
+    <div class="left">
+      <div class="header">
+        <div class="left">
+          <label
+            >{{ 'common.invoice' | translate }} <span>· {{ '65132132' }}</span
+            ><span *ngIf="(radioButtons$ | async)[0].value || (radioButtons$ | async)[1].value" class="orange">
+              · {{ 'Cancelable con aceptación' }}</span
+            >
+          </label>
+        </div>
+        <div class="right">
+          <label>{{ ('uploadInvoice.invoiceDate' | translate) + ' 10/Feb/2022 · 13:07 Hrs.' }}</label>
+        </div>
+      </div>
+      <div class="pdf">
+        <app-upload-view-file (handleFileUpload)="setFile($event)"></app-upload-view-file>
+      </div>
+    </div>
+    <div class="right">
+      <div *ngIf="(creditNoteState$ | async).isInItemsView" class="note-content">
+        <div class="header">
+          <div>
+            <label
+              ><span>{{ 'rebill.creditNote' | translate }} · </span> {{ 'rebill.watchItemsWithImpact' | translate }}
+            </label>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="!(creditNoteState$ | async).isInItemsView" class="header">
+        <div class="header-content">
+          <app-radio-button
+            [height]="(viewType$ | async) === 'macBookAir' ? '23px' : '20px'"
+            [label]="'rebill.cancelInvoice' | translate"
+            [value]="(radioButtons$ | async)[0].value"
+            [labelFontStyle]="(radioButtons$ | async)[0].value ? 'labelNovecentoBoldProquifa21' : 'labelNovecentoBold21'"
+            (emitValue)="setActiveRadioButton($event, 'cancelInvoice')"
+          ></app-radio-button>
+          <app-radio-button
+            [height]="(viewType$ | async) === 'macBookAir' ? '23px' : '20px'"
+            [label]="'rebill.rebill' | translate"
+            [value]="(radioButtons$ | async)[1].value"
+            [labelFontStyle]="(radioButtons$ | async)[1].value ? 'labelNovecentoBoldProquifa21' : 'labelNovecentoBold21'"
+            (emitValue)="setActiveRadioButton($event, 'rebill')"
+          ></app-radio-button>
+          <app-radio-button
+            [height]="(viewType$ | async) === 'macBookAir' ? '23px' : '20px'"
+            [label]="'rebill.creditNote' | translate"
+            [value]="(radioButtons$ | async)[2].value"
+            [labelFontStyle]="(radioButtons$ | async)[2].value ? 'labelNovecentoBoldProquifa21' : 'labelNovecentoBold21'"
+            (emitValue)="setActiveRadioButton($event, 'creditNote')"
+          >
+          </app-radio-button>
+        </div>
+      </div>
+      <div class="body">
+        <div *ngIf="(creditNoteState$ | async).isInItemsView" class="note-table">
+          <div class="header-table">
+            <div class="header-content">
+              <div class="separator"></div>
+              <div class="index">
+                <label>#</label>
+              </div>
+              <div class="cant">
+                <label>{{ 'preProcessing.tableLabels.quantity' | translate }}</label>
+              </div>
+              <div class="description">
+                <label>{{ 'preProcessing.tableLabels.description' | translate }}</label>
+              </div>
+              <div class="unitPrice">
+                <label>{{ 'preProcessing.tableLabels.unitPrice2' | translate }}</label>
+              </div>
+              <div class="import">
+                <label>{{ 'preProcessing.tableLabels.amount' | translate }}</label>
+              </div>
+            </div>
+          </div>
+          <div class="body-table">
+            <div class="item">
+              <div class="item-content">
+                <div class="check">
+                  <app-check-box></app-check-box>
+                </div>
+                <div class="index">
+                  <label>{{ 1 }}</label>
+                </div>
+                <div class="cant">
+                  <label>{{ 1 }}</label>
+                </div>
+                <div class="description">
+                  <label
+                    ><span>{{ '#CAT · 058590 ' }}</span
+                    >{{ '· (Z)-N,-Methylmeloxicam (30 mg) ylidene)-4-hydroxy · USP' }}</label
+                  >
+                </div>
+                <div class="unit-price">
+                  <label>{{ 100 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                </div>
+                <div class="import">
+                  <label>{{ 100 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="footer-table">
+            <div class="footer-content">
+              <label>{{ 3 + ' ' + ('rebill.selected' | translate) }} </label>
+              <label>{{ 7 + ' ' + ('common.items' | translate) }} </label>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="!(creditNoteState$ | async).isInItemsView" class="aqua">
+          <div class="aqua-content">
+            <label *ngIf="(radioButtons$ | async)[0].value">{{ 'Motivo de cancelación' }}</label>
+            <app-drop-down-list
+              *ngIf="(radioButtons$ | async)[0].value"
+              [items]="reasonOptions$ | async"
+              [itemSelected]="(cancelInvoiceState$ | async).reason"
+              (valueDropList)="setReason($event, 'cancelInvoice')"
+            ></app-drop-down-list>
+            <label *ngIf="(radioButtons$ | async)[1].value">{{ 'Motivo de cancelación' }}</label>
+            <app-drop-down-list
+              *ngIf="(radioButtons$ | async)[1].value"
+              [items]="reasonOptions$ | async"
+              [itemSelected]="(rebillState$ | async).reason"
+              (valueDropList)="setReason($event, 'rebill')"
+            ></app-drop-down-list>
+            <button
+              *ngIf="(radioButtons$ | async)[1].value"
+              [ngClass]="(rebillState$ | async).reason != null && !(rebillState$ | async).checkBox ? 'active' : 'disabled'"
+              [disabled]="!(rebillState$ | async).checkBox && (rebillState$ | async).reason != null"
+              (click)="codePop = true"
+              >{{ 'rebill.cancelInvoice' | translate }}</button
+            >
+            <label *ngIf="(radioButtons$ | async)[2].value">{{ 'Tipo de relaciones en CFDI' }}</label>
+            <app-drop-down-list
+              *ngIf="(radioButtons$ | async)[2].value"
+              [items]="(creditNoteState$ | async).dropItems"
+              [itemSelected]="(creditNoteState$ | async).dropItemSelected"
+              (valueDropList)="setCFDI($event)"
+            ></app-drop-down-list>
+          </div>
+        </div>
+        <div class="content">
+          <div *ngIf="!(creditNoteState$ | async).isInItemsView" class="content1">
+            <div class="left-content">
+              <div class="up">
+                <label class="title">{{ 'checkout.payMethod' | translate }}</label>
+                <label *ngIf="(radioButtons$ | async)[0].value" class="text">{{ 'Ejemplo de método de pago' }}</label>
+                <app-drop-down-list
+                  *ngIf="(radioButtons$ | async)[1].value || (radioButtons$ | async)[2].value"
+                ></app-drop-down-list>
+              </div>
+              <div class="down">
+                <label class="title">{{ 'preProcessing.exchangeRate' | translate }}</label>
+                <label *ngIf="(radioButtons$ | async)[0].value" class="text">{{ 'Ejemplo de txt' }}</label>
+                <app-generic-input
+                  *ngIf="(radioButtons$ | async)[1].value || (radioButtons$ | async)[2].value"
+                ></app-generic-input>
+              </div>
+            </div>
+            <div class="middle-content">
+              <div class="up">
+                <label class="title">{{ 'dailyMeeting.details.paymentConditions' | translate }}</label>
+                <label *ngIf="(radioButtons$ | async)[0].value" class="text">{{ 'Ejemplo de condiciones de pago' }}</label>
+                <app-generic-input
+                  *ngIf="(radioButtons$ | async)[1].value || (radioButtons$ | async)[2].value"
+                ></app-generic-input>
+              </div>
+              <div class="down">
+                <label class="title">{{ 'RFC' }}</label>
+                <label *ngIf="(radioButtons$ | async)[0].value" class="text">{{ 'Ejemplo de RFC' }}</label>
+                <app-generic-input
+                  *ngIf="(radioButtons$ | async)[1].value || (radioButtons$ | async)[2].value"
+                ></app-generic-input>
+              </div>
+            </div>
+            <div class="right-content">
+              <div class="up">
+                <label class="title">{{ 'common.coin' | translate }}</label>
+                <label *ngIf="(radioButtons$ | async)[0].value" class="text">{{ 'MXN' }}</label>
+                <app-drop-down-list
+                  *ngIf="(radioButtons$ | async)[1].value || (radioButtons$ | async)[2].value"
+                  [items]="itemsMoneda | async"
+                ></app-drop-down-list>
+              </div>
+              <div class="down">
+                <label class="title">{{ 'formProvider.step1.businessName' | translate }}</label>
+                <label class="text">{{ 'Ejemplo de razón social' }}</label>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="!(creditNoteState$ | async).isInItemsView" class="content2">
+            <label class="title">{{ 'rebill.address' | translate }}</label>
+            <label class="text">{{ 'Ejemplo de dirección de cadena larga' }}</label>
+          </div>
+          <div *ngIf="!(creditNoteState$ | async).isInItemsView" class="content3">
+            <div class="left">
+              <label class="title">{{ 'attendReviewPayment.wayToPay' | translate }}</label>
+              <label *ngIf="(radioButtons$ | async)[0].value" style="padding-right: 55px;" class="text">{{
+                'Ejemplo de txt'
+              }}</label>
+              <app-generic-input
+                *ngIf="(radioButtons$ | async)[1].value || (radioButtons$ | async)[2].value"
+              ></app-generic-input>
+            </div>
+            <div class="right">
+              <label class="title">{{ 'rebill.cfdiUsage' | translate }}</label>
+              <label *ngIf="(radioButtons$ | async)[0].value" class="text">{{ 'Ejemplo CFDI' }}</label>
+              <app-generic-input
+                *ngIf="(radioButtons$ | async)[1].value || (radioButtons$ | async)[2].value"
+              ></app-generic-input>
+            </div>
+            <div class="invisible"></div>
+          </div>
+          <div *ngIf="(radioButtons$ | async)[1].value" class="rebill-aqua">
+            <div class="content">
+              <app-check-box
+                [check]="(rebillState$ | async).checkBox"
+                [label]="'04 · Sustitución de los CFDI previos'"
+                [fontColor]="(rebillCheck$ | async) ? '#008894' : '#c2c3c9'"
+                [disabled]="false"
+                (event)="setCheckBox()"
+              ></app-check-box>
+            </div>
+          </div>
+          <div *ngIf="(radioButtons$ | async)[2].value" class="table">
+            <div *ngIf="!(creditNoteState$ | async).isInItemsView" (click)="setIsInItemsView(true)" class="header-table">
+              <label>{{
+                ('rebill.watchItemsWithImpact' | translate) + ' · ' + 3 + ' ' + ('rebill.selectedItems' | translate)
+              }}</label>
+            </div>
+            <div class="table-content">
+              <div class="header-table">
+                <div class="separator"></div>
+                <div class="items">
+                  <label>{{ 'common.items' | translate }}</label>
+                </div>
+                <div class="subtotal">
+                  <label>{{ 'preProcessing.tableLabels.subtotal' | translate }}</label>
+                </div>
+                <div class="iva">
+                  <label>{{ 'preProcessing.tableLabels.iva' | translate }}</label>
+                </div>
+                <div class="total">
+                  <label>{{ 'preProcessing.tableLabels.total' | translate }}</label>
+                </div>
+              </div>
+              <div class="original">
+                <div class="text">
+                  <label>{{ 'preProcessing.typeOfItem.original' | translate }}</label>
+                </div>
+                <div class="items">
+                  <label>{{ 7 }}</label>
+                </div>
+                <div class="subtotal">
+                  <label>{{ 700 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                </div>
+                <div class="iva">
+                  <label>{{ 0 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                </div>
+                <div class="total">
+                  <label>{{ 700 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                </div>
+              </div>
+              <div class="separator"></div>
+              <div class="original">
+                <div class="text">
+                  <label>{{ 'paymentOrder.refund' | translate }}</label>
+                </div>
+                <div class="items">
+                  <label>{{ 3 }}</label>
+                </div>
+                <div class="subtotal">
+                  <label>{{ 0 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                </div>
+                <div class="iva">
+                  <label>{{ 0 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                </div>
+                <div class="total">
+                  <label>{{ 0 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                </div>
+              </div>
+              <div class="separator"></div>
+              <div class="total">
+                <div class="text">
+                  <label>{{ 'rebill.totalPayable' | translate }}</label>
+                </div>
+                <div class="items">
+                  <label>{{ 0 }}</label>
+                </div>
+                <div class="subtotal">
+                  <label>{{ 0 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                </div>
+                <div class="iva">
+                  <label>{{ 0 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                </div>
+                <div class="total">
+                  <label>{{ 0 | currency: 'USD':'symbol':'1.2-2' }}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        <button
+          *ngIf="(radioButtons$ | async)[0].value"
+          [ngClass]="(cancelInvoiceState$ | async).reason != null ? 'active' : 'disabled'"
+          [disabled]="!(cancelInvoiceButtonValidator$ | async)"
+          (click)="codePop = true"
+          >{{ 'rebill.confirmCancellation' | translate }}</button
+        >
+        <button *ngIf="(radioButtons$ | async)[1].value" [ngClass]="'disabled'" [disabled]="false">{{
+          'rebill.generateNewInvoice' | translate
+        }}</button>
+        <button
+          *ngIf="(radioButtons$ | async)[2].value && !(creditNoteState$ | async).isInItemsView"
+          [ngClass]="'disabled'"
+          [disabled]="false"
+          >{{ 'rebill.generateCreditNote' | translate }}</button
+        >
+        <div *ngIf="(creditNoteState$ | async).isInItemsView" class="note-buttons">
+          <button (click)="setIsInItemsView(false)">{{ 'common.cancel' | translate }}</button>
+          <button (click)="setIsInItemsView(false)">{{ 'common.accept' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="pop-up-edit-data">
+  <app-pop-up-generic
+    id="code-pop-up"
+    *ngIf="codePop"
+    [titleHeader]="'rebill.validateInvoiceCancellation' | translate"
+    [activeButtons]="true"
+    [width]="(viewType$ | async) === 'iPad' ? '745px' : '785px'"
+    [height]="(viewType$ | async) === 'iPad' ? '660px' : '685px'"
+    [rightButtonLabel]="!generatedCode ? ('rebill.generateCode' | translate) : ('rebill.check' | translate)"
+    (evento)="closePopUp($event, 'codePop')"
+  >
+    <div class="container">
+      <div class="header">
+        <div class="image">
+          <img src="assets/Images/cargar_foto.svg" alt="" />
+        </div>
+        <div class="client-data">
+          <label>{{ 'Nombre Cliente' }}</label>
+          <label>{{ 'Pedido ' + '12345-6789' }}</label>
+          <label> {{ 'common.paymentConditions' | translate }} · {{ 15 + ' Días' }}</label>
+        </div>
+      </div>
+      <div class="resume">
+        <label>{{ 'rebill.cancelInvoice' | translate }} {{ '651321-654' }}</label>
+      </div>
+      <div class="code">
+        <!--TODO: Tipo TRAMITAR A MOROSO-->
+
+        <!--        TODO: NO tiene request-->
+        <ng-container *ngIf="!generatedCode; else hasRequest">
+          <label>
+            {{ 'checkout.validityCodeMessageDelinquentCustomer' | translate }} <br />
+            <span>{{ 'checkout.validityCodeMessagePart2' | translate }}</span>
+          </label>
+          <label>
+            {{ 'checkout.generateCodeQuestion' | translate }}
+          </label>
+        </ng-container>
+        <!--        TODO: Tiene request-->
+        <ng-template #hasRequest>
+          <label>
+            {{ 'checkout.codeSent' | translate }} <br />
+            <span>valdemar.farina@ryndem.mx</span>
+          </label>
+          <label class="enter-digits">
+            {{ 'checkout.enterDigits' | translate }}
+          </label>
+        </ng-template>
+      </div>
+      <div *ngIf="generatedCode" class="inputs">
+        <div>
+          <input placeholder="" #inputs />
+          <input placeholder="" #inputs />
+          <input placeholder="" #inputs />
+          <input placeholder="" #inputs />
+        </div>
+      </div>
+    </div>
+  </app-pop-up-generic>
+</div>
+<!--TODO: CAMBIAR POR DIALOG-->
+<app-pop-up-send-email
+  *ngIf="mailPop"
+  [additionalText]="'Nombre_archivo.pdf'"
+  [titleHeader]="'rebill.sendInvoice' | translate"
+  [mailList]="mailList"
+  [subject]="''"
+  [width]="(viewType$ | async) === 'iPad' ? '745px' : '785px'"
+  [height]="(viewType$ | async) === 'iPad' ? '660px' : '685px'"
+>
+</app-pop-up-send-email>
+<!--<app-custom-position-pop-up-->
+<!--  class="pop-up-conditions"-->
+<!--  *ngIf="popUpIsOpenConditions"-->
+<!--  [adjustForSmallTarget]="30"-->
+<!--  [minHeight]="'700px'"-->
+<!--  [minWidth]="'1100px'"-->
+<!--  [padding]="'0'"-->
+<!--  [popUpPosition]="'right-start'"-->
+<!--  (closeEmitter)="closePopUp($event, 'conditions')"-->
+<!--&gt;-->
+<!--  <div id="container-pop-up-conditions">-->
+<!--    <div class="header">-->
+<!--      <img src="assets/Images/strategy/bad.svg" />-->
+<!--      <label>{{ 'Nombre cliente' }}</label>-->
+<!--    </div>-->
+<!--    <div class="content-info">-->
+<!--      <div class="bar-line">-->
+<!--        <div>-->
+<!--          <label>{{ 'strategy.details.paymentConditions' | translate }}</label>-->
+<!--          <label class="green">{{ 60 + ' Dìas' }}</label>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--          <label>{{ 'strategy.details.creditLine' | translate }}</label>-->
+<!--          <label class="green">{{ (10000 | currency: 'USD':'symbol-narrow':'1.0-2') + ' USD' }}</label>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--          <label>{{ 'strategy.details.healthyDebt' | translate }}</label>-->
+<!--          <label class="green">{{ (1000 | currency: 'USD':'symbol-narrow':'1.0-2') + ' USD' }}</label>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--          <label>{{ 'strategy.details.expiredDebt' | translate }}</label>-->
+<!--          <label class="red">{{ (2000 | currency: 'USD':'symbol-narrow':'1.0-2') + ' USD' }}</label>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--          <label>{{ 'strategy.details.positiveBalance' | translate }}</label>-->
+<!--          <label class="green">{{ (300 | currency: 'USD':'symbol-narrow':'1.0-2') + ' USD' }}</label>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--          <label>{{ 'strategy.details.remains' | translate }}</label>-->
+<!--          <label class="yellow">{{ (7000 | currency: 'USD':'symbol-narrow':'1.0-2') + ' USD' }}</label>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="complaints">-->
+<!--        <div class="container-chart">-->
+<!--          <div class="chart-container">-->
+<!--            <div class="chart">-->
+<!--              <app-doughnut-chart-->
+<!--                [title]=""-->
+<!--                [typeChart]="11"-->
+<!--                [titleDetails]="'Totales'"-->
+<!--                [fontSize]="'small'"-->
+<!--                [showPercentage]="false"-->
+<!--                [adjustTotals]="true"-->
+<!--                [widthChart]="70"-->
+<!--                [enableOnClick]="true"-->
+<!--              >-->
+<!--              </app-doughnut-chart>-->
+<!--            </div>-->
+<!--            <div class="labels">-->
+<!--              <div>-->
+<!--                <span class="circulo" [style.background]="'#dd4543'"></span>-->
+<!--                <p>{{ 'strategy.details.delinquent' | translate }}</p>-->
+<!--              </div>-->
+<!--              <div>-->
+<!--                <span class="circulo" [style.background]="'#4ba92b'"></span>-->
+<!--                <p>{{ 'strategy.details.healthyDebt' | translate }}</p>-->
+<!--              </div>-->
+<!--              <div>-->
+<!--                <span class="circulo" [style.background]="'#5793f3'"></span>-->
+<!--                <p>{{ 'strategy.details.creditNotes' | translate }}</p>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="container-table">-->
+<!--          <div>-->
+<!--            <div>-->
+<!--              <span class="circulo" [style.background]="'#dd4543'"></span>-->
+<!--              <label>{{ 'MOROSIDAD' }}</label>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--              <app-hamburger-menu [position]="'right'"> </app-hamburger-menu>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="table">-->
+<!--            <div>-->
+<!--              <div class="body">-->
+<!--                <virtual-scroller>-->
+<!--                  <div class="row-items-quotation">-->
+<!--                    <div>-->
+<!--                      <div class="line-one">-->
+<!--                        <p>#{{ 1 }} · </p>-->
+<!--                        <p>{{ 'F0-123456787' }}</p>-->
+<!--                      </div>-->
+<!--                      <div class="line-two">-->
+<!--                        <p>{{ 'Fecha estimada de cobro' + ' 20/Dic/2018 ' }}</p>-->
+<!--                      </div>-->
+<!--                    </div>-->
+<!--                    <div>-->
+<!--                      <label class="text-red">-->
+<!--                        {{ '$200.00 USD' }}-->
+<!--                      </label>-->
+<!--                      &lt;!&ndash;                      <label *ngIf="segmentActiveChartConditions.label === healthyDebt" class="text-green">&ndash;&gt;-->
+<!--                      &lt;!&ndash;                        {{ (item.m_Item4 | currency: (selectCurrencyClient$ | async)) + ' ' + (selectCurrencyClient$ | async) }}&ndash;&gt;-->
+<!--                      &lt;!&ndash;                      </label>&ndash;&gt;-->
+<!--                      &lt;!&ndash;                      <label&ndash;&gt;-->
+<!--                      &lt;!&ndash;                        *ngIf="segmentActiveChartConditions.label === creditNotes && lodash.isFinite(item.m_Item3)"&ndash;&gt;-->
+<!--                      &lt;!&ndash;                        class="text-blue"&ndash;&gt;-->
+<!--                      &lt;!&ndash;                      >&ndash;&gt;-->
+<!--                      &lt;!&ndash;                        {{ (item.m_Item3 | currency: (selectCurrencyClient$ | async)) + ' ' + (selectCurrencyClient$ | async) }}&ndash;&gt;-->
+<!--                      &lt;!&ndash;                      </label>&ndash;&gt;-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </virtual-scroller>-->
+<!--              </div>-->
+<!--              &lt;!&ndash;              <div class="without-results" *ngIf="segmentActiveChartConditions === null">&ndash;&gt;-->
+<!--              &lt;!&ndash;                <app-without-results [title]="'SELECCIONA LA GRÁFICA PARA HABILITAR ESTA SECCIÓN'"></app-without-results>&ndash;&gt;-->
+<!--              &lt;!&ndash;              </div>&ndash;&gt;-->
+<!--              &lt;!&ndash;              <div&ndash;&gt;-->
+<!--              &lt;!&ndash;                class="without-results"&ndash;&gt;-->
+<!--              &lt;!&ndash;                *ngIf="segmentActiveChartConditions !== null && scrollItemsPendingsInvoices.length === 0"&ndash;&gt;-->
+<!--              &lt;!&ndash;              >&ndash;&gt;-->
+<!--              &lt;!&ndash;                <app-without-results [title]="'Sin facturas'"></app-without-results>&ndash;&gt;-->
+<!--              &lt;!&ndash;              </div>&ndash;&gt;-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="footer-table">-->
+<!--            <div>-->
+<!--              <label class="label-1">-->
+<!--                {{ 5 + ' Facturas' }}-->
+<!--              </label>-->
+<!--              <label class="label-2"> {{ (2000 | currency: 'USD':'symbol-narrow':'1.0-2') + ' USD' }}</label>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    &lt;!&ndash;    <div class="loading" *ngIf="isLoadingPendingInvoices$ | async">&ndash;&gt;-->
+<!--    &lt;!&ndash;      <app-loading></app-loading>&ndash;&gt;-->
+<!--    &lt;!&ndash;    </div>&ndash;&gt;-->
+<!--  </div>-->
+<!--</app-custom-position-pop-up>-->

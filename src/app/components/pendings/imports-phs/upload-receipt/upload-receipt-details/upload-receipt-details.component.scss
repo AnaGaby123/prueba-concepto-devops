@@ -1,0 +1,224 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  & > #upload-receipt-details {
+    @include s.flexColumn;
+    @include s.absolute100;
+    justify-content: flex-start;
+    overflow: hidden;
+
+    & > .container-component {
+      @include s.flexRow;
+      flex: 1 1 auto;
+      overflow: hidden;
+
+      & > .first-section {
+        @include s.flexColumn;
+        @include s.default-transition;
+        flex: 0 0 500px;
+        position: relative;
+
+        & > .content {
+          @include s.flexColumn;
+          flex: 1 1 auto;
+          height: calc(100% - 45px);
+          border-right: 1px solid s.$pqGray2;
+          margin-top: 25px;
+
+          & > label:nth-of-type(1) {
+            @include s.escaledFontFormat(s.$textSize17to24, bold, s.$pqBlack2);
+            @include s.Novecento-Bold;
+            padding: 0 0 15px 15px;
+          }
+
+          & > .container-filters {
+            @include s.flexRowNoWrap;
+            align-items: center;
+            border-bottom: 1px solid s.$pqBlack2;
+            justify-content: space-between;
+            margin: 0 15px;
+            padding-bottom: 20px;
+          }
+
+          & > .container-content {
+            @include s.flexColumn;
+            height: 100%;
+
+            & #all-cards {
+              height: 100%;
+              margin: 0 15px;
+            }
+
+            & > virtual-scroller {
+              * {
+                cursor: pointer;
+              }
+
+              & .card:hover {
+                background-color: s.$pqGray;
+              }
+
+              & .active {
+                background-color: s.$pqGray;
+                border-left: 8px solid s.$pqGreen !important;
+              }
+
+              & .card {
+                @include s.flexColumn;
+                padding: 15px 0;
+                border-left: 8px solid transparent;
+                border-bottom: 1px solid s.$pqGray2;
+
+                & > .card-body {
+                  @include s.flexColumn;
+                  @include s.absolute100;
+                  padding-left: 10px;
+                  justify-content: center;
+
+                  & > .div {
+                    @include s.flexRowNoWrap;
+                    @include s.absoluteTop;
+                    @include s.absolute100;
+                    box-sizing: border-box;
+                    justify-content: flex-start;
+                  }
+
+                  & > .line-one {
+                    padding-bottom: 5px;
+
+                    & > label {
+                      @include s.escaledFontFormat(s.$textSize16to20, bold, s.$pqBlack2);
+                      @include s.Roboto-Bold;
+                      margin-top: 2px;
+                    }
+
+                    & > label:nth-of-type(2) {
+                      color: s.$pqGreen !important;
+                    }
+
+                    & > label:nth-of-type(2),
+                    label:nth-of-type(3) {
+                      padding-left: 4px;
+                    }
+                  }
+
+                  & > .line-two {
+                    padding-bottom: 4px;
+
+                    & > label {
+                      @include s.escaledFontFormat(s.$textSize16to20, bold, s.$pqBlack2);
+                      @include s.Roboto-Bold;
+                      margin-top: 2px;
+                    }
+                  }
+
+                  & > .line-three {
+                    & > label {
+                      @include s.escaledFontFormat(s.$textSize14to18, normal, s.$pqBlack2);
+                      @include s.Roboto-Regular;
+                      margin-top: 2px;
+                    }
+
+                    & > label:nth-of-type(2) {
+                      padding-left: 3px;
+                    }
+                  }
+                }
+              }
+            }
+
+            & > .is-loading {
+              @include s.flexRowNoWrap;
+              @include s.absoluteCenter;
+              width: 100%;
+              height: 100%;
+            }
+
+            & > .without-results {
+              @include s.flexRowNoWrap;
+              @include s.absoluteCenter;
+              width: 100%;
+              height: 100%;
+            }
+          }
+        }
+
+        & > .footer {
+          @include s.flexRowNoWrap;
+          height: 45px;
+          justify-content: space-between;
+          margin: 0 15px;
+          border-top: 1px solid s.$pqBlack2;
+
+          & > label:nth-of-type(1) {
+            padding-right: 10px;
+          }
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize12to14, normal, s.$pqBlack2);
+            @include s.Roboto-Regular;
+            padding-top: 10px;
+          }
+        }
+      }
+
+      & > .second-section {
+        @include s.flexColumn;
+        @include s.absoluteCenter;
+        flex: 1 1 auto;
+        overflow: hidden;
+        padding: 25px 20px 0 20px;
+
+        & > app-upload-view-file {
+          flex: 1 1 auto;
+        }
+
+        & > .footer {
+          @include s.flexRowWrap;
+          width: 100%;
+          flex: 0 0 45px;
+          align-items: center;
+          justify-content: flex-end;
+
+          & .btn-save {
+            @include s.pqButton(166px, 250px, 25px, 30px, s.$pqGreen);
+          }
+
+          & .btn-save-disable {
+            @include s.pqButton(166px, 250px, 25px, 30px, s.$pqGray3);
+          }
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #upload-receipt-details {
+      & > .container-component {
+        & > .first-section {
+          flex: 0 0 530px;
+
+          & > .content {
+            height: calc(100% - 58px);
+          }
+
+          & > .footer {
+            height: 58px;
+          }
+        }
+
+        & > .second-section {
+          & > .footer {
+            flex: 0 0 58px;
+          }
+        }
+      }
+    }
+  }
+}

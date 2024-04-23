@@ -1,0 +1,155 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  & > .impact-container {
+    @include s.flexRowNoWrap;
+    background-color: rgba(s.$darkOrange, 0.13);
+    border-bottom: 1px solid s.$pqGray2;
+    justify-content: space-between;
+    min-width: 900px;
+    padding: 20px 65px 20px 55px;
+    position: relative;
+
+    & > img {
+      cursor: pointer;
+      width: 18px;
+      position: absolute;
+      right: 18px;
+      top: 18px;
+    }
+
+    & > .form {
+      @include s.flexRowNoWrap;
+      flex: 1 1 auto;
+
+      & > div {
+        @include s.flexColumn;
+        flex: 0 0 auto;
+        margin-right: 18px;
+
+        &:not(.text-area) {
+          max-width: 170px;
+          padding-bottom: 3px;
+        }
+
+        & > label:not(.title) {
+          @include s.escaledFontFormat(s.$textSize13to16, regular, s.$darkOrange);
+          @include s.Roboto-Regular;
+          margin-bottom: 3px;
+        }
+
+        & > .title {
+          @include s.escaledFontFormat(s.$textSize13to16, regular, s.$darkOrange);
+          @include s.Novecento-Bold;
+          margin-bottom: 10px;
+        }
+
+        & > .radio {
+          margin-bottom: 13px;
+
+          &:nth-of-type(3) {
+            margin-bottom: 0;
+          }
+        }
+
+        & > .date-picker {
+          height: 25px;
+
+          &:first-of-type {
+            margin-bottom: 35px;
+          }
+        }
+
+        & > .input {
+          @include s.flexRow;
+          align-items: center;
+          margin-bottom: 35px;
+
+          & > .input {
+            margin-right: 10px;
+            width: 100px;
+          }
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+            @include s.Roboto-Regular;
+          }
+        }
+      }
+
+      & > .text-area {
+        flex: 1 1 auto;
+        margin-right: 0;
+      }
+    }
+
+    & > .buttons {
+      @include s.flexColumn;
+      flex: 0 0 auto;
+      justify-content: space-between;
+      margin-left: 40px;
+      padding-bottom: 3px;
+
+      & > .active {
+        @include s.pqButton(
+          $min-width: 105px,
+          $max-width: 112px,
+          $baseColor: s.$darkOrange,
+          $textSizeButton: s.$textSize13to16
+        );
+      }
+
+      & > .disabled {
+        @include s.pqButtonDisable($min-width: 105px, $max-width: 112px, $textSizeButton: s.$textSize13to16);
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      min-width: 1250px;
+
+      & > img {
+        width: 20px;
+      }
+
+      & > .form {
+        & > div {
+          &:not(.text-area) {
+            max-width: 200px;
+          }
+
+          & > .title {
+            margin-bottom: 15px;
+          }
+
+          & > .radio {
+            margin-bottom: 19px;
+
+            &:nth-of-type(3) {
+              margin-bottom: 0;
+            }
+          }
+
+          & > .date-picker {
+            height: 30px;
+
+            &:first-of-type {
+              margin-bottom: 40px;
+            }
+          }
+
+          & > .input {
+            margin-bottom: 40px;
+
+            & > .input {
+              width: 120px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

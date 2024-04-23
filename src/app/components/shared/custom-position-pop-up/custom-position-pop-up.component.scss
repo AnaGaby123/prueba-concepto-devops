@@ -1,0 +1,86 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  z-index: 10;
+
+  & > div {
+    position: fixed;
+    transition: all 0.3s ease-in-out;
+
+    & > div {
+      @include s.flexColumn;
+      overflow: hidden;
+      position: relative;
+      background-color: transparent;
+      padding: 10px;
+      box-sizing: content-box;
+
+      & > .container {
+        @include s.flexColumn;
+        box-sizing: border-box;
+        flex: 1;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        border-width: 1px;
+        border-style: solid;
+        box-shadow: 0 0 10px -1px rgba(0, 0, 0, 0.1);
+        position: relative;
+
+        & > .close-button {
+          position: absolute;
+          cursor: pointer;
+        }
+
+        & > .content {
+          @include s.flexColumn;
+          flex: 1;
+          overflow: hidden;
+        }
+      }
+
+      & > .triangle {
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+        border-right-width: 1px;
+        border-right-style: solid;
+        width: 14px;
+        height: 14px;
+        position: absolute;
+        background-color: s.$pqWhite;
+
+        &.top-start,
+        &.top-center,
+        &.top-end {
+          transform: rotate(45deg);
+        }
+
+        &.bottom-start,
+        &.bottom-center,
+        &.bottom-end {
+          transform: rotate(225deg);
+        }
+
+        &.right-start,
+        &.right-center,
+        &.right-end {
+          transform: rotate(135deg);
+        }
+
+        &.left-start,
+        &.left-center,
+        &.left-end {
+          transform: rotate(315deg);
+        }
+      }
+    }
+  }
+}

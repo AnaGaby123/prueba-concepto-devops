@@ -1,0 +1,26 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  width: 100%;
+  & > .comments-container {
+    & > .img-container {
+      @include s.flexRow;
+      @include s.absoluteCenter;
+      width: 24px;
+      height: 24px;
+      & > img {
+        width: 22px;
+        height: 19px;
+        transition: all 0.2s ease-in-out;
+        cursor: pointer;
+        &:hover {
+          opacity: 0.7;
+        }
+      }
+    }
+  }
+}

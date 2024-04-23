@@ -1,0 +1,319 @@
+@use 'base' as s;
+:host {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  #general-data-customs-agents {
+    @include s.flexColumn;
+    flex: 1;
+    overflow: hidden;
+    & > .general-data {
+      padding: 0 80px;
+
+      & > .top-content {
+        align-items: center;
+        display: grid;
+        grid-column-gap: 15px;
+        grid-row-gap: 20px;
+        grid-template-columns: 140px 170px 140px 0.5fr 1fr 0.5fr;
+        grid-template-rows: auto auto;
+        margin-bottom: 25px;
+        & > .image {
+          @include s.gridCenter;
+          & > img {
+            max-height: 89px;
+            max-width: 100%;
+          }
+        }
+
+        & > .image-content {
+          margin-top: 20px;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqGreen2);
+            @include s.Roboto-Bold;
+          }
+        }
+
+        & > .date-content {
+          @include s.flexColumn;
+
+          & > label {
+            @include s.Roboto-Regular;
+            @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+          }
+          & > span {
+            @include s.Roboto-Bold;
+            @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqGreen);
+          }
+        }
+        & > div {
+          overflow: hidden;
+        }
+
+        & > .description {
+          grid-column-end: span 6;
+        }
+      }
+      & > .aqua-content {
+        & > .content {
+          @include s.flexColumn;
+          background-color: rgba(s.$pqGreen, 0.05);
+          padding: 20px;
+
+          & > .subtitle {
+            margin-bottom: 10px;
+
+            & > label {
+              @include s.Roboto-Bold;
+              @include s.escaledFontFormat(s.$textSize15to19, bold, s.$pqBlack2);
+            }
+          }
+          & > .text {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-column-gap: 20px;
+
+            & > div {
+              @include s.flexColumn;
+              & > label {
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                padding-bottom: 3px;
+                & > span {
+                  vertical-align: baseline;
+                }
+              }
+            }
+          }
+        }
+      }
+      & > .required-data {
+        @include s.flexRow;
+        align-items: center;
+        height: 30px;
+        justify-content: flex-end;
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen);
+        }
+      }
+    }
+    & > .contacts {
+      @include s.flexColumn;
+      flex: 1 1 auto;
+      & > .title {
+        @include s.flexRow;
+        border-bottom: 1px solid s.$pqBlack2;
+        padding-bottom: 5px;
+        & > label {
+          @include s.Novecento-Bold;
+          @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+        }
+      }
+      & > .contacts-container {
+        @include s.flexRow;
+        flex: 1;
+        padding-top: 15px;
+        & > virtual-scroller {
+          @include s.absolute100;
+          @include s.fixVirtualScroller;
+          &::ng-deep > .scrollable-content {
+            @include s.itemsCardWithGrid(350px, s.$contactItemHeightSizeMap);
+          }
+        }
+      }
+      & > .required-contacts {
+        @include s.flexRow;
+        margin: 5px 0;
+        justify-content: flex-end;
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen);
+        }
+      }
+    }
+  }
+  & > .newContact {
+    & .pop-up-container {
+      @include s.flexColumn;
+      flex: 1;
+      & > .form-container {
+        @include s.flexColumn;
+        padding: 30px 20px;
+        & > .header {
+          @include s.flexColumn;
+          & > .info-content {
+            display: grid;
+            grid-template-columns: 110px 1fr;
+            grid-column-gap: 20px;
+            margin-bottom: 20px;
+
+            & > .image {
+              @include s.gridCenter;
+
+              & > img {
+                max-height: 70px;
+                max-width: 100%;
+              }
+            }
+            & > .text {
+              @include s.flexColumn;
+              align-items: flex-start;
+              flex: 1;
+              justify-content: center;
+              & > .aqua {
+                padding-bottom: 3px;
+                & > label {
+                  @include s.Roboto-Bold;
+                  @include s.escaledFontFormat(s.$textSize17to22, bold, s.$pqGreen);
+                }
+              }
+              & > .black {
+                & > label {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+                }
+              }
+            }
+          }
+          & > .subtitle {
+            @include s.flexRow;
+            justify-content: flex-start;
+            padding-bottom: 20px;
+            & > label {
+              @include s.Novecento-Bold;
+              @include s.escaledFontFormat(s.$textSize15to18, bold, s.$pqGreen);
+            }
+          }
+        }
+        & > .inputs {
+          display: grid;
+          grid-template-columns: repeat(6, 1fr);
+          grid-column-gap: 20px;
+          grid-template-rows: repeat(4, auto);
+          grid-row-gap: 18px;
+
+          & > div {
+            @include s.flexRow;
+            grid-column-end: span 2;
+
+            &.small {
+              display: grid;
+              grid-template-columns: repeat(2, 1fr);
+              grid-column-gap: 10px;
+            }
+          }
+        }
+        & > .required-data {
+          @include s.flexRow;
+          align-items: flex-end;
+          flex: 1;
+          justify-content: flex-end;
+          & > label {
+            @include s.Roboto-Regular;
+            @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen);
+          }
+        }
+      }
+      & > .alert-content {
+        height: 40px;
+        & > .alert-message {
+          @include s.flexRow;
+          background-color: #fdf7f8;
+          justify-content: center;
+          & > label {
+            @include s.Roboto-Bold;
+            @include s.escaledFontFormat(s.$textSize15to17, bold, s.$pqTextAlert);
+            padding: 10px 0;
+          }
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #general-data-customs-agents {
+      & > .general-data {
+        padding: 0 100px;
+        & > .top-content {
+          grid-template-columns: 140px 190px 170px 0.5fr 1fr 0.5fr;
+          & > .image {
+            & > img {
+              max-height: 109px;
+            }
+          }
+          & > .image-content {
+            margin-top: 22px;
+          }
+        }
+        & > .aqua-content {
+          & > .content {
+            padding: 25px 25px 45px 25px;
+
+            & > .subtitle {
+              margin-bottom: 15px;
+            }
+            & > .text {
+              & > div {
+                & > label {
+                  padding-bottom: 5px;
+                }
+              }
+            }
+          }
+        }
+        & > .required-data {
+          height: 45px;
+        }
+      }
+
+      & > .contacts {
+        & > .title {
+          padding-bottom: 10px;
+        }
+
+        & > .contacts-container {
+          padding-top: 20px;
+        }
+      }
+    }
+
+    & > .newContact {
+      & .pop-up-container {
+        & > .form-container {
+          padding: 35px 25px;
+          & > .header {
+            & > .info-content {
+              grid-template-columns: 130px 1fr;
+              margin-bottom: 30px;
+
+              & > .image {
+                & > img {
+                  max-height: 90px;
+                }
+              }
+              & > .text {
+                & > .aqua {
+                  padding-bottom: 5px;
+                }
+              }
+            }
+          }
+
+          & > .inputs {
+            row-gap: 25px;
+          }
+        }
+        & > .alert-content {
+          height: 50px;
+          & > .alert-message {
+            & > label {
+              padding: 15px 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}

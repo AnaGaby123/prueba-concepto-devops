@@ -1,0 +1,69 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  & > .expenses {
+    @include s.flexColumn;
+    align-items: center;
+
+    & > h4 {
+      @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqGreen);
+      @include s.Novecento-Bold;
+      margin-bottom: 12px;
+    }
+
+    & > .grid {
+      display: grid;
+      grid-template-columns: repeat(4, auto);
+      grid-gap: 20px 30px;
+
+      & > .input-container {
+        @include s.flexRow;
+        align-items: center;
+        flex-wrap: nowrap;
+        /*margin-right: 40px;*/
+
+        &:last-child {
+          margin-right: 0;
+        }
+
+        & > .input {
+          margin: 0 7px;
+          width: 70px;
+        }
+
+        & label {
+          @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+          @include s.Roboto-Bold;
+          white-space: pre;
+        }
+
+        & span {
+          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+          @include s.Roboto-Regular;
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .grid {
+        grid-template-columns: repeat(2, auto);
+        justify-items: end;
+
+        & > .input-container {
+          &:last-child {
+            grid-column: 2 / 3;
+          }
+
+          & > .input {
+            margin: 0 9px;
+            width: 85px;
+          }
+        }
+      }
+    }
+  }
+}

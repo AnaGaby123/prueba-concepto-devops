@@ -1,0 +1,189 @@
+@use 'base' as s;
+
+:host {
+  width: 100%;
+  height: 100%;
+
+  #principal-container {
+    @include s.flexRow;
+    width: 100%;
+    height: 100%;
+
+    & > .menu {
+      @include s.flexColumn;
+      width: 100%;
+      position: relative;
+
+      section {
+        @include s.flexRow;
+        transition: 0.5s;
+        overflow: hidden;
+        width: 100%;
+        background-color: s.$pqWhite;
+        z-index: 2;
+        box-shadow: 0 2px 4px -1px rgb(0 0 0 / 20%), 0 4px 5px 0 rgb(0 0 0 / 14%), 0 1px 10px 0 rgb(0 0 0 / 12%);
+
+        & > div {
+          width: 100%;
+          @include s.flexColumn;
+          box-sizing: border-box;
+          border: 1px solid s.$pqGray2;
+        }
+      }
+
+      & > .section {
+        position: absolute !important;
+        top: 40px;
+        left: 0;
+
+        & > div > .listaHamburguesa {
+          width: 100%;
+          @include s.flexColumn;
+          box-sizing: border-box;
+          padding-right: 15px;
+          padding-left: 15px;
+          height: 30px;
+          cursor: pointer;
+
+          > li {
+            @include s.flexRow;
+            @include s.absoluteCenter;
+            padding-bottom: 7px;
+            padding-top: 7px;
+            display: flex;
+            box-sizing: border-box;
+            border-bottom: 0.5px solid s.$pqGray2;
+            @include s.Roboto-Light;
+            font-size: 13px;
+          }
+
+          & > .sinLine {
+            border-bottom: none !important;
+          }
+        }
+
+        .itemSelect {
+          background-color: s.$pqGray2;
+
+          & > li {
+            @include s.Roboto-Regular-Important;
+          }
+        }
+
+        & > ul:nth-of-type(1) {
+          padding-top: 15px;
+        }
+
+        & > ul:last-child {
+          padding-bottom: 15px;
+        }
+
+        .listaHamburguesa:hover {
+          transition: 0.3s;
+          background-color: s.$pqGray2;
+        }
+      }
+    }
+
+    .menu > div:hover {
+      cursor: pointer;
+    }
+
+    .menu > div:hover {
+      transition: background-color 0.5ms;
+      background-color: s.$pqGreen;
+
+      & > .text {
+        & > label {
+          color: s.$pqWhite !important;
+        }
+      }
+
+      & > .icons > div {
+        background-color: s.$pqWhite;
+      }
+    }
+
+    .menu:focus {
+      @include s.focusDisable;
+    }
+
+    .menu > div {
+      @include s.flexRow;
+      width: 100%;
+      height: 40px;
+      justify-content: flex-start;
+      align-items: center;
+      box-sizing: border-box;
+      background-color: s.$pqGray2;
+      border: 1px solid s.$gris;
+      padding: 8px 15px 8px 15px;
+
+      & > .icons {
+        @include s.flexColumn;
+        height: 100%;
+        box-sizing: border-box;
+        padding-right: 15px;
+        justify-content: center;
+        transition: all 0.5s ease-in-out;
+
+        & > div {
+          @include s.flexRow;
+          width: 20px;
+          height: 1px;
+          background: s.$gris;
+          box-sizing: border-box;
+          transition: all 0.5s ease-in-out;
+        }
+
+        & > div:nth-of-type(2) {
+          cursor: pointer;
+          margin-top: 5px;
+          margin-bottom: 5px;
+        }
+      }
+
+      & > .text {
+        @include s.flexRow;
+        width: calc(100% - 43px);
+        justify-content: center;
+
+        & > label {
+          $textSize: (
+            'base': 16px,
+            'macBookAir': 20px,
+          );
+          @include s.escaledFontFormat($textSize, regular, s.$pqBlack2);
+          @include s.Novecento-Bold;
+        }
+      }
+
+      & > .close {
+        @include s.flexColumn;
+        height: 100%;
+        box-sizing: border-box;
+        padding-right: 15px;
+        justify-content: center;
+
+        & > div:first-child {
+          transition: flex-basis 0.5s ease-in-out;
+          flex-basis: 0;
+        }
+
+        & > div:last-child {
+          transition: flex-basis 0.5s ease-in-out;
+          flex-basis: 0;
+        }
+      }
+    }
+  }
+}
+
+label {
+  $textSize: (
+    'base': 13px,
+    'macBookAir': 13px,
+  );
+  @include s.escaledFontFormat($textSize, regular, s.$pqBlack2);
+  @include s.Roboto-Light;
+}

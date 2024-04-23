@@ -1,0 +1,57 @@
+@use 'base' as s;
+
+:host {
+  @include s.generic-main-component-structure;
+
+  & > #daily-meeting-container {
+    & > .footer {
+      & > div {
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+
+          & > span {
+            @include s.Roboto-Bold;
+            vertical-align: baseline;
+
+            &.red {
+              color: s.$pqTextAlert;
+            }
+
+            &.green {
+              color: s.$pqGreen2;
+            }
+          }
+        }
+
+        & > img:nth-of-type(1) {
+          width: auto;
+          height: 19px;
+          margin-right: 5px;
+        }
+      }
+    }
+
+    //width: 100%;
+    //height: 100%;
+    //& > .header-bar {
+    //  width: 100%;
+    //  height: 50px;
+    //}
+    //& > .outlet {
+    //  width: 100%;
+    //  height: calc(100% - 50px);
+    //}
+  }
+
+  //@include responsive_layout('macBookAir') {
+  //  & > #daily-meeting-container {
+  //    & > .header-bar {
+  //      height: 64px;
+  //    }
+  //    & > .outlet {
+  //      height: calc(100% - 64px);
+  //    }
+  //  }
+  //}
+}

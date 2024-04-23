@@ -1,0 +1,307 @@
+<div class="item">
+  <app-internal-sales-item
+    [internalSalesItem]="buildItem(itemsQuote$ | async)"
+    (valueEmitter)="globalItemEventsHandler($event)"
+  ></app-internal-sales-item>
+
+  <div
+    class="bottom"
+    *ngFor="
+      let replaced of !localIsEmpty(item.ListaPPPartidaPedidoOriginales) && (!item.ppIncidenciaPartida || item.Validada)
+        ? [item.ListaPPPartidaPedidoOriginales[0]]
+        : []
+    "
+  >
+    <div></div>
+    <div class="buttons-column"></div>
+    <div class="number-column">
+      <label>{{ replaced.Numero }}</label>
+    </div>
+    <div class="type-column">
+      <img
+        alt="Tipo de partida"
+        [src]="
+          replaced.vPartidaCotizacion?.TipoPartidaCotizacion === 'Original'
+            ? 'assets/Images/pre-processing/originales.svg'
+            : replaced.vPartidaCotizacion?.TipoPartidaCotizacion === 'Alternativa'
+            ? 'assets/Images/pre-processing/alternativas.svg'
+            : replaced.vPartidaCotizacion?.TipoPartidaCotizacion === 'Ahorro'
+            ? 'assets/Images/pre-processing/ahorro.svg'
+            : replaced.vPartidaCotizacion?.TipoPartidaCotizacion === 'Complementaria'
+            ? 'assets/Images/pre-processing/complementarias.svg'
+            : replaced.vPartidaCotizacion?.TipoPartidaCotizacion === 'Promoción'
+            ? 'assets/Images/pre-processing/promocion.svg'
+            : 'assets/Images/pre-processing/originales.svg'
+        "
+      />
+    </div>
+    <div *ngIf="(viewType$ | async) === 'macBookAir'" class="cat-column">
+      <label>
+        {{ replaced.vProducto?.Catalogo }}
+      </label>
+    </div>
+    <div class="concept-column">
+      <div>
+        <label *ngIf="(viewType$ | async) === 'iPad'" class="label-cat textUpperCase">
+          #{{ 'preProcessing.tableLabels.catalogNumber' | translate }} · {{ replaced.vProducto?.Catalogo }} ·
+        </label>
+        <label>{{ replaced.vProducto?.Descripcion }}</label>
+      </div>
+      <div>
+        <label> {{ replaced.vProducto?.NombreMarca }} · </label>
+        <label
+          *ngIf="replaced.vPartidaCotizacion?.TotalCotizacionesVinculadas > 0"
+          [ngClass]="{
+            'current-quotation': replaced.validity === 'Vigente',
+            'expiring-quotation': replaced.validity === 'Por Expirar',
+            'expired-quotation': replaced.validity === 'Expirada'
+          }"
+        >
+          {{ replaced.vPartidaCotizacion?.TotalCotizacionesVinculadas }}
+        </label>
+        <label
+          *ngIf="replaced.vPartidaCotizacion?.TotalCotizacionesVinculadas === 1"
+          [ngClass]="{
+            'current-quotation': replaced.validity === 'Vigente',
+            'expiring-quotation': replaced.validity === 'Por Expirar',
+            'expired-quotation': replaced.validity === 'Expirada'
+          }"
+        >
+          {{ 'preProcessing.linkedQuotation' | translate }} ·
+        </label>
+        <label
+          *ngIf="replaced.vPartidaCotizacion?.TotalCotizacionesVinculadas > 1"
+          [ngClass]="{
+            'current-quotation': replaced.validity === 'Vigente',
+            'expiring-quotation': replaced.validity === 'Por Expirar',
+            'expired-quotation': replaced.validity === 'Expirada'
+          }"
+        >
+          {{ 'preProcessing.linkedQuotations' | translate }} ·
+        </label>
+        <label
+          *ngIf="replaced.vPartidaCotizacion?.FechaVencimiento"
+          [ngClass]="{
+            'current-quotation': replaced.validity === 'Vigente',
+            'expiring-quotation': replaced.validity === 'Por Expirar',
+            'expired-quotation': replaced.validity === 'Expirada'
+          }"
+        >
+          {{ replaced.validity }}
+        </label>
+        <label
+          *ngIf="
+            replaced.ppPartidaPedidoConfiguracion?.TieneContrato ||
+            (!replaced.ppPartidaPedidoConfiguracion?.TieneContrato && replaced.vProducto?.Controlado)
+          "
+          [ngClass]="{
+            'current-quotation': replaced.validity === 'Vigente',
+            'expiring-quotation': replaced.validity === 'Por Expirar',
+            'expired-quotation': replaced.validity === 'Expirada'
+          }"
+        >
+          ·
+        </label>
+        <label *ngIf="replaced.ppPartidaPedidoConfiguracion?.TieneContrato" class="in-contract">
+          {{ 'preProcessing.inContract' | translate }}
+        </label>
+        <label
+          *ngIf="replaced.ppPartidaPedidoConfiguracion?.TieneContrato && replaced.vProducto.Controlado"
+          class="current-quotation"
+        >
+          ·
+        </label>
+        <label *ngIf="replaced.vProducto?.Controlado" class="controlled">
+          {{ 'preProcessing.checked' | translate }}
+        </label>
+      </div>
+    </div>
+    <div class="days-column">
+      <label>
+        {{
+          replaced.ValorConfiguracionTiempoEntrega && !replaced.ValorConfiguracionTiempoEntrega.EsIntervalo
+            ? replaced.ValorConfiguracionTiempoEntrega.ValorEsperado
+            : replaced.ValorConfiguracionTiempoEntrega.ValorMaximoIntervalo -
+              replaced.ValorConfiguracionTiempoEntrega.ValorMaximoIntervalo
+        }}
+        {{ replaced.catUnidadTiempo ? replaced.catUnidadTiempo.UnidadTiempo : ('preProcessing.days' | translate) }}
+      </label>
+    </div>
+    <div class="pieces-column">
+      <div class="floating-container">
+        <label #piecesInputDispatch [ngClass]="!replaced.Activo ? 'no-underline' : ''">
+          {{ replaced.NumeroDePiezas }}
+        </label>
+      </div>
+    </div>
+    <div class="price-column">
+      <div class="floating-container">
+        <label
+          #priceInputDispatch
+          [ngClass]="
+            (replaced.Activo && replaced.vPartidaCotizacion === null) ||
+            (replaced.vPartidaCotizacion !== null && replaced.vPartidaCotizacion.AjusteDeOferta === true)
+              ? 'gold'
+              : (!replaced.Activo && item?.cotPartidaCotizacionDetalle?.gMCotPartidasDetalle?.VPartidaCotizacion === null) ||
+                (replaced.vPartidaCotizacion !== null && replaced.vPartidaCotizacion.AjusteDeOferta === true)
+              ? 'no-underline gold'
+              : !replaced.Activo
+              ? 'no-underline'
+              : ''
+          "
+        >
+          {{ replaced.PrecioUnitario | currency: 'USD':'symbol':'1.2-2' }}
+          {{ selectCurrencyLabel$ | async }}
+        </label>
+      </div>
+      <label *ngIf="replaced.vPartidaCotizacion === null" class="gold">
+        {{ 'preProcessing.catalogPrice' | translate }}
+      </label>
+      <label *ngIf="replaced.vPartidaCotizacion !== null && replaced.vPartidaCotizacion.AjusteDeOferta === true" class="gold">
+        {{ 'preProcessing.adjustedPrice' | translate }}
+      </label>
+    </div>
+    <div class="subtotal-column">
+      <label>
+        {{ replaced.Subtotal | currency: 'USD':'symbol':'1.2-2' }}
+        {{ selectCurrencyLabel$ | async }}
+      </label>
+    </div>
+    <div class="iva-column">
+      <label>
+        {{ replaced.IVA | currency: 'USD':'symbol':'1.2-2' }}
+        {{ selectCurrencyLabel$ | async }}
+      </label>
+    </div>
+    <div class="total-column tooltip">
+      <div>
+        <label>
+          {{ replaced.Total | currency: 'USD':'symbol':'1.2-2' }}
+          {{ selectCurrencyLabel$ | async }}
+        </label>
+        <div *ngIf="(viewType$ | async) === 'iPad'">
+          <img
+            alt="Porcentaje"
+            [src]="replaced.isNegative ? 'assets/Images/quotation/price_down.svg' : 'assets/Images/quotation/price_up.svg'"
+          />
+          <label *ngIf="replaced.isNegative">-</label>
+          <label>{{ item.percentage | number: '1.0-2' }}%</label>
+        </div>
+      </div>
+      <div class="tooltip-text">
+        <p *ngIf="!replaced.isNegative">{{ 'Arriba del Precio de Lista' }}</p>
+        <p *ngIf="replaced.isNegative">{{ 'Abajo del Precio de Lista' }}</p>
+      </div>
+    </div>
+    <div *ngIf="(viewType$ | async) === 'macBookAir'" class="percentage-column">
+      <img
+        alt="Porcentaje"
+        [src]="replaced.isNegative ? 'assets/Images/quotation/price_down.svg' : 'assets/Images/quotation/price_up.svg'"
+      />
+      <label *ngIf="replaced.isNegative">-</label>
+      <label>{{ replaced.percentage | number: '1.0-2' }}%</label>
+    </div>
+  </div>
+  <div
+    class="incidence"
+    *ngIf="(!item?.Validada || item?.hasInheritIncidences) && !item?.freightItem && item?.Validada !== null"
+  >
+    <div class="tab" *ngIf="item.Validada === false && !item.hasInheritIncidences"></div>
+    <div class="content">
+      <div>
+        <label> {{ 'preProcessing.inconsistencies' | translate }}: </label>
+      </div>
+      <div>
+        <app-check-box
+          [label]="'incidencesItem.catalog' | translate"
+          [backGroundCheckColor]="'#fff'"
+          [check]="item.ppIncidenciaPartida.Catalogo"
+          (event)="setIncidenceValue(item.IdPPPartidaPedido, FIELD_CATALOG, $event)"
+        >
+        </app-check-box>
+        <app-check-box
+          [label]="'incidencesItem.description' | translate"
+          [backGroundCheckColor]="'#fff'"
+          [check]="item.ppIncidenciaPartida.Descripcion"
+          (event)="setIncidenceValue(item.IdPPPartidaPedido, FIELD_DESCRIPTION, $event)"
+        >
+        </app-check-box>
+        <app-check-box
+          [label]="'incidencesItem.presentation' | translate"
+          [backGroundCheckColor]="'#fff'"
+          [check]="item.ppIncidenciaPartida.Presentacion"
+          (event)="setIncidenceValue(item.IdPPPartidaPedido, FIELD_PRESENTATION, $event)"
+        >
+        </app-check-box>
+        <app-check-box
+          [label]="'incidencesItem.brand' | translate"
+          [backGroundCheckColor]="'#fff'"
+          [check]="item.ppIncidenciaPartida.Marca"
+          (event)="setIncidenceValue(item.IdPPPartidaPedido, FIELD_TRADEMARK, $event)"
+        >
+        </app-check-box>
+        <app-check-box
+          *ngIf="
+            item?.cotPartidaCotizacionDetalle?.vProducto?.Tipo !== productsTypes.trainings &&
+            item?.cotPartidaCotizacionDetalle?.vProducto?.Tipo !== productsTypes.training
+          "
+          [label]="'incidencesItem.tee' | translate"
+          [backGroundCheckColor]="'#fff'"
+          [check]="item.ppIncidenciaPartida.TiempoEstimadoEntrega"
+          (event)="setIncidenceValue(item.IdPPPartidaPedido, FIELD_TEE, $event)"
+        >
+        </app-check-box>
+        <app-check-box
+          *ngIf="
+            item?.cotPartidaCotizacionDetalle?.vProducto?.Tipo === productsTypes.trainings ||
+            item?.cotPartidaCotizacionDetalle?.vProducto?.Tipo === productsTypes.trainings
+          "
+          [label]="'incidencesItem.dateTraining' | translate"
+          [check]="item?.ppIncidenciaPartida?.FechaRealizacionEnCapacitacion"
+          [backGroundCheckColor]="'#fff'"
+          (event)="setIncidenceValue(item.IdPPPartidaPedido, FIELD_DATE, $event)"
+        >
+        </app-check-box>
+        <app-check-box
+          [label]="'incidencesItem.price' | translate"
+          [backGroundCheckColor]="'#fff'"
+          [check]="item.ppIncidenciaPartida.PrecioUnitario"
+          (event)="setIncidenceValue(item.IdPPPartidaPedido, FIELD_UNIT_PRICE, $event)"
+        >
+        </app-check-box>
+        <app-check-box
+          [label]="'incidencesItem.currency' | translate"
+          [backGroundCheckColor]="'#fff'"
+          [check]="item.ppIncidenciaPartida.Moneda"
+          (event)="setIncidenceValue(item.IdPPPartidaPedido, FIELD_CURRENCY, $event)"
+        >
+        </app-check-box>
+        <app-check-box
+          [label]="'incidencesItem.iva' | translate"
+          [backGroundCheckColor]="'#fff'"
+          [check]="item.ppIncidenciaPartida.IVA"
+          (event)="setIncidenceValue(item.IdPPPartidaPedido, FIELD_IVA, $event)"
+        >
+        </app-check-box>
+      </div>
+      <div>
+        <label>
+          {{ 'common.comments' | translate }}
+        </label>
+        <app-generic-input
+          [value]="item.ppIncidenciaPartida.Comentarios"
+          [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+          (textData)="setIncidenceValue(item.IdPPPartidaPedido, FIELD_COMMENTS, $event)"
+        >
+        </app-generic-input>
+      </div>
+    </div>
+    <div class="image">
+      <img
+        alt="Inconsistencia"
+        *ngIf="item.hasInheritIncidences"
+        src="assets/Images/pre-processing/partida_inconsistencias.svg"
+      />
+    </div>
+  </div>
+</div>

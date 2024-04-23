@@ -1,0 +1,222 @@
+<app-pop-up-generic [titleHeader]="'quotation.details.configureFreight' | translate" [width]="width" [height]="height">
+  <div class="configure-freight-container">
+    <div class="quotation-info-container">
+      <div class="logo">
+        <img alt="" src="assets/Images/clientes/logo_proquifa_hover.svg" />
+      </div>
+      <div class="data-container">
+        <label class="title">{{ data.client?.name }}</label>
+        <label class="quotation-info"
+          >{{ 'quotation.details.section.freight.quotation' | translate }} FO-{{ data.client?.folio
+          }}<span>
+            ·
+            {{
+              (totalItemsInQuotation$ | async) +
+                ' ' +
+                ((totalItemsInQuotation$ | async) === 1
+                  ? ('quotation.details.section.freight.product' | translate)
+                  : ('quotation.details.section.freight.products' | translate)) +
+                ' · ' +
+                (totalPieces$ | async) +
+                ' ' +
+                ((totalPieces$ | async) === 1 ? 'pza.' : 'pzas.')
+            }}
+          </span>
+        </label>
+        <div>
+          <img alt="" src="assets/Images/contacto.svg" />
+          <label class="subTitle">{{ (contact$ | async)?.label }}</label>
+        </div>
+      </div>
+      <div class="total-amount">
+        <label class="total"
+          >{{
+            (totalQuoted$ | async)?.totalPriceQuotation
+              | currency: (selectedQuotationDetails$ | async)?.ClaveMoneda:'symbol-narrow':'1.2-2'
+          }}
+          {{ (selectedQuotationDetails$ | async)?.ClaveMoneda }}
+        </label>
+        <label class="subtitle">{{ 'quotation.details.section.freight.monTotal' | translate }} </label>
+      </div>
+    </div>
+    <div class="steps" *ngIf="!(isInternalMessaging$ | async) && !(clientSendGuide$ | async) && !(ShippingCostApply$ | async)">
+      <app-bar-activities
+        [enableLeftArrow]="clickArrowsIzq"
+        [enableRightArrow]="true"
+        [selectedOption]="step"
+        [options]="freightSteps$ | async"
+        (handleOptionSelected)="setStep($event)"
+      >
+      </app-bar-activities>
+    </div>
+    <div
+      class="list"
+      [ngClass]="{
+        onlyFreightExpress: (isInternalMessaging$ | async) || (clientSendGuide$ | async) || (ShippingCostApply$ | async)
+      }"
+    >
+      <div>
+        <div class="headerList">
+          <div class="title">
+            <label>{{
+              step === 0
+                ? ('quotation.details.section.freight.express' | translate | uppercase)
+                : ('quotation.details.section.freight.conventional' | translate | uppercase)
+            }}</label>
+          </div>
+        </div>
+        <div class="dataList">
+          <div *ngIf="step === 0">
+            <ng-container *ngIf="(listFreightExpress$ | async).length > 0">
+              <div
+                class="item-freight-express"
+                *ngFor="let item of listFreightExpress$ | async; let i = index; trackBy: handleTrackByProvider"
+                (click)="selectedFreightExpress(item)"
+              >
+                <div class="data">
+                  <div>
+                    <label
+                      >#{{ i + 1 }} · <span>{{ item.Nombre }}</span></label
+                    >
+                  </div>
+                </div>
+                <div class="selected">
+                  <div>
+                    <label
+                      >{{
+                        item.PrecioConvertidoMonedaCotizacion
+                          | currency: (selectedQuotationDetails$ | async)?.ClaveMoneda:'symbol-narrow':'1.2-2'
+                      }}
+                      {{ (selectedQuotationDetails$ | async)?.ClaveMoneda }}</label
+                    >
+                  </div>
+                  <div>
+                    <div>
+                      <app-radio-button [value]="item.isSelected"></app-radio-button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+            <div class="without-results" *ngIf="(listFreightExpress$ | async).length === 0">
+              <app-without-results></app-without-results>
+            </div>
+          </div>
+          <div *ngIf="step === 1">
+            <ng-container *ngIf="(listFreightConventional$ | async).length > 0">
+              <div
+                class="item-freight"
+                *ngFor="let item of listFreightConventional$ | async; let i = index; trackBy: handleTrackByFreight"
+                (click)="setOptionFreightConventional(item)"
+              >
+                <div class="data">
+                  <div>
+                    <label
+                      >#{{ i + 1 }} · <span>{{ item?.Descripcion }}</span></label
+                    >
+                  </div>
+                </div>
+                <div class="selected">
+                  <div>
+                    <label
+                      >{{
+                        item.PrecioConvertidoMonedaCotizacion
+                          | currency: (selectedQuotationDetails$ | async)?.ClaveMoneda:'symbol-narrow':'1.2-2'
+                      }}
+                      {{ (selectedQuotationDetails$ | async)?.ClaveMoneda }}</label
+                    >
+                  </div>
+                  <div>
+                    <div>
+                      <app-radio-button [value]="item.isSelected"></app-radio-button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+            <div class="without-results" *ngIf="(listFreightConventional$ | async).length === 0">
+              <app-without-results></app-without-results>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="freight-conventional">
+      <div class="data">
+        <div class="column-left-container">
+          <div class="freight-apportion">
+            <div>
+              <!--DOCS: Se quita porque de momento no hay fletes no desglosados-->
+              <!--(event)="setBrokenDown($event)"-->
+              <app-check-box
+                [check]="brokenDown"
+                [disabled]="true"
+                [label]="'quotation.details.section.freight.apportion' | translate"
+                [labelFontStyle]="brokenDown ? 'labelRobotoRegularProquifa13' : 'labelRobotoRegular13'"
+              >
+              </app-check-box>
+            </div>
+          </div>
+          <div class="legend-freight">
+            <label>( {{ 'quotation.details.section.freight.legendFreight' | translate }})</label>
+          </div>
+        </div>
+        <div class="totals-container">
+          <div class="left">
+            <label *ngIf="!(isInternalMessaging$ | async) && !(clientSendGuide$ | async) && !(ShippingCostApply$ | async)"
+              >{{ 'quotation.details.section.freight.express' | translate }}:</label
+            >
+            <label *ngIf="!(isInternalMessaging$ | async) && !(clientSendGuide$ | async) && !(ShippingCostApply$ | async)">
+              {{ 'quotation.details.section.freight.conventional' | translate }}:</label
+            >
+            <label class="titleBlack">{{ 'quotation.details.section.freight.subtotal' | translate }}:</label>
+          </div>
+
+          <div class="right">
+            <label *ngIf="!(isInternalMessaging$ | async) && !(clientSendGuide$ | async) && !(ShippingCostApply$ | async)"
+              >{{
+                (totalSelectedFreightExpress$ | async) > 0
+                  ? (totalSelectedFreightExpress$
+                    | async
+                    | currency: (selectedQuotationDetails$ | async)?.ClaveMoneda:'symbol-narrow':'1.2-2')
+                  : 'N/A'
+              }}
+              {{ (totalSelectedFreightExpress$ | async) > 0 ? (selectedQuotationDetails$ | async)?.ClaveMoneda : '' }}
+            </label>
+            <label *ngIf="!(isInternalMessaging$ | async) && !(clientSendGuide$ | async) && !(ShippingCostApply$ | async)"
+              >{{
+                totalFreightConventional
+                  | async
+                  | currency: (selectedQuotationDetails$ | async)?.ClaveMoneda:'symbol-narrow':'1.2-2'
+              }}
+              {{ (selectedQuotationDetails$ | async)?.ClaveMoneda }}</label
+            >
+            <label class="total"
+              >{{
+                ((totalFreightConventional | async) || 0) + ((totalFreightExpress$ | async) || 0)
+                  | currency: (selectedQuotationDetails$ | async)?.ClaveMoneda:'symbol-narrow':'1.2-2'
+              }}
+              {{ (selectedQuotationDetails$ | async)?.ClaveMoneda }}</label
+            >
+          </div>
+        </div>
+      </div>
+      <div class="comments-container">
+        <div class="comment">
+          <label> {{ 'quotation.details.section.freight.comment' | translate }}</label>
+        </div>
+        <div>
+          <app-generic-text-area [height]="'52px'" [value]="comment" (emitData)="setComment($event)"></app-generic-text-area>
+        </div>
+      </div>
+    </div>
+    <div class="buttons">
+      <button class="active" (click)="onClose(false)">
+        <label> {{ 'quotation.details.section.freight.exit' | translate }}</label>
+      </button>
+      <button [ngClass]="(selectSaveFreightValidator$ | async) ? 'active' : 'disable'" (click)="onClose(true)">
+        <label> {{ 'common.accept' | translate }}</label>
+      </button>
+    </div>
+  </div>
+</app-pop-up-generic>

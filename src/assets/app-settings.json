@@ -1,0 +1,165 @@
+{
+  "newClientName": "Cliente Nuevo",
+  "googleMaps": {
+    "apiKey": "AIzaSyDeMpxeMDMeXPYpjWSPimigGELC8ZoiUGM",
+    "styles": [
+      {
+        "featureType": "administrative",
+        "elementType": "labels",
+        "stylers": [
+          {
+            "visibility": "on"
+          }
+        ]
+      },
+      {
+        "featureType": "administrative",
+        "elementType": "labels.text",
+        "stylers": [
+          {
+            "visibility": "on"
+          }
+        ]
+      },
+      {
+        "featureType": "administrative.country",
+        "elementType": "labels.text",
+        "stylers": [
+          {
+            "visibility": "on"
+          }
+        ]
+      },
+      {
+        "featureType": "administrative.province",
+        "elementType": "labels.text",
+        "stylers": [
+          {
+            "visibility": "on"
+          }
+        ]
+      },
+      {
+        "featureType": "administrative.locality",
+        "elementType": "all",
+        "stylers": [
+          {
+            "visibility": "on"
+          }
+        ]
+      },
+      {
+        "featureType": "administrative.locality",
+        "elementType": "labels.text",
+        "stylers": [
+          {
+            "visibility": "on"
+          },
+          {
+            "hue": "#ff0000"
+          }
+        ]
+      },
+      {
+        "featureType": "landscape.natural",
+        "elementType": "geometry.fill",
+        "stylers": [
+          {
+            "visibility": "on"
+          },
+          {
+            "color": "#e0efef"
+          }
+        ]
+      },
+      {
+        "featureType": "poi",
+        "elementType": "geometry.fill",
+        "stylers": [
+          {
+            "visibility": "on"
+          },
+          {
+            "color": "#c0e8e8"
+          }
+        ]
+      },
+      {
+        "featureType": "road",
+        "elementType": "geometry",
+        "stylers": [
+          {
+            "lightness": 100
+          },
+          {
+            "visibility": "simplified"
+          }
+        ]
+      },
+      {
+        "featureType": "road",
+        "elementType": "labels",
+        "stylers": [
+          {
+            "visibility": "off"
+          }
+        ]
+      },
+      {
+        "featureType": "road",
+        "elementType": "labels.text",
+        "stylers": [
+          {
+            "visibility": "on"
+          }
+        ]
+      },
+      {
+        "featureType": "road",
+        "elementType": "labels.icon",
+        "stylers": [
+          {
+            "visibility": "off"
+          }
+        ]
+      },
+      {
+        "featureType": "transit.line",
+        "elementType": "geometry",
+        "stylers": [
+          {
+            "visibility": "on"
+          },
+          {
+            "lightness": 700
+          }
+        ]
+      },
+      {
+        "featureType": "water",
+        "elementType": "all",
+        "stylers": [
+          {
+            "color": "#7dcdcd"
+          }
+        ]
+      }
+    ],
+    "clientPinImage": "assets/Images/mapa/Pin_Entrega.svg",
+    "proquifaPinImage": "assets/Images/mapa/Pin_PQF.svg",
+    "proquifaCDMX": {
+      "cords": {
+        "lat": 19.28574453507142,
+        "lng": -99.15951678329967
+      },
+      "route": "Local"
+    },
+    "proquifaGuadalajara": {
+      "cords": {
+        "lat": 20.6620617,
+        "lng": -103.398209
+      },
+      "route": "Guadalajara"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+<div class="content-products">
+  <app-header-internal-sales-item
+    class="header-internal"
+    [internalSalesItem]="(selectInternalSalesInvestigationItem$ | async)?.[0]"
+  ></app-header-internal-sales-item>
+  <div class="body">
+    <virtual-scroller [items]="investigationProducts" *ngIf="investigationProducts?.length > 0" [bufferAmount]="24">
+      <app-internal-sales-item
+        *ngFor="let itemInvestigation of selectInternalSalesInvestigationItem$ | async"
+        [internalSalesItem]="itemInvestigation"
+        (valueEmitter)="globalItemEventsHandler($event)"
+        [ngClass]="{disabled: (selectedQuotationStatus$ | async)?.EstadoCotizacion === catQuotationState.Enviada}"
+      ></app-internal-sales-item>
+    </virtual-scroller>
+  </div>
+  <div class="totals">
+    <div class="total-products-online-or-offline">
+      <label>
+        {{
+          investigationProducts?.length +
+            ' ' +
+            ((investigationProducts?.length === 1 ? 'common.product' : 'common.products') | translate)
+        }}
+      </label>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,89 @@
+<div class="component-container" id="pre-processing-container">
+  <div class="header">
+    <app-header-bar
+      [title]="title$ | async"
+      [activeBack]="detailsMode$ | async"
+      [name]="(client$ | async)?.Nombre"
+      (goBack)="returnMainPage()"
+    >
+    </app-header-bar>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="footer">
+    <ng-container *ngIf="!(detailsMode$ | async); else alternative">
+      <div>
+        <label class="title">OC: </label>
+        <label>{{ 'preProcessing.purchaseOrder' | translate }}</label>
+      </div>
+      <div>
+        <label class="title">VT: </label>
+        <label>{{ 'preProcessing.totalValue' | translate }}</label>
+      </div>
+      <div>
+        <img alt="original" src="assets/Images/pre-processing/originales.svg" />
+        <label class="text">{{ 'preProcessing.typeOfItem.originals' | translate }}</label>
+      </div>
+      <div>
+        <img alt="alternatives" src="assets/Images/pre-processing/alternativas.svg" />
+        <label class="text">{{ 'preProcessing.typeOfItem.alternatives' | translate }}</label>
+      </div>
+      <div>
+        <img alt="complementary" src="assets/Images/pre-processing/complementarias.svg" />
+        <label class="text">{{ 'preProcessing.typeOfItem.complementary' | translate }}</label>
+      </div>
+      <div>
+        <img alt="promotion" src="assets/Images/pre-processing/promocion.svg" />
+        <label class="text">{{ 'preProcessing.typeOfItem.promotion' | translate }}</label>
+      </div>
+      <div>
+        <img alt="saving" src="assets/Images/pre-processing/ahorro.svg" />
+        <label class="text">{{ 'preProcessing.typeOfItem.saving' | translate }}</label>
+      </div>
+    </ng-container>
+    <ng-template #alternative>
+      <div>
+        <label class="title">OC: </label>
+        <label>{{ 'preProcessing.purchaseOrder' | translate }}</label>
+      </div>
+      <div>
+        <label class="title">VT: </label>
+        <label>{{ 'preProcessing.totalValue' | translate }}</label>
+      </div>
+      <div>
+        <img alt="original" src="assets/Images/pre-processing/originales.svg" />
+        <label class="text">{{ 'preProcessing.typeOfItem.originals' | translate }}</label>
+      </div>
+      <div>
+        <img alt="alternatives" src="assets/Images/pre-processing/alternativas.svg" />
+        <label class="text">{{ 'preProcessing.typeOfItem.alternatives' | translate }}</label>
+      </div>
+      <div>
+        <img alt="complementary" src="assets/Images/pre-processing/complementarias.svg" />
+        <label class="text">{{ 'preProcessing.typeOfItem.complementary' | translate }}</label>
+      </div>
+      <div>
+        <img alt="promotion" src="assets/Images/pre-processing/promocion.svg" />
+        <label class="text">{{ 'preProcessing.typeOfItem.promotion' | translate }}</label>
+      </div>
+      <div>
+        <img alt="saving" src="assets/Images/pre-processing/ahorro.svg" />
+        <label class="text">{{ 'preProcessing.typeOfItem.saving' | translate }}</label>
+      </div>
+      <!-- DOCS: Se quitó la funcionalidad. La imagen esta en imágenes sin utilizar en el repo del proyecto -->
+      <!--      <div>-->
+      <!--        <img alt="sent" src="assets/Images/pre-processing/reemplazar_partida.svg" />-->
+      <!--        <label class="text">{{ 'preProcessing.replaceItem' | translate }}</label>-->
+      <!--      </div>-->
+      <div>
+        <img alt="sent" src="assets/Images/eliminar.svg" />
+        <label class="text">{{ 'delete' | translate }}</label>
+      </div>
+      <div>
+        <img alt="sent" src="assets/Images/pre-processing/revertir-ajuste.svg" />
+        <label class="text">{{ 'preProcessing.reverseAdjustment' | translate }}</label>
+      </div>
+    </ng-template>
+  </div>
+</div>

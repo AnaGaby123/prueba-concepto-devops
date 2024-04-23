@@ -1,0 +1,17 @@
+<header class="headerBarContainer">
+  <div (click)="activeBack && handleGoBack()" [ngClass]="activeBack && 'click-enable'">
+    <img *ngIf="activeBack" src="assets/Images/arrows/arrow-left-black.svg" alt="back" />
+    <label>{{ title }}</label>
+  </div>
+  <div class="name" *ngIf="name !== ''">
+    <label>{{ name }}</label>
+  </div>
+  <div *ngIf="imageSource !== ''" class="tooltip">
+    <div>
+      <img [src]="'assets/Images/' + imageSource" alt="" (click)="executeActionClick()" />
+    </div>
+    <div *ngIf="tooltipText !== ''" class="tooltip-text">
+      <p>{{ tooltipText }} </p>
+    </div>
+  </div>
+</header>

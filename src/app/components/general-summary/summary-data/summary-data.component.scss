@@ -1,0 +1,279 @@
+@use 'base' as s;
+
+:host {
+  width: 100%;
+  height: 100%;
+
+  #summary-data {
+    @include s.flexColumn;
+    box-sizing: border-box;
+    padding: 20px 0 20px 20px;
+    width: 100%;
+    height: 100%;
+
+    & > .filter {
+      @include s.flexColumn;
+      max-height: 75px;
+      height: 100%;
+      width: 100%;
+
+      & > .title {
+        & > label {
+          $textSize: (
+            'base': 17px,
+            'macBookAir': 21px,
+          );
+          @include s.responsive-font-format(
+            $color: s.$pqBlack2,
+            $font-family: s.$font-family_novecento_bold,
+            $font-size-map: s.$responsive-font-17-17,
+            $font-weight: s.$font_weight_bold
+          );
+        }
+      }
+
+      & > .keyPad {
+        @include s.flexRow;
+        box-sizing: border-box;
+        padding-top: 12px;
+      }
+    }
+
+    & > .content {
+      @include s.flexColumn;
+      height: calc(100% - 77px);
+      width: 100%;
+
+      & > .list {
+        @include s.itemsCardWithGrid(360px, s.$defaultGridItemHeightSize);
+        flex: 1;
+        max-height: 100%;
+        overflow: auto;
+        width: 100%;
+
+        & > .item {
+          @include s.flexColumn;
+          border: 1px solid s.$pqGray2;
+
+          & > .content-customer {
+            @include s.flexColumn;
+            box-sizing: border-box;
+            cursor: pointer;
+            gap: 6px;
+            height: 100%;
+            justify-content: space-between;
+            padding: 22px 20px;
+            width: 100%;
+
+            & * {
+              cursor: pointer;
+            }
+
+            & > .id-name {
+              @include s.responsive-font-format(
+                $color: s.$pqBlack2,
+                $font-family: s.$font-family-roboto_bold,
+                $font-size-map: s.$responsive-font-18-18,
+                $font-weight: s.$font-weight_bold
+              );
+            }
+
+            & > .time {
+              & > .red {
+                color: s.$pqRed;
+              }
+
+              & > .orange {
+                color: s.$orange;
+              }
+
+              & > .green {
+                color: s.$pqGreen2;
+              }
+            }
+
+            & > div {
+              @include s.flexRow;
+              align-items: center;
+              box-sizing: border-box;
+              height: auto;
+              width: 100%;
+            }
+
+            & > .contract {
+              & > .withContact {
+                @include s.responsive-font-format(
+                  $color: s.$main-proquifa,
+                  $font-family: s.$font-family_roboto,
+                  $font-size-map: s.$responsive-font-17-17
+                );
+                white-space: pre;
+              }
+
+              & > .strategy {
+                @include s.responsive-font-format(
+                  $color: s.$pqBlack2,
+                  $font-family: s.$font-family_roboto,
+                  $font-size-map: s.$responsive-font-17-17
+                );
+              }
+            }
+
+            & > .date {
+              @include s.responsive-font-format(
+                $color: s.$pqBlack2,
+                $font-family: s.$font-family_roboto,
+                $font-size-map: s.$responsive-font-16-16
+              );
+            }
+
+            & > .quotes {
+              & > label {
+                @include s.responsive-font-format(
+                  $color: s.$dark-proquifa-d,
+                  $font-family: s.$font-family_roboto,
+                  $font-size-map: s.$responsive-font-16-16
+                );
+              }
+            }
+
+            & > .evi {
+              & > .title {
+                @include s.responsive-font-format(
+                  $color: s.$pqBlack2,
+                  $font-family: s.$font-family-roboto_bold,
+                  $font-size-map: s.$responsive-font-16-16,
+                  $font-weight: s.$font-weight_bold
+                );
+                white-space: pre;
+              }
+
+              & > .evi-name {
+                @include s.responsive-font-format(
+                  $color: s.$pqBlack2,
+                  $font-family: s.$font-family_roboto,
+                  $font-size-map: s.$responsive-font-16-16
+                );
+              }
+            }
+
+            & > .time {
+              & > label {
+                @include s.responsive-font-format(
+                  $color: s.$pqBlack2,
+                  $font-family: s.$font-family_roboto,
+                  $font-size-map: s.$responsive-font-16-16
+                );
+              }
+
+              & > .expire {
+                color: s.$alert-c !important;
+              }
+
+              & > img {
+                height: 16px;
+                margin-left: 10px;
+                margin-right: 7px;
+                width: 16px;
+              }
+            }
+
+            & > .strategies {
+              justify-content: space-between;
+
+              & > .link {
+                @include s.responsive-font-format(
+                  $color: s.$pqGreen,
+                  $font-family: s.$font-family_roboto,
+                  $font-size-map: s.$responsive-font-16-16
+                );
+                cursor: pointer;
+                text-decoration: underline;
+              }
+
+              & > label {
+                @include s.responsive-font-format(
+                  $color: s.$pqGreen2,
+                  $font-family: s.$font-family_roboto,
+                  $font-size-map: s.$responsive-font-16-16
+                );
+              }
+
+              & > .red {
+                color: s.$alert-c;
+              }
+
+              & > .orange {
+                color: s.$orange;
+              }
+
+              & > .green {
+                color: s.$pqGreen2;
+              }
+
+              & > .expireDangerous {
+                color: s.$alert-c !important;
+              }
+
+              & > .expire {
+                color: s.$orange !important;
+              }
+            }
+          }
+        }
+
+        & > .item:hover {
+          background-color: s.$pqGray2;
+        }
+      }
+
+      & > .without-results {
+        @include s.flexRowNoWrap;
+        @include s.absoluteCenter;
+        width: 100%;
+        height: 100%;
+      }
+
+      & > .total {
+        width: 100%;
+        max-height: 33px;
+        height: 100%;
+        @include s.flexRow;
+        justify-content: center;
+        border-top: 1px solid s.$pqBlack;
+
+        & > label {
+          margin-top: 9px;
+          @include s.responsive-font-format(
+            $color: s.$pqBlack2,
+            $font-family: s.$font-family_roboto-regular,
+            $font-size-map: s.$responsive-font-13-16
+          );
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #summary-data {
+      & > .filter {
+        max-height: 96px;
+      }
+    }
+  }
+
+  virtual-scroller {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.loader {
+  @include s.flexRow;
+  height: 100%;
+  flex: 1;
+
+  & > app-loading {
+    @include s.flexRow;
+  }
+}

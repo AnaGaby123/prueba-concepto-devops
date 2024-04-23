@@ -1,0 +1,773 @@
+@use 'base' as s;
+
+:host {
+  @include s.absolute100;
+  @include s.flexColumn;
+
+  & > .container {
+    @include s.flexColumn;
+    box-sizing: border-box;
+    flex: 1 1 100%;
+    margin: 0 0 37px 0;
+    min-width: 1300px;
+    width: 100%;
+    overflow: auto;
+
+    & > .general-data-title {
+      margin-bottom: 10px;
+
+      & > label {
+        @include s.Novecento-Bold;
+        @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+      }
+    }
+
+    & .sm {
+      padding: 15px 0 5px 0;
+    }
+
+    & > .general-data {
+      @include s.flexColumn;
+      background-color: rgba(0, 136, 148, 0.05);
+      padding: 0 20px 20px 20px;
+
+      & > .brand {
+        @include s.flexRow;
+
+        & > div {
+          margin-right: 20px;
+        }
+
+        & > .brands {
+          flex: 0 1 450px;
+        }
+
+        & > .type-products {
+          flex: 0 1 450px;
+        }
+
+        & > .provider {
+          align-self: end;
+          height: 25px;
+          display: flex;
+
+          & > label {
+            @include s.Roboto-Bold;
+            @include s.escaledFontFormat(s.$textSize14to16, bold, s.$pqGreen);
+            align-self: center;
+            font-style: italic;
+
+            & > span {
+              vertical-align: baseline;
+              color: s.$pqBlack2;
+            }
+          }
+        }
+      }
+
+      & > .brand-not-found {
+        @include s.flexRow;
+
+        & > .message {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize12to14, normal, s.$orangeMessage);
+          margin-top: 11px;
+          font-style: italic;
+          text-decoration-line: underline;
+          cursor: pointer;
+        }
+      }
+    }
+
+    & > .product-data-container {
+      @include s.flexColumn;
+      margin-top: 20px;
+
+      & > .product-data-title {
+        border-bottom: 1px solid s.$pqBlack2;
+        padding-bottom: 5px;
+
+        & > label {
+          @include s.Novecento-Bold;
+          @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+        }
+      }
+
+      & > .product-data-form {
+        margin-top: 30px;
+        display: grid;
+        grid-template-columns: repeat(8, 1fr) 205px;
+        grid-template-rows: repeat(2, 1fr);
+        grid-column-gap: 20px;
+        grid-row-gap: 20px;
+
+        & > .name {
+          grid-column-end: span 5;
+        }
+
+        & > .description {
+          grid-column-end: span 4;
+        }
+
+        & > .availability {
+          grid-column-end: span 2;
+        }
+
+        & > .date-availability {
+          grid-column-end: span 2;
+        }
+
+        & > .price {
+          @include s.flexColumn;
+
+          &.edit {
+            grid-column-end: span 2;
+          }
+
+          &.read {
+            @include s.flexColumn;
+            grid-column-end: span 3;
+          }
+
+          & > .title {
+            @include s.flexRow;
+            align-items: center;
+            flex: 1;
+
+            & > label {
+              &.edit {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+              }
+
+              &.read {
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+              }
+            }
+          }
+
+          & > .price-read {
+            @include s.flexRow;
+            align-items: center;
+            height: 25px;
+
+            & > label {
+              @include s.Roboto-Bold;
+              @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+
+              & > span {
+                @include s.Roboto-Regular;
+                vertical-align: baseline;
+              }
+            }
+          }
+
+          & > .persons {
+            display: grid;
+            grid-template-columns: repeat(2, auto);
+            grid-column-gap: 5px;
+          }
+        }
+
+        & > .price2 {
+          @include s.flexRow;
+          align-items: flex-end;
+          grid-column-end: span 3;
+
+          & > .groups {
+            display: grid;
+            grid-template-columns: repeat(3, auto);
+            grid-column-gap: 5px;
+          }
+        }
+
+        & > .validity {
+          @include s.flexColumn;
+          grid-column-end: span 2;
+
+          & > .title {
+            @include s.flexRow;
+            align-items: center;
+            flex: 1;
+
+            & > label {
+              @include s.Roboto-Bold;
+              @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+            }
+          }
+
+          & > .data {
+            @include s.flexRow;
+            align-items: center;
+            height: 25px;
+
+            & > label {
+              @include s.Roboto-Bold;
+              @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+
+              & > span {
+                @include s.Roboto-Regular;
+                vertical-align: baseline;
+              }
+            }
+          }
+        }
+
+        & > .inputDescription {
+          grid-column-end: span 4;
+        }
+
+        & > .validityCuratorship {
+          min-width: 200px;
+        }
+
+        & > .CharacteristicGrouper {
+          grid-column-end: span 2;
+        }
+
+        & > .availability {
+          grid-column-end: span 2;
+        }
+
+        & > .date-availability {
+          @include s.flexColumn;
+          grid-column-end: span 2;
+
+          & > .title {
+            @include s.flexRow;
+            align-items: center;
+            flex: 1;
+
+            & > label {
+              @include s.Roboto-Bold;
+              @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+            }
+          }
+
+          & > .data {
+            @include s.flexRow;
+            align-items: center;
+            height: 25px;
+
+            & > label {
+              @include s.Roboto-Regular;
+              @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+              vertical-align: baseline;
+            }
+          }
+        }
+
+        & > .purchase-restriction {
+          grid-column-end: span 2;
+        }
+
+        & > .pieces {
+          display: flex;
+          flex-direction: row;
+          align-items: flex-end;
+
+          & > label {
+            @include s.Roboto-Bold;
+            @include s.escaledFontFormat(s.$textSize14to16, bold, s.$pqBlack2);
+            margin-bottom: 4px;
+            padding-left: 5px;
+            white-space: pre;
+          }
+        }
+      }
+    }
+
+    & > .family-data-container {
+      @include s.flexColumn;
+      margin-top: 30px;
+
+      & > .family-data-title {
+        padding-bottom: 15px;
+
+        & > label {
+          @include s.Novecento-Bold;
+          @include s.escaledFontFormat(s.$textSize15to21, bold, s.$pqBlack2);
+        }
+      }
+
+      & > .biologic-reactive-standard-chemist {
+        display: grid;
+        grid-template-columns: repeat(8, 1fr) 205px;
+        grid-template-rows: repeat(4, 1fr);
+        grid-column-gap: 20px;
+        grid-row-gap: 20px;
+
+        & > .clasfication {
+          grid-column-end: span 2;
+        }
+
+        & > .physicalState {
+          grid-column-end: span 2;
+        }
+
+        & > .use {
+          grid-column-end: span 2;
+        }
+
+        & > .cas {
+          display: flex;
+          flex-direction: column;
+          grid-column-end: span 2;
+
+          & > app-check-box {
+            margin-bottom: 5px;
+          }
+        }
+
+        & > .synonyms {
+          grid-column-end: span 2;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+        }
+
+        & > .molecularForm {
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          grid-column-end: span 3;
+        }
+
+        & > .molecularStructure {
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          grid-column-end: span 2;
+        }
+
+        & > .presentationType {
+          grid-column-end: span 2;
+        }
+
+        & > .aplication {
+          grid-column-end: span 2;
+        }
+
+        & > .transportationWay {
+          grid-column-end: span 2;
+        }
+
+        & > .transportationManagment {
+          grid-column-end: span 2;
+        }
+
+        & > .purity {
+          grid-column-end: span 2;
+        }
+
+        & > .notes {
+          grid-column-end: span 7;
+        }
+      }
+
+      & > .biologic-reactive-standard {
+        display: grid;
+        grid-template-columns: repeat(8, 1fr) 205px;
+        grid-template-rows: repeat(3, 1fr);
+        grid-column-gap: 20px;
+        grid-row-gap: 20px;
+
+        & > .clasfication {
+          grid-column-end: span 2;
+        }
+
+        & > .physicalState {
+          grid-column-end: span 2;
+        }
+
+        & > .use {
+          grid-column-end: span 2;
+        }
+
+        & > .presentationType {
+          grid-column-end: span 2;
+        }
+
+        & > .aplication {
+          grid-column-end: span 2;
+        }
+
+        & > .transportationWay {
+          grid-column-end: span 2;
+        }
+
+        & > .transportationManagment {
+          grid-column-end: span 2;
+        }
+
+        & > .purity {
+          grid-column-end: span 2;
+        }
+
+        & > .notes {
+          grid-column-end: span 7;
+        }
+      }
+
+      & > .publications {
+        @include s.flexColumn;
+
+        & > .form-data {
+          margin-top: 30px;
+          display: grid;
+          grid-template-columns: repeat(6, 1fr);
+          grid-template-rows: repeat(1, 1fr);
+          grid-column-gap: 20px;
+          grid-row-gap: 20px;
+        }
+
+        & > .supplements {
+          padding-top: 30px;
+
+          & > .supplements-title {
+            padding-bottom: 15px;
+
+            & > label {
+              @include s.Novecento-Bold;
+              @include s.escaledFontFormat(s.$textSize15to21, bold, s.$pqBlack2);
+            }
+          }
+
+          & > .supplements-form-data {
+            @include s.flexRowNoWrap;
+
+            & > div {
+              margin-right: 20px;
+              flex: 0 1 250px;
+            }
+
+            & > div:first-of-type {
+              flex: 0 1 400px;
+            }
+
+            & > div:last-of-type {
+              margin-right: 0;
+            }
+
+            & > .btn-save {
+              align-self: flex-end;
+
+              & > .enable {
+                @include s.pqButton();
+              }
+
+              & > .disable {
+                @include s.pqButtonDisable();
+              }
+            }
+          }
+
+          & > .chips {
+            margin-top: 20px;
+
+            & > .fileChip {
+              @include s.flexRowNoWrap;
+              overflow: hidden;
+              overflow-x: auto;
+
+              & > .rounded {
+                background-color: rgb(0, 136, 148, 0.05);
+                border-radius: 20px;
+                margin-right: 30px;
+                justify-content: space-between;
+                padding: 8px;
+                align-items: center;
+                @include s.flexRowNoWrap;
+
+                @include s.flexRowNoWrap;
+
+                & > label {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize13to15, regular, s.$pqGreen);
+                  padding: 0 0 0 10px;
+
+                  & > .title {
+                    @include s.Roboto-Regular;
+                    color: s.$pqGreen;
+                    vertical-align: baseline;
+                  }
+
+                  & > .isbnEditor {
+                    color: s.$pqBlack2;
+                    padding: 0 10px 0 0;
+                    vertical-align: baseline;
+                  }
+                }
+
+                & > div {
+                  display: flex;
+
+                  & > img {
+                    margin-right: 10px;
+                    flex: 0 0 auto;
+                    cursor: pointer;
+                    width: 10px;
+                  }
+                }
+              }
+            }
+          }
+
+          & > .notes {
+            @include s.flexColumn;
+            flex: 1 1 700px;
+            margin-top: 20px;
+          }
+        }
+      }
+
+      & > .labware {
+        @include s.flexRow;
+
+        & > .type-products {
+          display: flex;
+          flex: 0 0 255px;
+        }
+
+        & > .notes {
+          display: flex;
+          flex: 1;
+        }
+      }
+
+      & > .medicalDevices {
+        margin-top: 30px;
+        display: grid;
+        grid-template-columns: repeat(8, 1fr) 205px;
+        grid-template-rows: repeat(2, 1fr);
+        grid-column-gap: 20px;
+        grid-row-gap: 20px;
+
+        & > .type-products {
+          grid-column-end: span 2;
+        }
+
+        & > .health-register {
+          grid-column-end: span 2;
+        }
+
+        & > .expiration-health-register {
+          grid-column-end: span 2;
+        }
+
+        & > .storage {
+          grid-column-end: span 2;
+        }
+
+        & > .notes {
+          grid-column-end: span 9;
+        }
+      }
+
+      & > .training {
+        display: grid;
+        grid-template-columns: repeat(8, 1fr) 205px;
+        grid-template-rows: repeat(2, 1fr);
+        grid-column-gap: 20px;
+        grid-row-gap: 20px;
+
+        & > .productType {
+          grid-column-end: span 2;
+        }
+
+        & > .model {
+          @include s.flexColumn;
+          flex: 1;
+
+          &.edit {
+            grid-column-end: span 2;
+          }
+
+          &.read {
+            grid-column-end: span 3;
+          }
+
+          & > .title {
+            @include s.flexRow;
+            align-items: center;
+            flex: 1;
+
+            & > label {
+              &.edit {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+              }
+
+              &.read {
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+              }
+            }
+          }
+
+          & > .radios-read {
+            @include s.flexRow;
+            align-items: center;
+            height: 25px;
+
+            & > label {
+              @include s.Roboto-Regular;
+              @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+            }
+          }
+
+          & > .radios {
+            display: grid;
+            grid-template-columns: repeat(2, auto);
+          }
+        }
+
+        & > .duration {
+          @include s.flexColumn;
+          grid-column-end: span 3;
+
+          & > .title {
+            @include s.flexRow;
+            align-items: center;
+            flex: 1;
+
+            & > label {
+              @include s.Roboto-Bold;
+              @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+            }
+          }
+
+          & > .duration-read {
+            @include s.flexRow;
+            align-items: center;
+            flex: 1;
+
+            & > label {
+              @include s.Roboto-Regular;
+              @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+
+              & > span {
+                @include s.Roboto-Bold;
+                vertical-align: baseline;
+              }
+            }
+          }
+        }
+
+        & > .notes {
+          grid-column-end: span 9;
+        }
+      }
+    }
+
+    & > .without-results {
+      @include s.absoluteCenter;
+      display: flex;
+      flex: 1;
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > .container {
+      & > .general-data-title {
+        margin-bottom: 15px;
+      }
+
+      & > .general-data {
+        padding: 25px;
+      }
+
+      & > .product-data-container {
+        @include s.flexColumn;
+        margin-top: 25px;
+
+        & > .product-data-title {
+          padding-bottom: 10px;
+        }
+
+        & > .product-data-form {
+          grid-template-columns: repeat(8, 1fr) 230px;
+
+          & > .price {
+            & > .price-read {
+              @include s.flexRow;
+              height: 30px;
+            }
+
+            & > .persons {
+              display: grid;
+              grid-template-columns: repeat(2, auto);
+              grid-column-gap: 5px;
+            }
+          }
+
+          & > .price2 {
+            @include s.flexRow;
+            align-items: flex-end;
+            grid-column-end: span 3;
+
+            & > .groups {
+              display: grid;
+              grid-template-columns: repeat(3, auto);
+              grid-column-gap: 5px;
+            }
+          }
+
+          & > .validity {
+            grid-column-end: span 2;
+          }
+
+          & > .inputDescription {
+            grid-column-end: span 4;
+          }
+
+          & > .validityCuratorship {
+            min-width: 200px;
+          }
+
+          & > .CharacteristicGrouper {
+            grid-column-end: span 2;
+          }
+
+          & > .availability {
+            grid-column-end: span 2;
+          }
+
+          & > .date-availability {
+            grid-column-end: span 2;
+          }
+
+          & > .purchase-restriction {
+            grid-column-end: span 2;
+          }
+
+          & > .pieces {
+            & > label {
+              margin-bottom: 6px;
+              padding-left: 7px;
+            }
+          }
+        }
+      }
+
+      & > .family-data-container {
+        & > .biologic-reactive-standard-chemist {
+          grid-template-columns: repeat(8, 1fr) 230px;
+        }
+
+        & > .biologic-reactive-standard {
+          grid-template-columns: repeat(8, 1fr) 230px;
+        }
+
+        & > .medicalDevices {
+          grid-template-columns: repeat(8, 1fr) 230px;
+        }
+
+        & > .training {
+          grid-template-columns: repeat(8, 1fr) 230px;
+        }
+      }
+    }
+  }
+}

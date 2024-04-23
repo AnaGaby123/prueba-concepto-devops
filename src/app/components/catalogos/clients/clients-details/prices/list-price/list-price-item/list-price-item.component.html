@@ -1,0 +1,43 @@
+<div class="price-item" [ngClass]="price.isSelected ? 'selected' : ''" (click)="handleSelectedPriceChange()">
+  <div class="select-indicator"></div>
+  <div class="item">
+    <div class="info">
+      <div>
+        <label class="titleCant"> {{ price.PrecioLista }} {{ price?.MonedaVentaProveedor }}</label>
+        <label class="price-provider" *ngIf="price?.PrecioListaMonedaProveedor">
+          {{ price?.PrecioListaMonedaProveedor.toFixed(2) }}
+          {{ price?.ClaveMonedaPagos }}</label
+        >
+        <label class="price-provider" *ngIf="!price?.PrecioListaMonedaProveedor">N/D</label>
+      </div>
+      <label class="textOrange-black">
+        {{
+          price.TotalProducto +
+            ' ' +
+            (price.TotalProducto === 1 ? ('common.product' | translate) : ('common.products' | translate))
+        }}
+        · <img alt="" src="assets/Images/triangulo_naranja.svg" />
+        <span> {{ price.percentage.toFixed(2) }}%</span>
+      </label>
+    </div>
+    <div class="prices">
+      <div class="marker" *ngIf="price.NivelConfiguracionProductoCliente === 'PrecioLista'">
+        <img
+          alt=""
+          [src]="
+            price.Temporal === true
+              ? 'assets/Images/reloj.svg'
+              : price.Temporal === false
+              ? 'assets/Images/clientes/enfoque.svg'
+              : ''
+          "
+        />
+        <label *ngIf="price.Temporal"> 2:00 Hrs.</label>
+      </div>
+      <label
+        >{{ selectClientIncomeLevel$ | async }}<span class="black"> · {{ price.PrecioProquifaNet | currency }} · </span
+        ><span [ngClass]="price.isNegative ? 'red' : 'green'">{{ price.percentage.toFixed(2) }} %</span></label
+      >
+    </div>
+  </div>
+</div>

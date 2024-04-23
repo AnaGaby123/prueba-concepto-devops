@@ -1,0 +1,29 @@
+<app-pop-up-generic
+  class="pop-alert-configuration"
+  [activeButtons]="true"
+  [height]="(viewType$ | async) === viewTypes.small ? '400px' : '450px'"
+  [width]="(viewType$ | async) === viewTypes.small ? '600px' : '650px'"
+  (evento)="onClose($event)"
+>
+  <div class="container">
+    <img alt="alert" src="assets/Images/alerta.svg" />
+    <div>
+      <label>{{ alertConfig + ' ' + (itemConfigSelected$ | async)?.label }}</label>
+      <div class="configuracion">
+        <div>
+          <app-pqf-toggle-switch
+            [options]="itemsConfig$ | async"
+            [selectedOption]="itemConfigSelected$ | async"
+            (selectedOptionChange)="selectedOptionChange($event)"
+          ></app-pqf-toggle-switch>
+        </div>
+        <div>
+          <div *ngIf="(itemConfigSelected$ | async)?.label !== 'Definitiva'">
+            <img alt="definitiva" src="assets/Images/reloj.svg" />
+            <label class="textAlert"> 2:00 Hrs.</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-pop-up-generic>

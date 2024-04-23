@@ -1,0 +1,201 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  $left-container-flex: (
+    'base': 580px,
+    'macBookAir': 680px,
+  );
+  $graphics-padding: (
+    'base': 30px 40px,
+    'macBookAir': 40px 50px,
+  );
+  $graphics-structure: (
+    'top': 1,
+    'bottom': 2,
+  );
+  $graphics-gap: (
+    'base': 35px 20px,
+    'macBookAir': 40px 35px,
+  );
+
+  @include s.pending-dashboard-structure($left-container-flex, $graphics-padding, $graphics-structure, $graphics-gap);
+
+  #follow-purchase-promise-list {
+    & > .left-container {
+      & > .filters {
+        & > div:nth-of-type(1) {
+          width: 40%;
+        }
+
+        & > div:nth-of-type(2) {
+          width: 60%;
+          justify-content: flex-end;
+        }
+
+        & > div {
+          @include s.flexRow;
+          align-items: center;
+          justify-content: center;
+          width: 50%;
+        }
+      }
+      & > .list-container {
+        & > virtual-scroller {
+          & .item {
+            & > .indicator {
+              & > .circle {
+                @include s.pqCircle(12px, s.$pqRed);
+                flex: 0 0 16px;
+                margin-left: 10px;
+                margin-top: 4px;
+              }
+              & > .green {
+                @include s.pqCircle(12px, s.$pqGreen2);
+              }
+            }
+            & > .content {
+              @include s.absoluteTop;
+              @include s.flexRowWrap;
+              & > .name {
+                @include s.flexRowNoWrap;
+                margin-bottom: 5px;
+                width: 100%;
+
+                & > label:nth-of-type(1) {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font_family_roboto_bold,
+                    $font-weight: s.$font_weight_bold,
+                    $font-size-map: s.$responsive-font-17-21,
+                    $color: s.$pqGreen
+                  );
+                  @include s.multiLineTextTruncateSinHeight(1, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+                }
+              }
+              & > .datePC {
+                @include s.flexRowNoWrap;
+                margin-bottom: 8px;
+                width: 100%;
+
+                & > label:nth-of-type(1) {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font_family_roboto_bold,
+                    $font-weight: s.$font_weight_bold,
+                    $font-size-map: s.$responsive-font-16-20
+                  );
+                }
+              }
+              & > .states {
+                @include s.flexRow;
+                justify-content: flex-start;
+                margin-bottom: 8px;
+                width: 100%;
+
+                & > img {
+                  @include s.imageIconResponsiveSize;
+                  width: 14px;
+                  margin-right: 5px;
+                }
+
+                & > label {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font_family_roboto_regular,
+                    $font-weight: s.$font_weight_regular,
+                    $font-size-map: s.$responsive-font-14-16
+                  );
+                  margin-right: 5px;
+                }
+
+                & > .pqf {
+                  color: s.$pqGreen !important;
+                }
+              }
+              & .total-value {
+                @include s.absoluteCenter;
+                @include s.flexRowNoWrap;
+                justify-content: flex-start;
+                width: 100%;
+
+                & > label {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font_family_roboto_regular,
+                    $font-weight: s.$font_weight_regular,
+                    $font-size-map: s.$responsive-font-14-16
+                  );
+                  margin-right: 5px;
+                }
+              }
+            }
+          }
+        }
+      }
+      & > .footer {
+        @include s.flexRow;
+        border-top: 1px solid s.$pqBlack2;
+        justify-content: space-between;
+
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+          @include s.flexRow;
+        }
+      }
+    }
+    & > .right-container {
+      grid-template-columns: 1fr 2fr;
+
+      & > app-doughnut-chart {
+        grid-column-end: span 2;
+        overflow: hidden;
+      }
+
+      & > app-bar-chart {
+        overflow: hidden;
+      }
+
+      & > .loading {
+        grid-area: 2/1/2/3;
+      }
+    }
+    @include s.media-query(s.$standard) {
+      & > .left-container {
+        & > .list-container {
+          & > virtual-scroller {
+            & .item {
+              min-height: 145px;
+              & > .indicator {
+                & > .circle {
+                  @include s.pqCircle(16px, s.$pqRed);
+                  flex: 0 0 20px;
+                  margin-left: 15px;
+                  margin-top: 5px;
+                }
+                & > .green {
+                  @include s.pqCircle(12px, s.$pqGreen2);
+                }
+              }
+              & > .content {
+                & > .states {
+                  & > div {
+                    margin-left: 10px;
+
+                    & > img:nth-of-type(1) {
+                      margin-right: 10px;
+                    }
+
+                    & > label:nth-of-type(2) {
+                      margin-left: 10px;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

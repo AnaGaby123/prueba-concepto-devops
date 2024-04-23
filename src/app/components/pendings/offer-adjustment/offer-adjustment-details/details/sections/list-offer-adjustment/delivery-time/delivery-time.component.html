@@ -1,0 +1,253 @@
+<div id="delivery-time">
+  <div class="notes-container">
+    <div class="with-freight">
+      <div>
+        <div class="radio-buttons-content">
+          <div>
+            <app-radio-button
+              [value]="(selectRadioControls$ | async)?.twoDays"
+              [allowDisable]="true"
+              [label]="'Menos 2 días'"
+              [labelFontStyle]="'default'"
+              [height]="'20px'"
+              (emitValue)="handleChangeModeSection($event, 'twoDays')"
+            ></app-radio-button>
+          </div>
+          <div>
+            <app-radio-button
+              [value]="(selectRadioControls$ | async)?.expressFreight"
+              [allowDisable]="true"
+              [label]="'Flete Express'"
+              [labelFontStyle]="'default'"
+              [height]="'20px'"
+              (emitValue)="handleChangeModeSection($event, 'expressFreight')"
+            ></app-radio-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <label class="subtitle">{{
+    (selectRadioControls$ | async).twoDays ? ('common.items' | translate) : ('common.providers' | translate)
+  }}</label>
+  <div class="table-container" *ngIf="(quotationItems$ | async).length > 0">
+    <virtual-scroller [items]="quotationItems$ | async" [bufferAmount]="24" (vsUpdate)="itemsQuotation = $event">
+      <app-header-internal-sales-item
+        class="header"
+        *ngIf="(selectRadioControls$ | async)?.twoDays"
+        [internalSalesItem]="selectHeaderInternalSalesItemTwoDays$ | async"
+      ></app-header-internal-sales-item>
+      <div class="header-separator" *ngIf="(selectRadioControls$ | async)?.twoDays"></div>
+      <div
+        *ngFor="let provider of quotationItems$ | async; let i = index; trackBy: handleTrackByProvider"
+        class="card-container"
+      >
+        <app-internal-sales-item
+          *ngIf="(selectRadioControls$ | async)?.twoDays"
+          [internalSalesItem]="provider"
+          (valueEmitter)="globalItemEventsHandler($event)"
+        ></app-internal-sales-item>
+        <div class="card">
+          <div
+            class="expressFreight"
+            *ngIf="(selectRadioControls$ | async)?.expressFreight"
+            [ngClass]="{selected: provider?.data?.showItems}"
+          >
+            <div class="first-column">
+              <div class="column-mark">
+                <img src="assets/Images/clientes/logo_proquifa_hover.svg" alt="logo_proquifa" />
+                <label>{{ provider?.data?.Proveedor?.Nombre }}</label>
+              </div>
+              <div class="column-items">
+                <img src="assets/Images/pre-processing/originales.svg" alt="type" />
+                <label>{{ provider?.data?.TiposDePartidas?.NumeroOriginales }}</label>
+                <img src="assets/Images/pre-processing/ahorro.svg" alt="type" />
+                <label>{{ provider?.data?.TiposDePartidas?.NumeroAhorro }}</label>
+                <img src="assets/Images/pre-processing/promocion.svg" alt="type" />
+                <label>{{ provider?.data?.TiposDePartidas?.NumeroPromocion }}</label>
+                <img src="assets/Images/pre-processing/alternativas.svg" alt="type" />
+                <label>{{ provider?.data?.TiposDePartidas?.NumeroAlternativas }}</label>
+                <img src="assets/Images/pre-processing/complementarias.svg" alt="type" />
+                <label>{{ provider?.data?.TiposDePartidas?.NumeroComplementaria }}</label>
+              </div>
+            </div>
+            <div class="third-column" *ngIf="(selectRadioControls$ | async).expressFreight">
+              <div class="column-info">
+                <label class="normal">{{ ('offerAdjustment.details.freightExpress' | translate) + ': ' }}</label>
+                <label
+                  #freightTarget
+                  class="freight"
+                  [ngClass]="{disable: provider?.data?.ajOfFleteExpressCotizacion?.Rechazado}"
+                  (click)="handleExpressFreightPop(true, provider?.data, freightTarget, i, $event)"
+                  >{{ provider?.data?.Proveedor?.Nombre }}
+                  <span class="green">{{
+                    '· ' +
+                      (toRound(provider?.data?.ajOfFleteExpressCotizacion?.PrecioFleteExpress, 2)
+                        | currency: 'USD':'symbol-narrow':'0.2-4')
+                  }}</span>
+                  <span class="black">{{
+                    '· ' + provider?.data?.ajOfFleteExpressCotizacion?.PorcentajeProquifa + '% PQF'
+                  }}</span>
+                </label>
+              </div>
+              <div class="column-dialog">
+                <div
+                  *ngIf="
+                    provider?.data?.ajOfFleteExpressCotizacion?.Comentarios !== null &&
+                    provider?.data?.ajOfFleteExpressCotizacion?.Comentarios !== ''
+                  "
+                >
+                  <img
+                    #justificationTarget
+                    (click)="
+                      handleJustificationPop(
+                        true,
+                        provider?.data?.ajOfFleteExpressCotizacion?.Comentarios,
+                        justificationTarget,
+                        'top-end'
+                      )
+                    "
+                    src="assets/Images/offer-adjustment/dialog.svg"
+                    alt="dialog"
+                  />
+                </div>
+              </div>
+              <div class="column-deploy">
+                <img
+                  (click)="showItems(i)"
+                  [ngClass]="provider?.data?.showItems ? 'rotate' : ''"
+                  src="assets/Images/quotation/arrow_default.svg"
+                  alt=""
+                />
+              </div>
+            </div>
+          </div>
+          <div class="table-container" *ngIf="provider?.data?.showItems && (selectRadioControls$ | async)?.expressFreight">
+            <div class="table">
+              <app-header-internal-sales-item
+                class="header-color"
+                [internalSalesItem]="selectHeaderInternalSalesExpressFreight$ | async"
+              ></app-header-internal-sales-item>
+              <div class="body">
+                <app-internal-sales-item
+                  *ngFor="let item of selectedItemsDetails$ | async; let cont = index"
+                  [internalSalesItem]="item"
+                  (valueEmitter)="globalItemEventsHandler($event)"
+                ></app-internal-sales-item>
+              </div>
+              <div class="footer"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </virtual-scroller>
+  </div>
+  <div class="without-results" *ngIf="(quotationItems$ | async).length === 0">
+    <app-without-results
+      [title]="
+        !(selectRadioControls$ | async)?.twoDays && !(selectRadioControls$ | async)?.expressFreight
+          ? 'Selecciona una opción para mostrar resultados'
+          : 'No tienes ajustes por validar'
+      "
+    ></app-without-results>
+  </div>
+</div>
+<app-custom-position-pop-up
+  id="pop-up-justification"
+  *ngIf="popUpJustification"
+  [popUpPosition]="justificationPosition"
+  [target]="popUpJustificationTarget"
+  [minWidth]="'300px'"
+  [maxWidth]="'450px'"
+  [minHeight]="'90px'"
+  [maxHeight]="'90px'"
+  [borderRadius]="'18px'"
+  [popUpPosition]="'left-center'"
+  [adjustForSmallTarget]="70"
+  [closeButton]="false"
+  (closeEmitter)="handleJustificationPop(false)"
+>
+  <div class="content">
+    <div class="title">
+      <label>{{ 'providerCatalog.deliveryTime' | translate }}</label>
+    </div>
+    <div class="container-justification">
+      <label>{{ ('offerAdjustment.details.justification' | translate) + ':' }}</label>
+      <label>{{ justification }}</label>
+    </div>
+  </div>
+</app-custom-position-pop-up>
+<app-custom-position-pop-up
+  id="pop-up-freight-express"
+  *ngIf="popUpFreightExpress"
+  [target]="popUpFreightExpressTarget"
+  [popUpPosition]="'bottom-center'"
+  [borderColor]="'#d8d9dd'"
+  [borderRadius]="'0px'"
+  [minWidth]="'490px'"
+  [maxWidth]="'490px'"
+  [minHeight]="'250px'"
+  [maxHeight]="'250px'"
+  [closeButton]="false"
+  [padding]="'0px'"
+  (closeEmitter)="handleExpressFreightPop(false)"
+>
+  <div class="container-freigth-express">
+    <div class="line-one">
+      <app-check-box [height]="'22px'" [check]="freightPopObj.active" (event)="freightPopObj.active = $event"></app-check-box>
+      <label>{{ 'offerAdjustment.details.freightExpress' | translate }}</label>
+    </div>
+    <div class="line-two">
+      <div class="provider">
+        <label class="pqf" [ngClass]="{disable: !freightPopObj.active}">{{ freightPopObj.provider }} </label>
+        <label class="green" [ngClass]="{disable: !freightPopObj.active}">
+          ·
+          {{
+            toRound(freightPopObj.freightPrice * ((100 - Number(freightPopObj.percentageSelected.value)) / 100), 2)
+              | currency: 'USD':'symbol-narrow':'0.2-4'
+          }}</label
+        >
+      </div>
+      <div class="percentage">
+        <app-drop-down-list
+          [activeMinWidth]="false"
+          [subtitleActive]="false"
+          [items]="freightPopObj.percentageOptions"
+          [itemSelected]="freightPopObj.percentageSelected"
+          [disable]="!freightPopObj.active"
+          (valueDropList)="freightPopObj.percentageSelected = $event"
+        >
+        </app-drop-down-list>
+      </div>
+    </div>
+    <div class="line-three">
+      <label>{{ 'offerAdjustment.details.adjustmentComments' | translate }}</label>
+      <div class="comments">
+        <app-generic-text-area
+          [placeholder]="'Escribe aquí'"
+          [value]="freightPopObj.comments"
+          [height]="'100%'"
+          [required]="true"
+          (emitData)="freightPopObj.comments = $event"
+        ></app-generic-text-area>
+      </div>
+    </div>
+  </div>
+  <div class="button">
+    <button
+      [ngClass]="
+        (freightPopObj.active && !lodashIsEmpty(freightPopObj.comments)) ||
+        (!freightPopObj.active && !lodashIsEmpty(freightPopObj.comments))
+          ? 'btn-active-accept'
+          : 'btn-disable-accept'
+      "
+      [disabled]="
+        (!freightPopObj.active && lodashIsEmpty(freightPopObj.comments)) ||
+        (freightPopObj.active && lodashIsEmpty(freightPopObj.comments))
+      "
+      (click)="setFreightPopConfig()"
+    >
+      {{ 'offerAdjustment.details.accept' | translate }}
+    </button>
+  </div>
+</app-custom-position-pop-up>

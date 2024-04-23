@@ -1,0 +1,51 @@
+<div id="list-quotes-container">
+  <div class="list">
+    <app-pqf-card
+      [enableMessage]="lodashIsEmpty(quotationsList$ | async)"
+      [options]="quotationsList$ | async"
+      (handleOptionSelected)="handleOptionSelected($event)"
+    ></app-pqf-card>
+  </div>
+  <div
+    class="add-products"
+    *ngIf="
+      (selectedQuotationStatus$ | async)?.EstadoCotizacion !== catQuotationState.Enviada &&
+      !(selectedQuotation$ | async)?.CotizacionDeInvestigacion &&
+      !(selectedQuotation$ | async)?.EnviadaConInvestigacion
+    "
+  >
+    <label>
+      {{ 'quotation.details.addProducts' | translate }}
+      <label class="ocean" *ngIf="(selectedQuotationStatus$ | async)?.EstadoCotizacion === catQuotationState.Nueva">
+        · FO-{{ (selectedQuotation$ | async)?.Folio }}
+      </label>
+      <label class="ocean-save" *ngIf="(selectedQuotationStatus$ | async)?.EstadoCotizacion === catQuotationState.Guardada">
+        · <span (click)="onClickViewQuotationPdf()">FO-{{ (selectedQuotation$ | async)?.Folio }}</span>
+      </label>
+      <ng-container [ngSwitch]="(selectedQuotationStatus$ | async)?.EstadoCotizacion">
+        <label class="new" *ngSwitchCase="catQuotationState.Nueva"> · {{ 'quotation.itemStatusNew' | translate }}</label>
+        <label class="saved" *ngSwitchCase="catQuotationState.Guardada"> · {{ 'quotation.itemStatusSaved' | translate }}</label>
+        <label class="sent" *ngSwitchCase="catQuotationState.Enviada"> · {{ 'quotation.itemStatusSent' | translate }}</label>
+      </ng-container>
+    </label>
+    <button
+      (click)="redirectToCheckout()"
+      [ngClass]="{active: (selectedTotalItems$ | async) > 0}"
+      [disabled]="(selectedTotalItems$ | async) === 0"
+    >
+      <img src="assets/Images/quotation/cart.svg" alt="" />
+      ({{ selectedTotalItems$ | async }})
+      {{
+        (selectedTotalItems$ | async) === 1
+          ? ('quotation.details.entry' | translate)
+          : ('quotation.details.entries' | translate)
+      }}
+    </button>
+  </div>
+  <app-link-new-contact-pop-up *ngIf="isNewContactPopUpOpen$ | async"></app-link-new-contact-pop-up>
+  <app-link-new-contact-add-pop-up *ngIf="isNewAddContactPopUpOpen$ | async"></app-link-new-contact-add-pop-up>
+  <app-link-new-contact-add-pop-up-success
+    *ngIf="isNewAddContactPopUpSuccess$ | async"
+  ></app-link-new-contact-add-pop-up-success>
+  <router-outlet></router-outlet>
+</div>

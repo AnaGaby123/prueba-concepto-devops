@@ -1,0 +1,35 @@
+@use 'base' as s;
+
+:host {
+  @include s.generic-main-component-structure;
+
+  #process-purchase-container {
+    & > .footer {
+      & > div {
+        & > div {
+          border-radius: 50%;
+          width: 15px;
+          height: 15px;
+          margin-right: 6px;
+        }
+
+        & > .label-dark {
+          @include s.Roboto-Bold;
+          @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack);
+          padding-right: 3px;
+        }
+
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+        }
+
+        & > img:nth-of-type(1) {
+          width: auto;
+          height: 19px;
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+}

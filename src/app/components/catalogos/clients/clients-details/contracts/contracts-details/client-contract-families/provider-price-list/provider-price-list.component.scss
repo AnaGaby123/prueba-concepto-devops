@@ -1,0 +1,273 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.flexRow;
+  column-gap: 20px;
+  flex: 1;
+
+  & > .configuration-list-price-container {
+    @include s.flexColumn;
+    flex: 0 0 420px;
+    gap: 11px;
+
+    & > .title {
+      @include s.flexRow;
+      align-items: center;
+      width: 100%;
+
+      & > label {
+        @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+        @include s.Novecento-Bold;
+      }
+    }
+
+    & > .list-price {
+      @include s.flexColumn;
+      background: s.$pqGray2;
+      flex: 1;
+      overflow: hidden;
+      padding: 30px 20px;
+
+      & > .search-bar {
+        border-bottom: 1px solid s.$pqGray3;
+        padding-bottom: 28px;
+      }
+
+      & > .list-prices {
+        @include s.flexColumn;
+        flex: 1;
+
+        & > virtual-scroller {
+          @include s.fixVirtualScroller();
+
+          ::ng-deep .scrollable-content {
+            & .item-container {
+              @include s.flexRow;
+              border-bottom: 1px solid rgba(66, 66, 66, 0.1);
+
+              & > .indicator {
+                @include s.flexRow;
+                flex: 0 0 8px;
+
+                &.active {
+                  background-color: s.$pqGreen;
+                }
+              }
+
+              & > .item {
+                display: grid;
+                grid-template-columns: 0.8fr 2fr 0.2fr;
+                grid-column-gap: 10px;
+                margin: 0 10px;
+                padding: 5px 0;
+                flex: 1;
+
+                & > .currency {
+                  @include s.flexColumn;
+                  gap: 5px;
+                  & > .titleCant {
+                    @include s.Roboto-Bold;
+                    @include s.escaledFontFormat(s.$textSize14to16, bold, s.$pqGreen);
+                  }
+                  & > .price-provider {
+                    @include s.Roboto-Bold;
+                    @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+                  }
+                }
+
+                & > .info {
+                  @include s.flexColumn;
+                  gap: 5px;
+                  justify-content: center;
+                  & > .total-product {
+                    @include s.Roboto-Bold;
+                    @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+
+                    & > img {
+                      height: 10px;
+                      margin: 0 5px;
+                      vertical-align: baseline;
+                    }
+
+                    & > span {
+                      color: s.$pqOrange2Semaforo;
+                      vertical-align: baseline;
+                    }
+                  }
+
+                  & > .prices {
+                    display: flex;
+                    & > label {
+                      @include s.Roboto-Bold;
+                      @include s.escaledFontFormat(s.$textSize10to12, bold, s.$pqBlack2);
+
+                      & > .black {
+                        @include s.Roboto-Regular;
+                        vertical-align: baseline;
+                      }
+
+                      & > .red {
+                        @include s.Roboto-Regular;
+                        color: s.$pqRed2;
+                        vertical-align: baseline;
+                      }
+
+                      & > .green {
+                        @include s.Roboto-Regular;
+                        color: s.$pqGreen3;
+                        vertical-align: baseline;
+                      }
+                    }
+                  }
+                }
+
+                & > .image {
+                  @include s.absoluteCenter;
+                  display: flex;
+
+                  & > img {
+                    height: 24px;
+                    cursor: pointer;
+                  }
+
+                  & > .disabled {
+                    pointer-events: none;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        & > .loading {
+          @include s.absoluteCenter;
+          @include s.flexColumn;
+          flex: 1;
+          min-height: 35px;
+          overflow: hidden;
+        }
+      }
+
+      & > .loading,
+      & > .without-results {
+        @include s.absoluteCenter;
+        @include s.flexColumn;
+        flex: 1;
+        min-height: 35px;
+        overflow: hidden;
+      }
+    }
+  }
+
+  & > .cambioListaPrecios {
+    @include s.flexColumn;
+    flex: 1;
+
+    & > .ajustePrecios {
+      @include s.flexColumn;
+      flex: 1 1 auto;
+      overflow: hidden;
+
+      & > .tabs {
+        flex: 0 0 auto;
+      }
+
+      & > .general-container-sections {
+        display: grid;
+        flex: 1 1 auto;
+        grid-template-columns: 100%;
+        overflow: hidden;
+
+        & > .price-container {
+          @include s.flexColumn;
+          flex: 1;
+          overflow-y: auto;
+
+          & > .provider-list-price,
+          & > .discount-freight,
+          & > .import,
+          & > .custom-agent-cost,
+          & > .expenses {
+            @include s.flexColumn;
+            align-items: center;
+            border-bottom: 1px solid s.$boxShadow;
+            padding: 15px;
+
+            & > * {
+              display: block;
+              max-width: 950px;
+            }
+          }
+
+          & > .fixed,
+          & > .utility {
+            align-items: center;
+            border-bottom: 1px solid s.$boxShadow;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+
+            & > * {
+              display: block;
+              max-width: 950px;
+            }
+          }
+        }
+
+        & > .send-time-container {
+          @include s.flexColumn;
+
+          & > div {
+            @include s.flexColumn;
+            align-items: center;
+            padding: 25px;
+
+            & > .green-title {
+              @include s.Novecento-Bold;
+              @include s.escaledFontFormat(s.$textSize14to16, bold, s.$pqGreen);
+              margin-bottom: 10px;
+              text-align: center;
+              width: 100%;
+            }
+
+            & > .route-name {
+              @include s.Roboto-Bold;
+              @include s.escaledFontFormat(s.$textSize14to16, bold, s.$pqBlack2);
+              text-align: center;
+            }
+          }
+
+          & > .route-details {
+            @include s.flexColumn;
+            border-top: 1px solid s.$boxShadow;
+          }
+        }
+      }
+
+      & > .botones {
+        @include s.flexRow;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 0;
+
+        & > .botonActive {
+          @include s.pqButton();
+        }
+
+        & > .botonDisable {
+          @include s.pqButtonDisable();
+        }
+      }
+    }
+
+    & > .withoutResults {
+      @include s.flexRow;
+      align-items: center;
+      flex: 1;
+    }
+  }
+}

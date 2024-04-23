@@ -1,0 +1,30 @@
+<app-pop-up-generic
+  id="request-with-errors-pop-up"
+  [activeButtons]="true"
+  [activeBtn]="true"
+  [height]="(viewType$ | async) === 'iPad' ? '660px' : '643px'"
+  [rightButtonLabel]="'notProcessed.generateCode' | translate"
+  [titleHeader]="'notProcessed.validateSettings' | translate"
+  [width]="(viewType$ | async) === 'iPad' ? '745px' : '785px'"
+  (evento)="onClose($event)"
+>
+  <div class="container">
+    <app-client-data
+      [customerName]="data?.customerName"
+      [purchaseOrder]="data?.purchaseOrder"
+      [paymentConditions]="data?.paymentConditions"
+    ></app-client-data>
+    <div class="resume">
+      <label>{{ data?.resume }}</label>
+    </div>
+    <div class="code">
+      <label>
+        {{ data?.description }} <br />
+        <span>{{ 'preProcessing.validityCodeMessagePart2' | translate }}</span>
+      </label>
+      <label>
+        {{ 'notProcessed.generateCodeQuestion' | translate }}
+      </label>
+    </div>
+  </div>
+</app-pop-up-generic>

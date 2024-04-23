@@ -1,0 +1,92 @@
+<div id="generate-order-graphics">
+  <div class="list">
+    <div class="header">
+      <label>2 · {{ 'planDispatchDetails.consolidate' | translate }}</label>
+    </div>
+    <div class="body">
+      <virtual-scroller
+        [enableUnequalChildrenSizes]="true"
+        [items]="(arrivalListGroup$ | async)?.Groups"
+        (vsUpdate)="arrivalListGroups = $event"
+      >
+        <div class="item" *ngFor="let item of arrivalListGroups">
+          <div class="top" [ngClass]="item.IsOpen && 'selected'" (click)="openProviderDispatchOrder(item.NombreProveedor)">
+            <div class="indicator"></div>
+            <div class="container">
+              <div class="first-text">
+                <label
+                  >#{{ item.Index }} · <span>{{ item.NombreProveedor }}</span></label
+                >
+                <img src="assets/Images/quotation/arrow_collapsible.svg" alt="Abrir" />
+              </div>
+              <div class="second-text" *ngIf="!item.IsOpen">
+                <label class="arrival-list"
+                  >{{ item.TotalResults }}
+                  {{
+                    item.TotalResults === 1 ? ('common.arrivalList' | translate) : ('common.arrivalLists' | translate)
+                  }}</label
+                >
+                <label class="totals"
+                  >{{ item.NumeroDePiezas }}
+                  {{ item.NumeroDePiezas === 1 ? ('common.pza' | translate) : ('common.pzas' | translate) }} ·
+                  {{ item.TotalUSD | currency: 'USD':'symbol-narrow':'1.2-2' }}</label
+                >
+                <label class="date" [ngClass]="'red'">{{ item.FechaEstimadaEntrega | dateFormatSlashShort }}</label>
+              </div>
+            </div>
+          </div>
+          <div class="bottom" *ngIf="item.IsOpen">
+            <div class="sub-items">
+              <div class="sub-item" *ngFor="let subItem of item.Results; let i = index">
+                <label class="arrival-list"
+                  >#{{ i + 1 }} · <span>LA-{{ subItem.Folio || 'N/D' }}</span></label
+                >
+                <label class="totals"
+                  >{{ subItem.NumeroDePiezas }}
+                  {{ subItem.NumeroDePiezas === 1 ? ('common.pza' | translate) : ('common.pzas' | translate) }} ·
+                  {{ subItem.TotalUSD | currency: 'USD':'symbol-narrow':'1.2-2' }}</label
+                >
+                <label class="date" [ngClass]="'red'">{{ subItem.FEAMasAntigua | dateFormatSlashShort }}</label>
+              </div>
+            </div>
+            <div class="footer">
+              <label
+                >#{{ item.TotalResults }}
+                {{ item.TotalResults === 1 ? ('common.arrivalList' | translate) : ('common.arrivalLists' | translate) }}</label
+              >
+            </div>
+          </div>
+        </div>
+      </virtual-scroller>
+    </div>
+    <div class="footer">
+      <label
+        >#{{ (arrivalListGroup$ | async)?.TotalGroups }}
+        {{
+          (arrivalListGroup$ | async)?.TotalGroups === 1 ? ('common.provider' | translate) : ('common.providers' | translate)
+        }}</label
+      >
+    </div>
+  </div>
+  <div class="donutChart">
+    <div class="header">
+      <img src="assets/Images/plan-dispatch/list.svg" alt="Lista" (click)="emitValue()" />
+      <img src="assets/Images/plan-dispatch/donut-hover.svg" />
+    </div>
+    <div class="chart">
+      <app-doughnut-chart [typeChart]="1" [titleDetails]="''"></app-doughnut-chart>
+    </div>
+  </div>
+  <div class="barGraphic">
+    <div class="header">
+      <label>3 · {{ 'planDispatchDetails.documentation' | translate }}</label>
+    </div>
+    <div class="chart">
+      <app-bar-chart [values]="" [fontColorBottom]="'#008894'" [textDataLabel]="'Partidas'"></app-bar-chart>
+    </div>
+    <div class="footer">
+      <button [ngClass]="'active'">{{ 'common.save' | translate }}</button>
+      <button [ngClass]="'active-green'">{{ 'common.generate' | translate }}</button>
+    </div>
+  </div>
+</div>

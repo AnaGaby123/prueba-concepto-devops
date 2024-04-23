@@ -1,0 +1,35 @@
+<div id="plan-dispatch-details-steps">
+  <div class="bar-activites">
+    <app-bar-activities
+      [options]="steps$ | async"
+      [selectedOption]="stepSelected$ | async"
+      [enableLeftArrow]="true"
+      [enableRightArrow]="stepsValidator$ | async"
+      (handleOptionSelected)="changeStep($event)"
+    >
+    </app-bar-activities>
+  </div>
+  <ng-container [ngSwitch]="stepSelectedName$ | async">
+    <app-import-settings class="outlet" *ngSwitchCase="'imports-settings'"></app-import-settings>
+    <app-consolidate class="outlet" *ngSwitchCase="'consolidate'"></app-consolidate>
+    <app-documentation class="outlet" *ngSwitchCase="'documentation'"></app-documentation>
+    <app-generate-order class="outlet" *ngSwitchCase="'generate-order'"></app-generate-order>
+  </ng-container>
+</div>
+<app-pop-up-generic *ngIf="popIsOpen" [width]="(viewType$ | async) === 'macBookAir' ? '620px' : '490px'" [height]="'auto'">
+  <div class="pop-up-content">
+    <div class="image">
+      <img src="assets/Images/close-offer/warning.svg" />
+    </div>
+    <div class="text">
+      <label>
+        <span>{{ 'No se puede continuar al siguiente paso' }}</span
+        ><br />
+        {{ 'por falta de documentación en Listas de Arribo asociadas a la Orden de Despacho' }}</label
+      >
+    </div>
+    <div class="button">
+      <button (click)="handleOpenPop()">{{ 'Ok' }}</button>
+    </div>
+  </div>
+</app-pop-up-generic>

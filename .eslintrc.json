@@ -1,0 +1,152 @@
+{
+  "env": {
+    "browser": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@angular-eslint/recommended",
+    "plugin:prettier/recommended",
+    "plugin:@angular-eslint/recommended--extra"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": ["./tsconfig.json"]
+  },
+  "plugins": ["@typescript-eslint", "@angular-eslint", "prettier"],
+  "root": true,
+  "ignorePatterns": ["*/**/*.html", "projects/**/*"],
+  "rules": {
+    "prettier/prettier": [
+      "warn",
+      {
+        "singleQuote": true,
+        "arrowParens": "always",
+        "proseWrap": "always",
+        "semi": true,
+        "bracketSpacing": false,
+        "jsxBracketSameLine": true,
+        "trailingComma": "all",
+        "printWidth": 100
+      }
+    ],
+    "arrow-body-style": "off",
+    "prefer-arrow-callback": "off"
+  },
+  "overrides": [
+    {
+      "files": ["*.ts"],
+      "parser": "@typescript-eslint/parser",
+      "plugins": ["@typescript-eslint", "@angular-eslint", "prettier"],
+      "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@angular-eslint/recommended",
+        "plugin:@angular-eslint/recommended--extra"
+      ],
+      "rules": {
+        "no-debugger": "off",
+        "capitalized-comments": "off",
+        "curly": "warn",
+        "default-case": "warn",
+        "default-case-last": "warn",
+        "eqeqeq": "error",
+        "max-params": ["error", 20],
+        "no-confusing-arrow": "warn",
+        "no-empty-function": [
+          "error",
+          {
+            "allow": ["constructors"]
+          }
+        ],
+        "@typescript-eslint/no-non-null-assertion": ["off"],
+        "no-extra-boolean-cast": "off",
+        "no-unneeded-ternary": "warn",
+        "no-unused-expressions": "error",
+        "no-var": "error",
+        "prefer-const": "error",
+        "prefer-destructuring": "warn",
+        "prefer-object-spread": "warn",
+        "prefer-template": "warn",
+        "require-await": "error",
+        "sort-keys": "warn",
+        "sort-vars": "warn",
+        "spaced-comment": ["warn", "always"],
+        "array-bracket-newline": ["warn", "consistent"],
+        "array-bracket-spacing": ["warn", "never"],
+        "array-element-newline": ["warn", "consistent"],
+        "arrow-spacing": "warn",
+        "comma-spacing": ["warn"],
+        "indent": ["warn", 2],
+        "key-spacing": [
+          "warn",
+          {
+            "beforeColon": false,
+            "afterColon": true
+          }
+        ],
+        "keyword-spacing": "warn",
+        "max-len": [
+          "warn",
+          {
+            "code": 100,
+            "tabWidth": 2,
+            "ignoreUrls": true,
+            "ignoreRegExpLiterals": true,
+            "ignoreStrings": true
+          }
+        ],
+        "no-multiple-empty-lines": [
+          "warn",
+          {
+            "max": 1,
+            "maxEOF": 1,
+            "maxBOF": 0
+          }
+        ],
+        "no-trailing-spaces": [
+          "warn",
+          {
+            "ignoreComments": true
+          }
+        ],
+        "quotes": ["warn", "single"],
+        "semi": ["error", "always"],
+        "semi-spacing": [
+          "warn",
+          {
+            "before": false
+          }
+        ],
+        "space-in-parens": ["warn", "never"],
+        "@angular-eslint/directive-selector": [
+          "error",
+          {
+            "type": "attribute",
+            "prefix": "app",
+            "style": "camelCase"
+          }
+        ],
+        "@angular-eslint/component-selector": [
+          "error",
+          {
+            "type": "element",
+            "style": "kebab-case"
+          }
+        ],
+        "@angular-eslint/no-empty-lifecycle-method": ["off"],
+        "@typescript-eslint/no-empty-function": [
+          "error",
+          {
+            "allow": ["constructors"]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["*.html"],
+      "extends": ["plugin:@angular-eslint/template/recommended", "plugin:prettier/recommended"],
+      "rules": {}
+    }
+  ]
+}

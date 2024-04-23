@@ -1,0 +1,220 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  width: 100%;
+  height: 100%;
+
+  & > .container {
+    @include s.flexColumn;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+
+    & > .body {
+      @include s.flexColumn;
+      flex: 1 1 auto;
+      overflow: hidden;
+
+      & > .filter-container {
+        flex: 0 0 auto;
+        margin-bottom: 10px;
+      }
+
+      & > .center-container {
+        @include s.flexColumn;
+        flex: 1 1 auto;
+        padding: 20px 0 15px 0;
+
+        & > .virtual-scroller {
+          @include s.absolute100;
+          @include s.fixVirtualScroller;
+          flex: 1 1 auto;
+
+          & ::ng-deep .scrollable-content {
+            @include s.itemsCardWithGrid(380px, s.$defaultGridItemHeightSize);
+          }
+        }
+
+        & > .loading {
+          @include s.absolute100;
+          @include s.gridCenter;
+        }
+
+        & > .loading-container {
+          flex: 0 0 auto;
+          margin: 10px 0;
+        }
+      }
+
+      & > .table-corporates {
+        height: calc(100% - 25px);
+        width: 100%;
+
+        .corporationContainer {
+          padding-bottom: 25px;
+          width: 100%;
+
+          & > .corporationName {
+            border-bottom: 1px solid #eceef0;
+            padding-bottom: 2px;
+            width: 100%;
+
+            & > p:nth-of-type(1) {
+              @include s.escaledFontFormat(s.$textSize16to21, bold, s.$pqGreen);
+              @include s.Novecento-Bold;
+            }
+          }
+
+          & > .clientsContainer {
+            @include s.flexRowWrap;
+            padding-top: 5px;
+            width: 100%;
+
+            & > .client {
+              align-self: stretch;
+              height: 280px;
+              margin: 0 1%;
+              max-width: initial;
+              padding: 10px 0;
+              position: relative;
+              width: 31.3%;
+              @media screen and (min-width: 93.75em) {
+                // 1500px
+                margin: 0 1%;
+                max-width: initial;
+                width: 23%;
+              }
+              @media screen and (min-width: 117.5em) {
+                // 1880px
+                margin: 0 1%;
+                max-width: initial;
+                width: 18%;
+              }
+              @media screen and (min-width: 140em) {
+                // 2240px
+                margin: 0 1%;
+                max-width: initial;
+                width: 14.6%;
+              }
+
+              &:hover {
+                & > .centerPagination {
+                  & > img:nth-of-type(1) {
+                    display: none;
+                  }
+
+                  & > img:nth-of-type(2) {
+                    display: block;
+                  }
+                }
+              }
+
+              & > .centerPagination {
+                @include s.absoluteCenter;
+                @include s.flexRow;
+                height: 170px;
+                width: 100%;
+
+                & > img {
+                  animation: animatezoom 0.2s;
+                  width: 110px;
+                }
+
+                & > img:nth-of-type(1) {
+                  display: block;
+                }
+
+                & > img:nth-of-type(2) {
+                  display: none;
+                }
+              }
+
+              & > .footContent {
+                @include s.absoluteCenter;
+                @include s.flexColumn;
+                height: calc(100% - 170px);
+                justify-content: flex-start;
+                line-height: 20px;
+                padding-top: 10px;
+                width: 100%;
+
+                & > span:nth-of-type(1) {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize15to18, regular, s.$pqBlack2);
+                  @include s.multiLineTextTruncateSinHeight(2, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+                  padding: 0 10px;
+                  text-align: center;
+                }
+
+                & > label:nth-of-type(1) {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize13to14, regular, s.$pqBlack2);
+                }
+              }
+
+              & > .rightSeparator {
+                @include s.flexRow;
+                background: linear-gradient(to top, #ffffff 2%, #bcbcbc 72%, #ffffff 95%) 100%;
+                height: 100%;
+                position: absolute;
+                right: calc(-5% + 1px);
+                top: 0;
+                width: 1px;
+              }
+
+              & > .downSeparator {
+                @include s.flexRow;
+                background: linear-gradient(to left, #ffffff 2%, #bcbcbc 72%, #ffffff 95%) 100%;
+                bottom: 0;
+                height: 1.5px;
+                left: 0;
+                position: absolute;
+                width: 100%;
+              }
+            }
+          }
+        }
+      }
+
+      & > .totals {
+        @include s.absoluteCenter;
+        @include s.flexRow;
+        flex: 0 0 30px;
+        width: auto;
+        padding-bottom: 15px;
+
+        & > p {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+        }
+      }
+    }
+
+    & > .footer {
+      @include s.flexRowNoWrap;
+      align-items: center;
+      border-top: 2px solid s.$pqBlack2;
+      flex: 0 0 57px;
+      justify-content: flex-end;
+      padding: 0 20px;
+
+      & > .mesh {
+        height: 18px;
+        position: relative;
+        width: 18px;
+        z-index: 2;
+      }
+
+      & > button {
+        @include s.pqfButton();
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+  }
+}

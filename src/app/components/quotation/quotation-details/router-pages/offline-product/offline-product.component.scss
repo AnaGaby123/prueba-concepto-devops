@@ -1,0 +1,213 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100();
+  @include s.flexColumn;
+  section {
+    @include s.flexColumn();
+    height: 100%;
+    justify-content: flex-start;
+    padding: 0 20px 20px 20px;
+    row-gap: 35px;
+    width: auto;
+
+    & > .title {
+      @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+      @include s.Novecento-Bold();
+      border-bottom: 1px solid s.$pqBlack2;
+      padding: 20px 0 13px;
+    }
+
+    & > .form {
+      @include s.flexColumn();
+      grid-template-rows: 40px;
+      justify-content: space-between;
+      overflow: auto;
+      padding: 0 55px 0;
+
+      & > .first-content {
+        @include s.absolute100();
+        display: grid;
+        grid-template-columns: 6fr 4fr 1fr;
+        row-gap: 53px;
+        column-gap: 15px;
+        margin-bottom: 23px;
+
+        & > .mark {
+          @include s.flexColumn();
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize13to18, '', s.$pqBlack2);
+            @include s.Roboto-Regular();
+          }
+
+          & > .text-black {
+            @include s.Roboto-Bold();
+          }
+        }
+
+        & > .type-family {
+          @include s.flexColumn();
+          grid-column-end: span 2;
+
+          & > .provider-name {
+            @include s.escaledFontFormat(s.$textSize14to19, '', s.$pqGreen);
+            @include s.Roboto-Bold-Italic();
+            text-align: end;
+            margin-top: 9px;
+          }
+          & > .alert-message {
+            @include s.Roboto-Regular-Italic();
+            @include s.escaledFontFormat(s.$textSize14to16, '', s.$alert-c);
+            margin-top: 10px;
+            text-align: justify;
+          }
+        }
+      }
+
+      & > .second-content {
+        @include s.absolute100();
+        @include s.flexColumn();
+
+        .text-pieces-quotation {
+          margin-bottom: 25px;
+        }
+
+        .text-content-product {
+          margin-bottom: 42px;
+        }
+
+        .text-content-notes {
+          margin-bottom: 36px;
+        }
+      }
+
+      & > .data-legends {
+        @include s.flexRow();
+        flex: 0 auto;
+        justify-content: flex-end;
+        justify-items: flex-end;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize13to18, '', s.$pqGreen);
+          @include s.Roboto-Regular();
+        }
+      }
+    }
+
+    & > .buttons {
+      @include s.flexRow();
+      align-items: flex-end;
+      flex: 1 1 auto;
+      justify-content: space-between;
+      width: 100%;
+      $max-width-map: (
+        'base': 180px,
+        'macBookAir': 200px,
+      );
+
+      & > .buttonActive {
+        @include s.pqfButton($max-width-map: $max-width-map);
+      }
+
+      & > .buttonDisable {
+        @include s.pqfDisableButton($max-width-map: $max-width-map);
+        pointer-events: none;
+      }
+    }
+  }
+
+  app-pop-up-generic {
+    .general-content {
+      margin: 0px 40px;
+
+      .content-img {
+        @include s.flexRow;
+        align-items: center;
+        justify-content: center;
+
+        .alert-img {
+          width: 58px;
+          height: 58px;
+        }
+
+        margin-bottom: 29px;
+      }
+
+      .product-details {
+        @include s.flexColumn;
+        margin-bottom: 30px;
+
+        .product {
+          @include s.escaledFontFormat(s.$textSize21to26, bold, s.$pqBlack2);
+          @include s.Roboto-Regular();
+        }
+
+        .name-product {
+          @include s.escaledFontFormat(s.$textSize21to26, bold, s.$pqGreen);
+          @include s.multiLineTextTruncate(2, bold, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+          @include s.Roboto-Bold();
+        }
+
+        .available {
+          @include s.escaledFontFormat(s.$textSize21to26, bold, s.$pqBlack2);
+          @include s.Roboto-Regular();
+        }
+      }
+
+      .question {
+        @include s.escaledFontFormat(s.$textSize21to26, bold, s.$pqBlack2);
+        @include s.Roboto-Bold();
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    section {
+      & > .form {
+        flex: 1 0 auto;
+
+        & > .first-content {
+          flex: 0 0 225px;
+          grid-gap: 25px;
+
+          & > .type-family {
+            justify-content: flex-start;
+          }
+
+          & > .mark {
+            flex: 0 0 147px;
+          }
+        }
+
+        & > .second-content {
+          .text-pieces-quotation {
+            height: auto;
+            margin-bottom: 60px;
+          }
+
+          .text-content-product {
+            height: auto;
+            margin-bottom: 70px;
+          }
+
+          .text-content-notes {
+            height: auto;
+            margin-bottom: 30px;
+          }
+        }
+
+        & > .data-legends {
+          & > label {
+            font-size: 16px;
+            text-align: end;
+          }
+        }
+      }
+    }
+  }
+}

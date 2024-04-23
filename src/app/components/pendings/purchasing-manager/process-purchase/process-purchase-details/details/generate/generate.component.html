@@ -1,0 +1,453 @@
+<div id="generate">
+  <div class="first-section">
+    <div class="content">
+      <label>{{
+        (totalFamilies$ | async) +
+          ' ' +
+          ((totalFamilies$ | async) === 1
+            ? ('processPurchase.details.family' | translate)
+            : ('processPurchase.details.families' | translate))
+      }}</label>
+      <app-pqf-card
+        [options]="cardOptions$ | async"
+        [isLoading]="isLoadingGeneralData$ | async"
+        [enableMessage]="true"
+        [withoutOptionsMessage]="'Sin Familias'"
+        (handleOptionSelected)="handleOptionSelected($event)"
+      ></app-pqf-card>
+      <div class="container-tabs">
+        <app-tabs
+          *ngIf="!(isLoadingGeneralData$ | async)"
+          [options]="tabOptions$ | async"
+          [tapSelected]="tapSelected$ | async"
+          (onSelectOption)="onSelectOption($event)"
+        >
+        </app-tabs>
+      </div>
+      <div class="container-filters">
+        <div class="hamburger-menu">
+          <app-hamburger-menu
+            [options]="dataByType$ | async"
+            [value]="(dataByTypeSelected$ | async).value"
+            (valueEmit)="selectFilterByType($event)"
+          >
+          </app-hamburger-menu>
+        </div>
+        <div class="app-search">
+          <app-search
+            [placeholder]="'Catálogo, Descripción, Cliente, #Pedido Interno'"
+            [searchTerm]="searchTerm$ | async"
+            (textSearch)="handleKeySearch($event)"
+          >
+          </app-search>
+        </div>
+      </div>
+      <div class="container-content">
+        <virtual-scroller
+          *ngIf="(!(isLoadingProducts$ | async) && (products$ | async).length > 0) || (isLoadingMoreProducts$ | async)"
+          [items]="products$ | async"
+          (vsUpdate)="productsResults = $event"
+          (vsChange)="vsChange($event)"
+          (vsEnd)="fetchMoreProducts($event)"
+          id="all-cards"
+          cdkDropList
+          cdkDropListSortingDisabled
+          cdkDropListConnectedTo="selected-products"
+          [cdkDropListData]="productsResults"
+          [cdkDropListEnterPredicate]="noReturnPredicate"
+        >
+          <div *ngFor="let product of productsResults" [cdkDragData]="product" cdkDrag class="element">
+            <div class="card drag">
+              <div class="card-content">
+                <div class="body">
+                  <div class="first-column">
+                    <div class="line-one">
+                      <label class="label-index"
+                        >{{ '#' + product.Index + ' ·' }}
+                        <span class="code">{{ product.Catalogo + ' ·' }}</span>
+                        <span class="desc">{{ product.Descripcion }}</span>
+                        <span class="mark">{{ '·  ' + product.NombreProveedor }}</span>
+                      </label>
+                    </div>
+                    <div class="footer-labels">
+                      <img
+                        alt="item_type"
+                        [src]="
+                          product.PartidaRegular
+                            ? '/assets/Images/labels/regular.svg'
+                            : product.FleteExpress
+                            ? '/assets/Images/labels/flete_express.svg'
+                            : product.PartidaProgramada
+                            ? '/assets/Images/labels/programada-blue.svg'
+                            : ''
+                        "
+                      />
+                      <label class="blue">
+                        {{
+                          ' · ' +
+                            product.NumeroDePiezas +
+                            ' ' +
+                            (product.NumeroDePiezas === 1
+                              ? ('processPurchase.details.piece' | translate)
+                              : ('processPurchase.details.pieces' | translate)) +
+                            ' · CU: ' +
+                            ((product.PrecioLista | currency: product.ClaveMoneda) + ' ' + product.ClaveMoneda) +
+                            ' · CT: ' +
+                            ((product.TotalPartida | currency: product.ClaveMoneda) + ' ' + product.ClaveMoneda)
+                        }}
+                        <span class="fee-green">{{
+                          ' · FEE+: ' + (product.FechaEstimadaEntrega | date: 'dd/MMM/yyyy') + ' ·'
+                        }}</span>
+                        <!--TODO: VALIDAR RANGO DE FECHAS-->
+                      </label>
+                      <div class="cliente">
+                        <div class="tooltip">
+                          <div>
+                            <p>{{ ' Cliente · ' }}</p>
+                          </div>
+                          <div class="tooltip-text">
+                            <p>{{ product.NombreCliente }}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <label class="pi">{{ ' PI: ' + product.FolioPedidoInterno }}</label>
+                    </div>
+                  </div>
+                  <div class="second-column" [ngClass]="product.StockDisponible ? 'between' : 'end'">
+                    <img
+                      *ngIf="product.StockDisponible"
+                      [id]="product.stockPop.elementId"
+                      (click)="handlePopUpStock(product.IdOcPendienteCompraProducto, true)"
+                      src="assets/Images/purchasing-manager/stock.svg"
+                      alt="stock"
+                    />
+                    <img alt="add" src="assets/Images/mas.svg" (click)="addProductFromButton(product)" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </virtual-scroller>
+        <div class="is-loading" *ngIf="(isLoadingProducts$ | async) && !(isLoadingMoreProducts$ | async)">
+          <app-loading></app-loading>
+        </div>
+        <app-loading *ngIf="isLoadingMoreProducts$ | async"></app-loading>
+        <div class="without-results" *ngIf="(products$ | async).length === 0 && !(isLoadingProducts$ | async)">
+          <app-without-results [title]="'Sin resultados'"></app-without-results>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <div>
+        <label>{{ '#' + (currentTotals$ | async)?.results }}</label>
+        <label>{{
+          (currentTotals$ | async)?.allPieces +
+            ' ' +
+            ((currentTotals$ | async)?.allPieces === 1
+              ? ('processPurchase.details.piece' | translate)
+              : ('processPurchase.details.pieces' | translate))
+        }}</label>
+        <label>{{
+          ('processPurchase.details.amountTotal' | translate) +
+            ': ' +
+            ((currentTotals$ | async)?.amount | currency: 'USD') +
+            ' USD'
+        }}</label>
+      </div>
+    </div>
+  </div>
+  <div class="second-section">
+    <div class="content">
+      <div>
+        <label
+          >{{ 'processPurchase.details.purchaseToFamily' | translate }}: <span>{{ selectedFamilyName$ | async }}</span></label
+        >
+      </div>
+      <app-provider-contacts
+        [contactList]="selectContactsProvidersDropList$ | async"
+        [selectedContact]="providerContactSelected$ | async"
+        (emitResponse)="setContactSelectedProvider($event)"
+      >
+      </app-provider-contacts>
+      <div class="container-blue">
+        <div>
+          <label>{{ '* ' + ('processPurchase.details.companyThatBuys' | translate) }}</label>
+          <div>
+            <app-drop-down-list
+              [title]="''"
+              [activeMinWidth]="false"
+              [subtitleActive]="true"
+              [items]="companyThatBuysOptions$ | async"
+              [itemSelected]="companyThatBuysSelected$ | async"
+              (valueDropList)="saveInputValue($event, 'companyThatBuys')"
+            >
+            </app-drop-down-list>
+          </div>
+        </div>
+        <div>
+          <label>{{ '* ' + ('processPurchase.details.shippingCompany' | translate) }}</label>
+          <div>
+            <app-drop-down-list
+              [title]="''"
+              [activeMinWidth]="false"
+              [subtitleActive]="true"
+              [disable]="isMexican$ | async"
+              [items]="shippingCompanyOptions$ | async"
+              [itemSelected]="shippingCompanySelected$ | async"
+              (valueDropList)="saveInputValue($event, 'shippingCompany')"
+            >
+            </app-drop-down-list>
+          </div>
+        </div>
+      </div>
+      <div class="container-content">
+        <div
+          class="listaDrop"
+          id="selected-products"
+          cdkDropList
+          cdkDropListSortingDisabled
+          [cdkDropListData]="productsToGenerateOrder$ | async"
+          (cdkDropListDropped)="dropProduct($event)"
+        >
+          <div
+            *ngFor="let product of productsToGenerateOrder$ | async; let indice = index; trackBy: handleTrackByProduct"
+            class="element"
+          >
+            <div class="card">
+              <div class="card-content">
+                <div class="body">
+                  <div class="first-column">
+                    <div class="line-one">
+                      <label class="label-index"
+                        >{{ '#' + product.Index + ' ·' }}
+                        <span class="code">{{ product.Catalogo + ' ·' }}</span>
+                        <span class="desc">{{ product.Descripcion }}</span>
+                        <span class="mark">{{ '·  ' + product.NombreProveedor }}</span>
+                      </label>
+                    </div>
+                    <div class="footer-labels">
+                      <img
+                        [src]="
+                          product.PartidaRegular
+                            ? '/assets/Images/labels/regular.svg'
+                            : product.FleteExpress
+                            ? '/assets/Images/labels/flete_express.svg'
+                            : product.PartidaProgramada
+                            ? '/assets/Images/labels/programada-blue.svg'
+                            : ''
+                        "
+                      />
+                      <label class="blue">
+                        {{
+                          ' · ' +
+                            product.NumeroDePiezas +
+                            (product.NumeroDePiezas === 1 ? ' Pza' : ' Pzas') +
+                            ' · CU: ' +
+                            ((product.PrecioLista | currency: product.ClaveMoneda) + ' ' + product.ClaveMoneda) +
+                            ' · CT: ' +
+                            ((product.TotalPartida | currency: product.ClaveMoneda) + ' ' + product.ClaveMoneda)
+                        }}
+                        <span class="fee-green">{{
+                          ' · FEE+: ' + (product.FechaEstimadaEntrega | date: 'dd/MMM/yyyy') + ' ·'
+                        }}</span>
+                      </label>
+                      <div class="cliente">
+                        <div class="tooltip">
+                          <div>
+                            <p>{{ ' Cliente · ' }}</p>
+                          </div>
+                          <div class="tooltip-text">
+                            <p>{{ product.NombreCliente }}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <label class="pi">{{ ' PI: ' + product.FolioPedidoInterno }}</label>
+                    </div>
+                  </div>
+                  <div class="second-column top-end">
+                    <img alt="close" (click)="removeProduct(product)" src="assets/Images/cerrar.svg" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="withoutResults" *ngIf="lodashIsEmpty(productsToGenerateOrder$ | async)">
+            <app-without-results [title]="'Agregue o arrastre los productos de lista para generar una orden de compra'">
+            </app-without-results>
+          </div>
+        </div>
+      </div>
+      <div class="footer-content">
+        <div>
+          <label>{{ '#' + (productsToGenerateOrder$ | async).length }}</label>
+          <label>{{
+            (pzasToGenerateOrder$ | async) +
+              ' ' +
+              ((pzasToGenerateOrder$ | async) === 1
+                ? ('processPurchase.details.piece' | translate)
+                : ('processPurchase.details.pieces' | translate))
+          }}</label>
+        </div>
+        <div>
+          <div>
+            <label>{{ ('processPurchase.details.subtotal' | translate) + ':' }}</label>
+            <label>{{ ('processPurchase.details.tax' | translate) + ':' }}</label>
+            <label>{{ ('processPurchase.details.total' | translate) + ':' }}</label>
+          </div>
+          <div>
+            <label>{{ (subtotal$ | async | currency: 'USD') + ' USD' }}</label>
+            <label>{{ (tax$ | async | currency: 'USD') + ' USD' }}</label>
+            <label>{{ (total$ | async | currency: 'USD') + ' USD' }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <div>
+        <button
+          *ngIf="nameLinkTo$ | async"
+          [ngClass]="(productsToGenerateOrder$ | async).length === 0 ? 'btn-link-to-disable' : 'btn-link-to'"
+          [disabled]="(productsToGenerateOrder$ | async).length === 0"
+          (click)="handleQuestionPop(QUESTION_POP, true)"
+        >
+          {{ 'Vincular a ' + (nameLinkTo$ | async) }}
+        </button>
+      </div>
+      <div>
+        <button
+          class="btn-generate-oc"
+          [ngClass]="
+            (productsToGenerateOrder$ | async).length === 0 || !(validationDropDownList$ | async)
+              ? 'btn-generate-oc-disable'
+              : 'btn-generate-oc'
+          "
+          [disabled]="(productsToGenerateOrder$ | async).length === 0 || !(validationDropDownList$ | async)"
+          (click)="handleMailPop(MAIL_POP, true)"
+        >
+          {{ 'generar oc' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<app-pop-up-generic
+  id="question-pop-up"
+  *ngIf="popUps.question.isOpen"
+  [activeButtons]="true"
+  [rightButtonLabel]="'Aceptar'"
+  [activeBtn]="true"
+  [width]="viewType === 'iPad' ? '520px' : '520px'"
+  [height]="viewType === 'iPad' ? '340px' : '340px'"
+  (evento)="handleQuestionPop(QUESTION_POP, false, $event)"
+>
+  <div class="container">
+    <img src="assets/Images/alerta.svg" alt="alert" />
+    <div>
+      <label>{{ 'processPurchase.details.questionAddProductsFirstPart' | translate }}</label>
+    </div>
+    <div>
+      <label>{{
+        (productsToGenerateOrder$ | async).length +
+          ((productsToGenerateOrder$ | async).length === 1 ? ' Producto a' : ' Productos a') +
+          ' ' +
+          (nameLinkTo$ | async) +
+          '?'
+      }}</label>
+    </div>
+  </div>
+</app-pop-up-generic>
+<!--TODO: CAMBIAR POR DIALOG-->
+<app-pop-up-send-email
+  *ngIf="isOpenPopUpMail$ | async"
+  [titleHeader]="'Generar OC'"
+  [additionalText]="fileName$ | async"
+  [activeContacts]="true"
+  [validateOnlyContact]="false"
+  [mailList]="mailList$ | async"
+  [contacts]="contactsList$ | async"
+  [subject]="subject$ | async"
+  (emitResponse)="handleMailPop(MAIL_POP, false, $event)"
+>
+</app-pop-up-send-email>
+<app-pop-up-generic
+  id="not-add-pop-up"
+  *ngIf="popUps.notAdd.isOpen"
+  [activeButtons]="true"
+  [rightButtonLabel]="'Aceptar'"
+  [activeBtn]="true"
+  [onlyOneButton]="true"
+  [width]="viewType === 'iPad' ? '520px' : '520px'"
+  [height]="viewType === 'iPad' ? '340px' : '340px'"
+  (evento)="handlePopNotAdd($event)"
+>
+  <div class="container">
+    <img src="assets/Images/alerta.svg" alt="alert" />
+    <div>
+      <label>{{ 'processPurchase.details.productsCantAdd' | translate }}</label>
+    </div>
+    <div>
+      <label
+        >{{
+          flagNotAdd === 'isNormal'
+            ? ('processPurchase.details.isNormal' | translate)
+            : ('processPurchase.details.isDifferentToNormal' | translate)
+        }}
+      </label>
+    </div>
+  </div>
+</app-pop-up-generic>
+<app-pop-up-generic
+  id="not-change-family-pop-up"
+  *ngIf="popUps.notChangeFamily.isOpen"
+  [activeButtons]="true"
+  [rightButtonLabel]="'Aceptar'"
+  [activeBtn]="true"
+  [onlyOneButton]="true"
+  [width]="viewType === 'iPad' ? '520px' : '520px'"
+  [height]="viewType === 'iPad' ? '340px' : '340px'"
+  (evento)="handleQuestionPop(NOT_CHANGE_FAMILY, false)"
+>
+  <div class="container">
+    <img src="assets/Images/alerta.svg" alt="alert" />
+    <div>
+      <label>{{ 'processPurchase.details.notChangeFamilyTitle' | translate }}</label>
+    </div>
+    <div>
+      <label>{{ 'processPurchase.details.notChangeFamilyMessage' | translate }}</label>
+    </div>
+  </div>
+</app-pop-up-generic>
+<div *ngFor="let product of products$ | async">
+  <app-custom-position-pop-up
+    *ngIf="product.stockPop.isOpen && product.stockPop.isInRange"
+    id="pop-up-stock"
+    [target]="getElement(product.stockPop.elementId)"
+    [popUpPosition]="product.stockPop.position"
+    [style.z-index]="product.stockPop.zIndex"
+    [minWidth]="viewType === viewIpad ? '300px' : '400px'"
+    [maxWidth]="viewType === viewIpad ? '300px' : '400px'"
+    [minHeight]="viewType === viewIpad ? '100px' : '130px'"
+    [maxHeight]="viewType === viewIpad ? '100px' : '130px'"
+    (closeEmitter)="handlePopUpStock(product.IdOcPendienteCompraProducto, false)"
+  >
+    <div class="container-stock">
+      <label *ngIf="product.NumeroPiezasOcPartidaStock > product.NumeroDePiezas"
+        >Se {{ product.NumeroDePiezas === 1 ? 'tomará' : 'tomarán' }}
+        <span>{{ product.NumeroDePiezas }} {{ product.NumeroDePiezas === 1 ? 'pza' : 'pzas' }} de</span>
+        <span> Stock</span>
+      </label>
+      <label *ngIf="product.NumeroPiezasOcPartidaStock <= product.NumeroDePiezas"
+        >Se {{ product.NumeroPiezasOcPartidaStock === 1 ? 'tomará' : 'tomarán' }}
+        <span>{{ product.NumeroPiezasOcPartidaStock }} {{ product.NumeroPiezasOcPartidaStock === 1 ? 'pza' : 'pzas' }} de</span>
+        <span> Stock</span>
+      </label>
+      <button
+        class="btn-accept-ipad"
+        [ngClass]="viewType === viewIpad ? 'btn-accept-ipad' : 'btn-accept'"
+        (click)="takePiecesOfStock(product)"
+      >
+        {{ 'Aceptar' }}
+      </button>
+    </div>
+  </app-custom-position-pop-up>
+</div>

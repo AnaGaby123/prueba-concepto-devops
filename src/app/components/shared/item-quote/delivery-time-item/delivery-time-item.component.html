@@ -1,0 +1,35 @@
+<div
+  class="delivery-time-container"
+  [style.cursor]="columnDeliveryTime?.isEdit ? 'pointer' : ''"
+  (click)="handleClick($event, {}, true, nameActionsInternalSalesItem.DeliveryTimeScheduleAction)"
+>
+  <label
+    class="days"
+    *ngIf="columnDeliveryTime?.days >= 0 || columnDeliveryTime?.days !== ''"
+    [style.cursor]="columnDeliveryTime?.isEdit ? 'pointer' : ''"
+    >{{ printDays(columnDeliveryTime?.days) }}</label
+  >
+  <label
+    class="type"
+    *ngIf="
+      columnDeliveryTime.isFreight ||
+      columnDeliveryTime.isProgramming ||
+      columnDeliveryTime.isFreight === false ||
+      columnDeliveryTime.isProgramming === false
+    "
+    [ngClass]="columnDeliveryTime?.isFreight ? 'freight' : columnDeliveryTime?.isProgramming ? 'programming' : 'regular'"
+    [style.cursor]="columnDeliveryTime?.isEdit ? 'pointer' : ''"
+    [style.text-decoration]="columnDeliveryTime?.isEdit ? 'underline' : ''"
+  >
+    {{
+      columnDeliveryTime?.isFreight
+        ? ('descriptionItemQuote.express' | translate)
+        : columnDeliveryTime?.isProgramming
+        ? ('descriptionItemQuote.scheduled' | translate)
+        : ('descriptionItemQuote.regular' | translate)
+    }}</label
+  >
+  <label class="label-freight" *ngIf="columnDeliveryTime?.isFreight && columnDeliveryTime?.percentagePaidProquifa > 0"
+    >{{ 'descriptionItemQuote.pqfPaid' | translate }} {{ columnDeliveryTime?.percentagePaidProquifa | number: '1.0-2' }}%</label
+  >
+</div>

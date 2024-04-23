@@ -1,0 +1,183 @@
+<div id="client-contract-brands">
+  <div *ngIf="(contrato$ | async) || {}; let contrato" class="principal">
+    <div class="data">
+      <div class="element-row">
+        <div>
+          <label class="text">
+            {{ 'formClient.step5.contractStart' | translate }}
+          </label>
+        </div>
+        <div class="dop-down">
+          <div class="dop-down">
+            <app-date-picker
+              dateFormat="YYYYMMDD"
+              [date]="contrato?.FechaInicioTipoDate"
+              [color]="false"
+              [disabledCalendarDays]="selectNonWorkingDays$ | async"
+              (fecha)="handleDate($event, 'startDate')"
+            >
+            </app-date-picker>
+          </div>
+        </div>
+      </div>
+      <div class="element-row">
+        <div>
+          <label class="text">
+            {{ 'formClient.step5.contractEnd' | translate }}
+          </label>
+        </div>
+        <div class="dop-down">
+          <app-date-picker
+            dateFormat="YYYYMMDD"
+            [date]="contrato?.FechaFinTipoDate"
+            [disabledCalendarDays]="selectNonWorkingDays$ | async"
+            [color]="false"
+            [disabled]="!contrato?.FechaInicioTipoDate"
+            (fecha)="handleDate($event, 'endDate')"
+            [rangeStart]="contrato?.FechaInicioTipoDate"
+          >
+          </app-date-picker>
+        </div>
+      </div>
+      <div class="element-row">
+        <div>
+          <label class="text">
+            {{ 'formClient.step5.paymentConditions' | translate }}
+          </label>
+        </div>
+        <div class="dop-down">
+          <app-drop-down-list
+            [isSearchable]="(itemsCondicionPago | async)?.length > 5"
+            [itemSelected]="selectedPaymentCondition$ | async"
+            [items]="itemsCondicionPago | async"
+            (valueDropList)="setPaymentConditions($event)"
+          ></app-drop-down-list>
+        </div>
+      </div>
+    </div>
+    <div class="section-brands" cdkDropListGroup>
+      <div class="list-brands">
+        <div>
+          <div>
+            <label class="title">
+              {{ 'common.brands' | translate }}
+            </label>
+          </div>
+          <div class="search">
+            <app-search
+              [placeholder]="'Buscar'"
+              [isDisable]="contrato?.FechaInicioTipoDate === null || contrato?.FechaFinTipoDate === null"
+              (textSearch)="handleKeySearch($event)"
+            >
+            </app-search>
+          </div>
+        </div>
+        <div class="lista">
+          <virtual-scroller
+            *ngIf="!lodashIsEmpty(brandsList$ | async) && (brandsStatus$ | async) === 3"
+            [items]="brandsList$ | async"
+            (vsUpdate)="scrollBrands = $event"
+            cdkDropList
+            cdkDropListConnectedTo="selectedBrandsContainer"
+            cdkDropListSortingDisabled
+            [cdkDropListData]="scrollBrands"
+          >
+            <div
+              *ngFor="let brand of scrollBrands; index as i"
+              id="{{ 'brandAvailable_' + i }}"
+              class="tasks-container"
+              cdkDropList
+              [cdkDragData]="brand"
+              cdkDrag
+              [cdkDragDisabled]="brand.ConContrato && !brand.isInThisContract"
+            >
+              <div
+                class="brand-available"
+                [ngClass]="!brand.isInThisContract && brand.ConContrato ? 'with-contract' : 'without-contract'"
+              >
+                <div class="brand-name">
+                  <label class="element-list">{{ brand.NombreMarca }}</label>
+                  <label class="onContract" *ngIf="brand.ConContrato && !brand.isInThisContract">
+                    {{ 'formClient.step5.onContract' | translate }}
+                  </label>
+                  <label class="onContract" *ngIf="brand.ConContrato && brand.isInThisContract">
+                    {{ 'formClient.step5.inThisContract' | translate }}
+                  </label>
+                </div>
+                <div class="plus-icon">
+                  <img
+                    class="img-active"
+                    alt="mas"
+                    [src]="'assets/Images/mas.svg'"
+                    *ngIf="!brand.ConContrato || brand.isInThisContract"
+                    (click)="handleAddBrand(brand)"
+                  />
+                  <img
+                    alt="mas"
+                    class="img-inactive"
+                    [src]="'assets/Images/mas_gris.svg'"
+                    *ngIf="brand.ConContrato && !brand.isInThisContract"
+                  />
+                </div>
+              </div>
+            </div>
+          </virtual-scroller>
+          <div class="without-results" *ngIf="lodashIsEmpty(brandsList$ | async) && (brandsStatus$ | async) !== 1">
+            <app-without-results [title]="'Ingrese un rango de fechas'"></app-without-results>
+          </div>
+          <div class="loading" *ngIf="(brandsStatus$ | async) === 1">
+            <app-loading></app-loading>
+          </div>
+        </div>
+      </div>
+      <div class="list-drop-down">
+        <header>
+          <label class="text-index">#</label>
+          <label class="text"> {{ 'formClient.step5.brandName' | translate }}</label>
+        </header>
+        <div class="list-selected">
+          <div
+            cdkDropList
+            id="selectedBrandsContainer"
+            class="list-select"
+            [cdkDropListData]="(contrato$ | async)?.preSelectedBrands"
+            (cdkDropListDropped)="dropBrand($event)"
+          >
+            <div
+              *ngFor="let brand of (contrato$ | async)?.preSelectedBrands; index as i"
+              id="{{ 'selectedBrand' + i }}"
+              class="elementos"
+            >
+              <div>
+                <div>
+                  <p>
+                    <span> #{{ i + 1 }} ·</span>
+                    <span>{{ brand.NombreMarca }}</span>
+                  </p>
+                </div>
+                <div>
+                  <img alt="Eliminar marca" src="assets/Images/cerrar.svg" (click)="deleteMark(brand)" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="totals">
+          <label class="total">
+            #{{ (contrato$ | async)?.preSelectedBrands.length }}
+            {{
+              (contrato$ | async)?.preSelectedBrands.length === 1 ? ('common.brand' | translate) : ('common.brands' | translate)
+            }}
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--
+<app-pop-up-provider-brand
+  *ngIf="activeProveedor"
+  [dataBrand]="itemBrand"
+  (emitValue)="setIdProveedor($event)"
+></app-pop-up-provider-brand>
+-->

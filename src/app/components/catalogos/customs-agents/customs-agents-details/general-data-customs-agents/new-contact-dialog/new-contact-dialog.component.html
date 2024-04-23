@@ -1,0 +1,191 @@
+<app-pop-up-generic
+  class="newContact"
+  [activeButtons]="true"
+  [height]="(viewType$ | async) === viewTypes.small ? '690px' : '805px'"
+  [width]="(viewType$ | async) === viewTypes.small ? '709px' : '827px'"
+  (evento)="onClose($event)"
+  [activeBtn]="errors.length === 0 && (saveValidation$ | async)"
+  [titleHeader]="!(editMode$ | async) ? 'AGREGAR CONTACTO' : 'VER CONTACTO'"
+>
+  <div class="pop-up-container">
+    <div class="form-container">
+      <div class="header">
+        <div class="info-content">
+          <div class="image">
+            <img src="assets/Images/clientes/logo_proquifa_hover.svg" />
+          </div>
+          <div class="text">
+            <div class="aqua">
+              <label>{{ (customAgent$ | async)?.NombreComercial || 'N/D' }}</label>
+            </div>
+            <div class="black">
+              <label>Patente {{ (customAgent$ | async)?.NumeroPatente || 'N/D' }}</label>
+            </div>
+          </div>
+        </div>
+        <div class="subtitle">
+          <label>{{ 'formProvider.step3.addCampaingGeneralData' | translate }}</label>
+        </div>
+      </div>
+      <div class="inputs">
+        <div>
+          <app-generic-input
+            [label]="'formClient.step1.name' | translate"
+            [required]="true"
+            (textData)="setData('Nombres', $event)"
+            [typeValidation]="inputValidators.AlphaAndSpaces"
+            [value]="(contactForm$ | async)?.Nombres"
+            [maxlength]="50"
+            [minlength]="3"
+            (errorData)="validate($event, FIELD_NOMBRES)"
+          >
+          </app-generic-input>
+        </div>
+        <div>
+          <app-generic-input
+            [label]="'formClient.step5.contractPopUp.lastName' | translate"
+            [required]="true"
+            (textData)="setData('ApellidoPaterno', $event)"
+            [typeValidation]="inputValidators.AlphaAndSpaces"
+            [value]="(contactForm$ | async)?.ApellidoPaterno"
+            [maxlength]="30"
+            [minlength]="3"
+            (errorData)="validate($event, FIELD_APELLIDO_PATERNO)"
+          ></app-generic-input>
+        </div>
+        <div>
+          <app-generic-input
+            [label]="'formClient.step5.contractPopUp.mothersLastName' | translate"
+            [typeValidation]="inputValidators.AlphaAndSpaces"
+            [value]="(contactForm$ | async)?.ApellidoMaterno"
+            [maxlength]="30"
+            [minlength]="3"
+            (textData)="setData('ApellidoMaterno', $event)"
+            (errorData)="validate($event, FIELD_APELLIDO_MATERNO)"
+          ></app-generic-input>
+        </div>
+        <div>
+          <app-generic-input
+            [label]="'eventConsole.title' | translate"
+            [required]="true"
+            [typeValidation]="inputValidators.AlphaAndSpaces"
+            (textData)="setData('Titulo', $event)"
+            [value]="(contactForm$ | async)?.Titulo"
+            [maxlength]="10"
+            [minlength]="1"
+            (errorData)="validate($event, FIELD_TITULO)"
+          ></app-generic-input>
+        </div>
+        <div>
+          <app-generic-input
+            [label]="'eventConsole.position' | translate"
+            [required]="true"
+            (textData)="setData('Puesto', $event)"
+            [maxlength]="50"
+            [minlength]="3"
+            [typeValidation]="inputValidators.AlphaAndSpaces"
+            [value]="(contactForm$ | async)?.Puesto"
+            (errorData)="validate($event, FIELD_PUESTO)"
+          ></app-generic-input>
+        </div>
+        <div>
+          <app-generic-input
+            [label]="'eventConsole.department' | translate"
+            [required]="true"
+            [typeValidation]="inputValidators.AlphaAndSpaces"
+            (textData)="setData('Departamento', $event)"
+            [maxlength]="50"
+            [minlength]="3"
+            [value]="(contactForm$ | async)?.Departamento"
+            (errorData)="validate($event, FIELD_DEPARTAMENTO)"
+          ></app-generic-input>
+        </div>
+        <div>
+          <app-generic-input
+            [label]="'common.email' | translate"
+            [required]="true"
+            [typeValidation]="validators.Email"
+            [value]="((contactForm$ | async)?.CorreoElectronico)[0].Correo"
+            [forceActiveErrors]="(existingEmail$ | async).exist"
+            (errorData)="validate($event, FIELD_EMAIL)"
+            (textData)="setData('Mail', $event)"
+          >
+          </app-generic-input>
+        </div>
+        <div class="small">
+          <div>
+            <app-generic-input
+              [label]="('productToClaim.phone' | translate) + ' 1'"
+              [typeValidation]="validators.Phonev2"
+              [required]="true"
+              [minlength]="8"
+              [maxlength]="14"
+              [value]="(contactForm$ | async)?.NumeroTelefono1"
+              (textData)="setPhoneNumber($event, 'Numero', 'Telefono 1')"
+              (errorData)="validate($event, FIELD_PHONE_1)"
+            >
+            </app-generic-input>
+          </div>
+          <div>
+            <app-generic-input
+              [label]="'eventConsole.extension' | translate"
+              [typeValidation]="validators.Number"
+              [maxlength]="5"
+              [minlength]="3"
+              [value]="(contactForm$ | async).NumeroTelefonico[0]?.Extension"
+              [isDisable]="(contactForm$ | async)?.NumeroTelefono1?.length < 8"
+              (textData)="setPhoneNumber($event, 'Extension', 'Telefono 1')"
+            ></app-generic-input>
+          </div>
+        </div>
+        <div class="small">
+          <div>
+            <app-generic-input
+              [label]="('productToClaim.phone' | translate) + ' 2'"
+              [required]="false"
+              [typeValidation]="validators.Phonev2"
+              [value]="(contactForm$ | async)?.NumeroTelefono2"
+              [minlength]="8"
+              [maxlength]="14"
+              [isDisable]="(contactForm$ | async)?.NumeroTelefono1?.length < 8"
+              (textData)="setPhoneNumber($event, 'Numero', 'Telefono 2')"
+              (errorData)="validate($event, FIELD_PHONE_2)"
+            >
+            </app-generic-input>
+          </div>
+          <div>
+            <app-generic-input
+              [label]="'eventConsole.extension' | translate"
+              [typeValidation]="validators.Number"
+              [isDisable]="
+                (contactForm$ | async)?.NumeroTelefono2 !== null ? (contactForm$ | async)?.NumeroTelefono2?.length < 8 : true
+              "
+              [maxlength]="5"
+              [minlength]="3"
+              [value]="(contactForm$ | async).NumeroTelefonico[1]?.Extension"
+              (textData)="setPhoneNumber($event, 'Extension', 'Telefono 2')"
+            ></app-generic-input>
+          </div>
+        </div>
+        <div>
+          <app-generic-input
+            [label]="'customsAgents.mobile' | translate"
+            [typeValidation]="validators.Phonev2"
+            [value]="(contactForm$ | async)?.NumeroMovil"
+            [minlength]="8"
+            [maxlength]="14"
+            (textData)="setPhoneNumber($event, 'Numero', 'Móvil')"
+          ></app-generic-input>
+        </div>
+      </div>
+      <div class="required-data">
+        <label>*{{ 'common.requiredField' | translate }}</label>
+      </div>
+    </div>
+    <div class="alert-content">
+      <div class="alert-message" *ngIf="(existingEmail$ | async).exist">
+        <label>{{ email + ' ya está registrado, es necesario registrar otro correo electrónico' }}</label>
+      </div>
+    </div>
+  </div>
+</app-pop-up-generic>

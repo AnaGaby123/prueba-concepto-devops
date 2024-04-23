@@ -1,0 +1,639 @@
+<div id="registerDir">
+  <div class="schedules-data">
+    <div class="direcciones">
+      <div class="title">
+        <label>{{ 'adressSection.adress' | translate }}</label>
+        <div>
+          <app-search [placeholder]="'search' | translate" (textSearch)="handleKeySearch($event)"></app-search>
+        </div>
+      </div>
+      <div class="listaDir">
+        <div class="lista" *ngIf="(addressOnly$ | async).length > 0">
+          <div
+            class="item"
+            *ngFor="let item of addressOnly$ | async; let i = index; trackBy: addressTrackBy"
+            (click)="selectAddress(item)"
+            [ngClass]="item?.isSelected ? 'active' : ''"
+          >
+            <div class="indicator" [ngClass]="item?.isSelected ? 'active' : ''"></div>
+            <div class="datosDireccion">
+              <div class="datos">
+                <p class="index">{{ 'clientCatalog.address' | translate }} #{{ item.index }}</p>
+                <p class="address">{{ item?.Calle }} No.{{ item?.NumeroExterior }}</p>
+                <p class="address">Col. {{ item?.Colonia }} · C.P. {{ item?.CodigoPostal }}</p>
+                <p class="city">{{ item?.Ciudad }} {{ item?.Estado }}</p>
+              </div>
+              <div class="type">
+                <span>{{ item?.AddressTypeName }}</span>
+              </div>
+              <div class="icons">
+                <div class="schedule-types">
+                  <img *ngIf="item?.horariosEntrega.length > 0" alt="" src="assets/Images/entrega.svg" />
+                  <img *ngIf="item?.horariosRevision.length > 0" alt="" src="assets/Images/revision.svg" />
+                  <img *ngIf="item?.horariosCobro.length > 0" alt="" src="assets/Images/cobro.svg" />
+                  <img *ngIf="item?.horariosVisita.length > 0" alt="" src="assets/Images/visita.svg" />
+                </div>
+                <div class="actions">
+                  <img *ngIf="enableEdit$ | async" (click)="deleteAddress(item)" alt="" src="assets/Images/eliminar.svg" />
+                  <img
+                    *ngIf="enableEdit$ | async"
+                    alt=""
+                    src="assets/Images/lapiz.svg"
+                    (click)="handleNewAddress(item, true, i)"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="(addressOnly$ | async).length === 0" class="messageEmptyList">
+          <app-without-results [title]="'clientCatalog.withoutAddressMessage' | translate"></app-without-results>
+        </div>
+      </div>
+      <div class="btnAgregar">
+        <div>
+          <label
+            ># {{ (addressOnly$ | async).length }}
+            {{
+              (addressOnly$ | async).length === 1
+                ? ('clientCatalog.address' | translate)
+                : ('clientCatalog.addresses' | translate)
+            }}</label
+          >
+        </div>
+        <button [ngClass]="(enableEdit$ | async) ? 'active' : 'disable'" (click)="handleNewAddress(null, false, null)">{{
+          'common.add' | translate
+        }}</button>
+      </div>
+    </div>
+    <div class="horarios">
+      <div class="title" *ngIf="!lodashIsEmpty(selectedAddress$ | async)">
+        <div class="text">
+          <label class="index">{{ 'clientCatalog.address' | translate }} #{{ (selectedAddress$ | async)?.index }}</label>
+        </div>
+        <div class="address">
+          <label
+            ><span class="green">{{ (selectedAddress$ | async)?.AddressTypeName }}</span> ·
+            {{ (selectedAddress$ | async)?.Calle }} No. {{ (selectedAddress$ | async)?.NumeroExterior }} · C.P.
+            {{ (selectedAddress$ | async)?.CodigoPostal }}</label
+          >
+        </div>
+      </div>
+      <div class="schedule-info" *ngIf="!lodashIsEmpty(selectedAddress$ | async)">
+        <div class="sectionEntrega">
+          <div class="tipoHorarios">
+            <div class="imgTipo">
+              <div>
+                <img alt="" src="assets/Images/entrega.svg" />
+                <label>{{ 'strategy.details.delivery' | translate }}</label>
+              </div>
+            </div>
+            <div *ngIf="(selectedAddress$ | async)?.horariosEntrega.length > 0" class="address">
+              <div class="content">
+                <div *ngFor="let horario of (selectedAddress$ | async)?.horariosEntrega; trackBy: scheduleTrackBy">
+                  <div *ngIf="horario?.checked" class="schedule-content">
+                    <label
+                      ><span>{{ horario?.Dia }}</span> {{ '·' }} {{ horario?.HoraInicioPrimerHorario }} -
+                      {{ horario?.HoraFinPrimerHorario }}
+                      {{ horario?.HoraInicioSegundoHorario !== null ? ' y ' + horario?.HoraInicioSegundoHorario + ' - ' : '' }}
+                      {{ horario?.HoraFinSegundoHorario !== null ? horario?.HoraFinSegundoHorario : '' }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="pencilEdit">
+                <img
+                  alt=""
+                  src="assets/Images/lapiz.svg"
+                  (click)="handleSchedule('Entrega', true, 'entrega')"
+                  *ngIf="(selectedAddress$ | async)?.horariosEntrega.length > 0 && (enableEdit$ | async)"
+                />
+              </div>
+            </div>
+            <div class="btn" *ngIf="(selectedAddress$ | async)?.horariosEntrega.length === 0">
+              <button
+                [ngClass]="(enableEdit$ | async) ? 'active' : 'disable'"
+                (click)="handleSchedule('Entrega', false, 'entrega')"
+              >
+                {{ 'clientCatalog.addSchedule' | translate }}</button
+              >
+            </div>
+          </div>
+          <div
+            *ngIf="
+              (selectedAddress$ | async)?.horariosEntrega.length > 0 && !lodashIsEmpty((selectedAddress$ | async)?.DeliveryData)
+            "
+            class="content"
+          >
+            <div class="configuraciones-entrega">
+              <div>
+                <label class="configTitle">{{ 'clientCatalog.deliveryData' | translate }}</label>
+              </div>
+              <div class="container-items">
+                <div>
+                  <app-check-box
+                    [height]="(viewType$ | async) === viewTypes.small ? '17px' : '20px'"
+                    [enableEdit]="enableEdit$ | async"
+                    [enabledIconNoSelected]="!(selectedAddress$ | async)?.DeliveryData.AceptaParciales"
+                    [check]="(selectedAddress$ | async)?.DeliveryData.AceptaParciales"
+                    [label]="'Acepta Parciales'"
+                    [backGroundCheckColor]="(enableEdit$ | async) ? '#ffffff' : ''"
+                    [labelFontStyle]="
+                      (selectedAddress$ | async)?.DeliveryData.AceptaParciales
+                        ? 'labelRobotoRegularProquifa13'
+                        : 'robotoRegular13'
+                    "
+                    (event)="setDeliveryData('AceptaParciales', $event)"
+                  >
+                  </app-check-box>
+                </div>
+                <div>
+                  <app-check-box
+                    [check]="(selectedAddress$ | async)?.DeliveryData.AceptaParcialesPorLinea"
+                    [enabledIconNoSelected]="!(selectedAddress$ | async)?.DeliveryData.AceptaParcialesPorLinea"
+                    [height]="(viewType$ | async) === viewTypes.small ? '17px' : '20px'"
+                    [enableEdit]="enableEdit$ | async"
+                    [label]="'Acepta Parciales por línea'"
+                    [backGroundCheckColor]="(enableEdit$ | async) ? '#ffffff' : ''"
+                    [labelFontStyle]="
+                      (selectedAddress$ | async)?.DeliveryData.AceptaParcialesPorLinea
+                        ? 'labelRobotoRegularProquifa13'
+                        : 'robotoRegular13'
+                    "
+                    (event)="setDeliveryData('AceptaParcialesPorLinea', $event)"
+                  >
+                  </app-check-box>
+                </div>
+                <div>
+                  <app-check-box
+                    [height]="(viewType$ | async) === viewTypes.small ? '17px' : '20px'"
+                    [enableEdit]="enableEdit$ | async"
+                    [enabledIconNoSelected]="!(selectedAddress$ | async)?.DeliveryData.EntregaYRevisionMismoDia"
+                    [check]="(selectedAddress$ | async)?.DeliveryData.EntregaYRevisionMismoDia"
+                    [label]="'Entrega y Revisión en el mismo día'"
+                    [backGroundCheckColor]="(enableEdit$ | async) ? '#ffffff' : ''"
+                    [labelFontStyle]="
+                      (selectedAddress$ | async)?.DeliveryData.EntregaYRevisionMismoDia
+                        ? 'labelRobotoRegularProquifa13'
+                        : 'robotoRegular13'
+                    "
+                    (event)="setDeliveryData('EntregaYRevisionMismoDia', $event)"
+                  >
+                  </app-check-box>
+                </div>
+              </div>
+            </div>
+            <div class="configuraciones">
+              <div>
+                <label class="configTitle">{{ 'planDispatchDetails.packingList' | translate }}</label>
+              </div>
+              <div class="container-items">
+                <app-check-box
+                  [height]="(viewType$ | async) === viewTypes.small ? '17px' : '20px'"
+                  [enableEdit]="enableEdit$ | async"
+                  [backGroundCheckColor]="(enableEdit$ | async) ? '#ffffff' : ''"
+                  [enabledIconNoSelected]="!(selectedAddress$ | async)?.DeliveryData.SoloAceptaEntregasPorFactura"
+                  [check]="(selectedAddress$ | async)?.DeliveryData.SoloAceptaEntregasPorFactura"
+                  [label]="'Solo acepta entregas por factura'"
+                  [labelFontStyle]="
+                    (selectedAddress$ | async)?.DeliveryData.SoloAceptaEntregasPorFactura
+                      ? 'labelRobotoRegularProquifa13'
+                      : 'robotoRegular13'
+                  "
+                  [fontSize]="(viewType$ | async) === 'macBookAir' ? '16px' : '14px'"
+                  (event)="setDeliveryData('SoloAceptaEntregasPorFactura', $event)"
+                >
+                </app-check-box>
+                <app-check-box
+                  [height]="(viewType$ | async) === viewTypes.small ? '17px' : '20px'"
+                  [enableEdit]="enableEdit$ | async"
+                  [backGroundCheckColor]="(enableEdit$ | async) ? '#ffffff' : ''"
+                  [enabledIconNoSelected]="!(selectedAddress$ | async)?.DeliveryData.EntregaEnCondicionesDeAlmacenaje"
+                  [check]="(selectedAddress$ | async)?.DeliveryData.EntregaEnCondicionesDeAlmacenaje"
+                  [label]="'Entregar en condiciones de almacenaje'"
+                  [labelFontStyle]="
+                    (selectedAddress$ | async)?.DeliveryData.EntregaEnCondicionesDeAlmacenaje
+                      ? 'labelRobotoRegularProquifa13'
+                      : 'robotoRegular13'
+                  "
+                  (event)="setDeliveryData('EntregaEnCondicionesDeAlmacenaje', $event)"
+                >
+                </app-check-box>
+                <app-check-box
+                  [height]="(viewType$ | async) === viewTypes.small ? '17px' : '20px'"
+                  [enableEdit]="enableEdit$ | async"
+                  [backGroundCheckColor]="(enableEdit$ | async) ? '#ffffff' : ''"
+                  [enabledIconNoSelected]="!(selectedAddress$ | async)?.DeliveryData.EntregarConHielera"
+                  [check]="(selectedAddress$ | async)?.DeliveryData.EntregarConHielera"
+                  [label]="'Entrega con hielera'"
+                  [labelFontStyle]="
+                    (selectedAddress$ | async)?.DeliveryData.EntregarConHielera
+                      ? 'labelRobotoRegularProquifa13'
+                      : 'robotoRegular13'
+                  "
+                  (event)="setDeliveryData('EntregarConHielera', $event)"
+                ></app-check-box>
+              </div>
+            </div>
+            <div class="configuraciones-entrega">
+              <div>
+                <label class="configTitle">{{ 'planDispatchDetails.documentation' | translate }}</label>
+              </div>
+              <div class="container-items">
+                <div>
+                  <div style="padding-right: 5px;">
+                    <app-check-box
+                      [height]="(viewType$ | async) === viewTypes.small ? '17px' : '20px'"
+                      [enableEdit]="enableEdit$ | async"
+                      [enabledIconNoSelected]="!(selectedAddress$ | async)?.DeliveryData.CopiasPorFactura"
+                      [check]="(selectedAddress$ | async)?.DeliveryData.CopiasPorFactura"
+                      [backGroundCheckColor]="(enableEdit$ | async) ? '#ffffff' : ''"
+                      [labelFontStyle]="
+                        (selectedAddress$ | async)?.DeliveryData.CopiasPorFactura
+                          ? 'labelRobotoRegularProquifa13'
+                          : 'robotoRegular13'
+                      "
+                      [label]="
+                        !(enableEdit$ | async) && (selectedAddress$ | async)?.DeliveryData.CopiasPorFactura
+                          ? 'Copias de factura:'
+                          : 'Copias de factura'
+                      "
+                      (event)="setDeliveryData('CopiasPorFactura', $event)"
+                    >
+                    </app-check-box>
+                  </div>
+                  <div class="input">
+                    <app-generic-input
+                      *ngIf="(selectedAddress$ | async)?.DeliveryData.NumCopiasFacturas > 0 || (enableEdit$ | async)"
+                      [style.pointerEvents]="
+                        (selectedAddress$ | async)?.DeliveryData.CopiasPorFactura && (enableEdit$ | async) ? 'auto' : 'none'
+                      "
+                      [placeholder]="''"
+                      [arrowColorDisable]="
+                        !((selectedAddress$ | async)?.DeliveryData.CopiasPorFactura && (enableEdit$ | async))
+                      "
+                      [width]="'60px'"
+                      [typeValidation]="inputValidators.Number"
+                      [activeArrows]="true"
+                      [value]="(selectedAddress$ | async)?.DeliveryData.NumCopiasFacturas"
+                      [enableEdit]="enableEdit$ | async"
+                      [isDisable]="!(selectedAddress$ | async)?.DeliveryData.CopiasPorFactura"
+                      (textData)="setDeliveryData('NumCopiasFacturas', $event)"
+                    >
+                    </app-generic-input>
+                  </div>
+                </div>
+                <div>
+                  <app-check-box
+                    [height]="(viewType$ | async) === viewTypes.small ? '17px' : '20px'"
+                    [enableEdit]="enableEdit$ | async"
+                    [backGroundCheckColor]="(enableEdit$ | async) ? '#ffffff' : ''"
+                    [enabledIconNoSelected]="!(selectedAddress$ | async)?.DeliveryData.HojasSeguridad"
+                    [check]="(selectedAddress$ | async)?.DeliveryData.HojasSeguridad"
+                    [labelFontStyle]="
+                      (selectedAddress$ | async)?.DeliveryData.HojasSeguridad
+                        ? 'labelRobotoRegularProquifa13'
+                        : 'robotoRegular13'
+                    "
+                    [label]="'Hojas de seguridad (aplica USP Y EP)'"
+                    (event)="setDeliveryData('HojasSeguridad', $event)"
+                  >
+                  </app-check-box>
+                </div>
+                <div>
+                  <app-check-box
+                    [height]="(viewType$ | async) === viewTypes.small ? '17px' : '20px'"
+                    [enableEdit]="enableEdit$ | async"
+                    [backGroundCheckColor]="(enableEdit$ | async) ? '#ffffff' : ''"
+                    [enabledIconNoSelected]="!(selectedAddress$ | async)?.DeliveryData.Certificados"
+                    [check]="(selectedAddress$ | async)?.DeliveryData.Certificados"
+                    [labelFontStyle]="
+                      (selectedAddress$ | async)?.DeliveryData.Certificados ? 'labelRobotoRegularProquifa13' : 'robotoRegular13'
+                    "
+                    [label]="'Certificados (Aplica USP Y EP)'"
+                    (event)="setDeliveryData('Certificados', $event)"
+                  >
+                  </app-check-box>
+                </div>
+                <div>
+                  <div style="padding-right: 5px;">
+                    <app-check-box
+                      [height]="(viewType$ | async) === viewTypes.small ? '17px' : '20px'"
+                      [enableEdit]="enableEdit$ | async"
+                      [backGroundCheckColor]="(enableEdit$ | async) ? '#ffffff' : ''"
+                      [enabledIconNoSelected]="!(selectedAddress$ | async)?.DeliveryData.CopiaPedido"
+                      [check]="(selectedAddress$ | async)?.DeliveryData.CopiaPedido"
+                      [labelFontStyle]="
+                        (selectedAddress$ | async)?.DeliveryData.CopiaPedido
+                          ? 'labelRobotoRegularProquifa13'
+                          : 'robotoRegular13'
+                      "
+                      [label]="
+                        !(enableEdit$ | async) && (selectedAddress$ | async)?.DeliveryData.CopiaPedido
+                          ? 'Copias Orden de compra del cliente:'
+                          : 'Copias Orden de compra del cliente'
+                      "
+                      (event)="setDeliveryData('CopiaPedido', $event)"
+                    >
+                    </app-check-box>
+                  </div>
+                  <div class="input">
+                    <app-generic-input
+                      *ngIf="(selectedAddress$ | async)?.DeliveryData.NumCopiasPedido > 0 || (enableEdit$ | async)"
+                      [width]="'60px'"
+                      [style.pointerEvents]="
+                        (selectedAddress$ | async)?.DeliveryData.CopiaPedido && (enableEdit$ | async) ? 'auto' : 'none'
+                      "
+                      [arrowColorDisable]="!((selectedAddress$ | async)?.DeliveryData.CopiaPedido && (enableEdit$ | async))"
+                      [placeholder]="''"
+                      [typeValidation]="inputValidators.Number"
+                      [activeArrows]="true"
+                      [value]="(selectedAddress$ | async)?.DeliveryData.NumCopiasPedido"
+                      [fontSize]="(viewType$ | async) === 'macBookAir' ? '16px' : '14px'"
+                      [enableEdit]="enableEdit$ | async"
+                      [isDisable]="!(selectedAddress$ | async)?.DeliveryData.CopiaPedido"
+                      (textData)="setDeliveryData('NumCopiasPedido', $event)"
+                    >
+                    </app-generic-input>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="comment-container">
+              <div>
+                <label>{{ 'common.comments' | translate }}</label>
+              </div>
+              <div class="comment" *ngIf="enableEdit$ | async">
+                <div>
+                  <app-generic-input
+                    [maxlength]="500"
+                    [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+                    [value]="(deliveryComment | async)?.Comentario"
+                    (textData)="setComment($event, 'deliveryComment')"
+                  ></app-generic-input>
+                </div>
+                <button
+                  (click)="addComment('Entrega')"
+                  [ngClass]="!lodashIsEmpty((deliveryComment | async)?.Comentario) ? 'btnEnable' : 'btnDisable'"
+                  [disabled]="lodashIsEmpty((deliveryComment | async)?.Comentario)"
+                >
+                  {{ 'common.add' | translate }}
+                </button>
+              </div>
+              <div class="commentsList" *ngIf="!lodashIsEmpty(deliveryComments$ | async)">
+                <div *ngFor="let item of deliveryComments$ | async; trackBy: commentsTrackBy">
+                  <div>
+                    <div class="info">
+                      <label>{{ item?.Comentario }}</label>
+                    </div>
+                    <div class="img" *ngIf="enableEdit$ | async">
+                      <img (click)="deleteComment(item)" alt="" src="assets/Images/cerrar.svg" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sectionEntrega">
+          <div class="tipoHorarios">
+            <div class="imgTipo">
+              <div>
+                <img alt="" src="assets/Images/revision.svg" />
+                <label>{{ 'reviewResults.review' | translate }}</label>
+              </div>
+            </div>
+            <div class="address" *ngIf="(selectedAddress$ | async)?.horariosRevision.length > 0">
+              <div class="content">
+                <div *ngFor="let horario of (selectedAddress$ | async)?.horariosRevision; trackBy: scheduleTrackBy">
+                  <div *ngIf="horario.checked" class="schedule-content">
+                    <label
+                      ><span>{{ horario.Dia }}</span
+                      >· {{ horario.HoraInicioPrimerHorario }} - {{ horario.HoraFinPrimerHorario }}
+                      {{ horario?.HoraInicioSegundoHorario ? ' y ' + horario?.HoraInicioSegundoHorario + ' - ' : '' }}
+                      {{ horario.HoraFinSegundoHorario }}</label
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="pencilEdit">
+                <img
+                  alt=""
+                  src="assets/Images/lapiz.svg"
+                  (click)="handleSchedule('Revision', true, 'revision')"
+                  *ngIf="(selectedAddress$ | async)?.horariosRevision.length > 0 && (enableEdit$ | async)"
+                />
+              </div>
+            </div>
+            <div class="btn" *ngIf="(selectedAddress$ | async)?.horariosRevision.length === 0">
+              <button
+                [ngClass]="(enableEdit$ | async) ? 'active' : 'disable'"
+                (click)="handleSchedule('Revision', false, 'revision')"
+                >{{ 'clientCatalog.addSchedule' | translate }}</button
+              >
+            </div>
+          </div>
+          <div class="content" style="padding-top: 0;" *ngIf="(selectedAddress$ | async)?.horariosEntrega.length > 0">
+            <div class="comment-container">
+              <div>
+                <label>{{ 'common.comments' | translate }}</label>
+              </div>
+              <div class="comment" *ngIf="enableEdit$ | async">
+                <div>
+                  <app-generic-input
+                    [maxlength]="500"
+                    [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+                    [value]="(reviewDataComment | async)?.Comentario"
+                    (textData)="setComment($event, 'reviewDataComment')"
+                  ></app-generic-input>
+                </div>
+                <button
+                  [ngClass]="!lodashIsEmpty((reviewDataComment | async)?.Comentario) ? 'btnEnable' : 'btnDisable'"
+                  [disabled]="lodashIsEmpty((reviewDataComment | async)?.Comentario)"
+                  (click)="addComment('Revision')"
+                >
+                  {{ 'common.add' | translate }}
+                </button>
+              </div>
+              <div class="commentsList" *ngIf="!lodashIsEmpty(reviewComments$ | async)">
+                <div *ngFor="let item of reviewComments$ | async; let i = index; trackBy: commentsTrackBy">
+                  <div>
+                    <div class="info">
+                      <label>{{ item?.Comentario }}</label>
+                    </div>
+                    <div class="img" *ngIf="enableEdit$ | async">
+                      <img (click)="deleteComment(item)" alt="" src="assets/Images/cerrar.svg" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sectionEntrega">
+          <div class="tipoHorarios">
+            <div class="imgTipo">
+              <div>
+                <img alt="" src="assets/Images/cobro.svg" />
+                <label>{{ 'executeCollection.collection' | translate }}</label>
+              </div>
+            </div>
+            <div class="address" *ngIf="(selectedAddress$ | async)?.horariosCobro.length > 0">
+              <div class="content">
+                <div
+                  *ngFor="let horario of (selectedAddress$ | async)?.horariosCobro; trackBy: scheduleTrackBy"
+                  class="listaHorario"
+                >
+                  <div *ngIf="horario.checked" class="schedule-content">
+                    <label
+                      ><span>{{ horario.Dia }}</span
+                      >· {{ horario.HoraInicioPrimerHorario }} - {{ horario.HoraFinPrimerHorario }}
+                      {{ horario?.HoraInicioSegundoHorario ? ' y ' + horario?.HoraInicioSegundoHorario + ' - ' : '' }}
+                      {{ horario.HoraFinSegundoHorario }}</label
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="pencilEdit">
+                <img
+                  alt=""
+                  src="assets/Images/lapiz.svg"
+                  (click)="handleSchedule('Cobro', true, 'cobro')"
+                  *ngIf="(selectedAddress$ | async)?.horariosCobro.length > 0 && (enableEdit$ | async)"
+                />
+              </div>
+            </div>
+            <div class="btn" *ngIf="(selectedAddress$ | async)?.horariosCobro.length === 0">
+              <button
+                [ngClass]="(enableEdit$ | async) ? 'active' : 'disable'"
+                (click)="handleSchedule('Cobro', false, 'cobro')"
+              >
+                {{ 'clientCatalog.addSchedule' | translate }}</button
+              >
+            </div>
+          </div>
+          <div class="content" style="padding-top: 0;" *ngIf="(selectedAddress$ | async)?.horariosEntrega.length > 0">
+            <div class="comment-container">
+              <div>
+                <label>{{ 'common.comments' | translate }}</label>
+              </div>
+              <div class="comment" *ngIf="enableEdit$ | async">
+                <div>
+                  <app-generic-input
+                    [maxlength]="500"
+                    [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+                    [value]="(chargesDataComment | async)?.Comentario"
+                    (textData)="setComment($event, 'chargesDataComment')"
+                  ></app-generic-input>
+                </div>
+                <button
+                  [ngClass]="!lodashIsEmpty((chargesDataComment | async)?.Comentario) ? 'btnEnable' : 'btnDisable'"
+                  [disabled]="lodashIsEmpty((chargesDataComment | async)?.Comentario)"
+                  (click)="addComment('Cobro')"
+                >
+                  {{ 'common.add' | translate }}
+                </button>
+              </div>
+              <div class="commentsList" *ngIf="!lodashIsEmpty(chargesComments$ | async)">
+                <div *ngFor="let item of chargesComments$ | async; trackBy: commentsTrackBy">
+                  <div>
+                    <div class="info">
+                      <label>{{ item?.Comentario }}</label>
+                    </div>
+                    <div class="img" *ngIf="enableEdit$ | async">
+                      <img (click)="deleteComment(item)" alt="" src="assets/Images/cerrar.svg" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sectionEntrega">
+          <div class="tipoHorarios">
+            <div class="imgTipo">
+              <div>
+                <img alt="" src="assets/Images/visita.svg" />
+                <label>{{ 'clientCatalog.visit' | translate }}</label>
+              </div>
+            </div>
+            <div class="address" *ngIf="(selectedAddress$ | async)?.horariosVisita.length > 0">
+              <div class="content">
+                <div *ngFor="let horario of (selectedAddress$ | async)?.horariosVisita; trackBy: scheduleTrackBy">
+                  <div *ngIf="horario.checked" class="schedule-content">
+                    <label
+                      ><span>{{ horario.Dia }}</span
+                      >· {{ horario.HoraInicioPrimerHorario }} - {{ horario.HoraFinPrimerHorario }}
+                      {{ horario?.HoraInicioSegundoHorario ? ' y ' + horario?.HoraInicioSegundoHorario + ' - ' : ''
+                      }}{{ horario.HoraFinSegundoHorario }}</label
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="pencilEdit">
+                <img
+                  alt=""
+                  src="assets/Images/lapiz.svg"
+                  (click)="handleSchedule('Visita', true, 'visita')"
+                  *ngIf="(selectedAddress$ | async)?.horariosVisita.length > 0 && (enableEdit$ | async)"
+                />
+              </div>
+            </div>
+
+            <div class="btn" *ngIf="(selectedAddress$ | async)?.horariosVisita.length === 0">
+              <button
+                [ngClass]="(enableEdit$ | async) ? 'active' : 'disable'"
+                (click)="handleSchedule('Visita', false, 'visita')"
+              >
+                {{ 'clientCatalog.addSchedule' | translate }}</button
+              >
+            </div>
+          </div>
+          <div class="content" style="padding-top: 0;" *ngIf="(selectedAddress$ | async)?.horariosEntrega.length > 0">
+            <div class="comment-container">
+              <div>
+                <label>{{ 'common.comments' | translate }}</label>
+              </div>
+              <div class="comment" *ngIf="enableEdit$ | async">
+                <div>
+                  <app-generic-input
+                    [maxlength]="500"
+                    [typeValidation]="inputValidators.AlphaAndSpacesAndNumbers"
+                    [value]="(visitComment | async)?.Comentario"
+                    (textData)="setComment($event, 'visitComment')"
+                  ></app-generic-input>
+                </div>
+                <button
+                  [ngClass]="!lodashIsEmpty((visitComment | async)?.Comentario) ? 'btnEnable' : 'btnDisable'"
+                  [disabled]="lodashIsEmpty((visitComment | async)?.Comentario)"
+                  (click)="addComment('Visita')"
+                >
+                  {{ 'common.add' | translate }}
+                </button>
+              </div>
+              <div class="commentsList" *ngIf="!lodashIsEmpty(visitComments$ | async)">
+                <div *ngFor="let item of visitComments$ | async; let i = index; trackBy: commentsTrackBy">
+                  <div>
+                    <div class="info">
+                      <label>{{ item?.Comentario }}</label>
+                    </div>
+                    <div class="img" *ngIf="enableEdit$ | async">
+                      <img (click)="deleteComment(item)" alt="" src="assets/Images/cerrar.svg" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="without-results">
+        <app-without-results
+          *ngIf="lodashIsEmpty(selectedAddress$ | async)"
+          [title]="'Selecciona una dirección'"
+        ></app-without-results>
+      </div>
+    </div>
+  </div>
+</div>
+<!--<app-add-schedule *ngIf="schedulePop$ | async" [data]="scheduleValue" [title]="scheduleModalTitle | async"></app-add-schedule>-->

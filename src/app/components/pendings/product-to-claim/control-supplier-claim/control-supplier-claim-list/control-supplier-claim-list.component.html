@@ -1,0 +1,80 @@
+<div class="dashboard-container" id="control-supplier-claim-list">
+  <div class="left-container">
+    <label class="title">{{ 'loadMissing.providers' | translate }}</label>
+    <div class="tabs">
+      <app-tabs
+        [options]="tabOptions$ | async"
+        [tapSelected]="tabSelected$ | async"
+        (onSelectOption)="setTab($event)"
+      ></app-tabs>
+    </div>
+    <div class="filters">
+      <div class="filter-by-type">
+        <app-hamburger-menu
+          [options]="sortOptions$ | async"
+          [value]="(sortSelected$ | async).value"
+          (valueEmit)="setSort($event)"
+        ></app-hamburger-menu>
+      </div>
+      <div class="filter-search">
+        <app-search [placeholder]="'loadMissing.provider' | translate" (textSearch)="handleKeySearch($event)"></app-search>
+      </div>
+    </div>
+    <div class="list-container">
+      <virtual-scroller>
+        <div class="provider" (click)="itemSelected()">
+          <div class="index">
+            <label>{{ '#' + 1 }}</label>
+          </div>
+          <div class="details">
+            <div class="name">
+              <label>{{ 'Nombre de Proveedor XY' }}</label>
+            </div>
+            <div class="amount">
+              <label>
+                {{
+                  4 + ' ' + (1 === 1 ? ('common.pieces' | translate) : ('common.piece' | translate)) + ' · ' + 3 + ' OC'
+                }}</label
+              >
+            </div>
+            <div class="oc">
+              <label>FEE+: {{ '12/Enero/2022' }}</label>
+            </div>
+            <div class="status">
+              <img alt="" src="assets/Images/labels/fuera-de-tiempo.svg" />
+              <label>{{ 1 }}</label>
+              <label>·</label>
+              <img alt="" src="assets/Images/labels/urgente.svg" />
+              <label class="urgent">{{ 1 }}</label>
+              <label>·</label>
+              <img alt="" src="assets/Images/labels/en-tiempo.svg" />
+              <label class="in-time">{{ 1 }}</label>
+            </div>
+          </div>
+          <div class="row">
+            <img alt="" src="assets/Images/arrows/arrow_right.svg" />
+          </div>
+        </div>
+      </virtual-scroller>
+      <div class="without-results" *ngIf="false">
+        <app-without-results></app-without-results>
+      </div>
+      <div class="loader" *ngIf="false">
+        <app-loading></app-loading>
+      </div>
+    </div>
+    <div class="footer">
+      <label>{{ '#' + (0 | number: '1.0-0') }}</label>
+      <label>{{ 'OC ' + 5 }}</label>
+      <!--        <label>{{ 660 + ' ' + (660 === 1 ? ('common.piece' | translate) : ('common.pieces' | translate)) }}</label>-->
+      <label>{{ 660 + ' ' + ('common.pieces' | translate) }}</label>
+    </div>
+  </div>
+  <div class="right-container">
+    <ng-container *ngIf="true">
+      <app-doughnut-chart [title]="'loadMissing.providers' | translate"></app-doughnut-chart>
+      <app-bar-chart [title]="'manageBackOrder.deliveryTrafficLight' | translate"></app-bar-chart>
+    </ng-container>
+    <app-loading class="loading" *ngIf="false"></app-loading>
+  </div>
+</div>

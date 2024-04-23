@@ -1,0 +1,44 @@
+<aside>
+  <label class="title">Proveedor</label>
+  <app-search
+    class="search"
+    [searchTerm]="searchTerm$ | async"
+    [placeholder]="'Proveedor'"
+    (textSearch)="handleKeySearch($event)"
+  >
+  </app-search>
+  <div class="list-container">
+    <virtual-scroller
+      class="virtual"
+      *ngIf="!lodashIsEmpty((providersList$ | async)?.Results)"
+      [items]="(providersList$ | async)?.Results"
+      (vsUpdate)="scrolledXProviders = $event"
+      (vsEnd)="fetchMoreProviders($event)"
+    >
+      <app-providers-panel-item
+        class="item"
+        *ngFor="let item of scrolledXProviders"
+        [provider]="item"
+        (selectedProviderChange)="selectedProv($event)"
+      ></app-providers-panel-item>
+    </virtual-scroller>
+    <div
+      class="loading-complete"
+      *ngIf="(providersApiStatus$ | async) === 1 && lodashIsEmpty((providersList$ | async)?.Results)"
+    >
+      <app-loading></app-loading>
+    </div>
+    <div class="loading" *ngIf="(providersApiStatus$ | async) === 1 && !lodashIsEmpty((providersList$ | async)?.Results)">
+      <app-loading></app-loading>
+    </div>
+    <div
+      class="without-results"
+      *ngIf="(providersApiStatus$ | async) !== 1 && lodashIsEmpty((providersList$ | async)?.Results)"
+    >
+      <app-without-results></app-without-results>
+    </div>
+  </div>
+  <div class="footer">
+    <label> #{{ (providersList$ | async)?.TotalResults }} proveedores </label>
+  </div>
+</aside>

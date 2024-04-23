@@ -1,0 +1,51 @@
+@use 'base' as s;
+
+:host {
+  @include s.flexRow;
+  @include s.reset-line-height;
+  flex: 1;
+
+  & > .radio-button-container {
+    @include s.flexRow;
+    align-items: center;
+    flex: 1;
+    gap: 4px;
+
+    & > .radio-container {
+      cursor: pointer;
+      height: 40px;
+      padding: 8px;
+      width: 40px;
+
+      & > img {
+        @include s.absolute100;
+      }
+    }
+
+    & > .text-container {
+      @include s.flexRow;
+      align-items: center;
+      flex: 1;
+
+      & > label {
+        @include s.responsive-font-format($font-size-map: s.$responsive-font-16-16);
+
+        &.active {
+          color: s.$pqGreen !important;
+        }
+
+        &.hasError {
+          color: s.$pqAlert !important;
+        }
+
+        &.disabled {
+          color: s.$dark-proquifa-d !important;
+        }
+
+        &.normal {
+          color: s.$pqBlack2 !important;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,112 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+  display: block;
+  overflow: hidden;
+
+  & > #inspector-dashboard {
+    @include s.absolute100;
+    @include s.flexColumn;
+    justify-content: flex-start;
+    overflow: hidden;
+    background-color: s.$pqGray2;
+
+    & > .tabs {
+      @include s.flexRow;
+      flex: 0 0 30px;
+      overflow: hidden;
+    }
+
+    & > .content {
+      @include s.flexColumn;
+      flex: 1;
+      overflow: hidden;
+      padding: 0 15px 15px 15px;
+
+      & > .charts {
+        @include s.flexRow;
+        flex: 1 1 auto;
+        overflow: hidden;
+
+        & > .left-content {
+          @include s.flexRow;
+          @include s.absoluteCenter;
+          flex: 0 0 40%;
+          overflow: hidden;
+          padding: 25px;
+        }
+
+        & > .right-content {
+          @include s.flexColumn;
+          flex: 1;
+          overflow: hidden;
+          padding: 25px;
+
+          & > .up {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: 1fr;
+            grid-column-gap: 25px;
+            flex: 1;
+            overflow: hidden;
+
+            & > div {
+              flex: 1;
+              overflow: hidden;
+            }
+          }
+
+          & > .down {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: 1fr;
+            flex: 1;
+            overflow: hidden;
+
+            & > div {
+              flex: 1;
+              overflow: hidden;
+            }
+          }
+        }
+      }
+
+      & > .button {
+        @include s.flexRow;
+        justify-content: flex-end;
+
+        & > .button-active {
+          @include s.pqButton();
+        }
+
+        & > .button-disable {
+          @include s.pqButtonDisable();
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .tabs {
+        flex: 0 0 40px;
+      }
+
+      & > .content {
+        padding: 0 20px 20px 20px;
+
+        & > .charts {
+          & > .left-content {
+            flex: 1;
+          }
+        }
+
+        & > .button {
+        }
+      }
+    }
+  }
+}

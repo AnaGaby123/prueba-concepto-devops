@@ -1,0 +1,20 @@
+@use 'base' as s;
+app-pop-up-generic {
+  ::ng-deep .modal {
+    background: none;
+
+    & > .modal-content {
+      transition: none;
+    }
+  }
+}
+.add-item-to-resume-alert {
+  @include s.flexColumn;
+  gap: 20px;
+  & > img {
+    height: 56px;
+  }
+  & > label {
+    @include s.responsive-font-format($font-size-map: s.$responsive-font-26-26, $color: s.$dark-proquifa-b);
+  }
+}

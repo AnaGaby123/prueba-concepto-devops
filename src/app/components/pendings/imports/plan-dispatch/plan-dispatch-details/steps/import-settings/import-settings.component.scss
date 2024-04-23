@@ -1,0 +1,95 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  & > #plan-dispatch-details-step1 {
+    @include s.flexColumn;
+    @include s.absolute100;
+    padding-bottom: 20px;
+
+    & > .container {
+      @include s.flexRow;
+      flex: 0 0 100%;
+
+      & > div {
+        @include s.flexColumn;
+        border-right: 1px solid s.$pqGray2;
+        flex: 1;
+        padding: 0 20px;
+
+        & > .header {
+          flex: 0 0 auto;
+          margin-bottom: 40px;
+          text-align: center;
+
+          & > label {
+            @include s.Novecento-Bold;
+            @include s.escaledFontFormat(s.$textSize19to24, bold, s.$pqBlack2);
+          }
+        }
+
+        & > .body {
+          flex: 1 1 auto;
+
+          & > div {
+            @include s.flexRow;
+            align-items: center;
+            cursor: pointer;
+            margin-bottom: 50px;
+            justify-content: space-between;
+
+            & * {
+              cursor: pointer;
+            }
+
+            & > .image,
+            & > .text {
+              flex: 1 1 auto;
+              padding-right: 25px;
+
+              & > img {
+                max-width: 78%;
+              }
+
+              & > label {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormat(s.$textSize14to20, bold, s.$pqBlack2);
+              }
+            }
+
+            & > .rb {
+              flex: 0 0 auto;
+            }
+          }
+        }
+
+        & > .footer {
+          display: grid;
+          flex: 0 0 auto;
+          place-items: center;
+
+          & > button {
+            @include s.pqButton($min-width: 143px, $max-width: 170px, $baseColor: s.$pqGray3);
+          }
+        }
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > #plan-dispatch-details-step1 {
+      & > .container {
+        & > div {
+          & > .header {
+            margin-bottom: 50px;
+          }
+        }
+      }
+    }
+  }
+}

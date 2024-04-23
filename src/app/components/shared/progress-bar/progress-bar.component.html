@@ -1,0 +1,25 @@
+<div class="progress">
+  <div
+    class="progress-bar"
+    aria-valuemin="0"
+    aria-valuemax="100"
+    [attr.attraria-valuenow]="percentage"
+    [style.width.%]="percentage"
+    [style.background-color]="color"
+    [style.min-width]="percentage === 0 ? '' : '25px'"
+  >
+  </div>
+</div>
+<ng-container *ngIf="limitLines.length > 0">
+  <div *ngFor="let line of limitLines" [style.background]="line.color" [style.left]="line.percentagePosition" class="line">
+    <div class="tooltip" *ngIf="line">
+      <div class="element-active">
+        <div class="line"></div>
+      </div>
+      <div class="tooltip-text" *ngIf="line.tooltipText">
+        <p>{{ 'common.creditLine' | translate }}</p>
+        <p>{{ line.tooltipText }}</p>
+      </div>
+    </div>
+  </div>
+</ng-container>

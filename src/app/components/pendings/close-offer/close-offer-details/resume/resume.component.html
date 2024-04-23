@@ -1,0 +1,377 @@
+<div id="resume-container">
+  <div class="resume-section">
+    <div>
+      <label>{{ 'closeOffer.toResume' | translate }} </label>
+      <label
+        >· {{ totalEntriesInResumeView$ | async }}
+        {{
+          (totalEntriesInResumeView$ | async) === 1 ? ('closeOffer.entry' | translate) : ('closeOffer.entries' | translate)
+        }}</label
+      >
+    </div>
+    <button (click)="goBack()">{{ 'common.back' | translate }}</button>
+  </div>
+  <div class="status-tabs">
+    <app-tabs
+      [options]="tabOptions$ | async"
+      [tapSelected]="selectedTabOption$ | async"
+      (onSelectOption)="selectResumeTabOption($event)"
+    ></app-tabs>
+  </div>
+  <div class="brands-tabs" *ngIf="(tabIsAdjustment$ | async) && !lodashIsEmpty(brandsOptions$ | async)">
+    <label *ngIf="(brandsOptions$ | async).length > 1">{{ 'closeOffer.tableLabels.providers' | translate }}</label>
+    <app-bar-activities
+      *ngIf="(brandsOptions$ | async).length > 1"
+      [options]="brandsOptions$ | async"
+      [selectedOption]="selectedBrandsStep$ | async"
+      [enableSelectOption]="true"
+      [showArrows]="false"
+      [labelsAlignment]="'center'"
+      [showIdInLabel]="false"
+      (handleOptionSelected)="selectBrand($event)"
+    ></app-bar-activities>
+  </div>
+  <div class="search-section">
+    <div class="info">
+      <label>{{ 'closeOffer.entries' | translate }}</label>
+      <!--      <label>{{ 'closeOffer.contactSchedule' | translate }}:</label>-->
+      <div>
+        <label></label>
+        <label></label>
+      </div>
+    </div>
+    <div class="search">
+      <app-search
+        [isSearchByType]="true"
+        [imageFill]="'#008894'"
+        [searchTerm]="searchTerm$ | async"
+        [typesOfSearch]="searchOptions$ | async"
+        [typeSelected]="selectedSearchOption$ | async"
+        (handleTypeSelected)="setSearchOption($event, 'selectedResumeSearchOption')"
+        (textSearch)="handleChangeSearchTerm($event)"
+      ></app-search>
+    </div>
+  </div>
+  <!--  <div class="schedules">-->
+  <!--    <div class="schedule">-->
+  <!--      <label>Lunes:</label>-->
+  <!--      <label> 9:00 - 11:30 y 15:00 - 18:00 hrs.</label>-->
+  <!--    </div>-->
+  <!--  </div>-->
+  <div class="table-container">
+    <virtual-scroller
+      *ngIf="(entriesApiStatus$ | async) === 3 && !lodashIsEmpty(selectInternalSalesItemResume$ | async)"
+      [bufferAmount]="24"
+      [enableUnequalChildrenSizes]="true"
+      [items]="selectInternalSalesItemResume$ | async"
+      (vsUpdate)="updateItems($event)"
+      (vsChange)="vsChange($event, 'tracingPop')"
+    >
+      <div class="header">
+        <app-header-internal-sales-item
+          [internalSalesItem]="selectInternalSalesItemHeader$ | async"
+          (valueEmitter)="globalHeaderItemEventsHandler($event)"
+        ></app-header-internal-sales-item>
+      </div>
+      <div class="header-separator"></div>
+      <div class="item">
+        <app-internal-sales-item
+          *ngFor="let item of selectInternalSalesItemResume$ | async; trackBy: handleTrackByItemBy; let i = index"
+          [internalSalesItem]="item"
+          (valueEmitter)="globalItemEventsHandler($event)"
+        ></app-internal-sales-item>
+      </div>
+    </virtual-scroller>
+    <div *ngFor="let item of items; trackBy: handleTrackByItem">
+      <app-custom-position-pop-up
+        id="pop-up-price-cat"
+        *ngIf="item?.popUpByAmount?.isOpen && item?.popUpByAmount?.isInRange"
+        [target]="getElement(item?.popUpByAmount?.elementId)"
+        [popUpPosition]="item.Index === items?.length ? 'top-center' : 'bottom-center'"
+        [borderColor]="'#d8d9dd'"
+        [borderRadius]="'0px'"
+        [minWidth]="'310px'"
+        [maxWidth]="'310px'"
+        [minHeight]="'auto'"
+        [maxHeight]="'390px'"
+        [closeButton]="false"
+        [padding]="'0px'"
+        [zIndexInvert]="true"
+        (closeEmitter)="handlePopUp(item, false)"
+      >
+        <div class="container-price-cat">
+          <div class="container-blue">
+            <div class="amount">
+              <label
+                ><span>{{ 'common.unitPrice' | translate }}:</span
+                ><span
+                  >{{ formPrice.price | currency: (quote$ | async)?.currency }} {{ (quote$ | async)?.currency }}</span
+                ></label
+              >
+            </div>
+          </div>
+          <div class="container-second-section">
+            <div class="amount-controls">
+              <div>
+                <input
+                  placeholder="%"
+                  (keypress)="handleValidateNumber($event, typePercentage)"
+                  [(ngModel)]="formPrice.valuePercentage"
+                  [ngModelOptions]="{debounce: {input: 3000}}"
+                  (ngModelChange)="setInput($event, typePercentage)"
+                />
+                <label>%</label>
+              </div>
+              <div>
+                <input
+                  placeholder="$"
+                  (keypress)="handleValidateNumber($event, typeAmount)"
+                  [(ngModel)]="formPrice.valueAmount"
+                  [ngModelOptions]="{debounce: {input: 3000}}"
+                  (ngModelChange)="setInput($event, typeAmount)"
+                />
+                <label>Monto</label>
+              </div>
+            </div>
+            <div class="container-comments">
+              <label>{{ '* ' + ('offerAdjustment.details.adjustmentComments' | translate) }}</label>
+              <textarea
+                placeholder="Escribe Aquí"
+                [ngModel]="formPrice.comments"
+                (ngModelChange)="changeComments(item, $event)"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="button">
+          <button
+            *ngIf="true"
+            [ngClass]="
+              formPrice.comments !== '' && formPrice.valueAmount && formPrice.valuePercentage
+                ? 'btn-active-accept'
+                : 'btn-disable-accept'
+            "
+            [disabled]="!formPrice.comments || !formPrice.valueAmount || !formPrice.valuePercentage"
+            (click)="saveFormPriceComments(item)"
+          >
+            {{ 'offerAdjustment.details.accept' | translate }}
+          </button>
+        </div>
+      </app-custom-position-pop-up>
+    </div>
+    <div class="loading" *ngIf="(entriesApiStatus$ | async) === 1">
+      <app-loading></app-loading>
+    </div>
+    <div class="loading" *ngIf="(entriesApiStatus$ | async) !== 1 && lodashIsEmpty(items$ | async)">
+      <app-without-results></app-without-results>
+    </div>
+  </div>
+  <div class="footer-tracing" *ngIf="tabIsTracing$ | async" [ngClass]="(validatorForFooter$ | async) ? 'active' : 'disabled'">
+    <div class="total-entries">
+      <label>{{ (selectedEntries$ | async)?.length }}</label>
+    </div>
+    <label class="separator">|</label>
+    <div class="next-tracing">
+      <label>{{ 'closeOffer.nextTracing' | translate }}</label>
+      <app-date-picker
+        dateFormat="YYYYMMDD"
+        [color]="false"
+        [disabled]="!(validatorForFooter$ | async)"
+        [disabledCalendarDays]="selectNonWorkingDays$ | async"
+        [date]="followingDate$ | async"
+        [position]="'top'"
+        (fecha)="handleDate($event, 'following')"
+      ></app-date-picker>
+    </div>
+    <div class="reason">
+      <label>{{ 'closeOffer.reasons' | translate }}</label>
+      <app-drop-down-list
+        [optionsPosition]="'top'"
+        [items]="catFollowingReason$ | async"
+        [isSearchable]="(catFollowingReason$ | async)?.length > 5"
+        [itemSelected]="followingReason$ | async"
+        [disable]="!(validatorForFooter$ | async)"
+        (valueDropList)="setReason($event, 'following')"
+      ></app-drop-down-list>
+    </div>
+    <div class="button">
+      <button
+        [disabled]="!(validatorForFooterButton$ | async)"
+        [ngClass]="(validatorForFooterButton$ | async) ? 'active' : 'disabled'"
+        (click)="sendToPurchasePromise('following')"
+        >{{ 'closeOffer.setTracing' | translate }}</button
+      >
+    </div>
+  </div>
+  <div
+    class="footer-adjustment"
+    *ngIf="tabIsAdjustment$ | async"
+    [ngClass]="(validatorForFooter$ | async) ? 'active' : 'disabled'"
+  >
+    <div class="total-entries">
+      <label>{{ (selectedEntries$ | async)?.length }}</label>
+    </div>
+    <label class="separator">|</label>
+    <div class="options-adjustment">
+      <div>
+        <app-check-box
+          [disabled]="
+            !(validatorForFooter$ | async) ||
+            (resumeData$ | async)?.minusTwoDaysIsSelected ||
+            (resumeData$ | async)?.priceIsSelected ||
+            !(selectedProvider$ | async)
+          "
+          [check]="(resumeData$ | async)?.freightIsSelected"
+          (event)="handleCheckAdjustment($event, 'freightIsSelected')"
+        ></app-check-box>
+        <label
+          [ngClass]="{disabled: (resumeData$ | async)?.minusTwoDaysIsSelected || (resumeData$ | async)?.priceIsSelected}"
+          >{{ 'closeOffer.expressFreight' | translate }}</label
+        >
+      </div>
+      <div>
+        <app-check-box
+          [disabled]="
+            !(validatorForFooter$ | async) || (resumeData$ | async)?.freightIsSelected || (resumeData$ | async)?.priceIsSelected
+          "
+          [check]="(resumeData$ | async)?.minusTwoDaysIsSelected"
+          (event)="handleCheckAdjustment($event, 'minusTwoDaysIsSelected')"
+        ></app-check-box>
+        <label [ngClass]="{disabled: (resumeData$ | async)?.freightIsSelected || (resumeData$ | async)?.priceIsSelected}">
+          {{ 'closeOffer.minusTwoDays' | translate }}</label
+        >
+      </div>
+      <div>
+        <app-check-box
+          [disabled]="
+            !(validatorForFooter$ | async) ||
+            (resumeData$ | async)?.freightIsSelected ||
+            (resumeData$ | async)?.minusTwoDaysIsSelected
+          "
+          [check]="(resumeData$ | async)?.priceIsSelected"
+          (event)="handleCheckAdjustment($event, 'priceIsSelected')"
+        ></app-check-box>
+        <label
+          [ngClass]="{disabled: (resumeData$ | async)?.freightIsSelected || (resumeData$ | async)?.minusTwoDaysIsSelected}"
+          >{{ 'closeOffer.price' | translate }}</label
+        >
+      </div>
+    </div>
+    <div class="adjust-data-container">
+      <div>
+        <div class="freight-configurator-container" *ngIf="(resumeData$ | async)?.freightIsSelected">
+          <div class="freights">
+            <!--<app-drop-down-list
+              [activeMinWidth]="false"
+              [disable]="!(validatorForFooter$ | async) || !(resumeData$ | async)?.freightIsSelected"
+              [optionsPosition]="'top'"
+              [items]="catBrandProviders$ | async"
+              [itemSelected]="adjustmentFreight$ | async"
+              (valueDropList)="setReason($event, 'adjustmentProvider')"
+            ></app-drop-down-list>-->
+            <label>{{ (selectedProvider$ | async)?.Nombre }}</label>
+          </div>
+          <div class="percentage">
+            <app-drop-down-list
+              [activeMinWidth]="false"
+              [disable]="!(validatorForFooter$ | async) || !(resumeData$ | async)?.freightIsSelected"
+              [optionsPosition]="'top'"
+              [placeholder]="'%'"
+              [items]="catPercentages$ | async"
+              [itemSelected]="adjustmentPercentage$ | async"
+              (valueDropList)="setReason($event, 'adjustmentPercentage')"
+            ></app-drop-down-list>
+          </div>
+        </div>
+        <div class="reason" *ngIf="(resumeData$ | async)?.freightIsSelected || (resumeData$ | async)?.minusTwoDaysIsSelected">
+          <label>{{ 'closeOffer.justification' | translate }}</label>
+          <app-generic-input
+            [isDisable]="!(validatorForFooter$ | async)"
+            [typeValidation]="inputValidators.AcceptAll"
+            [value]="adjustmentJustification$ | async"
+            (textData)="setJustification($event, 'adjustment')"
+          ></app-generic-input>
+        </div>
+      </div>
+      <div class="button">
+        <button
+          [disabled]="!(validatorForFooterButton$ | async)"
+          [ngClass]="(validatorForFooterButton$ | async) ? 'active' : 'disabled'"
+          (click)="sendToPurchasePromise('adjustment')"
+          >{{ 'closeOffer.adjustOffer' | translate }}</button
+        >
+      </div>
+    </div>
+  </div>
+  <div class="footer-promise" *ngIf="tabIsPromise$ | async" [ngClass]="(validatorForFooter$ | async) ? 'active' : 'disabled'">
+    <div class="total-entries">
+      <label>{{ (selectedEntries$ | async)?.length }}</label>
+    </div>
+    <label class="separator">|</label>
+    <div class="next-tracing">
+      <label>{{ 'closeOffer.buyPromise' | translate }}</label>
+      <app-date-picker
+        dateFormat="YYYYMMDD"
+        [color]="false"
+        [disabled]="!(validatorForFooter$ | async)"
+        [disabledCalendarDays]="selectNonWorkingDays$ | async"
+        [date]="purchasePromiseDate$ | async"
+        [position]="'top'"
+        [rangeStart]="rangeStart"
+        (fecha)="handleDate($event, 'promise')"
+      ></app-date-picker>
+    </div>
+    <div class="reason">
+      <label>{{ 'closeOffer.justification' | translate }}</label>
+      <app-generic-input
+        [value]="promiseJustification$ | async"
+        [isDisable]="!(validatorForFooter$ | async)"
+        [typeValidation]="inputValidators.AcceptAll"
+        (textData)="setJustification($event, 'promise')"
+      ></app-generic-input>
+    </div>
+    <div class="button">
+      <button
+        [disabled]="!(validatorForFooterButton$ | async)"
+        [ngClass]="(validatorForFooterButton$ | async) ? 'active' : 'disabled'"
+        (click)="sendToPurchasePromise('promise')"
+        >{{ 'closeOffer.buyPromise' | translate }}</button
+      >
+    </div>
+  </div>
+  <div class="footer-cancel" *ngIf="tabIsCancel$ | async" [ngClass]="(validatorForFooter$ | async) ? 'active' : 'disabled'">
+    <div class="total-entries">
+      <label>{{ (selectedEntries$ | async)?.length }}</label>
+    </div>
+    <label class="separator">|</label>
+    <div class="next-tracing">
+      <label>{{ 'closeOffer.reason' | translate }}</label>
+      <app-drop-down-list
+        [activeMinWidth]="false"
+        [disable]="!(validatorForFooter$ | async)"
+        [optionsPosition]="'top'"
+        [isSearchable]="(catCancelReason$ | async)?.length > 5"
+        [items]="catCancelReason$ | async"
+        [itemSelected]="cancelReason$ | async"
+        (valueDropList)="setReason($event, 'cancel')"
+      ></app-drop-down-list>
+    </div>
+    <div class="reason">
+      <label>{{ 'closeOffer.justification' | translate }}</label>
+      <app-generic-input
+        [value]="cancelJustification$ | async"
+        [isDisable]="!(validatorForFooter$ | async)"
+        [typeValidation]="inputValidators.AcceptAll"
+        (textData)="setJustification($event, 'cancel')"
+      ></app-generic-input>
+    </div>
+    <div class="button">
+      <button
+        [disabled]="!(validatorForFooterButton$ | async)"
+        [ngClass]="(validatorForFooterButton$ | async) ? 'active' : 'disabled'"
+        (click)="sendToPurchasePromise('cancel')"
+        >{{ 'closeOffer.sendToCancel' | translate }}</button
+      >
+    </div>
+  </div>
+</div>

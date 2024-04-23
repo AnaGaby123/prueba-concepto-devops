@@ -1,0 +1,264 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  height: 100%;
+  @include s.flexColumn;
+
+  #sell-buy-licences {
+    @include s.flexColumn;
+    flex: 1;
+    overflow: auto;
+
+    & > .container-sell-buy {
+      @include s.flexColumn;
+
+      & > .container-title {
+        @include s.flexRow;
+        align-items: center;
+        border-bottom: 1px solid;
+        padding: 0 0 7px 0;
+
+        & > .title {
+          & > label {
+            @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+            @include s.Novecento-Bold;
+          }
+        }
+      }
+
+      & > .sell-buy-content {
+        @include s.flexColumn;
+
+        & > .drop-list-container {
+          display: grid;
+          grid-column-gap: 20px;
+          grid-template-columns: repeat(4, 1fr);
+          grid-template-rows: 1fr;
+          padding: 30px 0;
+
+          & > .radios {
+            @include s.flexColumn;
+
+            & > .head {
+              @include s.flexRow;
+              align-items: center;
+              height: 19px;
+              @include s.responsive_layout('macBookAir') {
+                height: 21px;
+              }
+
+              & > label {
+                &.regular {
+                  @include s.Roboto-Regular;
+                }
+
+                &.bold {
+                  @include s.Roboto-Bold;
+                }
+
+                @include s.escaledFontFormat(s.$textSize13to15, bold, s.$pqBlack2);
+              }
+            }
+
+            & > .rb {
+              @include s.flexRow;
+              flex: 1;
+
+              & > div {
+                flex: 1;
+              }
+            }
+          }
+        }
+
+        & > .companies-container {
+          @include s.flexColumn;
+          flex-grow: 1;
+          margin-bottom: 20px;
+
+          & > .title {
+            border-bottom: 1px solid s.$pqGray2;
+            padding-bottom: 10px;
+
+            & > label {
+              @include s.Roboto-Bold;
+              @include s.escaledFontFormat(s.$textSize15to17, bold, s.$pqBlack2);
+            }
+          }
+
+          & > .company-item {
+            @include s.flexRow;
+            align-items: center;
+            border-bottom: 1px solid s.$pqGray2;
+            justify-content: space-between;
+            padding: 12px 16px;
+
+            &:last-child {
+              border-bottom: none;
+            }
+
+            &:hover {
+              @include s.default-transition($property: background-color, $duration: 0.2s);
+              background-color: s.$pqGray2;
+            }
+
+            & div {
+              @include s.flexRow;
+              justify-content: space-between;
+              align-items: center;
+            }
+
+            & div:last-child {
+              display: grid;
+              grid-template-columns: repeat(2, auto);
+              align-items: center;
+              grid-column-gap: 5px;
+
+              & > label {
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormat(s.$textSize13to15, regular, s.$pqBlack2);
+                margin-right: 11px;
+
+                &.enable {
+                  color: s.$pqGreen;
+                }
+              }
+            }
+          }
+        }
+
+        & > .fiscal-year-container {
+          @include s.flexRow;
+          @include s.absoluteCenter;
+          padding: 20px 0;
+          background-color: rgba(0, 136, 148, 0.05);
+
+          & > .content {
+            display: grid;
+            align-items: center;
+            grid-template-columns: repeat(2, auto);
+            grid-column-gap: 20px;
+
+            & > div {
+              @include s.flexRow;
+              align-items: center;
+
+              & > .subtitle {
+                & > label {
+                  @include s.Roboto-Bold;
+                  @include s.escaledFontFormat(s.$textSize13to16, bold, s.$pqBlack2);
+                }
+              }
+
+              & > div {
+                margin-left: 10px;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    & > .licenses-content {
+      @include s.flexColumn;
+      margin: 30px 0;
+
+      & > .title {
+        @include s.flexRow;
+        padding-bottom: 7px;
+        border-bottom: 1px solid s.$pqBlack2;
+
+        & > label {
+          @include s.Novecento-Bold;
+          @include s.escaledFontFormat(s.$textSize17to21, bold, s.$pqBlack2);
+        }
+      }
+
+      & > .content {
+        & > .licenses-form {
+          align-items: flex-end;
+          display: grid;
+          grid-template-columns: 2fr repeat(2, 1fr);
+          grid-column-gap: 20px;
+          flex: 1 1 auto;
+          margin-top: 20px;
+          max-width: 40%;
+
+          & > div {
+            @include s.flexRow;
+            align-items: flex-end;
+
+            & > label {
+              @include s.Roboto-Regular;
+              @include s.escaledFontFormat(s.$textSize13to15, regular, s.$pqBlack2);
+              margin: 0 0 3px 5px;
+            }
+
+            & > button {
+              @include s.pqfButton();
+
+              &.disable {
+                @include s.pqfDisableButton();
+              }
+            }
+          }
+        }
+
+        & > .items-content {
+          @include s.flexRow;
+          flex-wrap: wrap;
+          margin: 15px 0;
+
+          & > .item {
+            margin: 5px 5px;
+            padding: 7px 10px;
+            background-color: rgba(s.$pqGreen, 0.03);
+
+            & > .item-content {
+              align-items: center;
+              display: grid;
+              grid-template-columns: repeat(2, auto);
+              grid-column-gap: 5px;
+
+              & > label {
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormat(s.$textSize13to15, regular, s.$pqBlack2);
+
+                & > span {
+                  @include s.Roboto-Bold;
+                  color: s.$pqGreen;
+                  vertical-align: baseline;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .required-data {
+    @include s.escaledFontFormat(s.$textSize12to15, regular, s.$pqGreen);
+    @include s.Roboto-Regular;
+    height: 36px;
+    text-align: right;
+    padding-right: 25px;
+    line-height: 2.7em;
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #sell-buy-licences {
+      & > .container-sell-buy {
+        & > .sell-buy-content {
+          & > .companies-container {
+            margin-bottom: 25px;
+          }
+        }
+      }
+    }
+  }
+}

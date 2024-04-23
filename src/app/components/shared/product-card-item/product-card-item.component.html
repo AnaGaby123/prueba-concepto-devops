@@ -1,0 +1,70 @@
+<div class="product" [ngClass]="backGroundColor">
+  <div class="controlate">
+    <div *ngIf="showCheck">
+      <app-check-box [backGroundCheckColor]="'#ffffff'" [check]="product.Activo" (event)="emitValue($event)"></app-check-box>
+    </div>
+    <div class="indicator" *ngIf="showAvailability">
+      <div [ngClass]="setIndicatorColor(product?.DisponibilidadClave)"></div>
+      <label [ngClass]="setTextIndicatorColor(product?.DisponibilidadClave)">{{ product?.Disponibilidad }}</label>
+    </div>
+    <div>
+      <label *ngIf="product.Controlado">Controlado</label>
+    </div>
+  </div>
+  <div class="product-image">
+    <img
+      #imagePresentationElement
+      alt="{{ 'logo ' + product?.Presentacion ?? 'image-presentation' }}"
+      [src]="product?.ImagePresentation"
+      (error)="errorImgHandler()"
+    />
+    <img
+      #imagePresentationElementHover
+      alt="{{ 'logo ' + product?.Presentacion ?? 'image-presentation'}}"
+      [src]="product?.ImagePresentationHover"
+      (error)="errorImgHandlerHover()"
+    />
+  </div>
+  <div class="product-container">
+    <div class="title-footer">
+      <label class="position" *ngIf="showIndex">#{{ product?.Index }} · </label>
+      <div class="product-image">
+        <img
+          #imageItemBrand
+          alt="{{ 'logo ' + product?.NombreMarca }}"
+          [src]="product?.image"
+          (error)="errorImgBrandHandler()"
+        />
+        <img
+          #imageItemBrandHover
+          alt="{{ 'logo ' + product?.NombreMarca }}"
+          [src]="product?.imageHover"
+          (error)="errorImgBrandHandlerHover()"
+        />
+        <label>{{ product?.NombreMarca }} · </label>
+      </div>
+      <span>CAT #{{ product?.TipoProductoClave === productType.trainings ? 'N/D' : product?.Catalogo }}</span>
+    </div>
+    <label class="description">{{ product?.Descripcion }}</label>
+
+    <div class="totales">
+      <label class="alternatives">
+        Alternativos {{ product?.TipoProductoClave === productType.trainings ? ' N/A ' : product?.TotalAlternativo }}
+      </label>
+      <label class="complements">
+        Complementarios {{ product?.TipoProductoClave === productType.trainings ? ' N/A ' : product?.TotalComplementario }}
+      </label>
+    </div>
+    <div class="prices">
+      <div *ngIf="product?.TipoProductoClave !== productType.trainings" class="trainings">
+        <label class="presentation">{{ product?.Presentacion }} {{ product?.Unidad }}</label>
+        <label class="usage">{{ product?.Uso }}</label>
+      </div>
+      <div class="price-list">
+        <label>{{ product?.PrecioLista | currency }} {{ product?.MonedaVentaProveedor }}</label>
+      </div>
+    </div>
+  </div>
+  <div class="rightSeparator"></div>
+  <div class="downSeparator"></div>
+</div>

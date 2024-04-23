@@ -1,0 +1,252 @@
+<div id="change-notices-details-container">
+  <div class="top-container">
+    <div class="left-container">
+      <div class="title">
+        <label>{{ 'common.products' | translate }}</label>
+      </div>
+      <div class="tabs">
+        <app-tabs [options]="tabs$ | async" [tapSelected]="tab$ | async" (onSelectOption)="setTab($event)"></app-tabs>
+      </div>
+      <div class="filters">
+        <div class="filter-by-type">
+          <app-hamburger-menu [options]="filters$ | async" [value]="(filter$ | async)?.value" (valueEmit)="setOption($event)">
+          </app-hamburger-menu>
+        </div>
+        <div class="filter-by-date">
+          <app-search
+            [isSearchByType]="true"
+            [typesOfSearch]="searchTermOptions$ | async"
+            [typeSelected]="selectedSearchTermOption$ | async"
+            [searchTerm]="searchTerm$ | async"
+            [imageFill]="'#008894'"
+            [placeholder]="'common.enterHere' | translate"
+            (textSearch)="handleKeySearch($event)"
+            (handleTypeSelected)="setSelectedTypeOfSearch($event)"
+          ></app-search>
+        </div>
+      </div>
+      <div class="list-clients">
+        <virtual-scroller>
+          <div class="client selected">
+            <div class="index"></div>
+            <div class="information">
+              <div class="name">
+                <label
+                  ><span>#{{ '1' }} · </span><span>Cat{{ '1546300' }} · </span
+                  >{{ 'Polydimethylsiloxane (500mg) ethylsiloxane (500mg) nombre de producto' }}</label
+                >
+              </div>
+              <div class="pieces">
+                <label
+                  >{{ '1' }} {{ 1 === 1 ? ('common.piece' | translate) : ('common.pieces' | translate) }} · {{ '6' }}
+                  {{ 'changeNotices.affectedPi' | translate }}</label
+                >
+              </div>
+              <div class="date">
+                <label>{{ 'changeNotices.cnDate' | translate }}: {{ '07/Enero/2021' }}</label>
+              </div>
+            </div>
+            <div class="arrow">
+              <img src="assets/Images/labels/cancelada.svg" alt="" />
+              <!--<img src="assets/Images/labels/impacto-fee.svg" alt="" />
+              <img src="assets/Images/labels/back-order.svg" alt="" />
+              <img src="assets/Images/labels/almacen.svg" alt="" />-->
+            </div>
+          </div>
+        </virtual-scroller>
+      </div>
+      <div class="totals">
+        <label>{{ '#' + 0 }}</label>
+        <label>{{
+          (1 | number: '1.0-0') + ' ' + (1 === 1 ? ('common.piece' | translate) : ('common.pieces' | translate))
+        }}</label>
+      </div>
+    </div>
+    <div class="right-container">
+      <div class="title">
+        <label
+          ><span>{{ '#2 · Cat1546300 · ' }}</span
+          >{{ 'Paracetamol (500mg) 1546300 ethylsiloxane (500mg) producto ...' }}</label
+        >
+      </div>
+      <div class="client">
+        <div class="data">
+          <div class="title">
+            <label>{{ 'preProcessing.client' | translate }}</label>
+          </div>
+          <div class="data">
+            <div class="logo">
+              <img alt="Logo" src="assets/Images/clientes/logo_proquifa_default.svg" />
+            </div>
+            <div class="dataGeneral">
+              <div class="name">
+                <label>{{ 'Pisa Farmaceutica nombre de cliente dos renglones' }}</label>
+              </div>
+              <div class="type-client">
+                <label>
+                  {{ 'preProcessing.client' | translate }}:
+                  {{ 'Cliente · AA+' }}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="contact">
+          <div class="title">
+            <label>{{ 'preProcessing.contactData' | translate }}</label>
+          </div>
+          <div class="dataContact">
+            <div>
+              <div>
+                <div class="image">
+                  <img alt="Contacto" src="assets/Images/contacto.svg" />
+                </div>
+                <div>
+                  <label class="text-bold">
+                    {{ 'José Ramón Ruiz Fernández' }}
+                  </label>
+                </div>
+              </div>
+              <div>
+                <div class="image">
+                  <img alt="Email" class="small" src="assets/Images/quotation/mail.svg" />
+                </div>
+                <div>
+                  <label class="text-original">
+                    {{ 'jose.ruiz@empresa.com' }}
+                  </label>
+                </div>
+              </div>
+              <div>
+                <div class="image">
+                  <img alt="Teléfono" class="small" src="assets/Images/quotation/phone.svg" />
+                </div>
+                <div>
+                  <label class="text-original">
+                    {{ '01 (55) 364 74 85' }} · {{ 'preProcessing.ext' | translate }}.
+                    {{ '1245' }}
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div>
+                <div>
+                  <label class="text-bold"> {{ 'preProcessing.dept' | translate }}: </label>
+                </div>
+                <div>
+                  <label class="text-original">
+                    {{ 'Compras' }}
+                  </label>
+                </div>
+              </div>
+              <div>
+                <div>
+                  <label class="text-bold">
+                    {{ ('quotation.details.position' | translate) + ': ' }}
+                  </label>
+                </div>
+                <div>
+                  <label class="text-original">
+                    {{ 'Administrativo' }}
+                  </label>
+                </div>
+              </div>
+              <div>
+                <div>
+                  <label class="text-bold">
+                    {{ ('quotation.details.decisionLevel' | translate) + ': ' }}
+                  </label>
+                </div>
+                <div>
+                  <label class="text-original">
+                    {{ 'Bajo' }}
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div>
+                <div>
+                  <label class="text-bold">{{ ('quotation.details.assignedUser' | translate) + ': ' }}</label>
+                </div>
+                <div>
+                  <label class="text-original">{{ 'BArias' }}</label>
+                </div>
+              </div>
+              <div>
+                <div>
+                  <label class="grass">{{ 'preProcessing.clientWithCredit' | translate }}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="title">
+          <label
+            ><span>{{ '6' }} {{ 'changeNotices.affectedInternalOrders' | translate }} </span
+            >{{ '· 110521-9133, 10521-9134, 10521-9135, 10521-9136 , 10521-9137, 10521-9138' }}</label
+          >
+        </div>
+        <div class="info">
+          <div class="left">
+            <div class="top">
+              <div class="center">
+                <label>{{ 'common.pieces' | translate }}</label>
+                <label>{{ '2' }}</label>
+              </div>
+              <div>
+                <label>{{ 'changeNotices.management' | translate }}</label>
+                <label>{{ 'Compras · Nombres Apellido ' }}</label>
+              </div>
+              <div>
+                <label>{{ 'changeNotices.reasons' | translate }}</label>
+                <label>{{ 'Motivos Desconocidos' }}</label>
+              </div>
+              <div>
+                <label>{{ 'changeNotices.originalDeliveryDate' | translate }}</label>
+                <label>{{ '15/Agosto/2021' }}</label>
+              </div>
+              <div>
+                <label>{{ 'changeNotices.newDeliveryDate' | translate }}</label>
+                <label>{{ '14/Oct/2021' }}</label>
+              </div>
+              <div>
+                <label>{{ 'changeNotices.estimatedProviderDate' | translate }}</label>
+                <label>{{ 'N/A' }}</label>
+              </div>
+            </div>
+            <div class="bottom">
+              <label>{{ 'common.comments' | translate }}</label>
+              <label>{{
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+              }}</label>
+            </div>
+          </div>
+          <div class="right">
+            <label>{{ 'IMPACTO FEE' }}</label>
+          </div>
+        </div>
+        <div class="justification">
+          <label>{{ 'changeNotices.justification' | translate }}</label>
+          <app-generic-text-area class="text-area" [height]="'110px'"></app-generic-text-area>
+        </div>
+      </div>
+      <div class="button">
+        <button class="active">{{ 'common.send' | translate }}</button>
+      </div>
+    </div>
+  </div>
+  <footer class="bottom-container">
+    <div>
+      <label class="bold">{{ 'changeNotices.cnDate' | translate }}: </label>
+      <label>{{ 'changeNotices.changeNoticesDate' | translate }}</label>
+    </div>
+    <div>
+      <label class="bold">{{ 'changeNotices.pi' | translate }}: </label>
+      <label>{{ 'changeNotices.internalOrder' | translate }}</label>
+    </div>
+  </footer>
+</div>

@@ -1,0 +1,106 @@
+<div id="coreContainer">
+  <section class="homeContainer">
+    <div class="content">
+      <header class="header">
+        <app-header></app-header>
+      </header>
+      <div class="article">
+        <div
+          class="asideAux"
+          #asideAux
+          [ngClass]="{hideMenu: !(menuIsOpen$ | async) && (viewType$ | async) === viewTypes.small}"
+        >
+          <app-nav-bar
+            [containSubmenu]="selectContainSubmenu$ | async"
+            [mainMenuOptions]="getMenuOptions(menuOptions$ | async)"
+            [menuIsOpen]="menuIsOpen$ | async"
+            [optionSelected]="optionSelected$ | async"
+            [secondMenuOptions]="submenusSelected$ | async"
+            [submenuIsOpen]="submenuIsOpen$ | async"
+            [menuWidth]="asideAux.offsetWidth"
+            (handleSelectOptionFromMenu)="handleSelectFirstLevelOptionFromMenu($event)"
+            (handleOpenSubmenu)="handleSelectSecondLevelOptionFromMenu($event)"
+          ></app-nav-bar>
+        </div>
+        <div class="outlet">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+      <footer class="footer">
+        <app-footer></app-footer>
+      </footer>
+    </div>
+  </section>
+  <div class="full_screen_content">
+    <div class="tooltip" (click)="handleFullScreen()">
+      <img alt="full_screen_open" src="assets/Images/general/full_screen_open.svg" *ngIf="!activeFullScreen" />
+      <img alt="full_screen_close" src="assets/Images/general/full_screen_close.svg" *ngIf="activeFullScreen" />
+      <div class="tooltip-text">
+        <p *ngIf="!activeFullScreen">Ver pantalla completa</p>
+        <p *ngIf="activeFullScreen">{{ 'Salir pantalla completa' }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="container" *ngIf="blockScreen"></div>
+</div>
+<app-pop-up-alert
+  *ngIf="modalError$ | async"
+  [textInitial]="''"
+  [textInter]="messageError$ | async"
+  [textFinal]="''"
+  [activarBoton]="false"
+  [time]="5000"
+  (confirmacion)="closeModalError()"
+>
+</app-pop-up-alert>
+<app-alert-succes
+  *ngIf="(modalSuccess$ | async)?.modalIsOpen"
+  [width]="(viewType$ | async) === viewTypes.small ? '500px' : '620px'"
+  [height]="(viewType$ | async) === viewTypes.small ? '300px' : '360px'"
+  [text]="(modalSuccess$ | async)?.message"
+  [extraText]="(modalSuccess$ | async)?.extraMessage"
+  [successText]="(modalSuccess$ | async)?.successText"
+  (confirmation)="closeModalSuccess()"
+>
+</app-alert-succes>
+<pqf-draggable-modal
+  *ngIf="(modalPopFile$ | async)?.modalIsOpen"
+  [titleHeader]="(modalPopFile$ | async)?.titleHeader"
+  (closeModal)="closePop()"
+  [isLoading]="(modalPopFile$ | async)?.isLoading"
+>
+  <app-upload-view-file [datasFile]="{path: (modalPopFile$ | async)?.base64File, titulo: ''}"></app-upload-view-file>
+</pqf-draggable-modal>
+
+<pqf-general-loading *ngIf="loading$ | async"></pqf-general-loading>
+
+<pqf-draggable-modal
+  *ngIf="this.file?.archivoBase64 || this.file?.isLoading"
+  [titleHeader]="this.file?.nombre"
+  [isLoading]="this.file?.isLoading"
+  (closeModal)="closeViewFile()"
+>
+  <app-upload-view-file
+    *ngIf="this.file?.isPdf"
+    [datasFile]="{path: this.file?.archivoBase64, titulo: ''}"
+  ></app-upload-view-file>
+
+  <div *ngIf="!this.file?.isPdf" class="imageFile">
+    <div *ngIf="isBase64Image(this.file?.archivoBase64)" class="image">
+      <img alt="file" [src]="this.file?.archivoBase64" class="img" />
+    </div>
+    <label>{{ 'common.downloadInstructions' | translate }}</label>
+    <div class="fill">
+      <div class="download" (click)="download()">
+        <button>{{ 'common.download' | translate }}</button>
+      </div>
+    </div>
+  </div>
+</pqf-draggable-modal>
+
+<app-custom-position-pop-up-notes
+  *ngIf="(notespop$ | async)?.modalIsOpen"
+  [target]="target"
+  [columnNotes]="(notespop$ | async)?.notes"
+>
+</app-custom-position-pop-up-notes>

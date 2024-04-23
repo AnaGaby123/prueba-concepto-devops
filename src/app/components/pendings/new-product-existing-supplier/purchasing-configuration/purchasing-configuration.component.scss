@@ -1,0 +1,5 @@
+@use 'base' as s;
+
+:host {
+  @include s.pqf-generic-main-component-structure;
+}

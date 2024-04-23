@@ -1,0 +1,176 @@
+<div class="product-details">
+  <div class="product-content">
+    <div class="image">
+      <!--TODO: Colocar la presentación del producto-->
+      <img #imagePresentationElement [src]="(selectProduct$ | async)?.imagePresentation" (error)="errorImgHandler()" />
+    </div>
+    <div class="product-info">
+      <div class="title">
+        <!--TODO: Colocar el logo de la marca-->
+        <img #imageItemBrand class="logo" [src]="(selectProduct$ | async)?.brandImage" (error)="errorImgBrandHandler()" />
+        <label *ngIf="(selectProduct$ | async)?.productDetails?.TipoProductoClave === ENUM_PRODUCT_FAMILY_KEY.standards">
+          CAT #{{ (selectProduct$ | async)?.Catalogo || 'N/D' }}
+          {{ ' · ' + (selectProduct$ | async)?.Presentacion + ' ' + ((selectProduct$ | async)?.Unidad || 'N/D') }}
+          {{ ' · ' + ((selectProduct$ | async)?.productDetails?.Uso || 'N/D') }} ·
+        </label>
+        <label
+          *ngIf="
+            (selectProduct$ | async)?.productDetails?.TipoProductoClave === ENUM_PRODUCT_FAMILY_KEY.labware ||
+            (selectProduct$ | async)?.productDetails?.TipoProductoClave === ENUM_PRODUCT_FAMILY_KEY.medicalDevice
+          "
+        >
+          CAT #{{ (selectProduct$ | async)?.Catalogo || 'N/D' }}
+        </label>
+        <label *ngIf="(selectProduct$ | async)?.productDetails?.TipoProductoClave === ENUM_PRODUCT_FAMILY_KEY.publications">
+          · {{ (selectProduct$ | async)?.productDetails?.FormatoPublicacion || 'N/D' }}
+        </label>
+        <label>
+          <img
+            class="img-label"
+            *ngIf="(selectProduct$ | async)?.productDetails?.DisponibilidadClave === availabilityTypes.available"
+            src="assets/Images/labels/productos/disponible.svg"
+          />
+        </label>
+        <label>
+          <img
+            class="img-label"
+            *ngIf="(selectProduct$ | async)?.productDetails?.DisponibilidadClave === availabilityTypes.discontinued"
+            src="assets/Images/labels/productos/descontinuado.svg"
+          />
+        </label>
+        <label>
+          <img
+            class="img-label"
+            *ngIf="(selectProduct$ | async)?.productDetails?.DisponibilidadClave === availabilityTypes.backorder"
+            src="assets/Images/labels/productos/en_backOrder.svg"
+          />
+        </label>
+        <label>
+          <img
+            class="img-label"
+            *ngIf="(selectProduct$ | async)?.productDetails?.DisponibilidadClave === availabilityTypes.notmarketable"
+            src="assets/Images/labels/productos/no_comercializable.svg"
+          />
+        </label>
+      </div>
+      <div class="description">
+        <label>{{ (selectProduct$ | async)?.Descripcion }}</label>
+      </div>
+      <div class="family">
+        <label class="green">
+          {{ (selectProduct$ | async)?.productDetails?.Tipo }}
+          {{ getNAValue((selectProduct$ | async)?.productDetails?.Subtipo) }}
+          {{ getNAValue((selectProduct$ | async)?.productDetails?.Control) }}
+          {{
+            isTipe((selectProduct$ | async)?.productDetails?.Control) && !(selectProduct$ | async)?.productDetails?.Control
+              ? ' · '
+              : ''
+          }}
+        </label>
+        <label *ngIf="isTipe((selectProduct$ | async)?.productDetails?.Tipo)" class="orange">
+          {{ (selectProduct$ | async)?.productDetails?.Controlado ? ' Controlado' : '' }}
+        </label>
+        <label>
+          {{
+            (selectProduct$ | async)?.productDetails?.Tipo === 'Publicaciones'
+              ? ' · ' + (selectProduct$ | async)?.productDetails?.Autor
+              : ''
+          }}
+        </label>
+        <label class="orange">{{ (selectProduct$ | async)?.productDetails?.Controlado ? 'Controlado' : '' }}</label>
+      </div>
+      <div class="info">
+        <div class="left">
+          <div class="text">
+            <label class="label16"
+              >{{ 'newProductExistingSupplier.regulatoryResearch.details.presentation' | translate }} : </label
+            ><span class="label16-bold-green"
+              >{{ (selectProduct$ | async)?.Presentacion }} {{ (selectProduct$ | async)?.Unidad }}</span
+            >
+          </div>
+          <div class="text">
+            <label class="label16">
+              {{ 'newProductExistingSupplier.regulatoryResearch.details.classification' | translate }}
+              :
+            </label>
+            <span class="label16-bold">
+              {{
+                (selectProduct$ | async)?.productDetails?.Clasificacion
+                  ? (selectProduct$ | async)?.productDetails?.Clasificacion
+                  : 'N/D'
+              }}
+            </span>
+          </div>
+          <div class="text">
+            <label class="label16">{{ 'common.provider' | translate }} : </label>
+            <span class="label16-bold-green">
+              {{
+                (selectProduct$ | async)?.productDetails?.NombreProveedor
+                  ? (selectProduct$ | async)?.productDetails?.NombreProveedor
+                  : 'N/D'
+              }}
+            </span>
+          </div>
+        </div>
+        <div class="right">
+          <div class="text">
+            <label class="label16"
+              >{{ 'newProductExistingSupplier.regulatoryResearch.details.application' | translate }} :
+              {{
+                (selectProduct$ | async)?.productDetails?.Aplicacion
+                  ? (selectProduct$ | async)?.productDetails?.Aplicacion
+                  : 'N/D'
+              }}
+            </label>
+          </div>
+          <div class="text">
+            <label class="label16">{{ 'newProductExistingSupplier.regulatoryResearch.details.brand' | translate }} : </label>
+            <span class="label16-bold-green">
+              {{
+                (selectProduct$ | async)?.productDetails?.NombreMarca
+                  ? (selectProduct$ | async)?.productDetails?.NombreMarca
+                  : 'N/D'
+              }}
+            </span>
+          </div>
+          <div class="text">
+            <label class="label16">
+              {{ 'newProductExistingSupplier.regulatoryResearch.details.physicalState' | translate }} :
+              {{
+                (selectProduct$ | async)?.productDetails?.EstadoFisico
+                  ? (selectProduct$ | async)?.productDetails?.EstadoFisico
+                  : 'N/D'
+              }}
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="drop-content">
+        <div class="drop">
+          <pqf-drop-down-list
+            [options]="selectBrandFamilyList$ | async"
+            [selectedOption]="selectBrandFamily$ | async"
+            [isRequired]="true"
+            [isActive]="enableEdit$ | async"
+            [label]="'newProductExistingSupplier.regulatoryResearch.details.typeOfProduct' | translate"
+            (selectedOptionChangeEmitter)="selectionChange('IdMarcaFamilia', $event)"
+          ></pqf-drop-down-list>
+        </div>
+      </div>
+    </div>
+    <div class="auto"></div>
+    <div class="right-price">
+      <label class="subtitle">
+        {{ 'newProductExistingSupplier.regulatoryResearch.details.providerPriceList' | translate }}
+      </label>
+      <label class="price">
+        {{ (typeBackup$ | async)?.PrecioLista | currency: (providerCurrency$ | async):'symbol':'1.2-2' }}
+        {{ providerCurrency$ | async }}
+      </label>
+      <label class="commentary">
+        {{ 'newProductExistingSupplier.regulatoryResearch.details.validity' | translate }}
+        : {{ (selectProduct$ | async)?.productDetails?.FechaCaducidadVigenciaCuraduria | dateFormatSlashShort }}
+      </label>
+    </div>
+  </div>
+</div>

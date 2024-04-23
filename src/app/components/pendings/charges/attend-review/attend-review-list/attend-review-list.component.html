@@ -1,0 +1,125 @@
+<div class="dashboard-container" id="attend-review-list-container">
+  <div class="left-container">
+    <label class="title">{{ 'checkout.customers' | translate }}</label>
+    <div class="tabs">
+      <app-tabs [options]="tabs$ | async" [tapSelected]="tab$ | async" (onSelectOption)="setTab($event)"></app-tabs>
+    </div>
+    <div class="filters">
+      <div class="filter-by-type">
+        <app-hamburger-menu [options]="filters$ | async" [value]="(filter$ | async).value" (valueEmit)="setOption($event)">
+        </app-hamburger-menu>
+      </div>
+      <div class="filter-by-search">
+        <app-search [placeholder]="'common.client' | translate" (textSearch)="handleKeySearch($event)"></app-search>
+      </div>
+    </div>
+    <div class="list-container">
+      <virtual-scroller [items]="customers$ | async" (vsUpdate)="customersScroller = $event" *ngIf="(apiStatus$ | async) === 3">
+        <div class="client" *ngFor="let customer of customersScroller" (click)="selectedCustomer(customer)">
+          <div class="index">
+            <label>{{ customer.index }}</label>
+          </div>
+          <div class="information">
+            <div class="name">
+              <label>{{ customer.NombreCliente }}</label>
+            </div>
+            <div class="amount">
+              <img src="" alt="" />
+              <label>{{
+                ('common.totalValue' | translate) +
+                  ' ' +
+                  ((customer.MontoTotal ? customer.MontoTotal : 0) | currency: 'USD':'symbol-narrow':'2.2-4') +
+                  ' USD'
+              }}</label>
+            </div>
+            <div class="invoice">
+              <label>{{
+                customer.TotalFacturas +
+                  ' ' +
+                  (customer.TotalFacturas === 1 ? ('common.invoice' | translate) : ('common.invoices' | translate))
+              }}</label>
+              <label>·</label>
+              <label>{{
+                (customer.TotalPedidos ? customer.TotalPedidos : 0) + ' ' + ('attendReview.associatedOrders' | translate)
+              }}</label>
+            </div>
+            <div class="labels">
+              <div *ngFor="let label of customer.vTpProformaPedidoObj">
+                <label *ngIf="label.EstadoTPProformaPedido === 'Nueva'">{{
+                  label.TotalProformaPedidoEstado +
+                    ' ' +
+                    (label.TotalProformaPedidoEstado === 1
+                      ? ('quotation.itemStatusNew' | translate)
+                      : ('attendReview.news' | translate))
+                }}</label>
+                <label class="save" *ngIf="label.EstadoTPProformaPedido === 'Guardada'">{{
+                  label.TotalProformaPedidoEstado +
+                    ' ' +
+                    (label.TotalProformaPedidoEstado === 1
+                      ? ('quotation.itemStatusSaved' | translate)
+                      : ('attendReview.saved' | translate))
+                }}</label>
+                <label class="executed" *ngIf="label.EstadoTPProformaPedido === 'Ejecutada'"
+                  >{{ label.TotalProformaPedidoEstado }} Ejecutada</label
+                >
+                <label class="nr" *ngIf="label.EstadoTPProformaPedido === 'NoRealizada'"
+                  >{{ label.TotalProformaPedidoEstado }} NR</label
+                >
+              </div>
+            </div>
+            <div class="date">
+              <label>{{ 'FE+ : ' + (customer.FechaEntregaMasProxima | dateFormatSlashShort) }}</label>
+              <label class="dateReview">·</label>
+              <label class="dateReview">{{ 'FR +:' + (customer.FechaRevisionMasProxima | dateFormatSlashShort) }}</label>
+            </div>
+          </div>
+          <div class="arrow">
+            <img alt="arrow" src="assets/Images/quotation/arrow_default.svg" />
+          </div>
+        </div>
+      </virtual-scroller>
+      <div class="without-results" *ngIf="false">
+        <app-without-results></app-without-results>
+      </div>
+      <div class="loader" *ngIf="(apiStatus$ | async) === 1">
+        <app-loading></app-loading>
+      </div>
+    </div>
+    <div class="footer">
+      <label>{{ '#' + 0 }}</label>
+      <label>{{
+        (1 | number: '1.0-0') + ' ' + (1 === 1 ? ('common.invoice' | translate) : ('common.invoices' | translate))
+      }}</label>
+      <label>{{ (0 | number: '1.0-0') + ' ' + ('attendReview.associatedOrders' | translate) }}</label>
+      <label>{{
+        ('common.totalValue' | translate) +
+          ': ' +
+          (((totalAmount$ | async) ? (totalAmount$ | async) : 0) | currency: 'USD':'symbol-narrow':'2.2-4') +
+          ' USD'
+      }}</label>
+    </div>
+  </div>
+  <div class="right-container">
+    <ng-container *ngIf="false">
+      <app-doughnut-chart
+        *ngIf="(apiStatus$ | async) === 3"
+        [title]="'common.clients' | translate"
+        [titleDetails]="'totals' | translate"
+        [data]="doughnutData$ | async"
+        [optionDetails]="dateDetailsChart$ | async"
+        [optionDetailsHover]="dataDetailsHover$ | async"
+      ></app-doughnut-chart>
+      <app-doughnut-chart
+        *ngIf="(apiStatus$ | async) === 3"
+        [title]="'attendReview.requests' | translate"
+        [titleDetails]="'totals' | translate"
+      ></app-doughnut-chart>
+      <app-bar-chart
+        *ngIf="(apiStatus$ | async) === 3"
+        [values]="dataBarChart$ | async"
+        [title]="'reviewResults.reviews' | translate"
+      ></app-bar-chart>
+    </ng-container>
+    <app-loading class="loading" *ngIf="true"></app-loading>
+  </div>
+</div>

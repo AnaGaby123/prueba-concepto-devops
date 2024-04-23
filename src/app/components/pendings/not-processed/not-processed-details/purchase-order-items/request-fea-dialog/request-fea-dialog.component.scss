@@ -1,0 +1,270 @@
+@use 'base' as s;
+
+#request-fea-pop-up {
+  ::ng-deep .modal {
+    background: none;
+
+    & > .modal-content {
+      transition: none;
+    }
+  }
+  & > div {
+    & > .modal {
+      & > .modal-content {
+        text-align: initial;
+      }
+    }
+  }
+
+  & .container {
+    height: 100%;
+    width: 100%;
+    @include s.flexColumn;
+    overflow: hidden;
+
+    & > .header {
+      @include s.flexRow;
+      padding: 20px 30px;
+      height: 103px;
+
+      & > .logo {
+        @include s.flexColumn;
+        @include s.absoluteCenter;
+        width: 160px;
+        padding-right: 30px;
+
+        & > img {
+          max-width: 100%;
+          max-height: 100%;
+        }
+      }
+
+      & > .client {
+        @include s.flexColumn;
+        flex: 1;
+        align-items: flex-start;
+
+        & > label:nth-of-type(1) {
+          @include s.escaledFontFormat(s.$textSize20to23, bold, s.$pqGreen);
+          @include s.Novecento-Bold;
+        }
+        & > label:nth-of-type(2) {
+          @include s.escaledFontFormat(s.$textSize16to20, regular, s.$pqGreen);
+          @include s.Roboto-Regular;
+        }
+        & > label:nth-of-type(3) {
+          @include s.escaledFontFormat(s.$textSize16to20, regular, s.$pqBlack2);
+          @include s.Roboto-Regular;
+        }
+      }
+
+      & > .totals {
+        @include s.flexColumn;
+        flex-shrink: 0;
+        align-items: flex-end;
+
+        & > label:first-of-type {
+          @include s.escaledFontFormat(s.$textSize16to20, regular, s.$pqGreen);
+          @include s.Roboto-Regular;
+        }
+
+        & > label:last-of-type {
+          @include s.escaledFontFormat(s.$textSize16to20, regular, s.$pqBlack2);
+          @include s.Roboto-Regular;
+        }
+      }
+    }
+
+    & > .title-container {
+      @include s.flexRow;
+      padding: 0px 30px;
+
+      & > div {
+        @include s.flexRow;
+        justify-content: flex-start;
+        width: 100%;
+        padding: 8px 0;
+
+        &.border-top {
+          border-top: 1px solid s.$pqBlack2;
+        }
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize18to21, bold, s.$pqBlack2);
+          @include s.Novecento-Bold;
+        }
+      }
+    }
+
+    & > .data {
+      @include s.flexRow;
+      flex-wrap: wrap;
+      padding: 14px 30px;
+      background-color: rgba(s.$pqGreen, 0.05);
+
+      & > div {
+        @include s.flexColumn;
+        align-items: flex-start;
+        width: 49%;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+          @include s.Roboto-Regular;
+          margin-bottom: 6px;
+        }
+
+        &.date-picker {
+          text-align: start;
+        }
+
+        & > .circle {
+          @include s.flexRow;
+          justify-content: flex-start;
+          border-radius: 15px;
+          background-color: rgba(s.$pqGreen, 0.07);
+          width: 100%;
+          padding: 7px 23px;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize14to18, regular, s.$pqGreen);
+            @include s.Roboto-Regular;
+          }
+        }
+      }
+
+      & > .container-delivery-instructions {
+        margin-top: 4px;
+        flex-basis: 100%;
+      }
+
+      & > div:nth-child(1),
+      & > div:nth-child(2) {
+        margin-bottom: 10px;
+      }
+
+      & > div:nth-child(odd) {
+        padding-right: 14px;
+      }
+
+      & > div:nth-child(4) {
+        justify-content: flex-end;
+      }
+    }
+
+    & > .list {
+      @include s.flexColumn;
+      flex: 1;
+      margin: 0 30px;
+      overflow: hidden;
+
+      & > .items {
+        @include s.flexColumn;
+        flex: 1;
+        overflow-y: auto;
+        border-top: 1px solid s.$pqBlack2;
+        border-bottom: 1px solid s.$pqBlack2;
+        row-gap: 10px;
+
+        & > .item {
+          @include s.flexColumn;
+          align-items: flex-start;
+          padding: 8px 24px;
+          row-gap: 2px;
+          background-color: s.$orangeLight;
+          & > .cat {
+            @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqGreen);
+            @include s.Roboto-Bold;
+            //line-height: 1.2em;
+            & > img {
+              margin-right: 4px;
+            }
+            & .span-index {
+              width: 35px;
+              vertical-align: baseline;
+              color: s.$pqBlack2;
+            }
+
+            & > .img-brand {
+              width: 15px;
+            }
+          }
+
+          & > .product-description {
+            @include s.multiLineTextTruncateSinHeight($lineHeight: 1.2em);
+            @include s.escaledFontFormat(s.$textSize11to13, bold, s.$pqBlack2);
+            @include s.Roboto-Light;
+            text-align: start;
+            & > span {
+              color: s.$pqGreen;
+            }
+          }
+
+          & > .family {
+            @include s.escaledFontFormat(s.$textSize11to13, bold, s.$pqGreen);
+            @include s.Roboto-Bold;
+
+            & > .controlled {
+              @include s.escaledFontFormat(s.$textSize11to13, bold, s.$complementario-b);
+              @include s.Roboto-Bold;
+            }
+          }
+
+          & > .date-validate {
+            @include s.escaledFontFormat(s.$textSize11to13, bold, s.$success);
+            @include s.Roboto-Bold;
+            & span {
+              color: s.$pqGreen;
+            }
+          }
+          & > .dates-trainings {
+            @include s.escaledFontFormat(s.$textSize11to13, bold, s.$pqBlack2);
+            @include s.Roboto-Bold;
+          }
+          & > .freight {
+            @include s.escaledFontFormat(s.$textSize11to13, regular, s.$alert-c);
+            @include s.Roboto-Regular;
+          }
+
+          & > .totals {
+            @include s.escaledFontFormat(s.$textSize11to13, regular, s.$pqBlack2);
+            @include s.Roboto-Regular;
+            line-height: 1.2em;
+            & > span {
+              color: s.$pqGreen;
+            }
+          }
+          & > .inconsistencies {
+            @include s.multiLineTextTruncateSinHeight(3, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+            @include s.escaledFontFormat(s.$textSize11to13, regular, s.$redInconsistency);
+            @include s.Roboto-Regular;
+            line-height: 1.2em;
+          }
+          & > .inconsistencies {
+            & > label:last-of-type {
+              & > span {
+                display: none;
+              }
+            }
+          }
+          & > .comments {
+            @include s.escaledFontFormat(s.$textSize11to13, regular, s.$redInconsistency);
+            @include s.Roboto-Regular;
+            line-height: 1.2em;
+          }
+        }
+      }
+
+      & > div:last-of-type {
+        @include s.flexRow;
+        justify-content: flex-end;
+        flex-shrink: 0;
+        padding-top: 13px;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGreen);
+          @include s.Roboto-Regular;
+        }
+      }
+    }
+  }
+}

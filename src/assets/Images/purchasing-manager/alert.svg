@@ -1,0 +1,15 @@
+<svg width='21' height='21' viewBox='0 0 21 21' xmlns='http://www.w3.org/2000/svg'
+     xmlns:xlink='http://www.w3.org/1999/xlink'>
+  <defs>
+    <path
+      d='M11.333 12.375 11.615 4H9.058l.282 8.375h1.993zm-.997 4.844c.404 0 .73-.12.976-.357.246-.238.37-.54.37-.905 0-.37-.124-.675-.37-.913s-.572-.357-.976-.357c-.398 0-.72.12-.967.361-.246.24-.369.544-.369.909s.123.667.37.905c.246.238.568.357.966.357z'
+      id='a' />
+  </defs>
+  <g fill='none' fill-rule='evenodd'>
+    <circle fill='#E29D2A' cx='10.5' cy='10.5' r='10.5' />
+    <g fill-rule='nonzero' fill='#FFF'>
+      <use xlink:href='#a' />
+      <use stroke='#FFF' xlink:href='#a' />
+    </g>
+  </g>
+</svg>

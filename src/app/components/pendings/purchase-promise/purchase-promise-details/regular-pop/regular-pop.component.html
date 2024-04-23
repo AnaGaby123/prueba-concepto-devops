@@ -1,0 +1,182 @@
+<app-pop-up-generic
+  class="regular-pop"
+  [titleHeader]="'purchasePromise.seeItem' | translate"
+  [activeButtons]="true"
+  [activeBtn]="validateItemPop$ | async"
+  [width]="'930px'"
+  [height]="'810px'"
+  [overflow]="''"
+  (evento)="onClose(TEE_POP, false, null, $event)"
+>
+  <div class="content">
+    <app-see-item-details-pop-top [seeItemDetailsPopTop]="selectInfoDetailsTop$ | async"></app-see-item-details-pop-top>
+    <div class="body">
+      <div class="item-info">
+        <div class="title">
+          <div class="purchase">
+            <label>{{ 'descriptionItemQuote.itemToBePreProcessing' | translate }}</label>
+          </div>
+          <div class="addenda-title" *ngIf="selectAddendaDeLineaDeOrden$ | async">
+            <label class="addenda">{{ 'checkout.addenda' | translate }}</label>
+          </div>
+        </div>
+        <div class="content-purchase">
+          <div class="info">
+            <app-see-item-details-pop-bottom
+              [seeItemDetailsPopBottom]="selectDetailsItemPopBottom$ | async"
+            ></app-see-item-details-pop-bottom>
+          </div>
+          <div class="addenda" *ngIf="selectAddendaDeLineaDeOrden$ | async">
+            <app-generic-input
+              class="input"
+              [label]="'Línea de Orden'"
+              [value]="(selectedPurchasePromises$ | async)?.PpPartidaPedidoAddendaSanofi?.LineaDeOrden"
+              [typeValidation]="inputValidators.Number"
+              (textData)="setSanofiValue2('LineaDeOrden', $event)"
+            ></app-generic-input>
+            <app-drop-down-list
+              class="drop-list"
+              [isSearchable]="(selectListUnidad$ | async)?.length > 5"
+              [items]="selectListUnidad$ | async"
+              [itemSelected]="selectListUnidadPqf$ | async"
+              [label]="'descriptionItemQuote.uniteOfMeasurement' | translate"
+              (valueDropList)="setSanofiValue2('IdCatUnidad', $event)"
+            >
+            </app-drop-down-list>
+          </div>
+        </div>
+        <label class="dates-trainings" *ngIf="(iQuote$ | async)?.quote?.FechasRealizacionCapacitacion?.length > 0"
+          >{{ 'descriptionItemQuote.datesTraining' | translate }}:
+          <span class="black" *ngFor="let date of (iQuote$ | async)?.quote?.FechasRealizacionCapacitacion; let i = index">
+            {{ date?.Fecha | dateFormatSlashShort
+            }}{{ i !== (iQuote$ | async)?.quote?.FechasRealizacionCapacitacion?.length - 1 ? ',' : '' }}
+          </span>
+        </label>
+        <app-products-supplements
+          *ngIf="(iQuote$ | async)?.quote?.vProductoSuplementarios?.length > 0"
+          [vProductsSupplements]="(iQuote$ | async)?.quote?.vProductoSuplementarios"
+        ></app-products-supplements>
+      </div>
+      <div class="config-info">
+        <div class="title">
+          <label>{{ 'purchasePromise.configurationForPreProcessing' | translate }}</label>
+        </div>
+        <div class="config-content">
+          <div class="delivery-restrictions">
+            <label *ngIf="(clientRestrictions$ | async)?.monthlyRestriction.RestriccionFinDeMes"
+              ><span>{{ 'descriptionItemQuote.deliveryRestrictions' | translate }}: </span
+              ><label
+                >{{ 'common.restrictionNotAcceptEndMonth' | translate }} ({{
+                  (clientRestrictions$ | async)?.monthlyRestriction.DiasAntesFinDeMes
+                }}
+                {{ 'common.beforeMonth' | translate }})</label
+              ></label
+            >
+            <label class="month" *ngIf="(clientRestrictions$ | async)?.monthlyRestriction.RestriccionMensual"
+              ><span>{{ 'process.deliveryRestrictions' | translate }}: </span
+              ><label
+                >{{ 'common.endMonthRestriction' | translate }}
+                {{ (clientRestrictions$ | async)?.monthlyRestriction.APartirDelDia }}
+                {{ 'process.everyMonth' | translate }}</label
+              ></label
+            >
+            <label class="month" *ngIf="(clientRestrictions$ | async)?.monthlyRestriction.EntregaConRemision"
+              ><span>{{ 'process.deliveryRestrictions' | translate }}: </span
+              ><label>{{ 'common.referralRestriction' | translate }}</label></label
+            >
+            <div
+              class="temporal tooltip"
+              *ngIf="
+                (clientRestrictions$ | async)?.temporaryRestriction?.length > 0 &&
+                (clientRestrictions$ | async)?.isActiveTemporaryRestriction
+              "
+            >
+              <label
+                >{{ 'preProcessing.temporaryRestriction' | translate }}:
+                <span
+                  >{{ ((clientRestrictions$ | async)?.temporaryRestriction)[0]?.Titulo }} {{ 'process.from' | translate }}
+                  {{ ((clientRestrictions$ | async)?.temporaryRestriction)[0]?.FechaInicio | dateFormatSlashShort }}
+                  {{ 'process.until' | translate }}
+                  {{ ((clientRestrictions$ | async)?.temporaryRestriction)[0]?.FechaFin | dateFormatSlashShort }}...</span
+                >
+              </label>
+              <div class="tooltip-text">
+                <p *ngFor="let restr of (clientRestrictions$ | async)?.temporaryRestriction"
+                  >{{ restr.Titulo }} desde {{ restr.FechaInicio | dateFormatSlashShort }} hasta
+                  {{ restr.FechaFin | dateFormatSlashShort }}</p
+                >
+              </div>
+            </div>
+          </div>
+          <div class="freightData" *ngIf="(iQuote$ | async)?.quote?.AplicaFleteExpress">
+            <div class="aqua">
+              <label>
+                <span>{{ 'quotation.details.section.freight.express' | translate }}: </span>
+                <span class="green">FEE {{ selectFEE$ | async | dateFormatSlash }} </span>
+                <span class="proquifa"> · {{ (iQuote$ | async)?.quotation?.FleteExpress?.NombreProveedor }} </span>
+                <span class="green">
+                  ·
+                  {{
+                    (iQuote$ | async)?.quotation?.FleteExpress?.PrecioAjustado
+                      ? ((iQuote$ | async)?.quotation?.FleteExpress?.PrecioAjustado | currency: 'USD':'symbol-narrow':'1.2-2')
+                      : ((iQuote$ | async)?.quotation?.FleteExpress?.Precio | currency: 'USD':'symbol-narrow':'1.2-2')
+                  }}
+                  {{ (iQuote$ | async)?.quote?.ClaveMoneda }}
+                </span>
+                <span class="black" *ngIf="(iQuote$ | async)?.quotation?.FleteExpress?.PorcentajeProquifa">
+                  · {{ (iQuote$ | async)?.quotation?.FleteExpress?.PorcentajeProquifa || 0 }} % PQF</span
+                >
+              </label>
+            </div>
+            <!--                      <div class="justification">-->
+            <!--                        <div class="title">-->
+            <!--                          <label>{{ 'Justificación de Flete' }}</label>-->
+            <!--                        </div>-->
+            <!--                        <div class="comments">-->
+            <!--                          <label>{{ 'Ejemplo de comentarios' }}</label>-->
+            <!--                        </div>-->
+            <!--                      </div>-->
+          </div>
+          <div class="regularData">
+            <div class="date">
+              <!--              DOCS: Mostrar el check de Entrega Programa cuando la partida no tiene flete express-->
+              <div class="check" *ngIf="!(iQuote$ | async)?.PcPartidaPromesaDeCompra?.AplicaFleteExpress">
+                <app-check-box
+                  [check]="(iQuote$ | async)?.quote?.Programada"
+                  (event)="updateValue('Programada', $event)"
+                  [label]="'purchasePromise.scheduledDelivery' | translate"
+                ></app-check-box>
+              </div>
+              <label
+                *ngIf="
+                  !(iQuote$ | async)?.quote?.Programada && !(iQuote$ | async)?.PcPartidaPromesaDeCompra?.AplicaFleteExpress
+                "
+                >FEE: <span class="green mb">{{ selectFEE$ | async | dateFormatSlash }}</span></label
+              >
+              <div class="picker" *ngIf="(iQuote$ | async)?.quote?.Programada">
+                <app-date-picker
+                  dateFormat="YYYYMMDD"
+                  [color]="false"
+                  [date]="selectedDate$ | async"
+                  [disabledCalendarDays]="selectNonAvailableDays$ | async"
+                  [position]="'down'"
+                  (fecha)="handleDate($event)"
+                  [rangeStart]="rangeStart$ | async"
+                  [rangeEnd]="selectFEERangeEnd$ | async"
+                ></app-date-picker>
+              </div>
+            </div>
+            <div class="comments">
+              <app-generic-text-area
+                [title]="'purchasePromise.comments' | translate"
+                [height]="'110px'"
+                [value]="(iQuote$ | async)?.quote?.Notas"
+                (emitData)="updateValue('Notas', $event)"
+              ></app-generic-text-area>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-pop-up-generic>

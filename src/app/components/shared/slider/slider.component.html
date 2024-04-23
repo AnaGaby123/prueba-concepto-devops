@@ -1,0 +1,32 @@
+<div id="slider">
+  <div class="container-slider">
+    <div *ngIf="showLines" class="line-one"></div>
+    <div *ngIf="showLines" class="line-two"></div>
+    <div *ngIf="showLines" class="line-three"></div>
+    <span
+      #span
+      [style.left]="leftSpan"
+      [ngClass]="
+        inputMode === 'amount'
+          ? valueInput <= tenPercent && showLines
+            ? 'danger'
+            : 'green'
+          : valueInput <= 10 && showLines
+          ? 'danger'
+          : 'green'
+      "
+    >
+      {{
+        (inputMode === 'percentage' && valueInput <= 10 && valueInput > 0 && showLines ? '-' : '') +
+          (inputMode === 'amount' ? (valueInput | currency: currency) + ' ' + currency : valueInput + '%')
+      }}
+    </span>
+    <input #inputRange type="range" [min]="min" [max]="max" [value]="value" step="1" (input)="updateDataInputRange()" />
+  </div>
+  <div [ngClass]="showLines ? 'values-footer with-lines' : 'values-footer without-lines'">
+    <label *ngIf="showLines">{{
+      inputMode === 'amount' ? (tenPercent | currency: currency) + ' ' + currency : '10% Mínimo Preautorizado '
+    }}</label>
+    <label>{{ labelLimit }}</label>
+  </div>
+</div>

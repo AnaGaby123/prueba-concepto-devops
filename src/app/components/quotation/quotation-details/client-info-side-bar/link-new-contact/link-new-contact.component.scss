@@ -1,0 +1,98 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+.info-content {
+  justify-content: space-between;
+  margin: 0 24px;
+}
+
+:host {
+  width: 100%;
+}
+
+#link-new-contact {
+  @include s.flexColumn;
+  height: 100%;
+  margin-right: 4.5px;
+
+  & > .search {
+    margin-top: 32px;
+
+    & > img {
+      margin-left: 8px;
+    }
+  }
+
+  & > .info {
+    @include s.flexColumn;
+    flex: 1;
+    gap: 46px;
+    justify-content: center;
+
+    & > .list {
+      @include s.flexColumn;
+      flex: 1;
+      margin-top: 24px;
+
+      & > virtual-scroller {
+        @include s.absolute100;
+        @include s.fixVirtualScroller;
+
+        ::ng-deep .scrollable-content {
+        }
+      }
+    }
+
+    & > .loading,
+    & > .without-results {
+      @include s.flexColumn;
+      align-items: center;
+      height: 100%;
+      justify-content: center;
+    }
+
+    & > .requesting-new-customer-text {
+      @include s.responsive-font-format(
+        $color: s.$pqGreen,
+        $font-family: s.$font-family-novecento_bold,
+        $font-size-map: s.$responsive-font-19-19,
+        $font-weight: s.$font-weight_bold
+      );
+      margin: 0 38.5px;
+      text-align: center;
+    }
+
+    & > .request-description-text {
+      @include s.responsive-font-format(
+        $color: s.$pqGreen,
+        $font-size-map: s.$responsive-font-17-17,
+        $font-family: s.$font-family_roboto
+      );
+      text-align: center;
+    }
+  }
+
+  & > .add-client {
+    display: flex;
+    justify-content: center;
+    margin: 28px 0;
+
+    & > button {
+      $max-width-map: (
+        'base': 240px,
+        'macBookAir': 360px,
+      );
+
+      &.button-enable {
+        @include s.pqfButton($max-width-map: $max-width-map);
+      }
+
+      &.button-disabled {
+        @include s.pqfDisableButton($max-width-map: $max-width-map);
+      }
+    }
+  }
+}

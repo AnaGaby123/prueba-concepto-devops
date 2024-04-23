@@ -1,0 +1,114 @@
+<div class="dashboard-container" id="attend-investigation-list">
+  <div class="left-container">
+    <label class="title">{{ 'attendInvestigation.attendInvestigationList.providers' | translate }}</label>
+    <div class="tabs">
+      <app-tabs
+        [options]="tabOptions$ | async"
+        [tapSelected]="tabOption$ | async"
+        (onSelectOption)="setTabOptionSelected($event)"
+      >
+      </app-tabs>
+    </div>
+    <div class="list-container">
+      <virtual-scroller
+        class="virtual-list"
+        *ngIf="(listProviders$ | async)?.length > 0 && (listProviderStatus$ | async) === 3"
+        [items]="listProviders$ | async"
+        (vsUpdate)="clientScroll = $event"
+      >
+        <div class="item" *ngFor="let client of clientScroll" (click)="selectClient(client)">
+          <div class="number">
+            <label>{{ '#' + client.Index }}</label>
+          </div>
+          <div class="content">
+            <div class="name">
+              <label>{{ client.NombreProveedor }}</label>
+            </div>
+            <div class="classification">
+              <label class="classification-products">{{
+                client.Total + ' ' + (client.Total === 1 ? 'Producto' : 'Productos')
+              }}</label>
+            </div>
+            <div class="status">
+              <img alt="news" src="assets/Images/labels/nuevos.svg" *ngIf="client.EstadoInvestigacionNueva > 0" />
+              <label class="new" *ngIf="client.EstadoInvestigacionNueva > 0">
+                {{ client.EstadoInvestigacionNueva }}
+                {{
+                  client.EstadoInvestigacionEnEsperaDeRespuesta > 0 || client.EstadoInvestigacionPorreatender > 0 ? ' · ' : ''
+                }}</label
+              >
+              <img
+                alt="reattended"
+                src="assets/Images/labels/por-reatender.svg"
+                *ngIf="client.EstadoInvestigacionPorreatender > 0"
+              />
+              <label class="reattended" *ngIf="client.EstadoInvestigacionPorreatender > 0">
+                {{ client.EstadoInvestigacionPorreatender }}
+                {{ client.EstadoInvestigacionEnEsperaDeRespuesta > 0 ? ' · ' : '' }}</label
+              >
+              <img
+                alt="pending response"
+                src="assets/Images/labels/en-investigacion.svg"
+                *ngIf="client.EstadoInvestigacionEnEsperaDeRespuesta > 0"
+              />
+              <label class="pending-response" *ngIf="client.EstadoInvestigacionEnEsperaDeRespuesta > 0">
+                {{ client.EstadoInvestigacionEnEsperaDeRespuesta }}</label
+              >
+            </div>
+            <div class="states">
+              <label>
+                {{
+                  ('attendInvestigation.attendInvestigationList.dateReception' | translate) +
+                    ' ' +
+                    (client.FechaRegistro | dateFormatSlash)
+                }}</label
+              >
+            </div>
+          </div>
+          <div class="arrow">
+            <img alt="arrow" src="assets/Images/arrows/arrow_right.svg" />
+          </div>
+        </div>
+      </virtual-scroller>
+      <div class="without-results" *ngIf="(listProviders$ | async).length === 0 && (listProviderStatus$ | async) !== 1">
+        <app-without-results></app-without-results>
+      </div>
+      <div class="loader" *ngIf="(listProviderStatus$ | async) === 1">
+        <app-loading></app-loading>
+      </div>
+    </div>
+    <div class="footer">
+      <label
+        >{{ (listProviders$ | async).length | number: '1.0-0' }}
+        {{ (listProviders$ | async).length === 1 ? 'Proveedor' : 'Proveedores' }}</label
+      >
+      <label>{{
+        (totalProducts$ | async | number: '1.0-0') + ((totalProducts$ | async) === 1 ? ' Producto' : ' Productos')
+      }}</label>
+    </div>
+  </div>
+  <div class="right-container">
+    <ng-container *ngIf="(activeChart$ | async) && (listProviderStatus$ | async) === 3">
+      <app-doughnut-chart
+        [maxWidth]="'850px'"
+        [titleDetails]="'donutChart.titleTotals' | translate"
+        [title]="'attendInvestigation.attendInvestigationList.providers' | translate"
+        [data]="doughnutChartData$ | async"
+        [optionDetailsHover]="doughnutChartOptionDetailsHover$ | async"
+        [optionDetails]="doughnutChartOptionDetails$ | async"
+        [typeChart]="1"
+      >
+      </app-doughnut-chart>
+      <app-bar-chart
+        [maxWidth]="'850px'"
+        [title]="'attendInvestigation.attendInvestigationList.products' | translate"
+        [values]="valuesBarChart$ | async"
+      >
+      </app-bar-chart>
+    </ng-container>
+    <app-loading
+      class="loading"
+      *ngIf="(listProviderStatus$ | async) === 1 && lodashIsEmpty(listProviders$ | async)"
+    ></app-loading>
+  </div>
+</div>

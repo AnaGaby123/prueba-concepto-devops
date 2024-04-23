@@ -1,0 +1,11 @@
+<div class="component-container" id="declare-transit-arrival-container">
+  <div class="header">
+    <app-header-bar [title]="title$ | async" [activeBack]="isDetailsView$ | async" (goBack)="goBack()"></app-header-bar>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="footer" *ngIf="!(isDetailsView$ | async)">
+    <ng-container></ng-container>
+  </div>
+</div>

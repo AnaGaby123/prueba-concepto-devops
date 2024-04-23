@@ -1,0 +1,51 @@
+@use "sass:math";
+@use 'displayed' as *;
+@use 'colors' as *;
+
+
+@mixin fontScalingFix {
+  -webkit-font-smoothing: antialiased;
+}
+@mixin fontScalingFixImportant {
+  -webkit-font-smoothing: antialiased !important;
+}
+
+
+@function em($pixels, $context: $browser-context) {
+  @return math.div($pixels, $context) * 1em;
+}
+
+// responsive font size mixin
+@mixin font-size-map($font-size-map) {
+  @each $breakpoint, $font-size in $font-size-map {
+    @if $breakpoint== 'base' {
+      font-size: em($font-size);
+    } @else {
+      @include responsive_layout($breakpoint) {
+        font-size: em($font-size);
+      }
+    }
+  }
+}
+
+@mixin font-size-map-important($font-size-map) {
+  @each $breakpoint, $font-size in $font-size-map {
+    @if $breakpoint== 'base' {
+      font-size: em($font-size) !important;
+    } @else {
+      @include responsive_layout($breakpoint) {
+        font-size: em($font-size) !important;
+      }
+    }
+  }
+}
+
+@mixin responsive_layout($size) {
+  @if map-has-key($breakpoints, $size) {
+    @media #{inspect(map-get($breakpoints, $size))} {
+      @content;
+    }
+  } @else {
+    @warn "No existe el tamaño `#{$size}`. "+"en la lista de breakpoints, revise el map de `$breakpoints`.";
+  }
+}

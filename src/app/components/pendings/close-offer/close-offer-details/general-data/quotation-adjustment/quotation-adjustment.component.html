@@ -1,0 +1,493 @@
+<section id="quotation-adjustment-container">
+  <div class="tabs" *ngIf="!(seeResumeActive$ | async)">
+    <app-tabs
+      [options]="tabOptions$ | async"
+      [tapSelected]="selectedTabOption$ | async"
+      (onSelectOption)="selectTabOption($event)"
+    ></app-tabs>
+  </div>
+  <div class="header-options">
+    <div [ngSwitch]="(selectedTabOption$ | async)?.id">
+      <label *ngSwitchCase="1"></label>
+      <label *ngSwitchCase="2">{{ 'closeOffer.clientPaymentConditions' | translate }} </label>
+      <label class="green" *ngSwitchCase="2">· {{ paymentConditions | async }}</label>
+      <ng-container *ngIf="!(seeResumeActive$ | async)">
+        <label *ngSwitchCase="3">{{ 'closeOffer.prices' | translate }} </label>
+        <label class="underline" *ngSwitchCase="3" (click)="handleSeeAdjustmentsPop(true)"
+          >· {{ 'closeOffer.seeAdjustments' | translate }}</label
+        >
+      </ng-container>
+    </div>
+    <app-search
+      *ngIf="(selectedTabOption$ | async)?.id !== '2'"
+      [isSearchByType]="true"
+      [imageFill]="'#008894'"
+      [searchTerm]="searchTerm$ | async"
+      [typesOfSearch]="searchOptions$ | async"
+      [typeSelected]="selectedSearchOption$ | async"
+      (handleTypeSelected)="setSearchOption($event, 'selectedDefaultSearchOption')"
+      (textSearch)="handleChangeSearchTerm($event)"
+    ></app-search>
+    <button
+      class="see-resume"
+      *ngIf="!(seeResumeActive$ | async) && (selectedTabOption$ | async)?.id !== '2'"
+      [disabled]="!(validatorSeeConfiguredButton$ | async)"
+      [ngClass]="(validatorSeeConfiguredButton$ | async) ? 'active' : 'disabled'"
+      (click)="setSeeResume(true)"
+      >{{ 'closeOffer.seeResume' | translate }} ({{ configuredEntries$ | async }})
+    </button>
+    <button
+      class="back active"
+      *ngIf="(seeResumeActive$ | async) && (selectedTabOption$ | async)?.id !== '2'"
+      (click)="setSeeResume(false)"
+      >{{ 'common.back' | translate }}</button
+    >
+  </div>
+  <div class="table-container" *ngIf="(selectedTabOption$ | async)?.id !== '2'">
+    <virtual-scroller
+      *ngIf="(entriesApiStatus$ | async) === 3 && !lodashIsEmpty(selectInternalSalesItemAdjustment$ | async)"
+      [bufferAmount]="24"
+      [enableUnequalChildrenSizes]="true"
+      [items]="selectInternalSalesItemAdjustment$ | async"
+      (vsUpdate)="items = $event"
+      (vsChange)="vsChange($event, 'tracingPop')"
+    >
+      <app-header-internal-sales-item
+        class="header"
+        [internalSalesItem]="selectHeaderInternalSalesItemAdjustment$ | async"
+        (valueEmitter)="globalHeaderItemEventsHandler($event)"
+      ></app-header-internal-sales-item>
+      <div class="header-separator"></div>
+      <div
+        class="item"
+        *ngFor="let item of selectInternalSalesItemAdjustment$ | async; let i = index; trackBy: handleTrackByItemBy"
+      >
+        <app-internal-sales-item
+          [internalSalesItem]="item"
+          (valueEmitter)="globalItemEventsHandler($event)"
+        ></app-internal-sales-item>
+      </div>
+    </virtual-scroller>
+    <div class="loading" *ngIf="(entriesApiStatus$ | async) === 1">
+      <app-loading></app-loading>
+    </div>
+    <div class="loading" *ngIf="(entriesApiStatus$ | async) !== 1 && lodashIsEmpty(items$ | async)">
+      <app-without-results></app-without-results>
+    </div>
+  </div>
+  <div class="payment-conditions" *ngIf="(selectedTabOption$ | async)?.id === '2'">
+    <div class="title" *ngIf="(entriesApiStatus$ | async) === 3">
+      <label
+        >{{ 'closeOffer.acceptedPaymentCondition' | translate }}:
+        <span>{{
+          (getPaymentCondition((items$ | async)?.[0]?.ajOfCondicionesdePagoCotizacion?.IdCatCondicionesDePago) | async) ?? 'N/D'
+        }}</span
+        ><span *ngIf="(items$ | async)?.[0]?.ajOfCondicionesdePagoCotizacion?.DiasAdicionales">
+          + {{ (items$ | async)?.[0]?.ajOfCondicionesdePagoCotizacion?.DiasAdicionales }} Días</span
+        ></label
+      >
+    </div>
+    <div class="container ocean" *ngIf="(entriesApiStatus$ | async) === 3">
+      <div class="info">
+        <label>{{ 'closeOffer.changePaymentCondition' | translate }}</label>
+        <label class="ocean"
+          >{{ getPaymentCondition((items$ | async)?.[0]?.ajOfCondicionesdePagoCotizacion?.IdCatCondicionesDePago) | async }}
+          <span *ngIf="(items$ | async)?.[0]?.ajOfCondicionesdePagoCotizacion?.DiasAdicionales">
+            + {{ (items$ | async)?.[0]?.ajOfCondicionesdePagoCotizacion?.DiasAdicionales }} Días</span
+          ></label
+        >
+      </div>
+      <div class="info">
+        <label>{{ 'closeOffer.adjustmentComments' | translate }}</label>
+        <label class="ocean">{{ (items$ | async)?.[0]?.ajOfCondicionesdePagoCotizacion?.Comentarios ?? 'N/D' }}</label>
+      </div>
+      <div class="info">
+        <label>{{ 'closeOffer.eviJustification' | translate }}</label>
+        <label class="ocean">{{ (items$ | async)?.[0]?.ajOfCondicionesdePagoCotizacion?.JustificacionAjuste ?? 'N/D' }}</label>
+      </div>
+    </div>
+    <div class="loading" *ngIf="(entriesApiStatus$ | async) === 1">
+      <app-loading></app-loading>
+    </div>
+  </div>
+  <div class="table-footer" *ngIf="(selectedTabOption$ | async)?.id !== '2'">
+    <div>
+      <label
+        >{{ (selectInternalSalesItemAdjustment$ | async)?.length }}
+        {{
+          (selectDifferentBrand$ | async) === 1 ? ('closeOffer.entries' | translate) : ('closeOffer.entry' | translate)
+        }}</label
+      >
+    </div>
+    <div>
+      <label
+        >{{ selectDifferentBrand$ | async }}
+        {{ (selectDifferentBrand$ | async) === 1 ? ('common.brand' | translate) : ('common.brands' | translate) }}</label
+      >
+    </div>
+    <button
+      *ngIf="!(seeResumeActive$ | async)"
+      [disabled]="!(validatorForResumeButton$ | async)"
+      [ngClass]="(validatorForResumeButton$ | async) ? 'active' : 'disabled'"
+      (click)="navigateToResume()"
+      >{{ 'closeOffer.toResume' | translate }}</button
+    >
+    <button
+      *ngIf="seeResumeActive$ | async"
+      [disabled]="!(validatorAcceptProcessButton$ | async)"
+      [ngClass]="(validatorAcceptProcessButton$ | async) ? 'active-green' : 'disabled'"
+      (click)="changeQuoteStatus()"
+      >{{ 'common.accept' | translate }}</button
+    >
+  </div>
+  <div class="button">
+    <button class="active" (click)="handleModalIsOpenSendQuotation(true)">{{ 'common.resendQuotation' | translate }}</button>
+  </div>
+</section>
+
+<app-pop-up-generic
+  class="see-adjustment-pop"
+  *ngIf="seeAdjustmentPop"
+  [titleHeader]="'closeOffer.deliveryTimeAdjustments' | translate"
+  [activeButtons]="true"
+  [height]="(viewType$ | async) === 'macBookAir' ? '832px' : '660px'"
+  [width]="(viewType$ | async) === 'macBookAir' ? '930px' : '745px'"
+  (evento)="handleSeeAdjustmentsPop(false)"
+>
+  <div class="pop-container">
+    <div class="header">
+      <div class="client-info">
+        <div class="image">
+          <img alt="" #imageElement [src]="setImage((clientData$ | async)?.imageHover)" (error)="errorImage()" />
+        </div>
+        <div class="data">
+          <label>{{ (client$ | async).Nombre }}</label>
+          <label>Estrategia {{ (itemSelected$ | async)?.label }}</label>
+          <label>Cotización F0-{{ (quote$ | async)?.Folio }}</label>
+        </div>
+      </div>
+      <div class="extra-info">
+        <label
+          >{{ (quote$ | async)?.TotalCotizado | currency: (quote$ | async)?.claveMoneda:'symbol-narrow':'1.2-2'
+          }}{{ (quote$ | async)?.claveMoneda }}</label
+        >
+        <label>Valor Cotización</label>
+      </div>
+    </div>
+    <div class="body">
+      <div class="table-title">
+        <label>{{ 'closeOffer.expressFreight' | translate }} · </label>
+        <label>{{ 'common.brands' | translate }}</label>
+      </div>
+      <ng-container *ngIf="!(isLoadingItemsAjusted | async) && (itemsPriceAdjusted$ | async)?.length > 0">
+        <div class="table">
+          <app-item-adjusted [item]="item" *ngFor="let item of itemsPriceAdjusted$ | async"></app-item-adjusted>
+        </div>
+      </ng-container>
+      <app-without-results
+        class="loading-container"
+        *ngIf="!(isLoadingItemsAjusted | async) && (itemsPriceAdjusted$ | async)?.length === 0"
+      ></app-without-results>
+      <app-loading class="loading-container" *ngIf="isLoadingItemsAjusted | async"></app-loading>
+      <div class="table-footer" *ngIf="!(isLoadingItemsAjusted | async)">
+        <label
+          >#{{ (itemsPriceAdjusted$ | async)?.length }}
+          {{
+            (itemsPriceAdjusted$ | async)?.length === 1 ? ('common.product' | translate) : ('common.products' | translate)
+          }}</label
+        >
+      </div>
+    </div>
+  </div>
+</app-pop-up-generic>
+<div *ngFor="let item of items$ | async">
+  <div
+    class="custom-pop-up"
+    *ngIf="item.freightPop.isOpen && item.freightPop.isInRange"
+    [style.z-index]="item.freightPop.zIndex"
+  >
+    <app-custom-position-pop-up
+      [minWidth]="(viewType$ | async) === 'macBookAir' ? '630px' : '470px'"
+      [minHeight]="'auto'"
+      [maxWidth]="(viewType$ | async) === 'macBookAir' ? '630px' : '470px'"
+      [maxHeight]="(viewType$ | async) === 'macBookAir' ? '225px' : '177px'"
+      [closeButtonSize]="(viewType$ | async) === 'macBookAir' ? '20px' : '18px'"
+      [closeButtonSeparation]="(viewType$ | async) === 'macBookAir' ? '18px' : '15px'"
+      [target]="getElement(item.freightPop.elementId)"
+      [padding]="'0'"
+      [adjustForSmallTarget]="(viewType$ | async) === 'macBookAir' ? 40 : 40"
+      [popUpPosition]="item.freightPop.position"
+      (closeEmitter)="handlePopUp(item, 'freightPop', false)"
+    >
+      <!--DOCS: Flete express-->
+      <div class="pop-ng-content" *ngIf="!lodashIsEmpty(item.ajOfFleteExpressCotizacion)">
+        <label class="title freight ocean">{{ 'closeOffer.expressFreight' | translate }}</label>
+        <div
+          class="freight"
+          [ngClass]="{
+            yellow: item.ajOfFleteExpressCotizacion?.ParcialmenteAceptado,
+            green: item.ajOfFleteExpressCotizacion?.Aceptado,
+            red: item.ajOfFleteExpressCotizacion?.Rechazado
+          }"
+        >
+          <div class="subtitle">
+            <label
+              [ngClass]="{
+                yellow: item.ajOfFleteExpressCotizacion?.ParcialmenteAceptado,
+                green: item.ajOfFleteExpressCotizacion?.Aceptado,
+                red: item.ajOfFleteExpressCotizacion?.Rechazado
+              }"
+              >{{
+                item.ajOfFleteExpressCotizacion?.ParcialmenteAceptado
+                  ? ('closeOffer.partialAuthorized' | translate)
+                  : item.ajOfFleteExpressCotizacion?.Aceptado
+                  ? ('closeOffer.authorized' | translate)
+                  : ('closeOffer.rejected' | translate)
+              }}</label
+            >
+          </div>
+          <div class="subtitle" *ngIf="item.ajOfFleteExpressCotizacion?.Rechazado">
+            <label class="red textUpperCase">{{ 'closeOffer.withOutFreight' | translate }}</label>
+          </div>
+          <div class="subtitle" *ngIf="item.ajOfFleteExpressCotizacion?.Aceptado">
+            <label class="ocean">{{ item.cotCotizacionFleteExpress?.Proveedor.Nombre }}</label>
+            <label class="green">
+              ·
+              {{
+                item.cotCotizacionFleteExpress?.PrecioAjustado | currency: (quote$ | async)?.claveMoneda:'symbol-narrow':'1.2-2'
+              }}
+              {{ (quote$ | async)?.claveMoneda }}
+            </label>
+            <label class="black">
+              · {{ item.cotCotizacionFleteExpress?.PorcentajeProquifa | currency: (quote$ | async)?.claveMoneda:'':'1.2-2' }}%
+              PQF</label
+            >
+          </div>
+          <label
+            class="comments"
+            *ngIf="item.ajOfFleteExpressCotizacion?.ParcialmenteAceptado || item.ajOfFleteExpressCotizacion?.Rechazado"
+          >
+            <span>{{ 'common.comments' | translate }}: </span>
+            {{ item.ajOfFleteExpressCotizacion?.Comentarios }}
+          </label>
+        </div>
+        <div
+          class="freight"
+          *ngIf="item.ajOfFleteExpressCotizacion?.ParcialmenteAceptado || item.ajOfFleteExpressCotizacion?.Rechazado"
+        >
+          <div class="subtitle">
+            <label class="black">{{ 'closeOffer.suggested' | translate }}</label>
+          </div>
+          <label class="comments red">
+            {{ item.cotCotizacionFleteExpress?.Proveedor.Nombre }} ·
+            {{ item.cotCotizacionFleteExpress?.Precio | currency: (quote$ | async)?.claveMoneda:'symbol-narrow':'1.2-2' }}
+            {{ (quote$ | async)?.claveMoneda }} ·
+            {{ item.ajOfFleteExpressCotizacion?.PorcentajeProquifa | currency: (quote$ | async)?.claveMoneda:'':'1.2-2' }}% PQF
+          </label>
+        </div>
+      </div>
+      <!--DOCS: Menos dos días-->
+      <div
+        class="pop-ng-content"
+        *ngIf="item.ajOfValorConfiguracionTiempoEntregaCotizacion && lodashIsEmpty(item.ajOfFleteExpressCotizacion)"
+      >
+        <label class="title freight ocean">{{ 'closeOffer.minusTwoDays' | translate }}</label>
+        <div
+          class="freight"
+          [ngClass]="{
+            green: item.ajOfValorConfiguracionTiempoEntregaCotizacion?.Aceptado,
+            red: item.ajOfValorConfiguracionTiempoEntregaCotizacion?.Rechazado
+          }"
+        >
+          <div class="subtitle">
+            <label
+              [ngClass]="{
+                green: item.ajOfValorConfiguracionTiempoEntregaCotizacion?.Aceptado,
+                red: item.ajOfValorConfiguracionTiempoEntregaCotizacion?.Rechazado
+              }"
+              >{{
+                item.ajOfValorConfiguracionTiempoEntregaCotizacion?.Aceptado
+                  ? ('closeOffer.authorized' | translate)
+                  : ('closeOffer.rejected' | translate)
+              }}</label
+            >
+          </div>
+          <div class="row">
+            <div>
+              <label>{{ 'closeOffer.originalTee' | translate }}: </label>
+              <label class="ocean">8 Días Hábiles</label>
+            </div>
+            <div *ngIf="(viewType$ | async) !== 'macBookAir'">
+              <label>{{ 'closeOffer.suggestedTee' | translate }}: </label>
+              <label class="green">6 Días Hábiles</label>
+            </div>
+          </div>
+          <label class="comments" *ngIf="item.ajOfValorConfiguracionTiempoEntregaCotizacion?.Rechazado">
+            <span>{{ 'common.comments' | translate }}: </span>
+            {{ item.ajOfValorConfiguracionTiempoEntregaCotizacion?.Comentarios }}
+          </label>
+        </div>
+        <div class="freight">
+          <div class="subtitle">
+            <label class="black">{{ 'closeOffer.suggested' | translate }}</label>
+          </div>
+          <label
+            class="comments"
+            [ngClass]="{
+              green: item.ajOfValorConfiguracionTiempoEntregaCotizacion?.Aceptado,
+              red: item.ajOfValorConfiguracionTiempoEntregaCotizacion?.Rechazado
+            }"
+          >
+            <span
+              [ngClass]="{
+                'green-bold': item.ajOfValorConfiguracionTiempoEntregaCotizacion?.Aceptado,
+                'red-bold': item.ajOfValorConfiguracionTiempoEntregaCotizacion?.Rechazado
+              }"
+              >{{ 'closeOffer.tableLabels.tee' | translate }}:
+            </span>
+            6 Días Hábiles
+          </label>
+        </div>
+      </div>
+    </app-custom-position-pop-up>
+  </div>
+  <div
+    class="custom-pop-up"
+    *ngIf="item.commentsPop.isOpen && item.commentsPop.isInRange"
+    [style.z-index]="item.commentsPop.zIndex"
+  >
+    <app-custom-position-pop-up
+      *ngIf="item.commentsPop.isOpen"
+      [minWidth]="(viewType$ | async) === 'macBookAir' ? '630px' : '470px'"
+      [minHeight]="'auto'"
+      [maxWidth]="(viewType$ | async) === 'macBookAir' ? '630px' : '470px'"
+      [maxHeight]="(viewType$ | async) === 'macBookAir' ? '136px' : '110px'"
+      [closeButtonSize]="(viewType$ | async) === 'macBookAir' ? '20px' : '18px'"
+      [closeButtonSeparation]="(viewType$ | async) === 'macBookAir' ? '20px' : '18px'"
+      [target]="getElement(item.commentsPop.elementId)"
+      [popUpPosition]="item.commentsPop.position"
+      (closeEmitter)="handlePopUp(item, 'commentsPop', false)"
+    >
+      <div class="pop-ng-content resume">
+        <label
+          class="title"
+          [ngClass]="{
+            ocean: item.Seguimiento,
+            yellow: item.AjusteDeOferta,
+            green: item.PromesaDeCompra,
+            red: item.Cancelacion
+          }"
+          >{{
+            item.Seguimiento
+              ? ('closeOffer.nextTracingComplete' | translate)
+              : item.AjusteDeOferta
+              ? ('closeOffer.offerAdjustment' | translate)
+              : item.PromesaDeCompra
+              ? ('closeOffer.buyPromise' | translate)
+              : ('closeOffer.cancel' | translate)
+          }}</label
+        >
+        <div class="subtitle">
+          <label *ngIf="item.Seguimiento"
+            >{{ item.ListaCotPartidaCotizacionSeguimiento[0].FechaProximoSeguimiento | dateFormatSlash }} ·
+            {{ getFollowReason(item.ListaCotPartidaCotizacionSeguimiento[0].IdCatMotivoSeguimientoCotizacion) | async }}</label
+          >
+          <label class="ocean" *ngIf="item.AjusteDeOferta && item.ajOfFleteExpressCotizacion">Flete express: </label>
+          <label class="ocean" *ngIf="item.AjusteDeOferta && item.ajOfFleteExpressCotizacion">Nombre de proveedor X · </label>
+          <label class="green" *ngIf="item.AjusteDeOferta && item.ajOfFleteExpressCotizacion"
+            >{{
+              item.ajOfFleteExpressCotizacion.PrecioFleteExpress
+                | currency: (quote$ | async)?.claveMoneda:'symbol-narrow':'1.2-2'
+            }}
+            {{ (quote$ | async)?.claveMoneda }} ·
+          </label>
+          <label class="black" *ngIf="item.AjusteDeOferta && item.ajOfFleteExpressCotizacion"
+            >{{ item.ajOfFleteExpressCotizacion.PorcentajeProquifa | currency: (quote$ | async)?.claveMoneda:'':'1.2-2' }}%
+            PQF</label
+          >
+
+          <label *ngIf="item.PromesaDeCompra"
+            >{{ 'closeOffer.buyDate' | translate }} ·
+            {{ item.cotPromesaDeCompraPartida.FechaPromesaDeCompra | dateFormatSlash }}</label
+          >
+          <label *ngIf="item.Cancelacion"
+            >{{ 'closeOffer.reason' | translate }} ·
+            {{ getCancelReason(item.cotCancelacionPartidaCotizacion.IdCatMotivoCancelacionPartidaCotizacion) | async }}</label
+          >
+        </div>
+        <label class="content" *ngIf="item.PromesaDeCompra">
+          <span>Justificación: </span>
+          {{ item.cotPromesaDeCompraPartida.Justificacion }}
+        </label>
+        <label class="content" *ngIf="item.Cancelacion">
+          <span>Justificación: </span>
+          {{ item.cotCancelacionPartidaCotizacion.Observaciones }}
+        </label>
+      </div>
+    </app-custom-position-pop-up>
+  </div>
+  <div class="custom-pop-up" *ngIf="item.pricePop.isOpen && item.pricePop.isInRange" [style.z-index]="item.pricePop.zIndex">
+    <app-custom-position-pop-up
+      [minWidth]="(viewType$ | async) === 'macBookAir' ? '427px' : '362px'"
+      [minHeight]="'auto'"
+      [maxWidth]="(viewType$ | async) === 'macBookAir' ? '500px' : '480px'"
+      [maxHeight]="(viewType$ | async) === 'macBookAir' ? '225px' : '177px'"
+      [closeButtonSize]="(viewType$ | async) === 'macBookAir' ? '20px' : '18px'"
+      [closeButtonSeparation]="(viewType$ | async) === 'macBookAir' ? '18px' : '15px'"
+      [target]="getElement(item.pricePop.elementId)"
+      [padding]="'0'"
+      [adjustForSmallTarget]="(viewType$ | async) === 'macBookAir' ? 122 : 150"
+      [popUpPosition]="item.pricePop.position"
+      (closeEmitter)="handlePopUp(item, 'pricePop', false)"
+    >
+      <div class="pop-ng-content">
+        <div class="prices">
+          <div class="price">
+            <label
+              class="bold"
+              [ngClass]="{
+                yellow: item?.ajOfPrecioCotizacion.ParcialmenteAceptado,
+                green: item?.ajOfPrecioCotizacion.Aceptado,
+                red: item?.ajOfPrecioCotizacion.Rechazado
+              }"
+              >{{ 'common.agreedPrice' | translate }}</label
+            >
+            <label
+              [ngClass]="{
+                yellow: item?.ajOfPrecioCotizacion?.ParcialmenteAceptado,
+                green: item?.ajOfPrecioCotizacion?.Aceptado,
+                red: item?.ajOfPrecioCotizacion?.Rechazado
+              }"
+              >{{
+                item?.ajOfPrecioCotizacion?.PrecioUnitarioPactado
+                  | currency: (quote$ | async)?.claveMoneda:'symbol-narrow':'1.2-2'
+              }}
+              {{ (quote$ | async)?.claveMoneda }}</label
+            >
+          </div>
+          <div class="price">
+            <label class="bold">Precio Unitario</label>
+            <label
+              >{{
+                item.cotProductoOferta.PrecioCotizadoUnitarioConvertido
+                  | currency: (quote$ | async)?.claveMoneda:'symbol-narrow':'1.2-2'
+              }}
+              {{ (quote$ | async)?.claveMoneda }}</label
+            >
+          </div>
+        </div>
+        <div
+          class="comments"
+          *ngIf="item.ajOfPrecioCotizacion?.ParcialmenteAceptado || !item.ajOfPrecioCotizacion?.Aceptado"
+          [ngClass]="{
+            yellow: item.ajOfPrecioCotizacion?.ParcialmenteAceptado,
+            red: !item.ajOfPrecioCotizacion?.Aceptado
+          }"
+        >
+          <label class="bold">Comentarios de Ajustes: </label>
+          <label>{{ item.ajOfPrecioCotizacion?.Comentarios }}</label>
+        </div>
+      </div>
+    </app-custom-position-pop-up>
+  </div>
+</div>

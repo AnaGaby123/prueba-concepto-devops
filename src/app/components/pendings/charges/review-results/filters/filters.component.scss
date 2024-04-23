@@ -1,0 +1,186 @@
+@use 'base' as s;
+
+:host {
+  width: 100%;
+  height: 100%;
+
+  #filters {
+    @include s.flexRowWrap;
+    position: relative;
+    width: auto;
+    height: 100%;
+    background-color: s.$pqGray2;
+
+    &.hide {
+      animation-name: hideContent;
+      animation-duration: 1s;
+      transition: 1s ease-in-out;
+      animation-fill-mode: forwards;
+    }
+
+    &.show {
+      animation-name: showContent;
+      animation-duration: 0.7s;
+      animation-fill-mode: forwards;
+    }
+
+    & > .data-filters {
+      @include s.flexRow;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+
+      & > div {
+        @include s.flexColumn;
+        width: 100%;
+        height: 100%;
+        min-width: 274px;
+        box-sizing: border-box;
+        padding: 10px;
+
+        & > .title {
+          @include s.flexRow;
+          justify-content: center;
+          max-height: 123px;
+          height: 100%;
+          width: 100%;
+          box-sizing: border-box;
+          padding-top: 20px;
+
+          & > .text {
+            @include s.flexColumn;
+            justify-content: flex-start;
+            width: 100%;
+            align-items: center;
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize20to25, '', s.$pqBlack2);
+              @include s.Novecento-Demibold;
+              text-align: center;
+            }
+          }
+        }
+
+        & > .content {
+          @include s.flexColumn;
+          height: calc(100% - 123px);
+
+          & > div {
+            @include s.flexColumn;
+            box-sizing: border-box;
+            padding: 65px 20px 0;
+            width: 100%;
+
+            & > .title {
+              @include s.flexRow;
+              padding-bottom: 5px;
+
+              & > label {
+                @include s.escaledFontFormat(s.$textSize16to18, '', s.$pqBlack2);
+                @include s.Roboto-Bold;
+                margin-bottom: 10px;
+              }
+            }
+
+            & > .recharge {
+              @include s.flexRow;
+              width: 100%;
+              height: 50px;
+              border-radius: 25px;
+              background-color: s.$pqBlack2;
+              cursor: pointer;
+              justify-content: center;
+            }
+
+            & > .recharge:hover {
+              background-color: s.$recharge;
+            }
+          }
+        }
+      }
+    }
+
+    & > .arrow {
+      position: absolute;
+      width: 22px;
+      height: 32px;
+      cursor: pointer;
+      top: calc(50% + 72px);
+      right: 0;
+      z-index: 3;
+
+      & > img {
+        width: 22px;
+        height: 32px;
+        opacity: 1;
+        transform: scaleX(1);
+        transition: transform 0.8s ease-in-out;
+
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+
+      & > .reverse {
+        transform: scaleX(-1);
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #filters {
+      &.hide {
+        animation-name: hideContentBig;
+        animation-duration: 0.7s;
+        animation-fill-mode: forwards;
+      }
+
+      &.show {
+        animation-name: showContentBig;
+        animation-duration: 0.7s;
+        animation-fill-mode: forwards;
+      }
+
+      & > .data-filters {
+        & > div {
+          min-width: 370px;
+        }
+      }
+    }
+  }
+  @keyframes hideContent {
+    from {
+      width: 274px;
+    }
+    to {
+      width: 0;
+    }
+  }
+
+  @keyframes showContent {
+    from {
+      width: 0;
+    }
+    to {
+      width: 274px;
+    }
+  }
+
+  @keyframes hideContentBig {
+    from {
+      width: 370px;
+    }
+    to {
+      width: 0;
+    }
+  }
+
+  @keyframes showContentBig {
+    from {
+      width: 0;
+    }
+    to {
+      width: 370px;
+    }
+  }
+}

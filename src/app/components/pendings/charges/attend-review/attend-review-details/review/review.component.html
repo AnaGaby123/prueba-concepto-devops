@@ -1,0 +1,645 @@
+<div id="review">
+  <div class="left">
+    <label class="title">{{
+      typeOfReview === 'Física' && (selectedBill$ | async).EstadoTPProformaPedidoEjecutada
+        ? ('attendReview.evidenceMessenger' | translate)
+        : ('attendReview.deliveredDocuments' | translate)
+    }}</label>
+    <app-upload-view-file
+      *ngIf="(requestApiStatus$ | async) === 3 && (selectedBill$ | async).url"
+      [datasFile]="{path: (selectedBill$ | async).url, titulo: ''}"
+    ></app-upload-view-file>
+    <div class="loading" *ngIf="(requestApiStatus$ | async) === 1">
+      <app-loading></app-loading>
+    </div>
+    <div class="loading" *ngIf="(requestApiStatus$ | async) === 2">
+      <app-without-results [title]="'PDF NO DISPONIBLE'"></app-without-results>
+    </div>
+  </div>
+  <div class="right">
+    <div class="scroll">
+      <label class="title">{{ 'attendReview.reviewData' | translate }}</label>
+      <div class="warning" *ngIf="(selectedBill$ | async).TipoValidacion === 'Física'">
+        <label
+          ><span>{{ 'attendReview.notRealizedComments' | translate }}: </span
+          >{{
+            'Los datos de dirección cambiaron, son los siguientes Avenida periferico sur #4118 piso 6 Colonia Jardines del pedregal'
+          }}</label
+        >
+      </div>
+      <div class="opacity">
+        <label class="title"
+          ><span>{{ 'attendReview.typeOfReview' | translate }}: </span
+          >{{ (selectedBill$ | async).TipoValidacion | lowercase }}</label
+        >
+      </div>
+      <!--TODO: Si es física-->
+      <ng-container *ngIf="(selectedBill$ | async).TipoValidacion === 'Física'">
+        <div class="inputs">
+          <app-drop-down-list
+            class="w-60"
+            [activeMinWidth]="false"
+            [enableEdit]="false"
+            [label]="'attendReview.country' | translate"
+            [itemSelected]="(addressDrop$ | async).country"
+          ></app-drop-down-list>
+          <app-drop-down-list
+            class="w-40"
+            [activeMinWidth]="false"
+            [enableEdit]="false"
+            [label]="'attendReview.state' | translate"
+            [itemSelected]="(addressDrop$ | async).state"
+          ></app-drop-down-list>
+          <app-generic-input
+            class="w-100"
+            [enableEdit]="false"
+            [label]="'attendReview.street' | translate"
+            [value]="
+              (address$ | async)?.Direccion?.Calle +
+              ' ' +
+              ((address$ | async)?.Direccion?.NumeroExterior ? '#' + (address$ | async)?.Direccion?.NumeroExterior : 'S/N') +
+              ((address$ | async)?.Direccion?.Colonia ? ' Colonia ' + (address$ | async)?.Direccion?.Colonia : '')
+            "
+          ></app-generic-input>
+          <app-generic-input
+            class="w-25"
+            [enableEdit]="false"
+            [label]="'attendReview.municipality' | translate"
+            [value]="(address$ | async)?.Direccion?.Municipio"
+          ></app-generic-input>
+          <app-generic-input
+            class="w-25"
+            [enableEdit]="false"
+            [label]="'attendReview.zipCode' | translate"
+            [value]="(address$ | async)?.Direccion?.CodigoPostal"
+          >
+          </app-generic-input>
+          <app-drop-down-list
+            class="w-25"
+            [activeMinWidth]="false"
+            [enableEdit]="false"
+            [label]="'attendReview.route' | translate"
+            [itemSelected]="(addressDrop$ | async).route"
+          ></app-drop-down-list>
+          <app-drop-down-list
+            class="w-25"
+            [activeMinWidth]="false"
+            [enableEdit]="false"
+            [label]="'attendReview.zone' | translate"
+            [itemSelected]="(addressDrop$ | async).zone"
+          ></app-drop-down-list>
+        </div>
+        <div class="schedules">
+          <label #target>{{ 'attendReview.seeDeliverySchedules' | translate }}</label>
+          <div class="schedules-pop">
+            <app-custom-position-pop-up
+              [adjustForSmallTarget]="25"
+              [borderRadius]="'20px'"
+              [closeButton]="false"
+              [maxHeight]="'200px'"
+              [maxWidth]="'400px'"
+              [minHeight]="'80px'"
+              [minWidth]="'200px'"
+              [popUpPosition]="'right-start'"
+              [target]="target"
+            >
+              <div class="schedules">
+                <ul *ngIf="(address$ | async)?.HorarioAtencionRevision; let schedule">
+                  <li
+                    >· Lunes · {{ schedule.HorarioAtencionLunes?.HoraInicioPrimerHorario }}-{{
+                      schedule?.HorarioAtencionLunes?.HoraFinPrimerHorario
+                    }}
+                    y
+                    {{ schedule?.HorarioAtencionLunes?.HoraInicioSegundoHorario }}-{{
+                      schedule?.HorarioAtencionLunes?.HoraFinSegundoHorario
+                    }}
+                    Hrs,
+                  </li>
+                  <li
+                    >· Martes · {{ schedule?.HorarioAtencionMartes?.HoraInicioPrimerHorario }}-{{
+                      schedule?.HorarioAtencionMartes?.HoraFinPrimerHorario
+                    }}
+                    y
+                    {{ schedule?.HorarioAtencionMartes?.HoraInicioSegundoHorario }}-{{
+                      schedule?.HorarioAtencionMartes?.HoraFinSegundoHorario
+                    }}
+                    Hrs,
+                  </li>
+                  <li
+                    >· Miércoles · {{ schedule?.HorarioAtencionMiercoles?.HoraInicioPrimerHorario }}-{{
+                      schedule?.HorarioAtencionMiercoles?.HoraFinPrimerHorario
+                    }}
+                    y
+                    {{ schedule?.HorarioAtencionMiercoles?.HoraInicioSegundoHorario }}-{{
+                      schedule?.HorarioAtencionMiercoles?.HoraFinSegundoHorario
+                    }}
+                    Hrs,
+                  </li>
+                  <li *ngIf="schedule?.HorarioAtencionJueves"
+                    >· Jueves · {{ schedule?.HorarioAtencionJueves?.HoraInicioPrimerHorario }}-{{
+                      schedule?.HorarioAtencionJueves?.HoraFinPrimerHorario
+                    }}
+                    y
+                    {{ schedule?.HorarioAtencionJueves?.HoraInicioSegundoHorario }}-{{
+                      schedule?.HorarioAtencionJueves?.HoraFinSegundoHorario
+                    }}
+                    Hrs,
+                  </li>
+                  <li *ngIf="schedule?.HorarioAtencionViernes"
+                    >· Viernes · {{ schedule?.HorarioAtencionViernes?.HoraInicioPrimerHorario }}-{{
+                      schedule?.HorarioAtencionViernes?.HoraFinPrimerHorario
+                    }}
+                    y
+                    {{ schedule?.HorarioAtencionViernes?.HoraInicioSegundoHorario }}-{{
+                      schedule?.HorarioAtencionViernes?.HoraFinSegundoHorario
+                    }}
+                    Hrs
+                  </li>
+                </ul>
+              </div>
+            </app-custom-position-pop-up>
+          </div>
+        </div>
+        <label class="title ocean">{{ 'attendReview.criterion' | translate }}</label>
+        <div class="inputs">
+          <app-drop-down-list
+            class="w-60"
+            [enableEdit]="false"
+            [items]="catPriority$ | async"
+            [itemSelected]="selectedPriority$ | async"
+            [label]="'attendReview.priority' | translate"
+            (valueDropList)="setPriority($event)"
+          ></app-drop-down-list>
+          <app-drop-down-list
+            class="w-40"
+            [label]="'attendReview.origin' | translate"
+            [itemSelected]="selectedOrigin$ | async"
+            [enableEdit]="false"
+          ></app-drop-down-list>
+          <app-generic-text-area
+            [enableEdit]="false"
+            [height]="'60px'"
+            [value]="(selectedBill$ | async).dataReview?.ComentariosAdicionales"
+            [title]="'attendReview.additionalComments' | translate"
+            (emitData)="handleKeyComment($event)"
+          ></app-generic-text-area>
+        </div>
+        <!--TODO: Si es física y esta Ejecutada-->
+        <ng-container *ngIf="(selectedBill$ | async).EstadoTPProformaPedidoEjecutada">
+          <div class="opacity">
+            <label class="title"
+              ><span>{{ 'attendReview.executeData' | translate }}: </span></label
+            >
+          </div>
+          <div class="inputs">
+            <div>
+              <app-generic-input
+                class="w-25"
+                [value]="
+                  (selectedBill$ | async).PedidosAsociados.length > 0
+                    ? (selectedBill$ | async).PedidosAsociados[0].NumeroOrdenDeCompra
+                    : 'ND'
+                "
+                [enableEdit]="false"
+                [label]="'attendReview.associatedOrders' | translate"
+              ></app-generic-input>
+            </div>
+            <app-generic-input
+              class="w-25"
+              [value]="
+                (selectedBill$ | async).dataReview?.FechaRevision
+                  ? ((selectedBill$ | async).dataReview?.FechaRevision | dateFormatSlashShort)
+                  : 'ND'
+              "
+              [enableEdit]="false"
+              [label]="'attendReview.revisionDate2' | translate"
+            >
+            </app-generic-input>
+            <app-generic-input
+              class="w-25"
+              [enableEdit]="false"
+              [value]="(selectedBill$ | async).dataReview?.UsuarioDestino?.NombreCompleto"
+              [label]="'attendReview.whoExecutes' | translate"
+            ></app-generic-input>
+            <app-generic-input
+              [value]="(selectedBill$ | async).dataReview?.ComentariosAdicionales"
+              class="w-25"
+              [enableEdit]="false"
+              [label]="'attendReview.programmingHistory' | translate"
+            >
+            </app-generic-input>
+          </div>
+          <div class="files">
+            <div class="input-container">
+              <label>{{ 'attendReview.uploadEvidence' | translate }}</label>
+              <app-generic-input-file
+                class="input"
+                [showAddSelectedFile]="true"
+                (manualEmitFile)="addFile($event)"
+              ></app-generic-input-file>
+            </div>
+            <div class="files-container">
+              <div class="file">
+                <app-chip-file [chipsFiles]="files$ | async" (deleteChipFile)="deleteFile($event)"></app-chip-file>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <!--TODO: Si es física y no esta Ejecutada-->
+        <ng-container *ngIf="!(selectedBill$ | async).EstadoTPProformaPedidoEjecutada">
+          <label class="title ocean">{{ 'attendReview.programming' | translate }}</label>
+          <label class="subtitle"
+            >{{ 'Pedidos Asociados:' }}
+            <span *ngFor="let order of (selectedBill$ | async).PedidosAsociados; let i = index">{{
+              order.NumeroOrdenDeCompra + (i < (selectedBill$ | async).PedidosAsociados.length - 1 ? ', ' : '')
+            }}</span></label
+          >
+          <div class="opacity">
+            <label class="text">{{ 'attendReview.revisionDate2' | translate }}:</label>
+            <app-date-picker
+              dateFormat="YYYYMMDD"
+              class="picker"
+              [color]="false"
+              [disabledCalendarDays]="selectNonWorkingDays$ | async"
+              [date]="(selectedBill$ | async)?.dataReview?.dateFormat ? (selectedBill$ | async).dataReview.dateFormat : null"
+              (fecha)="setDate($event)"
+            >
+            </app-date-picker>
+          </div>
+        </ng-container>
+      </ng-container>
+      <!--TODO: Si es digital-->
+      <ng-container *ngIf="(selectedBill$ | async).TipoValidacion === 'Digital'">
+        <div class="inputs">
+          <app-generic-input
+            class="w-100"
+            [enableEdit]="false"
+            [label]="'attendReview.webPageToReview' | translate"
+            [value]="(dataBillOfClient$ | async).Pagina"
+          ></app-generic-input>
+          <app-generic-input
+            class="w-100"
+            [enableEdit]="false"
+            [label]="'attendReview.email' | translate"
+            [value]="(dataBillOfClient$ | async)?.DatosFacturacionCliente?.Correo"
+          ></app-generic-input>
+          <app-generic-input
+            class="w-50"
+            [enableEdit]="false"
+            [label]="'attendReview.user' | translate"
+            [value]="(dataBillOfClient$ | async)?.DatosFacturacionCliente?.Usuario"
+          ></app-generic-input>
+          <app-generic-input
+            class="w-50"
+            [enableEdit]="false"
+            [label]="'attendReview.password' | translate"
+            [value]="(dataBillOfClient$ | async)?.DatosFacturacionCliente?.Contrasena"
+          >
+          </app-generic-input>
+        </div>
+        <label class="title ocean">{{ 'attendReview.programming' | translate }}</label>
+        <label class="subtitle"
+          >{{ 'Pedidos Asociados:' }}
+          <span class="tooltip"
+            >{{
+              (selectedBill$ | async).PedidosAsociados.length > 0
+                ? (selectedBill$ | async).PedidosAsociados[0].NumeroOrdenDeCompra
+                : 'ND'
+            }}
+            <div class="tooltip-text">
+              <p *ngFor="let order of (selectedBill$ | async).PedidosAsociados; let i = index">{{
+                i > 0 ? order.NumeroOrdenDeCompra : ''
+              }}</p>
+            </div>
+          </span></label
+        >
+        <div class="opacity">
+          <label class="text">{{ 'attendReview.revisionDate2' | translate }}:</label>
+          <app-date-picker
+            class="picker"
+            dateFormat="YYYYMMDD"
+            [color]="false"
+            [position]="'top'"
+            [disabledCalendarDays]="selectNonWorkingDays$ | async"
+            [date]="(selectedBill$ | async)?.dataReview?.dateFormat ? (selectedBill$ | async).dataReview.dateFormat : null"
+            (fecha)="setDate($event)"
+          ></app-date-picker>
+        </div>
+        <div class="files">
+          <div class="input-container">
+            <label>{{ 'attendReview.uploadEvidence' | translate }}</label>
+            <app-generic-input-file
+              class="input"
+              [showAddSelectedFile]="true"
+              (manualEmitFile)="addFile($event)"
+            ></app-generic-input-file>
+          </div>
+          <div class="files-container">
+            <div class="file">
+              <app-chip-file [chipsFiles]="files$ | async" (deleteChipFile)="deleteFile($event)"></app-chip-file>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <!--TODO: Si es híbrida-->
+      <ng-container *ngIf="(selectedBill$ | async).TipoValidacion === 'Híbrida'">
+        <label class="title ocean">{{ 'attendReview.digitalReviewData' | translate }}</label>
+        <div class="inputs">
+          <app-generic-input
+            class="w-100"
+            [enableEdit]="false"
+            [value]="(dataBillOfClient$ | async).Pagina"
+            [label]="'attendReview.webPageToReview' | translate"
+          ></app-generic-input>
+          <app-generic-input
+            class="w-100"
+            [enableEdit]="false"
+            [value]="(dataBillOfClient$ | async)?.DatosFacturacionCliente?.Correo"
+            [label]="'attendReview.email' | translate"
+          ></app-generic-input>
+          <app-generic-input
+            class="w-50"
+            [enableEdit]="false"
+            [label]="'attendReview.user' | translate"
+            [value]="(dataBillOfClient$ | async)?.DatosFacturacionCliente?.Usuario"
+          ></app-generic-input>
+          <app-generic-input
+            class="w-50"
+            [enableEdit]="false"
+            [value]="(dataBillOfClient$ | async)?.DatosFacturacionCliente?.Contrasena"
+            [label]="'attendReview.password' | translate"
+          >
+          </app-generic-input>
+        </div>
+        <label class="title ocean">{{ 'attendReview.programming' | translate }}</label>
+        <label class="subtitle"
+          >{{ 'Pedidos Asociados:' }}
+          <span class="tooltip"
+            >{{
+              (selectedBill$ | async).PedidosAsociados.length > 0
+                ? (selectedBill$ | async).PedidosAsociados[0].NumeroOrdenDeCompra
+                : 'ND'
+            }}
+            <div class="tooltip-text" *ngIf="(selectedBill$ | async).PedidosAsociados.length > 1">
+              <label class="more-text" *ngFor="let order of (selectedBill$ | async).PedidosAsociados; let i = index"
+                >{{ i > 0 ? order.NumeroOrdenDeCompra : '' }}
+              </label>
+            </div>
+          </span></label
+        >
+        <div class="files">
+          <div class="input-container">
+            <label>{{ 'attendReview.uploadEvidence' | translate }}</label>
+            <app-generic-input-file
+              class="input"
+              [showAddSelectedFile]="true"
+              (manualEmitFile)="addFile($event)"
+            ></app-generic-input-file>
+          </div>
+          <div class="files-container">
+            <div class="file">
+              <div class="file">
+                <app-chip-file [chipsFiles]="files$ | async" (deleteChipFile)="deleteFile($event)"></app-chip-file>
+              </div>
+            </div>
+          </div>
+        </div>
+        <label class="title ocean">{{ 'attendReview.physicalReviewData' | translate }}</label>
+        <div class="warning">
+          <label
+            ><span>{{ 'attendReview.notRealizedComments' | translate }}: </span
+            >{{
+              'Los datos de dirección cambiaron, son los siguientes Avenida periferico sur #4118 piso 6 Colonia Jardines del pedregal'
+            }}</label
+          >
+        </div>
+        <div class="inputs">
+          <app-drop-down-list
+            class="w-60"
+            [activeMinWidth]="false"
+            [enableEdit]="false"
+            [itemSelected]="(addressDrop$ | async).country"
+            [label]="'attendReview.country' | translate"
+          ></app-drop-down-list>
+          <app-drop-down-list
+            class="w-40"
+            [activeMinWidth]="false"
+            [enableEdit]="false"
+            [itemSelected]="(addressDrop$ | async).state"
+            [label]="'attendReview.state' | translate"
+          ></app-drop-down-list>
+          <app-generic-input
+            class="w-100"
+            [enableEdit]="false"
+            [label]="'attendReview.street' | translate"
+            [value]="
+              (address$ | async)?.Direccion?.Calle +
+              ' ' +
+              ((address$ | async)?.Direccion?.NumeroExterior ? '#' + (address$ | async)?.Direccion?.NumeroExterior : 'S/N') +
+              ((address$ | async)?.Direccion?.Colonia ? ' Colonia ' + (address$ | async)?.Direccion?.Colonia : '')
+            "
+          ></app-generic-input>
+          <app-generic-input
+            class="w-25"
+            [enableEdit]="false"
+            [label]="'attendReview.municipality' | translate"
+            [value]="(address$ | async)?.Direccion?.Municipio"
+          ></app-generic-input>
+          <app-generic-input
+            class="w-25"
+            [enableEdit]="false"
+            [label]="'attendReview.zipCode' | translate"
+            [value]="(address$ | async)?.Direccion?.CodigoPostal"
+          >
+          </app-generic-input>
+          <app-drop-down-list
+            class="w-25"
+            [activeMinWidth]="false"
+            [enableEdit]="false"
+            [label]="'attendReview.route' | translate"
+            [itemSelected]="(addressDrop$ | async).route"
+          ></app-drop-down-list>
+          <app-drop-down-list
+            class="w-25"
+            [activeMinWidth]="false"
+            [enableEdit]="false"
+            [label]="'attendReview.zone' | translate"
+            [itemSelected]="(addressDrop$ | async).zone"
+          ></app-drop-down-list>
+        </div>
+        <div class="schedules">
+          <label #target>{{ 'attendReview.seeDeliverySchedules' | translate }}</label>
+          <div class="schedules-pop">
+            <app-custom-position-pop-up
+              [adjustForSmallTarget]="25"
+              [borderRadius]="'20px'"
+              [closeButton]="false"
+              [maxHeight]="'200px'"
+              [maxWidth]="'400px'"
+              [minHeight]="'80px'"
+              [minWidth]="'200px'"
+              [popUpPosition]="'right-start'"
+              [target]="target"
+            >
+              <div class="schedules">
+                <ul *ngIf="(address$ | async)?.HorarioAtencionRevision; let schedule">
+                  <li
+                    >· Lunes · {{ schedule.HorarioAtencionLunes?.HoraInicioPrimerHorario }}-{{
+                      schedule?.HorarioAtencionLunes?.HoraFinPrimerHorario
+                    }}
+                    y
+                    {{ schedule?.HorarioAtencionLunes?.HoraInicioSegundoHorario }}-{{
+                      schedule?.HorarioAtencionLunes?.HoraFinSegundoHorario
+                    }}
+                    Hrs,
+                  </li>
+                  <li
+                    >· Martes · {{ schedule?.HorarioAtencionMartes?.HoraInicioPrimerHorario }}-{{
+                      schedule?.HorarioAtencionMartes?.HoraFinPrimerHorario
+                    }}
+                    y
+                    {{ schedule?.HorarioAtencionMartes?.HoraInicioSegundoHorario }}-{{
+                      schedule?.HorarioAtencionMartes?.HoraFinSegundoHorario
+                    }}
+                    Hrs,
+                  </li>
+                  <li
+                    >· Miércoles · {{ schedule?.HorarioAtencionMiercoles?.HoraInicioPrimerHorario }}-{{
+                      schedule?.HorarioAtencionMiercoles?.HoraFinPrimerHorario
+                    }}
+                    y
+                    {{ schedule?.HorarioAtencionMiercoles?.HoraInicioSegundoHorario }}-{{
+                      schedule?.HorarioAtencionMiercoles?.HoraFinSegundoHorario
+                    }}
+                    Hrs,
+                  </li>
+                  <li *ngIf="schedule?.HorarioAtencionJueves"
+                    >· Jueves · {{ schedule?.HorarioAtencionJueves?.HoraInicioPrimerHorario }}-{{
+                      schedule?.HorarioAtencionJueves?.HoraFinPrimerHorario
+                    }}
+                    y
+                    {{ schedule?.HorarioAtencionJueves?.HoraInicioSegundoHorario }}-{{
+                      schedule?.HorarioAtencionJueves?.HoraFinSegundoHorario
+                    }}
+                    Hrs,
+                  </li>
+                  <li *ngIf="schedule?.HorarioAtencionViernes"
+                    >· Viernes · {{ schedule?.HorarioAtencionViernes?.HoraInicioPrimerHorario }}-{{
+                      schedule?.HorarioAtencionViernes?.HoraFinPrimerHorario
+                    }}
+                    y
+                    {{ schedule?.HorarioAtencionViernes?.HoraInicioSegundoHorario }}-{{
+                      schedule?.HorarioAtencionViernes?.HoraFinSegundoHorario
+                    }}
+                    Hrs
+                  </li>
+                </ul>
+              </div>
+            </app-custom-position-pop-up>
+          </div>
+        </div>
+        <label class="title ocean">{{ 'attendReview.criterion' | translate }}</label>
+        <div class="inputs">
+          <app-drop-down-list
+            class="w-60"
+            [enableEdit]="true"
+            [items]="catPriority$ | async"
+            [itemSelected]="selectedPriority$ | async"
+            [label]="'attendReview.priority' | translate"
+            (valueDropList)="setPriority($event)"
+          ></app-drop-down-list>
+          <app-drop-down-list
+            class="w-40"
+            [label]="'attendReview.origin' | translate"
+            [itemSelected]="selectedOrigin$ | async"
+            [enableEdit]="false"
+          ></app-drop-down-list>
+          <app-generic-text-area
+            [enableEdit]="true"
+            [height]="'60px'"
+            [title]="'attendReview.additionalComments' | translate"
+            [value]="(selectedBill$ | async).dataReview?.ComentariosAdicionales"
+            (emitData)="handleKeyComment($event)"
+          ></app-generic-text-area>
+        </div>
+        <div class="opacity" *ngIf="!(selectedBill$ | async).EstadoTPProformaPedidoEjecutada">
+          <label class="text">{{ 'attendReview.revisionDate2' | translate }}:</label>
+
+          <app-date-picker
+            class="picker"
+            dateFormat="YYYYMMDD"
+            [color]="false"
+            [disabledCalendarDays]="selectNonWorkingDays$ | async"
+            [date]="(selectedBill$ | async)?.dataReview?.dateFormat ? (selectedBill$ | async).dataReview.dateFormat : null"
+            (fecha)="setDate($event)"
+          >
+          </app-date-picker>
+        </div>
+        <!--TODO: Si esta Ejecutada-->
+        <ng-container *ngIf="(selectedBill$ | async).EstadoTPProformaPedidoEjecutada">
+          <div class="opacity">
+            <label class="title"
+              ><span>{{ 'attendReview.executeData' | translate }}: </span></label
+            >
+          </div>
+          <div class="inputs">
+            <app-generic-input class="w-33" [enableEdit]="false" [label]="'attendReview.revisionDate2' | translate">
+            </app-generic-input>
+            <app-generic-input
+              class="w-33"
+              [enableEdit]="false"
+              [label]="'attendReview.whoExecutes' | translate"
+            ></app-generic-input>
+            <app-generic-input class="w-33" [enableEdit]="false" [label]="'attendReview.programmingHistory' | translate">
+            </app-generic-input>
+          </div>
+          <div class="files">
+            <div class="input-container">
+              <label>{{ 'attendReview.uploadEvidence' | translate }}</label>
+              <app-generic-input-file
+                class="input"
+                [showAddSelectedFile]="true"
+                (manualEmitFile)="addFile($event)"
+              ></app-generic-input-file>
+            </div>
+            <div class="files-container">
+              <div class="file">
+                <app-chip-file [chipsFiles]="files$ | async" (deleteChipFile)="deleteFile($event)"></app-chip-file>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
+    <div class="fixed">
+      <button [ngClass]="'active-yellow'" (click)="rebillView()">{{ 'attendReview.reBill' | translate }}</button>
+      <button
+        (click)="saveReview()"
+        *ngIf="(selectedBill$ | async).TipoValidacion === 'Física' && !(selectedBill$ | async).EstadoTPProformaPedidoEjecutada"
+        [ngClass]="'active-green'"
+        >{{ 'attendReview.programReview' | translate }}</button
+      >
+      <button
+        (click)="saveReview()"
+        *ngIf="
+          (((selectedBill$ | async).TipoValidacion === 'Física' || (selectedBill$ | async).TipoValidacion === 'Híbrida') &&
+            (selectedBill$ | async).EstadoTPProformaPedidoEjecutada) ||
+          (((selectedBill$ | async).TipoValidacion === 'Digital' || (selectedBill$ | async).TipoValidacion === 'Híbrida') &&
+            (selectedBill$ | async).files.length > 0)
+        "
+        [ngClass]="'active-green-small'"
+        >{{ 'common.finish' | translate }}</button
+      >
+      <button
+        (click)="saveReview()"
+        *ngIf="
+          ((selectedBill$ | async).TipoValidacion === 'Digital' || (selectedBill$ | async).TipoValidacion === 'Híbrida') &&
+          !(selectedBill$ | async).EstadoTPProformaPedidoEjecutada &&
+          (selectedBill$ | async).files.length == 0
+        "
+        [ngClass]="(selectedBill$ | async)?.dataReview?.FechaRevision ? 'active-ocean' : 'disabled-ocean'"
+        >{{ 'common.save' | translate }}</button
+      >
+    </div>
+  </div>
+</div>

@@ -1,0 +1,82 @@
+<div id="link-alternative-complementary">
+  <div class="product-info">
+    <div class="title">
+      <label>{{ 'common.product' | translate }}</label>
+    </div>
+    <app-product-item-general-info></app-product-item-general-info>
+  </div>
+  <div class="sections">
+    <div class="filters">
+      <div class="tabs">
+        <app-tabs [options]="tabOptions$ | async" [tapSelected]="selectedTab$ | async" (onSelectOption)="setTab($event)">
+        </app-tabs>
+      </div>
+      <div class="search">
+        <div>
+          <app-search
+            (textSearch)="handleKeySearch($event)"
+            [activeRefresh]="true"
+            [borderColor]="'#008894'"
+            [imageFill]="'#008894'"
+            [isExpandable]="true"
+            [isLoading]="(suggestApiStatus$ | async) === 1"
+            [isSearchByType]="true"
+            [itemSelected]="selectedSearchValue$ | async"
+            [resultItems]="optionOfProducts$ | async"
+            [searchTerm]="searchTerm$ | async"
+            [typeSelected]="selectedSearchOption$ | async"
+            [typesOfSearch]="searchOptions$ | async"
+            (handleClearSearchTerm)="handleClearSearchTerm()"
+            (handleItemSelected)="handleItemSelected($event)"
+            (handleTypeSelected)="setTypeSelected($event)"
+          ></app-search>
+        </div>
+      </div>
+    </div>
+    <div class="content">
+      <div class="productsList" *ngIf="!lodashIsEmpty(selectProductList$ | async)">
+        <virtual-scroller
+          class="virtual-scroller"
+          *ngIf="(selectedTab$ | async).id === '1'"
+          [bufferAmount]="2"
+          [enableUnequalChildrenSizes]="true"
+          [items]="selectProductList$ | async"
+          (vsEnd)="fetchMore($event)"
+          (vsUpdate)="scrollItems = $event"
+        >
+          <app-product-card-item
+            *ngFor="let product of scrollItems"
+            [backGroundColor]="'yellow-card'"
+            [borderColorWhite]="true"
+            [product]="buildAlternativeItem(product)"
+            [showCheck]="true"
+            [showIndex]="false"
+            (emitResponse)="setProductSelected($event)"
+          ></app-product-card-item>
+        </virtual-scroller>
+        <virtual-scroller
+          class="virtual-scroller"
+          *ngIf="(selectedTab$ | async).id === '2'"
+          [bufferAmount]="2"
+          [enableUnequalChildrenSizes]="true"
+          [items]="selectProductList$ | async"
+          (vsUpdate)="scrollItems = $event"
+          (vsEnd)="fetchMore($event)"
+        >
+          <app-product-card-item
+            *ngFor="let product of scrollItems"
+            [backGroundColor]="'blue-card'"
+            [borderColorWhite]="true"
+            [product]="buildComplementaryItem(product)"
+            [showCheck]="true"
+            [showIndex]="false"
+            (emitResponse)="setProductSelected($event)"
+          ></app-product-card-item>
+        </virtual-scroller>
+      </div>
+      <div class="without-results" *ngIf="lodashIsEmpty(selectProductList$ | async)">
+        <app-without-results [title]="'UTILIZA EL BUSCADOR PARA HABILITAR ESTA SECCIÓN'"></app-without-results>
+      </div>
+    </div>
+  </div>
+</div>

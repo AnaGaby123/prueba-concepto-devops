@@ -1,0 +1,95 @@
+<div class="header-container" [ngClass]="internalSalesItem?.backgroundHeader ? internalSalesItem?.backgroundHeader : 'white'">
+  <div class="indicator" *ngIf="internalSalesItem?.isSelected !== undefined"></div>
+  <div class="options-column" *ngIf="internalSalesItem?.columnOptions"
+    ><app-check-normal-item
+      *ngIf="internalSalesItem?.columnOptions?.typeOption === typeOptionsColumn.CheckBoxNormal"
+      [columnOptions]="internalSalesItem?.columnOptions"
+      (valueEmitter)="handleAction($event)"
+    ></app-check-normal-item
+  ></div>
+  <div class="number-column" *ngIf="internalSalesItem?.columnNumberItem"><label>#</label></div>
+  <div class="img-type-quote" *ngIf="internalSalesItem?.columnImgTypeItem"></div>
+  <div class="img-type-presentation-column" *ngIf="internalSalesItem?.columnImgTypePresentationProduct"></div>
+  <div class="concept-column" *ngIf="internalSalesItem?.columnConcept"
+    ><label>{{ 'preProcessing.tableLabels.concept' | translate }}</label></div
+  >
+  <div class="notes-column" *ngIf="internalSalesItem?.columnNotes"> </div>
+  <div class="brand-column" *ngIf="internalSalesItem?.columnBrand"
+    ><label>{{ 'preProcessing.tableLabels.brand' | translate }}</label></div
+  >
+  <div class="delivery-time-column" *ngIf="internalSalesItem?.columnDeliveryTime"
+    ><label>{{ 'preProcessing.tableLabels.tee' | translate }}</label>
+    <label>{{ 'preProcessing.tableLabels.days' | translate }}</label></div
+  >
+  <div class="delivery-time-suggested-column" *ngIf="internalSalesItem?.columnDeliveryTimeSuggested">
+    <label class="suggested">{{ 'preProcessing.tableLabels.teeSuggested' | translate }}</label>
+    <label>{{ 'preProcessing.tableLabels.days' | translate }}</label>
+  </div>
+  <div class="pieces-column" *ngIf="internalSalesItem?.columnNumberPieces"
+    ><label>{{ 'preProcessing.tableLabels.quantity' | translate }}</label
+    ><label>{{ 'preProcessing.tableLabels.pieces' | translate }}</label></div
+  >
+  <div class="requested-price-column" *ngIf="internalSalesItem?.columnRequestedPrice"
+    ><label>{{ 'common.priceRequest' | translate }}</label></div
+  >
+  <div class="adjustment-price-column" *ngIf="internalSalesItem?.columnAdjustmentPrice"
+    ><label> {{ 'common.priceAdjustment' | translate }}</label></div
+  >
+  <div class="agreed-price-column" *ngIf="internalSalesItem?.columnAgreedPrice"
+    ><label> {{ 'common.agreedPrice' | translate }}</label></div
+  >
+  <div class="unit-price-column" *ngIf="internalSalesItem?.columnUnitPrice"
+    ><label>{{ 'common.unitPrice' | translate }}</label></div
+  >
+  <div class="pro-freight-column" *ngIf="internalSalesItem?.columnProFreight?.showColumn"
+    ><label>{{ 'preProcessing.tableLabels.proFreight' | translate }}</label></div
+  >
+  <div class="subtotal-column" *ngIf="internalSalesItem?.columnSubtotal"
+    ><label>{{ 'preProcessing.tableLabels.subtotal' | translate }}</label></div
+  >
+  <div class="iva-column" *ngIf="internalSalesItem?.columnIva"
+    ><label>{{ 'preProcessing.tableLabels.iva' | translate }}</label></div
+  >
+  <div class="delivery-restrictions-column" *ngIf="internalSalesItem?.columnDeliveryRestrictions?.showColumn"></div>
+  <div class="value-total-column" *ngIf="internalSalesItem?.columnTotalValue"
+    ><label>{{ 'preProcessing.tableLabels.totalValue' | translate }}</label></div
+  >
+  <div class="cancel-reason-column" *ngIf="internalSalesItem?.columnCancelReason"
+    ><label>{{ 'closeOffer.tableLabels.cancelReason' | translate }}</label>
+  </div>
+  <div class="see-resume-column" *ngIf="internalSalesItem?.columnSeeResume"> </div>
+  <div class="state-column" *ngIf="internalSalesItem?.columnState"> </div>
+  <div class="last-follow-up-column" *ngIf="internalSalesItem?.columnDateLastFollow"
+    ><label>{{ 'preProcessing.tableLabels.last' | translate }}</label>
+    <label>{{ 'preProcessing.tableLabels.following' | translate }}</label></div
+  >
+  <div class="purchase-arrival-date-column" *ngIf="internalSalesItem?.columnArrivalDate"
+    ><label>{{ 'preProcessing.tableLabels.arrivalDate' | translate }}</label></div
+  >
+  <div class="research-response-column" *ngIf="internalSalesItem?.columnResearchResponse"
+    ><label>{{ 'preProcessing.tableLabels.researchResponse' | translate }}</label></div
+  >
+  <div
+    class="checks-type-adjustment-column"
+    *ngIf="internalSalesItem?.columnChecksTypeAdjustment?.showColumn"
+    [style.flex]="
+      internalSalesItem?.columnChecksTypeAdjustment?.numberChecksActive === 1
+        ? '0 0 130px'
+        : internalSalesItem?.columnChecksTypeAdjustment?.numberChecksActive === 2
+        ? '0 0 240px'
+        : internalSalesItem?.columnChecksTypeAdjustment?.numberChecksActive === 3
+        ? '0 0 350px'
+        : '0 0 460px'
+    "
+  >
+    <app-checks-type-adjustment-item
+      [columnChecksTypeAdjustment]="internalSalesItem?.columnChecksTypeAdjustment"
+      (valueEmitter)="handleAction($event)"
+    ></app-checks-type-adjustment-item>
+  </div>
+  <div class="arrow-column" *ngIf="internalSalesItem?.columnArrow"><label></label></div>
+  <div class="comment-column" *ngIf="internalSalesItem?.columnComments"><label></label></div>
+  <div class="delete-column" *ngIf="internalSalesItem?.columnDelete"><label></label></div>
+  <div class="trash-reverse-setting-column" *ngIf="internalSalesItem?.columnTrashReverseSetting"><label></label></div>
+  <div class="see-more-column" *ngIf="internalSalesItem?.columnSeeMore"><label></label></div>
+</div>

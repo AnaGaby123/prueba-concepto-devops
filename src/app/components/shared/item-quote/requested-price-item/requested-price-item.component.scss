@@ -1,0 +1,211 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  width: 100%;
+  & > .unit-price-container {
+    width: 100%;
+    & > .floating-container {
+      @include s.flexRow;
+      justify-content: flex-end;
+      align-items: center;
+      column-gap: 6px;
+      flex-wrap: wrap;
+      position: relative;
+      & > label {
+        @include s.responsive-font-format(
+          $font-family: s.$font_family_roboto_light,
+          $font-weight: s.$font_weight_light,
+          $font-size-map: s.$responsive-font-14-14,
+          $color: s.$pqBlack2
+        );
+        &.red {
+          color: s.$pqRed;
+        }
+
+        &.yellow {
+          color: s.$orange;
+        }
+
+        &.green {
+          color: s.$pqGreen2;
+        }
+        &.ocean {
+          color: s.$main-proquifa;
+        }
+        &.black {
+          color: s.$pqBlack2;
+        }
+
+        &.bold {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_roboto_bold,
+            $font-weight: s.$font_weight_bold,
+            $font-size-map: s.$responsive-font-14-14,
+            $color: s.$pqBlack2
+          );
+        }
+
+        &.red-bold {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_roboto_bold,
+            $font-weight: s.$font_weight_bold,
+            $font-size-map: s.$responsive-font-14-14,
+            $color: s.$pqRed
+          );
+        }
+
+        &.yellow-bold {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_roboto_bold,
+            $font-weight: s.$font_weight_bold,
+            $font-size-map: s.$responsive-font-14-14,
+            $color: s.$orange
+          );
+        }
+
+        &.green-bold {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_roboto_bold,
+            $font-weight: s.$font_weight_bold,
+            $font-size-map: s.$responsive-font-14-14,
+            $color: s.$pqGreen2
+          );
+          color: s.$pqGreen2;
+        }
+        &.ocean-bold {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_roboto_bold,
+            $font-weight: s.$font_weight_bold,
+            $font-size-map: s.$responsive-font-14-14,
+            $color: s.$main-proquifa
+          );
+        }
+        &.black-bold {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_roboto_bold,
+            $font-weight: s.$font_weight_bold,
+            $font-size-map: s.$responsive-font-14-14,
+            $color: s.$pqBlack2
+          );
+        }
+      }
+
+      & > .floating-input {
+        width: 192px;
+        padding-top: 12px;
+        background-color: s.$pqWhite;
+        border: 1px solid s.$boxShadow;
+        position: absolute;
+        left: 50%;
+        top: 26px;
+        z-index: 1;
+        margin-left: -96px;
+        box-shadow: 0 0 7px -1px rgba(s.$pqBlack2, 0.5);
+
+        & > div:nth-child(1) {
+          @include s.flexColumn;
+          @include s.absoluteCenter;
+          height: 35px;
+          width: 100%;
+          background-color: rgba(s.$pqGreen, 0.05);
+          margin-bottom: 15px;
+
+          & > label {
+            text-align: center;
+            @include s.responsive-font-format(
+              $font-family: s.$font_family_roboto_light,
+              $font-size-map: s.$responsive-font-12-14,
+              $font-weight: s.$font_weight_light,
+              $color: s.$main-proquifa
+            );
+          }
+        }
+
+        & > div:nth-child(2) {
+          @include s.flexRow;
+          @include s.absoluteCenter;
+          padding-bottom: 15px;
+
+          & > input {
+            width: 97px;
+            margin-right: 4px;
+            text-align: center;
+            color: s.$pqGreen2;
+            border-color: s.$boxShadow;
+            transition: all 0.3s ease;
+
+            &.warning {
+              color: s.$redWarning;
+              border-color: s.$redWarning;
+            }
+          }
+
+          & > label {
+            @include s.responsive-font-format(
+              $font-family: s.$font_family_roboto_bold,
+              $font-size-map: s.$responsive-font-12-14,
+              $font-weight: s.$font_weight_bold,
+              $color: s.$main-proquifa
+            );
+          }
+        }
+
+        & > div:nth-child(3) {
+          @include s.flexRow;
+          @include s.absoluteCenter;
+          background-color: s.$redWarning;
+          transition: all 0.3s ease-in-out;
+          overflow: hidden;
+
+          & > label {
+            text-align: center;
+            @include s.responsive-font-format($font-size-map: s.$responsive-font-13-16, $color: s.$pqWhite);
+          }
+        }
+
+        & > div.visible {
+          height: 43px;
+          padding: 0 20px;
+        }
+
+        & > div.invisible {
+          height: 0 !important;
+          /*overflow: hidden!important;*/
+        }
+      }
+      & > .triangle {
+        border-top: solid 1px s.$boxShadow;
+        border-left: solid 1px s.$boxShadow;
+        width: 14px;
+        height: 14px;
+        position: absolute;
+        top: 19px;
+        left: 50%;
+        margin-left: -7px;
+        transform: rotate(45deg);
+        background-color: s.$pqWhite;
+        z-index: 3;
+        box-shadow: -3px -3px 6px -4px rgba(s.$pqBlack2, 0.5);
+      }
+      & > .img-container {
+        @include s.flexRow;
+        @include s.absoluteCenter;
+        width: 24px;
+        height: 24px;
+        & > img {
+          width: 22px;
+          height: 19px;
+          transition: all 0.2s ease-in-out;
+          cursor: pointer;
+          &:hover {
+            opacity: 0.7;
+          }
+        }
+      }
+    }
+  }
+}

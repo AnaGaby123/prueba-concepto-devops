@@ -1,0 +1,115 @@
+<div class="dashboard-container" id="plan-collection-list">
+  <div class="left-container">
+    <label class="title">{{ 'common.providers' | translate }}</label>
+    <div class="filters">
+      <div class="filter-by-type">
+        <app-hamburger-menu
+          [options]="tapOptionsValue$ | async"
+          [value]="(selectedOptionsValue$ | async)?.value"
+          (valueEmit)="setFilter($event)"
+        >
+        </app-hamburger-menu>
+      </div>
+      <div class="filter-by-search">
+        <app-search
+          [imageFill]="'#008894'"
+          [isSearchByType]="true"
+          [placeholder]="'planCollection.orderBuy' | translate"
+          [searchTerm]=""
+          [typeSelected]="selectedBySearch$ | async"
+          [typesOfSearch]="filterBySearch | async"
+          (handleTypeSelected)="('')"
+          (textSearch)="('')"
+        >
+        </app-search>
+      </div>
+    </div>
+    <div class="list-container">
+      <virtual-scroller *ngIf="true">
+        <div class="item" (click)="providerSelected()">
+          <div class="index">
+            <label>{{ '#' + 1 }}</label>
+          </div>
+          <div class="body">
+            <div class="name">
+              <label>{{ 'Proveedor Nacional' }}</label>
+            </div>
+            <div class="classification">
+              <label>{{ 1 }} {{ 'OC' | translate }}</label>
+              <label> · </label>
+              <label>{{ 150 | currency: 'USD':'symbol-narrow':'0.2-4' }}</label>
+            </div>
+            <div class="cant">
+              <label>{{ 1 }} {{ true ? ('common.pza' | translate) : ('common.pzas' | translate) }}</label>
+              <label> · </label>
+              <label>{{ 3 }} {{ false ? ('common.product' | translate) : ('common.products' | translate) }}</label>
+            </div>
+            <div class="last-file">
+              <div class="days">
+                <label class="day">3 + {{ true ? ('common.days' | translate) : ('common.day' | translate) }}: </label>
+                <label class="result">{{ 1 }}</label>
+                <label class="day">3 {{ true ? ('common.days' | translate) : ('common.day' | translate) }}: </label>
+                <label class="result">{{ 1 }}</label>
+                <label class="day">2 {{ true ? ('common.days' | translate) : ('common.day' | translate) }}: </label>
+                <label class="result">{{ 1 }}</label>
+                <label class="day">1 {{ false ? ('common.days' | translate) : ('common.day' | translate) }}: </label>
+                <label class="result">{{ 1 }}</label>
+              </div>
+              <div class="date">
+                <label class="fee" [ngClass]="false ? 'green' : 'red'">FER: {{ '17/Agosto/2022' }}</label>
+              </div>
+            </div>
+          </div>
+          <div class="arrow">
+            <img alt="arrow" src="assets/Images/arrows/arrow_right.svg" />
+          </div>
+        </div>
+      </virtual-scroller>
+      <app-without-results *ngIf="false" class="without-results" [title]="'Sin resultados'"></app-without-results>
+      <app-loading *ngIf="false" class="loading"></app-loading>
+    </div>
+    <div class="footer" *ngIf="true">
+      <div class="totals">
+        <label>{{ '#' + (20 | number: '1.0-0') }}</label>
+        <label>{{ 20 }}{{ ' OC' }}</label>
+        <label>{{
+          (50 | number: '1.0-0') + ' ' + (true ? ('common.products' | translate) : ('common.product' | translate))
+        }}</label>
+        <label>{{
+          (50 | number: '1.0-0') + ' ' + (true ? ('common.pieces' | translate) : ('common.piece' | translate))
+        }}</label>
+        <label
+          >{{ 'common.totalAmount' | translate }}
+          {{ 50 | currency: 'USD':'symbol-narrow':'2.2-4' }}
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="right-container">
+    <ng-container *ngIf="true">
+      <app-doughnut-chart
+        [data]="itemBarra"
+        [fontSize]="(viewType$ | async) === appViewTypes.small ? 'small' : 'normal'"
+        [optionDetailsHover]=""
+        [optionDetails]=""
+        [titleDetails]="'planCollection.provider' | translate"
+        [title]="'planCollection.provider' | translate"
+        [typeChart]="1"
+      >
+      </app-doughnut-chart>
+      <app-bar-chart
+        [fontSize]="(viewType$ | async) === appViewTypes.small ? 14 : 16"
+        [title]="'planCollection.collectionTraffic' | translate"
+        [values]="itemStatics"
+      >
+      </app-bar-chart>
+      <app-bar-chart
+        [fontSize]="(viewType$ | async) === appViewTypes.small ? 14 : 16"
+        [title]="'planCollection.timeReference' | translate"
+        [values]="itemStatics2"
+      >
+      </app-bar-chart>
+    </ng-container>
+    <app-loading class="loading" *ngIf="false"></app-loading>
+  </div>
+</div>

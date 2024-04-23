@@ -1,0 +1,50 @@
+<div
+  class="genericInput"
+  [ngClass]="errors && enableEdit && !isDisable && 'genericInputDanger'"
+  [style.text-align]="textAlign"
+  [style.width]="width"
+  [style.height]="height"
+>
+  <div class="label-container" *ngIf="title">
+    <img
+      id="label-container-img"
+      *ngIf="required && showAsterisk && enableEdit"
+      alt=""
+      [src]="isDisable ? grayAsteriskImg : !errors && !forceActiveErrors ? asteriskImg : redAsteriskImg"
+    />
+    <div>
+      <label
+        id="label-container-title"
+        class="title"
+        [style.font-family]="!enableEdit ? 'Roboto-bold' : titleFontFamily"
+        [style.color]="isDisable ? titleDisableFontColor : titleFontColor"
+        >{{ title }}</label
+      >
+    </div>
+  </div>
+  <div
+    class="input-container"
+    [ngClass]="{'not-enable-edit': !enableEdit}"
+    [style.border-color]="isDisable ? disableBorderColor : borderColor"
+  >
+    <div class="label" *ngIf="!enableEdit">
+      <label id="input-container-label" [style.text-align]="textAlign" [style.color]="fontColor">{{ value || 'N/D' }}</label>
+    </div>
+    <textarea
+      *ngIf="enableEdit"
+      [style.font-family]="font"
+      [style.text-align]="textAlign"
+      [style.color]="isDisable ? disableFontColor : fontColor"
+      [style.border]="enableBorder ? 'none' : ''"
+      [placeholder]="placeholder"
+      [required]="required"
+      [readOnly]="isDisable"
+      [maxlength]="maxlength"
+      [minlength]="minlength"
+      (blur)="validated(value)"
+      [(ngModel)]="value"
+      (ngModelChange)="emitValue($event)"
+      >{{ value }}
+    </textarea>
+  </div>
+</div>

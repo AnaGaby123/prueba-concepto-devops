@@ -1,0 +1,168 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  height: 100%;
+  width: 100%;
+
+  #pop-up-container {
+    @include s.flexColumn;
+    height: 100%;
+    width: 100%;
+
+    & > .product {
+      @include s.flexColumn;
+      flex: 0 1 74px;
+      padding: 26px 30px;
+
+      & > .title {
+        @include s.flexRow;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize17to22, '', s.$pqGreen);
+          @include s.Novecento-Bold;
+        }
+      }
+
+      & > .name {
+        @include s.flexRow;
+
+        & > label {
+          text-align: start;
+          @include s.escaledFontFormat(s.$textSize16to20, '', s.$pqBlack2);
+          @include s.Roboto-Bold;
+        }
+      }
+    }
+
+    & > .back-order {
+      @include s.flexColumn;
+      height: 100%;
+      flex: 1;
+      overflow: hidden;
+
+      & > .dates {
+        @include s.flexRow;
+        flex: 0 0 139px;
+        padding-top: 18px;
+
+        & > .date-elements {
+          @include s.flexRow;
+          justify-content: space-between;
+          height: 100%;
+          width: 100%;
+          padding: 20px 30px;
+          background-color: s.$pqFondo;
+
+          & > div {
+            @include s.flexColumn;
+            justify-content: center;
+            align-items: flex-start;
+
+            & > app-date-picker {
+              height: 30px;
+            }
+
+            & > label {
+              @include s.escaledFontFormat(s.$textSize12to16, '', s.$pqBlack2);
+              @include s.Roboto-Regular;
+              margin-bottom: 5px;
+            }
+          }
+        }
+      }
+
+      & > .reason {
+        @include s.flexRow;
+        padding: 40px 30px;
+      }
+    }
+
+    & > .discontinued {
+      @include s.flexRow;
+      padding: 43px 30px;
+      border-top: 1px solid;
+      height: 100%;
+      flex: 1;
+      overflow: hidden;
+
+      & > .content {
+        @include s.flexColumn;
+        width: 100%;
+        height: 100%;
+        align-items: flex-start;
+
+        & > label {
+          @include s.escaledFontFormat(s.$textSize12to16, '', s.$pqBlack2);
+          @include s.Roboto-Regular;
+          margin-bottom: 5px;
+        }
+      }
+    }
+
+    & > .available {
+      height: 100%;
+      flex: 1;
+
+      & > .content {
+        @include s.flexColumn;
+        justify-content: center;
+        height: 100%;
+        border-top: 1px solid;
+
+        & > .options {
+          @include s.flexColumn;
+          @include s.absoluteCenter;
+          flex: 0 0 184px;
+          background-color: s.$pqFondoContent;
+
+          & > div:nth-child(1) {
+            padding-bottom: 30px;
+          }
+
+          & > div {
+            @include s.flexRow;
+            width: 290px;
+            display: flex;
+            justify-content: flex-start;
+          }
+        }
+
+        & > .date {
+          @include s.flexRow;
+          padding-top: 20px;
+          @include s.absoluteCenter;
+
+          & > label {
+            @include s.escaledFontFormat(s.$textSize14to20, '', s.$pqBlack2);
+            @include s.Roboto-Regular;
+            margin-right: 5px;
+          }
+
+          & > app-date-picker {
+            width: 210px;
+          }
+        }
+      }
+    }
+
+    & > .buttons {
+      @include s.flexRow;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 20px 30px;
+      height: 100px;
+
+      & > .active {
+        @include s.pqButton();
+      }
+
+      & > .disabled {
+        @include s.pqButtonDisable();
+      }
+    }
+  }
+}

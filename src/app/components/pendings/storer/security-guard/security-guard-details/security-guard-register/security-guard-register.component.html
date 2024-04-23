@@ -1,0 +1,266 @@
+<div class="register-visit-step-1">
+  <label class="subtitle">Mensajero</label>
+  <div class="delivery-container">
+    <div class="delivery-image-content">
+      <app-image-profile
+        [showAddImage]="editMode$ | async"
+        [showDeleteImage]="editMode$ | async"
+        (emitResponse)="imageRecovery($event)"
+        [image]="imageFile$ | async"
+        [isLoading]="(apiStatusImage$ | async) === 1"
+      ></app-image-profile>
+    </div>
+    <div class="add-delivery">
+      <div *ngIf="!(newVisitant$ | async) && !(editMode$ | async)">
+        <app-drop-down-list
+          [subtitleActive]="false"
+          [isSearchable]="true"
+          [label]="'Nombre Completo del Visitante'"
+          [disable]="false"
+          (valueDropList)="completeName($event)"
+          [items]="selectVisitorList$ | async"
+          [itemSelected]="selectSelectVisitNameSelected$ | async"
+        >
+        </app-drop-down-list>
+        <img alt="" [src]="'assets/Images/ocean-add-user.svg'" class="imgOcean-Add-User" (click)="addNewUser()" />
+      </div>
+      <div *ngIf="(newVisitant$ | async) || (editMode$ | async)">
+        <app-generic-input
+          [enableEdit]="editMode$ | async"
+          [label]="'Nombre Completo del Visitante'"
+          [value]="!(newVisitant$ | async) ? (segVisitorData$ ? (segVisitorData$ | async)?.NombreCompleto : '') : ''"
+          (textData)="setDataVisitor($event, 'NombreCompleto')"
+          [required]="true"
+          [typeValidation]="inputValidators.AlphaAndSpacesTwo"
+        ></app-generic-input>
+      </div>
+    </div>
+    <div class="place">
+      <app-generic-text-area
+        [enableEdit]="false"
+        [title]="'De donde viene'"
+        [value]="(selectedVisit$ | async)?.catOrigenVisitante?.OrigenVisitante"
+        [height]="'90px'"
+      ></app-generic-text-area>
+    </div>
+    <div class="telephone">
+      <app-generic-input
+        [enableEdit]="editMode$ | async"
+        [label]="'Teléfono'"
+        [value]="!(newVisitant$ | async) ? (segVisitorData$ | async)?.Telefono : ''"
+        (textData)="setDataVisitor($event, 'Telefono')"
+        [required]="false"
+      ></app-generic-input>
+    </div>
+    <div class="extension">
+      <app-generic-input
+        [enableEdit]="editMode$ | async"
+        [label]="'Ext.'"
+        [value]="!(newVisitant$ | async) ? (segVisitorData$ | async)?.Extension : ''"
+        (textData)="setDataVisitor($event, 'Extension')"
+        [required]="false"
+      ></app-generic-input>
+    </div>
+    <div class="cellphone">
+      <app-generic-input
+        [enableEdit]="editMode$ | async"
+        [label]="'Celular'"
+        [value]="!(newVisitant$ | async) ? (segVisitorData$ | async)?.Celular : ''"
+        (textData)="setDataVisitor($event, 'Celular')"
+        [required]="false"
+      ></app-generic-input>
+    </div>
+    <div class="email">
+      <app-generic-input
+        [enableEdit]="editMode$ | async"
+        [label]="'E-Mail'"
+        [value]="!(newVisitant$ | async) ? (segVisitorData$ | async)?.Email : ''"
+        (textData)="setDataVisitor($event, 'Email')"
+        [required]="false"
+      ></app-generic-input>
+    </div>
+    <div class="date">
+      <app-generic-input
+        [enableEdit]="false"
+        [label]="'Fecha y hora aproximada de arribo'"
+        [font]="'Roboto-bold'"
+        [value]="
+          (selectedVisit$ | async)?.FechaHoraAproximadaDeArribo
+            ? ((selectedVisit$ | async)?.FechaHoraAproximadaDeArribo | dateFormatSlashShortWithHour)
+            : 'N/A'
+        "
+      ></app-generic-input>
+    </div>
+    <div class="cancel">
+      <button
+        [ngClass]="'btn-link-to'"
+        [disabled]="false"
+        (click)="cancelEdit()"
+        *ngIf="(newVisitant$ | async) || (editMode$ | async)"
+      >
+        {{ 'CANCELAR' }}
+      </button>
+    </div>
+    <div class="saveOrEdit">
+      <button
+        [ngClass]="
+          !(newVisitant$ | async)
+            ? (segVisitorData$ | async)?.NombreCompleto
+              ? 'btn-link-to'
+              : 'btn-link-to-disable'
+            : (newSegVisitorData$ | async)?.NombreCompleto
+            ? 'btn-link-to'
+            : 'btn-link-to-disable'
+        "
+        [disabled]="
+          !(newVisitant$ | async) ? !(segVisitorData$ | async)?.NombreCompleto : !(newSegVisitorData$ | async)?.NombreCompleto
+        "
+        (click)="acceptEdit()"
+        *ngIf="(newVisitant$ | async) || (editMode$ | async)"
+      >
+        {{ 'ACEPTAR' }}
+      </button>
+      <button
+        [ngClass]="'btn-link-to'"
+        [disabled]="false"
+        (click)="editVisitant()"
+        *ngIf="(segVisitorData$ | async) && !(editMode$ | async)"
+      >
+        {{ 'EDITAR' }}
+      </button>
+    </div>
+    <div *ngIf="showPopEmptyFields" class="popUpCont">
+      <app-pop-up-generic
+        class="popDescriptionFilds"
+        [titleHeader]="'Proquifa Net'"
+        [width]="'620px'"
+        [height]="'360px'"
+        [activeButtons]="true"
+        [rightButtonLabel]="'Ok'"
+        [onlyOneButton]="true"
+        (evento)="closePop()"
+      >
+        <img alt="alert" class="imageFilesPop" src="assets/Images/alerta.svg" />
+        <div class="containerDescription">
+          <label class="descriptionFields">Debe establecer por lo menos alguno de estos datos: Teléfono, Celular, E-mail</label>
+        </div>
+      </app-pop-up-generic>
+    </div>
+  </div>
+  <label class="tagVehicle">Vehículo</label>
+  <div class="vehicleContainer">
+    <div class="vehicleContainerSub">
+      <app-radio-button
+        [activeLocalState]="false"
+        [value]="(selectedVisit$ | async)?.AplicaVehiculo === true"
+        [height]="(viewType$ | async) === 'macBookAir' ? '20px' : '17px'"
+        [label]="'Aplica'"
+        (emitValue)="setApplication($event, 'apply')"
+      ></app-radio-button>
+      <app-radio-button
+        [activeLocalState]="false"
+        [value]="(selectedVisit$ | async)?.AplicaVehiculo === false"
+        [height]="(viewType$ | async) === 'macBookAir' ? '20px' : '17px'"
+        [label]="'No Aplica'"
+        (emitValue)="setApplication($event, 'notApply')"
+      >
+      </app-radio-button>
+    </div>
+    <div class="vehicleContainerSubSecond">
+      <div class="vehicleContainerSubSecondItemsFirst">
+        <app-drop-down-list
+          [subtitleActive]="false"
+          [label]="'Tipo de Vehículo'"
+          [disable]="!(selectedVisit$ | async)?.AplicaVehiculo"
+          [items]="dropdownListVehicleType$ | async"
+          [activeMinWidth]="false"
+          class="containerSub"
+          (valueDropList)="vehycleTypeClick($event)"
+          [itemSelected]="selectSelectVehicleType$ | async"
+        >
+        </app-drop-down-list>
+      </div>
+      <div class="vehicleContainerSubSecondItemsSecond">
+        <app-drop-down-list
+          [subtitleActive]="false"
+          [label]="'Marca'"
+          [items]="dropdownListVehicleBrand$ | async"
+          [disable]="!(selectedVisit$ | async)?.AplicaVehiculo"
+          [activeMinWidth]="false"
+          (valueDropList)="vehycleBrandClick($event)"
+          [itemSelected]="selectSelectVehicleBrand$ | async"
+          class="containerSub"
+        >
+        </app-drop-down-list>
+      </div>
+      <div class="vehicleContainerSubSecondItemsThird">
+        <app-generic-input
+          [enableEdit]="true"
+          [label]="'Color'"
+          [value]="(selectedVisit$ | async)?.segVehiculoVisitante?.Color"
+          [isDisable]="!(selectedVisit$ | async)?.AplicaVehiculo"
+          (textData)="setColorVehicle($event)"
+        ></app-generic-input>
+      </div>
+      <div class="vehicleContainerSubSecondItemsFourth">
+        <app-generic-input
+          [enableEdit]="true"
+          [label]="'Placas'"
+          [isDisable]="!(selectedVisit$ | async)?.AplicaVehiculo"
+          [value]="
+            (selectedVisit$ | async)?.segVehiculoVisitante?.Placas ? (selectedVisit$ | async)?.segVehiculoVisitante?.Placas : ''
+          "
+          (textData)="setPlateVehicle($event)"
+        ></app-generic-input>
+      </div>
+    </div>
+  </div>
+
+  <label class="tagWhoVisit">a quién visita</label>
+  <div class="whoVisitContainer">
+    <div class="tagWhoVisitFirst">
+      <app-generic-input
+        [enableEdit]="false"
+        [label]="'A quién visita'"
+        [value]="
+          (selectedVisit$ | async)?.UsuarioAQuienVisita?.UserName
+            ? (selectedVisit$ | async)?.UsuarioAQuienVisita?.UserName
+            : 'N/D'
+        "
+      ></app-generic-input>
+    </div>
+    <div class="tagWhoVisitSecond">
+      <app-generic-input
+        [enableEdit]="false"
+        [label]="'Puesto'"
+        [value]="
+          (selectedVisit$ | async)?.UsuarioAQuienVisita?.PuestoUsuario
+            ? (selectedVisit$ | async)?.UsuarioAQuienVisita?.PuestoUsuario
+            : 'N/D'
+        "
+      ></app-generic-input>
+    </div>
+    <div class="tagWhoVisitThird">
+      <app-generic-input
+        [enableEdit]="false"
+        [label]="'Departamento'"
+        [value]="
+          (selectedVisit$ | async)?.UsuarioAQuienVisita?.Departamento
+            ? (selectedVisit$ | async)?.UsuarioAQuienVisita?.Departamento
+            : 'N/D'
+        "
+      ></app-generic-input>
+    </div>
+    <div class="tagWhoVisitFourth">
+      <app-generic-input
+        [enableEdit]="false"
+        [label]="'Ext.'"
+        [value]="
+          (selectedVisit$ | async)?.UsuarioAQuienVisita?.Extension
+            ? (selectedVisit$ | async)?.UsuarioAQuienVisita?.Extension
+            : 'N/D'
+        "
+      ></app-generic-input>
+    </div>
+  </div>
+</div>

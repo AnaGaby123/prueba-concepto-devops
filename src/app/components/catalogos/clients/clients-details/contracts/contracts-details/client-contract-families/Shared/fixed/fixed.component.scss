@@ -1,0 +1,77 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  & > .fixed {
+    @include s.flexRowNoWrap;
+    justify-content: center;
+
+    & > .container {
+      @include s.flexColumn;
+      align-items: center;
+
+      & > h4 {
+        @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqGreen);
+        @include s.Novecento-Bold;
+        margin-bottom: 12px;
+
+        &.margin-bottom {
+          margin-bottom: 20px;
+        }
+      }
+
+      & > .flex {
+        @include s.flexRow;
+
+        & > .input-container {
+          @include s.flexRow;
+          align-items: center;
+          flex-wrap: nowrap;
+          margin-right: 30px;
+
+          &.column {
+            @include s.flexColumn;
+          }
+
+          &:last-child {
+            margin-right: 0;
+          }
+
+          & > .input {
+            margin: 0 7px;
+            width: 90px;
+          }
+
+          & > label,
+          & > span {
+            @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+            @include s.Roboto-Bold;
+            white-space: pre;
+
+            &.green {
+              @include s.Roboto-Regular;
+              color: s.$pqGreen;
+              margin-top: 4px;
+            }
+          }
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .container {
+        & > .flex {
+          & > .input-container {
+            & > .input {
+              margin: 0 9px;
+              width: 100px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

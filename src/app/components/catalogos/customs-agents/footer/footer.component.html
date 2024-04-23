@@ -1,0 +1,14 @@
+<div id="footer-customs-agents">
+  <div class="one-button" *ngIf="!(enableEdit$ | async)">
+    <button *ngIf="!(isInDetails$ | async)" (click)="handleAddOrEdit('add')">{{ 'common.add' | translate }}</button>
+    <button *ngIf="(isInDetails$ | async) && (editMode$ | async)" (click)="handleAddOrEdit('edit')" [ngClass]="''">{{
+      'common.edit' | translate
+    }}</button>
+  </div>
+  <div class="two-buttons" *ngIf="enableEdit$ | async">
+    <button class="button-enable" (click)="cancel()">{{ 'common.cancel' | translate }}</button>
+    <button [ngClass]="(saveButton$ | async) ? 'button-enable' : 'button-disable'" (click)="saveData()">{{
+      'common.save' | translate
+    }}</button>
+  </div>
+</div>

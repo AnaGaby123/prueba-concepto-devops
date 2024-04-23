@@ -1,0 +1,30 @@
+@use 'base' as s;
+
+:host {
+  @include s.generic-main-component-structure;
+
+  & > #adjustment-container {
+    & > .footer {
+      & div {
+        & > label {
+          @include s.escaledFontFormat(s.$textSize12to14, '', s.$pqBlack2);
+          @include s.Roboto-Regular;
+        }
+
+        & > .oc {
+          @include s.Roboto-Bold;
+        }
+
+        & > .vt {
+          @include s.Roboto-Bold;
+        }
+
+        & > img {
+          height: 19px;
+          margin-right: 5px;
+          width: auto;
+        }
+      }
+    }
+  }
+}

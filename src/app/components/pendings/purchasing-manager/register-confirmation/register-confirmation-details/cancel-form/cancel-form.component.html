@@ -1,0 +1,86 @@
+<div class="cancel-container">
+  <div class="close-button">
+    <img src="assets/Images/dark-red-x.svg" alt="" class="absolute" (click)="cancelConfig()" />
+  </div>
+  <div class="form-container">
+    <div class="form">
+      <label>{{ 'registerConfirmation.cancelReason' | translate }}</label>
+      <div class="radius">
+        <app-radio-button
+          class="radio"
+          [allowDisable]="true"
+          [height]="viewType === appViewTypes.small ? '17px' : '20px'"
+          [isMulticolor]="true"
+          [labelFontStyle]="item?.ocPartidaCancelacion?.Descontinuado ? 'robotoBold13' : 'defaultLabel'"
+          [label]="'registerConfirmation.discontinued' | translate"
+          [radioColor]="'red'"
+          [value]="item?.ocPartidaCancelacion.Descontinuado"
+          (emitValue)="saveInputValueRadio('Descontinuado', $event)"
+        ></app-radio-button>
+        <app-radio-button
+          class="radio"
+          [allowDisable]="true"
+          [height]="viewType === appViewTypes.small ? '17px' : '20px'"
+          [isMulticolor]="true"
+          [labelFontStyle]="item?.ocPartidaCancelacion?.RestriccionesVenta ? 'robotoBold13' : 'defaultLabel'"
+          [label]="'registerConfirmation.saleRestrictions' | translate"
+          [radioColor]="'red'"
+          [value]="item?.ocPartidaCancelacion?.RestriccionesVenta"
+          (emitValue)="saveInputValueRadio('RestriccionesVenta', $event)"
+        ></app-radio-button>
+        <app-radio-button
+          class="radio"
+          [allowDisable]="true"
+          [height]="viewType === 'iPad' ? '17px' : '20px'"
+          [isMulticolor]="true"
+          [labelFontStyle]="item?.ocPartidaCancelacion?.RestriccionesImportacion ? 'robotoBold13' : 'defaultLabel'"
+          [label]="'registerConfirmation.importRestrictions' | translate"
+          [radioColor]="'red'"
+          [value]="item?.ocPartidaCancelacion?.RestriccionesImportacion"
+          (emitValue)="saveInputValueRadio('RestriccionesImportacion', $event)"
+        ></app-radio-button>
+        <div>
+          <div>
+            <app-generic-input
+              class="input"
+              [fontSize]="viewType === 'iPad' ? '13px' : '16px'"
+              [isDisable]="
+                item?.backOrderConfig ||
+                (nameComponent === registerConfirmation && arrayLength === 4) ||
+                (nameComponent !== registerConfirmation && arrayLength === 3)
+              "
+              [label]="'common.pieces' | translate"
+              [labelFontColor]="'#cc435e'"
+              [max]="item?.tempNumeroDePiezas"
+              [min]="1"
+              [placeholder]="'0'"
+              [textAlign]="'center'"
+              [typeValidation]="inputValidators.Number"
+              [value]="item?.ocPartidaCancelacion?.NumeroDePiezas"
+              (textData)="saveInputValueString('NumeroDePiezas', $event)"
+            ></app-generic-input>
+          </div>
+          <label>{{ 'common.fromMinus' | translate }} {{ item?.tempNumeroDePiezas }}</label>
+        </div>
+      </div>
+      <app-generic-text-area
+        [height]="'80px'"
+        [title]="'registerConfirmation.changeJustification' | translate"
+        [titleFontColor]="'#cc435e'"
+        [value]="item?.ocPartidaCancelacion?.Justificacion"
+        (emitData)="saveInputValueString('Justificacion', $event)"
+      ></app-generic-text-area>
+    </div>
+    <div class="buttons">
+      <button *ngIf="!item?.cancelConfig || !isTheLastIndex" [ngClass]="'active'" (click)="cancelConfig()">{{
+        'common.cancel' | translate
+      }}</button>
+      <button *ngIf="item?.cancelConfig && isTheLastIndex" [ngClass]="'active'" (click)="deleteConfig()">{{
+        'common.uncheck' | translate
+      }}</button>
+      <button [disabled]="!saveValidator" [ngClass]="saveValidator ? 'active' : 'disabled'" (click)="saveConfig()">{{
+        'common.accept' | translate
+      }}</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,45 @@
+<div id="load-and-carousel-images">
+  <div *ngIf="images.length === 0" class="without-images">
+    <label for="file-input-first">
+      <img src="assets/Images/load-image.svg" alt="load image" />
+      <label>{{ '.jpg / .png' }}</label>
+      <label>{{ text }}</label>
+    </label>
+    <input id="file-input-first" type="file" accept=".jpg,.png" multiple (change)="addImage($event)" />
+  </div>
+  <div *ngIf="images.length > 0" class="carousel">
+    <div class="image-container" [style.width]="imageContainerWidth" [style.height]="imageContainerHeight">
+      <img #currentImg [src]="images[currentPosition].base64" alt="Current Image" />
+    </div>
+    <div class="footer">
+      <div class="controls">
+        <img (click)="changeImage('prev')" class="prev" src="assets/Images/control-prev.svg" alt="prev" />
+        <label> {{ currentPosition + 1 }} / {{ images.length }} </label>
+        <img (click)="changeImage('next')" class="next" src="assets/Images/control-next.svg" alt="next" />
+      </div>
+      <div class="buttons">
+        <div>
+          <img (click)="deleteImage()" src="assets/Images/delete-photo.svg" alt="delete photo" />
+        </div>
+        <div>
+          <img (click)="zoom('out')" src="assets/Images/zoom-out.svg" alt="zoom out" />
+          <img (click)="zoom('in')" src="assets/Images/zoom-in.svg" alt="zoom in" />
+        </div>
+        <div>
+          <div class="tooltip">
+            <div class="input-container">
+              <label for="file-input">
+                <img src="assets/Images/add-photo.svg" alt="add photo" />
+              </label>
+              <input id="file-input" type="file" accept=".jpg,.png" multiple (change)="addImage($event)" />
+            </div>
+            <div class="tooltip-text">
+              <p>{{ 'common.addPhoto' | translate }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tooltip"></div>
+  </div>
+</div>

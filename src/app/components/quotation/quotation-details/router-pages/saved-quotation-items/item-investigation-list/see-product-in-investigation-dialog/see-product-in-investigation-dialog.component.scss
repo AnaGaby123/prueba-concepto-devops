@@ -1,0 +1,147 @@
+@use 'base' as s;
+
+app-pop-up-generic {
+  ::ng-deep .modal {
+    background: none;
+
+    & > .modal-content {
+      transition: none;
+    }
+  }
+}
+
+.item-investigation-container {
+  @include s.flexColumn;
+  flex: 1;
+  & > .item-investigation-info {
+    @include s.flexRowNoWrap;
+    align-items: center;
+    background-color: s.$main-proquifa-f;
+    display: flex;
+    flex: 0 0 153px;
+    gap: 22px;
+    justify-content: center;
+    margin-bottom: 19px;
+    & > .image-product {
+      flex: 0 0 70px;
+      & > img {
+        max-height: 70px;
+        max-width: 100%;
+      }
+    }
+    & > .info-product {
+      @include s.flexColumn;
+      align-items: flex-start;
+      flex: 0 0 380px;
+      & > .brand {
+        @include s.flexRowNoWrap;
+        gap: 4px;
+        & > .brand-image {
+          display: grid;
+          grid-template-columns: 16px auto;
+
+          & > img {
+            max-height: 16px;
+            max-width: 100%;
+          }
+        }
+        & > label {
+          @include s.responsive-font-format(
+            $color: s.$main-proquifa,
+            $font-family: s.$font_family_roboto_bold,
+            $font-size-map: s.$responsive-font-13-13,
+            $font-weight: s.$font-weight_bold
+          );
+        }
+      }
+      & > .description {
+        @include s.responsive-font-format(
+          $font-family: s.$font_family_roboto_light,
+          $font-size-map: s.$responsive-font-12-12,
+          $font-weight: s.$font-weight_light
+        );
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        display: -webkit-box;
+        overflow: hidden;
+        text-align: start;
+        text-overflow: ellipsis;
+      }
+      & > .family-name {
+        @include s.responsive-font-format(
+          $color: s.$main-proquifa,
+          $font-family: s.$font_family_roboto_bold,
+          $font-size-map: s.$responsive-font-11-13,
+          $font-weight: s.$font-weight_bold
+        );
+      }
+    }
+    & > .status-investigation {
+      @include s.flexColumn;
+      align-items: flex-start;
+      flex: 0 0 110px;
+      gap: 3px;
+      & > .product-found {
+        @include s.responsive-font-format(
+          $font-family: s.$font_family_roboto_bold,
+          $font-size-map: s.$responsive-font-16-16,
+          $font-weight: s.$font-weight_bold
+        );
+      }
+      & > .product-found {
+        color: s.$success;
+      }
+      & > .status {
+        @include s.responsive-font-format($color: s.$dark-proquifa-d, $font-size-map: s.$responsive-font-12-12);
+      }
+    }
+  }
+
+  & > .provider-evidence-container {
+    @include s.flexRowNoWrap;
+    gap: 35px;
+    padding: 20px 60px 0 60px;
+    flex: 0 0 auto;
+
+    & > .provider-notes-container {
+      @include s.flexColumn;
+      align-items: flex-start;
+      flex: 0 0 380px;
+      & > .notes {
+        @include s.responsive-font-format(
+          $color: s.$main-proquifa,
+          $font-family: s.$font_family_roboto_bold,
+          $font-size-map: s.$responsive-font-13-13,
+          $font-weight: s.$font-weight_bold
+        );
+      }
+      & > .provider-notes {
+        @include s.responsive-font-format($font-size-map: s.$responsive-font-13-13);
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        display: -webkit-box;
+        overflow: hidden;
+        text-align: start;
+        text-overflow: ellipsis;
+      }
+    }
+
+    & > .provider-evidence-file {
+      @include s.flexRow;
+      flex: 1;
+    }
+  }
+
+  & > .footer {
+    @include s.flexRow;
+    justify-content: flex-end;
+    padding: 40px 60px;
+    & > button {
+      $max-width-map: (
+        'base': 225px,
+        'macBookAir': 327px,
+      );
+      @include s.pqfButton($max-width-map: $max-width-map, $width: 100%);
+    }
+  }
+}

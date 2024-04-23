@@ -1,0 +1,95 @@
+<div id="barcode">
+  <div class="container-component">
+    <div class="first-section">
+      <div class="content">
+        <label>{{ 'registerArrival.details.shippingGuides' | translate }}</label>
+        <div class="container-filters">
+          <div class="hamburger-menu">
+            <app-hamburger-menu
+              [options]="orderOptions$ | async"
+              [value]="(orderSelected$ | async).value"
+              (valueEmit)="selectFilterByType($event)"
+            >
+            </app-hamburger-menu>
+          </div>
+          <div class="app-search">
+            <app-search
+              [placeholder]="'registerArrival.details.guideNumber' | translate"
+              [searchTerm]="searchTerm$ | async"
+              (textSearch)="handleKeySearch($event)"
+            >
+            </app-search>
+          </div>
+        </div>
+        <div class="container-content" (click)="focusInput()">
+          <virtual-scroller
+            *ngIf="(dispatchOrders$ | async).length > 0 && !(isLoadingDispatchOrders$ | async)"
+            [items]="dispatchOrders$ | async"
+            (vsUpdate)="dispatchOrdersResults = $event"
+            id="all-cards"
+          >
+            <div
+              *ngFor="let dispatchOrder of dispatchOrdersResults; let i = index"
+              [ngClass]="
+                (dispatchOrderSelected$ | async).IdImpOrdenDespacho === dispatchOrder.IdImpOrdenDespacho
+                  ? 'card active'
+                  : 'card'
+              "
+              (click)="selectDispatchOrder(dispatchOrder)"
+            >
+              <div class="card-body">
+                <div class="line-one">
+                  <label>#{{ dispatchOrder.Index }} ·</label>
+                  <label>{{ dispatchOrder.GuiaDeEmbarque }} ·</label>
+                  <label>{{ dispatchOrder.MontoTotalUSD | currency: 'USD':'symbol':'1.2-2' }}</label>
+                </div>
+                <div class="line-two">
+                  <label>{{ 'registerArrival.details.petition' | translate }} {{ dispatchOrder.NumeroPedimento }}</label>
+                </div>
+                <div class="line-three">
+                  <label>{{ dispatchOrder.Folio }} ·</label>
+                  <label
+                    >{{ dispatchOrder.Bultos }}
+                    {{
+                      dispatchOrder.Bultos === 1
+                        ? ('registerArrival.details.package' | translate)
+                        : ('registerArrival.details.packages' | translate)
+                    }}</label
+                  >
+                </div>
+              </div>
+            </div>
+          </virtual-scroller>
+          <div class="is-loading" *ngIf="isLoadingDispatchOrders$ | async">
+            <div class="load-circle">
+              <app-loading></app-loading>
+            </div>
+          </div>
+          <div *ngIf="(dispatchOrders$ | async).length === 0 && !(isLoadingDispatchOrders$ | async)" class="without-results">
+            <app-without-results></app-without-results>
+          </div>
+        </div>
+      </div>
+      <div class="footer" (click)="focusInput()">
+        <label
+          >#{{ (dispatchOrders$ | async).length }}
+          {{
+            (dispatchOrders$ | async).length === 1
+              ? ('registerArrival.details.shippingGuide' | translate)
+              : ('registerArrival.details.shippingGuides' | translate)
+          }}</label
+        >
+      </div>
+    </div>
+    <div class="second-section" (click)="focusInput()">
+      <input #barcodeInput type="text" [(ngModel)]="barcode" (keyup.enter)="handleBarcode()" />
+      <div class="code" *ngIf="(dispatchOrderStatus$ | async) === 3">
+        <img src="assets/Images/barcode.svg" alt="barcode" />
+      </div>
+      <div class="texts" *ngIf="(dispatchOrderStatus$ | async) === 3">
+        <label>{{ 'registerArrival.details.barcodeReadOfPetition' | translate }}</label>
+        <label *ngIf="!(isLoadingDispatchOrders$ | async)">{{ (dispatchOrderSelected$ | async)?.NumeroPedimento }}</label>
+      </div>
+    </div>
+  </div>
+</div>

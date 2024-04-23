@@ -1,0 +1,88 @@
+<div id="guide-client-list">
+  <div class="container">
+    <div class="list-content">
+      <div class="list-header">
+        <label>{{ 'common.clients' | translate }}</label>
+        <div class="filters">
+          <app-search
+            [placeholder]="('common.client' | translate) + ', ' + ('strategy.details.internalOrder' | translate)"
+            [searchTerm]="''"
+            (textSearch)="handleKeySearch($event)"
+          ></app-search>
+        </div>
+      </div>
+      <div class="list-body">
+        <virtual-scroller>
+          <div class="item" [ngClass]="'selected-item'">
+            <div class="content">
+              <div class="indicator" [ngClass]="'selected'"></div>
+              <div class="item-content">
+                <div class="index">
+                  <label
+                    >#{{ 1 }} · <span>{{ 'Nombre del cliente' }}</span>
+                  </label>
+                </div>
+                <div class="price">
+                  <label>{{ 15000 | currency: 'USD':'symbol-narrow':'1.2-2' }}</label>
+                </div>
+                <div class="pi">
+                  <label>{{ 'strategy.details.internalOrderShort' | translate }} {{ 2387438485748275 }}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </virtual-scroller>
+      </div>
+      <div class="list-footer">
+        <div>
+          <div>
+            <label>#{{ 4 }}</label>
+            <label>{{ 'common.amount' | translate }}: {{ 46865.96 | currency: 'USD':'symbol-narrow':'1.2-2' }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="document-content">
+      <div class="header">
+        <label
+          >{{ '#' + 4 }} · <span>{{ 'NOMBRE DEL CLIENTE' }}</span> · {{ 'strategy.details.internalOrderShort' | translate }}
+          {{ 2387438485748275 }}</label
+        >
+      </div>
+      <div class="body">
+        <div class="document">
+          <app-upload-view-file [text]="'registerConfirmation.uploadDocument' | translate"></app-upload-view-file>
+        </div>
+        <div class="aqua">
+          <div class="aqua-content">
+            <div class="guide">
+              <label>{{ 'common.guideNumber' | translate }}</label>
+              <app-generic-input
+                [width]="(viewType$ | async) === 'maxBookAir' ? '354px' : '300px'"
+                [fontColor]="'#008894'"
+                (textData)="changeGuideNumber($event)"
+              ></app-generic-input>
+            </div>
+            <div class="freight">
+              <label>{{ 'monitoringDispatch.forwarder' | translate }}</label>
+              <app-drop-down-list
+                [widthContent]="(viewType$ | async) === 'maxBookAir' ? '354px' : '300px'"
+                [items]="freightOptions$ | async"
+                [itemSelected]="selectedFrightOption$ | async"
+                (valueDropList)="setFreightOption($event)"
+                [optionsPosition]="'top'"
+              ></app-drop-down-list>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        <button
+          [ngClass]="(validatorForGenerateButton$ | async) ? 'active' : 'disabled'"
+          [disabled]="!(validatorForGenerateButton$ | async)"
+          >{{ 'common.register' | translate }}</button
+        >
+      </div>
+    </div>
+  </div>
+</div>

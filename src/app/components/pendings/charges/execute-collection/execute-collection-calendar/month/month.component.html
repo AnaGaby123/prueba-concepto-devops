@@ -1,0 +1,70 @@
+<div class="container-month">
+  <div class="header">
+    <span>Resultados</span>
+  </div>
+  <div class="table-container">
+    <div class="table">
+      <div class="header-table">
+        <div class="number">
+          <span>#</span>
+        </div>
+        <div class="day-payment">
+          <span>Fecha Programada de Cobro</span>
+        </div>
+        <div class="credit"></div>
+        <div class="client">
+          <span>Cliente</span>
+        </div>
+        <div class="status-payment">
+          <span>Estados de pago</span>
+        </div>
+        <div class="to-pay">
+          <span>A Cobrar</span>
+        </div>
+        <div class="payeed">
+          <span>Cobrado</span>
+        </div>
+        <div class="status"></div>
+      </div>
+      <div class="body">
+        <virtual-scroller>
+          <div class="item" *ngFor="let item of items" [ngClass]="validatorColor(item.statusColor)">
+            <div class="number">
+              <span>{{ item.Index }}</span>
+            </div>
+            <div class="day-payment">
+              <span>{{ item.fechaPago | dateFormatSlash }}</span>
+            </div>
+            <div class="credit">
+              <img src="assets/Images/Paymentreceived.svg" alt="" *ngIf="item.credito" />
+              <img src="assets/Images/PaymentNotRreceived.svg" alt="" *ngIf="!item.credito" />
+            </div>
+            <div class="client">
+              <span>{{ item.client }} </span>
+              <span class="payment">{{ item.statusColor.length + ' Cobros' }}</span>
+            </div>
+            <div class="status-payment">
+              <div *ngFor="let status of item.statusColor">
+                <span [ngClass]="statusColor(status.tipo)" class="label"></span>
+                <label>{{ status.cantidad }}</label>
+              </div>
+            </div>
+            <div class="to-pay">
+              <span>{{ item.pagar | currency: 'USD':'symbol-narrow':'1.2-2' }} USD</span>
+            </div>
+            <div class="payeed">
+              <span>{{ item.pagado | currency: 'USD':'symbol-narrow':'1.2-2' }} USD</span>
+            </div>
+            <div class="status">
+              <img src="assets/Images/labels/withCredit.svg" alt="" *ngIf="item.credito" class="status" />
+              <img src="assets/Images/labels/sin_credito.svg" alt="" *ngIf="!item.credito" class="status" />
+            </div>
+          </div>
+        </virtual-scroller>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <span>#14</span>
+  </div>
+</div>

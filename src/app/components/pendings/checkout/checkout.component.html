@@ -1,0 +1,44 @@
+<div class="component-container" id="checkout-container">
+  <div class="header">
+    <app-header-bar
+      [activeBack]="(isInDetailsView$ | async) && !(resumeMode$ | async)"
+      [name]="''"
+      [title]="title$ | async"
+      (goBack)="returnMainPage()"
+    >
+    </app-header-bar>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="footer" *ngIf="!(isInDetailsView$ | async)">
+    <div>
+      <label class="label-dark">OC:</label>
+      <label class="label-normal">{{ 'checkout.OC' | translate }}</label>
+    </div>
+    <div>
+      <label class="label-dark">VT:</label>
+      <label class="label-normal">{{ 'checkout.totalValue' | translate }}</label>
+    </div>
+    <div>
+      <img alt="originales" src="assets/Images/pre-processing/originales.svg" />
+      <label class="label-normal">{{ 'checkout.originals' | translate }}</label>
+    </div>
+    <div>
+      <img alt="alternativas" src="assets/Images/pre-processing/alternativas.svg" />
+      <label class="label-normal">{{ 'checkout.alternatives' | translate }}</label>
+    </div>
+    <div>
+      <img alt="complementarias" src="assets/Images/pre-processing/complementarias.svg" />
+      <label class="label-normal">{{ 'checkout.complements' | translate }}</label>
+    </div>
+    <div>
+      <img alt="programadas" src="assets/Images/pre-processing/promocion.svg" />
+      <label class="label-normal">{{ 'checkout.programming' | translate }}</label>
+    </div>
+    <div>
+      <img alt="ahorro" src="assets/Images/pre-processing/ahorro.svg" />
+      <label class="label-normal">{{ 'checkout.saving' | translate }}</label>
+    </div>
+  </div>
+</div>

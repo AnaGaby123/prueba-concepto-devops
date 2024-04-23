@@ -1,0 +1,66 @@
+<div class="provider-list-price-container">
+  <label>{{ 'newProductExistingSupplier.purchasingConfiguration.priceListProvider' | translate }}</label>
+  <div class="provider-list-price">
+    <div class="pieces-container">
+      <div class="toggle-container">
+        <pqf-toggle
+          (emitOptionSelected)="handleToggleChange($event)"
+          [active]="actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.AplicaPorPieza"
+          [betweenActive]="true"
+          [textLeft]="'newProductExistingSupplier.purchasingConfiguration.amount' | translate"
+          [textRight]="'newProductExistingSupplier.purchasingConfiguration.unit' | translate"
+          [version]="'thin'"
+        ></pqf-toggle>
+      </div>
+      <div class="pieces">
+        <div>
+          <pqf-generic-input
+            *ngIf="actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.AplicaPorPieza"
+            [placeholder]="'000'"
+            [typeValidation]="inputTypes.Number"
+            [width]="'100px'"
+            [value]="actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.NumPiezas"
+            (valueChangeEmitter)="handleInputChange($event, fields.NumPiezas)"
+          ></pqf-generic-input>
+          <pqf-generic-input
+            *ngIf="!actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.AplicaPorPieza"
+            [placeholder]="'000'"
+            [typeValidation]="inputTypes.DecimalNumber"
+            [width]="'100px'"
+            [value]="actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.MontoMinimoOC"
+            (valueChangeEmitter)="handleInputChange($event, fields.MontoMinimoOC)"
+          ></pqf-generic-input>
+        </div>
+        <label>{{
+          actualConfiguration?.ConfiguracionPrecioProveedorFamilia?.AplicaPorPieza
+            ? ('newProductExistingSupplier.purchasingConfiguration.pieces' | translate)
+            : ('newProductExistingSupplier.purchasingConfiguration.dollars' | translate)
+        }}</label>
+      </div>
+    </div>
+    <div class="consolidation-container" *ngIf="!isMexican">
+      <div class="consolidation-form">
+        <div class="consolidation-check">
+          <pqf-check-box
+            [label]="'newProductExistingSupplier.purchasingConfiguration.dispatchOderConsolidation' | translate"
+            [check]="actualConfiguration?.MarcaFamiliaProveedor?.AplicaConsolidacion"
+            (event)="handleCheckChange($event, fields.AplicaConsolidacion)"
+          ></pqf-check-box>
+        </div>
+        <div class="families-list-consolidation">
+          <pqf-drop-down-list
+            [activeCheckItem]="true"
+            [isActive]="actualConfiguration?.MarcaFamiliaProveedor?.AplicaConsolidacion"
+            [options]="trademarkFamiliesOptions$ | async"
+            (selectedOptionChangeEmitter)="handleItemCheckChange($event)"
+          ></pqf-drop-down-list>
+        </div>
+      </div>
+      <div class="consolidation-list-container"
+        ><label *ngFor="let family of trademarkFamiliesConsolidation$ | async">{{
+          buildStringFamilyConsolidation(family)
+        }}</label>
+      </div>
+    </div>
+  </div>
+</div>

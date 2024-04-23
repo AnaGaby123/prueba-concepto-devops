@@ -1,0 +1,32 @@
+@use 'base' as s;
+
+:host {
+  @include s.generic-main-component-structure;
+
+  #pre-processing-container {
+    & > .footer {
+      & > div {
+        & > label {
+          line-height: initial;
+        }
+
+        & > .title {
+          @include s.Roboto-Bold;
+          @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+          white-space: pre;
+        }
+
+        & > label:nth-of-type(2),
+        .text {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize12to14, normal, s.$pqBlack2);
+        }
+
+        & > img {
+          @include s.imageIconResponsiveSize;
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+}

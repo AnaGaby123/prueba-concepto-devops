@@ -1,0 +1,69 @@
+<div class="component-container" id="plan-collection-container">
+  <div class="header">
+    <app-header-bar
+      [activeBack]="false"
+      [name]="'FEUM'"
+      [title]="'PLANEAR RECOLECCION'"
+      (goBack)="goBackBackPurchasing($event)"
+    >
+    </app-header-bar>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="footer">
+    <ng-container *ngIf="false; else alternative">
+      <div>
+        <label> <span class="label-dark">FER:</span> {{ 'planCollection.estimatedCollectionDate' | translate }}</label>
+      </div>
+      <div>
+        <label> <span class="label-dark">OC:</span> {{ 'planCollection.orderBuys' | translate }}</label>
+      </div>
+    </ng-container>
+    <ng-template #alternative>
+      <div class="tooltip">
+        <label class="text-black">FEA:</label>
+        <div class="tooltip-text">
+          <p>{{ 'planCollection.estimatedArrival' | translate }}</p>
+        </div>
+      </div>
+      <div class="tooltip">
+        <label class="text-green">FER:</label>
+        <div class="tooltip-text">
+          <p>{{ 'planCollection.estimatedInTime' | translate }}</p>
+        </div>
+      </div>
+      <div class="tooltip">
+        <label class="text-red">FER:</label>
+        <div class="tooltip-text">
+          <p>{{ 'planCollection.estimatedCollectionOut' | translate }}</p>
+        </div>
+      </div>
+      <div class="tooltip">
+        <label class="text-black">CU:</label>
+        <div class="tooltip-text">
+          <p>{{ 'planCollection.unitCost' | translate }}</p>
+        </div>
+      </div>
+      <div class="tooltip">
+        <label class="text-black">CT:</label>
+        <div class="tooltip-text">
+          <p>{{ 'planCollection.totalCost' | translate }}</p>
+        </div>
+      </div>
+      <div class="tooltip">
+        <label class="text-green">FEE:</label>
+        <div class="tooltip-text">
+          <p>{{ 'planCollection.estimatedDelivery' | translate }}</p>
+        </div>
+      </div>
+      <div class="tooltip">
+        <label class="text-red">FEE:</label>
+        <div class="tooltip-text">
+          <p class="text-red">{{ 'planCollection.estimatedDeliveryOut' | translate }}</p>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+  <!-- <footer *ngIf="isDetails$ | async"> </footer>-->
+</div>

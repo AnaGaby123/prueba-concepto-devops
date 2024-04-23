@@ -1,0 +1,74 @@
+@use 'base' as s;
+
+:host {
+  @include s.reset-line-height;
+  @include s.flexRow;
+
+  * {
+    cursor: pointer;
+  }
+
+  .check-box-container {
+    @include s.flexRow;
+    align-items: center;
+    flex: 0 0 auto;
+    gap: 8px;
+
+    &.inactive {
+      cursor: default !important;
+
+      & > .box-container {
+        & > img {
+          cursor: default;
+        }
+      }
+
+      & > .text-container {
+        cursor: default !important;
+
+        & > label {
+          &.disabled {
+            cursor: default !important;
+          }
+        }
+      }
+    }
+
+    & > .box-container {
+      display: flex;
+      height: 18px;
+      margin: 1px 0;
+      width: 18px;
+
+      & > img {
+        @include s.absolute100;
+      }
+    }
+
+    & > .text-container {
+      @include s.flexRow;
+      align-items: center;
+      flex: 1;
+
+      & > label {
+        @include s.responsive-font-format($font-size-map: s.$responsive-font-16-16);
+
+        &.active {
+          color: s.$pqGreen !important;
+        }
+
+        &.hasError {
+          color: s.$pqAlert !important;
+        }
+
+        &.disabled {
+          color: s.$dark-proquifa-d !important;
+        }
+
+        &.normal {
+          color: s.$pqBlack2 !important;
+        }
+      }
+    }
+  }
+}

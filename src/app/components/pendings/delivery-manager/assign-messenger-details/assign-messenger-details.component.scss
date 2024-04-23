@@ -1,0 +1,728 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  width: 100%;
+  height: 100%;
+
+  & > #assign-messenger-details {
+    @include s.flexColumn;
+    width: 100%;
+    height: 100%;
+
+    & > .content {
+      @include s.flexColumn;
+      flex: 1;
+
+      & > .messengers {
+        @include s.flexRow;
+        flex: 0 0 auto;
+        height: 157px;
+        overflow: auto;
+
+        & > .messengerDetails {
+          @include s.flexColumn;
+          border-right: 1px solid s.$pqBlack2;
+          flex: 0 0 171px;
+          height: 157px;
+          max-width: 171px;
+          text-align: center;
+          scroll-snap-type: block !important;
+
+          & * {
+            cursor: pointer;
+          }
+
+          &:hover {
+            background-color: s.$pqGray;
+          }
+
+          & > .container {
+            @include s.flexColumn;
+            padding: 20px 20px 0 20px;
+            scroll-snap-type: block !important;
+
+            & > .name {
+              @include s.flexRow;
+              @include s.absoluteCenter;
+              padding-bottom: 10px;
+
+              & > label {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormat(s.$textSize12to16, bold, s.$pqBlack2);
+                text-align: center;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                padding-right: 10px;
+              }
+
+              & > .circle {
+                @include s.pqCircle(12px, s.$pqRed2);
+                padding-left: 12px;
+              }
+            }
+
+            & > .routes {
+              @include s.flexColumn;
+              border-top: 1px solid rgba(0, 0, 0, 0.12);
+              padding-top: 5px;
+              padding-bottom: 5px;
+
+              & > label {
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+
+                & > span {
+                  @include s.Roboto-Light;
+                }
+              }
+            }
+
+            & > .totals {
+              @include s.flexColumn;
+              border-top: 1px solid rgba(0, 0, 0, 0.12);
+              padding-top: 5px;
+              padding-bottom: 5px;
+
+              & > label {
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+
+                & > span {
+                  @include s.Roboto-Light;
+                }
+
+                & > img {
+                  padding-right: 2px;
+                  max-width: 14px;
+                }
+              }
+            }
+
+            & > .totalAmount {
+              @include s.flexColumn;
+              border-top: 1px solid rgba(0, 0, 0, 0.12);
+              padding-top: 5px;
+              padding-bottom: 5px;
+
+              & > label {
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+
+                & > span {
+                  @include s.Roboto-Light;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      & > .container {
+        @include s.flexRow;
+        flex: 1;
+
+        & > .list {
+          @include s.flexColumn;
+          flex: 0 1 395px;
+          border-top: 1px solid s.$pqGray2;
+          border-right: 1px solid s.$pqGray2;
+
+          & > .list-content {
+            @include s.flexColumn;
+            flex: 1;
+            padding: 0 20px;
+
+            & > .header-list {
+              @include s.flexColumn;
+              flex: 0 auto;
+
+              & > .name {
+                @include s.flexRow;
+
+                & > label {
+                  @include s.flexRow;
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize13to18, Regular, s.$pqGreen);
+                  align-items: center;
+                  border-bottom: 1px solid s.$pqGray2;
+                  flex: 1;
+                  padding: 5px 0;
+                  white-space: pre;
+
+                  & > span {
+                    @include s.Roboto-Bold;
+                  }
+                }
+              }
+
+              & > .info {
+                @include s.flexColumn;
+                border-bottom: 1px solid s.$pqGray2;
+                padding: 10px 0 5px 0;
+
+                & > label {
+                  @include s.Roboto-Bold;
+                  @include s.escaledFontFormat(s.$textSize12to16, bold, s.$pqBlack2);
+
+                  & > span {
+                    @include s.Roboto-Light;
+                  }
+                }
+
+                & > .time {
+                  @include s.flexRow;
+
+                  & > label {
+                    @include s.flexRow;
+                    @include s.Roboto-Bold;
+                    @include s.escaledFontFormat(s.$textSize12to16, bold, s.$pqBlack2);
+                    align-items: center;
+
+                    & > span {
+                      @include s.Roboto-Light;
+                    }
+
+                    & > img {
+                      padding-right: 5px;
+                    }
+                  }
+                }
+              }
+            }
+
+            & > .body-list {
+              @include s.flexColumn;
+              flex: 1;
+
+              & .item {
+                @include s.flexRow;
+                border-bottom: 1px solid s.$pqGray4;
+                padding: 15px 15px 5px;
+
+                &:hover {
+                  background-color: s.$pqGray;
+                }
+
+                & > .index {
+                  @include s.flexRow;
+                  flex: 0 0 auto;
+                  padding-right: 5px;
+
+                  & > label {
+                    @include s.Roboto-Bold;
+                    @include s.escaledFontFormat(s.$textSize12to16, bold, s.$pqBlack2);
+                  }
+                }
+
+                & > .content {
+                  @include s.flexColumn;
+
+                  & > .client {
+                    @include s.flexRow;
+
+                    & > label {
+                      @include s.Roboto-Bold;
+                      @include s.escaledFontFormat(s.$textSize12to16, bold, s.$pqBlack2);
+                    }
+                  }
+
+                  & > label {
+                    @include s.Roboto-Regular;
+                    @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+
+                    & > span {
+                      color: s.$pqGreen;
+                    }
+                  }
+
+                  & > .events {
+                    & > label {
+                      @include s.Roboto-Regular;
+                      @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+
+                      & > span {
+                        color: s.$pqDanger;
+                      }
+
+                      & > img {
+                        max-width: 14px;
+                      }
+                    }
+
+                    &:hover {
+                      & * {
+                        cursor: pointer;
+                      }
+
+                      & > label {
+                        border-bottom: 1px solid s.$pqGreen;
+                      }
+                    }
+                  }
+
+                  & > .mount {
+                    & > label {
+                      @include s.Roboto-Light;
+                      @include s.escaledFontFormat(s.$textSize12to14, light, s.$pqBlack2);
+                    }
+                  }
+                }
+              }
+            }
+
+            & > .footer-list {
+              @include s.flexColumn;
+              border-top: 1px solid s.$pqGray2;
+              align-items: center;
+              padding: 18px 20px 10px 20px;
+
+              & > label {
+                @include s.flexRow;
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormat(s.$textSize12to16, regular, s.$pqBlack2);
+                align-items: center;
+                white-space: pre;
+
+                & > span {
+                  @include s.Roboto-Bold;
+                }
+              }
+            }
+          }
+        }
+
+        & > .map {
+          @include s.flexColumn;
+          flex: 1;
+
+          & > .map-container {
+            @include s.flexRow;
+            flex: 1;
+          }
+
+          & > .footer {
+            @include s.flexRow;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 20px 10px 20px;
+
+            & > button {
+              @include s.pqButton();
+            }
+
+            & > label {
+              @include s.Novecento;
+              @include s.escaledFontFormat(s.$textSize11to12, regular, s.$pqBlack2);
+            }
+          }
+        }
+      }
+    }
+
+    & > footer {
+      @include s.flexRow;
+      @include s.absoluteCenter;
+      border-top: 2px solid s.$pqBlack2;
+      height: 50px;
+
+      & > div {
+        @include s.flexRow;
+        @include s.absoluteCenter;
+        flex: 1;
+
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+          padding-right: 20px;
+
+          & > span {
+            @include s.Roboto-Bold;
+          }
+
+          & > .green {
+            color: #39b54a;
+          }
+
+          & > .yellow {
+            color: #fbb03b;
+          }
+
+          & > .red {
+            color: #c1272d;
+          }
+
+          & > img {
+            max-width: 14px;
+          }
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & > .content {
+        & > .messengers {
+          height: 183px;
+
+          & > .messengerDetails {
+            @include s.flexColumn;
+            flex: 0 0 211px;
+            height: 183px;
+            max-width: 211px;
+
+            & > .container {
+              & > .totals {
+                & > label {
+                  & > img {
+                    max-width: 16px;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        & > .container {
+          & > .list {
+            @include s.flexColumn;
+            flex: 0 1 435px;
+
+            & > .list-content {
+              & > .body-list {
+                & > .events {
+                  & > label {
+                    & > img {
+                      max-width: 17px;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      & > footer {
+        height: 55px;
+
+        & > div {
+          & > label {
+            & > img {
+              max-width: 17px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  & > app-pop-up-generic {
+    & .pop-up-content {
+      @include s.flexColumn;
+      flex: 1 0 100%;
+      overflow: hidden;
+      padding: 20px 30px;
+
+      & > .header {
+        @include s.flexColumn;
+        padding-bottom: 10px;
+        border-bottom: 1px solid;
+
+        & > .title {
+          @include s.flexRow;
+          justify-content: flex-start;
+          padding-bottom: 10px;
+
+          & > label {
+            @include s.Roboto-Bold;
+            @include s.escaledFontFormat(s.$textSize15to20, bold, s.$pqGreen);
+          }
+        }
+
+        & > .client {
+          @include s.flexRow;
+          justify-content: flex-start;
+          padding-bottom: 5px;
+
+          & > label {
+            @include s.flexRow;
+            @include s.Roboto-Light;
+            @include s.escaledFontFormat(s.$textSize12to16, light, s.$pqBlack2);
+            align-items: center;
+            white-space: pre;
+
+            & > span {
+              @include s.Roboto-Bold;
+            }
+          }
+        }
+
+        & > .zone {
+          @include s.flexRow;
+          justify-content: flex-start;
+          padding-bottom: 5px;
+
+          & > label {
+            @include s.flexRow;
+            @include s.Roboto-Light;
+            @include s.escaledFontFormat(s.$textSize12to16, light, s.$pqBlack2);
+            align-items: center;
+            padding-right: 5px;
+            white-space: pre;
+
+            & > span {
+              @include s.Roboto-Bold;
+            }
+          }
+
+          & > .events {
+            @include s.flexRow;
+            flex: 1 0 auto;
+            justify-content: flex-end;
+            padding-bottom: 5px;
+
+            & > label {
+              @include s.flexRow;
+              @include s.Roboto-Light;
+              @include s.escaledFontFormat(s.$textSize12to16, light, s.$pqBlack2);
+              align-items: center;
+              white-space: pre;
+
+              & > span {
+                @include s.Roboto-Bold;
+                color: s.$pqDanger;
+              }
+            }
+
+            & > img {
+              max-width: 14px;
+            }
+          }
+        }
+
+        & > .totalAmount {
+          @include s.flexRow;
+          justify-content: flex-start;
+          padding-bottom: 5px;
+
+          & > label {
+            @include s.Roboto-Light;
+            @include s.escaledFontFormat(s.$textSize12to16, light, s.$pqBlack2);
+            white-space: pre;
+
+            & > span {
+              color: s.$pqGreen;
+            }
+          }
+        }
+      }
+
+      & > .body {
+        @include s.flexColumn;
+        flex: 1;
+
+        & > .title {
+          @include s.flexRow;
+          padding: 15px 0;
+
+          & > label {
+            @include s.Roboto-Bold;
+            @include s.escaledFontFormat(s.$textSize12to16, bold, s.$pqGreen);
+          }
+
+          & > img {
+            max-width: 14px;
+            padding-right: 5px;
+          }
+        }
+
+        & > .body {
+          @include s.flexColumn;
+          border-bottom: 1px solid s.$pqGray2;
+          padding-bottom: 15px;
+
+          & > .item-pop {
+            @include s.flexColumn;
+
+            & > .pl {
+              @include s.flexRow;
+              justify-content: space-between;
+
+              & > .index {
+                & > label {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize12to16, regular, s.$pqBlack2);
+                }
+              }
+
+              & > .fee {
+                & > label {
+                  @include s.flexRow;
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize12to16, regular, s.$pqBlack2);
+                  align-items: center;
+                  white-space: pre;
+
+                  & > span {
+                    color: s.$pqGreen;
+                  }
+                }
+              }
+            }
+
+            & > .list {
+              @include s.flexRow;
+              padding: 7px 0 12px 0;
+
+              & > label {
+                @include s.flexRow;
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormat(s.$textSize12to16, regular, s.$pqBlack2);
+                padding-left: 10px;
+              }
+            }
+          }
+        }
+      }
+
+      & > .footer {
+        @include s.flexRow;
+        border-top: 1px solid s.$pqBlack2;
+        justify-content: center;
+        padding-top: 15px;
+
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+          white-space: pre;
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      & .pop-up-content {
+        & > .header {
+          & > .zone {
+            & > .events {
+              & > img {
+                max-width: 16px;
+              }
+            }
+          }
+        }
+
+        & > .body {
+          & > .title {
+            & > img {
+              max-width: 16px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.item {
+  @include s.flexRow;
+  border-bottom: 1px solid s.$pqGray4;
+  padding: 15px 15px 5px;
+
+  &:hover {
+    background-color: s.$pqGray;
+  }
+
+  & > .index {
+    @include s.flexRow;
+    flex: 0 0 auto;
+    padding-right: 5px;
+
+    & > label {
+      @include s.Roboto-Bold;
+      @include s.escaledFontFormat(s.$textSize12to16, bold, s.$pqBlack2);
+    }
+  }
+
+  & > .content {
+    @include s.flexColumn;
+
+    & > .client {
+      @include s.flexRow;
+
+      & > label {
+        @include s.Roboto-Bold;
+        @include s.escaledFontFormat(s.$textSize12to16, bold, s.$pqBlack2);
+      }
+    }
+
+    & > label {
+      @include s.Roboto-Regular;
+      @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+
+      & > span {
+        color: s.$pqGreen;
+      }
+    }
+
+    & > .events {
+      & > label {
+        @include s.Roboto-Regular;
+        @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+
+        & > span {
+          color: s.$pqDanger;
+        }
+
+        & > img {
+          max-width: 14px;
+        }
+      }
+
+      &:hover {
+        & * {
+          cursor: pointer;
+        }
+
+        & > label {
+          border-bottom: 1px solid s.$pqGreen;
+        }
+      }
+    }
+
+    & > .mount {
+      & > label {
+        @include s.Roboto-Light;
+        @include s.escaledFontFormat(s.$textSize12to14, light, s.$pqBlack2);
+      }
+    }
+  }
+
+  &.cdk-drag-preview {
+    background-color: s.$pqWhite;
+  }
+
+  &.cdk-drag-dragging {
+    cursor: grabbing;
+
+    & * {
+      cursor: grabbing;
+    }
+  }
+}
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}

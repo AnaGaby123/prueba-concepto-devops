@@ -1,0 +1,24 @@
+<div>
+  <div id="id01" class="modal" #pop>
+    <div class="modal-content" [style.width]="width" [style.height]="height" [style.border-color]="color">
+      <header class="header" [style.background-color]="color">
+        <h1> {{ titleHeader }} </h1>
+        <img *ngIf="showClose" (click)="onClose(false)" alt="" class="close" src="assets/Images/icono_cerrar.svg" />
+      </header>
+      <div class="contenido" [ngStyle]="{overflow: overflow}">
+        <ng-content></ng-content>
+      </div>
+      <footer *ngIf="activeButtons" [ngClass]="onlyOneButton ? 'footer2 center' : 'footer2 between'">
+        <button *ngIf="!onlyOneButton" [style.background-color]="color" class="btnOk" (click)="onClose(false)">{{
+          leftButtonLabel
+        }}</button>
+        <button
+          [style.background-color]="activeBtn ? color : ''"
+          [ngClass]="activeBtn ? 'btnOk' : 'btnDisable'"
+          (click)="onClose(true)"
+          >{{ rightButtonLabel }}</button
+        >
+      </footer>
+    </div>
+  </div>
+</div>

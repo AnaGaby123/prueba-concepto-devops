@@ -1,0 +1,16 @@
+<div class="component-container" id="declare-arrival-container">
+  <div class="header">
+    <app-header-bar [title]="title$ | async" [activeBack]="isDetails$ | async" (goBack)="goBack()"></app-header-bar>
+  </div>
+  <div class="outlet">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="footer" *ngIf="!(isDetails$ | async)">
+    <ng-container>
+      <div>
+        <label class="label-dark">OC:</label>
+        <label>{{ 'common.purchaseOrder' | translate }}</label>
+      </div>
+    </ng-container>
+  </div>
+</div>

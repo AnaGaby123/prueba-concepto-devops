@@ -1,0 +1,13 @@
+<app-pop-up-generic
+  [activeButtons]="true"
+  [height]="'360px'"
+  [titleHeader]="'quotation.details.proquifaNet' | translate"
+  [width]="'620px'"
+  [onlyOneButton]="true"
+  (evento)="onClose()"
+>
+  <div class="add-item-to-resume-alert">
+    <img alt="alert" src="assets/Images/alerta.svg" />
+    <label>{{ 'purchasePromise.addItemToResumeAlert' | translate }}</label>
+  </div>
+</app-pop-up-generic>

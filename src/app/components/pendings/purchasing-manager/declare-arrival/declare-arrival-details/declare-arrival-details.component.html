@@ -1,0 +1,510 @@
+<div id="declare-arrival-details-container">
+  <div class="top-container">
+    <div class="left-container">
+      <label class="title">{{ 'common.ocs' | translate }}</label>
+      <app-tabs
+        [options]="tabOptions$ | async"
+        [tapSelected]="selectedTabOption$ | async"
+        (onSelectOption)="selectTab($event)"
+      ></app-tabs>
+      <div class="filters">
+        <app-hamburger-menu
+          [options]="sortList$ | async"
+          [value]="(sort$ | async).value"
+          (valueEmit)="setTypeSort($event)"
+        ></app-hamburger-menu>
+        <app-search
+          [placeholder]="'common.purchaseOrder' | translate"
+          [searchTerm]="(detailsNode$ | async)?.searchTerm"
+          (textSearch)="handleSearchTerm($event)"
+        >
+        </app-search>
+      </div>
+      <div class="list-container">
+        <virtual-scroller
+          *ngIf="(detailsNode$ | async)?.purchaseOrdersStatus === 3 && !lodashIsEmpty(orders$ | async)"
+          [items]="orders$ | async"
+          (vsUpdate)="orders = $event"
+        >
+          <div
+            class="item-oc"
+            *ngFor="let order of orders; trackBy: handleTrackBy"
+            (click)="selectOrder(order.IdOcOrdenDeCompra)"
+          >
+            <div class="indicator" [ngClass]="order.isSelected && 'selected'"></div>
+            <div class="info">
+              <label
+                >#{{ order.Index + 1 }} · <span>{{ order.NumeroOrdenDeCompra }} ·</span>
+                {{ order.TotalUSD | currency: 'USD':'symbol-narrow':'1.2-2' }} <label>USD</label></label
+              >
+              <label
+                >{{ order.NumeroDePiezas }}
+                {{ order.NumeroDePiezas === 1 ? ('common.pza' | translate) : ('common.pzas' | translate) }} ·
+                {{ order.NumeroDePartidas }}
+                {{ order.NumeroDePartidas === 1 ? ('common.items' | translate) : ('common.items' | translate) }}</label
+              >
+            </div>
+            <div class="image">
+              <img
+                [src]="
+                  order.EnTiempo
+                    ? 'assets/Images/labels/en-tiempo.svg'
+                    : order.Urgente
+                    ? 'assets/Images/labels/urgente.svg'
+                    : 'assets/Images/labels/fuera-de-tiempo.svg'
+                "
+                alt=""
+              />
+            </div>
+          </div>
+        </virtual-scroller>
+        <div class="loading" *ngIf="(detailsNode$ | async)?.purchaseOrdersStatus === 1">
+          <app-loading></app-loading>
+        </div>
+        <div class="loading" *ngIf="(detailsNode$ | async)?.purchaseOrdersStatus !== 1 && lodashIsEmpty(orders$ | async)">
+          <app-without-results></app-without-results>
+        </div>
+      </div>
+      <div class="totals">
+        <label>#{{ (totalsList$ | async)?.number }}</label>
+        <label
+          >{{ (totalsList$ | async)?.pieces }}
+          {{ (totalsList$ | async)?.pieces === 1 ? ('common.piece' | translate) : ('common.pieces' | translate) }}</label
+        >
+        <label
+          >{{ 'common.totalAmount' | translate }}:
+          {{ (totalsList$ | async)?.amount | currency: 'USD':'symbol-narrow':'1.2-2' }} USD</label
+        >
+      </div>
+    </div>
+    <div class="right-container">
+      <div class="title">
+        <label
+          >#{{ (selectedOrder$ | async)?.Index + 1 }} ·
+          <span class="underline">OC-{{ (selectedOrder$ | async)?.NumeroOrdenDeCompra }}</span> <span> ·</span>
+          {{ (selectedOrder$ | async)?.TotalUSD | currency: 'USD':'symbol-narrow':'1.2-2' }} ·
+          {{ (selectedOrder$ | async)?.NumeroDePiezas }}
+          {{ (selectedOrder$ | async)?.NumeroDePiezas === 1 ? ('common.pza' | translate) : ('common.pzas' | translate) }}
+          ·
+          {{ (selectedOrder$ | async)?.NumeroDePartidas }}
+          {{ (selectedOrder$ | async)?.NumeroDePartidas === 1 ? ('common.item' | translate) : ('common.items' | translate) }}
+          ·
+        </label>
+        <img
+          [src]="
+            (selectedOrder$ | async)?.EnTiempo
+              ? 'assets/Images/labels/en-tiempo.svg'
+              : (selectedOrder$ | async)?.Urgente
+              ? 'assets/Images/labels/urgente.svg'
+              : 'assets/Images/labels/fuera-de-tiempo.svg'
+          "
+          alt=""
+        />
+      </div>
+      <div class="header-container">
+        <div class="header">
+          <app-provider-contacts
+            [selectedContact]="providerContactSelected$ | async"
+            (emitResponse)="setContactSelectedProvider($event)"
+            [contactList]="selectContactsProvidersDropList$ | async"
+            [sizeGeneralData]="'600px'"
+          ></app-provider-contacts>
+        </div>
+      </div>
+      <div class="tables">
+        <div class="top">
+          <div class="table">
+            <div class="header">
+              <div class="number">
+                <label>#</label>
+              </div>
+              <div class="filter">
+                <app-alphabet-filter
+                  [labelFontSize]="(viewType$ | async) === 'iPad' ? '13px' : '14px'"
+                  [selectedOption]="(selectedOrder$ | async)?.filterByLetter"
+                  (emitSelectedOption)="selectFilterByLetter($event)"
+                ></app-alphabet-filter>
+              </div>
+              <div class="name">
+                <label>{{ 'uploadInvoice.description' | translate }}</label>
+              </div>
+              <div class="price">
+                <label>{{ 'uploadInvoice.amount' | translate }}</label>
+              </div>
+              <div class="pieces">
+                <label>{{ 'uploadInvoice.quantity' | translate }}</label>
+              </div>
+              <div class="amount">
+                <label>{{ 'uploadInvoice.totalAmount' | translate }}</label>
+              </div>
+              <div class="origin">
+                <label>{{ 'uploadInvoice.origin' | translate }}</label>
+              </div>
+              <div class="certificate">
+                <label>{{ 'uploadInvoice.certificate' | translate }}</label>
+              </div>
+              <div class="button">
+                <img *ngIf="!lodashIsEmpty(items$ | async)" src="assets/Images/mas.svg" alt="" (click)="addItem('')" />
+              </div>
+            </div>
+            <div class="body">
+              <virtual-scroller
+                *ngIf="(detailsNode$ | async)?.itemsStatus === 3 && !lodashIsEmpty(items$ | async)"
+                [items]="items$ | async"
+                (vsUpdate)="items = $event"
+                id="all-items"
+                cdkDropList
+                cdkDropListSortingDisabled
+                cdkDropListConnectedTo="selected-items"
+                [cdkDropListData]="items"
+                [cdkDropListEnterPredicate]="noReturnPredicate"
+              >
+                <div class="item" *ngFor="let item of items; trackBy: handleTrackByItem" cdkDrag [cdkDragData]="item">
+                  <div class="number">
+                    <label class="bold">{{ item.Number }}</label>
+                  </div>
+                  <div class="filter">
+                    <label class="ocean">{{ item.Initial }}</label>
+                  </div>
+                  <div class="name">
+                    <div>
+                      <label>{{ item.Descripcion }}</label>
+                    </div>
+                  </div>
+                  <div class="price">
+                    <div class="tooltip">
+                      <label class="ocean">{{ item.PrecioLista | currency: 'USD':'symbol-narrow':'1.2-2' }}</label>
+                      <!--<div class="tooltip-text">
+                        <p>{{ 'uploadInvoice.modifyCost' | translate }}</p>
+                      </div>-->
+                    </div>
+                  </div>
+                  <div class="pieces">
+                    <label>{{ item.NumeroDePiezas }}</label>
+                  </div>
+                  <div class="amount">
+                    <label>{{ item.TotalPartida | currency: 'USD':'symbol-narrow':'1.2-2' }}</label>
+                  </div>
+                  <div class="origin" *ngIf="!item.isPublish">
+                    <app-drop-down-list
+                      class="big"
+                      [activeMinWidth]="false"
+                      [items]="item.countriesForDropDown"
+                      [itemSelected]="item.selectedCountry"
+                      [isSearchable]="true"
+                      (valueDropList)="selectCountry('items', item.IdOcPartida, $event)"
+                    ></app-drop-down-list>
+                    <label>{{ 'declareArrival.lot' | translate }}</label>
+                    <div
+                      class="circle"
+                      *ngIf="
+                        (provider$ | async)?.NombreProveedor.toUpperCase() === 'USP' ||
+                        (provider$ | async)?.NombreProveedor.toUpperCase() === 'EP'
+                      "
+                      [ngClass]="'green'"
+                    ></div>
+                    <app-drop-down-list
+                      *ngIf="
+                        (provider$ | async)?.NombreProveedor.toUpperCase() === 'USP' ||
+                        (provider$ | async)?.NombreProveedor.toUpperCase() === 'EP'
+                      "
+                      class="small"
+                      [activeMinWidth]="false"
+                      [items]="item.lotsForDropDown"
+                      [itemSelected]="item.selectedLot"
+                      [widthContent]="'160px'"
+                      (valueDropList)="selectLot('items', item.IdOcPartida, $event)"
+                    ></app-drop-down-list>
+                    <app-generic-input
+                      *ngIf="
+                        (provider$ | async)?.NombreProveedor.toUpperCase() !== 'USP' &&
+                        (provider$ | async)?.NombreProveedor.toUpperCase() !== 'EP'
+                      "
+                      class="input"
+                      [value]="item.newLot.Nombre"
+                      (textData)="setLotName('items', item.IdOcPartida, $event)"
+                    ></app-generic-input>
+                  </div>
+                  <div class="certificate" *ngIf="!item.isPublish">
+                    <app-generic-input-file
+                      class="input-file"
+                      [disabled]="item.withoutCertificate"
+                      [showInputFileBox]="false"
+                      [file]="item.certificate"
+                      (autoEmitFile)="setCertifiedFile('items', item.IdOcPartida, $event)"
+                    ></app-generic-input-file>
+                    <app-check-box
+                      [label]="'N/D'"
+                      [check]="item.withoutCertificate"
+                      (event)="selectWithoutCertificate('items', item.IdOcPartida, $event)"
+                    ></app-check-box>
+                  </div>
+                  <div class="edition" *ngIf="item.isPublish">
+                    <app-drop-down-list
+                      class="big"
+                      [activeMinWidth]="false"
+                      [items]="item.countriesForDropDown"
+                      [itemSelected]="item.selectedCountry"
+                      [isSearchable]="true"
+                      (valueDropList)="selectCountry('items', item.IdOcPartida, $event)"
+                    ></app-drop-down-list>
+                    <label>{{ 'declareArrival.edition' | translate }}</label>
+                    <app-generic-input
+                      class="input"
+                      [value]="item.newLot.Nombre"
+                      (textData)="setLotName('items', item.IdOcPartida, $event)"
+                    ></app-generic-input>
+                  </div>
+                  <div class="button">
+                    <img
+                      [ngClass]="!addValidator(item) && 'disabled'"
+                      [src]="addValidator(item) ? 'assets/Images/mas.svg' : 'assets/Images/mas_gris.svg'"
+                      alt=""
+                      (click)="addValidator(item) && addItem(item.IdOcPartida)"
+                    />
+                  </div>
+                </div>
+              </virtual-scroller>
+              <div class="loading" *ngIf="(detailsNode$ | async)?.itemsStatus === 1">
+                <app-loading></app-loading>
+              </div>
+              <div class="loading" *ngIf="(detailsNode$ | async)?.itemsStatus !== 1 && lodashIsEmpty(items$ | async)">
+                <app-without-results></app-without-results>
+              </div>
+            </div>
+            <div class="footer">
+              <div class="number">
+                <label>#{{ (totalItems$ | async)?.length }}</label>
+              </div>
+              <div class="filter"></div>
+              <div class="name"></div>
+              <div class="price">
+                <label>{{ (totalItems$ | async)?.price | currency: 'USD':'symbol-narrow':'1.2-2' }}</label>
+              </div>
+              <div class="pieces">
+                <label class="ocean">{{ (totalItems$ | async)?.quantity }}</label>
+              </div>
+              <div class="amount">
+                <label class="ocean">{{ (totalItems$ | async)?.amount | currency: 'USD':'symbol-narrow':'1.2-2' }}</label>
+              </div>
+              <div class="origin"></div>
+              <div class="certificate"></div>
+              <div class="button"></div>
+            </div>
+          </div>
+        </div>
+        <div class="bottom">
+          <div class="table">
+            <div class="header">
+              <div class="number">
+                <label>#</label>
+              </div>
+              <div class="filter">
+                <app-alphabet-filter
+                  [labelFontSize]="(viewType$ | async) === 'iPad' ? '13px' : '14px'"
+                  [selectedOption]="(detailsNode$ | async)?.filterByLetter"
+                  (emitSelectedOption)="selectFilterByLetter($event, 'details')"
+                ></app-alphabet-filter>
+              </div>
+              <div class="name">
+                <label>{{ 'uploadInvoice.description' | translate }}</label>
+              </div>
+              <div class="price">
+                <label>{{ 'uploadInvoice.amount' | translate }}</label>
+              </div>
+              <div class="pieces">
+                <label>{{ 'uploadInvoice.quantity' | translate }}</label>
+              </div>
+              <div class="amount">
+                <label>{{ 'uploadInvoice.totalAmount' | translate }}</label>
+              </div>
+              <div class="origin">
+                <label>{{ 'uploadInvoice.origin' | translate }}</label>
+              </div>
+              <div class="certificate">
+                <label>{{ 'uploadInvoice.certificate' | translate }}</label>
+              </div>
+              <div class="button">
+                <img
+                  *ngIf="!lodashIsEmpty(selectedItems$ | async)"
+                  src="assets/Images/cerrar.svg"
+                  alt=""
+                  (click)="deleteItem('')"
+                />
+              </div>
+            </div>
+            <div class="body">
+              <virtual-scroller
+                [items]="selectedItems$ | async"
+                id="selected-items"
+                cdkDropList
+                cdkDropListSortingDisabled
+                [cdkDropListData]="selectedItems$ | async"
+                (cdkDropListDropped)="dropItem($event)"
+              >
+                <div class="item" *ngFor="let item of selectedItems$ | async; trackBy: handleTrackByItem">
+                  <div class="number">
+                    <label class="bold">{{ item.Number }}</label>
+                  </div>
+                  <div class="filter">
+                    <label class="ocean">{{ item.Initial }}</label>
+                  </div>
+                  <div class="name">
+                    <div>
+                      <label>{{ item.Descripcion }}</label>
+                    </div>
+                  </div>
+                  <div class="price">
+                    <div class="tooltip">
+                      <label class="ocean">{{ item.PrecioLista | currency: 'USD':'symbol-narrow':'1.2-2' }}</label>
+                      <!--<div class="tooltip-text">
+                        <p>{{ 'uploadInvoice.modifyCost' | translate }}</p>
+                      </div>-->
+                    </div>
+                  </div>
+                  <div class="pieces">
+                    <label>{{ item.NumeroDePiezas }}</label>
+                  </div>
+                  <div class="amount">
+                    <label>{{ item.TotalPartida | currency: 'USD':'symbol-narrow':'1.2-2' }}</label>
+                  </div>
+                  <div class="origin" *ngIf="!item.isPublish">
+                    <app-drop-down-list
+                      class="big"
+                      [activeMinWidth]="false"
+                      [disable]="true"
+                      [items]="item.countriesForDropDown"
+                      [itemSelected]="item.selectedCountry"
+                      (valueDropList)="selectCountry('selectedItems', item.IdOcPartida, $event)"
+                    ></app-drop-down-list>
+                    <label>{{ 'declareArrival.lot' | translate }}</label>
+                    <div
+                      class="circle"
+                      *ngIf="
+                        (provider$ | async)?.NombreProveedor.toUpperCase() === 'USP' ||
+                        (provider$ | async)?.NombreProveedor.toUpperCase() === 'EP'
+                      "
+                      [ngClass]="'green'"
+                    ></div>
+                    <app-drop-down-list
+                      *ngIf="
+                        (provider$ | async)?.NombreProveedor.toUpperCase() === 'USP' ||
+                        (provider$ | async)?.NombreProveedor.toUpperCase() === 'EP'
+                      "
+                      class="small"
+                      [activeMinWidth]="false"
+                      [disable]="true"
+                      [items]="item.lotsForDropDown"
+                      [itemSelected]="item.selectedLot"
+                      [widthContent]="'160px'"
+                      (valueDropList)="selectLot('selectedItems', item.IdOcPartida, $event)"
+                    ></app-drop-down-list>
+                    <app-generic-input
+                      *ngIf="
+                        (provider$ | async)?.NombreProveedor.toUpperCase() !== 'USP' &&
+                        (provider$ | async)?.NombreProveedor.toUpperCase() !== 'EP'
+                      "
+                      class="input"
+                      [isDisable]="true"
+                    ></app-generic-input>
+                  </div>
+                  <div class="certificate" *ngIf="!item.isPublish">
+                    <app-generic-input-file
+                      class="input-file"
+                      [disabled]="true"
+                      [showInputFileBox]="false"
+                      [file]="item.certificate"
+                      (autoEmitFile)="setCertifiedFile('selectedItems', item.IdOcPartida, $event)"
+                    ></app-generic-input-file>
+                    <app-check-box
+                      [label]="'N/D'"
+                      [check]="item.withoutCertificate"
+                      [disabled]="true"
+                      (event)="selectWithoutCertificate('selectedItems', item.IdOcPartida, $event)"
+                    ></app-check-box>
+                  </div>
+                  <div class="edition" *ngIf="item.isPublish">
+                    <app-drop-down-list
+                      class="big"
+                      [activeMinWidth]="false"
+                      [disable]="true"
+                      [items]="item.countriesForDropDown"
+                      [itemSelected]="item.selectedCountry"
+                      (valueDropList)="selectCountry('items', item.IdOcPartida, $event)"
+                    ></app-drop-down-list>
+                    <label>{{ 'declareArrival.edition' | translate }}</label>
+                    <app-generic-input
+                      class="input"
+                      [isDisable]="true"
+                      [value]="item.newLot.Nombre"
+                      (textData)="setLotName('items', item.IdOcPartida, $event)"
+                    ></app-generic-input>
+                  </div>
+                  <div class="button">
+                    <img src="assets/Images/cerrar.svg" alt="" (click)="deleteItem(item.IdOcPartida)" />
+                  </div>
+                </div>
+                <div class="loading" *ngIf="lodashIsEmpty(selectedItems$ | async)">
+                  <app-without-results
+                    [title]="'Agregue o arrastre partidas para habilitar esta sección'"
+                  ></app-without-results>
+                </div>
+              </virtual-scroller>
+            </div>
+            <div class="footer">
+              <div class="number">
+                <label>#{{ (selectedTotalItems$ | async)?.length }}</label>
+              </div>
+              <div class="filter"></div>
+              <div class="name"></div>
+              <div class="price">
+                <label>{{ (selectedTotalItems$ | async)?.price | currency: 'USD':'symbol-narrow':'1.2-2' }}</label>
+              </div>
+              <div class="pieces">
+                <label class="ocean">{{ (selectedTotalItems$ | async)?.quantity }}</label>
+              </div>
+              <div class="amount">
+                <label class="ocean">{{
+                  (selectedTotalItems$ | async)?.amount | currency: 'USD':'symbol-narrow':'1.2-2'
+                }}</label>
+              </div>
+              <div class="origin"></div>
+              <div class="certificate"></div>
+              <div class="button"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="packing">
+        <label>{{ 'declareArrival.chargePackingList' | translate }}</label>
+        <app-generic-input-file
+          class="input-file"
+          [file]="(detailsNode$ | async)?.packingList"
+          (autoEmitFile)="setPackingListFile($event)"
+        ></app-generic-input-file>
+      </div>
+      <div class="button">
+        <button
+          [ngClass]="(validatorForGenerateButton$ | async) ? 'active' : 'disabled'"
+          [disabled]="!(validatorForGenerateButton$ | async)"
+          (click)="generate()"
+          >{{ 'common.generate' | translate }}</button
+        >
+      </div>
+    </div>
+  </div>
+  <footer class="bottom-container">
+    <div>
+      <label class="bold">OC: </label>
+      <label>{{ 'common.purchaseOrder' | translate }}</label>
+    </div>
+    <div>
+      <div class="circle yellow"></div>
+      <label>{{ 'declareArrival.previousLot' | translate }}</label>
+    </div>
+    <div>
+      <div class="circle green"></div>
+      <label>{{ 'declareArrival.actualLot' | translate }}</label>
+    </div>
+  </footer>
+</div>

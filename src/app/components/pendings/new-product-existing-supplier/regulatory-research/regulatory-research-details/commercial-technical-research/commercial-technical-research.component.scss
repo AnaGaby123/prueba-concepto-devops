@@ -1,0 +1,206 @@
+@use 'base' as s;
+
+:host {
+  @include s.absolute100;
+  @include s.flexColumn;
+  @include s.reset-line-height;
+  overflow: hidden;
+}
+
+#commercial-technical-research {
+  @include s.flexColumn;
+  flex: 1;
+  overflow: auto;
+
+  & > .general-data {
+    @include s.flexColumn;
+    padding-top: 8px;
+
+    & > .trainings {
+      @include s.flexColumn;
+      gap: 36px;
+      margin-top: 16px;
+
+      & > .row {
+        @include s.flexRow;
+        gap: 20px;
+
+        & > div {
+          width: 50%;
+        }
+
+        & > .price {
+          & > div {
+            & > div {
+              @include s.flexRow;
+              gap: 16px;
+              margin-top: 8px;
+            }
+          }
+        }
+      }
+    }
+    & > .content {
+      & > .providerPriceList {
+        @include s.flexRowNoWrap;
+        align-items: flex-end;
+        gap: 10px;
+        & > div {
+          align-items: center;
+          display: flex;
+          height: 40px;
+          & > label {
+            @include s.responsive-font-format(
+              $font-family: s.$font-family-roboto_bold,
+              $font-weight: s.$font-weight-bold,
+              $font-size-map: s.$responsive-font-16-16
+            );
+          }
+        }
+      }
+      & > .featureBundler {
+        grid-column-end: span 2;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  }
+
+  & > .families {
+    @include s.flexColumn;
+    padding-top: 16px;
+
+    & > .content {
+      & > .family {
+        @include s.flexColumn;
+        justify-content: space-between;
+        row-gap: 8px;
+
+        & > .subtitle {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-roboto_bold,
+            $font-weight: s.$font-weight-bold,
+            $font-size-map: s.$responsive-font-16-16
+          );
+        }
+
+        & > div {
+          @include s.flexRow;
+          align-items: center;
+          height: 40px;
+
+          & > .text {
+            @include s.responsive-font-format($font-size-map: s.$responsive-font-16-16);
+          }
+        }
+      }
+
+      & > .model-diffusion {
+        display: flex;
+      }
+
+      & > .cas {
+        @include s.flexColumn;
+        row-gap: 7px;
+
+        & > label {
+          @include s.responsive-font-format(
+            $font-family: s.$font-family-roboto_bold,
+            $font-weight: s.$font-weight-bold,
+            $font-size-map: s.$responsive-font-16-16
+          );
+        }
+      }
+
+      & > .notes {
+        grid-column-end: span 4;
+
+        &.labware {
+          grid-column-end: span 3;
+        }
+      }
+
+      &.medicalDevices {
+        grid-template-columns: repeat(3, 1fr);
+
+        & > .notes {
+          grid-column-end: span 2;
+        }
+      }
+    }
+  }
+
+  & > .supplements {
+    @include s.flexColumn;
+    padding: 16px 0;
+
+    & > .content {
+      padding: 16px 0 0 0;
+
+      & > .btn {
+        @include s.flexRow;
+        justify-content: center;
+        grid-column-end: span 4;
+
+        & > button {
+          @include s.pqf-button($version: s.$full, $type: s.$secondary, $height: s.$short, $width: s.$md);
+
+          &.enable {
+            @include s.pqButton();
+          }
+
+          &.disable {
+            @include s.pqButtonDisable();
+          }
+        }
+      }
+    }
+
+    & > .second-content {
+      @include s.flexColumn;
+      row-gap: 16px;
+      padding-top: 16px;
+
+      & > .item {
+        @include s.flexRow;
+        background-color: s.$main-proquifa-f;
+        border: 1px solid s.$pqGreen;
+        border-radius: 100px;
+        column-gap: 16px;
+        max-width: max-content;
+        padding: 2px 15px;
+
+        & > label {
+          @include s.responsive-font-format($font-size-map: s.$responsive-font-16-16, $color: s.$pqGreen);
+          letter-spacing: 1px;
+        }
+      }
+    }
+  }
+}
+
+.title {
+  @include s.flexRow;
+  border-bottom: 1px solid s.$pqBlack2;
+  padding: 8px 32px 8px 32px;
+
+  & > label {
+    @include s.responsive-font-format(
+      $font-family: s.$font-family-roboto_bold,
+      $font-weight: s.$font-weight-bold,
+      $font-size-map: s.$responsive-font-20-20
+    );
+  }
+}
+
+.content {
+  display: grid;
+  grid-column-gap: 20px;
+  grid-row-gap: 36px;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 16px 0;
+}
+
+.selector {
+  cursor: pointer;
+}

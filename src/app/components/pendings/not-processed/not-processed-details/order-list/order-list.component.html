@@ -1,0 +1,122 @@
+<section id="orders">
+  <div class="container">
+    <div class="content">
+      <div class="title">
+        <label>{{ 'preProcessing.purchaseOrders' | translate }}</label>
+      </div>
+      <div class="filters">
+        <div class="keyPad">
+          <app-dropdown-button
+            [options]="options$ | async"
+            [value]="optionSelected$ | async"
+            (valueEmit)="optionSelected($event)"
+          >
+          </app-dropdown-button>
+        </div>
+        <div class="search">
+          <app-search
+            [placeholder]="('search' | translate) + ' #OC'"
+            [searchTerm]="termSearch$ | async"
+            (textSearch)="handleKeySearch($event)"
+          >
+          </app-search>
+        </div>
+        <div class="hamburger">
+          <app-hamburger-menu
+            [options]="filters$ | async"
+            [value]="(filterSelected$ | async).value"
+            (valueEmit)="selectedOrder($event)"
+          >
+          </app-hamburger-menu>
+        </div>
+      </div>
+      <div class="list-container">
+        <div class="dataList">
+          <virtual-scroller
+            *ngIf="(purchaseOrder$ | async).length > 0 && (apiStatus$ | async) === 3"
+            [items]="purchaseOrder$ | async"
+            (vsUpdate)="purchaseOrder = $event"
+          >
+            <div
+              *ngFor="let oc of purchaseOrder; let i = index"
+              class="item"
+              [ngClass]="(purchaseItem$ | async)?.IdPPPedido === oc.IdPPPedido ? 'divActive' : ''"
+              (click)="selectedPurchase(oc)"
+            >
+              <div class="dfSelect" [ngClass]="{active: (purchaseItem$ | async).IdPPPedido === oc.IdPPPedido}"></div>
+              <div class="item-content">
+                <div class="info">
+                  <div class="oc">
+                    <label
+                      >#{{ oc.Index + 1 }} ·
+                      <span [ngClass]="!oc?.IdArchivo ? 'red' : ''">{{
+                        oc?.IdArchivo ? 'OC - ' + oc?.OrdenDeCompra : 'SIN OC'
+                      }}</span>
+                    </label>
+                  </div>
+                  <div class="value">
+                    <label
+                      >Valor Total {{ oc.ValorTotal | currency: oc.catMoneda?.ClaveMoneda:'symbol-narrow':'1.2-2' }}
+                      {{ oc.catMoneda.ClaveMoneda }}</label
+                    >
+                  </div>
+                  <div class="classification">
+                    <div>
+                      <img alt="original" src="assets/Images/pre-processing/originales.svg" />
+                      <label>{{ oc.TipoPartidasCotizacion[0].Total }}</label>
+                    </div>
+                    <div>
+                      <img alt="saving" src="assets/Images/pre-processing/ahorro.svg" />
+                      <label>{{ oc.TipoPartidasCotizacion[3].Total }}</label>
+                    </div>
+                    <div>
+                      <img alt="promotion" src="assets/Images/pre-processing/promocion.svg" />
+                      <label>{{ oc.TipoPartidasCotizacion[2].Total }}</label>
+                    </div>
+                    <div>
+                      <img alt="alternative" src="assets/Images/pre-processing/alternativas.svg" />
+                      <label>{{ oc.TipoPartidasCotizacion[1].Total }}</label>
+                    </div>
+                    <div>
+                      <img alt="complementary" src="assets/Images/pre-processing/complementarias.svg" />
+                      <label>{{ oc.TipoPartidasCotizacion[4].Total }}</label>
+                    </div>
+                  </div>
+                  <div class="reception">
+                    <div class="sinFea" *ngIf="oc.SinFEA">
+                      <label>SIN FEA </label>
+                    </div>
+                    <div class="withFea" *ngIf="!oc.SinFEA">
+                      <label>FEA: {{ oc.FechaEstimadaAjuste | dateFormatSlash }}</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="type">
+                  <img
+                    alt=""
+                    [src]="
+                      oc.ConOrdenDeCompra
+                        ? 'assets/Images/pre-processing/con_orden.svg'
+                        : oc.OcInterna
+                        ? 'assets/Images/pre-processing/oc-interna.svg'
+                        : 'assets/Images/pre-processing/sin_orden.svg'
+                    "
+                  />
+                </div>
+              </div>
+            </div>
+          </virtual-scroller>
+          <div class="without-results" *ngIf="(purchaseOrder$ | async)?.length === 0 && (apiStatus$ | async) === 3">
+            <app-without-results [title]="'NO SE ENCONTRÓ INFORMACIÓN'"></app-without-results>
+          </div>
+          <div class="loader" *ngIf="(apiStatus$ | async) === 1">
+            <app-loading></app-loading>
+          </div>
+        </div>
+        <div class="total">
+          <label>#{{ (purchaseOrder$ | async).length }} {{ 'notProcessed.orders' | translate }}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

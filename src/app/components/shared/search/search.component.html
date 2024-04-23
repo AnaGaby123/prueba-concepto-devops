@@ -1,0 +1,158 @@
+<div class="search-bar-container">
+  <div
+    class="container"
+    [style.position]="isExpandable ? 'absolute ' : 'relative'"
+    [style.border-color]="borderColor"
+    [ngClass]="resultsIsOpen && isExpandable ? 'container-open' : ''"
+  >
+    <div id="search-container" class="search" tabindex="0" (blur)="closeCombo($event)">
+      <div
+        *ngIf="!isSearchByType"
+        [ngClass]="resultsIsOpen || openType ? (openType ? 'lupa lupa-open type' : 'lupa lupa-open') : 'lupa'"
+        [style.background]="resultsIsOpen ? backgroundColor : imageFill"
+      >
+        <div class="onlyLupa">
+          <img
+            id="magnifying-glass-img"
+            [src]="imageFill !== 'transparent' && !resultsIsOpen ? 'assets/Images/lupa_blanca.svg' : 'assets/Images/lupa.svg'"
+            alt="buscar"
+          />
+        </div>
+      </div>
+      <div *ngIf="isSearchByType" class="type-search">
+        <!-- DOCS: Se agregó un segundo elemento idéntico con opacity: 0
+              para poder mantener el flex: 0 0 auto sin position: absolute-->
+        <div
+          class="opacity"
+          [style.display]="openType ? 'block' : 'none'"
+          [ngClass]="resultsIsOpen || openType ? (openType ? 'lupa lupa-open type' : 'lupa lupa-open') : 'lupa'"
+          [style.background]="resultsIsOpen ? backgroundColor : imageFill"
+        >
+          <div id="open-search-type" (click)="openSearchType($event)">
+            <img
+              [src]="
+                imageFill !== 'transparent' && !resultsIsOpen && !openType
+                  ? 'assets/Images/lupa_blanca.svg'
+                  : 'assets/Images/magnifying-glass-ocean.svg'
+              "
+              alt="buscar"
+            />
+            <div *ngIf="isSearchByType" class="search-type">
+              <div class="label">
+                <label>{{ typeSelected ? typeSelected?.label : 'ND' }}</label>
+              </div>
+              <div class="triangle">
+                <img
+                  *ngIf="!resultsIsOpen"
+                  alt=""
+                  [ngClass]="openType ? 'rotate' : ''"
+                  [src]="openType ? 'assets/Images/drop_list_pqf.svg' : 'assets/Images/drop_list_white.svg'"
+                />
+              </div>
+              <div *ngIf="resultsIsOpen" class="line">
+                <div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          [ngClass]="resultsIsOpen || openType ? (openType ? 'lupa lupa-open type' : 'lupa lupa-open') : 'lupa'"
+          [style.background]="resultsIsOpen ? backgroundColor : imageFill"
+        >
+          <div (click)="openSearchType($event)">
+            <img
+              [src]="
+                imageFill !== 'transparent' && !resultsIsOpen && !openType
+                  ? 'assets/Images/lupa_blanca.svg'
+                  : 'assets/Images/magnifying-glass-ocean.svg'
+              "
+              alt="buscar"
+            />
+            <div *ngIf="isSearchByType" class="search-type">
+              <div class="label" [ngClass]="resultsIsOpen && isExpandable ? 'label-separator' : ''">
+                <label>{{ typeSelected ? typeSelected?.label : 'ND' }}</label>
+              </div>
+              <div class="triangle">
+                <img
+                  alt=""
+                  *ngIf="!resultsIsOpen"
+                  [ngClass]="openType ? 'rotate' : ''"
+                  [src]="openType ? 'assets/Images/drop_list_pqf.svg' : 'assets/Images/drop_list_white.svg'"
+                />
+              </div>
+              <div *ngIf="resultsIsOpen" class="line">
+                <div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div [ngClass]="openType ? 'types-of-search' : 'types-of-search sinBorder'">
+          <div>
+            <div
+              [ngClass]="type.value === typeSelected?.value ? 'selected' : ''"
+              *ngFor="let type of typesOfSearch; let i = index"
+              (click)="handleType(type)"
+            >
+              <div>
+                <label>{{ type.label }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <input
+        id="search-input"
+        class="buscar-input"
+        #inputElement
+        type="text"
+        [ngModel]="searchTerm"
+        [placeholder]="placeholder"
+        [readOnly]="isDisable"
+        (ngModelChange)="handleSearch($event)"
+        (keyup.enter)="onSelectSearchTerm()"
+        (paste)="handlePasteEvent($event)"
+        (keydown)="handleKeyDownEvent($event)"
+        (focus)="onFocus()"
+        (blur)="onBlur()"
+      />
+      <div class="close-button" *ngIf="searchTerm && isExpandable">
+        <div class="lds-spinner" *ngIf="isLoading">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <img id="close-img" (click)="onClearSearchTerm()" alt="" src="assets/Images/cerrar_fecha.svg" />
+      </div>
+    </div>
+    <div *ngIf="resultsIsOpen && isExpandable && resultItems.length > 0" class="separator"></div>
+    <div
+      [ngClass]="isExpandable && resultsIsOpen && resultItems.length > 0 ? 'results-open' : 'results-closed'"
+      class="search-results"
+    >
+      <div>
+        <div
+          class="item-result"
+          *ngFor="let item of resultItems"
+          [ngClass]="{selected: itemSelected && itemSelected.value === item.value}"
+          (click)="onSelectItem(item)"
+        >
+          <div>
+            <label>{{ item.label }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--
+<&#45;&#45; &ndash;&gt;-->

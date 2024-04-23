@@ -1,0 +1,264 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+
+  .container {
+    @include s.flexColumn;
+    height: 100%;
+    width: 100%;
+
+    & > .tabs {
+      @include s.flexRow;
+      padding: 40px 20px 20px 20px;
+
+      & > app-tabs {
+        height: 41px;
+      }
+    }
+
+    & > .data-general {
+      @include s.flexColumn;
+      height: 100%;
+
+      & > div {
+        @include s.flexColumn;
+
+        & > .title {
+          @include s.flexRow;
+          padding: 9px 20px;
+
+          & > label {
+            @include s.Novecento-Bold;
+            @include s.escaledFontFormat(s.$textSize14to18, '', s.$pqGreen);
+          }
+        }
+
+        & > .classification {
+          @include s.flexColumn;
+          background-color: s.$pqFondoContent;
+          flex: 0 0 123px;
+          justify-content: space-between;
+          padding: 20px 24px;
+
+          & > div {
+            @include s.flexRow;
+            justify-content: space-between;
+            width: 100%;
+
+            & > div {
+              @include s.flexRow;
+              align-items: center;
+
+              & > label {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormat(s.$textSize15to16, '', s.$pqBlack2);
+              }
+            }
+
+            & > .name {
+              min-width: 580px;
+            }
+          }
+        }
+      }
+
+      & > .delivery {
+        flex: 1;
+
+        & > div {
+          @include s.flexColumn;
+
+          & > .title {
+            @include s.flexRow;
+            padding: 9px 20px;
+
+            & > label {
+              @include s.Novecento-Bold;
+              @include s.escaledFontFormat(s.$textSize14to18, '', s.$pqGreen);
+            }
+          }
+
+          & > .dataDelivery {
+            @include s.flexRow;
+            justify-content: space-between;
+            padding: 0 20px;
+
+            & > div {
+              @include s.flexColumn;
+              align-items: flex-start;
+              width: 100%;
+              padding-right: 30px;
+              padding-bottom: 20px;
+
+              & > label {
+                @include s.Roboto-Bold;
+                @include s.escaledFontFormat(s.$textSize15to16, '', s.$pqBlack2);
+                margin-bottom: 12px;
+              }
+
+              & > .text {
+                @include s.Roboto-Regular;
+                @include s.escaledFontFormat(s.$textSize15to16, '', s.$pqBlack2);
+              }
+            }
+
+            & > .address {
+              min-width: 33% !important;
+            }
+          }
+        }
+      }
+
+      & > .required {
+        padding: 0 20px;
+        align-items: flex-end;
+
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize14to16, '', s.$pqGreen);
+        }
+      }
+    }
+
+    & > .judgment {
+      @include s.flexColumn;
+      height: 100%;
+
+      & > .delivery-time {
+        @include s.flexColumn;
+        flex: 1;
+        padding: 0 20px;
+
+        & > .title {
+          @include s.flexRow;
+
+          & > label {
+            @include s.Novecento-Bold;
+            @include s.escaledFontFormat(s.$textSize14to18, '', s.$pqGreen);
+          }
+        }
+
+        & > .schedules {
+          @include s.flexColumn;
+          flex: 1;
+          height: 100%;
+
+          & > div {
+            @include s.flexColumn;
+            height: 100%;
+
+            & > .schedule-section {
+              @include s.flexRow;
+              justify-content: space-between;
+              height: 100%;
+              padding-top: 20px;
+
+              & > .schedule-day {
+                @include s.flexColumn;
+                align-items: flex-start;
+                flex: 0 0 33%;
+
+                & > label {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize13to16, '', s.$pqBlack2);
+                }
+
+                & > .title {
+                  @include s.Roboto-Bold;
+                  @include s.escaledFontFormat(s.$textSize13to16, '', s.$pqBlack2);
+                }
+              }
+            }
+          }
+
+          & > .schedule-info {
+            justify-content: space-around;
+          }
+
+          & > .schedules-options {
+            flex: 1 1 200px;
+            overflow: auto;
+            padding-top: 20px;
+
+            & > .container-schedule {
+              @include s.flexRow;
+              padding-bottom: 20px;
+
+              & > .day {
+                min-width: 120px;
+                padding-right: 10px;
+              }
+
+              & > .selected-schedule {
+                @include s.flexRow;
+                align-items: center;
+                padding-right: 30px;
+
+                & > app-drop-down-list {
+                  width: 84px;
+                }
+
+                & > label {
+                  @include s.Roboto-Regular;
+                  @include s.escaledFontFormat(s.$textSize13to16, '', s.$pqBlack2);
+                  padding: 0 5px;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      & > .data {
+        @include s.flexRow;
+        @include s.absoluteCenter;
+        background-color: s.$pqFondoContent;
+        flex: 0 0 94px;
+
+        & > div {
+          @include s.flexRow;
+          @include s.absoluteCenter;
+          height: 30px;
+          padding: 0 30px;
+
+          & > label {
+            @include s.Roboto-Bold;
+            @include s.escaledFontFormat(s.$textSize15to16, '', s.$pqBlack2);
+            padding-right: 5px;
+          }
+
+          & > .priority {
+            max-width: 235px;
+          }
+        }
+      }
+
+      & > .comments {
+        @include s.flexRow;
+        flex: 0 0 120px;
+        padding: 30px 20px 0 20px;
+      }
+    }
+
+    & > .buttons {
+      @include s.flexRow;
+      flex: 0 0 83px;
+      padding: 10px 20px 50px 20px;
+      justify-content: space-between;
+
+      & > .btn {
+        @include s.pqButton();
+      }
+
+      & > .btnDisable {
+        pointer-events: none;
+        @include s.pqButtonDisable();
+      }
+    }
+  }
+}

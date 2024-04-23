@@ -1,0 +1,50 @@
+<div class="import">
+  <h4>{{ 'formProvider.step8.subtitles.import' | translate }}</h4>
+  <div class="grid">
+    <div class="input-container">
+      <label>{{ 'formProvider.step8.inputs.igi' | translate }}</label>
+      <app-generic-input
+        class="input"
+        [enableEdit]="enableEdit"
+        [maxlength]="14"
+        [placeholder]="'0'"
+        [textAlign]="'center'"
+        [typeValidation]="inputValidators.Percentage"
+        [value]="actualConfiguration?.ConfiguracionPrecioProveedor?.IGI"
+        (textData)="saveInputValue(fields.IGI, $event)"
+      >
+      </app-generic-input>
+      <span>%</span>
+    </div>
+    <div class="input-container">
+      <label>{{ 'formProvider.step8.inputs.dta' | translate }}</label>
+      <app-generic-input
+        class="input"
+        [enableEdit]="enableEdit"
+        [maxlength]="14"
+        [placeholder]="'0'"
+        [textAlign]="'center'"
+        [typeValidation]="inputValidators.Percentage"
+        [value]="actualConfiguration?.ConfiguracionPrecioProveedor?.DTA"
+        (textData)="saveInputValue(fields.DTA, $event)"
+      >
+      </app-generic-input>
+      <span>%</span>
+    </div>
+    <div class="input-container">
+      <label>{{ 'formProvider.step8.inputs.prv' | translate }}</label>
+      <app-generic-input
+        class="input"
+        [enableEdit]="enableEdit"
+        [maxlength]="14"
+        [placeholder]="'0'"
+        [textAlign]="'center'"
+        [typeValidation]="inputValidators.DecimalNumber"
+        [value]="actualConfiguration?.ConfiguracionPrecioProveedor?.PRV"
+        (textData)="saveInputValue(fields.PRV, $event)"
+      >
+      </app-generic-input>
+      <span>USD</span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,939 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+  & > #close-offer-details-container {
+    @include s.absolute100;
+    @include s.flexColumn;
+    justify-content: flex-start;
+    & > .container {
+      @include s.flexRowNoWrap;
+      flex: 1;
+      justify-content: flex-start;
+      overflow: hidden;
+      & > .arrow {
+        position: absolute;
+        left: 298px;
+        top: 40%;
+        transition: all 0.4s ease-in-out;
+        z-index: 2;
+
+        & > img {
+          width: 16px;
+          height: 21px;
+          cursor: pointer;
+          transition: all 1s ease;
+          transform: scaleX(-1);
+        }
+
+        &.close {
+          left: 0;
+          transform: scaleX(-1);
+        }
+      }
+      & > .left-container {
+        @include s.flexColumn;
+        height: 100%;
+        width: 314px;
+        overflow: hidden;
+        border-right: 1px solid s.$pqGray2;
+        transition: all 0.4s ease-in-out;
+        flex-shrink: 0;
+        &.close {
+          width: 0;
+        }
+        & > .slide {
+          @include s.flexColumn;
+          height: 100%;
+          padding: 15px;
+          width: 314px;
+          & > .client-title {
+            @include s.flexRowNoWrap;
+            justify-content: flex-start;
+            & > label {
+              @include s.responsive-font-format(
+                $font-family: s.$font_family_novecento_bold,
+                $font-size-map: s.$responsive-font-17-21,
+                $font-weight: s.$font_weight_bold
+              );
+              white-space: pre;
+            }
+            & > label:first-of-type {
+              color: s.$pqGreen;
+            }
+          }
+          & > .client {
+            @include s.flexRowNoWrap;
+            padding: 15px 0;
+            & > .image {
+              @include s.gridCenter;
+              column-gap: 15px;
+              flex: 0 0 106px;
+              height: 70px;
+              & > img {
+                max-height: 100%;
+                max-width: 100%;
+                overflow: hidden;
+              }
+            }
+            & > .client-info {
+              @include s.flexColumn;
+              justify-content: center;
+              flex: 1;
+              overflow: hidden;
+              & > div {
+                @include s.multiLineTextTruncateSinHeight($lineHeight: 1.1em);
+                & > label {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font_family_roboto_bold,
+                    $font-size-map: s.$responsive-font-17-21,
+                    $font-weight: s.$font_weight_bold,
+                    $color: s.$main-proquifa
+                  );
+                }
+              }
+              & > label {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_roboto_regular,
+                  $font-size-map: s.$responsive-font-14-16,
+                  $font-weight: s.$font_weight_regular
+                );
+              }
+            }
+          }
+          & > .totals {
+            @include s.flexRowNoWrap;
+            padding-bottom: 20px;
+            border-bottom: 1px solid s.$pqBlack2;
+            & > div {
+              @include s.flexColumn;
+              flex: 0 0 50%;
+              & > .title {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_roboto_bold,
+                  $font-size-map: s.$responsive-font-13-16,
+                  $font-weight: s.$font_weight_bold
+                );
+                margin-bottom: 1px;
+              }
+              & > .totals {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_roboto_regular,
+                  $font-size-map: s.$responsive-font-13-16,
+                  $font-weight: s.$font_weight_regular,
+                  $color: s.$main-proquifa
+                );
+              }
+              & > .segmentation {
+                @include s.flexRowNoWrap;
+                column-gap: 6px;
+                margin-top: 3px;
+                & > img {
+                  @include s.imageIconResponsiveSize;
+                }
+              }
+              &.right {
+                align-items: flex-end;
+              }
+            }
+          }
+          & > .content {
+            @include s.flexColumn;
+            flex: 1;
+            overflow: auto;
+            padding-top: 15px;
+            row-gap: 15px;
+            & > .client-data {
+              @include s.flexColumn;
+              & > div {
+                @include s.flexRow;
+                margin-bottom: 5px;
+                & > label:nth-of-type(odd) {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font_family_roboto_bold,
+                    $font-size-map: s.$responsive-font-14-16,
+                    $font-weight: s.$font_weight_bold
+                  );
+                  white-space: pre-wrap;
+                }
+                & > label:nth-of-type(even) {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font_family_roboto_regular,
+                    $font-size-map: s.$responsive-font-14-16,
+                    $font-weight: s.$font_weight_regular
+                  );
+                }
+              }
+              & > div:first-of-type {
+                margin-bottom: 8px;
+                & > label {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font_family_roboto_bold,
+                    $font-size-map: s.$responsive-font-17-21,
+                    $font-weight: s.$font_weight_bold,
+                    $color: s.$main-proquifa
+                  );
+                }
+              }
+              & > div:last-of-type {
+                @include s.multiLineTextTruncateSinHeight($lines: 3, $lineHeight: 1em);
+                margin-bottom: 0;
+
+                & > label {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font_family_roboto_bold,
+                    $font-size-map: s.$responsive-font-14-16,
+                    $font-weight: s.$font_weight_bold
+                  );
+
+                  & > span {
+                    @include s.responsive-font-format(
+                      $font-family: s.$font_family_roboto_regular,
+                      $font-size-map: s.$responsive-font-14-16,
+                      $font-weight: s.$font_weight_regular
+                    );
+                  }
+                }
+              }
+            }
+            & > .contact-data {
+              @include s.flexColumn;
+              & > div:first-of-type {
+                margin-bottom: 8px;
+                & > label {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font_family_roboto_bold,
+                    $font-size-map: s.$responsive-font-17-21,
+                    $font-weight: s.$font_weight_bold,
+                    $color: s.$main-proquifa
+                  );
+                }
+              }
+              & > div.image {
+                @include s.flexRow;
+                margin-bottom: 5px;
+                align-items: center;
+                & > img {
+                  width: 15px;
+                  margin-right: 4px;
+                }
+                & > label {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font_family_roboto_regular,
+                    $font-size-map: s.$responsive-font-14-16,
+                    $font-weight: s.$font_weight_regular
+                  );
+
+                  &.bold {
+                    @include s.Roboto-Bold;
+                  }
+                }
+              }
+              & > div.data {
+                @include s.flexRow;
+                margin-bottom: 5px;
+                & > label:nth-of-type(odd) {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font_family_roboto_bold,
+                    $font-size-map: s.$responsive-font-14-16,
+                    $font-weight: s.$font_weight_bold
+                  );
+                  white-space: pre-wrap;
+                }
+                & > label:nth-of-type(even) {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font_family_roboto_regular,
+                    $font-size-map: s.$responsive-font-14-16,
+                    $font-weight: s.$font_weight_regular
+                  );
+                }
+              }
+            }
+            & > .contract-brands {
+              @include s.flexColumn;
+              flex: 1;
+              & > label {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_roboto_bold,
+                  $font-size-map: s.$responsive-font-17-21,
+                  $font-weight: s.$font_weight_bold,
+                  $color: s.$main-proquifa
+                );
+                margin-bottom: 4px;
+                flex-shrink: 0;
+              }
+              & > div:nth-of-type(1) {
+                @include s.flexRow;
+                & > label:nth-of-type(1) {
+                  @include s.responsive-font-format(
+                    $font-family: s.$font_family_novecento_bold,
+                    $font-size-map: s.$responsive-font-17-21,
+                    $font-weight: s.$font_weight_bold,
+                    $color: s.$main-proquifa
+                  );
+                }
+              }
+              & > .virtual-list {
+                @include s.flexColumn;
+                flex: 1;
+                min-height: 100px;
+                border-top: 1px solid s.$pqBlack2;
+                padding: 10px 0;
+                & > virtual-scroller {
+                  width: 100%;
+                  height: 100%;
+
+                  & > ::ng-deep .scrollable-content {
+                    @include s.flexColumn;
+                    row-gap: 10px;
+                    & > label {
+                      @include s.responsive-font-format(
+                        $font-family: s.$font_family_roboto_regular,
+                        $font-size-map: s.$responsive-font-12-14,
+                        $font-weight: s.$font_weight_regular
+                      );
+                      text-transform: uppercase;
+                      width: 100%;
+                      display: block;
+                    }
+                  }
+                }
+              }
+              & > .loading {
+                @include s.flexRow;
+                @include s.absoluteCenter;
+                width: 100%;
+                flex: 1;
+              }
+              & > .without-results {
+                @include s.flexRow;
+                @include s.absoluteCenter;
+                width: 100%;
+                flex: 1;
+              }
+            }
+          }
+          & > .brands-totals {
+            @include s.flexRow;
+            @include s.absoluteCenter;
+            border-top: 1px solid s.$pqBlack2;
+            height: 39px;
+            & > label {
+              @include s.responsive-font-format(
+                $font-family: s.$font_family_roboto_regular,
+                $font-size-map: s.$responsive-font-10-12-b,
+                $font-weight: s.$font_weight_regular
+              );
+            }
+          }
+        }
+      }
+      & > .right-container {
+        @include s.flexColumn;
+        position: relative;
+        flex: 1;
+        height: 100%;
+        overflow: hidden;
+
+        & > .content {
+          @include s.flexRowNoWrap;
+          flex: 1;
+          overflow: hidden;
+
+          & > .outlet {
+            flex: 1;
+            overflow: hidden;
+          }
+
+          & > aside {
+            @include s.flexColumn;
+            transition: all 0.3s ease;
+            flex: 0 0 270px;
+            background-color: s.$pqGray2;
+            padding: 20px;
+            & > .header {
+              @include s.flexColumn;
+              align-items: center;
+              margin-bottom: 18px;
+
+              & > .title {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_novecento_bold,
+                  $font-size-map: s.$responsive-font-17-21,
+                  $font-weight: s.$font_weight_bold,
+                  $color: s.$main-proquifa
+                );
+                margin-bottom: 20px;
+              }
+
+              & > .subtitle {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_roboto_bold,
+                  $font-size-map: s.$responsive-font-17-21,
+                  $font-weight: s.$font_weight_bold
+                );
+                text-align: center;
+              }
+            }
+            & > .strategy {
+              @include s.flexRow;
+              @include s.absoluteCenter;
+              margin-bottom: 15px;
+              & > label:first-of-type {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_roboto_bold,
+                  $font-size-map: s.$responsive-font-14-16,
+                  $font-weight: s.$font_weight_bold
+                );
+                white-space: pre;
+              }
+
+              & > label:last-of-type {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_roboto_bold,
+                  $font-size-map: s.$responsive-font-14-16,
+                  $font-weight: s.$font_weight_bold,
+                  $color: s.$main-proquifa
+                );
+              }
+            }
+
+            & > .strategy-details {
+              @include s.flexColumn;
+              margin-bottom: 20px;
+
+              & > p {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_roboto_regular_italic,
+                  $font-size-map: s.$responsive-font-10-12-b,
+                  $font-weight: s.$font_weight_light
+                );
+                line-height: 1.3em;
+                margin-bottom: 7px;
+
+                & > span {
+                  color: s.$pqGreen;
+                }
+
+                & > .text {
+                  color: s.$pqBlack2;
+                }
+              }
+            }
+
+            & > .date {
+              @include s.flexColumn;
+              margin-bottom: 28px;
+
+              & > label:first-of-type {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_roboto_bold,
+                  $font-size-map: s.$responsive-font-14-16,
+                  $font-weight: s.$font_weight_bold
+                );
+              }
+
+              & > label:last-of-type {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_novecento_bold,
+                  $font-size-map: s.$responsive-font-15-18,
+                  $font-weight: s.$font_weight_bold,
+                  $color: s.$main-proquifa
+                );
+              }
+            }
+
+            & > .tactics {
+              @include s.flexColumn;
+              row-gap: 20px;
+              overflow: hidden;
+              & > label {
+                @include s.responsive-font-format(
+                  $font-family: s.$font_family_roboto_bold,
+                  $font-size-map: s.$responsive-font-14-16,
+                  $font-weight: s.$font_weight_bold
+                );
+              }
+              & > .content {
+                @include s.flexColumn;
+                row-gap: 20px;
+                overflow: auto;
+                & > div {
+                  @include s.flexColumn;
+                  & > label:nth-of-type(1) {
+                    @include s.responsive-font-format(
+                      $font-family: s.$font_family_roboto_bold,
+                      $font-size-map: s.$responsive-font-14-16,
+                      $font-weight: s.$font_weight_bold,
+                      $color: s.$main-proquifa
+                    );
+                  }
+
+                  & > label:nth-of-type(3) {
+                    @include s.responsive-font-format(
+                      $font-family: s.$font_family_roboto_regular,
+                      $font-size-map: s.$responsive-font-12-14,
+                      $font-weight: s.$font_weight_regular,
+                      $color: s.$main-proquifa
+                    );
+                    text-decoration: underline;
+                    padding-left: 7px;
+                    transition: all 0.3s ease-in-out;
+
+                    &:hover,
+                    &.select {
+                      @include s.Roboto-Bold;
+                    }
+                  }
+
+                  & > label:nth-of-type(2) {
+                    @include s.responsive-font-format(
+                      $font-family: s.$font_family_roboto_regular,
+                      $font-size-map: s.$responsive-font-14-16,
+                      $font-weight: s.$font_weight_regular
+                    );
+                    padding-left: 7px;
+                  }
+
+                  & > div {
+                    @include s.flexColumn;
+                    padding-bottom: 5px;
+
+                    & > label {
+                      margin-bottom: 3px;
+
+                      &.link {
+                        cursor: pointer;
+                      }
+                    }
+
+                    & > label:nth-of-type(1) {
+                      @include s.responsive-font-format(
+                        $font-family: s.$font_family_roboto_regular,
+                        $font-size-map: s.$responsive-font-14-16,
+                        $font-weight: s.$font_weight_regular
+                      );
+                      padding-left: 7px;
+                    }
+
+                    & > label:nth-of-type(2) {
+                      @include s.responsive-font-format(
+                        $font-family: s.$font_family_roboto_regular,
+                        $font-size-map: s.$responsive-font-12-14,
+                        $font-weight: s.$font_weight_regular,
+                        $color: s.$main-proquifa
+                      );
+                      text-decoration: underline;
+                      padding-left: 7px;
+                      transition: all 0.3s ease-in-out;
+
+                      &:hover,
+                      &.select {
+                        @include s.Roboto-Bold;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        & > footer {
+          @include s.generic-main-component-footer;
+          & > .tooltip {
+            @include s.tooltip(auto, auto, auto, 150px, $trianglePosition: 'top');
+
+            & > label {
+              @include s.Roboto-Bold;
+              @include s.escaledFontFormat(s.$textSize12to14, bold, s.$pqBlack2);
+            }
+
+            & > .tooltip-text {
+              min-width: max-content !important;
+
+              & > p {
+                width: 100% !important;
+              }
+            }
+          }
+          & > div {
+            column-gap: 5px;
+            & > label {
+              @include s.responsive-font-format($font-size-map: s.$responsive-font-12-14);
+            }
+            & > .bold {
+              @include s.responsive-font-format(
+                $font-family: s.$font-family-roboto_bold,
+                $font-weight: s.$font-weight-bold,
+                $font-size-map: s.$responsive-font-12-14
+              );
+            }
+          }
+          & > .circle {
+            & > div {
+              flex-shrink: 0;
+              height: 8px;
+              width: 8px;
+              margin-right: 4px;
+              border-radius: 50%;
+
+              &.green {
+                background-color: s.$pqGreen2;
+              }
+
+              &.red {
+                background-color: s.$pqRed;
+              }
+
+              &.yellow {
+                background-color: s.$orange;
+              }
+            }
+          }
+          /*& > div {
+            @include flexRow;
+            @include absoluteCenter;
+            flex: 1;
+
+            & > div {
+              @include flexRow;
+              @include absoluteCenter;
+              margin-right: 18px;
+
+              & > label {
+                @include responsive-font-format(
+                  $font-family: $font_family_roboto_regular,
+                  $font-size-map: $responsive-font-12-14,
+                  $font-weight: $font_weight_regular
+                );
+              }
+
+              & > label:first-child {
+                @include Roboto-Bold;
+                margin-right: 4px;
+              }
+
+              & > img {
+                width: 16px;
+                height: 16px;
+                margin-right: 4px;
+              }
+            }
+            & > .tooltip {
+              @include tooltip(auto, auto, auto, 150px, $trianglePosition: 'top');
+              & > .tooltip-text {
+                min-width: max-content !important;
+
+                & > p {
+                  width: 100% !important;
+                }
+              }
+            }
+            & > .circle {
+              & > div {
+                flex-shrink: 0;
+                height: 8px;
+                width: 8px;
+                margin-right: 4px;
+                border-radius: 50%;
+
+                &.green {
+                  background-color: $pqGreen2;
+                }
+
+                &.red {
+                  background-color: $pqRed;
+                }
+
+                &.yellow {
+                  background-color: $orange;
+                }
+              }
+            }
+
+            & > div:last-child {
+              margin-right: 0;
+            }
+          }*/
+        }
+      }
+      @include s.media-query(s.$standard) {
+        & > .arrow {
+          left: 340px;
+
+          & > img {
+            width: 22px;
+            height: 32px;
+          }
+        }
+        & > .left-container {
+          width: 360px;
+          & > .slide {
+            width: 360px;
+            & > .client-data {
+              & > div {
+                margin-bottom: 8px;
+              }
+
+              & > div:first-of-type {
+                margin-bottom: 11px;
+              }
+            }
+            & > .contact-data {
+              & > div.image {
+                & > img {
+                  width: 18px;
+                  margin-right: 6px;
+                }
+              }
+            }
+            & > .contract-brands {
+              & > label {
+                margin-bottom: 5px;
+              }
+            }
+          }
+        }
+        & > .right-container {
+          & > .content {
+            & > .center-container {
+              & > .title {
+                & > div {
+                  & > img {
+                    margin-right: 8px;
+                  }
+                }
+              }
+
+              & > .bar-percentage {
+                & > .bars {
+                  padding-bottom: 18px;
+                }
+              }
+            }
+          }
+
+          /* & > footer {
+            height: 55px;
+
+            & > div {
+              & > div {
+                margin-right: 27px;
+
+                & > img {
+                  width: 17px;
+                  height: 17px;
+                  margin-right: 6px;
+                }
+              }
+            }
+          }*/
+        }
+        & .custom-pop-up {
+          & ::ng-deep {
+            & .pop-ng-content {
+              & > .title {
+                margin-bottom: 5px;
+              }
+
+              & > .subtitle {
+                margin-bottom: 3px;
+              }
+
+              & > .content {
+                line-height: 1.4;
+              }
+            }
+          }
+        }
+        & .custom-pop-up-tactics {
+          & ::ng-deep {
+            & .pop-ng-content {
+              & > .title {
+                margin-bottom: 5px;
+              }
+
+              & > .subtitle {
+                margin-bottom: 3px;
+              }
+
+              & > .content {
+                line-height: 1.4;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  & .custom-pop-up {
+    padding: 0 !important;
+
+    & > app-custom-position-pop-up {
+      transition: all 0.4s ease-in-out;
+    }
+
+    & ::ng-deep {
+      & .pop-ng-content {
+        @include s.flexColumn;
+        padding: 9px;
+        overflow-x: auto;
+        flex: 1;
+
+        & > .title {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_novecento_bold,
+            $font-size-map: s.$responsive-font-17-21,
+            $font-weight: s.$font_weight_bold
+          );
+          margin-bottom: 3px;
+
+          &.red {
+            color: s.$pqRed;
+          }
+
+          &.yellow {
+            color: s.$pqOrange;
+          }
+
+          &.ocean {
+            color: s.$pqGreen;
+          }
+
+          &.green {
+            color: s.$pqGreen2;
+          }
+        }
+
+        & > .subtitle {
+          @include s.flexRowWrap;
+          margin-bottom: 1px;
+
+          & > label {
+            @include s.responsive-font-format(
+              $font-family: s.$font_family_roboto_bold,
+              $font-size-map: s.$responsive-font-13-16,
+              $font-weight: s.$font_weight_bold,
+              $color: s.$main-proquifa
+            );
+
+            white-space: pre-wrap;
+          }
+
+          & > label.green {
+            color: s.$pqGreen2;
+          }
+
+          & > label.black {
+            color: s.$pqBlack2;
+          }
+        }
+
+        & > .content {
+          @include s.responsive-font-format(
+            $font-family: s.$font_family_roboto_regular,
+            $font-size-map: s.$responsive-font-13-16,
+            $font-weight: s.$font_weight_regular
+          );
+          line-height: 1.3;
+
+          & > span {
+            white-space: pre;
+            color: s.$pqGreen;
+          }
+        }
+      }
+    }
+  }
+  & .custom-pop-up-tactics {
+    padding: 0 !important;
+
+    & > app-custom-position-pop-up {
+      transition: all 0.4s ease-in-out;
+    }
+
+    & ::ng-deep {
+      & .pop-ng-content {
+        @include s.flexColumn;
+        overflow-x: auto;
+        flex: 1;
+
+        & > div {
+          @include s.flexColumn;
+          padding: 15px 19px;
+
+          &.background-color {
+            background-color: rgba(s.$pqGreen, 0.05);
+          }
+
+          & > .title {
+            @include s.responsive-font-format(
+              $font-family: s.$font_family_novecento_bold,
+              $font-size-map: s.$responsive-font-17-21,
+              $font-weight: s.$font_weight_bold
+            );
+            margin-bottom: 3px;
+
+            &.red {
+              color: s.$pqRed;
+            }
+
+            &.yellow {
+              color: s.$pqOrange;
+            }
+
+            &.ocean {
+              color: s.$pqGreen;
+            }
+
+            &.green {
+              color: s.$pqGreen2;
+            }
+          }
+
+          & > .subtitle {
+            @include s.flexRowWrap;
+            margin-bottom: 1px;
+
+            & > label {
+              @include s.responsive-font-format(
+                $font-family: s.$font_family_roboto_bold,
+                $font-size-map: s.$responsive-font-13-16,
+                $font-weight: s.$font_weight_bold,
+                $color: s.$main-proquifa
+              );
+              white-space: pre-wrap;
+            }
+
+            & > label.green {
+              color: s.$pqGreen2;
+            }
+
+            & > label.black {
+              color: s.$pqBlack2;
+            }
+          }
+
+          & > .content {
+            @include s.responsive-font-format(
+              $font-family: s.$font_family_roboto_regular,
+              $font-size-map: s.$responsive-font-13-16,
+              $font-weight: s.$font_weight_regular
+            );
+            line-height: 1.3;
+
+            & > span {
+              white-space: pre;
+              color: s.$pqGreen;
+            }
+          }
+        }
+      }
+    }
+  }
+}

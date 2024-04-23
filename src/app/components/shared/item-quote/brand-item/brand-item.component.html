@@ -1,0 +1,24 @@
+<div class="brand-container">
+  <div class="brand">
+    <div class="img-brand" *ngIf="columnBrand?.src"
+      ><img #imageElement alt="" [src]="setImage(columnBrand?.src)" (error)="errorImage()" />
+    </div>
+    <div class="name-brand" *ngIf="columnBrand?.nameBrand"
+      ><label class="name-brand"> {{ columnBrand?.nameBrand }} </label>
+    </div>
+  </div>
+  <div class="conversion-rate" *ngIf="columnBrand?.showConversionRate">
+    <label
+      #labelElement
+      (click)="
+        handleClick(
+          $event,
+          labelElement,
+          !columnBrand?.isSelectPercentageConversion,
+          nameActionsInternalSalesItem?.BrandItemRateConversionAction
+        )
+      "
+      >{{ 'descriptionItemQuote.conversionRate' | translate }} {{ columnBrand?.conversionRate | number: '1.0-2' }}%</label
+    >
+  </div>
+</div>

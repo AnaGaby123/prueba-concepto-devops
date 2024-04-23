@@ -1,0 +1,35 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.generic-main-component-structure;
+
+  & > #control-supplier-claim {
+    & > .footer {
+      & > div {
+        & > label {
+          @include s.Roboto-Regular;
+          @include s.escaledFontFormat(s.$textSize12to14, regular, s.$pqBlack2);
+          vertical-align: baseline;
+
+          & > span {
+            @include s.Roboto-Bold;
+            vertical-align: baseline;
+          }
+        }
+      }
+    }
+
+    @include s.responsive_layout('macBookAir') {
+      //& > .header-bar {
+      //  flex: 0 0 64px;
+      //}
+      //& > .footer {
+      //  flex: 0 0 55px;
+      //}
+    }
+  }
+}

@@ -1,0 +1,43 @@
+@use 'base' as s;
+
+:host {
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+  #review-results {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    position: relative;
+
+    & > .filters {
+      @include s.flexRow;
+      max-width: 274px;
+      width: auto;
+    }
+
+    & > .data {
+      @include s.flexRow;
+      width: 100%;
+      height: 100%;
+    }
+
+    & > .show {
+      width: calc(100% - 274px);
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #review-results {
+      & > .filters {
+        max-width: 370px;
+      }
+
+      & > .show {
+        width: calc(100% - 370px);
+      }
+    }
+  }
+}

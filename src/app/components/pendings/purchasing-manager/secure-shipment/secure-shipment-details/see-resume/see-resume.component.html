@@ -1,0 +1,463 @@
+<div class="see-resume-container">
+  <div class="header-container">
+    <div class="order-number">
+      <label>{{ 'secureShipment.summarySee' | translate }}</label>
+    </div>
+    <div class="btn-container">
+      <button class="btn" (click)="goToDetails()"> {{ 'common.back' | translate }} </button>
+    </div>
+  </div>
+  <div class="contact-line-information">
+    <div class="provider-contact">
+      <app-provider-contacts
+        [sizeGeneralData]="(viewType$ | async) === viewTypes.small ? '380px' : '300px'"
+      ></app-provider-contacts>
+    </div>
+    <div class="progress">
+      <div class="progress-title">
+        <label>{{ 'secureShipment.creditLine' | translate }}</label>
+      </div>
+      <div class="bar">
+        <app-progress-bar></app-progress-bar>
+      </div>
+      <div class="progress-footer">
+        <div class="left">
+          <label> {{ 'secureShipment.amountUsed' | translate }} {{ 200000 | currency: 'USD' }} </label>
+        </div>
+        <div class="right">
+          <label> {{ 200000 | currency: 'USD' }} </label>
+        </div>
+      </div>
+      <div class="date">
+        <div>
+          <label> {{ 'secureShipment.amountUsed' | translate }} {{ 200000 | currency: 'USD' }} </label>
+        </div>
+        <div>
+          <label> {{ 'secureShipment.creditLimit' | translate }} </label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="general-data-shipment">
+    <label>{{ 'secureShipment.generalDataShipment' | translate }}</label>
+    <div>
+      <label>{{ 'secureShipment.packingList' | translate }}</label>
+      <app-generic-input-file></app-generic-input-file>
+    </div>
+    <div>
+      <label>{{ 'secureShipment.loadGuide' | translate }}</label>
+      <app-generic-input-file></app-generic-input-file>
+    </div>
+    <div>
+      <label>{{ 'secureShipment.guideNumber' | translate }}</label>
+      <app-generic-input></app-generic-input>
+    </div>
+    <div>
+      <label>{{ 'secureShipment.forwarder' | translate }}</label>
+      <app-drop-down-list [activeMinWidth]="false"></app-drop-down-list>
+    </div>
+  </div>
+  <div class="item-embarked-container">
+    <div class="embarked-container">
+      <div class="container-table">
+        <div class="table-config">
+          <div class="header">
+            <div class="position">
+              <label>#</label>
+            </div>
+            <div class="description">
+              <label>{{ 'secureShipment.itemsEmbarked' | translate }}</label>
+            </div>
+            <div class="origin">
+              <label>{{ 'secureShipment.origin' | translate }}</label>
+            </div>
+            <div class="lot">
+              <label>{{ 'secureShipment.lot' | translate }}</label>
+            </div>
+            <div class="add">
+              <img src="assets/Images/add-green.svg" />
+            </div>
+            <div class="cross">
+              <img alt="remove" src="assets/Images/close_red.svg" />
+            </div>
+          </div>
+          <div class="body">
+            <virtual-scroller *ngIf="true" [enableUnequalChildrenSizes]="true">
+              <div class="item-container">
+                <div class="item">
+                  <label class="position">{{ 1 }}</label>
+                  <div class="description-container">
+                    <div class="description">
+                      <label>{{
+                        'MBL-0443P Polydimethylsiloxane (500mg) Polydime solo podrán ser dos renglones solo podrán ser dos renglones y habilitar tooltip …'
+                      }}</label>
+                    </div>
+                    <div class="cost">
+                      <img alt="programming" src="assets/Images/labels/programada.svg" *ngIf="true" />
+                      <img alt="only" src="assets/Images/labels/unica.svg" *ngIf="true" />
+                      <img alt="freight-normal" src="assets/Images/labels/flete_normal.svg" *ngIf="true" />
+                      <img alt="freight-express" src="assets/Images/labels/flete_express.svg" *ngIf="true" />
+                      <label
+                        >{{ 34 }}
+                        {{ 'secureShipment.pzas' | translate }}
+                        · <span>CU {{ 43 | currency: 'USD' }} · </span>CT {{ 43 | currency: 'USD' }}
+                        <span>· OC {{ '375647-9485' }}</span>
+                      </label>
+                    </div>
+                    <div class="client">
+                      <label
+                        >{{ 'secureShipment.client' | translate }}: <span class="client-name">{{ 'Laboratorios Aranda' }}</span>
+                        <span class="green-pq"> · {{ '020821-1107' }}</span>
+                        <span [ngClass]="'green'"> · FEE: {{ date | dateFormatSlashShort }}</span></label
+                      >
+                    </div>
+                    <div class="documents">
+                      <app-generic-input-file
+                        [classInput]="'special'"
+                        [placeholder]="'secureShipment.certificateAnalysis' | translate"
+                      ></app-generic-input-file>
+                      <app-generic-input-file
+                        [classInput]="'special'"
+                        [placeholder]="'secureShipment.securitySheet' | translate"
+                      ></app-generic-input-file>
+                      <app-generic-input-file
+                        [classInput]="'special'"
+                        [placeholder]="'secureShipment.usmca' | translate"
+                      ></app-generic-input-file>
+                      <app-generic-input-file
+                        [classInput]="'special'"
+                        [placeholder]="'secureShipment.others' | translate"
+                      ></app-generic-input-file>
+                    </div>
+                  </div>
+                  <div class="origin">
+                    <app-drop-down-list [activeMinWidth]="false"></app-drop-down-list>
+                  </div>
+                  <div class="lot">
+                    <div [ngClass]="'lot-indicator-green'"></div>
+                    <div class="quantity">
+                      <app-generic-input
+                        *ngIf="true"
+                        [labelTextAlign]="'center'"
+                        [placeholder]="'#'"
+                        [textAlign]="'center'"
+                      ></app-generic-input>
+                      <app-generic-input
+                        *ngIf="false"
+                        [labelTextAlign]="'center'"
+                        [label]="'Edición'"
+                        [placeholder]="'#'"
+                        [textAlign]="'center'"
+                      ></app-generic-input>
+                      <app-drop-down-list *ngIf="false" [activeMinWidth]="false"></app-drop-down-list>
+                    </div>
+                  </div>
+                  <div class="add" *ngIf="false">
+                    <img alt="add" src="assets/Images/add-green.svg" />
+                  </div>
+                  <div class="cross" *ngIf="false">
+                    <img alt="remove" src="assets/Images/dark-red-x.svg" />
+                  </div>
+                  <div class="bill-associeted" *ngIf="true">
+                    <label>{{ 'secureShipment.associatedBill' | translate }} {{ 123456 }}</label>
+                  </div>
+                </div>
+                <div class="item">
+                  <label class="position">{{ 1 }}</label>
+                  <div class="description-container">
+                    <div class="description">
+                      <label>{{
+                        'MBL-0443P Polydimethylsiloxane (500mg) Polydime solo podrán ser dos renglones solo podrán ser dos renglones y habilitar tooltip …'
+                      }}</label>
+                    </div>
+                    <div class="cost">
+                      <img alt="programming" src="assets/Images/labels/programada.svg" />
+                      <img alt="only" src="assets/Images/labels/unica.svg" *ngIf="true" />
+                      <img alt="freight-normal" src="assets/Images/labels/flete_normal.svg" *ngIf="true" />
+                      <img alt="freight-express" src="assets/Images/labels/flete_express.svg" *ngIf="true" />
+                      <label
+                        >{{ 34 }}
+                        {{ 'secureShipment.pzas' | translate }}
+                        · <span>CU {{ 43 | currency: 'USD' }} · </span>CT {{ 43 | currency: 'USD' }}
+                        <span>· OC {{ '375647-9485' }}</span>
+                      </label>
+                    </div>
+                    <div class="client">
+                      <label
+                        >{{ 'secureShipment.client' | translate }}: <span class="client-name">{{ 'Laboratorios Aranda' }}</span>
+                        <span class="green-pq"> · {{ '020821-1107' }}</span>
+                        <span [ngClass]="'green'"> · FEE: {{ date | dateFormatSlashShort }}</span></label
+                      >
+                    </div>
+                    <div class="documents">
+                      <app-generic-input-file
+                        [classInput]="'special'"
+                        [placeholder]="'secureShipment.certificateAnalysis' | translate"
+                      ></app-generic-input-file>
+                      <app-generic-input-file
+                        [classInput]="'special'"
+                        [placeholder]="'secureShipment.securitySheet' | translate"
+                      ></app-generic-input-file>
+                      <app-generic-input-file
+                        [classInput]="'special'"
+                        [placeholder]="'secureShipment.usmca' | translate"
+                      ></app-generic-input-file>
+                      <app-generic-input-file
+                        [classInput]="'special'"
+                        [placeholder]="'secureShipment.others' | translate"
+                      ></app-generic-input-file>
+                    </div>
+                  </div>
+                  <div class="origin">
+                    <app-drop-down-list [activeMinWidth]="false"></app-drop-down-list>
+                  </div>
+                  <div class="lot">
+                    <div class="lot-indicator"></div>
+                    <div class="quantity">
+                      <app-generic-input
+                        *ngIf="true"
+                        [labelTextAlign]="'center'"
+                        [placeholder]="'#'"
+                        [textAlign]="'center'"
+                      ></app-generic-input>
+                      <app-generic-input
+                        *ngIf="false"
+                        [labelTextAlign]="'center'"
+                        [label]="'Edición'"
+                        [placeholder]="'#'"
+                        [textAlign]="'center'"
+                      ></app-generic-input>
+                    </div>
+                  </div>
+                  <div class="add" *ngIf="true">
+                    <img alt="add" src="assets/Images/add-green.svg" />
+                  </div>
+                  <div class="cross" *ngIf="true">
+                    <img alt="remove" src="assets/Images/dark-red-x.svg" />
+                  </div>
+                  <div class="bill-associeted" *ngIf="false">
+                    <label>{{ 'secureShipment.associatedBill' | translate }} {{ 123456 }}</label>
+                  </div>
+                </div>
+              </div>
+            </virtual-scroller>
+            <div class="is-loading" *ngIf="false">
+              <app-loading></app-loading>
+            </div>
+            <div class="without-results" *ngIf="false">
+              <app-without-results [title]="'Sin resultados'"></app-without-results>
+            </div>
+          </div>
+          <div class="footer">
+            <div class="total-items">
+              <label>{{ '#16' }}</label>
+            </div>
+            <div class="total-pieces">
+              <label>{{ '20 Piezas' }}</label>
+            </div>
+            <div class="total-price">
+              <label class="ocean">Total {{ 50000 | currency: 'USD' }}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="associated-invoice-container">
+      <div>
+        <div class="container-table">
+          <div class="table-config">
+            <div class="header">
+              <div class="position">
+                <label>#</label>
+              </div>
+              <div class="description">
+                <label>{{ 'secureShipment.itemsAssociateBill' | translate }}</label>
+              </div>
+              <div class="origin">
+                <label>{{ 'secureShipment.origin' | translate }}</label>
+              </div>
+              <div class="lot">
+                <label>{{ 'secureShipment.lot' | translate }}</label>
+              </div>
+              <div class="cross">
+                <img alt="remove" src="assets/Images/dark-red-x.svg" />
+              </div>
+            </div>
+            <div class="body">
+              <virtual-scroller *ngIf="true" [enableUnequalChildrenSizes]="true">
+                <div class="item-container">
+                  <div class="item">
+                    <label class="position">{{ 1 }}</label>
+                    <div class="description-container">
+                      <div class="description">
+                        <label>{{
+                          'MBL-0443P Polydimethylsiloxane (500mg) Polydime solo podrán ser dos renglones solo podrán ser dos renglones y habilitar tooltip …'
+                        }}</label>
+                      </div>
+                      <div class="cost">
+                        <img alt="programming" src="assets/Images/labels/programada.svg" *ngIf="true" />
+                        <img alt="only" src="assets/Images/labels/unica.svg" *ngIf="true" />
+                        <img alt="freight-normal" src="assets/Images/labels/flete_normal.svg" *ngIf="true" />
+                        <img alt="freight-express" src="assets/Images/labels/flete_express.svg" *ngIf="true" />
+                        <label
+                          >{{ 34 }}
+                          {{ 'secureShipment.pzas' | translate }}
+                          · <span>CU {{ 43 | currency: 'USD' }} · </span>CT {{ 43 | currency: 'USD' }}
+                          <span>· OC {{ '375647-9485' }}</span>
+                        </label>
+                      </div>
+                      <div class="client">
+                        <label
+                          >{{ 'secureShipment.client' | translate }}:
+                          <span class="client-name">{{ 'Laboratorios Aranda' }}</span>
+                          <span class="green-pq"> · {{ '020821-1107' }}</span>
+                          <span [ngClass]="'green'"> · FEE: {{ date | dateFormatSlashShort }}</span></label
+                        >
+                      </div>
+                      <div class="documents">
+                        <app-generic-input-file
+                          [classInput]="'special'"
+                          [placeholder]="'secureShipment.certificateAnalysis' | translate"
+                        ></app-generic-input-file>
+                        <app-generic-input-file
+                          [classInput]="'special'"
+                          [placeholder]="'secureShipment.securitySheet' | translate"
+                        ></app-generic-input-file>
+                        <app-generic-input-file
+                          [classInput]="'special'"
+                          [placeholder]="'secureShipment.usmca' | translate"
+                        ></app-generic-input-file>
+                        <app-generic-input-file
+                          [classInput]="'special'"
+                          [placeholder]="'secureShipment.others' | translate"
+                        ></app-generic-input-file>
+                      </div>
+                    </div>
+                    <div class="origin">
+                      <app-drop-down-list [activeMinWidth]="false"></app-drop-down-list>
+                    </div>
+                    <div class="lot">
+                      <div [ngClass]="'lot-indicator-green'"></div>
+                      <div class="quantity">
+                        <app-generic-input [placeholder]="'#'" *ngIf="true"></app-generic-input>
+                        <app-drop-down-list [activeMinWidth]="false" *ngIf="false"></app-drop-down-list>
+                      </div>
+                    </div>
+                    <div class="cross">
+                      <img alt="remove" src="assets/Images/dark-red-x.svg" />
+                    </div>
+                  </div>
+                </div>
+              </virtual-scroller>
+              <div class="is-loading" *ngIf="false">
+                <app-loading></app-loading>
+              </div>
+              <div class="without-results" *ngIf="false">
+                <app-without-results [title]="'Sin resultados'"></app-without-results>
+              </div>
+            </div>
+            <div class="footer">
+              <div class="total-items">
+                <label>{{ '#16' }}</label>
+              </div>
+              <div class="total-pieces">
+                <label>{{ '20 Piezas' }}</label>
+              </div>
+              <div class="total-price">
+                <label class="ocean">Total {{ 50000 | currency: 'USD' }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="provider-bill-container">
+          <div class="provider-bill">
+            <div class="title"
+              ><label>{{ 'secureShipment.providerBill' | translate }}</label></div
+            >
+            <div class="bill-data-container">
+              <div class="bill-data">
+                <app-generic-input
+                  [labelFont]="'Roboto-Bold'"
+                  [label]="'secureShipment.invoiceNumber' | translate"
+                ></app-generic-input>
+                <app-date-picker
+                  [disabledCalendarDays]="selectNonWorkingDays$ | async"
+                  [labelFont]="'Roboto-Bold'"
+                  [label]="'secureShipment.invoiceDate' | translate"
+                  [position]="'top'"
+                ></app-date-picker>
+                <app-date-picker
+                  [disabledCalendarDays]="selectNonWorkingDays$ | async"
+                  [labelFont]="'Roboto-Bold'"
+                  [label]="'secureShipment.invoiceReceptionDate' | translate"
+                  [position]="'top'"
+                ></app-date-picker>
+                <app-generic-input
+                  [labelFont]="'Roboto-Bold'"
+                  [label]="'secureShipment.freightAmount' | translate"
+                  [placeholder]="'$'"
+                  [textAlign]="'center'"
+                ></app-generic-input>
+                <app-generic-input
+                  [labelFont]="'Roboto-Bold'"
+                  [label]="'secureShipment.taxFree' | translate"
+                  [placeholder]="'$'"
+                  [textAlign]="'center'"
+                ></app-generic-input>
+                <app-generic-input
+                  [activeAlertErrors]="false"
+                  [alertErrorMessage]="'EL monto de la factura no coincide con las 7 partidas vinculadas'"
+                  [fontColor]="'#4ba92b'"
+                  [labelFont]="'Roboto-Bold'"
+                  [label]="'secureShipment.billAmount' | translate"
+                  [placeholder]="'$'"
+                  [textAlign]="'center'"
+                ></app-generic-input>
+              </div>
+              <div class="bill-documents">
+                <div>
+                  <label>{{ 'secureShipment.loadBill' | translate }}</label>
+                  <app-generic-input-file [placeholder]="'.Jpg, Png, Pdf'"></app-generic-input-file>
+                </div>
+                <div>
+                  <label>{{ 'secureShipment.loadXML' | translate }}</label>
+                  <app-generic-input-file [placeholder]="'.Xml'"></app-generic-input-file>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="importation-amount">
+            <div class="title"
+              ><label>{{ 'secureShipment.importAmount' | translate }}</label></div
+            >
+            <div class="amount-resume-container">
+              <div class="amount-resume">
+                <div class="left">
+                  <label class="normal-text">{{ 'secureShipment.commercialValue' | translate }}</label>
+                  <label class="normal-text">{{ 'secureShipment.freightIncremental' | translate }}</label>
+                  <label class="normal-text">{{ 'secureShipment.customsValue' | translate }}</label>
+                  <label class="normal-text">{{ 'secureShipment.dta' | translate }}</label>
+                  <label class="normal-text">{{ 'secureShipment.iva' | translate }}</label>
+                  <label class="normal-text">{{ 'secureShipment.igi' | translate }}</label>
+                  <label class="bold-text">{{ 'secureShipment.totalImportation' | translate }}</label>
+                </div>
+                <div class="right">
+                  <label class="normal-text-green">{{ 200000 | currency: 'USD':'symbol-narrow':'1.2-2' }} USD</label>
+                  <label class="normal-text-green">{{ 200000 | currency: 'USD':'symbol-narrow':'1.2-2' }} USD</label>
+                  <label class="normal-text-green">{{ 200000 | currency: 'USD':'symbol-narrow':'1.2-2' }} USD</label>
+                  <label class="normal-text-green">{{ 200000 | currency: 'USD':'symbol-narrow':'1.2-2' }} USD</label>
+                  <label class="normal-text-green">{{ 200000 | currency: 'USD':'symbol-narrow':'1.2-2' }} USD</label>
+                  <label class="normal-text-green">{{ 200000 | currency: 'USD':'symbol-narrow':'1.2-2' }} USD</label>
+                  <label class="bold-text-green">{{ 200000 | currency: 'USD':'symbol-narrow':'1.2-2' }} USD</label>
+                </div>
+              </div>
+              <div class="btn-container">
+                <button class="btn" (click)="goToLinkedItem()"> {{ 'secureShipment.itemsAssociated' | translate }} </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

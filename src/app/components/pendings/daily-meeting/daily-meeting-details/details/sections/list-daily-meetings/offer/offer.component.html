@@ -1,0 +1,1726 @@
+<div id="offer-container" #offerContainer>
+  <div class="header">
+    <div class="title">
+      Partidas
+    </div>
+    <div class="search">
+      <app-search
+        [activeRefresh]="true"
+        [imageFill]="'#008894'"
+        [isSearchByType]="true"
+        [placeholder]="'Buscar'"
+        [searchTerm]="searchTerm$ | async"
+        [typeSelected]="typeOfSearch$ | async"
+        [typesOfSearch]="listTypesOfSearch$ | async"
+        (textSearch)="handleKeySearch($event)"
+        (handleTypeSelected)="setSearchType($event)"
+      >
+      </app-search>
+    </div>
+  </div>
+  <div class="table-container">
+    <div class="container">
+      <app-header-internal-sales-item class="header" [internalSalesItem]="selectColumnsHeaderConfig$ | async">
+      </app-header-internal-sales-item>
+      <virtual-scroller
+        *ngIf="(selectInternalSalesItem$ | async)?.length > 0"
+        [enableUnequalChildrenSizes]="true"
+        [bufferAmount]="24"
+        [items]="selectInternalSalesItem$ | async"
+        (vsUpdate)="itemsQuotationScroll = $event"
+        (vsEnd)="fetchMore($event)"
+      >
+        <app-internal-sales-item
+          *ngFor="let item of itemsQuotationScroll; let i = index; trackBy: handleTrackByItemBy"
+          [internalSalesItem]="item"
+          (valueEmitter)="handleAction($event)"
+        ></app-internal-sales-item>
+        <div
+          class="loading-items"
+          *ngIf="(isLoadingItemsQuotation$ | async) === 1 && (selectInternalSalesItem$ | async)?.length > 0"
+        >
+          <app-loading></app-loading>
+        </div>
+      </virtual-scroller>
+      <div class="loading" *ngIf="(isLoadingItemsQuotation$ | async) === 1 && (selectInternalSalesItem$ | async)?.length === 0">
+        <app-loading></app-loading>
+      </div>
+
+      <div
+        class="without-results"
+        *ngIf="(selectInternalSalesItem$ | async)?.length === 0 && (isLoadingItemsQuotation$ | async) === 3"
+      >
+        <app-without-results></app-without-results>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="total-items-quotation" [ngClass]="{'small-mode': offerContainer.offsetWidth < 1300}">
+      <div>
+        <p
+          >{{ (selectInternalSalesItem$ | async)?.length }}
+          {{ (selectInternalSalesItem$ | async)?.length === 1 ? ' Partida' : ' Partidas' }}</p
+        >
+      </div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div>
+        <p> {{ (bandOptions$ | async)?.length }} {{ (bandOptions$ | async)?.length === 1 ? ' Marca' : ' Marcas' }}</p>
+      </div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+  <div class="totals">
+    <div class="container-red">
+      <label>{{ 'strategy.details.paymentConditions' | translate }}</label>
+      <div class="red">
+        <label> 0 Dias</label>
+        <!--        <label>{{ paymentConditions$ | async }}</label>-->
+        <img
+          alt="bad"
+          [src]="popUpIsOpenConditions ? 'assets/Images/strategy/bad-hover.svg' : 'assets/Images/strategy/bad.svg'"
+          (click)="popUpIsOpenConditions ? closePopUp('conditions') : sendInitialDataPopUpConditions($event.target)"
+        />
+      </div>
+    </div>
+    <div class="container-blue">
+      <label>{{ 'strategy.details.deliveries' | translate }}</label>
+      <div class="blue">
+        <label>0 {{ 'strategy.details.inTimeAndForm' | translate }}</label>
+        <!-- <label>{{ (percentageDeliveriesInForm$ | async) + ' ' + ('strategy.details.inTimeAndForm' | translate) }}</label>-->
+        <img
+          alt="ver_mas"
+          [src]="popUpIsOpenDelivers ? 'assets/Images/strategy/see-more-hover.svg' : 'assets/Images/strategy/see-more.svg'"
+          (click)="popUpIsOpenDelivers ? closePopUp('delivers') : sendInitialDataPopUpDelivers($event.target)"
+        />
+      </div>
+    </div>
+    <div class="container-green">
+      <label>{{ 'strategy.details.averageTicket' | translate }}</label>
+      <div class="green">
+        <label>$0 {{ currency$ | async }}</label>
+      </div>
+    </div>
+  </div>
+</div>
+<app-strategy-pop-up
+  class="pop-up-conversion"
+  *ngIf="popUpIsOpenConversion"
+  [positions]="positionsPopUpConversion"
+  [style.left]="dataPopUpConversion.left"
+  [style.top]="dataPopUpConversion.top"
+  [trianglePosition]="trianglePositionConversion"
+  (closeEmitter)="closePopUp('conversion')"
+>
+  <div id="container-pop-up-conversion">
+    <div class="title">
+      <label>{{ (userData$ | async)?.NombreCliente + ' · ' + ' Tasa de conversión ·' }}</label>
+      <img
+        alt="type"
+        [src]="
+          'assets/Images/pre-processing/' +
+          (selectedItem.TipoPartidaCotizacion === typeOriginal
+            ? 'originales.svg'
+            : selectedItem.TipoPartidaCotizacion === typeAlternative
+            ? 'alternativas.svg'
+            : selectedItem.TipoPartidaCotizacion === typeComplementary
+            ? 'complementarias.svg'
+            : selectedItem.TipoPartidaCotizacion === typePromotion
+            ? 'promocion.svg'
+            : selectedItem.TipoPartidaCotizacion === typeSaving
+            ? 'ahorro.svg'
+            : 'originales.svg')
+        "
+      />
+      <label>{{
+        'Tipo ' + selectedItem.TipoPartidaCotizacion + (isTypeSelected ? '' : ' · ' + selectedItem.NombreMarca)
+      }}</label>
+      <br />
+      <label>{{ oneYear }}</label>
+    </div>
+    <div class="info">
+      <div class="chart-container">
+        <label>Razones</label>
+        <div class="chart">
+          <app-doughnut-chart
+            [title]=""
+            [typeChart]="10"
+            [titleDetails]="'Totales'"
+            [fontSize]="'small'"
+            [data]="selectedItem.doughnutChartDataConversion"
+            [optionDetails]="selectedItem.doughnutChartOptionConversionDetails"
+            [optionDetailsHover]="selectedItem.doughnutChartDataConversionHover"
+          >
+          </app-doughnut-chart>
+        </div>
+      </div>
+      <div class="table-container">
+        <label class="title">{{
+          'Cancelaciones · ' +
+            (selectedItem.PorcentajeTasasConversion | number: '1.2-2') +
+            '% de ' +
+            selectedItem.total +
+            ' partidas'
+        }}</label>
+        <div class="container-labels" *ngIf="selectedItem.details?.length > 0">
+          <div *ngFor="let item of selectedItem.details">
+            <div>
+              <span class="circle"></span>
+              <label class="label">{{ item.Descripcion }}</label>
+            </div>
+            <div>
+              <label class="percentage">{{ item.Porcentaje | number: '1.2-2' }}%</label>
+              <label class="total">{{ '· ' + item.Partidas + (item.Partidas > 0 ? ' Partidas' : ' Partidas') }}</label>
+            </div>
+          </div>
+        </div>
+        <div class="without-results" *ngIf="selectedItem?.details?.length === 0">
+          <app-without-results [title]="'No hay partidas canceladas'"></app-without-results>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-strategy-pop-up>
+<!--<app-strategy-pop-up-->
+<!--  class="pop-up-conditions"-->
+<!--  *ngIf="popUpIsOpenConditions"-->
+<!--  [style.top]="dataPopUpConditions.top"-->
+<!--  [style.left]="dataPopUpConditions.left"-->
+<!--  [positions]="positionsPopUpConditions"-->
+<!--  (closeEmitter)="closePopUp('conditions')"-->
+<!--&gt;-->
+<!--  <div id="container-pop-up-conditions">-->
+<!--    <div class="header">-->
+<!--      <img src="assets/Images/strategy/bad.svg" />-->
+<!--      <label>{{ (clientData$ | async)?.Nombre }}</label>-->
+<!--    </div>-->
+<!--    <div class="content-info" *ngIf="!(isLoadingPendingInvoices$ | async)">-->
+<!--      <div class="bar-line">-->
+<!--        <div>-->
+<!--          <label>{{ 'strategy.details.paymentConditions' | translate }}</label>-->
+<!--          <label class="green">{{ (pendingInvoices$ | async)?.catCondicionesDePago.CondicionesDePago }}</label>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--          <label>{{ 'strategy.details.creditLine' | translate }}</label>-->
+<!--          <label class="green">{{-->
+<!--            ((pendingInvoices$ | async)?.ConfiguracionPagos.LineaCredito | currency: (selectCurrencyClient$ | async)) +-->
+<!--            ' ' +-->
+<!--            (selectCurrencyClient$ | async)-->
+<!--            }}</label>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--          <label>{{ 'strategy.details.healthyDebt' | translate }}</label>-->
+<!--          <label class="green">{{-->
+<!--            ((doughnutChartDataConditions$ | async).values[1] | currency: (selectCurrencyClient$ | async)) +-->
+<!--            ' ' +-->
+<!--            (selectCurrencyClient$ | async)-->
+<!--            }}</label>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--          <label>{{ 'strategy.details.expiredDebt' | translate }}</label>-->
+<!--          <label class="red">{{-->
+<!--            ((doughnutChartDataConditions$ | async).values[0] | currency: (selectCurrencyClient$ | async)) +-->
+<!--            ' ' +-->
+<!--            (selectCurrencyClient$ | async)-->
+<!--            }}</label>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--          <label>{{ 'strategy.details.positiveBalance' | translate }}</label>-->
+<!--          <label class="green">{{-->
+<!--            ((doughnutChartDataConditions$ | async).values[2] | currency: (selectCurrencyClient$ | async)) +-->
+<!--            ' ' +-->
+<!--            (selectCurrencyClient$ | async)-->
+<!--            }}</label>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--          <label>{{ 'strategy.details.remains' | translate }}</label>-->
+<!--          <label class="yellow">{{-->
+<!--            (selectRemains$ | async | currency: (selectCurrencyClient$ | async)) + ' ' + (selectCurrencyClient$ | async)-->
+<!--            }}</label>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="complaints">-->
+<!--        <div class="container-chart">-->
+<!--          <div class="chart-container">-->
+<!--            <div class="chart">-->
+<!--              <app-doughnut-chart-->
+<!--                [adjustTotals]="true"-->
+<!--                [data]="doughnutChartDataConditions$ | async"-->
+<!--                [enableOnClick]="true"-->
+<!--                [fontSize]="'small'"-->
+<!--                [optionDetailsHover]="doughnutChartOptionDetailsConditionsHover$ | async"-->
+<!--                [optionDetails]="doughnutChartOptionConditionsDetails$ | async"-->
+<!--                [showPercentage]="false"-->
+<!--                [titleDetails]="'Totales'"-->
+<!--                [title]=""-->
+<!--                [typeChart]="11"-->
+<!--                (segmentActive)="setSegmentActive($event, 'conditions')"-->
+<!--              >-->
+<!--              </app-doughnut-chart>-->
+<!--            </div>-->
+<!--            <div class="labels">-->
+<!--              <div>-->
+<!--                <span class="circulo" [style.background]="'#dd4543'"></span>-->
+<!--                <p>{{ 'strategy.details.delinquent' | translate }}</p>-->
+<!--              </div>-->
+<!--              <div>-->
+<!--                <span class="circulo" [style.background]="'#4ba92b'"></span>-->
+<!--                <p>{{ 'strategy.details.healthyDebt' | translate }}</p>-->
+<!--              </div>-->
+<!--              <div>-->
+<!--                <span class="circulo" [style.background]="'#5793f3'"></span>-->
+<!--                <p>{{ 'strategy.details.creditNotes' | translate }}</p>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="container-table">-->
+<!--          <div>-->
+<!--            <div *ngIf="segmentActiveChartConditions !== null">-->
+<!--              <span-->
+<!--                class="circulo"-->
+<!--                [style.background]="-->
+<!--                  segmentActiveChartConditions.label === delinquent-->
+<!--                    ? '#dd4543'-->
+<!--                    : segmentActiveChartConditions.label === creditNotes-->
+<!--                    ? '#5793f3'-->
+<!--                    : segmentActiveChartConditions.label === healthyDebt-->
+<!--                    ? '#4ba92b'-->
+<!--                    : ''-->
+<!--                "-->
+<!--              ></span>-->
+<!--              <label>{{ segmentActiveChartConditions.label }}</label>-->
+<!--            </div>-->
+<!--            <div *ngIf="segmentActiveChartConditions !== null">-->
+<!--              <app-hamburger-menu-->
+<!--                [options]="filters$ | async"-->
+<!--                [value]="(filterSelected$ | async).value"-->
+<!--                [position]="'right'"-->
+<!--                (valueEmit)="setOrder($event)"-->
+<!--              >-->
+<!--              </app-hamburger-menu>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="table">-->
+<!--            <div>-->
+<!--              <div class="body" *ngIf="segmentActiveChartConditions !== null">-->
+<!--                <virtual-scroller-->
+<!--                  [items]="-->
+<!--                    segmentActiveChartConditions.label === delinquent-->
+<!--                      ? (listDelinquentBills$ | async)-->
+<!--                      : segmentActiveChartConditions.label === creditNotes-->
+<!--                      ? (listCreditNotes$ | async)-->
+<!--                      : segmentActiveChartConditions.label === healthyDebt-->
+<!--                      ? (listHealthyDebtBills$ | async)-->
+<!--                      : []-->
+<!--                  "-->
+<!--                  (vsUpdate)="scrollItemsPendingsInvoices = $event"-->
+<!--                >-->
+<!--                  <div class="row-items-quotation" *ngFor="let item of scrollItemsPendingsInvoices">-->
+<!--                    <div>-->
+<!--                      <div class="line-one">-->
+<!--                        <p>{{ '#' + item.Index + ' · ' }}</p>-->
+<!--                        <p>{{ item.m_Item1.Folio ? item.m_Item1.Folio : 'ND' }}</p>-->
+<!--                      </div>-->
+<!--                      <div class="line-two" *ngIf="segmentActiveChartConditions.label !== creditNotes">-->
+<!--                        <p>{{-->
+<!--                          ('strategy.details.collectDate' | translate) +-->
+<!--                          ' ' +-->
+<!--                          (item.m_Item1.FechaCompromisoPago | dateFormatSlashShort)-->
+<!--                          }}</p>-->
+<!--                      </div>-->
+<!--                    </div>-->
+<!--                    <div>-->
+<!--                      <label class="text-red" *ngIf="segmentActiveChartConditions.label === delinquent">-->
+<!--                        {{ (item.m_Item4 | currency: (selectCurrencyClient$ | async)) + ' ' + (selectCurrencyClient$ | async) }}-->
+<!--                      </label>-->
+<!--                      <label class="text-green" *ngIf="segmentActiveChartConditions.label === healthyDebt">-->
+<!--                        {{ (item.m_Item4 | currency: (selectCurrencyClient$ | async)) + ' ' + (selectCurrencyClient$ | async) }}-->
+<!--                      </label>-->
+<!--                      <label-->
+<!--                        class="text-blue"-->
+<!--                        *ngIf="segmentActiveChartConditions.label === creditNotes && lodash.isFinite(item.m_Item3)"-->
+<!--                      >-->
+<!--                        {{ (item.m_Item3 | currency: (selectCurrencyClient$ | async)) + ' ' + (selectCurrencyClient$ | async) }}-->
+<!--                      </label>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </virtual-scroller>-->
+<!--              </div>-->
+<!--              <div class="without-results" *ngIf="segmentActiveChartConditions === null">-->
+<!--                <app-without-results [title]="'SELECCIONA LA GRÁFICA PARA HABILITAR ESTA SECCIÓN'"></app-without-results>-->
+<!--              </div>-->
+<!--              <div-->
+<!--                class="without-results"-->
+<!--                *ngIf="segmentActiveChartConditions !== null && scrollItemsPendingsInvoices.length === 0"-->
+<!--              >-->
+<!--                <app-without-results [title]="'Sin facturas'"></app-without-results>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="footer-table">-->
+<!--            <div *ngIf="segmentActiveChartConditions !== null">-->
+<!--              <label class="label-1" *ngIf="segmentActiveChartConditions.label === creditNotes">-->
+<!--                {{ (listCreditNotes$ | async).length + ' ' + ('strategy.details.notes' | translate) }}-->
+<!--              </label>-->
+<!--              <label class="label-1" *ngIf="segmentActiveChartConditions.label === healthyDebt">-->
+<!--                {{ (listHealthyDebtBills$ | async).length + ' ' + ('strategy.details.invoices' | translate) }}-->
+<!--              </label>-->
+<!--              <label class="label-1" *ngIf="segmentActiveChartConditions.label === delinquent">-->
+<!--                {{ (listDelinquentBills$ | async).length + ' ' + ('strategy.details.invoices' | translate) }}-->
+<!--              </label>-->
+<!--              <label class="label-2">-->
+<!--                {{-->
+<!--                'Total ' +-->
+<!--                (segmentActiveChartConditions.label === creditNotes-->
+<!--                  ? (totalCreditNotes$ | async | currency: (selectCurrencyClient$ | async))-->
+<!--                  : segmentActiveChartConditions.label === delinquent-->
+<!--                    ? (totalDelinquent$ | async | currency: (selectCurrencyClient$ | async))-->
+<!--                    : segmentActiveChartConditions.label === healthyDebt-->
+<!--                      ? (totalHealthy$ | async | currency: (selectCurrencyClient$ | async))-->
+<!--                      : '') +-->
+<!--                ' ' +-->
+<!--                (selectCurrencyClient$ | async)-->
+<!--                }}</label-->
+<!--              >-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="loading" *ngIf="isLoadingPendingInvoices$ | async">-->
+<!--      <app-loading></app-loading>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</app-strategy-pop-up>-->
+<!--<app-strategy-pop-up-->
+<!--  class="pop-up-delivers"-->
+<!--  *ngIf="popUpIsOpenDelivers"-->
+<!--  (closeEmitter)="closePopUp('delivers')"-->
+<!--  [style.top]="dataPopUpDelivers.top"-->
+<!--  [style.left]="dataPopUpDelivers.left"-->
+<!--  [positions]="positionsPopUpDelivery"-->
+<!--&gt;-->
+<!--  <div id="container-pop-up-delivers">-->
+<!--    <div class="title" *ngIf="!(isLoadingDataDeliveries$ | async)">-->
+<!--      <label>{{ 'entregas ·' }}</label>-->
+<!--      <label>{{-->
+<!--        'Fuera de tiempo · ' +-->
+<!--        (percentageDeliveriesOutOfTime$ | async) +-->
+<!--        ' ' +-->
+<!--        (totalDeliveries$ | async) +-->
+<!--        ((totalDeliveries$ | async) === 1 ? ' Partida' : ' Partidas')-->
+<!--        }}</label>-->
+<!--      <label> {{ '· ' + (clientData$ | async)?.Nombre }}</label>-->
+<!--      <label>{{ '· ' + oneYear }}</label>-->
+<!--    </div>-->
+<!--    <div class="complaints" *ngIf="!(isLoadingDataDeliveries$ | async)">-->
+<!--      <div class="container-chart">-->
+<!--        <div class="chart-container">-->
+<!--          <label>{{ 'Tiempos de Referencia' }}</label>-->
+<!--          <div class="chart">-->
+<!--            <app-bar-chart-->
+<!--              [values]="valuesBarChart$ | async"-->
+<!--              [enableOnClick]="true"-->
+<!--              [textDataLabel]="'P.'"-->
+<!--              [totalPercentage]="totalDeliveries$ | async"-->
+<!--              [fontSize]="9"-->
+<!--              (segmentActive)="setSegmentActive($event, 'deliveries')"-->
+<!--            >-->
+<!--            </app-bar-chart>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="container-table">-->
+<!--        <div>-->
+<!--          <div *ngIf="segmentActiveChartDeliveries !== null">-->
+<!--            <span-->
+<!--              class="circulo"-->
+<!--              [style.background]="-->
+<!--                segmentActiveChartDeliveries.label === oneDay-->
+<!--                  ? '#df798c'-->
+<!--                  : segmentActiveChartDeliveries.label === twoDays-->
+<!--                  ? '#d85971'-->
+<!--                  : segmentActiveChartDeliveries.label === threeDays-->
+<!--                  ? '#d74460'-->
+<!--                  : segmentActiveChartDeliveries.label === moreThanThreeDays-->
+<!--                  ? '#c32644'-->
+<!--                  : segmentActiveChartDeliveries.label === changeNotice-->
+<!--                  ? '#f5a523'-->
+<!--                  : ''-->
+<!--              "-->
+<!--            ></span>-->
+<!--            <label>{{ segmentActiveChartDeliveries.label }}</label>-->
+<!--            <label-->
+<!--              [ngClass]="-->
+<!--                segmentActiveChartDeliveries.label === oneDay-->
+<!--                  ? 'text-red4'-->
+<!--                  : segmentActiveChartDeliveries.label === twoDays-->
+<!--                  ? 'text-red3'-->
+<!--                  : segmentActiveChartDeliveries.label === threeDays-->
+<!--                  ? 'text-red2'-->
+<!--                  : segmentActiveChartDeliveries.label === moreThanThreeDays-->
+<!--                  ? 'text-red1'-->
+<!--                  : segmentActiveChartDeliveries.label === changeNotice-->
+<!--                  ? 'text-yellow'-->
+<!--                  : ''-->
+<!--              "-->
+<!--            >-->
+<!--              {{-->
+<!--              '· ' +-->
+<!--              (segmentActiveChartDeliveries.label === oneDay-->
+<!--                ? (percentagesChart$ | async).oneDay.percentage +-->
+<!--                '% · ' +-->
+<!--                (percentagesChart$ | async).oneDay.total +-->
+<!--                ' ' +-->
+<!--                ((percentagesChart$ | async).oneDay.total === 1-->
+<!--                  ? ('strategy.details.item' | translate)-->
+<!--                  : ('strategy.details.items' | translate))-->
+<!--                : segmentActiveChartDeliveries.label === twoDays-->
+<!--                  ? (percentagesChart$ | async).twoDays.percentage +-->
+<!--                  '% · ' +-->
+<!--                  (percentagesChart$ | async).twoDays.total +-->
+<!--                  ' ' +-->
+<!--                  ((percentagesChart$ | async).twoDays.total === 1-->
+<!--                    ? ('strategy.details.item' | translate)-->
+<!--                    : ('strategy.details.items' | translate))-->
+<!--                  : segmentActiveChartDeliveries.label === threeDays-->
+<!--                    ? (percentagesChart$ | async).threeDays.percentage +-->
+<!--                    '% · ' +-->
+<!--                    (percentagesChart$ | async).threeDays.total +-->
+<!--                    ' ' +-->
+<!--                    ((percentagesChart$ | async).threeDays.total === 1-->
+<!--                      ? ('strategy.details.item' | translate)-->
+<!--                      : ('strategy.details.items' | translate))-->
+<!--                    : segmentActiveChartDeliveries.label === moreThanThreeDays-->
+<!--                      ? (percentagesChart$ | async).moreThanThreeDays.percentage +-->
+<!--                      '% · ' +-->
+<!--                      (percentagesChart$ | async).moreThanThreeDays.total +-->
+<!--                      ' ' +-->
+<!--                      ((percentagesChart$ | async).moreThanThreeDays.total === 1-->
+<!--                        ? ('strategy.details.item' | translate)-->
+<!--                        : ('strategy.details.items' | translate))-->
+<!--                      : segmentActiveChartDeliveries.label === changeNotice-->
+<!--                        ? (percentagesChart$ | async).changeNotice.percentage +-->
+<!--                        '% · ' +-->
+<!--                        (percentagesChart$ | async).changeNotice.total +-->
+<!--                        ' ' +-->
+<!--                        ((percentagesChart$ | async).changeNotice.total === 1-->
+<!--                          ? ('strategy.details.item' | translate)-->
+<!--                          : ('strategy.details.items' | translate))-->
+<!--                        : '')-->
+<!--              }}-->
+<!--            </label>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="table">-->
+<!--          <div>-->
+<!--            <div class="body" *ngIf="segmentActiveChartDeliveries !== null">-->
+<!--              <virtual-scroller-->
+<!--                [items]="-->
+<!--                  segmentActiveChartDeliveries.label === oneDay-->
+<!--                    ? (listDeliveriesOneDay$ | async)-->
+<!--                    : segmentActiveChartDeliveries.label === twoDays-->
+<!--                    ? (listDeliveriesTwoDays$ | async)-->
+<!--                    : segmentActiveChartDeliveries.label === threeDays-->
+<!--                    ? (listDeliveriesThreeDays$ | async)-->
+<!--                    : segmentActiveChartDeliveries.label === moreThanThreeDays-->
+<!--                    ? (listDeliveriesMoreThanThreeDays$ | async)-->
+<!--                    : segmentActiveChartDeliveries.label === changeNotice-->
+<!--                    ? (listDeliveriesChangeNotice$ | async)-->
+<!--                    : []-->
+<!--                "-->
+<!--                (vsUpdate)="scrollItemsDeliveries = $event"-->
+<!--              >-->
+<!--                <div class="row-items-quotation" *ngFor="let item of scrollItemsDeliveries; index as productIndex">-->
+<!--                  <div>-->
+<!--                    <div class="line-one">-->
+<!--                      <p>{{ '#' + item.Index + ' · ' }}</p>-->
+<!--                      <p>{{ ('strategy.details.invoice' | translate) + ' ' + item.Factura + ' · ' }}</p>-->
+<!--                      <p>{{-->
+<!--                        (viewType === viewIpad-->
+<!--                          ? ('strategy.details.internalOrderShort' | translate)-->
+<!--                          : ('strategy.details.internalOrder' | translate)) +-->
+<!--                        ' ' +-->
+<!--                        item.Pedido-->
+<!--                        }}</p>-->
+<!--                      <p>{{-->
+<!--                        '· ' +-->
+<!--                        item.NumeroPiezas +-->
+<!--                        ' ' +-->
+<!--                        (item.NumeroPiezas > 1-->
+<!--                          ? ('strategy.details.pieces' | translate)-->
+<!--                          : ('strategy.details.piece' | translate))-->
+<!--                        }}</p>-->
+<!--                    </div>-->
+<!--                    <div class="line-two">-->
+<!--                      <p>{{ 'FEE ' + (item.FechaEstimadaEntrega | dateFormatSlashShort) }}</p>-->
+<!--                      <p>{{ ' · FRE ' + (item.FechaRealEntrega | dateFormatSlashShort) }}</p>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                  <div>-->
+<!--                    <label class="text-red">{{ item.labelDays }}</label>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </virtual-scroller>-->
+<!--            </div>-->
+<!--            <div class="without-results" *ngIf="segmentActiveChartDeliveries === null">-->
+<!--              <app-without-results [title]="'SELECCIONA LA GRÁFICA PARA HABILITAR ESTA SECCIÓN'"></app-without-results>-->
+<!--            </div>-->
+<!--            <div class="without-results" *ngIf="segmentActiveChartDeliveries !== null && scrollItemsDeliveries.length === 0">-->
+<!--              <app-without-results [title]="'Sin Entregas'"></app-without-results>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="footer-table">-->
+<!--          <div *ngIf="segmentActiveChartDeliveries !== null">-->
+<!--            <label *ngIf="segmentActiveChartDeliveries.label === oneDay">-->
+<!--              {{-->
+<!--              (listDeliveriesOneDay$ | async).length +-->
+<!--              ' ' +-->
+<!--              ((listDeliveriesOneDay$ | async).length === 1-->
+<!--                ? ('strategy.details.delivery' | translate)-->
+<!--                : ('strategy.details.deliveries' | translate)) +-->
+<!--              ' · ' +-->
+<!--              (percentagesChart$ | async).oneDay.percentage +-->
+<!--              '%'-->
+<!--              }}-->
+<!--            </label>-->
+<!--            <label *ngIf="segmentActiveChartDeliveries.label === twoDays">-->
+<!--              {{-->
+<!--              (listDeliveriesTwoDays$ | async).length +-->
+<!--              ' ' +-->
+<!--              ((listDeliveriesTwoDays$ | async).length === 1-->
+<!--                ? ('strategy.details.delivery' | translate)-->
+<!--                : ('strategy.details.deliveries' | translate)) +-->
+<!--              ' · ' +-->
+<!--              (percentagesChart$ | async).twoDays.percentage +-->
+<!--              '%'-->
+<!--              }}-->
+<!--            </label>-->
+<!--            <label *ngIf="segmentActiveChartDeliveries.label === threeDays">-->
+<!--              {{-->
+<!--              (listDeliveriesThreeDays$ | async).length +-->
+<!--              ' ' +-->
+<!--              ((listDeliveriesThreeDays$ | async).length === 1-->
+<!--                ? ('strategy.details.delivery' | translate)-->
+<!--                : ('strategy.details.deliveries' | translate)) +-->
+<!--              ' · ' +-->
+<!--              (percentagesChart$ | async).threeDays.percentage +-->
+<!--              '%'-->
+<!--              }}-->
+<!--            </label>-->
+<!--            <label *ngIf="segmentActiveChartDeliveries.label === moreThanThreeDays">-->
+<!--              {{-->
+<!--              (listDeliveriesMoreThanThreeDays$ | async).length +-->
+<!--              ' ' +-->
+<!--              ((listDeliveriesMoreThanThreeDays$ | async).length === 1-->
+<!--                ? ('strategy.details.delivery' | translate)-->
+<!--                : ('strategy.details.deliveries' | translate)) +-->
+<!--              ' · ' +-->
+<!--              (percentagesChart$ | async).moreThanThreeDays.percentage +-->
+<!--              '%'-->
+<!--              }}-->
+<!--            </label>-->
+<!--            <label *ngIf="segmentActiveChartDeliveries.label === changeNotice">-->
+<!--              {{-->
+<!--              (listDeliveriesChangeNotice$ | async).length +-->
+<!--              ' ' +-->
+<!--              ((listDeliveriesChangeNotice$ | async).length === 1-->
+<!--                ? ('strategy.details.delivery' | translate)-->
+<!--                : ('strategy.details.deliveries' | translate)) +-->
+<!--              ' · ' +-->
+<!--              (percentagesChart$ | async).changeNotice.percentage +-->
+<!--              '%'-->
+<!--              }}-->
+<!--            </label>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="loading" *ngIf="isLoadingDataDeliveries$ | async">-->
+<!--      <app-loading></app-loading>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</app-strategy-pop-up>-->
+<!--<div *ngFor="let item of itemsQuotationScroll; trackBy: handleTrackItemByType">
+  <div
+    class="custom-pop-up"
+    *ngIf="item.popUpByType.isOpen && item.popUpByType.isInRange"
+    [style.z-index]="item.popUpByType.zIndex"
+  >
+    <app-custom-position-pop-up
+      class="pop-up-conversion"
+      [adjustForSmallTarget]="20"
+      [closeButtonSeparation]="viewType === 'macBookAir' ? '18px' : '15px'"
+      [closeButtonSize]="viewType === 'macBookAir' ? '20px' : '18px'"
+      [maxHeight]="viewType === 'macBookAir' ? '603px' : '351px'"
+      [maxWidth]="viewType === 'macBookAir' ? '854px' : '637px'"
+      [minHeight]="viewType === 'macBookAir' ? '603px' : '351px'"
+      [minWidth]="viewType === 'macBookAir' ? '854px' : '637px'"
+      [padding]="'0'"
+      [popUpPosition]="item.popUpByType.position"
+      [target]="getElement(item.popUpByType.elementId)"
+      (closeEmitter)="handlePopUp(item, popUpByType, false)"
+    >
+      <div id="container-pop-up-conversion-by-type">
+        <div class="title">
+          <label>{{ (userData$ | async)?.NombreCliente + ' · ' + ' Tasa de conversión ·' }}</label>
+          <img
+            alt="type"
+            [src]="
+              'assets/Images/strategy/' +
+              (item.TipoPartidaCotizacion === typeOriginal
+                ? 'originals.svg'
+                : item.TipoPartidaCotizacion === typeAlternative
+                ? 'alternatives.svg'
+                : item.TipoPartidaCotizacion === typeComplementary
+                ? 'complements.svg'
+                : item.TipoPartidaCotizacion === typePromotion
+                ? 'planned.svg'
+                : item.TipoPartidaCotizacion === typeSaving
+                ? 'savings.svg'
+                : 'originals.svg')
+            "
+          />
+          <label>{{ 'Tipo ' + item.TipoPartidaCotizacion }}</label>
+          <label>{{ '· ' + oneYear }}</label>
+        </div>
+        <div class="info">
+          <div class="chart-container">
+            <label>Razones</label>
+            <div class="chart">
+              <app-doughnut-chart
+                [title]=""
+                [typeChart]="10"
+                [widthChart]="70"
+                [titleDetails]="'Totales'"
+                [fontSize]="'small'"
+                [data]="item.doughnutChartDataConversionByType"
+                [optionDetails]="item.doughnutChartOptionConversionDetailsByType"
+                [optionDetailsHover]="doughnutChartOptionDetailsConversionHover"
+              >
+              </app-doughnut-chart>
+            </div>
+          </div>
+          <div class="table-container">
+            <label class="title">{{
+              'Cancelaciones · ' + (item.conversionFeesPercentageByType - 100) + '% de ' + item.totalByType + ' partidas'
+            }}</label>
+            <div class="container-labels" *ngIf="item.detailsByType.length > 0">
+              <div *ngFor="let detail of item.detailsByType">
+                <div>
+                  <span class="circle"></span>
+                  <label class="label">{{ detail.Descripcion }}</label>
+                </div>
+                <div>
+                  <label class="percentage">{{ detail.Porcentaje + '%' }}</label>
+                  <label class="total">{{ '· ' + detail.Partidas + (detail.Partidas > 0 ? ' Partidas' : ' Partidas') }}</label>
+                </div>
+              </div>
+            </div>
+            <div class="without-results" *ngIf="item.detailsByType.length === 0">
+              <app-without-results [title]="'No hay partidas canceladas'"></app-without-results>
+            </div>
+          </div>
+        </div>
+      </div>
+    </app-custom-position-pop-up>
+  </div>
+</div>-->
+
+<!--<div id="offer-container" #offerContainer>-->
+<!--  <div class="header">-->
+<!--    <label class="title">-->
+<!--      Partidas-->
+<!--    </label>-->
+<!--    <div class="search">-->
+<!--      <app-search-->
+<!--        [imageFill]="'#008894'"-->
+<!--        [placeholder]="'Buscar'"-->
+<!--        [searchTerm]="searchTerm$ | async"-->
+<!--        [activeRefresh]="true"-->
+<!--        [isSearchByType]="true"-->
+<!--        [typesOfSearch]="listTypesOfSearch$ | async"-->
+<!--        [typeSelected]="typeOfSearch$ | async"-->
+<!--        (textSearch)="handleKeySearch($event)"-->
+<!--        (handleTypeSelected)="setSearchType($event)"-->
+<!--      >-->
+<!--      </app-search>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <div class="table">-->
+<!--    <div>-->
+<!--      <div>-->
+<!--        <div class="head">-->
+<!--          <div class="content-items-quotation" [ngClass]="{'small-mode': offerContainer.offsetWidth < 1300}">-->
+<!--            <div>-->
+<!--              <p>#</p>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--              <p># CAT</p>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--              <p>Concepto</p>-->
+<!--            </div>-->
+<!--            <div class="brands-column">-->
+<!--              <app-drop-list-filters-->
+<!--                [title]="'closeOffer.tableLabels.brands' | translate"-->
+<!--                [items]="bandOptions$ | async"-->
+<!--                [itemSelected]="selectedBrand$ | async"-->
+<!--                (valueDropList)="handleFilterBrand($event)"-->
+<!--              >-->
+<!--              </app-drop-list-filters>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--              <p>TEE (Días Hábiles)</p>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--              <p>Cant. (Pzas)</p>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--              <p>Precio Cat.</p>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--              <p>Precio BOT</p>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--              <p>Valor Total</p>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="body">-->
+<!--          <virtual-scroller-->
+<!--            *ngIf="(itemsQuotation$ | async)?.length > 0"-->
+<!--            [enableUnequalChildrenSizes]="true"-->
+<!--            [items]="itemsQuotation$ | async"-->
+<!--            (vsUpdate)="itemsQuotationScroll = $event"-->
+<!--            (vsChange)="vsChange($event)"-->
+<!--          >-->
+<!--            <div *ngFor="let parentItem of itemsQuotationScroll">-->
+<!--              <div-->
+<!--                class="row-items-quotation"-->
+<!--                [ngClass]="{-->
+<!--                  saving: typeSaving === parentItem.TipoPartidaCotizacion,-->
+<!--                  alternative: typeAlternative === parentItem.TipoPartidaCotizacion,-->
+<!--                  complementary: typeComplementary === parentItem.TipoPartidaCotizacion,-->
+<!--                  'small-mode': offerContainer.offsetWidth < 1300-->
+<!--                }"-->
+<!--              >-->
+<!--                <div class="number">-->
+<!--                  <p *ngIf="parentItem.Index > 0">{{ parentItem.Index }}</p>-->
+<!--                  <img alt="arrow" src="assets/Images/quotation/arrow.svg" *ngIf="parentItem.Index < 0" />-->
+<!--                </div>-->
+<!--                <div class="image">-->
+<!--                  <img-->
+<!--                    alt="type"-->
+<!--                    [src]="-->
+<!--                      'assets/Images/pre-processing/' +-->
+<!--                      (parentItem.TipoPartidaCotizacion === typeOriginal-->
+<!--                        ? 'originales.svg'-->
+<!--                        : parentItem.TipoPartidaCotizacion === typeAlternative-->
+<!--                        ? 'alternativas.svg'-->
+<!--                        : parentItem.TipoPartidaCotizacion === typeComplementary-->
+<!--                        ? 'complementarias.svg'-->
+<!--                        : parentItem.TipoPartidaCotizacion === typePromotion-->
+<!--                        ? 'promocion.svg'-->
+<!--                        : parentItem.TipoPartidaCotizacion === typeSaving-->
+<!--                        ? 'ahorro.svg'-->
+<!--                        : 'originales.svg')-->
+<!--                    "-->
+<!--                  />-->
+<!--                </div>-->
+<!--                <div class="cat" *ngIf="offerContainer.offsetWidth >= 1300">-->
+<!--                  <p>{{ parentItem.Catalogo }}</p>-->
+<!--                </div>-->
+<!--                <div class="concept">-->
+<!--                  <label class="cat-name" *ngIf="offerContainer.offsetWidth < 1300">-->
+<!--                    #CAT · <span>{{ parentItem.Catalogo }}</span-->
+<!--                    ><span> · {{ parentItem.Descripcion }}</span>-->
+<!--                  </label>-->
+<!--                  <p class="name" *ngIf="offerContainer.offsetWidth >= 1300">{{ parentItem.Descripcion }}</p>-->
+<!--                  <p-->
+<!--                    #parentAnchorType-->
+<!--                    class="percentage"-->
+<!--                    (click)="-->
+<!--                      sendInitialDataPopUpConversion(-->
+<!--                        parentAnchorType,-->
+<!--                        parentItem,-->
+<!--                        true,-->
+<!--                        100 - parentItem.PorcentajeTasasConversionTipo-->
+<!--                      )-->
+<!--                    "-->
+<!--                  >-->
+<!--                    {{ 'Tasa Conversión ' + parentItem.PorcentajeTasasConversionTipo + '%' }}-->
+<!--                  </p>-->
+<!--                </div>-->
+<!--                <div class="marks">-->
+<!--                  <div>-->
+<!--                    <div class="brand-image">-->
+<!--                      <img #imageElement alt="logo" [src]="setImage(parentItem.imageHover)" (error)="errorImage()" />-->
+<!--                    </div>-->
+<!--                    <label> {{ parentItem.NombreMarca }}</label>-->
+<!--                  </div>-->
+<!--                  <p-->
+<!--                    #parentAnchorBrand-->
+<!--                    (click)="-->
+<!--                      parentItem.PorcentajeTasasConversionMarca > 0-->
+<!--                        ? sendInitialDataPopUpConversion(-->
+<!--                            parentAnchorBrand,-->
+<!--                            parentItem,-->
+<!--                            false,-->
+<!--                            100 - parentItem.PorcentajeTasasConversionMarca-->
+<!--                          )-->
+<!--                        : null-->
+<!--                    "-->
+<!--                  >-->
+<!--                    {{ 'Tasa Conversión ' + parentItem.PorcentajeTasasConversionMarca + '%' }}-->
+<!--                  </p>-->
+<!--                </div>-->
+<!--                <div class="tee">-->
+<!--                  <p>{{ parentItem.TiempoEntrega }}</p>-->
+<!--                </div>-->
+<!--                <div class="pieces">-->
+<!--                  <p>{{ parentItem.NumeroDePiezas }}</p>-->
+<!--                </div>-->
+<!--                <div class="price-cat">-->
+<!--                  <p-->
+<!--                    >{{ parentItem.PrecioCotizadoUnitarioConvertido | currency: (currency$ | async):'symbol-narrow':'2.2-4' }}-->
+<!--                    {{ currency$ | async }}</p-->
+<!--                  >-->
+<!--                </div>-->
+<!--                <div class="price-bot">-->
+<!--                  <p-->
+<!--                    >{{ parentItem.PrecioCotizadoUnitarioPactado | currency: (currency$ | async):'symbol-narrow':'2.2-4' }}-->
+<!--                    {{ currency$ | async }}</p-->
+<!--                  >-->
+<!--                </div>-->
+<!--                <div class="total">-->
+<!--                  <p-->
+<!--                    >{{ parentItem.PrecioCotizadoSubtotal | currency: (currency$ | async):'symbol-narrow':'2.2-4' }}-->
+<!--                    {{ currency$ | async }}</p-->
+<!--                  >-->
+<!--                </div>-->
+<!--                <div class="percentage">-->
+<!--                  <div class="tooltip">-->
+<!--                    <div>-->
+<!--                      <div>-->
+<!--                        <img-->
+<!--                          alt="indicator_price"-->
+<!--                          [src]="-->
+<!--                            parentItem.PorcentajeSobrePrecioCalculado > 0-->
+<!--                              ? 'assets/Images/strategy/price_up.svg'-->
+<!--                              : 'assets/Images/strategy/price_down.svg'-->
+<!--                          "-->
+<!--                        />-->
+<!--                        <p>{{ handleABS(parentItem.PorcentajeSobrePrecioCalculado) | number: '1.0-0' }}%</p>-->
+<!--                      </div>-->
+<!--                    </div>-->
+<!--                    <div class="tooltip-text">-->
+<!--                      <p>{{-->
+<!--                        parentItem.PorcentajeSobrePrecioCalculado > 0-->
+<!--                          ? 'Arriba del Precio de Lista'-->
+<!--                          : 'De bajo del Precio de Lista'-->
+<!--                      }}</p>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </virtual-scroller>-->
+<!--          <div class="totals">-->
+<!--            <div class="total-items-quotation">-->
+<!--              <div>-->
+<!--                <p>{{-->
+<!--                  (itemsQuotation$ | async).length + ((itemsQuotation$ | async).length === 1 ? ' Partida' : ' Partidas')-->
+<!--                }}</p>-->
+<!--              </div>-->
+<!--              <div></div>-->
+<!--              <div></div>-->
+<!--              <div-->
+<!--                ><p>{{-->
+<!--                  (bandOptions$ | async)?.length + ((bandOptions$ | async)?.length === 1 ? ' Marca' : ' Marcas')-->
+<!--                }}</p></div-->
+<!--              >-->
+<!--              <div></div>-->
+<!--              <div></div>-->
+<!--              <div></div>-->
+<!--              <div></div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="without-results" *ngIf="(itemsQuotation$ | async)?.length === 0 && !(isLoadingItemsQuotation$ | async)">-->
+<!--          <app-without-results></app-without-results>-->
+<!--        </div>-->
+<!--        &lt;!&ndash;        <div class="is-loading" *ngIf="isLoadingItemsQuotation$ | async">&ndash;&gt;-->
+<!--        &lt;!&ndash;          <app-loading></app-loading>&ndash;&gt;-->
+<!--        &lt;!&ndash;        </div>&ndash;&gt;-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <div class="totals">-->
+<!--    <div>-->
+<!--      <label>{{ 'dailyMeeting.details.paymentConditions' | translate }}</label>-->
+<!--      <div class="container-red">-->
+<!--        <label>{{ paymentConditions$ | async }}</label>-->
+<!--        <img-->
+<!--          [src]="popUpIsOpenConditions ? 'assets/Images/strategy/bad-hover.svg' : 'assets/Images/strategy/bad.svg'"-->
+<!--          (click)="popUpIsOpenConditions ? closePopUp('conditions') : sendInitialDataPopUpConditions($event.target)"-->
+<!--        />-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--      <label>{{ 'dailyMeeting.details.deliveries' | translate }}</label>-->
+<!--      <div class="container-blue">-->
+<!--        <label>{{ (percentageDeliveriesInForm$ | async) + ' ' + ('dailyMeeting.details.inTimeAndForm' | translate) }}</label>-->
+<!--        <img-->
+<!--          [src]="popUpIsOpenDelivers ? 'assets/Images/strategy/see-more-hover.svg' : 'assets/Images/strategy/see-more.svg'"-->
+<!--          (click)="popUpIsOpenDelivers ? closePopUp('delivers') : sendInitialDataPopUpDelivers($event.target)"-->
+<!--        />-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--      <label>Ticket Promedio</label>-->
+<!--      <div class="container-green">-->
+<!--        <label>$0 USD</label>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--</div>-->
+<!-- FIXME: SE COMENTAN LOS POP PARA SU FUTURA IMPLEMENTACIÓN CORRECTA EN LA FASE 2) -->
+<!--<app-strategy-pop-up-->
+<!--  class="pop-up-conversion"-->
+<!--  *ngIf="popUpIsOpenConversion"-->
+<!--  (closeEmitter)="closePopUp('conversion')"-->
+<!--  [style.top]="dataPopUpConversion.top"-->
+<!--  [style.left]="dataPopUpConversion.left"-->
+<!--  [positions]="positionsPopUpConversion"-->
+<!--  [trianglePosition]="trianglePositionConversion"-->
+<!--&gt;-->
+<!--  <div id="container-pop-up-conversion_">-->
+<!--    <div class="title">-->
+<!--      <label>Pfizer cliente · tasa de conversión ·</label>-->
+<!--      <img src="assets/Images/strategy/planned.svg" />-->
+<!--      <label>tipo original usp nombre de marca</label>-->
+<!--      <label>· mayo 2019 a mayo 2020</label>-->
+<!--    </div>-->
+<!--    <div class="info">-->
+<!--      <div class="chart-container">-->
+<!--        <label>razones</label>-->
+<!--        <div class="chart">-->
+<!--          <app-doughnut-chart-->
+<!--            [title]=""-->
+<!--            [typeChart]="10"-->
+<!--            [titleDetails]="'Totales'"-->
+<!--            [fontSize]="'small'"-->
+<!--            [data]="doughnutChartDataConversion"-->
+<!--            [optionDetails]="doughnutChartOptionConversionDetails"-->
+<!--            [optionDetailsHover]="doughnutChartOptionDetailsConversionHover"-->
+<!--          >-->
+<!--          </app-doughnut-chart>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="table-container">-->
+<!--        <label class="title">cancelaciones · 50% de 100 partidas</label>-->
+<!--        <div class="container-labels">-->
+<!--          <div>-->
+<!--            <div>-->
+<!--              <span class="circulo process"></span>-->
+<!--              <label class="label">Procesos internos del cliente</label>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--              <label class="percentage">20%</label>-->
+<!--              <label class="total">· 6 Partidas</label>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div>-->
+<!--            <div>-->
+<!--              <span class="circulo quotation"></span>-->
+<!--              <label class="label">Cotizó para presupuesto</label>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--              <label class="percentage">10%</label>-->
+<!--              <label class="total">· 8 Partidas</label>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div>-->
+<!--            <div>-->
+<!--              <span class="circulo offers"></span>-->
+<!--              <label class="label">Ofertas de Proquifa</label>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--              <label class="percentage">4%</label>-->
+<!--              <label class="total">· 5 Partidas</label>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div>-->
+<!--            <div>-->
+<!--              <span class="circulo price"></span>-->
+<!--              <label class="label">Precio Alto</label>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--              <label class="percentage">7%</label>-->
+<!--              <label class="total">· 8 Partidas</label>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div>-->
+<!--            <div>-->
+<!--              <span class="circulo time"></span>-->
+<!--              <label class="label">Tiempo de Entrega</label>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--              <label class="percentage">4%</label>-->
+<!--              <label class="total">· 5 Partidas</label>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div>-->
+<!--            <div>-->
+<!--              <span class="circulo conditions"></span>-->
+<!--              <label class="label">Condiciones de Pago</label>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--              <label class="percentage">4%</label>-->
+<!--              <label class="total">· 5 Partidas</label>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</app-strategy-pop-up>-->
+<!--<div *ngFor="let item of itemsQuotationScroll; trackBy: handleTrackItemByType">-->
+<!--  <div-->
+<!--    class="custom-pop-up"-->
+<!--    *ngIf="item.popUpByType.isOpen && item.popUpByType.isInRange"-->
+<!--    [style.z-index]="item.popUpByType.zIndex"-->
+<!--  >-->
+<!--    <app-custom-position-pop-up-->
+<!--      class="pop-up-conversion"-->
+<!--      [adjustForSmallTarget]="20"-->
+<!--      [closeButtonSeparation]="viewType === 'macBookAir' ? '18px' : '15px'"-->
+<!--      [closeButtonSize]="viewType === 'macBookAir' ? '20px' : '18px'"-->
+<!--      [maxHeight]="viewType === 'macBookAir' ? '603px' : '351px'"-->
+<!--      [maxWidth]="viewType === 'macBookAir' ? '854px' : '637px'"-->
+<!--      [minHeight]="viewType === 'macBookAir' ? '603px' : '351px'"-->
+<!--      [minWidth]="viewType === 'macBookAir' ? '854px' : '637px'"-->
+<!--      [padding]="'0'"-->
+<!--      [popUpPosition]="item.popUpByType.position"-->
+<!--      [target]="getElement(item.popUpByType.elementId)"-->
+<!--      (closeEmitter)="handlePopUp(item, popUpByType, false)"-->
+<!--    >-->
+<!--      <div id="container-pop-up-conversion-by-type">-->
+<!--        <div class="title">-->
+<!--          <label>{{ (userData$ | async)?.NombreCliente + ' · ' + ' Tasa de conversión ·' }}</label>-->
+<!--          <img-->
+<!--            alt="type"-->
+<!--            [src]="-->
+<!--              'assets/Images/strategy/' +-->
+<!--              (item.TipoPartidaCotizacion === typeOriginal-->
+<!--                ? 'originals.svg'-->
+<!--                : item.TipoPartidaCotizacion === typeAlternative-->
+<!--                ? 'alternatives.svg'-->
+<!--                : item.TipoPartidaCotizacion === typeComplementary-->
+<!--                ? 'complements.svg'-->
+<!--                : item.TipoPartidaCotizacion === typePromotion-->
+<!--                ? 'planned.svg'-->
+<!--                : item.TipoPartidaCotizacion === typeSaving-->
+<!--                ? 'savings.svg'-->
+<!--                : 'originals.svg')-->
+<!--            "-->
+<!--          />-->
+<!--          <label>{{ 'Tipo ' + item.TipoPartidaCotizacion }}</label>-->
+<!--          <label>{{ '· ' + oneYear }}</label>-->
+<!--        </div>-->
+<!--        <div class="info">-->
+<!--          <div class="chart-container">-->
+<!--            <label>Razones</label>-->
+<!--            <div class="chart">-->
+<!--              <app-doughnut-chart-->
+<!--                [title]=""-->
+<!--                [typeChart]="10"-->
+<!--                [titleDetails]="'Totales'"-->
+<!--                [fontSize]="'small'"-->
+<!--                [data]="item.doughnutChartDataConversionByType"-->
+<!--                [optionDetails]="item.doughnutChartOptionConversionDetailsByType"-->
+<!--                [optionDetailsHover]="doughnutChartOptionDetailsConversionHover"-->
+<!--              >-->
+<!--              </app-doughnut-chart>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="table-container">-->
+<!--            <label class="title">{{-->
+<!--              'Cancelaciones · ' + (100 - item.conversionFeesPercentageByType) + '% de ' + item.totalByType + ' partidas'-->
+<!--            }}</label>-->
+<!--            <div class="container-labels" *ngIf="item.detailsByType.length > 0">-->
+<!--              <div *ngFor="let detail of item.detailsByType">-->
+<!--                <div>-->
+<!--                  <span class="circle"></span>-->
+<!--                  <label class="label">{{ detail.Descripcion }}</label>-->
+<!--                </div>-->
+<!--                <div>-->
+<!--                  <label class="percentage">{{ detail.Porcentaje + '%' }}</label>-->
+<!--                  <label class="total">{{ '· ' + detail.Partidas + (detail.Partidas !== 1 ? ' Partidas' : ' Partida') }}</label>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="without-results" *ngIf="item.detailsByType.length === 0">-->
+<!--              <app-without-results [title]="'No hay partidas canceladas'"></app-without-results>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </app-custom-position-pop-up>-->
+<!--  </div>-->
+<!--</div>-->
+<!--<div *ngFor="let item of itemsQuotationScroll; trackBy: handleTrackItemByBrand">-->
+<!--  <div-->
+<!--    class="custom-pop-up"-->
+<!--    *ngIf="item.popUpByBrand.isOpen && item.popUpByBrand.isInRange"-->
+<!--    [style.z-index]="item.popUpByBrand.zIndex"-->
+<!--  >-->
+<!--    <app-custom-position-pop-up-->
+<!--      class="pop-up-conversion"-->
+<!--      [adjustForSmallTarget]="20"-->
+<!--      [closeButtonSeparation]="viewType === 'macBookAir' ? '18px' : '15px'"-->
+<!--      [closeButtonSize]="viewType === 'macBookAir' ? '20px' : '18px'"-->
+<!--      [maxHeight]="viewType === 'macBookAir' ? '603px' : '351px'"-->
+<!--      [maxWidth]="viewType === 'macBookAir' ? '854px' : '637px'"-->
+<!--      [minHeight]="viewType === 'macBookAir' ? '603px' : '351px'"-->
+<!--      [minWidth]="viewType === 'macBookAir' ? '854px' : '637px'"-->
+<!--      [padding]="'0'"-->
+<!--      [popUpPosition]="item.popUpByBrand.position"-->
+<!--      [target]="getElement(item.popUpByBrand.elementId)"-->
+<!--      (closeEmitter)="handlePopUp(item, popUpByBrand, false)"-->
+<!--    >-->
+<!--      <div id="container-pop-up-conversion-by-brand">-->
+<!--        <div class="title">-->
+<!--          <label>{{ (userData$ | async)?.NombreCliente + ' · ' + ' Tasa de conversión ·' }}</label>-->
+<!--          <img-->
+<!--            alt="type"-->
+<!--            [src]="-->
+<!--              'assets/Images/strategy/' +-->
+<!--              (item.TipoPartidaCotizacion === typeOriginal-->
+<!--                ? 'originals.svg'-->
+<!--                : item.TipoPartidaCotizacion === typeAlternative-->
+<!--                ? 'alternatives.svg'-->
+<!--                : item.TipoPartidaCotizacion === typeComplementary-->
+<!--                ? 'complements.svg'-->
+<!--                : item.TipoPartidaCotizacion === typePromotion-->
+<!--                ? 'planned.svg'-->
+<!--                : item.TipoPartidaCotizacion === typeSaving-->
+<!--                ? 'savings.svg'-->
+<!--                : 'originals.svg')-->
+<!--            "-->
+<!--          />-->
+<!--          <label>{{ 'Tipo ' + item.TipoPartidaCotizacion + ' · ' + item.NombreMarca }}</label>-->
+<!--          <label>{{ '· ' + oneYear }}</label>-->
+<!--        </div>-->
+<!--        <div class="info">-->
+<!--          <div class="chart-container">-->
+<!--            <label>Razones</label>-->
+<!--            <div class="chart">-->
+<!--              <app-doughnut-chart-->
+<!--                [title]=""-->
+<!--                [typeChart]="10"-->
+<!--                [titleDetails]="'Totales'"-->
+<!--                [fontSize]="'small'"-->
+<!--                [data]="item.doughnutChartDataConversionByBrand"-->
+<!--                [optionDetails]="item.doughnutChartOptionConversionDetailsByBrand"-->
+<!--                [optionDetailsHover]="doughnutChartOptionDetailsConversionHover"-->
+<!--              >-->
+<!--              </app-doughnut-chart>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="table-container">-->
+<!--            <label class="title">{{-->
+<!--              'Cancelaciones · ' + (100 - item.conversionFeesPercentageByBrand) + '% de ' + item.totalByBrand + ' partidas'-->
+<!--            }}</label>-->
+<!--            <div class="container-labels" *ngIf="item.detailsByBrand.length > 0">-->
+<!--              <div *ngFor="let detail of item.detailsByBrand">-->
+<!--                <div>-->
+<!--                  <span class="circle"></span>-->
+<!--                  <label class="label">{{ detail.Descripcion }}</label>-->
+<!--                </div>-->
+<!--                <div>-->
+<!--                  <label class="percentage">{{ detail.Porcentaje + '%' }}</label>-->
+<!--                  <label class="total">{{ '· ' + detail.Partidas + (detail.Partidas > 0 ? ' Partidas' : ' Partidas') }}</label>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="without-results" *ngIf="item.detailsByBrand.length === 0">-->
+<!--              <app-without-results [title]="'No hay partidas canceladas'"></app-without-results>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </app-custom-position-pop-up>-->
+<!--  </div>-->
+<!--</div>-->
+<!--<app-strategy-pop-up-->
+<!--  class="pop-up-conditions"-->
+<!--  *ngIf="popUpIsOpenConditions"-->
+<!--  (closeEmitter)="closePopUp('conditions')"-->
+<!--  [style.top]="dataPopUpConditions.top"-->
+<!--  [style.left]="dataPopUpConditions.left"-->
+<!--  [positions]="positionsPopUpConditions"-->
+<!--&gt;-->
+<!--  <div id="container-pop-up-conditions">-->
+<!--    <div class="header">-->
+<!--      <img src="assets/Images/strategy/bad.svg" />-->
+<!--      <label>{{ (userData$ | async)?.NombreCliente }}</label>-->
+<!--    </div>-->
+<!--    <div class="content-info" *ngIf="!(isLoadingPendingInvoices$ | async)">-->
+<!--      <div class="bar-line">-->
+<!--        <div>-->
+<!--          <label>{{ 'strategy.details.paymentConditions' | translate }}</label>-->
+<!--          <label class="green">{{ (pendingInvoices$ | async)?.catCondicionesDePago.CondicionesDePago }}</label>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--          <label>{{ 'strategy.details.creditLine' | translate }}</label>-->
+<!--          <label class="green">{{-->
+<!--            ((pendingInvoices$ | async)?.ConfiguracionPagos.LineaCredito | currency: (selectCurrencyClient$ | async)) +-->
+<!--              ' ' +-->
+<!--              (selectCurrencyClient$ | async)-->
+<!--          }}</label>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--          <label>{{ 'strategy.details.healthyDebt' | translate }}</label>-->
+<!--          <label class="green">{{-->
+<!--            ((doughnutChartDataConditions$ | async).values[1] | currency: (selectCurrencyClient$ | async)) +-->
+<!--              ' ' +-->
+<!--              (selectCurrencyClient$ | async)-->
+<!--          }}</label>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--          <label>{{ 'strategy.details.expiredDebt' | translate }}</label>-->
+<!--          <label class="red">{{-->
+<!--            ((doughnutChartDataConditions$ | async).values[0] | currency: (selectCurrencyClient$ | async)) +-->
+<!--              ' ' +-->
+<!--              (selectCurrencyClient$ | async)-->
+<!--          }}</label>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--          <label>{{ 'strategy.details.positiveBalance' | translate }}</label>-->
+<!--          <label class="green">{{-->
+<!--            ((doughnutChartDataConditions$ | async).values[2] | currency: (selectCurrencyClient$ | async)) +-->
+<!--              ' ' +-->
+<!--              (selectCurrencyClient$ | async)-->
+<!--          }}</label>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--          <label>{{ 'strategy.details.remains' | translate }}</label>-->
+<!--          <label class="yellow">{{-->
+<!--            (selectRemains$ | async | currency: (selectCurrencyClient$ | async)) + ' ' + (selectCurrencyClient$ | async)-->
+<!--          }}</label>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="complaints">-->
+<!--        <div class="container-chart">-->
+<!--          <div class="chart-container">-->
+<!--            <div class="chart">-->
+<!--              <app-doughnut-chart-->
+<!--                [title]=""-->
+<!--                [typeChart]="11"-->
+<!--                [titleDetails]="'Totales'"-->
+<!--                [fontSize]="'small'"-->
+<!--                [showPercentage]="false"-->
+<!--                [adjustTotals]="true"-->
+<!--                [enableOnClick]="true"-->
+<!--                (segmentActive)="setSegmentActive($event, 'conditions')"-->
+<!--                [data]="doughnutChartDataConditions$ | async"-->
+<!--                [optionDetails]="doughnutChartOptionConditionsDetails$ | async"-->
+<!--                [optionDetailsHover]="doughnutChartOptionDetailsConditionsHover$ | async"-->
+<!--              >-->
+<!--              </app-doughnut-chart>-->
+<!--            </div>-->
+<!--            <div class="labels">-->
+<!--              <div>-->
+<!--                <span class="circulo" [style.background]="'#dd4543'"></span>-->
+<!--                <p>{{ 'strategy.details.delinquent' | translate }}</p>-->
+<!--              </div>-->
+<!--              <div>-->
+<!--                <span class="circulo" [style.background]="'#4ba92b'"></span>-->
+<!--                <p>{{ 'strategy.details.healthyDebt' | translate }}</p>-->
+<!--              </div>-->
+<!--              <div>-->
+<!--                <span class="circulo" [style.background]="'#5793f3'"></span>-->
+<!--                <p>{{ 'strategy.details.creditNotes' | translate }}</p>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="container-table">-->
+<!--          <div>-->
+<!--            <div *ngIf="segmentActiveChartConditions !== null">-->
+<!--              <span-->
+<!--                class="circulo"-->
+<!--                [style.background]="-->
+<!--                  segmentActiveChartConditions.label === delinquent-->
+<!--                    ? '#dd4543'-->
+<!--                    : segmentActiveChartConditions.label === creditNotes-->
+<!--                    ? '#5793f3'-->
+<!--                    : segmentActiveChartConditions.label === healthyDebt-->
+<!--                    ? '#4ba92b'-->
+<!--                    : ''-->
+<!--                "-->
+<!--              ></span>-->
+<!--              <label>{{ segmentActiveChartConditions.label }}</label>-->
+<!--            </div>-->
+<!--            <div *ngIf="segmentActiveChartConditions !== null">-->
+<!--              <app-hamburger-menu-->
+<!--                [options]="filters$ | async"-->
+<!--                [value]="(filterSelected$ | async).value"-->
+<!--                [position]="'right'"-->
+<!--                (valueEmit)="setOrder($event)"-->
+<!--              >-->
+<!--              </app-hamburger-menu>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="table">-->
+<!--            <div>-->
+<!--              <div class="body" *ngIf="segmentActiveChartConditions !== null">-->
+<!--                <virtual-scroller-->
+<!--                  [items]="-->
+<!--                    segmentActiveChartConditions.label === delinquent-->
+<!--                      ? (listDelinquentBills$ | async)-->
+<!--                      : segmentActiveChartConditions.label === creditNotes-->
+<!--                      ? (listCreditNotes$ | async)-->
+<!--                      : segmentActiveChartConditions.label === healthyDebt-->
+<!--                      ? (listHealthyDebtBills$ | async)-->
+<!--                      : []-->
+<!--                  "-->
+<!--                  (vsUpdate)="scrollItemsPendingsInvoices = $event"-->
+<!--                >-->
+<!--                  <div class="row-items-quotation" *ngFor="let item of scrollItemsPendingsInvoices">-->
+<!--                    <div>-->
+<!--                      <div class="line-one">-->
+<!--                        <p>#{{ item.Index }} · </p>-->
+<!--                        <p>{{ item.m_Item1.Folio ? item.m_Item1.Folio : 'ND' }}</p>-->
+<!--                      </div>-->
+<!--                      <div class="line-two" *ngIf="segmentActiveChartConditions.label !== creditNotes">-->
+<!--                        <p>{{-->
+<!--                          ('strategy.details.collectDate' | translate) +-->
+<!--                            ' ' +-->
+<!--                            (item.m_Item1.FechaCompromisoPago | dateFormatSlashShort)-->
+<!--                        }}</p>-->
+<!--                      </div>-->
+<!--                    </div>-->
+<!--                    <div>-->
+<!--                      <label *ngIf="segmentActiveChartConditions.label === delinquent" class="text-red">-->
+<!--                        {{ (item.m_Item4 | currency: (selectCurrencyClient$ | async)) + ' ' + (selectCurrencyClient$ | async) }}-->
+<!--                      </label>-->
+<!--                      <label *ngIf="segmentActiveChartConditions.label === healthyDebt" class="text-green">-->
+<!--                        {{ (item.m_Item4 | currency: (selectCurrencyClient$ | async)) + ' ' + (selectCurrencyClient$ | async) }}-->
+<!--                      </label>-->
+<!--                      <label-->
+<!--                        *ngIf="segmentActiveChartConditions.label === creditNotes && lodash.isFinite(item.m_Item3)"-->
+<!--                        class="text-blue"-->
+<!--                      >-->
+<!--                        {{ (item.m_Item3 | currency: (selectCurrencyClient$ | async)) + ' ' + (selectCurrencyClient$ | async) }}-->
+<!--                      </label>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </virtual-scroller>-->
+<!--              </div>-->
+<!--              <div class="without-results" *ngIf="segmentActiveChartConditions === null">-->
+<!--                <app-without-results [title]="'SELECCIONA LA GRÁFICA PARA HABILITAR ESTA SECCIÓN'"></app-without-results>-->
+<!--              </div>-->
+<!--              <div-->
+<!--                class="without-results"-->
+<!--                *ngIf="segmentActiveChartConditions !== null && scrollItemsPendingsInvoices.length === 0"-->
+<!--              >-->
+<!--                <app-without-results [title]="'Sin facturas'"></app-without-results>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="footer-table">-->
+<!--            <div *ngIf="segmentActiveChartConditions !== null">-->
+<!--              <label class="label-1" *ngIf="segmentActiveChartConditions.label === creditNotes">-->
+<!--                {{ (listCreditNotes$ | async).length + ' ' + ('dailyMeeting.details.notes' | translate) }}-->
+<!--              </label>-->
+<!--              <label class="label-1" *ngIf="segmentActiveChartConditions.label === healthyDebt">-->
+<!--                {{ (listHealthyDebtBills$ | async).length + ' ' + ('dailyMeeting.details.invoices' | translate) }}-->
+<!--              </label>-->
+<!--              <label class="label-1" *ngIf="segmentActiveChartConditions.label === delinquent">-->
+<!--                {{ (listDelinquentBills$ | async).length + ' ' + ('dailyMeeting.details.invoices' | translate) }}-->
+<!--              </label>-->
+<!--              <label class="label-2">-->
+<!--                {{-->
+<!--                  ('dailyMeeting.details.total' | translate) +-->
+<!--                    ' ' +-->
+<!--                    (segmentActiveChartConditions.label === creditNotes-->
+<!--                      ? (totalCreditNotes$ | async | currency: (selectCurrencyClient$ | async))-->
+<!--                      : segmentActiveChartConditions.label === delinquent-->
+<!--                      ? (totalDelinquent$ | async | currency: (selectCurrencyClient$ | async))-->
+<!--                      : segmentActiveChartConditions.label === healthyDebt-->
+<!--                      ? (totalHealthy$ | async | currency: (selectCurrencyClient$ | async))-->
+<!--                      : '') +-->
+<!--                    ' ' +-->
+<!--                    (selectCurrencyClient$ | async)-->
+<!--                }}</label-->
+<!--              >-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="loading" *ngIf="isLoadingPendingInvoices$ | async">-->
+<!--      <app-loading></app-loading>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</app-strategy-pop-up>-->
+<!--<app-strategy-pop-up-->
+<!--  class="pop-up-delivers"-->
+<!--  *ngIf="popUpIsOpenDelivers"-->
+<!--  (closeEmitter)="closePopUp('delivers')"-->
+<!--  [style.top]="dataPopUpDelivers.top"-->
+<!--  [style.left]="dataPopUpDelivers.left"-->
+<!--  [positions]="positionsPopUpDelivery"-->
+<!--&gt;-->
+<!--  <div id="container-pop-up-delivers">-->
+<!--    <div class="title" *ngIf="!(isLoadingDataDeliveries$ | async)">-->
+<!--      <label>{{ 'entregas ·' }}</label>-->
+<!--      <label>{{-->
+<!--        'Fuera de tiempo · ' +-->
+<!--          (percentageDeliveriesOutOfTime$ | async) +-->
+<!--          ' ' +-->
+<!--          (totalDeliveries$ | async) +-->
+<!--          ((totalDeliveries$ | async) === 1 ? ' Partida' : ' Partidas')-->
+<!--      }}</label>-->
+<!--      <label> {{ '· ' + (userData$ | async)?.NombreCliente }}</label>-->
+<!--      <label>{{ '· ' + oneYear }}</label>-->
+<!--    </div>-->
+<!--    <div class="complaints" *ngIf="!(isLoadingDataDeliveries$ | async)">-->
+<!--      <div class="container-chart">-->
+<!--        <div class="chart-container">-->
+<!--          <label>{{ 'Tiempos de Referencia' }}</label>-->
+<!--          <div class="chart">-->
+<!--            <app-bar-chart-->
+<!--              [values]="valuesBarChart$ | async"-->
+<!--              [enableOnClick]="true"-->
+<!--              [textDataLabel]="'P.'"-->
+<!--              [totalPercentage]="totalDeliveries$ | async"-->
+<!--              [fontSize]="9"-->
+<!--              (segmentActive)="setSegmentActive($event, 'deliveries')"-->
+<!--            >-->
+<!--            </app-bar-chart>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="container-table">-->
+<!--        <div>-->
+<!--          <div *ngIf="segmentActiveChartDeliveries !== null">-->
+<!--            <span-->
+<!--              class="circulo"-->
+<!--              [style.background]="-->
+<!--                segmentActiveChartDeliveries.label === oneDay-->
+<!--                  ? '#df798c'-->
+<!--                  : segmentActiveChartDeliveries.label === twoDays-->
+<!--                  ? '#d85971'-->
+<!--                  : segmentActiveChartDeliveries.label === threeDays-->
+<!--                  ? '#d74460'-->
+<!--                  : segmentActiveChartDeliveries.label === moreThanThreeDays-->
+<!--                  ? '#c32644'-->
+<!--                  : segmentActiveChartDeliveries.label === changeNotice-->
+<!--                  ? '#f5a523'-->
+<!--                  : ''-->
+<!--              "-->
+<!--            ></span>-->
+<!--            <label>{{ segmentActiveChartDeliveries.label }}</label>-->
+<!--            <label-->
+<!--              [ngClass]="-->
+<!--                segmentActiveChartDeliveries.label === oneDay-->
+<!--                  ? 'text-red4'-->
+<!--                  : segmentActiveChartDeliveries.label === twoDays-->
+<!--                  ? 'text-red3'-->
+<!--                  : segmentActiveChartDeliveries.label === threeDays-->
+<!--                  ? 'text-red2'-->
+<!--                  : segmentActiveChartDeliveries.label === moreThanThreeDays-->
+<!--                  ? 'text-red1'-->
+<!--                  : segmentActiveChartDeliveries.label === changeNotice-->
+<!--                  ? 'text-yellow'-->
+<!--                  : ''-->
+<!--              "-->
+<!--            >-->
+<!--              {{-->
+<!--                '· ' +-->
+<!--                  (segmentActiveChartDeliveries.label === oneDay-->
+<!--                    ? (percentagesChart$ | async).oneDay.percentage +-->
+<!--                      '% · ' +-->
+<!--                      (percentagesChart$ | async).oneDay.total +-->
+<!--                      ' ' +-->
+<!--                      ((percentagesChart$ | async).oneDay.total === 1-->
+<!--                        ? ('dailyMeeting.details.item' | translate)-->
+<!--                        : ('dailyMeeting.details.items' | translate))-->
+<!--                    : segmentActiveChartDeliveries.label === twoDays-->
+<!--                    ? (percentagesChart$ | async).twoDays.percentage +-->
+<!--                      '% · ' +-->
+<!--                      (percentagesChart$ | async).twoDays.total +-->
+<!--                      ' ' +-->
+<!--                      ((percentagesChart$ | async).twoDays.total === 1-->
+<!--                        ? ('dailyMeeting.details.item' | translate)-->
+<!--                        : ('dailyMeeting.details.items' | translate))-->
+<!--                    : segmentActiveChartDeliveries.label === threeDays-->
+<!--                    ? (percentagesChart$ | async).threeDays.percentage +-->
+<!--                      '% · ' +-->
+<!--                      (percentagesChart$ | async).threeDays.total +-->
+<!--                      ' ' +-->
+<!--                      ((percentagesChart$ | async).threeDays.total === 1-->
+<!--                        ? ('dailyMeeting.details.item' | translate)-->
+<!--                        : ('dailyMeeting.details.items' | translate))-->
+<!--                    : segmentActiveChartDeliveries.label === moreThanThreeDays-->
+<!--                    ? (percentagesChart$ | async).moreThanThreeDays.percentage +-->
+<!--                      '% · ' +-->
+<!--                      (percentagesChart$ | async).moreThanThreeDays.total +-->
+<!--                      ' ' +-->
+<!--                      ((percentagesChart$ | async).moreThanThreeDays.total === 1-->
+<!--                        ? ('dailyMeeting.details.item' | translate)-->
+<!--                        : ('dailyMeeting.details.items' | translate))-->
+<!--                    : segmentActiveChartDeliveries.label === changeNotice-->
+<!--                    ? (percentagesChart$ | async).changeNotice.percentage +-->
+<!--                      '% · ' +-->
+<!--                      (percentagesChart$ | async).changeNotice.total +-->
+<!--                      ' ' +-->
+<!--                      ((percentagesChart$ | async).changeNotice.total === 1-->
+<!--                        ? ('dailyMeeting.details.item' | translate)-->
+<!--                        : ('dailyMeeting.details.items' | translate))-->
+<!--                    : '')-->
+<!--              }}-->
+<!--            </label>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="table">-->
+<!--          <div>-->
+<!--            <div class="body" *ngIf="segmentActiveChartDeliveries !== null">-->
+<!--              <virtual-scroller-->
+<!--                [items]="-->
+<!--                  segmentActiveChartDeliveries.label === oneDay-->
+<!--                    ? (listDeliveriesOneDay$ | async)-->
+<!--                    : segmentActiveChartDeliveries.label === twoDays-->
+<!--                    ? (listDeliveriesTwoDays$ | async)-->
+<!--                    : segmentActiveChartDeliveries.label === threeDays-->
+<!--                    ? (listDeliveriesThreeDays$ | async)-->
+<!--                    : segmentActiveChartDeliveries.label === moreThanThreeDays-->
+<!--                    ? (listDeliveriesMoreThanThreeDays$ | async)-->
+<!--                    : segmentActiveChartDeliveries.label === changeNotice-->
+<!--                    ? (listDeliveriesChangeNotice$ | async)-->
+<!--                    : []-->
+<!--                "-->
+<!--                (vsUpdate)="scrollItemsDeliveries = $event"-->
+<!--              >-->
+<!--                <div class="row-items-quotation" *ngFor="let item of scrollItemsDeliveries; index as productIndex">-->
+<!--                  <div>-->
+<!--                    <div class="line-one">-->
+<!--                      <p>{{ '#' + item.Index + ' · ' }}</p>-->
+<!--                      <p>{{ ('dailyMeeting.details.invoice' | translate) + ' ' + item.Factura + ' · ' }}</p>-->
+<!--                      <p>{{-->
+<!--                        (viewType === viewIpad-->
+<!--                          ? ('dailyMeeting.details.internalOrderShort' | translate)-->
+<!--                          : ('dailyMeeting.details.internalOrder' | translate)) +-->
+<!--                          ' ' +-->
+<!--                          item.Pedido-->
+<!--                      }}</p>-->
+<!--                      <p>{{-->
+<!--                        '· ' +-->
+<!--                          item.NumeroPiezas +-->
+<!--                          ' ' +-->
+<!--                          (item.NumeroPiezas > 1-->
+<!--                            ? ('dailyMeeting.details.pieces' | translate)-->
+<!--                            : ('dailyMeeting.details.piece' | translate))-->
+<!--                      }}</p>-->
+<!--                    </div>-->
+<!--                    <div class="line-two">-->
+<!--                      <p>{{ 'FEE ' + (item.FechaEstimadaEntrega | dateFormatSlashShort) }}</p>-->
+<!--                      <p>{{ ' · FRE ' + (item.FechaRealEntrega | dateFormatSlashShort) }}</p>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                  <div>-->
+<!--                    <label class="text-red">{{ item.labelDays }}</label>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </virtual-scroller>-->
+<!--            </div>-->
+<!--            <div class="without-results" *ngIf="segmentActiveChartDeliveries === null">-->
+<!--              <app-without-results [title]="'SELECCIONA LA GRÁFICA PARA HABILITAR ESTA SECCIÓN'"></app-without-results>-->
+<!--            </div>-->
+<!--            <div class="without-results" *ngIf="segmentActiveChartDeliveries !== null && scrollItemsDeliveries.length === 0">-->
+<!--              <app-without-results [title]="'Sin Entregas'"></app-without-results>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="footer-table">-->
+<!--          <div *ngIf="segmentActiveChartDeliveries !== null">-->
+<!--            <label *ngIf="segmentActiveChartDeliveries.label === oneDay">-->
+<!--              {{-->
+<!--                (listDeliveriesOneDay$ | async).length +-->
+<!--                  ' ' +-->
+<!--                  ((listDeliveriesOneDay$ | async).length === 1-->
+<!--                    ? ('dailyMeeting.details.delivery' | translate)-->
+<!--                    : ('dailyMeeting.details.deliveries' | translate)) +-->
+<!--                  ' · ' +-->
+<!--                  (percentagesChart$ | async).oneDay.percentage +-->
+<!--                  '%'-->
+<!--              }}-->
+<!--            </label>-->
+<!--            <label *ngIf="segmentActiveChartDeliveries.label === twoDays">-->
+<!--              {{-->
+<!--                (listDeliveriesTwoDays$ | async).length +-->
+<!--                  ' ' +-->
+<!--                  ((listDeliveriesTwoDays$ | async).length === 1-->
+<!--                    ? ('dailyMeeting.details.delivery' | translate)-->
+<!--                    : ('dailyMeeting.details.deliveries' | translate)) +-->
+<!--                  ' · ' +-->
+<!--                  (percentagesChart$ | async).twoDays.percentage +-->
+<!--                  '%'-->
+<!--              }}-->
+<!--            </label>-->
+<!--            <label *ngIf="segmentActiveChartDeliveries.label === threeDays">-->
+<!--              {{-->
+<!--                (listDeliveriesThreeDays$ | async).length +-->
+<!--                  ' ' +-->
+<!--                  ((listDeliveriesThreeDays$ | async).length === 1-->
+<!--                    ? ('dailyMeeting.details.delivery' | translate)-->
+<!--                    : ('dailyMeeting.details.deliveries' | translate)) +-->
+<!--                  ' · ' +-->
+<!--                  (percentagesChart$ | async).threeDays.percentage +-->
+<!--                  '%'-->
+<!--              }}-->
+<!--            </label>-->
+<!--            <label *ngIf="segmentActiveChartDeliveries.label === moreThanThreeDays">-->
+<!--              {{-->
+<!--                (listDeliveriesMoreThanThreeDays$ | async).length +-->
+<!--                  ' ' +-->
+<!--                  ((listDeliveriesMoreThanThreeDays$ | async).length === 1-->
+<!--                    ? ('dailyMeeting.details.delivery' | translate)-->
+<!--                    : ('dailyMeeting.details.deliveries' | translate)) +-->
+<!--                  ' · ' +-->
+<!--                  (percentagesChart$ | async).moreThanThreeDays.percentage +-->
+<!--                  '%'-->
+<!--              }}-->
+<!--            </label>-->
+<!--            <label *ngIf="segmentActiveChartDeliveries.label === changeNotice">-->
+<!--              {{-->
+<!--                (listDeliveriesChangeNotice$ | async).length +-->
+<!--                  ' ' +-->
+<!--                  ((listDeliveriesChangeNotice$ | async).length === 1-->
+<!--                    ? ('dailyMeeting.details.delivery' | translate)-->
+<!--                    : ('dailyMeeting.details.deliveries' | translate)) +-->
+<!--                  ' · ' +-->
+<!--                  (percentagesChart$ | async).changeNotice.percentage +-->
+<!--                  '%'-->
+<!--              }}-->
+<!--            </label>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="loading" *ngIf="isLoadingDataDeliveries$ | async">-->
+<!--      <app-loading></app-loading>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</app-strategy-pop-up>-->

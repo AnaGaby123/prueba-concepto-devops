@@ -1,0 +1,437 @@
+<div id="close-offer-details-container">
+  <div class="container">
+    <div class="arrow" [ngClass]="(clientPanelIsOpen$ | async) ? '' : 'close'">
+      <img src="assets/Images/arrows/flecha_mostrar.svg" alt="arrow" (click)="handleLeftContainer()" />
+    </div>
+    <div class="left-container" [ngClass]="(clientPanelIsOpen$ | async) ? '' : 'close'">
+      <div class="slide">
+        <div class="client-title">
+          <label class="textUpperCase">{{ 'closeOffer.client' | translate }} · </label>
+          <label class="textUpperCase">{{ 'closeOffer.withContract' | translate }}</label>
+        </div>
+        <div class="client">
+          <div class="image">
+            <img #imageElement [src]="setImage((clientData$ | async)?.imageHover)" (error)="errorImage()" />
+          </div>
+          <div class="client-info">
+            <div>
+              <label>{{ (client$ | async).Nombre }}</label>
+            </div>
+            <label>{{ 'closeOffer.client' | translate }}</label>
+          </div>
+        </div>
+        <div class="totals">
+          <div class="left">
+            <label class="title">{{ 'closeOffer.request' | translate }}</label>
+            <label class="totals">{{ (generalData$ | async)?.totalQuotations }}</label>
+          </div>
+          <div class="right">
+            <label class="title">{{ 'quotation.details.segmentation' | translate }}</label>
+            <div class="segmentation">
+              <img
+                [src]="
+                  (generalData$ | async)?.incomeLevel
+                    ? 'assets/Images/clientes/niveles-ingreso/' +
+                      incomeLevelHelper((generalData$ | async)?.incomeLevel) +
+                      '.svg'
+                    : 'assets/Images/clientes/niveles-ingreso/bajo.svg'
+                "
+                [alt]="(generalData$ | async)?.incomeLevel"
+              />
+              <img
+                [src]="
+                  (generalData$ | async)?.category
+                    ? 'assets/Images/clientes/categorias/' + lodashToLower((generalData$ | async)?.category) + '.svg'
+                    : 'assets/Images/clientes/categorias/rest.svg'
+                "
+                alt="bajo"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="content">
+          <div class="client-data">
+            <div>
+              <label>{{ 'closeOffer.clientData' | translate }}</label>
+            </div>
+            <div>
+              <label>{{ 'closeOffer.assignedEsac' | translate }}: </label>
+              <label>{{ ' ' + (generalData$ | async)?.assignedUser }}</label>
+            </div>
+            <div>
+              <label>{{ 'closeOffer.whoBills' | translate }}: </label>
+              <label>{{ (generalData$ | async)?.whoBills }}</label>
+            </div>
+            <div>
+              <label>{{ 'closeOffer.invoiceCurrency' | translate }}: </label>
+              <label>{{ (generalData$ | async)?.billingCurrency }}</label>
+            </div>
+            <div>
+              <label>{{ 'closeOffer.paymentConditions' | translate }}: </label>
+              <label>{{ (generalData$ | async)?.paymentConditions }}</label>
+            </div>
+            <div>
+              <label>{{ 'closeOffer.route' | translate }}: </label>
+              <label>{{ (generalData$ | async)?.route }}</label>
+            </div>
+            <div class="three-lines">
+              <label
+                >{{ 'closeOffer.address' | translate }}: <span> {{ (generalData$ | async)?.address }} </span>
+              </label>
+            </div>
+          </div>
+          <div class="contact-data">
+            <div>
+              <label>{{ 'closeOffer.contactData' | translate }}</label>
+            </div>
+            <div class="image">
+              <img src="assets/Images/contacto.svg" alt="contact" />
+              <label class="bold">{{ (generalData$ | async).contactName }}</label>
+            </div>
+            <div class="image">
+              <img src="assets/Images/quotation/mail.svg" alt="mail" />
+              <label>{{ (generalData$ | async).email }}</label>
+            </div>
+            <div class="image">
+              <img src="assets/Images/quotation/phone.svg" alt="phone" />
+              <label>{{ (generalData$ | async)?.phone1 }}</label>
+            </div>
+            <div class="data">
+              <label>{{ 'closeOffer.dept' | translate }}: </label>
+              <label>{{ (generalData$ | async)?.department }}</label>
+            </div>
+            <div class="data">
+              <label>{{ 'closeOffer.position' | translate }}: </label>
+              <label>{{ (generalData$ | async)?.position }}</label>
+            </div>
+            <div class="data">
+              <label>{{ 'closeOffer.decisionLevel' | translate }}: </label>
+              <label>{{ (generalData$ | async)?.decisionLevel }}</label>
+            </div>
+          </div>
+          <div class="contract-brands">
+            <label>{{ 'closeOffer.brandsInContract' | translate }}</label>
+            <div class="virtual-list" *ngIf="(listBrands$ | async).length > 0">
+              <virtual-scroller [items]="listBrands$ | async" (vsUpdate)="scrolledBrands = $event">
+                <label *ngFor="let brand of scrolledBrands">
+                  {{ brand.Nombre }}
+                </label>
+              </virtual-scroller>
+            </div>
+            <div class="loading" *ngIf="isLoadingBrands$ | async">
+              <app-loading></app-loading>
+            </div>
+            <div class="loading" *ngIf="!(isLoadingBrands$ | async) && (listBrands$ | async)?.length === 0">
+              <app-without-results [title]="'strategy.details.contentWithoutContract' | translate"></app-without-results>
+            </div>
+          </div>
+        </div>
+        <div class="brands-totals">
+          <label>{{ (listBrands$ | async).length }} {{ 'common.brands' | translate }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="right-container">
+      <div class="content">
+        <div class="outlet">
+          <router-outlet></router-outlet>
+        </div>
+        <aside>
+          <div class="header">
+            <label class="title textUpperCase">{{ 'closeOffer.strategy' | translate }}</label>
+            <label class="subtitle">{{ 'closeOffer.totalInClosingGeneral' | translate }}</label>
+            <label class="subtitle"
+              >{{ (client$ | async)?.TotalCotizadoUSD | currency: 'USD':'symbol-narrow':'1.2-2' }} USD</label
+            >
+          </div>
+          <div class="strategy">
+            <label>{{ 'closeOffer.strategy' | translate }} · </label>
+            <label>{{ (itemSelected$ | async)?.label }}</label>
+          </div>
+          <div class="strategy-details" *ngIf="(itemSelected$ | async)?.label">
+            <p>
+              <span>{{ 'strategy.details.objective' | translate }}</span>
+              <span> · </span>
+              <span *ngIf="(itemSelected$ | async)?.label === quotationStrategyOffensive" class="text">{{
+                'strategy.details.offensiveObjective' | translate
+              }}</span>
+              <span *ngIf="(itemSelected$ | async)?.label === quotationStrategyBalanced" class="text">{{
+                'strategy.details.balancedObjective' | translate
+              }}</span>
+              <span *ngIf="(itemSelected$ | async)?.label === quotationStrategyDefensive" class="text">{{
+                'strategy.details.defensiveObjective' | translate
+              }}</span>
+            </p>
+            <p>
+              <span>{{ 'closeOffer.tactic' | translate }}</span>
+              <span> · </span>
+              <span *ngIf="(itemSelected$ | async)?.label === quotationStrategyOffensive" class="text">{{
+                'strategy.details.offensiveTactics' | translate
+              }}</span>
+              <span *ngIf="(itemSelected$ | async)?.label === quotationStrategyBalanced" class="text">{{
+                'strategy.details.balancedTactics' | translate
+              }}</span>
+              <span *ngIf="(itemSelected$ | async)?.label === quotationStrategyDefensive" class="text">{{
+                'strategy.details.defensiveTactics' | translate
+              }}</span>
+            </p>
+          </div>
+          <div class="date">
+            <label>{{ 'closeOffer.dateRecord' | translate }}</label>
+            <label>{{ dateOfStrategy$ | async | dateFormatSlash }}</label>
+          </div>
+          <div class="tactics">
+            <label>{{ 'closeOffer.tactics' | translate }}</label>
+            <div class="content">
+              <div *ngIf="saleForValue$ | async; let sales">
+                <label>· {{ 'Venta Por Valor' }}</label>
+                <label>{{ 'Venta Por Valor' }}</label>
+                <!-- Colocar class select cuando se presione para abrir el pop -->
+                <label (click)="handlePopUp('salesValue', true, $event.target)">{{
+                  sales.ajOfQuotationStrategyTactic?.Observaciones ? 'Observaciones · Coordinador' : 'Justificación · EVI'
+                }}</label>
+                <div class="custom-pop-up-tactics" [style.z-index]="4">
+                  <app-custom-position-pop-up
+                    *ngIf="salesPop"
+                    [minWidth]="viewType === 'macBookAir' ? '630px' : '470px'"
+                    [minHeight]="'auto'"
+                    [maxWidth]="viewType === 'macBookAir' ? '630px' : '470px'"
+                    [maxHeight]="viewType === 'macBookAir' ? '180px' : '110px'"
+                    [closeButtonSize]="viewType === 'macBookAir' ? '20px' : '18px'"
+                    [closeButtonSeparation]="viewType === 'macBookAir' ? '20px' : '18px'"
+                    [floatingSize]="0"
+                    [padding]="'0'"
+                    [target]="salesTarget"
+                    [popUpPosition]="'left-center'"
+                    (closeEmitter)="handlePopUp('salesValue', false, null)"
+                  >
+                    <div class="pop-ng-content">
+                      <div class="background-color" *ngIf="sales.ajOfQuotationStrategyTactic.Observaciones">
+                        <label class="title ocean"
+                          >{{ 'closeOffer.observations' | translate }} · {{ 'common.coordinator' | translate }}</label
+                        >
+                        <label class="content">
+                          {{ sales.ajOfQuotationStrategyTactic.Observaciones }}
+                        </label>
+                      </div>
+                      <div *ngIf="sales.ajOfQuotationStrategyTactic.Justificacion">
+                        <label class="title ocean"
+                          >{{ 'closeOffer.justification' | translate }} · {{ 'common.evi' | translate }}</label
+                        >
+                        <label class="content">
+                          {{ sales.ajOfQuotationStrategyTactic.Justificacion }}
+                        </label>
+                      </div>
+                    </div>
+                  </app-custom-position-pop-up>
+                </div>
+              </div>
+              <div *ngIf="deliveryTimeTactic$ | async; let deliveruyTime">
+                <label>· {{ 'closeOffer.deliveryTime' | translate }}</label>
+                <label>{{ deliveruyTime.Subtactica }}</label>
+                <!-- Colocar class select cuando se presione para abrir el pop -->
+                <label (click)="handlePopUp('delivery', true, $event.target)">{{
+                  deliveruyTime.ajOfQuotationStrategyTactic?.Observaciones
+                    ? 'Observaciones · Coordinador'
+                    : 'Justificación · EVI'
+                }}</label>
+                <div class="custom-pop-up-tactics" [style.z-index]="4">
+                  <app-custom-position-pop-up
+                    *ngIf="deliveryPop"
+                    [minWidth]="viewType === 'macBookAir' ? '630px' : '470px'"
+                    [minHeight]="'auto'"
+                    [maxWidth]="viewType === 'macBookAir' ? '630px' : '470px'"
+                    [maxHeight]="viewType === 'macBookAir' ? '180px' : '110px'"
+                    [closeButtonSize]="viewType === 'macBookAir' ? '20px' : '18px'"
+                    [closeButtonSeparation]="viewType === 'macBookAir' ? '20px' : '18px'"
+                    [floatingSize]="0"
+                    [padding]="'0'"
+                    [target]="deliveryTarget"
+                    [popUpPosition]="'left-center'"
+                    (closeEmitter)="handlePopUp('delivery', false, null)"
+                  >
+                    <div class="pop-ng-content">
+                      <div class="background-color" *ngIf="deliveruyTime.ajOfQuotationStrategyTactic.Observaciones">
+                        <label class="title ocean"
+                          >{{ 'closeOffer.observations' | translate }} · {{ 'common.coordinator' | translate }}</label
+                        >
+                        <label class="content">
+                          {{ deliveruyTime.ajOfQuotationStrategyTactic.Observaciones }}
+                        </label>
+                      </div>
+                      <div *ngIf="deliveruyTime.ajOfQuotationStrategyTactic.Justificacion">
+                        <label class="title ocean"
+                          >{{ 'closeOffer.justification' | translate }} · {{ 'common.evi' | translate }}</label
+                        >
+                        <label class="content">
+                          {{ deliveruyTime.ajOfQuotationStrategyTactic.Justificacion }}
+                        </label>
+                      </div>
+                    </div>
+                  </app-custom-position-pop-up>
+                </div>
+              </div>
+              <div *ngIf="paymenConditions$ | async; let payment">
+                <label *ngIf="!lodashIsEmpty(paymenConditions$ | async)"
+                  >· {{ 'closeOffer.paymentConditions' | translate }}</label
+                >
+                <!-- Colocar class select cuando se presione para abrir el pop -->
+                <div *ngFor="let item of payment; let i = index">
+                  <label>{{ item.Subtactica }}</label>
+                  <label class="link" (click)="handlePopUp('payment', true, $event.target, i)">{{
+                    item.ajOfQuotationStrategyTactic?.Observaciones ? 'Observaciones · Coordinador' : 'Justificación · EVI'
+                  }}</label>
+                  <div class="custom-pop-up-tactics" [style.z-index]="paymentZIndex[i]">
+                    <app-custom-position-pop-up
+                      *ngIf="paymentConditionsPop[i]"
+                      [minWidth]="viewType === 'macBookAir' ? '630px' : '470px'"
+                      [minHeight]="'auto'"
+                      [maxWidth]="viewType === 'macBookAir' ? '630px' : '470px'"
+                      [maxHeight]="viewType === 'macBookAir' ? '197px' : '160px'"
+                      [closeButtonSize]="viewType === 'macBookAir' ? '20px' : '18px'"
+                      [closeButtonSeparation]="viewType === 'macBookAir' ? '20px' : '18px'"
+                      [floatingSize]="0"
+                      [adjustForSmallTarget]="20"
+                      [padding]="'0'"
+                      [target]="paymentConditionsTarget[i]"
+                      [popUpPosition]="'left-end'"
+                      (closeEmitter)="handlePopUp('payment', false, null, i)"
+                    >
+                      <div class="pop-ng-content">
+                        <div class="background-color" *ngIf="item.ajOfQuotationStrategyTactic.Observaciones">
+                          <label class="title ocean"
+                            >{{ 'closeOffer.observations' | translate }} · {{ 'common.coordinator' | translate }}</label
+                          >
+                          <label class="content">
+                            {{ item.ajOfQuotationStrategyTactic.Observaciones }}
+                          </label>
+                        </div>
+                        <div *ngIf="item.ajOfQuotationStrategyTactic.Justificacion">
+                          <label class="title ocean"
+                            >{{ 'closeOffer.justification' | translate }} · {{ 'common.evi' | translate }}</label
+                          >
+                          <label class="content"> {{ item.ajOfQuotationStrategyTactic.Justificacion }} </label>
+                        </div>
+                      </div>
+                    </app-custom-position-pop-up>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="tacticPrice$ | async; let tacticP">
+                <label>· {{ 'closeOffer.price' | translate }}</label>
+                <label>{{ tacticP.Subtactica }}</label>
+                <!-- Colocar class select cuando se presione para abrir el pop -->
+                <label class="link" (click)="handlePopUp('price', true, $event.target)">{{
+                  tacticP.ajOfQuotationStrategyTactic?.Observaciones ? 'Observaciones · Coordinador' : 'Justificación · EVI'
+                }}</label>
+                <div class="custom-pop-up-tactics" [style.z-index]="2">
+                  <app-custom-position-pop-up
+                    *ngIf="pricePop"
+                    [minWidth]="viewType === 'macBookAir' ? '630px' : '470px'"
+                    [minHeight]="'auto'"
+                    [maxWidth]="viewType === 'macBookAir' ? '630px' : '470px'"
+                    [maxHeight]="viewType === 'macBookAir' ? '136px' : '110px'"
+                    [closeButtonSize]="viewType === 'macBookAir' ? '20px' : '18px'"
+                    [closeButtonSeparation]="viewType === 'macBookAir' ? '20px' : '18px'"
+                    [floatingSize]="0"
+                    [padding]="'0'"
+                    [target]="priceTarget"
+                    [popUpPosition]="'left-center'"
+                    (closeEmitter)="handlePopUp('price', false, null)"
+                  >
+                    <div class="pop-ng-content">
+                      <div class="background-color" *ngIf="tacticP.ajOfQuotationStrategyTactic.Observaciones">
+                        <label class="title ocean"
+                          >{{ 'closeOffer.observations' | translate }} · {{ 'common.coordinator' | translate }}</label
+                        >
+                        <label class="content">
+                          {{ tacticP.ajOfQuotationStrategyTactic.Observaciones }}
+                        </label>
+                      </div>
+                      <div *ngIf="tacticP.ajOfQuotationStrategyTactic.Justificacion">
+                        <label class="title ocean"
+                          >{{ 'closeOffer.justification' | translate }} · {{ 'common.evi' | translate }}</label
+                        >
+                        <label class="content">
+                          {{ tacticP.ajOfQuotationStrategyTactic.Justificacion }}
+                        </label>
+                      </div>
+                    </div>
+                  </app-custom-position-pop-up>
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+      <footer>
+        <div class="tooltip">
+          <img src="assets/Images/pre-processing/originales.svg" alt="" />
+          <div class="tooltip-text">
+            <p>{{ 'preProcessing.typeOfItem.originals' | translate }}</p>
+          </div>
+        </div>
+        <div class="tooltip">
+          <img src="assets/Images/pre-processing/alternativas.svg" alt="" />
+          <div class="tooltip-text">
+            <p>{{ 'preProcessing.typeOfItem.alternatives' | translate }}</p>
+          </div>
+        </div>
+        <div class="tooltip">
+          <img src="assets/Images/pre-processing/complementarias.svg" alt="" />
+          <div class="tooltip-text">
+            <p>{{ 'preProcessing.typeOfItem.complementary' | translate }}</p>
+          </div>
+        </div>
+        <div class="tooltip">
+          <img src="assets/Images/pre-processing/promocion.svg" alt="" />
+          <div class="tooltip-text">
+            <p>{{ 'preProcessing.typeOfItem.promotion' | translate }}</p>
+          </div>
+        </div>
+        <div class="tooltip">
+          <img src="assets/Images/pre-processing/ahorro.svg" alt="" />
+          <div class="tooltip-text">
+            <p>{{ 'preProcessing.typeOfItem.saving' | translate }}</p>
+          </div>
+        </div>
+        <div class="tooltip">
+          <label class="bold">TEE</label>
+          <div class="tooltip-text">
+            <p>{{ 'closeOffer.deliveryEstimatedTime' | translate }}</p>
+          </div>
+        </div>
+        <div class="tooltip">
+          <label class="bold">FCO</label>
+          <div class="tooltip-text">
+            <p>{{ 'closeOffer.closeOfferDate' | translate }}</p>
+          </div>
+        </div>
+        <div class="circle" *ngIf="quoteInAdjustment$ | async">
+          <div class="green"></div>
+          <label>{{ 'closeOffer.acceptedAdjustment' | translate }}</label>
+        </div>
+        <div class="circle" *ngIf="quoteInAdjustment$ | async">
+          <div class="red"></div>
+          <label>{{ 'closeOffer.rejectedAdjustment' | translate }}</label>
+        </div>
+        <div class="circle" *ngIf="quoteInAdjustment$ | async">
+          <div class="yellow"></div>
+          <label>{{ 'closeOffer.partialAdjustment' | translate }}</label>
+        </div>
+        <div *ngIf="quoteInAdjustment$ | async">
+          <img src="assets/Images/close-offer/freight-ocean.svg" alt="" />
+          <label>{{ 'closeOffer.seeAdjustments' | translate }}</label>
+        </div>
+        <div>
+          <img src="assets/Images/quotation/comment.svg" alt="" />
+          <label>{{ 'closeOffer.seeComments' | translate }}</label>
+        </div>
+        <div *ngIf="quoteInProgress$ | async">
+          <img src="assets/Images/close-offer/warning.svg" alt="" />
+          <label>{{ 'closeOffer.expiredTracing' | translate }}</label>
+        </div>
+      </footer>
+    </div>
+  </div>
+</div>

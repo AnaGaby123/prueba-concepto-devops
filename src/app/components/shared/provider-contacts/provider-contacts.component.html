@@ -1,0 +1,78 @@
+<div class="providerContact" [style.padding]="padding" [style.background-color]="backGroundColor">
+  <div class="providerData" [style.flex-basis]="sizeGeneralData">
+    <div class="providerTitle">
+      <label
+        >{{ 'processPurchase.provider' | translate }}
+        <span> {{ availableCredit ?? '' }} </span>
+      </label>
+    </div>
+    <div class="providerContent">
+      <div>
+        <img alt="PQF" [src]="src" />
+      </div>
+      <div>
+        <label *ngIf="selectedContact" class="providerName">{{ selectedContact?.providerName }} </label>
+        <label *ngIf="!selectedContact" class="providerName">NA </label>
+        <label>{{ 'processPurchase.provider' | translate }}</label>
+      </div>
+    </div>
+  </div>
+  <div class="providerContactData" *ngIf="showContactData">
+    <div class="titleContact">
+      <label>{{ typeContact }}</label>
+    </div>
+
+    <div class="providerContactContent">
+      <div class="contentLeft">
+        <div>
+          <div>
+            <img alt="client" src="assets/Images/quotation/client.svg" />
+          </div>
+          <app-drop-down-list
+            [hasBorder]="false"
+            [items]="contactList"
+            [itemSelected]="selectedContactDropList"
+            (valueDropList)="setContactProviderSelected($event)"
+            [font]="'Roboto-Bold'"
+          ></app-drop-down-list>
+        </div>
+        <div>
+          <div>
+            <img alt="email" src="assets/Images/quotation/mail.svg" />
+          </div>
+          <label>{{ !lodashIsEmpty(selectedContact?.Mail) ? selectedContact?.Mail : 'NA' }}</label>
+        </div>
+        <div>
+          <div>
+            <img alt="phone" src="assets/Images/quotation/phone.svg" />
+          </div>
+          <label>{{
+            !lodashIsEmpty((selectedContact?.NumeroTelefonico)[0]?.Numero)
+              ? (selectedContact?.NumeroTelefonico)[0]?.Numero
+              : 'NA '
+          }}</label>
+          <label *ngIf="!lodashIsEmpty((selectedContact?.NumeroTelefonico)[0]?.Extension)">{{
+            !lodashIsEmpty((selectedContact?.NumeroTelefonico)[0]?.Extension)
+              ? ' · Ext. ' + (selectedContact?.NumeroTelefonico)[0]?.Extension
+              : ' NA'
+          }}</label>
+        </div>
+      </div>
+
+      <div class="contentRight" *ngIf="showAdditionalData">
+        <div>
+          <label>{{ ('processPurchase.details.department' | translate) + ':' }}</label>
+          <label>{{ !lodashIsEmpty(selectedContact?.Departamento) ? selectedContact?.Departamento : 'NA' }}</label>
+        </div>
+        <div>
+          <label>{{ ('processPurchase.details.position' | translate) + ':' }}</label>
+          <label>{{ !lodashIsEmpty(selectedContact?.Puesto) ? selectedContact?.Puesto : 'NA' }}</label>
+        </div>
+        <div>
+          <label>{{ ('processPurchase.details.decisionLevel' | translate) + ':' }}</label>
+          <label>{{ !lodashIsEmpty(selectedContact?.NivelDecision) ? selectedContact?.NivelDecision : 'NA' }}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

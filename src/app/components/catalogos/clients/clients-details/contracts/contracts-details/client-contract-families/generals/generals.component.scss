@@ -1,0 +1,136 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.flexColumn;
+  flex: 1;
+  overflow: hidden;
+
+  & > .general-container {
+    @include s.flexColumn;
+    flex: 1 1 auto;
+    overflow: hidden;
+    //padding: 30px 15px 15px 15px;
+    & > .tabs {
+      flex: 0 0 auto;
+    }
+
+    & > .general-container-sections {
+      display: grid;
+      flex: 1 1 auto;
+      grid-template-columns: 100%;
+      overflow: auto;
+
+      & > .price-container {
+        @include s.flexColumn;
+        flex: 1;
+        overflow-y: auto;
+
+        & > .provider-list-price,
+        & > .discount-freight,
+        & > .import,
+        & > .custom-agent-cost,
+        & > .expenses {
+          @include s.flexColumn;
+          align-items: center;
+          border-bottom: 1px solid s.$boxShadow;
+          padding: 15px;
+
+          & > * {
+            display: block;
+            max-width: 950px;
+          }
+        }
+
+        & > .fixed,
+        & > .utility {
+          align-items: center;
+          border-bottom: 1px solid s.$boxShadow;
+          display: flex;
+          flex-direction: column;
+          padding: 20px;
+
+          & > * {
+            display: block;
+            max-width: 950px;
+          }
+        }
+      }
+
+      & > .send-time-container {
+        @include s.flexColumn;
+
+        & > div {
+          @include s.flexColumn;
+          align-items: center;
+          padding: 25px;
+
+          & > .green-title {
+            @include s.Novecento-Bold;
+            @include s.escaledFontFormat(s.$textSize14to16, bold, s.$pqGreen);
+            margin-bottom: 10px;
+            text-align: center;
+            width: 100%;
+          }
+
+          & > .route-name {
+            @include s.Roboto-Bold;
+            @include s.escaledFontFormat(s.$textSize14to16, bold, s.$pqBlack2);
+            text-align: center;
+          }
+        }
+
+        & > .route-details {
+          @include s.flexColumn;
+          border-top: 1px solid s.$boxShadow;
+        }
+      }
+    }
+
+    & > .buttons {
+      @include s.flexRow;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+
+      & > .botonActive {
+        @include s.pqButton();
+      }
+
+      & > .botonDisable {
+        @include s.pqButtonDisable();
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > .general-container {
+      padding: 35px 20px 20px 20px;
+
+      & > .general-container-sections {
+        & > .price-container {
+          & > .provider-list-price,
+          & > .discount-freight,
+          & > .import,
+          & > .custom-agent-cost,
+          & > .expenses {
+            padding: 20px;
+          }
+        }
+
+        & > .send-time-container {
+          & > div {
+            padding: 30px;
+
+            & > .green-title {
+              margin-bottom: 12px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

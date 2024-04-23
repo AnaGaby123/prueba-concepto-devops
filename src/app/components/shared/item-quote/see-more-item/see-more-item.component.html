@@ -1,0 +1,8 @@
+<div class="see-more-container">
+  <label
+    #labelElement
+    *ngIf="columnSeeMore?.showColumn"
+    (click)="handleClick($event, labelElement, true, nameActionsInternalSalesItem?.SeeMoreAction)"
+    >{{ 'descriptionItemQuote.seeMore' | translate }}</label
+  >
+</div>

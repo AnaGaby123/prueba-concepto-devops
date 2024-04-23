@@ -1,0 +1,219 @@
+@use 'base' as s;
+
+:host {
+  width: 100%;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  #card-container {
+    @include s.flexRowNoWrap;
+    @include s.absoluteCenter;
+    width: 100%;
+
+    & > virtual-scroller {
+      @include s.flexRowNoWrap;
+      @include s.absoluteCenter;
+      @include s.fixVirtualScroller;
+      width: 100%;
+      height: 110px;
+      overflow-y: hidden;
+      overflow-x: auto;
+
+      ::ng-deep .scrollable-content {
+        @include s.flexRowNoWrap;
+        @include s.absoluteCenter;
+        width: 100%;
+        height: 81%;
+        background-color: s.$pqBlack2;
+        box-sizing: border-box;
+        justify-content: flex-start;
+        top: auto;
+
+        &::before,
+        &::after {
+          content: '';
+          width: 15px;
+          height: 100%;
+          min-width: 15px;
+          background-color: s.$pqBlack2;
+        }
+
+        & > div:last-child {
+          border-right: 0.3px solid s.$boxShadow;
+        }
+
+        & > .option {
+          @include s.flexColumn;
+          @include s.absoluteCenter;
+          position: relative;
+
+          &:hover {
+            background-color: s.$pqBlack;
+            cursor: pointer;
+          }
+
+          &:hover * {
+            cursor: pointer;
+          }
+
+          &.active {
+            height: 110%;
+            background-color: s.$pqBlack;
+            border: none;
+            color: s.$pqWhite;
+          }
+
+          &.border {
+            border-right: 0.3px solid s.$boxShadow;
+          }
+
+          width: 215px;
+          min-width: 170px;
+          height: 100%;
+          animation-duration: 0.5s;
+          background-color: s.$pqBlack2;
+          border-left: 0.3px solid s.$boxShadow;
+          box-sizing: border-box;
+          padding: 12px 10px;
+          transition: 0.5s ease-out;
+
+          & > div.label {
+            @include s.flexRowNoWrap;
+
+            & > label {
+              @include s.multiLineTextTruncateSinHeight(1, normal);
+              @include s.Novecento;
+              text-align: center;
+              word-break: break-word;
+
+              & > span {
+                vertical-align: baseline;
+              }
+            }
+
+            // DOCS fuente normal para los labels que no tengan una clase de estilos definida
+            & > .normal {
+              @include s.escaledFontFormat(s.$textSize12to15, regular, s.$pqWhite);
+            }
+
+            // DOCS fuente normal negrita
+            & > .normal-bold {
+              @include s.escaledFontFormat(s.$textSize12to15, regular, s.$pqWhite);
+              @include s.Novecento-Bold;
+            }
+
+            // DOCS: Fuente semi chica
+            & > .semi-small {
+              @include s.escaledFontFormat(s.$textSize11to13, regular, s.$pqWhite);
+            }
+
+            // DOCS: Fuente semi chica negrita
+            & > .semi-small-bold {
+              @include s.escaledFontFormat(s.$textSize11to13, bold, s.$pqWhite);
+              @include s.Novecento-Bold;
+            }
+
+            // DOCS fuente chica para los labels en normal
+            & > .small {
+              @include s.escaledFontFormat(s.$textSize10to12, regular, s.$pqWhite);
+
+              & > span:nth-of-type(2) {
+                margin: 0 4px;
+              }
+            }
+
+            & > .ultra-small-roboto {
+              @include s.Roboto-Medium;
+              @include s.escaledFontFormat(s.$textSize8to10, regular, s.$pqWhite);
+
+              & > span:nth-of-type(2) {
+                margin: 0 4px;
+              }
+            }
+
+            // DOCS fuente chica para los labels en negrita
+            & > .small-bold {
+              @include s.escaledFontFormat(s.$textSize10to12, bold, s.$pqWhite);
+              @include s.Novecento-Bold;
+            }
+
+            // DOCS fuente grande para los labels en negrita
+            & > .large-bold {
+              @include s.multiLineTextTruncateSinHeight(2, normal);
+              @include s.escaledFontFormat(s.$textSize13to19, bold, s.$pqWhite);
+              @include s.Novecento-Bold;
+            }
+
+            & > .indicators {
+              @include s.flexRowNoWrap;
+              align-items: center;
+              padding: 6px 0 0 12px;
+
+              & > img {
+                margin-left: -5px;
+                height: 11px;
+              }
+            }
+          }
+
+          & > div.label:first-child {
+            & > label {
+              margin-top: 0 !important;
+              padding-top: 0 !important;
+            }
+          }
+
+          & > div.label:last-child {
+            & > label {
+              text-align: center;
+            }
+          }
+
+          & > img {
+            bottom: 13px;
+            left: 20px;
+            max-height: 17px;
+            max-width: 19px;
+            position: absolute;
+          }
+        }
+      }
+    }
+
+    .scrollable-content {
+      @include s.flexRowNoWrap;
+      @include s.absoluteCenter;
+      width: 100%;
+      height: 90px;
+      background-color: s.$pqBlack2;
+      box-sizing: border-box;
+      justify-content: center;
+      top: 10px;
+
+      & > label:nth-of-type(1) {
+        @include s.escaledFontFormat(s.$textSize20to25, regular, s.$pqWhite);
+        @include s.Novecento-Bold;
+        text-transform: uppercase;
+      }
+    }
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    #card-container {
+      & > virtual-scroller {
+        ::ng-deep .scrollable-content {
+          &::before,
+          &::after {
+            width: 20px;
+            min-width: 20px;
+          }
+        }
+      }
+    }
+  }
+}

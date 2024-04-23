@@ -1,0 +1,436 @@
+@use 'base' as s;
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  @include s.absolute100;
+  $grayColor: s.$gnGrisRata;
+
+  & > .drop-list-container {
+    width: 100%;
+    padding: 0;
+    position: relative;
+    display: inline-block;
+
+    & > .label-container {
+      @include s.flexRowNoWrap;
+      @include s.absoluteCenter;
+      height: 19px;
+      justify-content: space-between;
+      margin-bottom: 3px;
+      overflow: hidden;
+      width: 100%;
+
+      & > img:nth-of-type(1) {
+        flex: 0 0 7px;
+        margin-right: 3px;
+        width: 7px;
+      }
+
+      & > div:nth-of-type(1) {
+        @include s.flexRowNoWrap;
+        flex: 1 1 auto;
+        @include s.multiLineTextTruncateSinHeight(1, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+
+        & > label:nth-of-type(1) {
+          @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+          @include s.Roboto-Regular;
+
+          &.label-default {
+            color: s.$pqBlack2;
+          }
+
+          &.label-danger {
+            color: s.$pqDanger !important;
+          }
+        }
+
+        & > label:nth-of-type(2) {
+          @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+          @include s.Roboto-Regular;
+        }
+      }
+    }
+
+    & > .label-disable-edit-container {
+      @include s.flexRow;
+      @include s.absoluteCenter;
+      width: 100%;
+      height: 25px;
+      justify-content: flex-start;
+
+      & > div:nth-of-type(1) {
+        width: 100%;
+        @include s.multiLineTextTruncateSinHeight(1, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+
+        & > label:nth-of-type(1) {
+          @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+          @include s.Roboto-Regular;
+        }
+      }
+    }
+
+    & > .container-drop {
+      width: 100%;
+      padding: 0;
+      position: relative;
+
+      & > .title {
+        @include s.flexRow;
+        width: 100%;
+        height: 25px;
+        color: s.$pqBlack2;
+        border: 1px solid;
+        justify-content: space-between;
+        background: #ffffff;
+        position: relative;
+        cursor: pointer;
+        transition: height 0.2s ease-in-out;
+
+        &.title-danger {
+          border: 1px solid #dc3545 !important;
+        }
+
+        &.noBorder {
+          border: none !important;
+        }
+
+        & > .img-initial {
+          @include s.flexRow;
+          @include s.absoluteCenter;
+          flex: 0 0 auto;
+          padding: 0 6px;
+          transition: 0.2s;
+
+          & > .magnifying-glass {
+            flex: 0 0 100%;
+            margin-top: 1px;
+            width: 11px;
+          }
+        }
+
+        & > .content-info {
+          @include s.flexRow;
+          flex: 1 1 auto;
+
+          & > div {
+            @include s.flexRow;
+            width: 100%;
+            justify-content: flex-start;
+            @include s.multiLineTextTruncateSinHeight(1, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+            word-break: break-all;
+
+            & > p {
+              @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+              @include s.Roboto-Regular;
+              line-height: 1.3;
+              width: 100%;
+
+              & > .circle {
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                display: inline-block;
+                margin-right: 2px;
+              }
+
+              & > label {
+                display: inline-flex;
+
+                & > .circleArray {
+                  border-radius: 50%;
+                  display: inline-block;
+                  height: 10px;
+                  position: relative;
+                  vertical-align: baseline;
+                  width: 10px;
+                }
+
+                & > .circleArray:nth-of-type(n + 1) {
+                  margin-right: -5px;
+                }
+
+                & > .circleArray:last-of-type {
+                  margin-right: 8px;
+                }
+              }
+
+              & > .main-spans {
+                @include s.flexRowNoWrap;
+              }
+
+              & > span:nth-of-type(2) {
+                margin-left: 4px;
+              }
+            }
+
+            input {
+              width: 100%;
+              height: 100%;
+              border: 0;
+              outline: none;
+              @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqBlack2);
+              @include s.Roboto-Regular;
+
+              &.disable {
+                @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqGray3);
+                pointer-events: none;
+              }
+            }
+
+            input::placeholder {
+              @include s.placeholder(s.$pqGray3, 1);
+              @include s.escaledFontFormat(s.$textSize13to16, regular, s.$pqPlaceholder);
+              @include s.Roboto-Regular;
+              color: s.$pqGray3;
+              opacity: 1;
+              width: 100%;
+              font-size: 13px !important;
+              @include s.responsive_layout('macBookAir') {
+                font-size: 16px !important;
+              }
+            }
+
+            &.two {
+              @include s.multiLineTextTruncateSinHeight(2, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+            }
+
+            &.three {
+              @include s.multiLineTextTruncateSinHeight(3, normal, rgba(255, 255, 255, 1), rgba(25, 255, 255, 0));
+            }
+          }
+        }
+
+        & > .img-final {
+          @include s.flexRow;
+          @include s.absoluteCenter;
+          flex: 0 0 auto;
+          padding: 0 10px;
+          transition: 1s;
+
+          & > .arrow {
+            width: 10px;
+            height: 6px;
+            top: 9px;
+            right: 7px;
+          }
+        }
+      }
+
+      & > .content {
+        width: 100%;
+        max-height: 200px;
+        background-color: s.$pqWhite;
+        border: 1px solid s.$pqGray2;
+        position: absolute;
+        transition: all 0.2s ease-in-out;
+        z-index: 4;
+
+        &.top {
+          box-shadow: 0px -8px 6px rgba(0, 0, 0, 0.07), 5px 2px 4px rgba(0, 0, 0, 0.07), -5px 2px 4px rgba(0, 0, 0, 0.07);
+        }
+
+        &.bottom {
+          box-shadow: 5px 2px 4px rgba(0, 0, 0, 0.07), -5px 2px 4px rgba(0, 0, 0, 0.07), 0px 8px 6px rgba(0, 0, 0, 0.07);
+        }
+
+        & > div:nth-of-type(1) {
+          width: 100%;
+
+          & > div:nth-of-type(1) {
+            width: 100%;
+            overflow: auto;
+
+            & > .options {
+              @include s.windowsScrollbars('none');
+              overflow: auto;
+              margin: 0 !important;
+
+              & > .options-container {
+                cursor: pointer;
+                transition: background-color 0.2s ease-in-out;
+                width: 100%;
+
+                & * {
+                  cursor: pointer;
+                }
+
+                &:last-child > .border-separator {
+                  border-bottom: none;
+                }
+
+                &:hover {
+                  background-color: #eceef0;
+                }
+
+                & > .border-separator {
+                  border-bottom: 0.5px solid #eceef0;
+                  margin: 0 10px;
+
+                  & > .option {
+                    display: flex;
+                    flex-direction: column;
+                    font-weight: lighter;
+                    justify-content: center;
+                    padding: 6px 0;
+                    width: 100%;
+
+                    & > .main-labels {
+                      @include s.flexRow;
+                      align-items: center;
+
+                      & > .check {
+                        height: 10px;
+                        margin-right: 13px;
+                        width: 10px;
+                      }
+
+                      & > .circle {
+                        border-radius: 50%;
+                        display: inline-block;
+                        height: 10px;
+                        margin-right: 8px;
+                        width: 10px;
+                      }
+
+                      & > .circles {
+                        min-width: max-content;
+
+                        & > .circleArray {
+                          border-radius: 50%;
+                          display: inline-block;
+                          height: 10px;
+                          position: relative;
+                          vertical-align: baseline;
+                          width: 10px;
+                        }
+
+                        & > .circleArray:nth-of-type(n + 1) {
+                          margin-right: -5px;
+                        }
+
+                        & > .circleArray:last-of-type {
+                          margin-right: 8px;
+                        }
+                      }
+
+                      & > .option-name {
+                        -webkit-box-orient: vertical;
+                        -webkit-line-clamp: 2;
+                        display: -webkit-box;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                      }
+
+                      & label {
+                        @include s.Roboto-Light;
+
+                        &.selected {
+                          @include s.Roboto-Regular;
+                        }
+                      }
+
+                      & > label:nth-of-type(2) {
+                        padding-left: 4px;
+                      }
+                    }
+
+                    & label {
+                      @include s.Roboto-Light;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .tooltip {
+    position: relative !important;
+    z-index: 1;
+  }
+
+  .tooltip .tooltiptext {
+    border: 1px solid s.$pqGray2;
+    visibility: hidden;
+    width: 160px;
+    background-color: s.$gnAzulObscuro;
+    color: #fff;
+    text-align: left;
+    position: absolute;
+    z-index: 10;
+    bottom: 100%;
+    left: 5px;
+    margin-left: -60px;
+    padding: 10px 15px;
+    opacity: 0;
+    transition: opacity 1s;
+
+    & > span {
+      color: s.$gnDorado;
+    }
+  }
+
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  @include s.responsive_layout('macBookAir') {
+    & > .drop-list-container {
+      & > .label-container {
+        height: 21px;
+
+        & > img:nth-of-type(1) {
+          width: 8px;
+        }
+
+        & > div:nth-of-type(1) {
+          width: calc(100% - 9px);
+        }
+      }
+
+      & > .label-disable-edit-container {
+        height: 30px;
+      }
+
+      & > .container-drop {
+        & > .title {
+          // height: 30px;
+
+          & > .img-initial {
+            & > .magnifying-glass {
+              width: 14px;
+            }
+          }
+
+          & > .img-final {
+            & > .arrow {
+              width: 11px;
+            }
+          }
+        }
+
+        & > .content {
+          & > div:nth-of-type(1) {
+            & > div:nth-of-type(1) {
+              & > .options {
+                & > .options-container {
+                  & > .border-separator {
+                    border-bottom: 0.5px solid #eceef0;
+                    margin: 0 15px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
